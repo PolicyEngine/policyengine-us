@@ -25,17 +25,13 @@ class hi_deductions(Variable):
         filing_status_eligible = (
             total_itemized_deduction > p.threshold.deductions[filing_status]
         )
-        is_dependent_on_another_return = tax_unit(
-            "head_is_dependent_elsewhere", period
-        )
+        is_dependent_on_another_return = tax_unit("head_is_dependent_elsewhere", period)
         standard_cap = min_(tax_unit_earned_income, standard_deduction)
         dependent_floor = max_(p.threshold.dependent, standard_cap)
         dependent_eligible = is_dependent_on_another_return & (
             total_itemized_deduction > dependent_floor
         )
-        itemized_deductions_eligible = (
-            filing_status_eligible | dependent_eligible
-        )
+        itemized_deductions_eligible = filing_status_eligible | dependent_eligible
         itemized_deduction = where(
             itemized_deductions_eligible, total_itemized_deduction, 0
         )

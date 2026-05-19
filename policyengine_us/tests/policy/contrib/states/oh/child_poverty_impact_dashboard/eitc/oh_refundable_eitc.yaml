@@ -1,0 +1,47 @@
+- name: Case 1 - OH EITC is refundable when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc
+  input:
+    state_code: OH
+    oh_eitc: 500
+  output:
+    oh_refundable_eitc: 500
+    oh_non_refundable_eitc: 0
+
+- name: Case 2 - OH refundable credits include EITC when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc
+  input:
+    state_code: OH
+    oh_eitc: 1_000
+  output:
+    oh_refundable_credits: 1_000
+
+- name: Case 3 - OH EITC is 0 when EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc
+  input:
+    state_code: OH
+    oh_eitc: 0
+  output:
+    oh_refundable_eitc: 0
+    oh_non_refundable_eitc: 0
+
+- name: Case 4 - OH refundable EITC is 0 for non-OH residents
+  period: 2024
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc
+  input:
+    state_code: CA
+    oh_eitc: 500
+  output:
+    oh_refundable_eitc: 0
+    oh_non_refundable_eitc: 0
+
+- name: Case 5 - OH non-refundable credits exclude EITC when reform active
+  period: 2024
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc
+  input:
+    state_code: OH
+    oh_eitc: 500
+  output:
+    oh_non_refundable_credits: 0

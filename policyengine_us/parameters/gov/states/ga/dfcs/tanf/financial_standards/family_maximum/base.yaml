@@ -1,0 +1,43 @@
+description: Georgia limits monthly cash assistance to this base maximum under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 12)
+  breakdown_labels:
+    - Family size
+  label: Georgia TANF family maximum base amount
+  reference:
+    # These values have not changed since 1997 (and likely since 1990 under AFDC).
+    - title: 1997 Green Book - Table 7-9 Maximum AFDC/TANF Benefits by Family Size
+      href: https://www.govinfo.gov/content/pkg/GPO-CPRT-105WPRT37945/html/GPO-CPRT-105WPRT37945-2-7.htm
+    - title: PAMMS TANF Policy Manual - Appendix A Financial Standards
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/appendix-a/
+    - title: PAMMS TANF Policy Manual - Section 1525 Income
+      href: https://pamms.dhs.ga.gov/dfcs/tanf/1525/
+    - title: Georgia Budget and Policy Institute - TANF Basics
+      href: https://gbpi.org/the-basics-of-georgias-temporary-assistance-for-needy-families-program/
+
+1:
+  1997-01-01: 155
+2:
+  1997-01-01: 235
+3:
+  1997-01-01: 280
+4:
+  1997-01-01: 330
+5:
+  1997-01-01: 378
+6:
+  1997-01-01: 410
+7:
+  1997-01-01: 444
+8:
+  1997-01-01: 470
+9:
+  1997-01-01: 496
+10:
+  1997-01-01: 530
+11:
+  1997-01-01: 568

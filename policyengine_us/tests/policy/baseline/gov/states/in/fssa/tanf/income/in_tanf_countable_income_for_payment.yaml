@@ -1,0 +1,71 @@
+- name: No income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_income_for_payment: 0
+
+- name: Earned income only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_income_for_payment: 100
+    # $400 × 0.25 = $100 (75% disregard)
+
+- name: Unearned income only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_income_for_payment: 300
+    # Unearned income has no disregard
+
+- name: Mixed earned and unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_countable_income_for_payment: 325
+    # $500 × 0.25 = $125 (earned with 75% disregard)
+    # $125 + $200 (unearned) = $325

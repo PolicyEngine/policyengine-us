@@ -1,0 +1,74 @@
+- name: Case 1, no pregnancy.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 42
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_geriatric_pregnancy: false
+
+- name: Case 2, pregnant but under 40.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        is_pregnant: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_geriatric_pregnancy: false
+
+- name: Case 3, pregnant at exactly 40.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_pregnant: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_geriatric_pregnancy: true
+
+- name: Case 4, pregnant over 40.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_pregnant: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_geriatric_pregnancy: true

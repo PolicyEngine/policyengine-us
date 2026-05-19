@@ -1,0 +1,103 @@
+# Tests Florida TCA payment standard based on shelter tier and family size
+# Three shelter tiers: $0, $1-$50, >$50
+# Source: Florida Statutes 414.095(10), FAC 65A-4.220
+
+- name: Case 1, size 1 zero shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    pre_subsidy_rent: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 95
+
+- name: Case 2, size 1 low shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    pre_subsidy_rent: 300  # $25/month
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 153
+
+- name: Case 3, size 1 high shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 1
+    pre_subsidy_rent: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 180
+
+- name: Case 4, size 2 zero shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    pre_subsidy_rent: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 158
+
+- name: Case 5, size 2 low shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    pre_subsidy_rent: 600  # $50/month (boundary)
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 205
+
+- name: Case 6, size 2 high shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    pre_subsidy_rent: 612  # $51/month (just above boundary)
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 241
+
+- name: Case 7, size 3 zero shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    pre_subsidy_rent: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 198
+
+- name: Case 8, size 3 low shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    pre_subsidy_rent: 300
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 258
+
+- name: Case 9, size 3 high shelter.
+  period: 2024-01
+  input:
+    spm_unit_size: 3
+    pre_subsidy_rent: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 303
+
+- name: Case 10, size 14 caps at size 13.
+  period: 2024-01
+  input:
+    spm_unit_size: 14
+    pre_subsidy_rent: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 919
+
+- name: Case 11, shelter cost $1 (minimum low tier).
+  period: 2024-01
+  input:
+    spm_unit_size: 2
+    pre_subsidy_rent: 12  # $1/month
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 205
+    # $1 shelter is in $1-$50 tier, not zero tier

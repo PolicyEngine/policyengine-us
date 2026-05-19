@@ -41,6 +41,262 @@
   output:
     is_aca_ptc_eligible: false
 
+- name: Lawfully present Medicaid-ineligible immigrant below FPL qualifies
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]
+
+- name: Medicaid immigration-eligible immigrant below FPL does not qualify through exception
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [true]
+    aca_ptc_below_fpl_immigration_exception: false
+    is_aca_ptc_eligible: [false]
+
+- name: Recent legal permanent resident below FPL qualifies through exception
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]
+
+- name: Recent one-year parolee below FPL qualifies through exception
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 0
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]
+
+- name: Below-FPL immigrant exception expires in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: false
+    is_aca_ptc_eligible: [false]
+
+- name: Below-FPL lawfully present immigrant in New York BHP is not PTC eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    is_aca_ptc_immigration_status_eligible: [true]
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: true
+    is_basic_health_program_eligible: [true]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Lawfully present immigrant in DC BHP is not PTC eligible after 2026 repeal
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        medicaid_income_level: 1.2
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.2
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    aca_ptc_below_fpl_immigration_exception: false
+    is_basic_health_program_eligible: [true]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Oregon Healthier Oregon coverage blocks PTC below FPL
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    or_healthier_oregon_eligible: [true]
+    is_basic_health_program_eligible: [false]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Oregon Healthier Oregon covers recent LPR below FPL instead of PTC
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 0.75
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    is_medicaid_immigration_status_eligible: [false]
+    aca_ptc_below_fpl_immigration_exception: true
+    or_healthier_oregon_eligible: [true]
+    is_basic_health_program_eligible: [false]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
 - name: is_aca_ptc_eligible unit test 5 --- income B
   period: 2022
   input:
@@ -62,6 +318,43 @@
     aca_magi_fraction: 6.50
   output:
      is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 6b --- basic health program coverage
+  period: 2025
+  input:
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    is_basic_health_program_eligible: true
+    aca_magi_fraction: 2.50
+  output:
+     is_aca_ptc_eligible: false
+
+- name: is_aca_ptc_eligible unit test 6c --- New York Essential Plan derived from program rules
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.3
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+     is_medicaid_eligible: [false]
+     is_basic_health_program_eligible: [true]
+     is_aca_ptc_eligible: [false]
 
 - name: is_aca_ptc_eligible unit test 7 --- max three children pay ACA premium
   period: 2022

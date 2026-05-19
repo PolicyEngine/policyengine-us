@@ -23,15 +23,14 @@ class ne_refundable_ctc_eligible_child(Variable):
         # 2) receiving care from an approved license-exempt provider enrolled in
         #    the child care subsidy program pursuant to Neb. Rev. Stat. §§ 68-1202
         #    and 68-1206
-        # As we do not yet model either the Child Care Licensing Act or the
-        # Nebraska child care subsidy program, we approximate it as having incurred
-        # pre-subsidy childcare expenses.
+        # As we do not yet model licensure status or subsidy-program enrollment,
+        # we approximate this gate as the tax unit having reported childcare
+        # expenses — the same input used by the federal CDCC and every other
+        # state dependent-care credit.
         received_qualifying_child_care = (
-            person("pre_subsidy_childcare_expenses", period) > 0
+            person.tax_unit("tax_unit_childcare_expenses", period) > 0
         )
-        income_eligible = person.tax_unit(
-            "ne_refundable_ctc_income_eligible", period
-        )
+        income_eligible = person.tax_unit("ne_refundable_ctc_income_eligible", period)
         return age_eligible_dependent & (
             received_qualifying_child_care | income_eligible
         )

@@ -12,22 +12,81 @@
   output:
     is_aca_ptc_immigration_status_eligible: true
 
-- name: In 2022, Deferred Action for Childhood Arrivals or Temporary Protected Status is ineligible. 
+- name: In 2022, Deferred Action for Childhood Arrivals is ineligible. 
   period: 2022
   input:
-    immigration_status: DACA_TPS
+    immigration_status: DACA
   output:
     is_aca_ptc_immigration_status_eligible: false
 
+- name: In 2022, Temporary Protected Status is eligible.
+  period: 2022
+  input:
+    immigration_status: TPS
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
 - name: In 2022, undocumented is ineligible.
   period: 2022
-  input: 
+  input:
     immigration_status: UNDOCUMENTED
   output:
     is_aca_ptc_immigration_status_eligible: false
 
-- name: Default to true. 
+- name: Default to true.
   period: 2022
   input:
   output:
     is_aca_ptc_immigration_status_eligible: true
+
+# Timeline tests for Biden rule (2024-11-01) making DACA eligible
+- name: In 2025, DACA is eligible (Biden rule in effect).
+  period: 2025
+  input:
+    immigration_status: DACA
+  output:
+    is_aca_ptc_immigration_status_eligible: true
+
+# Timeline tests for Marketplace Integrity rule (2025-08-25) making DACA ineligible again
+- name: In 2026, DACA is ineligible (after Marketplace Integrity rule).
+  period: 2026
+  input:
+    immigration_status: DACA
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+# Timeline tests for OBBBA Section 71301 (2027-01-01)
+- name: In 2027, ASYLEE is ineligible (OBBBA Section 71301).
+  period: 2027
+  input:
+    immigration_status: ASYLEE
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2027, REFUGEE is ineligible (OBBBA Section 71301).
+  period: 2027
+  input:
+    immigration_status: REFUGEE
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2027, TPS is ineligible (OBBBA Section 71301).
+  period: 2027
+  input:
+    immigration_status: TPS
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2027, DEPORTATION_WITHHELD is ineligible (OBBBA Section 71301).
+  period: 2027
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+  output:
+    is_aca_ptc_immigration_status_eligible: false
+
+- name: In 2027, PAROLED_ONE_YEAR is ineligible (OBBBA Section 71301).
+  period: 2027
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+  output:
+    is_aca_ptc_immigration_status_eligible: false

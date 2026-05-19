@@ -42,9 +42,7 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 # Phase-out
                 agi = tax_unit("adjusted_gross_income", period)
                 filing_status = tax_unit("filing_status", period)
-                threshold = reform_parameters.phase_out.threshold[
-                    filing_status
-                ]
+                threshold = reform_parameters.phase_out.threshold[filing_status]
                 income_over_threshold = max_(agi - threshold, 0)
                 phase_out_rate = reform_parameters.phase_out.rate
                 phase_out_amount = income_over_threshold * phase_out_rate
@@ -55,9 +53,7 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 # determine tax unit's income eligibility status
                 taxinc = tax_unit("dc_taxable_income_joint", period)
                 filing_status = tax_unit("filing_status", period)
-                income_eligible = (
-                    taxinc <= p.kccatc.income_limit[filing_status]
-                )
+                income_eligible = taxinc <= p.kccatc.income_limit[filing_status]
                 # determine count of KCCATC age eligible children
                 person = tax_unit.members
                 is_dependent = person("is_tax_unit_dependent", period)
@@ -70,14 +66,10 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 cdcc_eligible_count = tax_unit.sum(cdcc_age_eligible)
                 # calculate KCCATC amount
                 max_kccatc = kccatc_eligible_count * p.kccatc.max_amount
-                total_care_expenses = tax_unit(
-                    "tax_unit_childcare_expenses", period
-                )
+                total_care_expenses = tax_unit("tax_unit_childcare_expenses", period)
                 ratio = np.zeros_like(cdcc_eligible_count)
                 mask = cdcc_eligible_count > 0
-                ratio[mask] = (
-                    kccatc_eligible_count[mask] / cdcc_eligible_count[mask]
-                )
+                ratio[mask] = kccatc_eligible_count[mask] / cdcc_eligible_count[mask]
                 kccatc_care_expenses = total_care_expenses * ratio
                 kccatc = min_(kccatc_care_expenses, max_kccatc)
                 # return calculated kccatc amount if income eligible

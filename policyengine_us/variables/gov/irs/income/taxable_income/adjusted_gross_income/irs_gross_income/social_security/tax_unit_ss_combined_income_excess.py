@@ -10,9 +10,7 @@ class tax_unit_ss_combined_income_excess(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/86#b_1"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.irs.social_security.taxability.threshold.base
+        p = parameters(period).gov.irs.social_security.taxability.threshold.base
 
         # The legislation directs the usage of an income definition that is
         # a particularly modified AGI, plus half of gross Social Security

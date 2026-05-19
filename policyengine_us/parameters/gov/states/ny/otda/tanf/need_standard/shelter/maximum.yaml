@@ -1,0 +1,42 @@
+description: New York provides up to this amount as the maximum monthly shelter allowance under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  breakdown_label:
+    - Assistance unit size
+  label: New York TANF maximum monthly shelter allowance (NYC schedule)
+  reference:
+    - title: N.Y. Comp. Codes R. & Regs. Tit. 18 § 352.3 - Local agency maximum monthly shelter allowance schedule with children (New York City schedule)
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.3
+
+# NYC shelter allowance with children, 18 NYCRR 352.3(a) Schedule SA-2.
+# Values reflect the New York City schedule, the most populous local agency
+# district and the cross-state research convention used by CBPP and the
+# Urban Welfare Rules Database. This implementation uses the NYC schedule
+# as the model default since:
+#   (1) NYC accounts for the majority of New York's TANF caseload
+#   (2) CBPP and Urban WRD report the NYC figure as the NY benchmark
+# County-specific shelter allowances ($259-$447 range outside NYC) can be
+# layered on as a future enhancement when county data is available.
+# Effective date reflects the latest confirmed amendment to the NYC
+# schedule; historical values pre-2003 may have been lower and would
+# need to be added separately to support pre-2003 microsimulation.
+1:
+  2003-01-01: 277
+2:
+  2003-01-01: 283
+3:
+  2003-01-01: 400
+4:
+  2003-01-01: 450
+5:
+  2003-01-01: 501
+6:
+  2003-01-01: 524
+7:
+  2003-01-01: 546
+8:
+  2003-01-01: 546

@@ -17,8 +17,6 @@ class tx_tanf_eligible_parent(Variable):
         is_parent = person("is_tax_unit_head_or_spouse", period)
 
         # Must meet inclusion requirements
-        inclusion_requirements = person(
-            "tx_tanf_categorically_eligible_person", period
-        )
+        inclusion_requirements = person("tx_tanf_categorically_eligible_person", period)
 
         return is_parent & inclusion_requirements

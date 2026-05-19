@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class mt_itemized_deductions_joint(Variable):
     value_type = float
     entity = Person
-    label = (
-        "Montana itemized deductions when married couples are filing jointly"
-    )
+    label = "Montana itemized deductions when married couples are filing jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -32,6 +30,4 @@ class mt_itemized_deductions_joint(Variable):
             ],
         )
         is_head = person("is_tax_unit_head", period)
-        return is_head * (
-            interest_ded + other_deductions + charitable_deduction
-        )
+        return is_head * (interest_ded + other_deductions + charitable_deduction)

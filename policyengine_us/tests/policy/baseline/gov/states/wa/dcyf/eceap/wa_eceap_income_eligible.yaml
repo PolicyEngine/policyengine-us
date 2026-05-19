@@ -1,0 +1,741 @@
+- name: 2025 FPL era, family of 3 at $28,000, below 130% FPL ceiling, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 28_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 130% FPL family of 3 in 2025 = ($15,650 + 2*$5,500) * 1.30 = $34,645.
+    # $28,000 < $34,645, so income-eligible (within priority enrollment range below 110% FPL).
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2025 FPL era, family of 3 at $35,000, above 130% FPL ceiling, not eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 35_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 130% FPL family of 3 in 2025 = $34,645. $35,000 > $34,645, so not income-eligible.
+    # Risk-factor pathway (130-200% FPL with risk factor) is handled separately.
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: 2026 SMI era, family of 3 at $42,000, below 36% SMI threshold.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 42_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI for WA family of 3 (Oct 2025 SMI chart) = $42,128.
+    # $42,000 < $42,128, so income-eligible.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2026 SMI era, family of 3 at $45,000, above 36% SMI threshold.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 45_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI for WA family of 3 = $42,128. $45,000 > $42,128, so not eligible.
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: 2031 SMI era, family of 3 at $55,000, below 50% SMI threshold.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 55_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 50% SMI for WA family of 3 (based on Oct 2025 SMI) = $58,511.
+    # $55,000 < $58,511, so income-eligible under the 2030-08-01 50% SMI threshold.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2031 SMI era, family of 3 at $75,000, above 50% SMI threshold.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 75_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 50% SMI family of 3 in 2031 ~= $73,057.41; $75,000 > threshold.
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: Oregon family, income below threshold, not eligible due to residency.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_eceap_income_eligible: [false, false]
+
+# ---- Edge cases ----
+
+- name: 2025 family of 1 at exactly 110% FPL ($17,215), priority enrollment threshold, eligible.
+  period: 2025
+  input:
+    people:
+      child:
+        age: 4
+        employment_income: 17_215
+    spm_units:
+      spm_unit:
+        members: [child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: WA
+  output:
+    # 110% FPL family of 1 in 2025 = $15,650 * 1.10 = $17,215. At the priority enrollment
+    # threshold (RCW 43.216.505); below the 130% FPL allowed-enrollment ceiling ($20,345).
+    wa_eceap_income_eligible: [true]
+
+- name: 2025 family of 1 at $17,216, in 110-130% FPL allowed-enrollment band, eligible.
+  period: 2025
+  input:
+    people:
+      child:
+        age: 4
+        employment_income: 17_216
+    spm_units:
+      spm_unit:
+        members: [child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: WA
+  output:
+    # $17,216 is above 110% FPL ($17,215) but below 130% FPL ($20,345).
+    # Allowed for enrollment under RCW 43.216.512, no risk factor required.
+    wa_eceap_income_eligible: [true]
+
+- name: 2025 family of 2 at exactly 110% FPL ($23,265), priority enrollment threshold, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 23_265
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # 110% FPL family of 2 in 2025 = ($15,650 + $5,500) * 1.10 = $23,265. At the priority
+    # enrollment threshold (RCW 43.216.505); below the 130% FPL allowed-enrollment ceiling.
+    wa_eceap_income_eligible: [true, true]
+
+- name: 2025 family of 2 at $23,266, in 110-130% FPL allowed-enrollment band, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 23_266
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # $23,266 is above 110% FPL ($23,265) but below 130% FPL ($27,495).
+    # Allowed for enrollment under RCW 43.216.512, no risk factor required.
+    wa_eceap_income_eligible: [true, true]
+
+- name: 2025 family of 3 at $29,314, one dollar below 110% FPL priority threshold, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 29_314
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 110% FPL family of 3 in 2025 = $29,315. Below priority threshold; eligible.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2025 family of 3 at $29,316, in 110-130% FPL allowed-enrollment band, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 29_316
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $29,316 is above 110% FPL ($29,315) but below 130% FPL ($34,645).
+    # Allowed for enrollment under RCW 43.216.512, no risk factor required.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2025 family of 3 at $34,646, one dollar above 130% FPL ceiling, not eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 34_646
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 130% FPL family of 3 in 2025 = ($15,650 + 2*$5,500) * 1.30 = $34,645.
+    # $34,646 > $34,645, so above the FPL allowed-enrollment ceiling.
+    # Risk-factor pathway (130-200% FPL with risk factor) is handled separately.
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: 2025 family of 4 at exactly 110% FPL ($35,365), priority enrollment threshold, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 35_365
+      child:
+        age: 4
+        employment_income: 0
+      sibling1:
+        age: 6
+        employment_income: 0
+      sibling2:
+        age: 8
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling1, sibling2]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling1, sibling2]
+    households:
+      household:
+        members: [parent, child, sibling1, sibling2]
+        state_code: WA
+  output:
+    # 110% FPL family of 4 in 2025 = ($15,650 + 3*$5,500) * 1.10 = $35,365. At the priority
+    # enrollment threshold (RCW 43.216.505); below the 130% FPL allowed-enrollment ceiling.
+    wa_eceap_income_eligible: [true, true, true, true]
+
+- name: 2026 family of 3 at $44,425, one dollar below 36% SMI floor, eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 44_425
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 in 2026 ~= $44,425.03 (after uprating). At $44,425 <= threshold.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2026 family of 3 at $44,426, one dollar above 36% SMI floor, not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 44_426
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 in 2026 ~= $44,425.03; $44,426 > threshold.
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: 2031 family of 3 at $73,057, one dollar below 50% SMI floor, eligible.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 73_057
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 50% SMI family of 3 in 2031 ~= $73,057.41 (after uprating). $73,057 <= threshold.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2031 family of 3 at $73,058, one dollar above 50% SMI floor, not eligible.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 73_058
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    wa_eceap_income_eligible: [false, false, false]
+
+- name: 2025 transition year, family of 3 at $29,315, at 110% FPL priority threshold, eligible (FPL basis active).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 29_315
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Period 2025 reads 2025-01-01 parameters: FPL basis active, 130% FPL ceiling.
+    # 2025 FPG family of 3 = $15,650 + 2*$5,500 = $26,650; 110% = $29,315 (priority threshold).
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: 2025 transition year, family of 3 at $29,316, in 110-130% FPL allowed-enrollment band, eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 29_316
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $29,316 is above 110% FPL ($29,315) but below 130% FPL ($34,645).
+    # Allowed for enrollment under RCW 43.216.512, no risk factor required.
+    wa_eceap_income_eligible: [true, true, true]
+
+- name: Zero income family, well below any threshold, eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap_income_eligible: [true, true]
+
+- name: Negative self-employment income, eligible (income below threshold).
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -5_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Negative income is well below threshold; income-eligible.
+    wa_eceap_income_eligible: [true, true]
+
+- name: 2026 large family of 8 at $72,983, one dollar below 36% SMI floor, eligible.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 72_983
+      parent2:
+        age: 30
+        employment_income: 0
+      c1:
+        age: 4
+        employment_income: 0
+      c2:
+        age: 6
+        employment_income: 0
+      c3:
+        age: 8
+        employment_income: 0
+      c4:
+        age: 10
+        employment_income: 0
+      c5:
+        age: 12
+        employment_income: 0
+      c6:
+        age: 14
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+    households:
+      household:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+        state_code: WA
+  output:
+    # 36% SMI family of 8 in 2026 ~= $72,983.98. Income $72,983 <= threshold.
+    wa_eceap_income_eligible: [true, true, true, true, true, true, true, true]
+
+- name: 2026 large family of 8 at $72,984, one dollar above 36% SMI floor, not eligible.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 72_984
+      parent2:
+        age: 30
+        employment_income: 0
+      c1:
+        age: 4
+        employment_income: 0
+      c2:
+        age: 6
+        employment_income: 0
+      c3:
+        age: 8
+        employment_income: 0
+      c4:
+        age: 10
+        employment_income: 0
+      c5:
+        age: 12
+        employment_income: 0
+      c6:
+        age: 14
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+    households:
+      household:
+        members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
+        state_code: WA
+  output:
+    wa_eceap_income_eligible: [false, false, false, false, false, false, false, false]
+
+- name: Idaho family, income below threshold, not eligible due to residency.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    wa_eceap_income_eligible: [false, false]

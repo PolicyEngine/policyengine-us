@@ -7,13 +7,24 @@ class wa_working_families_tax_credit(Variable):
     label = "Washington Working Families Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206"
+    reference = (
+        "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206",
+        "https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=61",
+    )
     defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
-        # Filers must claim EITC and be in Washington to be eligible.
-        # TODO: Include ITIN children.
-        eligible = tax_unit("eitc", period) > 0
+        # Baseline eligibility: filers who claim EITC
+        eitc = tax_unit("eitc", period)
+        eitc_eligible = eitc > 0
+
+        # ESSB 6346 Sec. 901: age expansion eligibility (effective 2029)
+        age_expansion_eligible = tax_unit(
+            "wa_working_families_tax_credit_age_expansion_eligible", period
+        )
+
+        eligible = eitc_eligible | age_expansion_eligible
+
         # Parameters are based on EITC-eligible children.
         p = parameters(
             period
@@ -26,14 +37,12 @@ class wa_working_families_tax_credit(Variable):
         # The legislative analysis clarifies that this refers to "federal maximum AGI"
         # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
         eitc_agi_limit = tax_unit("eitc_agi_limit", period)
-        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(
-            eitc_child_count
-        )
+        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(eitc_child_count)
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
         # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
-        # instructs DOR to revise it to get to zero by the EITC AGI limit.
+        # instructs DOR to revise it to get to the minimum amount by the EITC AGI limit.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
-        phase_out_rate = max_amount / phase_out_start_reduction
+        phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
         earnings = tax_unit("filer_adjusted_earnings", period)
         excess = max_(0, earnings - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)

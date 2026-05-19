@@ -1,0 +1,160 @@
+- name: Case 1, no other priority factors.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # No factors = 0 pts
+    il_pi_other_priority_score: [0, 0, 0]
+
+- name: Case 2, low income family.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Low income (25) = 25 pts for child only
+    il_pi_other_priority_score: [0, 0, 25]
+
+- name: Case 3, immigrant family.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+        is_born_outside_us: true
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Immigrant family (25) = 25 pts for child only
+    il_pi_other_priority_score: [0, 0, 25]
+
+- name: Case 4, military family.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        military_basic_pay: 50_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Military family (25) = 25 pts for child only
+    il_pi_other_priority_score: [0, 0, 25]
+
+- name: Case 5, geriatric pregnancy.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 42
+        is_pregnant: true
+        employment_income: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    # Geriatric pregnancy (25) = 25 pts
+    il_pi_other_priority_score: [25]
+
+- name: Case 6, household has disability.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+        is_disabled: true
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Household has disability (25) = 25 pts for child only
+    il_pi_other_priority_score: [0, 0, 25]

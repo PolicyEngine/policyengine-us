@@ -5,6 +5,7 @@ values:
   2022-01-01: 4_430
   2023-01-01: 4_610
   2024-01-01: 4_790
+  2025-01-01: 4_930
 
 metadata:
   unit: currency-USD
@@ -15,6 +16,8 @@ metadata:
     interval: 10
   label: South Carolina young child deduction amount
   reference:
+    - title: SC 1040 tax form instructions (2025)
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=16
     - title: SC 1040 tax form instructions (2021)
       href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=19
     # 12-6-1160 defines the program and points to the amount in 1140.

@@ -464,9 +464,7 @@ def create_age_curve_yamls():
     # Remove quotes from numbers and format them properly
     def custom_str_presenter(dumper, data):
         if data.startswith("0000-01-01"):
-            return dumper.represent_scalar(
-                "tag:yaml.org,2002:str", data, style=""
-            )
+            return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="")
         return dumper.represent_scalar("tag:yaml.org,2002:str", data)
 
     NoAliasDumper.add_representer(str, custom_str_presenter)
@@ -477,9 +475,7 @@ def create_age_curve_yamls():
         values = data["values"]
 
         # Normalize values
-        normalized_values = {
-            age: value / base_value for age, value in values.items()
-        }
+        normalized_values = {age: value / base_value for age, value in values.items()}
 
         # Create YAML structure
         yaml_data = {

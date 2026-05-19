@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class co_qualified_business_income_deduction_addback_required(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Required to add back the Colorado qualified business income deduction"
-    )
+    label = "Required to add back the Colorado qualified business income deduction"
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3) (o)

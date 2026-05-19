@@ -1,0 +1,157 @@
+# Unit tests for Arizona TANF dependent care deduction
+# Child under 2: $200/month max, Child 2+: $175/month max
+# Deduction capped at actual childcare expenses
+# Reference: https://www.azleg.gov/ars/46/00292.htm
+
+- name: Case 1, no childcare expenses.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_tanf_dependent_care_deduction: 0
+
+- name: Case 2, child under 2 with expenses exceeding max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Child under 2: max $200/month
+    # Expenses ($300/mo) > max ($200), so deduction = $200
+    az_tanf_dependent_care_deduction: 200
+
+- name: Case 3, child age 2+ with expenses exceeding max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600  # $300/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Child age 2+: max $175/month
+    # Expenses ($300/mo) > max ($175), so deduction = $175
+    az_tanf_dependent_care_deduction: 175
+
+- name: Case 4, expenses less than max.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 1_800  # $150/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Child under 2: max $200/month
+    # Expenses ($150/mo) < max ($200), so deduction = $150
+    az_tanf_dependent_care_deduction: 150
+
+- name: Case 5, two children with combined deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # Child1 (under 2): max $200
+    # Child2 (age 2+): max $175
+    # Total max: $375
+    # Expenses ($500/mo) > max ($375), so deduction = $375
+    az_tanf_dependent_care_deduction: 375
+
+- name: Case 6, child exactly at age 2 boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000  # $250/month annual
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Child at age 2: $175/month max (not $200)
+    # Expenses ($250/mo) > max ($175), so deduction = $175
+    az_tanf_dependent_care_deduction: 175

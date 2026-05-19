@@ -1,0 +1,190 @@
+# Unit tests for Alaska ATAP final benefit amount
+# 7 AAC 45.525 - Determining the amount of payment
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.525
+# Formula: (Need Standard - Countable Income) * (Size 2 Max / Size 2 Need)
+# The ratio uses fixed size-2 values: $821 / $1,908 = 0.4303 for 2026
+
+- name: Ineligible receives zero
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        ak_atap_eligible: false
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 0
+        ak_atap_maximum_payment: 821
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    ak_atap: 0
+
+- name: Zero income receives maximum payment
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 0
+        ak_atap_maximum_payment: 821
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # ($1,908 - $0) * ($821 / $1,908) = $1,908 * 0.4303 = $821
+    ak_atap: 821
+
+- name: Partial income reduces benefit
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 1_000
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # ($1,908 - $1,000) * ($821 / $1,908) = $908 * 0.4303 = $390.67
+    ak_atap: 390.67
+
+- name: Income at need standard receives zero
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_908
+        ak_atap_countable_income: 1_908
+        ak_atap_maximum_payment: 821
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # ($1,908 - $1,908) * ratio = $0
+    ak_atap: 0
+
+- name: Family of 3 zero income
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 2_149
+        ak_atap_countable_income: 0
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # ($2,149 - $0) * ($821 / $1,908) = $2,149 * 0.4303 = $924.70
+    ak_atap: 924.70
+
+- name: Family of 3 with $500 countable income
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child1, child2]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 2_149
+        ak_atap_countable_income: 500
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # ($2,149 - $500) * ($821 / $1,908) = $1,649 * 0.4303 = $709.55
+    ak_atap: 709.55
+
+- name: Pregnant woman with zero income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_192
+        ak_atap_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # ($1,192 - $0) * ($821 / $1,908) = $1,192 * 0.4303 = $512.94
+    ak_atap: 512.94
+
+- name: Pregnant woman with $500 countable income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ak_atap_eligible: true
+        ak_atap_need_standard: 1_192
+        ak_atap_countable_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # ($1,192 - $500) * ($821 / $1,908) = $692 * 0.4303 = $297.77
+    ak_atap: 297.77

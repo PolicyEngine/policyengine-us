@@ -1,0 +1,124 @@
+# Unit tests for tob_revenue_medicare_hi
+# Tests Medicare HI trust fund revenue allocation from SS benefit taxation
+# Uses double-branching methodology per 42 U.S.C. 401 note
+
+- name: No SS benefits - zero Medicare revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 0
+
+- name: Below threshold - zero Medicare revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tob_revenue_medicare_hi: 0
+
+- name: Tier 1 only - zero Medicare revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Taxable SS <= 50% of gross, all goes to OASDI
+    tob_revenue_medicare_hi: 0
+
+- name: High income single - branching allocation
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Using branching: HI gets marginal tax on portion above 50% of gross
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_total: 4_240
+    tob_revenue_oasdi: 1_930
+    tob_revenue_medicare_hi: 2_310
+
+- name: Very high income - branching allocation
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Higher marginal rates affect the split
+    tax_unit_taxable_social_security: 25_500
+    tob_revenue_total: 5_778
+    tob_revenue_oasdi: 3_300
+    tob_revenue_medicare_hi: 2_478
+
+- name: Zero taxable SS - zero revenue
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 15_000
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    tax_unit_taxable_social_security: 0
+    tob_revenue_oasdi: 0
+    tob_revenue_medicare_hi: 0

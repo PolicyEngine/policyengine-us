@@ -1,0 +1,67 @@
+- name: IHC Level A from care setting
+  period: 2025-01
+  input:
+    al_ssp_care_setting: PRIVATE_HOME_IHC
+    al_level_b_care: false
+    state_code: AL
+  output:
+    al_ssp_payment_category: IHC_LEVEL_A
+
+- name: IHC Level B from care setting
+  period: 2025-01
+  input:
+    al_ssp_care_setting: PRIVATE_HOME_IHC
+    al_level_b_care: true
+    state_code: AL
+  output:
+    al_ssp_payment_category: IHC_LEVEL_B
+
+- name: FCMP Nursing Care from nursing facility with Medicaid
+  period: 2025-01
+  input:
+    al_ssp_care_setting: NURSING_FACILITY
+    ssi_medicaid_pays_majority_of_care: true
+    state_code: AL
+  output:
+    al_ssp_payment_category: FCMP_NURSING_CARE
+
+- name: Nursing Care from nursing facility without Medicaid
+  period: 2025-01
+  input:
+    al_ssp_care_setting: NURSING_FACILITY
+    ssi_medicaid_pays_majority_of_care: false
+    state_code: AL
+  output:
+    al_ssp_payment_category: NURSING_CARE
+
+- name: Foster Care from foster home
+  period: 2025-01
+  input:
+    al_ssp_care_setting: FOSTER_HOME
+    state_code: AL
+  output:
+    al_ssp_payment_category: FOSTER_CARE
+
+- name: Cerebral Palsy from cerebral palsy center
+  period: 2025-01
+  input:
+    al_ssp_care_setting: CEREBRAL_PALSY_CENTER
+    state_code: AL
+  output:
+    al_ssp_payment_category: CEREBRAL_PALSY
+
+- name: No care setting
+  period: 2025-01
+  input:
+    al_ssp_care_setting: NONE
+    state_code: AL
+  output:
+    al_ssp_payment_category: NONE
+
+- name: Legacy living arrangement input still maps to the new payment category
+  period: 2025-01
+  input:
+    al_ssp_living_arrangement: IHC_LEVEL_B
+    state_code: AL
+  output:
+    al_ssp_payment_category: IHC_LEVEL_B

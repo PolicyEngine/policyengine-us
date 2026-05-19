@@ -1,0 +1,16 @@
+description: Illinois provides this amount per child under the Prevention Initiative program (center-based).
+values:
+  # FY2024 Center-Based: $9.39M total / 702 children = $13,383
+  2024-01-01: 13_383
+  # FY2025: $6.85M total / 512 children = $13,379
+  2025-01-01: 13_379
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois PI per-child funding amount (center-based)
+  reference:
+    - title: Gov. Pritzker Smart Start FY2024 Press Release ($9.39M / 702 children center-based)
+      href: https://www.illinois.gov/news/press-release.29519.html
+    - title: Gov. Pritzker Smart Start FY2025 Press Release ($6.85M / 512 children)
+      href: https://gov-pritzker-newsroom.prezly.com/gov-pritzker-announces-5150-new-preschool-seats-through-smart-start-initiative

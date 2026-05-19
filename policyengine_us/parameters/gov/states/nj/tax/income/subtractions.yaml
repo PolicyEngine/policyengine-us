@@ -2,6 +2,12 @@ description: Subtractions from federal adjusted gross income.
 metadata:
   unit: list
   label: New Jersey subtractions from federal adjusted gross income
+  reference:
+    - title: NJ-1040 Instructions (page 21)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf
 values:
   2021-01-01:
-    - taxable_social_security
+    - us_govt_interest_person
+  2022-01-01:
+    - us_govt_interest_person
+    - nj_529_deduction

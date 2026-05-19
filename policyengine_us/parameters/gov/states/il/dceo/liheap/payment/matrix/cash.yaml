@@ -1,0 +1,121 @@
+description: Illinois provides this amount as a cash payment to households with heat included in rent under the Low Income Home Energy Assistance Program.
+
+# Income bracket 1 = 0-50% FPL
+1:
+  1:
+    2023-10-01: 630
+    2024-10-01: 750
+    2025-10-01: 956
+  2:
+    2023-10-01: 680
+    2024-10-01: 765
+    2025-10-01: 975
+  3:
+    2023-10-01: 730
+    2024-10-01: 780
+    2025-10-01: 994
+  4:
+    2023-10-01: 780
+    2024-10-01: 795
+    2025-10-01: 1_013
+  5:
+    2023-10-01: 830
+    2024-10-01: 830
+    2025-10-01: 1_058
+  6:
+    2023-10-01: 880
+    2024-10-01: 880
+    2025-10-01: 1_122
+
+# Income bracket 2 = 51-100% FPL
+2:
+  1:
+    2023-10-01: 305
+    2024-10-01: 420
+    2025-10-01: 602
+  2:
+    2023-10-01: 320
+    2024-10-01: 435
+    2025-10-01: 624
+  3:
+    2023-10-01: 345
+    2024-10-01: 450
+    2025-10-01: 645
+  4:
+    2023-10-01: 375
+    2024-10-01: 465
+    2025-10-01: 667
+  5:
+    2023-10-01: 395
+    2024-10-01: 480
+    2025-10-01: 688
+  6:
+    2023-10-01: 415
+    2024-10-01: 495
+    2025-10-01: 710
+
+# Income bracket 3 = 101-150% FPL
+3:
+  1:
+    2023-10-01: 210
+    2024-10-01: 410
+    2025-10-01: 404
+  2:
+    2023-10-01: 225
+    2024-10-01: 425
+    2025-10-01: 419
+  3:
+    2023-10-01: 240
+    2024-10-01: 440
+    2025-10-01: 434
+  4:
+    2023-10-01: 260
+    2024-10-01: 455
+    2025-10-01: 448
+  5:
+    2023-10-01: 275
+    2024-10-01: 470
+    2025-10-01: 463
+  6:
+    2023-10-01: 285
+    2024-10-01: 495
+    2025-10-01: 488
+
+# Income bracket 4 = 151-200% FPL
+4:
+  1:
+    2023-10-01: 170
+    2024-10-01: 315
+    2025-10-01: 310
+  2:
+    2023-10-01: 190
+    2024-10-01: 330
+    2025-10-01: 325
+  3:
+    2023-10-01: 210
+    2024-10-01: 340
+    2025-10-01: 335
+  4:
+    2023-10-01: 235
+    2024-10-01: 350
+    2025-10-01: 345
+  5:
+    2023-10-01: 255
+    2024-10-01: 365
+    2025-10-01: 360
+  6:
+    2023-10-01: 275
+    2024-10-01: 375
+    2025-10-01: 370
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Illinois LIHEAP cash payment (heat in rent)
+  reference:
+    - title: Illinois LIHEAP FY2024 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/IL_BenefitMatrix_2024.pdf#page=1
+    - title: Illinois LIHEAP FY2025 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/IL_BenefitMatrix_2025.pdf#page=1
+    - title: Illinois LIHEAP FY2026 Benefit Matrix (No LID for Electric)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/IL_BenefitMatrix_Heat-Cool_2026.pdf#page=2

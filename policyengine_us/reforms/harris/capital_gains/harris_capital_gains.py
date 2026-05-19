@@ -21,9 +21,7 @@ def create_harris_capital_gains() -> Reform:
 
             p_ref = parameters(period).gov.contrib.harris.capital_gains
 
-            excluded_cg = tax_unit(
-                "capital_gains_excluded_from_taxable_income", period
-            )
+            excluded_cg = tax_unit("capital_gains_excluded_from_taxable_income", period)
             non_cg_taxable_income = max_(0, taxable_income - excluded_cg)
             income_less_ancg = max_(0, taxable_income - adjusted_net_cg)
 
@@ -58,9 +56,7 @@ def create_harris_capital_gains() -> Reform:
             cg_in_third_bracket = min_(
                 max_(
                     0,
-                    adjusted_net_cg
-                    - cg_in_first_bracket
-                    - cg_in_second_bracket,
+                    adjusted_net_cg - cg_in_first_bracket - cg_in_second_bracket,
                 ),
                 max_(
                     0,
@@ -91,9 +87,7 @@ def create_harris_capital_gains() -> Reform:
             unrecaptured_s_1250_gain = tax_unit(
                 "unrecaptured_section_1250_gain", period
             )
-            qualified_dividends = add(
-                tax_unit, period, ["qualified_dividend_income"]
-            )
+            qualified_dividends = add(tax_unit, period, ["qualified_dividend_income"])
             max_taxable_unrecaptured_gain = min_(
                 unrecaptured_s_1250_gain,
                 max_(0, net_cg - qualified_dividends),
@@ -125,9 +119,7 @@ def create_harris_capital_gains() -> Reform:
     return reform
 
 
-def create_harris_capital_gains_reform(
-    parameters, period, bypass: bool = False
-):
+def create_harris_capital_gains_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_harris_capital_gains()
 
@@ -139,6 +131,4 @@ def create_harris_capital_gains_reform(
         return None
 
 
-harris_capital_gains = create_harris_capital_gains_reform(
-    None, None, bypass=True
-)
+harris_capital_gains = create_harris_capital_gains_reform(None, None, bypass=True)

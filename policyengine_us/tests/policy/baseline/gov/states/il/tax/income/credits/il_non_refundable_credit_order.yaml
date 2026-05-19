@@ -1,0 +1,11 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2021
+  input:
+    state_code: IL
+    il_income_tax_before_non_refundable_credits: 100
+    il_is_exemption_eligible: true
+    il_property_tax_credit_potential: 80
+    il_k12_education_expense_credit_potential: 40
+  output:
+    il_property_tax_credit: 80
+    il_k12_education_expense_credit: 20

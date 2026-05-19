@@ -1,0 +1,87 @@
+# Tests use 2021-01 period to validate base values (multiplier = 1.0)
+# Parameter tables contain July 2020 values; multiplier adjusts for later periods
+
+- name: If one person and lives in Arlington, UP grant standard is $275/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 275
+
+- name: If ten person and lives in Fairfax, UP grant standard is $944/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 944
+
+- name: If twelve person and lives in Montgomery, UP grant standard is $1,086/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 1_086
+
+- name: If one person and lives in Bedford, UP grant standard is $197/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 197
+
+- name: If ten person and lives in Frederick, UP grant standard is $848/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 848
+
+- name: If twelve person and lives in Pittsylvania, UP grant standard is $990/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 990
+
+- name: Only calculate for VA.
+  period: 2021-01
+  input:
+    state_code: FL
+    spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
+  output:
+    va_tanf_up_grant_standard: 0
+
+# Test multiplier effect for 2023 period (multiplier = 1.155)
+- name: UP grant standard in 2023 reflects 15.5% increase from base.
+  # Base $275 * 1.155 = $317.625/month
+  period: 2023-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 317.625
+
+# Test multiplier effect for 2018 period (multiplier = 0.8282)
+- name: UP grant standard in 2018-01 for size 3 in Group III locality.
+  # Base $442 * 0.8282 = $366.0644/month
+  period: 2018-01
+  input:
+    state_code: VA
+    spm_unit_size: 3
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_up_grant_standard: 366.0644

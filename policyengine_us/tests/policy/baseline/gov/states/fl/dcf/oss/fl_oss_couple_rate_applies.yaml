@@ -1,0 +1,228 @@
+# Tests for fl_oss_couple_rate_applies variable.
+# Couple rate requires: ssi_claim_is_joint AND both spouses is_ssi_eligible
+# AND both spouses in a qualifying facility (living_arrangement != NONE)
+# AND both spouses on the same non-NONE program track (Appendix A-12
+# defines couple rates per track).
+
+- name: Case 1, both spouses eligible and in facility on Redesign, couple rate applies.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_couple_rate_applies: [true, true]
+
+- name: Case 2, one spouse not SSI eligible, couple rate does not apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+      person2:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 40
+        is_ssi_eligible: false
+        ssi_claim_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_couple_rate_applies: [false, false]
+
+- name: Case 3, one spouse not in facility, couple rate does not apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        # No facility type → living arrangement = NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_couple_rate_applies: [false, false]
+
+- name: Case 4, single person, couple rate does not apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_couple_rate_applies: [false]
+
+- name: Case 5, different facility types on same Redesign track, couple rate applies.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 72
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: REDESIGN
+        age: 50
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Both on REDESIGN even if in different facility types → couple rate applies.
+    fl_oss_couple_rate_applies: [true, true]
+
+- name: Case 6, both spouses in MHRTF on Protected track, couple rate applies.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 50
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 48
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_oss_couple_rate_applies: [true, true]
+
+- name: Case 7, one spouse missing a program track, couple rate does not apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: ALF
+        # fl_oss_program_track defaults to NONE
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Spouse2 has no track → no shared track → couple rate does not apply.
+    fl_oss_couple_rate_applies: [false, false]
+
+- name: Case 8, spouses on mismatched tracks, couple rate does not apply.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: REDESIGN
+        age: 50
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: MHRTF
+        fl_oss_program_track: PROTECTED
+        age: 48
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Appendix A-12 defines couple rates per track; no rate exists for
+    # mixed REDESIGN/PROTECTED couples → couple rate does not apply.
+    fl_oss_couple_rate_applies: [false, false]

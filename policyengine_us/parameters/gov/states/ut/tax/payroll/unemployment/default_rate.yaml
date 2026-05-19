@@ -1,0 +1,15 @@
+description: Default employer-side unemployment insurance tax rate for Utah.
+values:
+  0000-01-01: 0.0061
+
+metadata:
+  period: year
+  unit: /1
+  label: Utah default unemployment tax rate
+  reference:
+    - title: Utah Code Section 35A-4-303
+      href: https://le.utah.gov/xcode/Title35a/Chapter4/C35A-4_1800010118000101.pdf#page=42
+    - title: Utah unemployment insurance tax rates
+      href: https://jobs.utah.gov/ui/Employer/%28S%28s5d4bcyft23kevj5ydmhig2k%29%29/Public/Questions/TaxRates.aspx
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=55

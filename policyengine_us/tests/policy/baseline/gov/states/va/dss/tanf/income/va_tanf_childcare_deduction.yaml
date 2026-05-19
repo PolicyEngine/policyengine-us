@@ -1,0 +1,186 @@
+- name: Family with mother and a 1-year-old child, expenses exceed max
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 25
+      person2:
+        is_tax_unit_dependent: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Max deduction: $200/month (child under 2) = $2,400/year
+    # Actual expenses: $3,000/year
+    # Deduction: min($3,000, $2,400) = $2,400
+    va_tanf_childcare_deduction: 2_400
+
+- name: Family with mother, disabled father, two children, expenses below max
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        is_disabled: false
+        age: 25
+      person2:
+        is_tax_unit_dependent: false
+        is_adult: true
+        is_disabled: true
+        age: 25
+      person3:
+        is_tax_unit_dependent: true
+        age: 1
+      person4:
+        is_tax_unit_dependent: true
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 4_800
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+  output:
+    # Max deduction: $200 (child under 2) + $175 (child 2+) + $175 (disabled adult) = $550/month = $6,600/year
+    # Actual expenses: $4,800/year
+    # Deduction: min($4,800, $6,600) = $4,800
+    va_tanf_childcare_deduction: 4_800
+
+- name: Case 3, zero childcare expenses returns zero.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 30
+      person2:
+        is_tax_unit_dependent: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Max deduction: $175/month = $2,100/year
+    # Actual expenses: $0
+    # Deduction: min($0, $2,100) = $0
+    va_tanf_childcare_deduction: 0
+
+- name: Case 4, child exactly age 2 gets $175 rate.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 28
+      person2:
+        is_tax_unit_dependent: true
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Max deduction: $175/month (child age 2) = $2,100/year
+    # Actual expenses: $3,000/year
+    # Deduction: min($3,000, $2,100) = $2,100
+    va_tanf_childcare_deduction: 2_100
+
+- name: Case 5, no care recipients returns zero.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        is_adult: true
+        is_disabled: false
+        age: 30
+      person2:
+        is_tax_unit_dependent: false
+        is_adult: true
+        is_disabled: false
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # No dependents, no disabled adults
+    # Max deduction = $0/year
+    # Deduction: min($3,000, $0) = $0
+    va_tanf_childcare_deduction: 0
+
+- name: Case 6, multiple infants under age 2.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 30
+      person2:
+        is_tax_unit_dependent: true
+        age: 0
+      person3:
+        is_tax_unit_dependent: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Max deduction: 2 infants * $200/month = $400/month = $4,800/year
+    # Actual expenses: $6,000/year
+    # Deduction: min($6,000, $4,800) = $4,800
+    va_tanf_childcare_deduction: 4_800
+
+- name: Case 7, mixed ages one infant and one toddler.
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 28
+      person2:
+        is_tax_unit_dependent: true
+        age: 1
+      person3:
+        is_tax_unit_dependent: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # Max deduction: $200 (infant under 2) + $175 (child 3+) = $375/month = $4,500/year
+    # Actual expenses: $5,000/year
+    # Deduction: min($5,000, $4,500) = $4,500
+    va_tanf_childcare_deduction: 4_500

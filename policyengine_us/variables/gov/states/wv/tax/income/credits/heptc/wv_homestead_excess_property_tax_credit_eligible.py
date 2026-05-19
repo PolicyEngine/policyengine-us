@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class wv_homestead_excess_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = (
-        "Eligible for the West Virginia homestead excess property tax credit"
-    )
+    label = "Eligible for the West Virginia homestead excess property tax credit"
     reference = (
         "https://code.wvlegislature.gov/11-21-23/"
         "https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=13"
@@ -24,7 +22,10 @@ class wv_homestead_excess_property_tax_credit_eligible(Variable):
         p = parameters(period).gov.states.wv.tax.income.credits.heptc.rate
         low_income_guidelines = p.fpg * wv_tax_unit_fpg
         lig_eligible = federal_agi <= low_income_guidelines
+        # Must have positive property taxes to be eligible
+        has_property_tax = property_tax > 0
         property_tax_value = property_tax - wv_sctc
-        ghi_amount = p.household_income * wv_ghi
+        # Don't allow negative household income to create eligibility
+        ghi_amount = max_(p.household_income * wv_ghi, 0)
         property_tax_eligible = property_tax_value > ghi_amount
-        return lig_eligible & property_tax_eligible
+        return lig_eligible & has_property_tax & property_tax_eligible

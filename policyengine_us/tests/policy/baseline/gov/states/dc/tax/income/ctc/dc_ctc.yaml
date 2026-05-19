@@ -1,19 +1,176 @@
-- name: Case 1, no phase_out, single filer with 2 qualifying children.
-  period: 2025
+- name: 2026 single filer below threshold with 2 children
+  period: 2026
   input:
-    adjusted_gross_income: 120_000
-    filing_status: SINGLE
-    dc_ctc_capped_children: 2
-    state_code: DC
+    people:
+      parent:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
   output:
-    dc_ctc: 840
+    dc_ctc: 2_000
 
-- name: Case 2, income above income threshold, single filer with 2 qualifying children.
-  period: 2025
+- name: 2026 single filer with phase-out
+  period: 2026
   input:
-    adjusted_gross_income: 162_000
-    filing_status: SINGLE
-    dc_ctc_capped_children: 2
-    state_code: DC
+    people:
+      parent:
+        age: 35
+        employment_income: 58_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
   output:
-    dc_ctc: 800
+    # $3,000 excess over $55,000 threshold = 3 increments * $50 = $150 phase-out
+    # $2,000 base - $150 = $1,850
+    dc_ctc: 1_850
+
+- name: 2026 joint filer below threshold with 3 children
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 65_000
+      parent2:
+        age: 33
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+      child3:
+        age: 15
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: DC
+  output:
+    dc_ctc: 3_000
+
+- name: 2026 joint filer with phase-out
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 75_000
+      parent2:
+        age: 33
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: DC
+  output:
+    # $5,000 excess over $70,000 threshold = 5 increments * $50 = $250 phase-out
+    # $2,000 base - $250 = $1,750
+    dc_ctc: 1_750
+
+- name: 2026 separate filer with phase-out
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 37_500
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    # $2,500 excess over $35,000 threshold = 3 increments * $50 = $150 phase-out
+    # $1,000 base - $150 = $850
+    dc_ctc: 850
+
+- name: 2026 income fully phases out credit
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 100_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    # $45,000 excess = 45 increments * $50 = $2,250 phase-out exceeds $1,000 base
+    dc_ctc: 0
+
+- name: 2026 child over 18 not eligible
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+      child2:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
+  output:
+    # Only child1 (age 17) is eligible
+    dc_ctc: 1_000

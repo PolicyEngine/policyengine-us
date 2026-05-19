@@ -1,0 +1,118 @@
+# Idaho TAFI Work Incentive Table Amount
+# Per IDAPA 16.03.08.251
+# Values: 1-2: $309, 3: $389, 4: $469, 5: $547, 6: $628,
+# 7: $708, 8: $787, 9: $867, 10: $947, 11+: $947 + $80 per additional
+# Note: Sizes 2-5 are tested in integration.yaml
+
+- name: Case 1, household of 1 (minimum size).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 309
+
+- name: Case 2, household of 6 (mid-table value).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 628
+
+- name: Case 3, household of 10 at table maximum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 947
+
+- name: Case 4, household of 11 uses overflow formula.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 17
+      person4:
+        age: 15
+      person5:
+        age: 13
+      person6:
+        age: 11
+      person7:
+        age: 9
+      person8:
+        age: 7
+      person9:
+        age: 5
+      person10:
+        age: 3
+      person11:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: ID
+  output:
+    id_tafi_work_incentive_amount: 1_027
+    # Size 11: $947 + ($80 * 1) = $1,027

@@ -1,0 +1,107 @@
+# Tests use 2021-01 period to validate base values (multiplier = 1.0)
+# Parameter tables contain July 2020 values; multiplier adjusts for later periods
+
+- name: If one person and lives in Arlington, grant standard is $316/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 316
+
+- name: If ten person and lives in Fairfax, grant standard is $1,085/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_085
+
+- name: If eleven person and lives in Arlington, grant standard is $1,166/month.
+  # Family size 11 = main[10] + 1 * addition = $1,085 + $81 = $1,166/month
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 11
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_166
+
+- name: If twelve person and lives in Montgomery, grant standard is $1,247/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_247
+
+- name: If one person and lives in Bedford, grant standard is $226/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 226
+
+- name: If ten person and lives in Frederick, grant standard is $975/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 975
+
+- name: If eleven person and lives in Bedford, grant standard is $1,056/month.
+  # Family size 11 = main[10] + 1 * addition = $975 + $81 = $1,056/month
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 11
+    county_str: BEDFORD_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_056
+
+- name: If twelve person and lives in Pittsylvania, grant standard is $1,137/month.
+  period: 2021-01
+  input:
+    state_code: VA
+    spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 1_137
+
+- name: Only calculate for VA.
+  period: 2021-01
+  input:
+    state_code: FL
+    spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
+  output:
+    va_tanf_grant_standard: 0
+
+# Test multiplier effect for 2023 period (multiplier = 1.155)
+- name: Grant standard in 2023 reflects 15.5% increase from base.
+  # Base $316 * 1.155 = $364.98/month
+  period: 2023-01
+  input:
+    state_code: VA
+    spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 364.98
+
+# Test multiplier effect for 2018 period (multiplier = 0.8282)
+- name: Grant standard in 2018-01 for size 3 in Group III locality.
+  # Base $508 * 0.8282 = $420.726/month
+  period: 2018-01
+  input:
+    state_code: VA
+    spm_unit_size: 3
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf_grant_standard: 420.726

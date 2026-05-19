@@ -7,9 +7,7 @@ class dc_gac(Variable):
     label = "DC General Assistance for Children (GAC)"
     unit = USD
     definition_period = MONTH
-    reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
-    )
+    reference = "https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05a"
     defined_for = "dc_gac_eligible"
 
     def formula(spm_unit, period, parameters):

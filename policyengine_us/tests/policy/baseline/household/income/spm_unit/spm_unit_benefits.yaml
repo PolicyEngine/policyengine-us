@@ -9,15 +9,19 @@
     wic: 0
     free_school_meals: 0
     reduced_price_school_meals: 0
-    spm_unit_broadband_subsidy: 0
-    spm_unit_energy_subsidy: 0
+    child_support_received: 2
+    workers_compensation: 3
+    educational_assistance: 4
+    financial_assistance: 5
+    survivor_benefits: 6
+    spm_unit_energy_subsidy: 7
     tanf: 0
     high_efficiency_electric_home_rebate: 0
     residential_efficiency_electrification_rebate: 0
     unemployment_compensation: 0
     basic_income: 0
   output:
-    spm_unit_benefits: 1
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6 + 7
 
 - name: Benefits do not include housing subsidies if the program is abolished.
   period: 2021
@@ -31,7 +35,6 @@
     wic: 0
     free_school_meals: 0
     reduced_price_school_meals: 0
-    spm_unit_broadband_subsidy: 0
     spm_unit_energy_subsidy: 0
     tanf: 0
     high_efficiency_electric_home_rebate: 0

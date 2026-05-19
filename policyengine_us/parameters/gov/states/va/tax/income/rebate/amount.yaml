@@ -5,36 +5,41 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  reference: 
+  reference:
   - title: Virginia 2023 legislative summary
     href: https://www.tax.virginia.gov/sites/default/files/inline-files/2023-legislative-summary.pdf#page=9
   - title: Virginia 2023 Special Session I Budget Bill (Introduced) - HB6001 Item 3-5.28 - B
     href: https://budget.lis.virginia.gov/item/2023/2/HB6001/Introduced/3/3-5.28/
   # Note that the link destination may change if there is a future rebate. As of 2025-02-14, it points to the "2023 Tax Rebate".
-  # The HB6001 budget defines this as a one-time rebate for 2023 tax returns, setting a specific rebate amount rather than enabling/disabling it with a boolean.  
+  # The HB6001 budget defines this as a one-time rebate for 2023 tax returns, setting a specific rebate amount rather than enabling/disabling it with a boolean.
   - title: What You Need to Know About the 2023 Tax Rebate
     href: https://www.tax.virginia.gov/rebate
   - title: House Bill 1600 (2025 Appropriations Act)
     href: https://legiscan.com/VA/text/HB1600/id/3262750/Virginia-2025-HB1600-Chaptered.pdf#page=335
-  # House Bill 1600 reauthorized rebate for tax year 2024
+  # House Bill 1600 reauthorized rebate for tax year 2024; no rebate for tax year 2025
 
 JOINT:
   2021-01-01: 500
   2022-01-01: 0
   2023-01-01: 400
+  2025-01-01: 0
 SINGLE:
   2021-01-01: 250
   2022-01-01: 0
   2023-01-01: 200
+  2025-01-01: 0
 SEPARATE:
   2021-01-01: 250
   2022-01-01: 0
   2023-01-01: 200
+  2025-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 250
   2022-01-01: 0
   2023-01-01: 200
+  2025-01-01: 0
 SURVIVING_SPOUSE:
   2021-01-01: 250
   2022-01-01: 0
   2023-01-01: 200
+  2025-01-01: 0

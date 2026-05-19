@@ -1,0 +1,122 @@
+# Tests for Washington Apple Health Expansion eligibility
+
+- name: Undocumented adult with low income eligible in 2025
+  period: 2025
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: true
+
+- name: Undocumented adult at income limit eligible
+  period: 2025
+  input:
+    age: 45
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.38  # 138% FPL (at limit)
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: true
+
+- name: Undocumented adult with income above limit NOT eligible
+  period: 2025
+  input:
+    age: 35
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.5  # 150% FPL (above 138% limit)
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: US citizen NOT eligible regardless of income
+  period: 2025
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: Legal permanent resident NOT eligible
+  period: 2025
+  input:
+    age: 30
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: DACA recipient NOT eligible (pending HCA clarification)
+  period: 2025
+  input:
+    age: 25
+    immigration_status: DACA
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: Pregnant undocumented adult NOT eligible (must use pregnancy programs)
+  period: 2025
+  input:
+    age: 28
+    immigration_status: UNDOCUMENTED
+    is_pregnant: true
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: Undocumented child NOT eligible (must use Apple Health for Kids)
+  period: 2025
+  input:
+    age: 15
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: Program NOT in effect before June 2024
+  period: 2023
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false
+
+- name: 19-year-old eligible (at minimum age)
+  period: 2025
+  input:
+    age: 19
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: true
+
+- name: 18-year-old NOT eligible (below minimum age)
+  period: 2025
+  input:
+    age: 18
+    immigration_status: UNDOCUMENTED
+    is_pregnant: false
+    medicaid_income_level: 1.0  # 100% FPL
+    state_code: WA
+  output:
+    wa_apple_health_expansion_eligible: false

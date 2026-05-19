@@ -1,0 +1,14 @@
+description: California limits the Medi-Cal enrollment freeze to these immigration statuses under the Medi-Cal program.
+
+values:
+  2016-01-01: []
+  2026-01-01:
+    - UNDOCUMENTED
+
+metadata:
+  unit: list
+  period: year
+  label: California Medi-Cal enrollment freeze affected immigration statuses
+  reference:
+    - title: California Welfare and Institutions Code Section 14007.8(b)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=14007.8.&lawCode=WIC

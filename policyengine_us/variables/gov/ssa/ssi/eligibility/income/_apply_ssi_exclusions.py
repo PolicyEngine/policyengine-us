@@ -6,6 +6,7 @@ def _apply_ssi_exclusions(
     unearned_income: ArrayLike,
     parameters: ParameterNode,
     period: Period,
+    general_exclusion: ArrayLike = None,
 ) -> ArrayLike:
     """
     Applies standard SSI income exclusions to convert total earned/unearned income
@@ -22,13 +23,14 @@ def _apply_ssi_exclusions(
     unearned_monthly = unearned_income / MONTHS_IN_YEAR
 
     p = parameters(period).gov.ssa.ssi.income.exclusions
+    general_exclusion = p.general if general_exclusion is None else general_exclusion
 
     # Step 1: Subtract general exclusion from unearned first
-    applied_general = min_(p.general, unearned_monthly)
+    applied_general = min_(general_exclusion, unearned_monthly)
     countable_unearned = unearned_monthly - applied_general
 
     # The remainder of the general exclusion (if unearned < 20) applies to earned
-    leftover_general = p.general - applied_general
+    leftover_general = general_exclusion - applied_general
     total_earned_excl = p.earned + leftover_general
 
     # Step 2 & 3: Apply the total earned exclusion, then exclude 50% of the rest

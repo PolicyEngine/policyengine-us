@@ -7,9 +7,7 @@ def create_tax_exempt() -> Reform:
         entity = Person
         label = "Gross income"
         unit = USD
-        documentation = (
-            "Gross income, as defined in the Internal Revenue Code."
-        )
+        documentation = "Gross income, as defined in the Internal Revenue Code."
         definition_period = YEAR
         reference = "https://www.law.cornell.edu/uscode/text/26/61"
 

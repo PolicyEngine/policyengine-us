@@ -1,0 +1,526 @@
+- name: Case 1, single parent with one child, no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Family of 2: Payment standard = $478
+    # Income = $0
+    # Countable income = $0
+    # Benefit = $478 - $0 = $478
+    mi_fip_payment_standard: 478
+    mi_fip_countable_income_for_benefit: 0
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 478
+
+- name: Case 2, single parent with two children, no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Income = $0
+    # Countable income = $0
+    # Benefit = $583 - $0 = $583
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 0
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 583
+
+- name: Case 3, single parent with two children, low income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $1,000
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $800) = $200 + $400 = $600
+    # Countable income = $1,000 - $600 = $400
+    # Benefit = $583 - $400 = $183
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 400
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 183
+
+- name: Case 4, single parent with two children, moderate income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 15_600  # $1,300/month
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $1,300
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $1,100) = $200 + $550 = $750
+    # Countable income = $1,300 - $750 = $550
+    # Benefit = $583 - $550 = $33
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 550
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 33
+
+- name: Case 5, single parent with two children, at ongoing eligibility threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 14_208  # $1,184/month - at threshold
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $1,184 (maximum for ongoing eligibility)
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $984) = $200 + $492 = $692
+    # Countable income = $1,184 - $692 = $492
+    # Benefit = $583 - $492 = $91
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 492
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 91
+
+- name: Case 6, single parent with two children, above ongoing threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 14_400  # $1,200/month - above threshold
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $1,200
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $1,000) = $200 + $500 = $700
+    # Countable income = $1,200 - $700 = $500
+    # Benefit = $583 - $500 = $83
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 500
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 83
+
+- name: Case 7, single parent with two children, at initial eligibility threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_768  # $814/month - at initial eligibility threshold
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $814 (maximum for initial eligibility)
+    # For ongoing benefit calculation, use 50% disregard
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $614) = $200 + $307 = $507
+    # Countable income = $814 - $507 = $307
+    # Benefit = $583 - $307 = $276
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 307
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 276
+
+- name: Case 8, large family with five members, no income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 0
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MI
+  output:
+    # Family of 5: Payment standard = $822
+    # Income = $0
+    # Countable income = $0
+    # Benefit = $822 - $0 = $822
+    mi_fip_payment_standard: 822
+    mi_fip_countable_income_for_benefit: 0
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 822
+
+- name: Case 9, large family with five members, moderate income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 18_000  # $1,500/month
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MI
+  output:
+    # Family of 5: Payment standard = $822
+    # Monthly income = $1,500
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $1,300) = $200 + $650 = $850
+    # Countable income = $1,500 - $850 = $650
+    # Benefit = $822 - $650 = $172
+    mi_fip_payment_standard: 822
+    mi_fip_countable_income_for_benefit: 650
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 172
+
+- name: Case 10, two-parent household, one parent working.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000  # $1,000/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 0
+      person3:
+        age: 6
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    # Family of 4: Payment standard = $707
+    # Monthly income = $1,000
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $800) = $200 + $400 = $600
+    # Countable income = $1,000 - $600 = $400
+    # Benefit = $707 - $400 = $307
+    mi_fip_payment_standard: 707
+    mi_fip_countable_income_for_benefit: 400
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 307
+
+- name: Case 11, two-parent household, both parents working.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 9_600  # $800/month
+      person2:
+        age: 33
+        employment_income_before_lsr: 4_800  # $400/month
+      person3:
+        age: 6
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    # Family of 4: Payment standard = $707
+    # BEM 518: Per-person deductions (enrolled recipients, 50% rate)
+    # Person 1: $800 - [$200 + 50%×$600] = $800 - $500 = $300
+    # Person 2: $400 - [$200 + 50%×$200] = $400 - $300 = $100
+    # Countable income = $300 + $100 = $400
+    # Benefit = $707 - $400 = $307
+    mi_fip_payment_standard: 707
+    mi_fip_countable_income_for_benefit: 400
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 307
+
+- name: Case 12, family with unearned income only.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        social_security_disability: 6_000  # $500/month
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Unearned income (social security) = $500/month
+    # No disregard for unearned income
+    # Countable income = $500
+    # Benefit = $583 - $500 = $83
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 500
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 83
+
+- name: Case 13, family with mixed earned and unearned income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+        social_security_retirement: 3_600  # $300/month
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Earned income = $500/month
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Earned disregard = $200 + (50% × $300) = $200 + $150 = $350
+    # Countable earned income = $500 - $350 = $150
+    # Unearned income (no disregard) = $300
+    # Total countable income = $150 + $300 = $450
+    # Benefit = $583 - $450 = $133
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 450
+    mi_fip_income_eligible: true
+    mi_fip_eligible: true
+    mi_fip: 133
+
+- name: Case 14, high income family, no benefit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 30_000  # $2,500/month - well above threshold
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Family of 3: Payment standard = $583
+    # Monthly income = $2,500
+    # Ongoing earned income disregard = $200 + 50% of remainder
+    # Disregard = $200 + (50% × $2,300) = $200 + $1,150 = $1,350
+    # Countable income = $2,500 - $1,350 = $1,150
+    # Benefit = $583 - $1,150 = -$567 (negative, so $0)
+    mi_fip_payment_standard: 583
+    mi_fip_countable_income_for_benefit: 1_150
+    mi_fip_income_eligible: false
+    mi_fip_eligible: false
+    mi_fip: 0
+
+- name: Case 15, family outside Michigan.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 12_000
+      person2:
+        age: 8
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # Not in Michigan - not eligible for MI TANF
+    mi_fip_eligible: false
+    mi_fip: 0

@@ -1,0 +1,21 @@
+description: Utah HB 210 Substitute 2 marriage tax credit MAGI income limit by filing status.
+  # Credit is not available if MAGI exceeds this limit (hard cutoff, no phaseout).
+
+SINGLE:
+  2026-01-01: 0
+JOINT:
+  2026-01-01: 90_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 0
+SEPARATE:
+  2026-01-01: 45_000
+SURVIVING_SPOUSE:
+  2026-01-01: 90_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah HB 210 Substitute 2 marriage credit income limit
+  reference:
+    - title: Utah HB 210 Substitute 2 (2026), Section 59-10-1049
+      href: https://le.utah.gov/~2026/bills/static/HB0210.html

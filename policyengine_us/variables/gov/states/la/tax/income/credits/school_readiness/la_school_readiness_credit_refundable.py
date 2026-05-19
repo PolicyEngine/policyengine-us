@@ -7,7 +7,9 @@ class la_school_readiness_credit_refundable(Variable):
     label = "Louisiana refundable school readiness tax credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
+    reference = (
+        "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
+    )
     defined_for = "la_school_readiness_credit_refundable_eligible"
 
-    adds = ["la_school_readiness_tax_credit"]
+    adds = ["la_school_readiness_credit"]

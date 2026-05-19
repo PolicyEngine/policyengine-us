@@ -7,9 +7,7 @@ class ma_child_and_family_credit_or_dependent_care_credit(Variable):
     label = "MA dependent or dependent care credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (x-y)
-    )
+    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (x-y)
     defined_for = StateCode.MA
     documentation = "The CFTC replaces the Dependent Care Tax Credit and the Household Dependent Tax Credit with Child and Family Tax Credit for tax years beginning on or after January 1, 2023."
 

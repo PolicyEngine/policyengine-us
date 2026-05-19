@@ -1,0 +1,503 @@
+# Cross-program integration tests for Washington cash assistance
+# programs: TANF, SFA, and RCA. Exercises the mutually-exclusive
+# immigration gates and the wa_show_all_cash_assistance_programs
+# override used by consumers that want to display all three programs'
+# benefit amounts alongside each other.
+
+- name: Case 1, citizen family with child receives TANF only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 570
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 2, LPR-only family in 5-year bar receives SFA only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Child immigration_status set explicitly: it defaults to CITIZEN, which
+    # would otherwise route the unit to TANF via the citizen-child pathway.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: true
+    wa_rca_eligible: false
+    wa_tanf: 0
+    wa_sfa: 570
+    wa_rca: 0
+
+- name: Case 3, refugee family with child receives TANF only (RCA blocked by 45 CFR 400.47).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+        years_since_us_entry: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Refugees are bar-exempt, so TANF applies. Per 45 CFR 400.47, an
+    # applicant eligible for TANF is disqualified from RCA.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    wa_tanf: 570
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 4, single refugee adult without child receives RCA only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # RCA does not require a dependent child; TANF and SFA do.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: true
+    wa_tanf: 0
+    wa_sfa: 0
+    # Family size 1 payment standard Jan 2024: $450
+    wa_rca: 450
+
+- name: Case 5, override shows all 3 programs with benefit amounts.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wa_show_all_cash_assistance_programs: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # Override bypasses the immigration gate across all 3 programs;
+    # other requirements (demographic, income, resources) still apply.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: true
+    wa_rca_eligible: true
+    # Family size 3 payment standard Jan 2024: $706; no income.
+    wa_tanf: 706
+    wa_sfa: 706
+    wa_rca: 706
+
+- name: Case 6, override with single adult shows RCA only (TANF and SFA still require a child).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        wa_show_all_cash_assistance_programs: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: true
+    wa_tanf: 0
+    wa_sfa: 0
+    # Family size 1 payment standard Jan 2024: $450
+    wa_rca: 450
+
+- name: Case 7, override respects the income test (high unearned income disqualifies all).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        social_security: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_show_all_cash_assistance_programs: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Monthly unearned = $2,000 > PS ($570) → income test fails for all
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    wa_tanf: 0
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 8, single refugee adult past 12-month window receives nothing.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+        years_since_us_entry: 2
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # No child → TANF/SFA demographic fails. Past 12-month window → RCA fails.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    wa_tanf: 0
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 9, fully undocumented family is ineligible for all 3.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Child immigration_status set explicitly: it defaults to CITIZEN, which
+    # would otherwise route the unit to TANF via the citizen-child pathway.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    wa_tanf: 0
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 10, mixed-status citizen head + LPR-in-bar spouse + child receives TANF only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # Citizen head makes household TANF-immigration-eligible; SFA-eligibility
+    # excluded at SPM-unit level to prevent mixed-status double-pay.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    # Family size 3 payment standard Jan 2024: $706
+    wa_tanf: 706
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 11, override with refugee household still fires all 3.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+        years_since_us_entry: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_show_all_cash_assistance_programs: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # Override bypasses the SFA mutex and RCA mutex so API consumers can
+    # display all 3 programs for bar-exempt immigrants too.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: true
+    wa_rca_eligible: true
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 570
+    wa_sfa: 570
+    wa_rca: 570
+
+- name: Case 12, Afghan or Ukrainian humanitarian parolee family with child receives TANF only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # PAROLED_ONE_YEAR stands in for Afghan (P.L. 117-43) and Ukrainian
+    # (P.L. 117-128) humanitarian parolees, who are bar-exempt for TANF.
+    # TANF therefore applies; RCA is blocked by 45 CFR 400.47.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 570
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 13a, single PAROLED_ONE_YEAR adult within ORR window receives RCA only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: PAROLED_ONE_YEAR
+        years_since_us_entry: 0.5
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Headline Afghan-parolee use case: no child means TANF/SFA demographic
+    # fails, but the parolee is bar-exempt for RCA and within the 12-month
+    # ORR window, so RCA fires.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: false
+    wa_rca_eligible: true
+    wa_tanf: 0
+    wa_sfa: 0
+    # Family size 1 payment standard Jan 2024: $450
+    wa_rca: 450
+
+- name: Case 13b, mixed-status citizen child + LPR-in-bar parent receives TANF only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # The citizen child is TANF-immigration-eligible, which lifts the whole
+    # SPM unit into TANF; the SFA mutex then blocks SFA. This is the
+    # correct PRWORA "citizen child saves the unit" outcome.
+    wa_tanf_eligible: true
+    wa_sfa_eligible: false
+    wa_rca_eligible: false
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 570
+    wa_sfa: 0
+    wa_rca: 0
+
+- name: Case 13, single mom + 19-year-old high school senior receives SFA only via 19-20 student pathway.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 19
+        immigration_status: CITIZEN
+        is_in_secondary_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # No under-18 child means TANF demographic fails. The 19-year-old
+    # student triggers the WAC 388-400-0010(2)(c) pathway; the parent is
+    # covered as a caretaker relative per (2)(d) via SPM-unit aggregation.
+    wa_tanf_eligible: false
+    wa_sfa_eligible: true
+    wa_rca_eligible: false
+    # Family size 2 payment standard Jan 2024: $570
+    wa_tanf: 0
+    wa_sfa: 570
+    wa_rca: 0
+
+- name: Case 14, spm_unit_benefits aggregator includes wa_sfa.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    # Direct-input wa_sfa; zero out the other benefit components in the
+    # aggregator so we can pin spm_unit_benefits to wa_sfa exactly. This
+    # locks in that wa_sfa is part of the aggregator (added in this PR).
+    wa_sfa: 1_200
+    wa_rca: 0
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+  output:
+    # spm_unit_benefits must include wa_sfa (and wa_rca) so the household
+    # actually sees this income flow into household_net_income.
+    spm_unit_benefits: 1_200
+
+- name: Case 15, spm_unit_benefits aggregator includes wa_rca.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa: 0
+    wa_rca: 3_600
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+  output:
+    # Locks in that wa_rca is part of the aggregator (added in this PR).
+    spm_unit_benefits: 3_600

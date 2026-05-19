@@ -1,0 +1,19 @@
+- name: TOB revenue - single retiree with SS and wages
+  period: 2024
+  absolute_error_margin: 100
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Actual value is around $4,240
+    tob_revenue_total: 4_240

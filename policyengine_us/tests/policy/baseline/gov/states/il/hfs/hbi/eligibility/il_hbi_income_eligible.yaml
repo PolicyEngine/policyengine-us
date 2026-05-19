@@ -1,0 +1,98 @@
+# Tests for il_hbi_income_eligible
+# Children and adults use MAGI (medicaid_income_level)
+# Seniors use AABD methodology (actual income with exemptions)
+
+- name: Child at 300% FPL eligible (under 318% limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    medicaid_income_level: 3.00
+  output:
+    il_hbi_income_eligible: true
+
+- name: Child at 317% FPL eligible (just under limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    medicaid_income_level: 3.17
+  output:
+    il_hbi_income_eligible: true
+
+- name: Child at 320% FPL not eligible (over limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    medicaid_income_level: 3.20
+  output:
+    il_hbi_income_eligible: false
+
+- name: Adult 50 at 100% FPL eligible (under 138% limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    medicaid_income_level: 1.00
+  output:
+    il_hbi_income_eligible: true
+
+- name: Adult 50 at 138% FPL eligible (at limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    medicaid_income_level: 1.38
+  output:
+    il_hbi_income_eligible: true
+
+- name: Adult 50 at 140% FPL not eligible (over limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    medicaid_income_level: 1.40
+  output:
+    il_hbi_income_eligible: false
+
+# Senior tests use AABD methodology with actual income
+# 2024 FPL for 1 person = $15,060/year
+# AABD countable = gross unearned - $25/month flat exemption
+# 100% FPL requires $15,060 countable = $15,360 gross ($1,280/month)
+
+- name: Senior 70 with low Social Security income eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 12_000  # ~80% FPL after AABD exemptions
+  output:
+    il_hbi_income_eligible: true
+
+- name: Senior 70 at approximately 100% FPL eligible (at limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 15_360  # Countable = $15,060 (100% FPL)
+  output:
+    il_hbi_income_eligible: true
+
+- name: Senior 70 over 100% FPL not eligible (over limit)
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    social_security: 18_000  # Well over 100% FPL
+  output:
+    il_hbi_income_eligible: false
+
+- name: Gap age adult 30 not eligible regardless of income
+  period: 2024
+  input:
+    state_code: IL
+    age: 30
+    medicaid_income_level: 0.50
+  output:
+    il_hbi_income_eligible: false

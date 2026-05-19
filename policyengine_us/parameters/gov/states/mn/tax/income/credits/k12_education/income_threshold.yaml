@@ -1,0 +1,17 @@
+description: Minnesota begins phasing out the K-12 Education Credit when AGI exceeds this threshold.
+values:
+  2021-01-01: 33_500
+  2022-01-01: 34_540
+  2023-01-01: 36_980
+  2024-01-01: 73_890
+  2025-01-01: 75_820
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota K-12 Education Credit income phaseout threshold
+  reference:
+  - title: 2025 Schedule M1ED, Line 12 Worksheet
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1ed-25.pdf
+  - title: Minnesota Statutes 290.0674 Minnesota Education Credit
+    href: https://www.revisor.mn.gov/statutes/cite/290.0674

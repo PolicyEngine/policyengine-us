@@ -1,0 +1,66 @@
+- name: Case 1, own household without shelter support has zero ISM.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+  output:
+    ssi_in_kind_support_and_maintenance: 0
+
+- name: Case 2, own household with outside shelter support triggers PMV.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_outside_shelter_support: true
+  output:
+    # PMV monthly = (1/3 x 967) + 20 = 322.33 + 20 = 342.33
+    # PMV annual = 342.33 x 12 = 4_108
+    ssi_in_kind_support_and_maintenance: 4_108
+
+- name: Case 3, own household with in-household shelter support triggers PMV.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_receives_shelter_from_others_in_household: true
+        # Not in another's household, so not Status B
+  output:
+    # PMV monthly = (1/3 x 967) + 20 = 342.33
+    # PMV annual = 342.33 x 12 = 4_108
+    ssi_in_kind_support_and_maintenance: 4_108
+
+- name: Case 4, another person's household has zero ISM (VTR is an FBR adjustment, not income).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+  output:
+    ssi_in_kind_support_and_maintenance: 0
+
+- name: Case 5, medical treatment facility has zero ISM.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi_in_kind_support_and_maintenance: 0

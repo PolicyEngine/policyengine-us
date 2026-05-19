@@ -6,7 +6,7 @@
 # 3. Nutritional risk assessment (assumed true in individual simulation)
 #
 # Note: WIC package values are uprated from 2018 base values using CPI-U.
-# Note: school_meal_countable_income is input as ANNUAL but computed as monthly.
+# Note: wic_countable_income is input as ANNUAL but computed as monthly.
 
 - name: Case 1, infant in low-income family eligible for WIC.
   period: 2024-01
@@ -26,9 +26,10 @@
         # Monthly: $2,000
         # 2-person FPG 2024: $20,440/year = $1,703/month
         # Ratio: 2000/1703 = 1.17 < 1.85 ✓
-        school_meal_countable_income: 24_000
+        wic_countable_income: 24_000
   output:
     wic_category: [NONE, INFANT]
+    wic_food_package: [NONE, INFANT_AVERAGE]
     meets_wic_income_test: true
     is_wic_eligible: [false, true]
     # INFANT value uprated from $138.64 (2018) to ~$173.28 (2024)
@@ -49,15 +50,16 @@
         # Monthly: $5,000
         # Pregnant adds +1 to household → 2-person FPG: $20,440/year = $1,703/month
         # Ratio: 5000/1703 = 2.94 > 1.85 ✗
-        school_meal_countable_income: 60_000
+        wic_countable_income: 60_000
         snap: 200
   output:
     wic_category: PREGNANT
+    wic_food_package: PREGNANT_SINGLETON
     meets_wic_income_test: false
     meets_wic_categorical_eligibility: true
     is_wic_eligible: true
-    # PREGNANT value uprated from $37.33 (2018) to ~$46.66 (2024)
-    wic: 46.66
+    # Package V-A value plus the FY 2024 cash-value benefit adjustment.
+    wic: 82.15
 
 - name: Case 3, child age 3 eligible through Medicaid.
   period: 2024-01
@@ -74,16 +76,17 @@
         # Monthly: $4,000
         # 1-person FPG 2024: $15,060/year = $1,255/month
         # Ratio: 4000/1255 = 3.19 > 1.85 ✗
-        school_meal_countable_income: 48_000
+        wic_countable_income: 48_000
         # Explicitly disable SNAP to test Medicaid pathway
         snap: 0
   output:
     wic_category: CHILD
+    wic_food_package: CHILD_24_59_MONTHS
     meets_wic_income_test: false
     meets_wic_categorical_eligibility: true
     is_wic_eligible: true
-    # CHILD value uprated from $31.78 (2018) to ~$39.72 (2024)
-    wic: 39.72
+    # Package IV-B value plus the FY 2024 cash-value benefit adjustment.
+    wic: 58.06
 
 - name: Case 4, healthy adult not eligible even with SNAP.
   period: 2024-01
@@ -94,7 +97,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        school_meal_countable_income: 12_000
+        wic_countable_income: 12_000
         snap: 200
   output:
     wic_category: NONE
@@ -115,7 +118,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        school_meal_countable_income: 18_000
+        wic_countable_income: 18_000
         # Explicitly disable SNAP/TANF
         snap: 0
         tanf: 0
@@ -147,12 +150,13 @@
         # 3 people + 1 for pregnancy = 4-person equivalent
         # 4-person FPG 2024: $31,200/year = $2,600/month
         # Ratio: 3000/2600 = 1.15 < 1.85 ✓
-        school_meal_countable_income: 36_000
+        wic_countable_income: 36_000
   output:
     wic_category: [NONE, PREGNANT, CHILD]
+    wic_food_package: [NONE, PREGNANT_SINGLETON, CHILD_24_59_MONTHS]
     is_wic_eligible: [false, true, true]
-    # Father: $0, Mother: ~$46.66, Child: ~$39.72
-    wic: [0, 46.66, 39.72]
+    # Father: $0, Mother: package V-A, Child: package IV-B.
+    wic: [0, 82.15, 58.06]
 
 - name: Case 7, income above 185% FPG without categorical eligibility.
   period: 2024-01
@@ -169,7 +173,7 @@
         # Monthly: $3,000
         # 1-person FPG 2024: $15,060/year = $1,255/month
         # Ratio: 3000/1255 = 2.39 > 1.85 ✗
-        school_meal_countable_income: 36_000
+        wic_countable_income: 36_000
         # Explicitly disable SNAP/TANF
         snap: 0
         tanf: 0

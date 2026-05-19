@@ -1,0 +1,78 @@
+- name: Case 1, no childcare expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_mfip_dependent_care_deduction: 0
+
+- name: Case 2, expenses below combined max.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_600  # $300/month annual
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Child under 2: max $200
+    # Child 2+: max $175
+    # Total max: $375
+    # Expenses: $300/month
+    # Deduction: min(300, 375) = 300
+    mn_mfip_dependent_care_deduction: 300
+
+- name: Case 3, expenses above combined max.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000  # $500/month annual
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Child under 2: max $200
+    # Child 2+: max $175
+    # Total max: $375
+    # Expenses: $500/month
+    # Deduction: min(500, 375) = 375
+    mn_mfip_dependent_care_deduction: 375

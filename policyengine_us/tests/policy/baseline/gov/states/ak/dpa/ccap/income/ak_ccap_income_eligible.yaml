@@ -1,0 +1,197 @@
+# ak_ccap_income_eligible: SPMUnit, bool, MONTH
+# countable_income <= 85% of monthly Alaska SMI (hhs_smi for size).
+# Boundary: <= per "does not exceed" in Manual 4070-2.
+#
+# Family of 3 at 2022-01 (HHS SMI base $104_070, size factor 0.84):
+#   100% annual SMI = $87_418.80; monthly = $7_284.90
+#   85% annual threshold = $74_305.98; monthly = $6_192.16
+
+- name: Case 1, family of 3 well below 85% SMI is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000/mo well below threshold
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: true
+
+- name: Case 2, family of 3 just below 85% SMI threshold is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Annual just below the $74_305.98 threshold (monthly $6_191.67).
+        employment_income: 74_300
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: true
+
+- name: Case 3, family of 3 above 85% SMI is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 78_000  # 6_500/mo > 6_192.16
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: false
+
+- name: Case 4, zero income is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: true
+
+- name: Case 5, family of 3 at the 85% SMI threshold is eligible (boundary inclusive).
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Family of 3: 100% monthly SMI = 7_284.90; 85% threshold = 6_192.165
+        # Use 1 cent below monthly threshold (annual 74_305.86 / 12 = 6_192.155)
+        # to avoid float-precision flips while still pinning the boundary band.
+        employment_income: 74_305.86
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # countable_income <= 85% SMI -> eligible
+    ak_ccap_income_eligible: true
+
+- name: Case 6, family of 3 one dollar per month above 85% SMI threshold is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Annual 74_318 / 12 = 6_193.17/mo, just above 6_192.165 threshold
+        employment_income: 74_318
+      person2:
+        age: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    # countable_income > 85% SMI -> ineligible
+    ak_ccap_income_eligible: false
+
+- name: Case 7, family of 6 well below 85% SMI is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 35
+        # Family of 6: capped_size=5, extra=0, adj=0.52+0.16*5=1.32
+        # Annual SMI = 104_070 * 1.32 = 137_372.40; monthly = 11_447.70
+        # 85% monthly threshold = 9_730.545
+        # 48_000/yr -> 4_000/mo < 9_730.545 -> eligible
+        employment_income: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+      person6:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AK
+  output:
+    ak_ccap_income_eligible: true
+
+- name: Case 8, family of 6 just above 85% SMI threshold is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 9_750/mo > 9_730.545 monthly threshold; annual = 117_000
+        employment_income: 117_000
+      person2:
+        age: 33
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 5
+      person6:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: AK
+  output:
+    # countable_income > 85% SMI for family of 6 -> ineligible
+    ak_ccap_income_eligible: false

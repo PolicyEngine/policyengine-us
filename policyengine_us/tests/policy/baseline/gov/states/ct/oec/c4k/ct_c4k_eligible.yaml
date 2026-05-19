@@ -1,0 +1,220 @@
+- name: Case 1, all criteria met, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: true
+
+- name: Case 2, no eligible child, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+        ct_tfa_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: false
+
+- name: Case 3, income ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: false
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+        ct_tfa_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: false
+
+- name: Case 4, asset ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: false
+        ct_c4k_meets_activity_test: true
+        ct_tfa_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: false
+
+- name: Case 5, activity test failed.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: false
+        ct_tfa_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: false
+
+- name: Case 6, TFA categorical eligibility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+        ct_tfa_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    ct_c4k_eligible: true
+
+- name: Case 7, TFA eligible overrides all other failures.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: false
+        is_ccdf_asset_eligible: false
+        ct_c4k_meets_activity_test: false
+        ct_tfa_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # TFA categorical eligibility bypasses regular requirements
+    ct_c4k_eligible: true
+
+- name: Case 8, adults only, no eligible child, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CT
+  output:
+    # No child under 13 => no eligible child => ineligible
+    ct_c4k_eligible: false
+
+- name: Case 9, multiple children, only one eligible, still eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+        is_disabled: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        is_ccdf_immigration_eligible_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ct_c4k_income_eligible: true
+        is_ccdf_asset_eligible: true
+        ct_c4k_meets_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    # person2 age 14 > 13 and not disabled => ineligible child
+    # person3 age 5 < 13 => eligible child => family eligible
+    ct_c4k_eligible: true

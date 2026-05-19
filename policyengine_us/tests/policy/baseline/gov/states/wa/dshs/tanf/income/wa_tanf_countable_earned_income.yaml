@@ -1,5 +1,6 @@
-- name: Zero gross earned income - zero countable
-  period: 2024-01
+# Tests for Aug 2024+ rules (with $500 flat disregard)
+- name: Case 1, zero gross earned income.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 0
@@ -7,8 +8,8 @@
     # Countable = max($0 - $500, 0) × 0.5 = $0
     wa_tanf_countable_earned_income: 0
 
-- name: Gross earned below disregard - zero countable
-  period: 2024-01
+- name: Case 2, gross earned below $500 disregard.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 300
@@ -16,8 +17,8 @@
     # Countable = max($300 - $500, 0) × 0.5 = $0
     wa_tanf_countable_earned_income: 0
 
-- name: Gross earned exactly at disregard - zero countable
-  period: 2024-01
+- name: Case 3, gross earned exactly at $500 disregard.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 500
@@ -25,46 +26,85 @@
     # Countable = max($500 - $500, 0) × 0.5 = $0
     wa_tanf_countable_earned_income: 0
 
-- name: Gross earned one dollar over disregard
-  period: 2024-01
+- name: Case 4, gross earned one dollar over disregard.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 501
   output:
-    # Countable = ($501 - $500) × 0.5 = $0.50
+    # Countable = max($501 - $500, 0) × 0.5 = $0.50
     wa_tanf_countable_earned_income: 0.5
 
-- name: Gross earned moderately above disregard
-  period: 2024-01
+- name: Case 5, gross earned moderately above disregard.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 1_000
   output:
-    # Countable = ($1,000 - $500) × 0.5 = $250
+    # Countable = max($1,000 - $500, 0) × 0.5 = $250
     wa_tanf_countable_earned_income: 250
 
-- name: Gross earned significantly above disregard
-  period: 2024-01
+- name: Case 6, gross earned significantly above disregard.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 2_000
   output:
-    # Countable = ($2,000 - $500) × 0.5 = $750
+    # Countable = max($2,000 - $500, 0) × 0.5 = $750
     wa_tanf_countable_earned_income: 750
 
-- name: High gross earned income
-  period: 2024-01
+- name: Case 7, high gross earned income.
+  period: 2025-01
   input:
     state_code: WA
     tanf_gross_earned_income: 4_000
   output:
-    # Countable = ($4,000 - $500) × 0.5 = $1,750
+    # Countable = max($4,000 - $500, 0) × 0.5 = $1,750
     wa_tanf_countable_earned_income: 1_750
 
-- name: Only calculate for WA
-  period: 2024-01
+- name: Case 8, only calculate for WA.
+  period: 2025-01
   input:
     state_code: OR
     tanf_gross_earned_income: 1_000
   output:
     wa_tanf_countable_earned_income: 0
+
+# Historical tests - verify pre-Aug-2024 calculation (no $500 flat disregard)
+- name: Case 9, gross earned in 2018-01 with only 50% disregard.
+  period: 2018-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 1_000
+  output:
+    # Pre-Aug 2024: No $500 flat disregard, only 50%
+    # Countable = $1,000 × 0.5 = $500
+    wa_tanf_countable_earned_income: 500
+
+- name: Case 10, low income in 2018-01.
+  period: 2018-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 300
+  output:
+    # Countable = $300 × 0.5 = $150
+    wa_tanf_countable_earned_income: 150
+
+- name: Case 11, high income in 2018-01.
+  period: 2018-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 2_000
+  output:
+    # Countable = $2,000 × 0.5 = $1,000
+    wa_tanf_countable_earned_income: 1_000
+
+- name: Case 12, 2024-01 uses only 50% disregard (before Aug 2024).
+  period: 2024-01
+  input:
+    state_code: WA
+    tanf_gross_earned_income: 1_000
+  output:
+    # 2024-01 is before Aug 2024, so no $500 flat disregard
+    # Countable = $1,000 × 0.5 = $500
+    wa_tanf_countable_earned_income: 500

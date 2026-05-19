@@ -1,0 +1,84 @@
+# Tests Florida TCA net income test (payment standard test)
+# Net countable income must be less than payment standard
+# Source: Florida Statutes 414.095(12), FAC 65A-4.220
+
+# Payment standard for size 2, >$50 shelter: $241
+
+- name: Case 1, zero income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+
+- name: Case 2, one dollar below threshold eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_880  # $240/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: true
+
+- name: Case 3, at threshold ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_892  # $241/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false
+
+- name: Case 4, one dollar above threshold ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_904  # $242/month
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca_net_income_eligible: false

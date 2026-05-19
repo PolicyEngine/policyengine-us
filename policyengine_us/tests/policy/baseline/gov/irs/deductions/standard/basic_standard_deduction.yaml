@@ -1,0 +1,34 @@
+- name: 2020 surviving spouse standard deduction is $24,800
+  period: 2020
+  input:
+    filing_status: SURVIVING_SPOUSE
+  output:
+    basic_standard_deduction: 24_800
+
+- name: 2020 joint filer standard deduction is $24,800
+  period: 2020
+  input:
+    filing_status: JOINT
+  output:
+    basic_standard_deduction: 24_800
+
+- name: 2020 single filer standard deduction is $12,400
+  period: 2020
+  input:
+    filing_status: SINGLE
+  output:
+    basic_standard_deduction: 12_400
+
+- name: 2020 head of household standard deduction is $18,650
+  period: 2020
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    basic_standard_deduction: 18_650
+
+- name: 2020 separate filer standard deduction is $12,400
+  period: 2020
+  input:
+    filing_status: SEPARATE
+  output:
+    basic_standard_deduction: 12_400

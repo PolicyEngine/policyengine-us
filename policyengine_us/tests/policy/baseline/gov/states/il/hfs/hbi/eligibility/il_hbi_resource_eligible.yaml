@@ -1,0 +1,74 @@
+# Unit tests for il_hbi_resource_eligible
+# Tests the $17,500 resource limit for HBIS (seniors only)
+
+- name: Senior with resources below limit is resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    spm_unit_assets: 10_000
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Senior with resources at limit is resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    spm_unit_assets: 17_500
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Senior with resources above limit is not resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    spm_unit_assets: 20_000
+  output:
+    il_hbi_resource_eligible: false
+
+- name: Senior with zero resources is resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 70
+    spm_unit_assets: 0
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Adult (non-senior) with high resources is still resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 50
+    spm_unit_assets: 100_000
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Child with high resources is still resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 10
+    spm_unit_assets: 500_000
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Senior just below limit is resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 65
+    spm_unit_assets: 17_499
+  output:
+    il_hbi_resource_eligible: true
+
+- name: Senior just above limit is not resource eligible
+  period: 2024
+  input:
+    state_code: IL
+    age: 65
+    spm_unit_assets: 17_501
+  output:
+    il_hbi_resource_eligible: false

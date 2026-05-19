@@ -113,6 +113,32 @@
     other_dependent_credit: 0
     income_tax_non_refundable_credits: 0
 
+- name: Child is not reclassified as an adult dependent when the filer lacks the federal child-CTC SSN gate
+  period: 2026
+  reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+        employment_income: 80_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    ctc_child_individual_maximum: [0, 0]
+    ctc_child_individual_maximum_arpa: [0, 3_720]
+    other_dependent_credit_maximum: [0, 0]
+    other_dependent_credit: 0
+    ctc: 3_720
+
 - name: Integration test - CTC partially phased out
   period: 2025
   reforms: policyengine_us.reforms.congress.afa.afa_other_dependent_credit.afa_other_dependent_credit

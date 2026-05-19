@@ -1,0 +1,93 @@
+- name: Zero earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 0
+    state_code: MI
+  output:
+    mi_fip_earned_income_after_deductions_for_benefit_person: 0
+
+- name: Earned income below flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 150
+    state_code: MI
+  output:
+    # $150 gross
+    # Flat deduction = $200, but capped at gross
+    # Remainder = max($150 - $200, 0) = $0
+    # 50% deduction = $0
+    # Countable = max($150 - $200 - $0, 0) = $0
+    mi_fip_earned_income_after_deductions_for_benefit_person: 0
+
+- name: Earned income equal to flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 200
+    state_code: MI
+  output:
+    # $200 gross
+    # Flat deduction = $200
+    # Remainder = max($200 - $200, 0) = $0
+    # 50% deduction = $0
+    # Countable = max($200 - $200 - $0, 0) = $0
+    mi_fip_earned_income_after_deductions_for_benefit_person: 0
+
+- name: Earned income above flat deduction
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 500
+    state_code: MI
+  output:
+    # $500 gross
+    # Flat deduction = $200
+    # Remainder = $500 - $200 = $300
+    # 50% deduction = $300 * 0.5 = $150
+    # Countable = $500 - $200 - $150 = $150
+    mi_fip_earned_income_after_deductions_for_benefit_person: 150
+
+- name: Moderate earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_000
+    state_code: MI
+  output:
+    # $1,000 gross
+    # Flat deduction = $200
+    # Remainder = $1,000 - $200 = $800
+    # 50% deduction = $800 * 0.5 = $400
+    # Countable = $1,000 - $200 - $400 = $400
+    mi_fip_earned_income_after_deductions_for_benefit_person: 400
+
+- name: High earned income
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 2_000
+    state_code: MI
+  output:
+    # $2,000 gross
+    # Flat deduction = $200
+    # Remainder = $2,000 - $200 = $1,800
+    # 50% deduction = $1,800 * 0.5 = $900
+    # Countable = $2,000 - $200 - $900 = $900
+    mi_fip_earned_income_after_deductions_for_benefit_person: 900
+
+- name: Outside Michigan returns zero
+  period: 2025-01
+  input:
+    tanf_gross_earned_income: 1_000
+    state_code: CA
+  output:
+    mi_fip_earned_income_after_deductions_for_benefit_person: 0
+
+- name: Historical 20% ongoing rate before 2011
+  period: 2010-01
+  input:
+    tanf_gross_earned_income: 500
+    state_code: MI
+  output:
+    # $500 gross
+    # Flat deduction = $200
+    # Remainder = $500 - $200 = $300
+    # 20% deduction (pre-2011) = $300 * 0.2 = $60
+    # Countable = $500 - $200 - $60 = $240
+    mi_fip_earned_income_after_deductions_for_benefit_person: 240

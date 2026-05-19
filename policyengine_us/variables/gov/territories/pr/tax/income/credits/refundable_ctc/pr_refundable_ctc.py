@@ -23,8 +23,7 @@ class pr_refundable_ctc(Variable):
         # line 25
         reduced_ss_tax = max_(
             0,
-            tax_unit("pr_refundable_ctc_social_security_tax", period)
-            - sum_eitc_ssi,
+            tax_unit("pr_refundable_ctc_social_security_tax", period) - sum_eitc_ssi,
         )
 
         # line 26

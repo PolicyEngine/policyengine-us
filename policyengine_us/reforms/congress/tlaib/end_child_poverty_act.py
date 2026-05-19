@@ -25,7 +25,9 @@ def create_end_child_poverty_act() -> Reform:
         definition_period = YEAR
         unit = USD
         label = "End Child Poverty Act Filer Credit"
-        reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
+        reference = (
+            "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
+        )
 
         def formula(tax_unit, period, parameters):
             # Filer credit.
@@ -52,9 +54,7 @@ def create_end_child_poverty_act() -> Reform:
             excess = max_(agi - phase_out_start, 0)
             reduction = excess * p.phase_out.rate
             # Compute final amount.
-            return filer_credit_eligible * max_(
-                max_filer_credit - reduction, 0
-            )
+            return filer_credit_eligible * max_(max_filer_credit - reduction, 0)
 
     class ecpa_child_benefit(Variable):
         value_type = float
@@ -85,24 +85,40 @@ def create_end_child_poverty_act() -> Reform:
         label = "benefits"
         unit = USD
         definition_period = YEAR
-        adds = [
-            "social_security",
-            "ssi",
-            "snap",
-            "wic",
-            "free_school_meals",
-            "reduced_price_school_meals",
-            "spm_unit_broadband_subsidy",
-            "tanf",
-            "high_efficiency_electric_home_rebate",
-            "residential_efficiency_electrification_rebate",
-            "unemployment_compensation",
-            # Contributed.
-            "basic_income",
-            "spm_unit_capped_housing_subsidy",
-            "household_state_benefits",
-            "ecpa_child_benefit",
-        ]
+
+        def formula(household, period, parameters):
+            BENEFITS = [
+                "social_security",
+                "ssi",
+                "snap",
+                "wic",
+                "free_school_meals",
+                "reduced_price_school_meals",
+                "child_support_received",
+                "workers_compensation",
+                "educational_assistance",
+                "financial_assistance",
+                "survivor_benefits",
+                # Broadband subsidies.
+                "acp",
+                "ebb",
+                "tanf",
+                "high_efficiency_electric_home_rebate",
+                "residential_efficiency_electrification_rebate",
+                "unemployment_compensation",
+                # Contributed.
+                "basic_income",
+                "spm_unit_capped_housing_subsidy",
+                "household_state_benefits",
+                "ecpa_child_benefit",
+            ]
+            if parameters(period).gov.hud.abolition:
+                BENEFITS = [
+                    benefit
+                    for benefit in BENEFITS
+                    if benefit != "spm_unit_capped_housing_subsidy"
+                ]
+            return add(household, period, BENEFITS)
 
     class spm_unit_benefits(Variable):
         value_type = float
@@ -126,7 +142,14 @@ def create_end_child_poverty_act() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
-                "spm_unit_broadband_subsidy",
+                "child_support_received",
+                "workers_compensation",
+                "educational_assistance",
+                "financial_assistance",
+                "survivor_benefits",
+                # Broadband subsidies.
+                "acp",
+                "ebb",
                 "spm_unit_energy_subsidy",
                 "tanf",
                 "high_efficiency_electric_home_rebate",
@@ -154,9 +177,7 @@ def create_end_child_poverty_act() -> Reform:
             p = parameters(period).gov.irs.credits
             previous_credits = add(tax_unit, period, p.refundable)
             filer_credit = tax_unit("ecpa_filer_credit", period)
-            adult_dependent_credit = tax_unit(
-                "ecpa_adult_dependent_credit", period
-            )
+            adult_dependent_credit = tax_unit("ecpa_adult_dependent_credit", period)
             return filer_credit + adult_dependent_credit + previous_credits
 
     class reform(Reform):
@@ -173,9 +194,7 @@ def create_end_child_poverty_act() -> Reform:
     return reform
 
 
-def create_end_child_poverty_act_reform(
-    parameters, period, bypass: bool = False
-):
+def create_end_child_poverty_act_reform(parameters, period, bypass: bool = False):
     if bypass:
         return create_end_child_poverty_act()
 
@@ -187,6 +206,4 @@ def create_end_child_poverty_act_reform(
         return None
 
 
-end_child_poverty_act = create_end_child_poverty_act_reform(
-    None, None, bypass=True
-)
+end_child_poverty_act = create_end_child_poverty_act_reform(None, None, bypass=True)

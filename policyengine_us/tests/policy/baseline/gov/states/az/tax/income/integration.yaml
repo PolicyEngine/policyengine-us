@@ -1,0 +1,28 @@
+# Integration tests for Arizona property tax credit income calculation
+# Per ARS 43-1072 and ITR 12-1
+
+- name: Property tax credit AGI with aged person (issue 6956)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 75
+        employment_income: 3_715.56
+        taxable_interest_income: 50.52
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Federal AGI = wages + interest = 3,715.56 + 50.52 = 3,766.08
+    adjusted_gross_income: 3_766.08
+    # AZ AGI subtracts aged exemption: 3,766.08 - 2,100 = 1,666.08
+    az_agi: 1_666.08
+    # Property tax credit AGI should NOT subtract exemptions or SS
+    # No SS, so equals Federal AGI
+    az_property_tax_credit_agi: 3_766.08
+    # Income $3,766.08 > threshold $3,751 for single, so not eligible
+    az_property_tax_credit: 0

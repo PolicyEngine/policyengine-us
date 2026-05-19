@@ -1,0 +1,65 @@
+- name: Case 1, ineligible receives zero benefit.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: false
+    nm_works_maximum_benefit: 439
+    nm_works_countable_income: 0
+  output:
+    nm_works: 0
+
+- name: Case 2, eligible with no income gets full benefit.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: true
+    nm_works_maximum_benefit: 439
+    nm_works_countable_income: 0
+  output:
+    # $439 - $0 = $439
+    nm_works: 439
+
+- name: Case 3, benefit one dollar below standard.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: true
+    nm_works_maximum_benefit: 439
+    nm_works_countable_income: 438
+  output:
+    # $439 - $438 = $1
+    nm_works: 1
+
+- name: Case 4, income at standard gets zero.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: true
+    nm_works_maximum_benefit: 439
+    nm_works_countable_income: 439
+  output:
+    # $439 - $439 = $0
+    nm_works: 0
+
+- name: Case 5, income one dollar above standard gets zero.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: true
+    nm_works_maximum_benefit: 439
+    nm_works_countable_income: 440
+  output:
+    # $439 - $440 = -$1, capped at $0
+    nm_works: 0
+
+- name: Case 6, size-1 household single adult gets full benefit.
+  period: 2024-01
+  input:
+    state_code: NM
+    nm_works_eligible: true
+    nm_works_maximum_benefit: 327
+    nm_works_countable_income: 0
+  output:
+    # Size 1 payment standard = $327
+    # $327 - $0 = $327
+    nm_works: 327

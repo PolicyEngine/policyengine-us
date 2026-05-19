@@ -1,12 +1,11 @@
 description: Massachusetts increases the eligibility limit for the Transitional Aid to Families with Dependent Children by this amount for each additional household member.
 values:
+  2000-01-01: 103
   2021-01-01: 116
-  2022-01-01: 126
-  2023-01-01: 139
+  2021-07-01: 126
+  2022-10-01: 139
+  2025-04-01: 153
 
-  # The amount remained unchanged in 2024 based on the 
-  # mass.gov guidance: https://www.mass.gov/lists/transitional-aid-to-families-with-dependent-children-tafdc-table-of-need-and-payment-standards-704410-704420
-  
 metadata:
   unit: currency-USD
   period: month
@@ -20,3 +19,5 @@ metadata:
       href: https://www.mass.gov/doc/tafdc-consolidated-report-march-2022/download
     - title: Mass Legal Services, 2024 TAFDC Advocacy Guide, 73. How much income can you have and still qualify for TAFDC?
       href: https://www.masslegalservices.org/content/73-how-much-income-can-you-have-and-still-qualify-tafdc
+    - title: DTA Online Guide Transmittal 2025-10, TAFDC & EAEDC Grant Increase (April 1, 2025 effective date)
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/olg%20docs/olgtm/2025/10.pdf#page=1

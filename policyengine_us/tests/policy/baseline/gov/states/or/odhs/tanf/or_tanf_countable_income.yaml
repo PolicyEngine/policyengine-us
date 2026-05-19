@@ -1,0 +1,70 @@
+# Oregon TANF Countable Income (OAR 461-140-0010)
+# Countable income = gross earned income + (gross unearned income - child support disregard)
+
+- name: Zero gross income results in zero countable income
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 0
+    or_tanf_child_support_disregard: 0
+  output:
+    or_tanf_countable_income: 0
+
+- name: Only earned income counts fully in countable income
+  # Gross earned income = $1,000
+  # Gross unearned income = $0
+  # Child support disregard = $0
+  # Countable income = $1,000 + $0 = $1,000
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 1_000
+    tanf_gross_unearned_income: 0
+    or_tanf_child_support_disregard: 0
+  output:
+    or_tanf_countable_income: 1_000
+
+- name: Only unearned income counts fully when no child support disregard
+  # Gross earned income = $0
+  # Gross unearned income = $300
+  # Child support disregard = $0
+  # Countable income = $0 + $300 = $300
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 300
+    or_tanf_child_support_disregard: 0
+  output:
+    or_tanf_countable_income: 300
+
+- name: Child support disregard reduces unearned income portion
+  # Gross earned income = $500
+  # Gross unearned income = $200 (child support)
+  # Child support disregard = $50
+  # Countable unearned = max($200 - $50, 0) = $150
+  # Countable income = $500 + $150 = $650
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 500
+    tanf_gross_unearned_income: 200
+    or_tanf_child_support_disregard: 50
+  output:
+    or_tanf_countable_income: 650
+
+- name: Child support disregard cannot make unearned income negative
+  # Gross earned income = $0
+  # Gross unearned income = $30
+  # Child support disregard = $50 (greater than unearned income)
+  # Countable unearned = max($30 - $50, 0) = $0
+  # Countable income = $0 + $0 = $0
+  period: 2024-01
+  input:
+    state_code: OR
+    tanf_gross_earned_income: 0
+    tanf_gross_unearned_income: 30
+    or_tanf_child_support_disregard: 50
+  output:
+    or_tanf_countable_income: 0

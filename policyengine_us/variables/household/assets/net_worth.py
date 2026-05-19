@@ -6,5 +6,6 @@ class net_worth(Variable):
     entity = Household
     label = "net worth"
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

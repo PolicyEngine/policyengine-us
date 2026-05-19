@@ -1,11 +1,16 @@
 description: Maximum claimable property tax associated with an owned property.
 values:
   2008-08-28: 1_100
+  2026-01-01: 1_550
 metadata:
   unit: currency-USD
   period: year
   label: Missouri property tax credit limit for property owners
   reference:
+    - title: MO Rev Stat § 135.030, effective 2026-01-01
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542
+    - title: 2025 MO-PTC Property Tax Credit Claim
+      href: https://dor.mo.gov/forms/MO-PTC%20Instructions_2025.pdf#page=2
     - title: MO-PTS 2024 Property Tax Credit Schedule, Line 11
       href: https://dor.mo.gov/forms/MO-PTS_2024.pdf#page=2
     - title: 2023 MO-PTS Property Tax Credit Schedule, Line 11

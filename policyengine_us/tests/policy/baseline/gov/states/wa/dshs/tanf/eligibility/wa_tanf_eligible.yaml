@@ -3,7 +3,6 @@
   input:
     state_code: WA
     is_demographic_tanf_eligible: true
-    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: true
   output:
@@ -14,29 +13,63 @@
   input:
     state_code: WA
     is_demographic_tanf_eligible: false
-    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: true
   output:
     wa_tanf_eligible: false
 
-- name: Missing citizenship - ineligible
+- name: Undocumented immigrant - ineligible
   period: 2024-01
   input:
     state_code: WA
+    immigration_status: UNDOCUMENTED
     is_demographic_tanf_eligible: true
-    is_citizen_or_legal_immigrant: false
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: true
   output:
     wa_tanf_eligible: false
+
+- name: LPR inside 5-year bar - ineligible
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: false
+
+- name: LPR past 5-year bar - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 6
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: true
+
+- name: Refugee bar-exempt - eligible
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+    is_demographic_tanf_eligible: true
+    wa_tanf_income_eligible: true
+    wa_tanf_resources_eligible: true
+  output:
+    wa_tanf_eligible: true
 
 - name: Income ineligible - ineligible
   period: 2024-01
   input:
     state_code: WA
     is_demographic_tanf_eligible: true
-    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: false
     wa_tanf_resources_eligible: true
   output:
@@ -47,7 +80,6 @@
   input:
     state_code: WA
     is_demographic_tanf_eligible: true
-    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: false
   output:
@@ -58,7 +90,6 @@
   input:
     state_code: ID
     is_demographic_tanf_eligible: true
-    is_citizen_or_legal_immigrant: true
     wa_tanf_income_eligible: true
     wa_tanf_resources_eligible: true
   output:

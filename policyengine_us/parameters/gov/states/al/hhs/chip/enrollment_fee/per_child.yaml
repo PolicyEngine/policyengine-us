@@ -1,0 +1,25 @@
+description: Alabama charges this annual ALL Kids enrollment fee per CHIP-eligible child, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: year
+  label: Alabama ALL Kids annual enrollment fee per child
+  reference:
+    - title: Alabama ALL Kids Premiums and Copays
+      href: https://www.alabamapublichealth.gov/allkids/premiums-and-copays.html
+    - title: Alabama ALL Kids Income Guidelines
+      href: https://www.alabamapublichealth.gov/allkids/assets/allkidsincomeguidelines.pdf
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 1.47
+    amount:
+      2021-01-01: 52
+  - threshold:
+      2021-01-01: 1.59
+    amount:
+      2021-01-01: 104

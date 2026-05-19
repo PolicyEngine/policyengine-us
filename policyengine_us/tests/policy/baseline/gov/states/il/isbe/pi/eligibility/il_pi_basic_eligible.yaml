@@ -1,0 +1,46 @@
+- name: Case 1, eligible child under 3 with income below 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    age: 2
+    employment_income: 30_000
+  output:
+    il_pi_basic_eligible: true
+
+- name: Case 2, child under 3 but income above 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    age: 1
+    employment_income: 150_000
+  output:
+    il_pi_basic_eligible: false
+
+- name: Case 3, child age 3 (too old) with income below 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    age: 3
+    employment_income: 20_000
+  output:
+    il_pi_basic_eligible: false
+
+- name: Case 4, pregnant person with income below 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    age: 25
+    is_pregnant: true
+    employment_income: 40_000
+  output:
+    il_pi_basic_eligible: true
+
+- name: Case 5, pregnant person with income above 400% FPL.
+  period: 2024
+  input:
+    state_code: IL
+    age: 30
+    is_pregnant: true
+    employment_income: 200_000
+  output:
+    il_pi_basic_eligible: false

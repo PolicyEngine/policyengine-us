@@ -8,10 +8,10 @@ class ia_standard_deduction_joint(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf"
-        "https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf"
-        "https://tax.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf"
-        "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
+        "https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf",
+        "https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf",
+        "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
+        "https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf",
     )
     defined_for = StateCode.IA
 
@@ -21,8 +21,9 @@ class ia_standard_deduction_joint(Variable):
         p = parameters(period).gov.states.ia.tax.income
 
         if p.deductions.standard.applies_federal:
-            fed_p = parameters(period).gov.irs.deductions
-            deduction = fed_p.standard.amount[filing_status]
+            # IA 1040 line 1d: "Standard deduction from federal 1040, line 12e"
+            # This includes the additional standard deduction for elderly/blind.
+            deduction = person.tax_unit("standard_deduction", period)
         else:
             deduction = p.deductions.standard.amount[filing_status]
 

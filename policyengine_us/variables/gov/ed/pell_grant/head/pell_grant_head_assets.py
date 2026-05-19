@@ -5,6 +5,7 @@ class pell_grant_head_assets(Variable):
     value_type = float
     entity = TaxUnit
     unit = USD
+    quantity_type = STOCK
     label = "Pell Grant head assets"
     definition_period = YEAR
 

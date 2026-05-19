@@ -1,0 +1,36 @@
+description: West Virginia sets this amount as the standard of need under the West Virginia Works program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Assistance group size
+  label: West Virginia Works standard of need amount
+  reference:
+    - title: WV Income Maintenance Manual Chapter 10, Appendix A
+      href: https://dhhr.wv.gov/bcf/Services/familyassistance/Documents/744/ch10_apa.pdf#page=1
+    - title: WV Income Maintenance Manual Appendix A Income limit(2024)
+      href: https://bfa.wv.gov/media/2766/download?inline#page=404
+
+1:
+  2017-01-01: 581
+2:
+  2017-01-01: 786
+3:
+  2017-01-01: 991
+4:
+  2017-01-01: 1_196
+5:
+  2017-01-01: 1_401
+6:
+  2017-01-01: 1_606
+7:
+  2017-01-01: 1_811
+8:
+  2017-01-01: 2_016
+9:
+  2017-01-01: 2_221
+10:
+  2017-01-01: 2_426

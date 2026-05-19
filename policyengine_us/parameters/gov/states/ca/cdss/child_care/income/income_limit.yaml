@@ -1,0 +1,16 @@
+description: California limits child care subsidy eligibility to this share of State Median Income for CalWORKs Stage 2, Stage 3, and CAPP programs.
+values:
+  2011-07-01: 0.7
+  2017-10-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: California child care income limit as share of SMI
+  reference:
+    - title: SB 70 (2011) Section 8263.1 - Lowered income limit from 75% to 70% SMI
+      href: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=201120120SB70
+    - title: AB 99 (2017) Section 8263.1 - Raised income limit from 70% to 85% SMI
+      href: https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201720180AB99
+    - title: California Welfare and Institutions Code Section 10271.5
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=10271.5.&lawCode=WIC

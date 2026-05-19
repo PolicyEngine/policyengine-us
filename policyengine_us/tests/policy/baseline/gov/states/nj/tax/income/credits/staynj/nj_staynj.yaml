@@ -1,0 +1,658 @@
+# Unit tests for nj_staynj variable
+# Tests benefit amounts for Stay NJ Property Tax Credit
+# Formula per P.L. 2024 c.88: Stay NJ = max(min(property_taxes * 50%, $6,500) - ANCHOR - Senior_Freeze, 0)
+# Note: Stay NJ begins in 2026
+#
+# ANCHOR benefit amounts for homeowners (income <= $250K):
+#   - Senior (65+), income <= $150K: $1,750
+#   - Senior (65+), income $150K-$250K: $1,250
+#   - Non-senior, income <= $150K: $1,500
+#   - Non-senior, income $150K-$250K: $1,000
+
+- name: Case 1, eligible senior receives benefit per corrected formula.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34  # New Jersey
+  output:
+    # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # max($5,000 - $1,750 - $0, 0) = $3,250
+    nj_staynj: 3_250
+
+- name: Case 2, benefit capped at maximum minus ANCHOR.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 200_000
+        real_estate_taxes: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($20,000 * 50%, $6,500) = min($10,000, $6,500) = $6,500
+    # ANCHOR = $1,250 (senior, income $150K-$250K)
+    # max($6,500 - $1,250 - $0, 0) = $5,250
+    nj_staynj: 5_250
+
+- name: Case 3, benefit under maximum with ANCHOR offset.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 150_000
+        real_estate_taxes: 13_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($13,000 * 50%, $6,500) = min($6,500, $6,500) = $6,500
+    # ANCHOR = $1,750 (senior, income $150K <= $150K)
+    # max($6,500 - $1,750 - $0, 0) = $4,750
+    nj_staynj: 4_750
+
+- name: Case 4, low property tax results in low benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 68
+        employment_income: 80_000
+        real_estate_taxes: 4_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($4,000 * 50%, $6,500) = min($2,000, $6,500) = $2,000
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # max($2,000 - $1,750 - $0, 0) = $250
+    nj_staynj: 250
+
+- name: Case 5, ineligible due to age receives $0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 64 < 65 - ineligible for Stay NJ
+    nj_staynj: 0
+
+- name: Case 6, ineligible due to income receives $0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 600_000
+        real_estate_taxes: 15_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $600K >= $500K limit - ineligible for Stay NJ
+    nj_staynj: 0
+
+- name: Case 7, ineligible renter receives $0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Renter - ineligible for Stay NJ
+    nj_staynj: 0
+
+- name: Case 8, zero property tax means zero benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Property tax $0 - ineligible (not homeowner)
+    nj_staynj: 0
+
+- name: Case 9, senior at income above ANCHOR limit but below Stay NJ limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 499_000
+        real_estate_taxes: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $499K > $250K ANCHOR limit - no ANCHOR benefit
+    # Income $499K < $500K Stay NJ limit - eligible for Stay NJ
+    # min($12,000 * 50%, $6,500) = min($6,000, $6,500) = $6,000
+    # max($6,000 - $0 - $0, 0) = $6,000
+    nj_staynj: 6_000
+
+- name: Case 10, Senior Freeze benefit subtracted from Stay NJ.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # Senior Freeze = $1,000
+    # max($5,000 - $1,750 - $1,000, 0) = $2,250
+    nj_staynj: 2_250
+
+- name: Case 11, large Senior Freeze and ANCHOR exceed target, benefit is zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($4,000 * 50%, $6,500) = min($2,000, $6,500) = $2,000
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # Senior Freeze = $2,000
+    # max($2,000 - $1,750 - $2,000, 0) = max(-$1,750, 0) = $0
+    nj_staynj: 0
+
+# ==============================================================================
+# EDGE CASES - Boundary conditions and corner cases
+# ==============================================================================
+
+- name: Edge case 1, property tax $13,000 hits cap exactly.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 13_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($13,000 * 50%, $6,500) = min($6,500, $6,500) = $6,500
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # max($6,500 - $1,750 - $0, 0) = $4,750
+    nj_staynj: 4_750
+
+- name: Edge case 2, property tax one dollar above cap threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 13_001
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($13,001 * 50%, $6,500) = min($6,500.50, $6,500) = $6,500
+    # ANCHOR = $1,750
+    # max($6,500 - $1,750 - $0, 0) = $4,750
+    nj_staynj: 4_750
+
+- name: Edge case 3, property tax one dollar below cap threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 12_999
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($12,999 * 50%, $6,500) = min($6,499.50, $6,500) = $6,499.50
+    # ANCHOR = $1,750
+    # max($6,499.50 - $1,750 - $0, 0) = $4,749.50
+    nj_staynj: 4_749.5
+
+- name: Edge case 4, very high property tax capped at maximum minus ANCHOR.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 200_000
+        real_estate_taxes: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($50,000 * 50%, $6,500) = min($25,000, $6,500) = $6,500
+    # ANCHOR = $1,250 (senior, income $150K-$250K)
+    # max($6,500 - $1,250 - $0, 0) = $5,250
+    nj_staynj: 5_250
+
+- name: Edge case 5, income exactly $499,999 one dollar below limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 499_999
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $499,999 > $250K - no ANCHOR
+    # Income $499,999 < $500,000 - eligible for Stay NJ
+    # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
+    # max($5,000 - $0 - $0, 0) = $5,000
+    nj_staynj: 5_000
+
+- name: Edge case 6, income exactly at $500,000 limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 500_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $500,000 NOT < $500,000 - ineligible
+    nj_staynj: 0
+
+- name: Edge case 7, age exactly 65 at boundary.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 100_000
+        real_estate_taxes: 8_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Age 65 >= 65 - eligible
+    # min($8,000 * 50%, $6,500) = min($4,000, $6,500) = $4,000
+    # ANCHOR = $1,750 (senior, income <= $150K)
+    # max($4,000 - $1,750 - $0, 0) = $2,250
+    nj_staynj: 2_250
+
+- name: Edge case 8, zero income still receives benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 0
+        real_estate_taxes: 6_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($6,000 * 50%, $6,500) = min($3,000, $6,500) = $3,000
+    # ANCHOR = $1,750 (senior, income $0 <= $150K)
+    # max($3,000 - $1,750 - $0, 0) = $1,250
+    nj_staynj: 1_250
+
+- name: Edge case 9, very low property tax below ANCHOR amount.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 100
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($100 * 50%, $6,500) = min($50, $6,500) = $50
+    # ANCHOR = $1,750
+    # max($50 - $1,750, 0) = $0
+    nj_staynj: 0
+
+- name: Edge case 10, couple where only spouse is 65 plus.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 100_000
+        real_estate_taxes: 14_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 0
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 34
+  output:
+    # Uses greater_age_head_spouse = max(50, 66) = 66 >= 65 - senior
+    # min($14,000 * 50%, $6,500) = min($7,000, $6,500) = $6,500
+    # ANCHOR = $1,750 (senior, income $100K <= $150K)
+    # max($6,500 - $1,750 - $0, 0) = $4,750
+    nj_staynj: 4_750
+
+- name: Edge case 11, mixed household paying both rent and taxes receives $0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Pays both rent and property taxes - is_homeowner = false - ineligible
+    nj_staynj: 0
+
+- name: Edge case 12, very high income senior is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_000_000
+        real_estate_taxes: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Income $1M far exceeds $500K limit - ineligible
+    nj_staynj: 0
+
+- name: Edge case 13, property tax at $1 gives minimal benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 1
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # min($1 * 50%, $6,500) = $0.50
+    # ANCHOR = $1,750
+    # max($0.50 - $1,750, 0) = $0
+    nj_staynj: 0
+
+- name: Edge case 14, senior who neither owns nor rents is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 50_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Not homeowner - ineligible
+    nj_staynj: 0

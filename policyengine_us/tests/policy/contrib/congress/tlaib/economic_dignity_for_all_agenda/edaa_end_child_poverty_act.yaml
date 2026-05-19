@@ -18,7 +18,7 @@
       household:
         members: [parent, child]
   output:
-    ecpa_child_benefit: [0, 5_630]
+    ecpa_child_benefit: [0, 5_680]
     ecpa_filer_credit: 700
 
 - name: ECPA adult dependent credit
@@ -75,7 +75,7 @@
         filing_status: SINGLE
         adjusted_gross_income: 30_000
   output:
-    ecpa_child_benefit: [0, 5_630, 5_630, 0]
+    ecpa_child_benefit: [0, 5_680, 5_680, 0]
     ecpa_adult_dependent_credit: [0, 0, 0, 700]
     ecpa_filer_credit: 200  # 700 - (10,000 * 0.05)
 
@@ -99,7 +99,7 @@
         filing_status: JOINT
         adjusted_gross_income: 45_000
   output:
-    ecpa_child_benefit: [0, 0, 5_630, 0]
+    ecpa_child_benefit: [0, 0, 5_680, 0]
     ecpa_adult_dependent_credit: [0, 0, 0, 700]
     ecpa_filer_credit: 1_150  # 1,400 - (5,000 * 0.05)
 
@@ -136,7 +136,7 @@
   output:
     # Federal CTC/EITC calculated for state reference
     ctc: 4_900
-    eitc: 4_244
+    eitc: 4_263
 
     # Oklahoma credits (5% of federal)
     ok_child_care_child_tax_credit:
@@ -146,7 +146,7 @@
 
     # ECPA benefits
     ecpa_child_benefit:
-      2026: [0, 0, 5_630, 5_630, 0]
+      2026: [0, 0, 5_680, 5_680, 0]
     ecpa_adult_dependent_credit:
       2026: [0, 0, 0, 0, 700]
     ecpa_filer_credit:
@@ -182,17 +182,81 @@
   output:
     # Federal calculations
     ctc: 4_400
-    eitc: 7_071
+    eitc: 7_082
 
     # Maine EITC is 25% of federal
-    me_eitc: 1_767
+    me_eitc: 1_771
 
     # ECPA benefits
     ecpa_child_benefit:
-      2026: [0, 5_630, 5_630]
+      2026: [0, 5_680, 5_680]
     ecpa_filer_credit:
       2026: 450  # $700 - ($25k - $20k) * 0.05
 
     # Federal credits exclude EITC/CTC
     income_tax_refundable_credits:
       2026: 450
+
+- name: Census SPM cash support leaves remain benefits under EDAA ECPA reform.
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    age: 30
+    child_support_received: 1
+    workers_compensation: 2
+    educational_assistance: 3
+    financial_assistance: 4
+    survivor_benefits: 5
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_state_benefits: 0
+    household_health_benefits: 0
+  output:
+    household_benefits: 1 + 2 + 3 + 4 + 5
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5
+
+- name: EDAA ECPA household benefits exclude housing subsidy if HUD is abolished.
+  period: 2026
+  reforms: policyengine_us.reforms.congress.tlaib.economic_dignity_for_all_agenda.end_child_poverty_act
+  input:
+    gov.hud.abolition: true
+    age: 30
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    head_start: 0
+    early_head_start: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 10
+    household_state_benefits: 0
+    commodity_supplemental_food_program: 0
+    household_health_benefits: 0
+  output:
+    household_benefits: 0

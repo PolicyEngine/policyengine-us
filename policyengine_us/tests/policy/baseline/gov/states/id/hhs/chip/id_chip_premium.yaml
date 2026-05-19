@@ -1,0 +1,38 @@
+- name: Idaho CHIP tier 1 tax unit with one child pays 10 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: ID
+  output:
+    id_chip_premium: 120
+
+- name: Idaho CHIP tier 2 tax unit with two children pays 30 dollars monthly total.
+  period: 2024
+  input:
+    people:
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [child1, child2]
+        state_code: ID
+  output:
+    id_chip_premium: 360

@@ -1,0 +1,15 @@
+description: Employer-side unemployment insurance taxable wage base for Maryland.
+values:
+  0000-01-01: 8_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Maryland unemployment taxable wage base
+  reference:
+    - title: Maryland Labor and Employment Section 8-607
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gle&section=8-607&enactments=false
+    - title: Maryland Unemployment Insurance
+      href: https://labor.maryland.gov/unemployment-insurance/
+    - title: Tax Measures of State Unemployment Insurance Tax Systems, CY 2024
+      href: https://oui.doleta.gov/unemploy/pdf/sigmeasures/sigmeasuitaxsys24.pdf#page=30

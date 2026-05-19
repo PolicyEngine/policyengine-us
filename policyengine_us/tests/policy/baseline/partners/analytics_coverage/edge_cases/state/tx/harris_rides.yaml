@@ -1,0 +1,92 @@
+- name: tx_harris_rides_age_64 (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        tx_harris_rides_eligible: false
+- name: tx_harris_rides_age_65_eligible (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        tx_harris_rides_eligible: false

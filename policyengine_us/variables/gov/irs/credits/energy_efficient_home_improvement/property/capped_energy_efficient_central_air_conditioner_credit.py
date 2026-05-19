@@ -6,16 +6,12 @@ class capped_energy_efficient_central_air_conditioner_credit(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Capped energy efficient central air conditioner credit"
-    documentation = (
-        "Capped energy-efficient central air conditioner expenditures"
-    )
+    documentation = "Capped energy-efficient central air conditioner expenditures"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C#b_3_A"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.irs.credits.energy_efficient_home_improvement
+        p = parameters(period).gov.irs.credits.energy_efficient_home_improvement
         expenditure = tax_unit(
             "energy_efficient_central_air_conditioner_expenditures", period
         )

@@ -102,7 +102,7 @@
   period: 2024
   input:
     gov.contrib.ctc.per_child_phase_out.in_effect: false
-    tax_unit_earned_income: 3_500
+    employment_income: 3_500
     ctc_qualifying_children: 2
   output:
     ctc_phase_in_relevant_earnings: 150
@@ -130,7 +130,7 @@
 - name: Large earnings scenario - $50,000 with two children, reform not active
   period: 2024
   input:
-    tax_unit_earned_income: 50_000
+    employment_income: 50_000
     ctc_qualifying_children: 2
   output:
     ctc_phase_in_relevant_earnings: 7_125
@@ -138,7 +138,7 @@
 - name: Large earnings scenario - $50,000 with one child, reform not active
   period: 2024
   input:
-    tax_unit_earned_income: 50_000
+    employment_income: 50_000
     ctc_qualifying_children: 1
   output:
     ctc_phase_in_relevant_earnings: 7_125

@@ -20,9 +20,7 @@ class ct_pension_annuity_subtraction(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         agi = tax_unit("adjusted_gross_income", period)
 
-        p = parameters(
-            period
-        ).gov.states.ct.tax.income.subtractions.pensions_or_annuity
+        p = parameters(period).gov.states.ct.tax.income.subtractions.pensions_or_annuity
 
         # Get the rate based on AGI and filing status
         is_joint = (filing_status == status.JOINT) | (

@@ -1,0 +1,162 @@
+# Unit tests for South Dakota TANF per-person countable earned income
+# Deduction: $90 flat + 20% of remaining
+# Source: ARSD 67:10:03:05
+# https://sdlegislature.gov/Rules/Administrative/67:10:03:05
+
+- name: Case 1, zero earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $0
+    # After $90 flat: max($0 - $90, 0) = $0
+    # After 20% disregard: $0 * 0.8 = $0
+    sd_tanf_countable_earned_income_person: 0
+
+- name: Case 2, earned income below $90 flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 50
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $50
+    # After $90 flat: max($50 - $90, 0) = $0
+    # After 20% disregard: $0 * 0.8 = $0
+    sd_tanf_countable_earned_income_person: 0
+
+- name: Case 3, earned income exactly $90.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 90
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $90
+    # After $90 flat: max($90 - $90, 0) = $0
+    # After 20% disregard: $0 * 0.8 = $0
+    sd_tanf_countable_earned_income_person: 0
+
+- name: Case 4, earned income $100.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 100
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $100
+    # After $90 flat: max($100 - $90, 0) = $10
+    # After 20% disregard: $10 * 0.8 = $8
+    sd_tanf_countable_earned_income_person: 8
+
+- name: Case 5, earned income $500.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $500
+    # After $90 flat: max($500 - $90, 0) = $410
+    # After 20% disregard: $410 * 0.8 = $328
+    sd_tanf_countable_earned_income_person: 328
+
+- name: Case 6, earned income $1,000.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $1,000
+    # After $90 flat: max($1,000 - $90, 0) = $910
+    # After 20% disregard: $910 * 0.8 = $728
+    sd_tanf_countable_earned_income_person: 728
+
+- name: Case 7, non-earner has zero countable.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+        tanf_gross_earned_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Child with no earned income
+    # Countable: $0
+    sd_tanf_countable_earned_income_person: 0
+
+# =============================================================================
+# EDGE CASES - Boundary around $90 flat deduction
+# =============================================================================
+
+- name: Case 8, edge case - income $89, just below flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 89
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $89
+    # After $90 flat: max($89 - $90, 0) = $0
+    # After 20% disregard: $0 * 0.8 = $0
+    # Edge case: $1 below threshold = fully disregarded
+    sd_tanf_countable_earned_income_person: 0
+
+- name: Case 9, edge case - income $91, just above flat deduction.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 91
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Gross earned: $91
+    # After $90 flat: max($91 - $90, 0) = $1
+    # After 20% disregard: $1 * 0.8 = $0.80
+    # Edge case: smallest positive countable earned income
+    sd_tanf_countable_earned_income_person: 0.8

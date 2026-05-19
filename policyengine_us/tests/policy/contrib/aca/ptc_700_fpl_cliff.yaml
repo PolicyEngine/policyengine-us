@@ -1,0 +1,136 @@
+- name: Single filer at 0% FPL - zero contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 0.0
+  output:
+    aca_required_contribution_percentage: 0.0
+
+- name: Single filer at 150% FPL - zero contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 1.5
+  output:
+    aca_required_contribution_percentage: 0.0
+
+- name: Single filer at 200% FPL - 2% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 2.0
+  output:
+    aca_required_contribution_percentage: 0.02
+
+- name: Single filer at 250% FPL - 4% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 2.5
+  output:
+    aca_required_contribution_percentage: 0.04
+
+- name: Single filer at 300% FPL - 6% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 3.0
+  output:
+    aca_required_contribution_percentage: 0.06
+
+- name: Single filer at 400% FPL - 8.5% contribution (old cliff point)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.085
+
+- name: Single filer at 500% FPL - 8.5% contribution (flat rate)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 5.0
+  output:
+    aca_required_contribution_percentage: 0.085
+
+- name: Single filer at 600% FPL - 8.5% contribution (flat rate continues)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 6.0
+  output:
+    aca_required_contribution_percentage: 0.085
+
+- name: Single filer at 700% FPL - 9.25% contribution (new cliff point)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 7.0
+  output:
+    aca_required_contribution_percentage: 0.0925
+
+- name: Single filer at 175% FPL - interpolated 1% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 1.75
+  output:
+    aca_required_contribution_percentage: 0.01
+
+- name: Single filer at 350% FPL - interpolated 7.25% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 3.5
+  output:
+    aca_required_contribution_percentage: 0.0725
+
+- name: Single filer at 650% FPL - interpolated 8.875% contribution
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  absolute_error_margin: 0.00001
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    aca_magi_fraction: 6.5
+  output:
+    # 8.5% + (9.25% - 8.5%) * 0.5 = 8.5% + 0.375% = 8.875%
+    aca_required_contribution_percentage: 0.08875
+
+- name: Baseline comparison at 400% FPL - shows elimination of cliff
+  period: 2026
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.0996
+
+- name: Baseline comparison at 500% FPL - shows new eligibility
+  period: 2026
+  absolute_error_margin: 0.00001
+  input:
+    aca_magi_fraction: 5.0
+  output:
+    aca_required_contribution_percentage: 0.0996

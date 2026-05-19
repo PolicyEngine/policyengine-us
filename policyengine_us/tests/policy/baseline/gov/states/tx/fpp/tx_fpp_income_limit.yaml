@@ -1,44 +1,44 @@
 - name: FPP income limit for household size 1
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     state_code: TX
     spm_unit_size: 1
   output:
-    tx_fpp_income_limit: 40_076  # 250% of 2026 FPG for size 1
+    tx_fpp_income_limit: 39_900  # 250% of 2026 FPG for size 1
 
 - name: FPP income limit for household size 2
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     state_code: TX
     spm_unit_size: 2
   output:
-    tx_fpp_income_limit: 54_161  # 250% of 2026 FPG for size 2
+    tx_fpp_income_limit: 54_100  # 250% of 2026 FPG for size 2
 
 - name: FPP income limit for household size 3
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     state_code: TX
     spm_unit_size: 3
   output:
-    tx_fpp_income_limit: 68_245 # 250% of 2026 FPG for size 3
+    tx_fpp_income_limit: 68_300 # 250% of 2026 FPG for size 3
 
 - name: FPP income limit for household size 5
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     state_code: TX
     spm_unit_size: 5
   output:
-    tx_fpp_income_limit: 96_415  # 250% of 2026 FPG for size 5
+    tx_fpp_income_limit: 96_700  # 250% of 2026 FPG for size 5
 
 - name: FPP income limit for household size 10
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     state_code: TX
     spm_unit_size: 10
   output:
-    tx_fpp_income_limit: 166_837 # 250% of 2026 FPG for size 10
+    tx_fpp_income_limit: 167_700 # 250% of 2026 FPG for size 10

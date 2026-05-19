@@ -1,4 +1,4 @@
-- name: Reduced single threshold
+- name: Indiv path disabled in 2024 (MFSS repealed)
   period: 2024
   input:
     long_term_capital_gains: 2_000
@@ -6,24 +6,26 @@
     state_filing_status_if_married_filing_separately_on_same_return: SINGLE
     state_code: MT
   output:
-    mt_capital_gains_tax_applicable_threshold_indiv: 20_000 
-
-- name: No nonqualified income
-  period: 2024
-  input:
-    long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 1_000
-    state_filing_status_if_married_filing_separately_on_same_return: SINGLE
-    state_code: MT
-  output:
-    mt_capital_gains_tax_applicable_threshold_indiv: 20_500
-
-- name: Negative threshold, capped at 0
-  period: 2024
-  input:
-    long_term_capital_gains: 2_000
-    mt_taxable_income_indiv: 40_000
-    state_filing_status_if_married_filing_separately_on_same_return: HEAD_OF_HOUSEHOLD
-    state_code: MT
-  output:
     mt_capital_gains_tax_applicable_threshold_indiv: 0
+
+- name: Indiv threshold uses net LTCG after STCG losses when MFSS is enabled
+  period: 2024
+  reforms: policyengine_us.tests.policy.baseline.gov.states.mt.tax.income.enable_mt_mfss_2024_reform.enable_mt_mfss_2024_reform
+  input:
+    people:
+      person1:
+        mt_taxable_income_indiv: 40_000
+        long_term_capital_gains: 50_000
+        short_term_capital_gains: -20_000
+      person2:
+        mt_taxable_income_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_applicable_threshold_indiv: [10_500, 20_500]

@@ -1,0 +1,38 @@
+description: Hawaii sets this amount as the Standard of Need under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Household size
+  label: Hawaii TANF Standard of Need amount
+  reference:
+    - title: Hawaii TANF State Plan 11.1 Income and Benefit Standards (Effective October 1, 2023)
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2024/12/Hawaii_TANF_State_Plan_Signed_Certified-Eff_20231001.pdf#page=22
+    - title: 2006 HHS Poverty Guidelines for Hawaii
+      href: https://aspe.hhs.gov/2006-hhs-poverty-guidelines
+
+# Standard of Need = 100% of 2006 Hawaii Federal Poverty Level (frozen since July 1, 2007)
+# NOTE: These values have not changed since 2007 as they are based on the 2006 FPL
+1:
+  2007-07-01: 939
+2:
+  2007-07-01: 1_265
+3:
+  2007-07-01: 1_590
+4:
+  2007-07-01: 1_916
+5:
+  2007-07-01: 2_242
+6:
+  2007-07-01: 2_568
+7:
+  2007-07-01: 2_894
+8:
+  2007-07-01: 3_220
+9:
+  2007-07-01: 3_546
+10:
+  2007-07-01: 3_872

@@ -12,8 +12,6 @@ class ca_income_tax(Variable):
 
     adds = [
         "ca_income_tax_before_refundable_credits",
-        "ca_amt",
-        "ca_mental_health_services_tax",
         "ca_use_tax",
     ]
     subtracts = ["ca_refundable_credits"]

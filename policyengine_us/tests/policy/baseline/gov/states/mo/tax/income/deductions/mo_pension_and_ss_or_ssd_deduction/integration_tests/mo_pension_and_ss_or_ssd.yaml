@@ -5,11 +5,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_social_security: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_public_pension_income: 10_000
@@ -35,11 +37,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_social_security: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 15_000
         is_tax_unit_spouse: true
         taxable_social_security: 10_000
@@ -65,11 +69,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_social_security: 6_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_social_security: 6_000
@@ -95,11 +101,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_social_security: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_private_pension_income: 10_000
@@ -125,6 +133,7 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_public_pension_income: 5_000
@@ -132,6 +141,7 @@
         taxable_social_security: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_public_pension_income: 5_000
@@ -158,6 +168,7 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_public_pension_income: 2_500
@@ -165,6 +176,7 @@
         taxable_social_security: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_public_pension_income: 2_500
@@ -192,6 +204,7 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_public_pension_income: 5_000
@@ -199,6 +212,7 @@
         taxable_social_security: 11_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_public_pension_income: 5_000
@@ -226,11 +240,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_public_pension_income: 10_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_public_pension_income: 10_000
@@ -256,11 +272,13 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_head: true
         taxable_private_pension_income: 10_000        
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_private_pension_income: 10_000
@@ -286,12 +304,14 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         employment_income: 5_000
         is_tax_unit_head: true
         taxable_private_pension_income: 5_000
         taxable_public_pension_income: 5_000
       person2:
         age: 72
+        medicare_enrolled: false
         employment_income: 5_000
         is_tax_unit_spouse: true
         taxable_private_pension_income: 5_000
@@ -322,7 +342,8 @@
         employment_income: 18_010
         taxable_interest_income: 5_505
         taxable_private_pension_income: 500
-        social_security: 9_000
+        # Use SSDI since people are under 62 - SSDI has no age limit for MO deduction
+        social_security_disability: 9_000
         ssi: 0  # not in TAXSIM35
         ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -332,7 +353,8 @@
         employment_income: 57_010
         taxable_interest_income: 5_505
         taxable_private_pension_income: 500
-        social_security: 9_000
+        # Use SSDI since people are under 62 - SSDI has no age limit for MO deduction
+        social_security_disability: 9_000
         ssi: 0  # not in TAXSIM35
         ma_state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -380,6 +402,7 @@
       person1:
         is_tax_unit_head: true
         age: 69
+        medicare_enrolled: false
         employment_income: 15_010
         taxable_interest_income: 5_505
         taxable_private_pension_income: 3_000
@@ -390,6 +413,7 @@
       person2:
         is_tax_unit_spouse: true
         age: 69
+        medicare_enrolled: false
         employment_income: 3_010
         taxable_interest_income: 5_505
         taxable_private_pension_income: 3_000
@@ -418,3 +442,35 @@
   output:  # expected results from hand calculations using 2021 MO Form 1040
     mo_pension_and_ss_or_ssd_deduction_section_b: [1_485, 1_485, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [750, 750, 0]
+
+# Test from GitHub issue #7293: MO elderly pension and SS exemption
+- name: MO elderly pension and SS exemption for age 75 (GitHub issue 7293)
+  period: 2024
+  absolute_error_margin: 10
+  input:
+    people:
+      person1:
+        age: 75
+        medicare_enrolled: false
+        employment_income: 0
+        taxable_interest_income: 131
+        taxable_private_pension_income: 25_717
+        social_security: 24_087
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 29  # Missouri
+  output:
+    # MO taxable income = Federal AGI - standard deduction - fed tax deduction - pension/SS deduction
+    # Federal AGI = $33,656, Standard deduction = $16,550 (65+ single)
+    # Pension/SS deduction = Section B ($5,152) + Section C ($7,808) = $12,960
+    # Federal income tax deduction ~$455
+    mo_taxable_income: 3691
+    mo_income_tax: 54

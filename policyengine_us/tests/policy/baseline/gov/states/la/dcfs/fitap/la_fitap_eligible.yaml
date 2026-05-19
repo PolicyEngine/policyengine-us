@@ -1,0 +1,81 @@
+- name: Case 1, all conditions met is eligible
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        la_fitap_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_fitap_eligible: true
+
+- name: Case 2, demographic ineligible
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: false
+        la_fitap_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_fitap_eligible: false
+
+- name: Case 3, income ineligible
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        la_fitap_income_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_fitap_eligible: false
+
+- name: Case 4, immigration ineligible
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_citizen_or_legal_immigrant: false
+      person2:
+        age: 5
+        is_citizen_or_legal_immigrant: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_demographic_tanf_eligible: true
+        la_fitap_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_fitap_eligible: false

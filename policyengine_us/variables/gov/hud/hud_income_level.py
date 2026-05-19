@@ -19,32 +19,40 @@ class hud_income_level(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        # Get annual income.
         annual_income = spm_unit("hud_annual_income", period)
-        # Get household size.
-        size = spm_unit("spm_unit_size", period)
-        # Get area median income.
         ami = spm_unit.household("ami", period)
-        # avoid array divide-by-zero warning by not using where() function
-        # see following GitHub issue for more details:
-        # https://github.com/PolicyEngine/policyengine-us/issues/2496
-        income_ami_ratio = np.zeros_like(ami)
-        mask = ami != 0
-        income_ami_ratio[mask] = annual_income[mask] / ami[mask]
-        # Look up thresholds for each income level.
-        moderate_threshold = spm_unit("hud_moderate_income_factor", period)
-        low_threshold = spm_unit("hud_low_income_factor", period)
-        very_low_threshold = spm_unit("hud_very_low_income_factor", period)
-        especially_low_threshold = spm_unit(
-            "hud_especially_low_income_factor", period
+        extremely_low_limit = spm_unit("hud_extremely_low_income_limit", period)
+        very_low_limit = spm_unit("hud_very_low_income_limit", period)
+        low_limit = spm_unit("hud_low_income_limit", period)
+
+        extremely_low_factor = spm_unit("hud_especially_low_income_factor", period)
+        very_low_factor = spm_unit("hud_very_low_income_factor", period)
+        low_factor = spm_unit("hud_low_income_factor", period)
+        moderate_factor = spm_unit("hud_moderate_income_factor", period)
+
+        fallback_extremely_low_limit = extremely_low_factor * ami
+        fallback_very_low_limit = very_low_factor * ami
+        fallback_low_limit = low_factor * ami
+        moderate_limit = moderate_factor * ami
+
+        extremely_low_limit = where(
+            extremely_low_limit > 0,
+            extremely_low_limit,
+            fallback_extremely_low_limit,
         )
-        # Return the lowest matching one.
+        very_low_limit = where(
+            very_low_limit > 0,
+            very_low_limit,
+            fallback_very_low_limit,
+        )
+        low_limit = where(low_limit > 0, low_limit, fallback_low_limit)
+
         return select(
             [
-                income_ami_ratio <= especially_low_threshold,
-                income_ami_ratio <= very_low_threshold,
-                income_ami_ratio <= low_threshold,
-                income_ami_ratio <= moderate_threshold,
+                (extremely_low_limit > 0) & (annual_income <= extremely_low_limit),
+                (very_low_limit > 0) & (annual_income <= very_low_limit),
+                (low_limit > 0) & (annual_income <= low_limit),
+                (moderate_limit > 0) & (annual_income <= moderate_limit),
             ],
             [
                 HUDIncomeLevel.ESPECIALLY_LOW,

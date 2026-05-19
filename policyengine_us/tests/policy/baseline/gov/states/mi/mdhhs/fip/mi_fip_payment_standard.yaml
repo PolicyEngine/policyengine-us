@@ -1,0 +1,294 @@
+- name: Single person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 363
+
+- name: Two person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 478
+
+- name: Three person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 583
+
+- name: Four person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 707
+
+- name: Five person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 822
+
+- name: Six person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 12
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 5
+      person6:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 981
+
+- name: Seven person household - maximum in bracket
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 7
+      person6:
+        age: 5
+      person7:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: MI
+  output:
+    mi_fip_payment_standard: 1_072
+
+- name: Eight person household - beyond bracket
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 7
+      person7:
+        age: 5
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: MI
+  output:
+    # Size 7 payment = $1,072
+    # Additional person (8th) = $95
+    # Total = $1,072 + $95 = $1,167
+    mi_fip_payment_standard: 1_167
+
+- name: Nine person household
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 18
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: MI
+  output:
+    # Size 7 payment = $1,072
+    # Additional persons (8th and 9th) = 2 × $95 = $190
+    # Total = $1,072 + $190 = $1,262
+    mi_fip_payment_standard: 1_262
+
+- name: Household outside Michigan returns zero
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    mi_fip_payment_standard: 0
+
+- name: Historical 2017 payment standard for three person household
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # 2017 payment standard for family of 3: $492
+    # (compared to 2024-12-01 value of $583)
+    mi_fip_payment_standard: 492
+
+- name: Historical 2017 payment standard beyond bracket
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 7
+      person7:
+        age: 5
+      person8:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: MI
+  output:
+    # 2017 size 7 payment = $905
+    # 2017 additional person = $80
+    # Total = $905 + $80 = $985
+    mi_fip_payment_standard: 985

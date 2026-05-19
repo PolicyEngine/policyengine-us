@@ -1,0 +1,58 @@
+# Tests for NH FANF benefit calculation
+# Formula: Benefit = max(Payment Standard - Net Countable Income, 0)
+# Benefit is 0 if not eligible (handled by defined_for)
+# Source: SR 97-03 Dated 02/97; FAM 603
+
+- name: Case 1, maximum benefit with zero income.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_eligible: true
+    nh_fanf_payment_standard: 753
+    nh_fanf_countable_income: 0
+  output:
+    # 753 - 0 = 753
+    nh_fanf: 753
+
+- name: Case 2, partial benefit with some income.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_eligible: true
+    nh_fanf_payment_standard: 1_022
+    nh_fanf_countable_income: 400
+  output:
+    # 1,022 - 400 = 622
+    nh_fanf: 622
+
+- name: Case 3, income at payment standard yields zero benefit.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_eligible: true
+    nh_fanf_payment_standard: 753
+    nh_fanf_countable_income: 753
+  output:
+    # 753 - 753 = 0
+    nh_fanf: 0
+
+- name: Case 4, ineligible gets zero benefit.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_eligible: false
+    nh_fanf_payment_standard: 753
+    nh_fanf_countable_income: 0
+  output:
+    nh_fanf: 0
+
+- name: Case 5, income exceeds payment standard, capped at zero.
+  period: 2024-01
+  input:
+    state_code: NH
+    nh_fanf_eligible: true
+    nh_fanf_payment_standard: 753
+    nh_fanf_countable_income: 800
+  output:
+    # max(753 - 800, 0) = 0
+    nh_fanf: 0

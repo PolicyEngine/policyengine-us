@@ -1,0 +1,242 @@
+# Tests for nh_ccap_cost_share (SPMUnit, MONTH)
+# Weekly family cost share based on income relative to FPG.
+# He-C 6910.18, Table 6910.19
+#
+# 2025 FPG family of 3: 15,650 + 5,500*2 = $26,650/year = $2,220.83/month
+# Step 1: <= 100% FPG ($2,220.83/mo) → $0/week
+# Step 2: > 100% to <= 138% FPG ($3,064.75/mo) → $5/week
+# Step 3: > 138% FPG → 7% * monthly income / (52/12)
+#
+# 2025 FPG family of 2: 15,650 + 5,500 = $21,150/year = $1,762.50/month
+# 2025 FPG family of 1: $15,650/year = $1,304.17/month
+
+- name: Case 1, income at 80% FPG, step 1, $0 cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_324
+        # $21,324/yr = $1,777/mo < $2,220.83 (100% FPG for 3)
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_cost_share: 0
+
+- name: Case 2, income at 120% FPG, step 2, $5 cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_980
+        # $31,980/yr = $2,665/mo > $2,220.83 (100% FPG)
+        # and < $3,064.75 (138% FPG) → Step 2
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_cost_share: 5
+
+- name: Case 3, income at 200% FPG, step 3, 7% cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 53_304
+        # $53,304/yr = $4,442/mo > $3,064.75 (138% FPG)
+        # Step 3: 7% * $4,442 / (52/12) = $71.77/week
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # $4,442 * 0.07 / (52/12) = $310.94 / 4.3333 = $71.76
+    nh_ccap_cost_share: 71.76
+
+- name: Case 4, income exactly at 100% FPG boundary, step 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 26_650
+        # $26,650/yr = $2,220.83/mo = exactly 100% FPG
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_cost_share: 0
+
+- name: Case 5, income just below 138% FPG boundary, step 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_600
+        # 138% FPG = $26,650 * 1.38 = $36,777/yr = $3,064.75/mo
+        # $36,600/yr = $3,050/mo < $3,064.75 → Step 2
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    nh_ccap_cost_share: 5
+
+# --- Edge Cases ---
+
+- name: Case 6, income $1 above 100% FPG, transitions from step 1 to step 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_163
+        # 2025 FPG family of 2: $21,150/yr = $1,762.50/mo
+        # $21,163/yr = $1,763.58/mo > $1,762.50 (100% FPG) → Step 2
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_cost_share: 5
+
+- name: Case 7, income $1 above 138% FPG, transitions from step 2 to step 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 29_200
+        # 2025 FPG family of 2: $21,150
+        # 138% FPG = $29,187/yr = $2,432.25/mo
+        # $29,200/yr = $2,433.33/mo > $2,432.25 → Step 3
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $2,433.33 * 0.07 = $170.33
+    # $170.33 / (52/12) = $170.33 / 4.3333 = $39.31
+    nh_ccap_cost_share: 39.31
+
+- name: Case 8, zero income, step 1, $0 cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $0 <= 100% FPG → Step 1 → $0
+    nh_ccap_cost_share: 0
+
+- name: Case 9, single person household, income at 100% FPG boundary.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 5
+        employment_income: 15_650
+        # 2025 FPG family of 1: $15,650/yr = $1,304.17/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # $1,304.17 <= $1,304.17 (100% FPG for 1) → Step 1 → $0
+    nh_ccap_cost_share: 0
+
+- name: Case 10, negative self-employment income, step 1, $0 cost share.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+        # Large negative → countable income negative
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Negative income <= 100% FPG → Step 1 → $0
+    nh_ccap_cost_share: 0

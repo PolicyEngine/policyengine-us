@@ -6,7 +6,9 @@ class new_clean_vehicle_credit_eligible(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Eligible for new clean vehicle credit"
-    documentation = "Eligible for nonrefundable credit for the purchase of a new clean vehicle"
+    documentation = (
+        "Eligible for nonrefundable credit for the purchase of a new clean vehicle"
+    )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/30D"
     defined_for = "purchased_qualifying_new_clean_vehicle"
@@ -22,6 +24,4 @@ class new_clean_vehicle_credit_eligible(Variable):
         msrp = tax_unit("new_clean_vehicle_msrp", period)
         classification = tax_unit("new_clean_vehicle_classification", period)
         meets_msrp_limit = msrp <= p.msrp_limit[classification]
-        return (
-            meets_capacity_requirement & meets_income_limit & meets_msrp_limit
-        )
+        return meets_capacity_requirement & meets_income_limit & meets_msrp_limit

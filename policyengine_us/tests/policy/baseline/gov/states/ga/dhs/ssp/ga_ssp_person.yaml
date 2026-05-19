@@ -1,0 +1,43 @@
+- name: Case 1, eligible person receives current amount.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ga_ssp_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    # $40/month per eligible individual (effective 2019-07-01)
+    ga_ssp_person: [40]
+
+- name: Case 2, ineligible person receives zero.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ga_ssp_eligible_person: false
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_person: [0]
+
+- name: Case 3, eligible person in 2017 receives first-era amount.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    people:
+      person1:
+        ga_ssp_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    # $20/month per eligible individual (effective 2006-07-01)
+    ga_ssp_person: [20]

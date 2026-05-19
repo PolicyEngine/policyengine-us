@@ -7,7 +7,9 @@ class ma_liheap_state_median_income_threshold(Variable):
     label = "Massachusetts LIHEAP state median income threshold"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
+    reference = (
+        "https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap"
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.hhs.liheap

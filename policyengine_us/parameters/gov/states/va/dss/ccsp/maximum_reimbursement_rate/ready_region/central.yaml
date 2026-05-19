@@ -1,0 +1,29 @@
+description: Virginia defines these localities as the Central Ready Region under the Child Care Subsidy Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP Central Ready Region localities
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+values:
+  2023-08-01:
+    - CHARLES_CITY_COUNTY_VA
+    - CHESTERFIELD_COUNTY_VA
+    # - COLONIAL_HEIGHTS_CITY_VA  # not in county_enum
+    - DINWIDDIE_COUNTY_VA
+    - EMPORIA_CITY_VA
+    - GOOCHLAND_COUNTY_VA
+    - GREENSVILLE_COUNTY_VA
+    - HANOVER_COUNTY_VA
+    - HENRICO_COUNTY_VA
+    - HOPEWELL_CITY_VA
+    - NEW_KENT_COUNTY_VA
+    - PETERSBURG_CITY_VA
+    - POWHATAN_COUNTY_VA
+    - PRINCE_GEORGE_COUNTY_VA
+    - RICHMOND_CITY_VA
+    - SURRY_COUNTY_VA
+    - SUSSEX_COUNTY_VA

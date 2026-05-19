@@ -23,10 +23,7 @@ class ar_personal_credits_base(Variable):
         # Arkansas provides an additional "aged special" credit for people who
         # do not receive retirement or disability benefit exemptions.
         receives_retirement_or_disability_exemption = (
-            person(
-                "ar_retirement_or_disability_benefits_exemption_person", period
-            )
-            > 0
+            person("ar_retirement_or_disability_benefits_exemption_person", period) > 0
         )
         aged_special = aged & ~receives_retirement_or_disability_exemption
         # Blind filers get an additional personal tax credit amount

@@ -1,8 +1,11 @@
 description: The IRS applies higher capital gains rates above these income thresholds.
 metadata:
+  label: Capital gains tax rate thresholds
+  breakdown:
+    - range(1, 3)
+    - filing_status
   unit: currency-USD
   period: year
-  label: Capital gains tax rate thresholds
   propagate_metadata_to_children: true
   uprating:
     parameter: gov.irs.uprating

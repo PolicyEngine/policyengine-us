@@ -24,3 +24,64 @@
     is_tanf_enrolled: true
   output:
     co_tanf_countable_earned_income_need: 330 # 67% disregard
+
+# --- 2013 era (period 2014; disregard values unchanged: $90 flat, 67% ongoing) ---
+
+- name: Case 4, not enrolled with earnings in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: false
+  output:
+    # $6,000 - ($90 * 12) = $6,000 - $1,080 = $4,920
+    co_tanf_countable_earned_income_need: 4_920
+
+- name: Case 5, enrolled with earnings in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: true
+  output:
+    # $6,000 * (1 - 0.67) = $6,000 * 0.33 = $1,980
+    co_tanf_countable_earned_income_need: 1_980
+
+# --- 2024 era (period 2025; disregard values still unchanged) ---
+
+- name: Case 6, not enrolled with earnings in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: false
+  output:
+    # $6,000 - ($90 * 12) = $6,000 - $1,080 = $4,920
+    co_tanf_countable_earned_income_need: 4_920
+
+- name: Case 7, enrolled with earnings in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 6_000
+    is_tanf_enrolled: true
+  output:
+    # $6,000 * (1 - 0.67) = $6,000 * 0.33 = $1,980
+    co_tanf_countable_earned_income_need: 1_980
+
+# --- Edge cases ---
+
+- name: Case 8, earnings below flat disregard floors at zero.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 600
+    is_tanf_enrolled: false
+  output:
+    # $600 - ($90 * 12) = $600 - $1,080 = max(-$480, 0) = $0
+    co_tanf_countable_earned_income_need: 0

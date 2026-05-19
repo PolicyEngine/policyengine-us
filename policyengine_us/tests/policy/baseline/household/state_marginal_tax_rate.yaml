@@ -1,0 +1,85 @@
+- name: State MTR is zero in TX (no state income tax)
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 48  # TX
+  output:
+    state_marginal_tax_rate: 0
+
+- name: State MTR for CA filer in 9.3% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 6  # CA
+  output:
+    state_marginal_tax_rate: 0.093
+
+- name: State MTR for NY filer in 5.9% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    state_fips: 36  # NY
+  output:
+    state_marginal_tax_rate: 0.059
+
+- name: State MTR for married couple filing jointly in CA
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 40
+        employment_income: 120_000
+      spouse:
+        age: 38
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [filer, spouse]
+    households:
+      household:
+        members: [filer, spouse]
+        state_fips: 6  # CA
+  output:
+    # CA joint filers at $170k combined — 9.3% bracket; default marginal_tax_rate_adults=2
+    state_marginal_tax_rate: [0.093, 0.093]
+
+- name: State MTR in two tax-unit household in TX
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    simulation.marginal_tax_rate_adults: 2
+    people:
+      person1:
+        age: 43
+        employment_income: 100_000
+      person2:
+        age: 30
+        employment_income: 40_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 48  # TX
+  output:
+    # TX has no state income tax — both should be 0
+    state_marginal_tax_rate: [0, 0]

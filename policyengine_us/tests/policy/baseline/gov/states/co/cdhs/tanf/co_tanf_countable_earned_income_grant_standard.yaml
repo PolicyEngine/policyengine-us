@@ -14,3 +14,27 @@
     co_tanf_countable_gross_earned_income: 20_000
   output:
     co_tanf_countable_earned_income_grant_standard: 6_600
+
+# --- 2013 era (period 2014; 67% disregard is unchanged) ---
+
+- name: Case 3, earned income in 2014.
+  period: 2014
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 12_000
+  output:
+    # $12,000 * (1 - 0.67) = $12,000 * 0.33 = $3,960
+    co_tanf_countable_earned_income_grant_standard: 3_960
+
+# --- 2024 era (period 2025; 67% disregard still unchanged) ---
+
+- name: Case 4, earned income in 2025.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 12_000
+  output:
+    # $12,000 * (1 - 0.67) = $12,000 * 0.33 = $3,960
+    co_tanf_countable_earned_income_grant_standard: 3_960

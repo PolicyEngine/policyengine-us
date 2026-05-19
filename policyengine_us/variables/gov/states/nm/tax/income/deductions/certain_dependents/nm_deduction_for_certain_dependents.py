@@ -12,9 +12,7 @@ class nm_deduction_for_certain_dependents(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.deductions.certain_dependents
+        p = parameters(period).gov.states.nm.tax.income.deductions.certain_dependents
         # The law 7-2-39(D) defines dependents as those from IRC 152.
         # IRC 152 refers to all dependents.
         # https://www.law.cornell.edu/uscode/text/26/152

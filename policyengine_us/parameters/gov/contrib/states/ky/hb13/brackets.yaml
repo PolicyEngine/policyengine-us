@@ -1,0 +1,21 @@
+description: Kentucky HB 13 graduated income tax brackets for income at or below the cliff threshold.
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Kentucky HB 13 graduated income tax brackets
+  reference:
+    - title: Kentucky HB 13 (2026 Session), Section 1, KRS 141.020(2)
+      href: https://apps.legislature.ky.gov/recorddocuments/bill/26RS/hb13/orig_bill.pdf#page=1
+
+brackets:
+  - threshold:
+      2027-01-01: 0
+    rate:
+      2027-01-01: 0.035
+  - threshold:
+      2027-01-01: 250_000
+    rate:
+      2027-01-01: 0.06

@@ -1,39 +1,195 @@
+# Unit tests for ky_family_size_tax_credit_rate
+# These tests verify that state_group is correctly derived from state_code
+# (not explicitly set, which would mask bugs in the state_group derivation)
+
 - name: No income
   period: 2023
-  input: 
+  input:
     state_code: KY
     ky_modified_agi: 0
-    state_group: CONTIGUOUS_US
     tax_unit_size: 1
   output:
     ky_family_size_tax_credit_rate: 1
 
 - name: One person with income at fpg
   period: 2022
-  input: 
+  input:
     state_code: KY
     ky_modified_agi: 13_590
-    state_group: CONTIGUOUS_US
     tax_unit_size: 1
   output:
     ky_family_size_tax_credit_rate: 1
 
 - name: Seven person, capped at 4 # fpg = 13_590 + 3 * 4_720 = 27_750, 119%
   period: 2022
-  input: 
+  input:
     state_code: KY
     ky_modified_agi: 33_000
-    state_group: CONTIGUOUS_US
     tax_unit_size: 7
   output:
     ky_family_size_tax_credit_rate: 0.5
 
 - name: Three people with income over fpg
   period: 2022
-  input: 
+  input:
     state_code: KY
     ky_modified_agi: 50_000
-    state_group: CONTIGUOUS_US
     tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0
+
+# 2025 KY Schedule ITC uses whole-dollar "not over" cutoffs. Parameter
+# thresholds are just above the official cutoff because the single-amount
+# bracket lower bound is inclusive.
+- name: Family of 1 at $19,876 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 19_876
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 0.3
+
+- name: Family of 1 above $19,876 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 19_877
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 0.2
+
+- name: Family of 2 at $26,861 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 26_861
+    tax_unit_size: 2
+  output:
+    ky_family_size_tax_credit_rate: 0.3
+
+- name: Family of 2 above $26,861 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 26_862
+    tax_unit_size: 2
+  output:
+    ky_family_size_tax_credit_rate: 0.2
+
+- name: Family of 3 at $33,846 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 33_846
+    tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0.3
+
+- name: Family of 3 above $33,846 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 33_847
+    tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0.2
+
+- name: Family of 4 at $40,831 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 40_831
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.3
+
+- name: Family of 4 above $40,831 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 40_832
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.2
+
+- name: Family of 1 at $20,815 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 20_815
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 1 above $20,815 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 20_816
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 0
+
+- name: Family of 2 at $28,130 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 28_130
+    tax_unit_size: 2
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 2 above $28,130 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 28_131
+    tax_unit_size: 2
+  output:
+    ky_family_size_tax_credit_rate: 0
+
+- name: Family of 3 at $35,445 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 35_445
+    tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 3 above $35,445 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 35_446
+    tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0
+
+- name: Family of 4 just below $42,760 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 42_759.88
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 4 at $42,760 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 42_760
+    tax_unit_size: 4
+  output:
+    ky_family_size_tax_credit_rate: 0.1
+
+- name: Family of 4 above $42,760 cutoff, 2025
+  period: 2025
+  input:
+    state_code: KY
+    ky_modified_agi: 42_761
+    tax_unit_size: 4
   output:
     ky_family_size_tax_credit_rate: 0

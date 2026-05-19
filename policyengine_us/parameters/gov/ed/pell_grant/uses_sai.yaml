@@ -1,0 +1,15 @@
+description: Whether Pell Grant uses the Student Aid Index (SAI) instead of Expected Family Contribution (EFC).
+
+values:
+  0000-01-01: false
+  2024-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Pell Grant uses Student Aid Index
+  reference:
+    - title: 20 U.S.C. § 1087mm - Student aid index
+      href: https://www.law.cornell.edu/uscode/text/20/1087mm
+    - title: Dear Colleague Letter GEN-23-07 - FAFSA Simplification Act Changes for Implementation in 2024-25
+      href: https://fsapartners.ed.gov/knowledge-center/library/dear-colleague-letters/2023-08-04/fafsa-simplification-act-changes-implementation-2024-25

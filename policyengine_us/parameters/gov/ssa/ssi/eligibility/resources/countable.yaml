@@ -1,0 +1,20 @@
+description: >-
+  The US counts these asset types as countable resources for SSI eligibility.
+  Excludes home, one vehicle, household goods, burial plots, and retirement accounts.
+values:
+  1975-01-01:
+    # Liquid assets counted as resources
+    - bank_account_assets  # Checking, savings, money market
+    - stock_assets  # Stocks and mutual funds
+    - bond_assets  # Bonds and government securities
+metadata:
+  label: SSI countable resource sources
+  reference:
+    - title: SSA POMS SI 01140.200 - Checking and Savings Accounts
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501140200
+    - title: SSA POMS SI 01140.220 - Stocks
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501140220
+    - title: SSA POMS SI 01140.240 - U.S. Savings Bonds
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501140240
+    - title: SSA POMS SI 01140.250 - Municipal, Corporate and Government Bonds
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501140250

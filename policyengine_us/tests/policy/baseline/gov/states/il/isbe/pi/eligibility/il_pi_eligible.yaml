@@ -1,0 +1,38 @@
+- name: Case 1, eligible infant with developmental delay.
+  period: 2024
+  input:
+    state_code: IL
+    age: 1
+    has_developmental_delay: true
+    employment_income: 30_000
+  output:
+    il_pi_eligible: true
+
+- name: Case 2, eligible pregnant woman in deep poverty.
+  period: 2024
+  input:
+    state_code: IL
+    age: 25
+    is_pregnant: true
+    employment_income: 5_000
+  output:
+    il_pi_eligible: true
+
+- name: Case 3, ineligible child age 3 too old.
+  period: 2024
+  input:
+    state_code: IL
+    age: 3
+    has_developmental_delay: true
+    employment_income: 30_000
+  output:
+    il_pi_eligible: false
+
+- name: Case 4, ineligible no risk factors.
+  period: 2024
+  input:
+    state_code: IL
+    age: 1
+    employment_income: 100_000
+  output:
+    il_pi_eligible: false

@@ -1,0 +1,66 @@
+# NM Admin Code 3.3.1.10: "zero is the lowest amount which may be reported
+# for any item in computing modified gross income"
+
+- name: NM modified gross income with positive income only
+  period: 2024
+  input:
+    state_code: NM
+    taxable_interest_income: 50_000
+    self_employment_income: 30_000
+  output:
+    nm_modified_gross_income: 80_000
+
+- name: NM business loss should not reduce modified gross income
+  period: 2024
+  input:
+    state_code: NM
+    taxable_interest_income: 100_000
+    self_employment_income: -100_000
+  output:
+    # Per PIT-RC: business loss enters as zero, not negative
+    nm_modified_gross_income: 100_000
+
+- name: NM capital losses should not reduce modified gross income
+  period: 2024
+  input:
+    state_code: NM
+    taxable_interest_income: 50_000
+    short_term_capital_gains: -20_000
+    long_term_capital_gains: -10_000
+  output:
+    # Capital gains undiminished by losses: floor to zero
+    nm_modified_gross_income: 50_000
+
+- name: NM rental loss should not reduce modified gross income
+  period: 2024
+  input:
+    state_code: NM
+    taxable_interest_income: 50_000
+    rental_income: -30_000
+  output:
+    nm_modified_gross_income: 50_000
+
+- name: NM mixed positive and negative income sources
+  period: 2024
+  input:
+    state_code: NM
+    taxable_interest_income: 100_000
+    self_employment_income: -50_000
+    rental_income: -20_000
+    short_term_capital_gains: 10_000
+    long_term_capital_gains: -15_000
+    dividend_income: 5_000
+  output:
+    # interest: max(100000, 0) = 100000
+    # self_employment: max(-50000, 0) = 0
+    # rental: max(-20000, 0) = 0
+    # capital_gains: max(10000 + -15000, 0) = max(-5000, 0) = 0
+    # dividends: max(5000, 0) = 5000
+    nm_modified_gross_income: 105_000
+
+- name: NM zero income
+  period: 2024
+  input:
+    state_code: NM
+  output:
+    nm_modified_gross_income: 0

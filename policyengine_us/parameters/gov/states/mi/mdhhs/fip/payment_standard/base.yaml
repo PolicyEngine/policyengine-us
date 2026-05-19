@@ -1,0 +1,52 @@
+description: Michigan provides this amount as the payment standard under the Family Independence Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: int
+  amount_unit: currency-USD
+  period: month
+  label: Michigan FIP payment standard
+  reference:
+    - title: Michigan TANF State Plan 2017 - Payment Standards (frozen 2008-2024)
+      href: https://www.michigan.gov/-/media/Project/Websites/mdhhs/Folder1/Folder33/TANF_State_Plan_2017.pdf#page=7
+    - title: Michigan TANF State Plan Effective 01-01-23 Revised 07-01-25 - Updated Payment Standards
+      href: https://www.michigan.gov/mdhhs/-/media/Project/Websites/mdhhs/Inside-MDHHS/Reports-and-Statistics---Human-Services/State-Plans-and-Federal-Regulations/TANF_State_Plan_Effective_01-01-23_Rev-07-01-25.pdf
+    - title: Michigan DHHS Reference Table 210 - FIP Monthly Assistance Payment Standard
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/RF/Public/RFT/210.pdf#page=1
+
+brackets:
+  - threshold:
+      2017-01-01: 1
+    amount:
+      2017-01-01: 306
+      2024-12-01: 363
+  - threshold:
+      2017-01-01: 2
+    amount:
+      2017-01-01: 403
+      2024-12-01: 478
+  - threshold:
+      2017-01-01: 3
+    amount:
+      2017-01-01: 492
+      2024-12-01: 583
+  - threshold:
+      2017-01-01: 4
+    amount:
+      2017-01-01: 597
+      2024-12-01: 707
+  - threshold:
+      2017-01-01: 5
+    amount:
+      2017-01-01: 694
+      2024-12-01: 822
+  - threshold:
+      2017-01-01: 6
+    amount:
+      2017-01-01: 828
+      2024-12-01: 981
+  - threshold:
+      2017-01-01: 7
+    amount:
+      2017-01-01: 905
+      2024-12-01: 1_072

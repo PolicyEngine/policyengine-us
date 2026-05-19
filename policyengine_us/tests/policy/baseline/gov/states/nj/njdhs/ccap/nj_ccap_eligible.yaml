@@ -1,0 +1,165 @@
+# nj_ccap_eligible: SPMUnit, bool, MONTH
+# Combines: has_eligible_child & income_eligible & asset_eligible & activity_eligible
+#
+# 2026 FPG (Contiguous US): first_person = 15_960, additional = 5_680
+#   Family of 2: 21_640; 200% = 43_280
+
+- name: Case 1, basic eligible family.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Has eligible child (age 4, dependent, citizen)
+    # Income 30_000 <= 43_280 (200% FPL) -> income eligible
+    # Assets default 0 <= 1_000_000 -> asset eligible
+    # weekly_hours_worked defaults to 40 >= 30 -> activity eligible
+    nj_ccap_eligible: true
+
+- name: Case 2, no eligible child makes family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Child age 15 >= 13 -> not eligible child
+    nj_ccap_eligible: false
+
+- name: Case 3, income too high for initial applicant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 50_000 > 43_280 (200% FPL for family of 2) -> income ineligible
+    nj_ccap_eligible: false
+
+- name: Case 4, activity ineligible parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Parent works 20 hrs < 30 hrs minimum, not student -> activity ineligible
+    nj_ccap_eligible: false
+
+- name: Case 5, full time student meets activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 15_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Student exemption -> activity eligible
+    nj_ccap_eligible: true
+
+- name: Case 6, non-NJ family gets false.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    nj_ccap_eligible: false

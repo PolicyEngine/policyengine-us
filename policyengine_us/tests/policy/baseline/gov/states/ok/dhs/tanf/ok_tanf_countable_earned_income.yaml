@@ -1,0 +1,203 @@
+# Unit tests for Oklahoma TANF countable earned income
+# OAC 340:10-3-33: Work expense based on hours ($120 for <30 hrs, $240 for 30+ hrs)
+# OAC 340:10-3-31.1: 50% earned income disregard (if gross <= $2,064)
+# https://oklahoma.gov/okdhs/library/policy/current/oac-340/chapter-10/subchapter-3/parts-3/earned-income-disregard.html
+
+- name: No earned income
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 0
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_tanf_countable_earned_income: 0
+
+- name: Part-time worker (under 30 hrs) - $120 work expense
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $500
+    # Work expense: $120 (<30 hrs/week)
+    # After work expense: $500 - $120 = $380
+    # 50% disregard: $380 * 0.50 = $190
+    # Countable earned: $190
+    ok_tanf_countable_earned_income: 190
+
+- name: Full-time worker (30+ hrs) - $240 work expense
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $500
+    # Work expense: $240 (30+ hrs/week)
+    # After work expense: $500 - $240 = $260
+    # 50% disregard: $260 * 0.50 = $130
+    # Countable earned: $130
+    ok_tanf_countable_earned_income: 130
+
+- name: Earned income below work expense
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 1_200  # $100/month
+        weekly_hours_worked_before_lsr: 20  # <30 hrs = $120 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $100
+    # Work expense: $120
+    # After work expense: max($100 - $120, 0) = $0
+    # Countable earned: $0
+    ok_tanf_countable_earned_income: 0
+
+- name: Higher earned income - full time
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 12_000  # $1,000/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $1,000
+    # Work expense: $240 (30+ hrs/week)
+    # After work expense: $1,000 - $240 = $760
+    # 50% disregard: $760 * 0.50 = $380
+    # Countable earned: $380
+    ok_tanf_countable_earned_income: 380
+
+- name: Earned income exceeds EID cap - no 50% disregard
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 36_000  # $3,000/month (exceeds $2,064 cap)
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $3,000 (> $2,064 EID cap)
+    # Per OAC 340:10-3-31.1: EID only applies if gross earned <= $2,064
+    # Work expense: $240
+    # After work expense: $3,000 - $240 = $2,760
+    # 50% disregard: NOT APPLIED (over cap)
+    # Countable earned: $2,760
+    ok_tanf_countable_earned_income: 2_760
+
+- name: Earned income at EID cap - 50% disregard applies
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+        employment_income_before_lsr: 24_768  # $2,064/month (at cap)
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240 deduction
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    # Monthly gross earned: $2,064 (= $2,064 EID cap)
+    # Per OAC 340:10-3-31.1: EID applies at exactly $2,064
+    # Work expense: $240
+    # After work expense: $2,064 - $240 = $1,824
+    # 50% disregard: $1,824 * 0.50 = $912
+    # Countable earned: $912
+    ok_tanf_countable_earned_income: 912
+
+- name: Two workers - person-level work expense deduction
+  period: 2024-01
+  input:
+    people:
+      adult1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+        weekly_hours_worked_before_lsr: 40  # 30+ hrs = $240
+      adult2:
+        age: 28
+        employment_income_before_lsr: 1_200  # $100/month (< work expense)
+        weekly_hours_worked_before_lsr: 10  # <30 hrs = $120
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child]
+    households:
+      household:
+        members: [adult1, adult2, child]
+        state_code: OK
+  output:
+    # Adult1: $500 - $240 = $260 after work expense
+    # Adult2: max($100 - $120, 0) = $0 after work expense
+    # Total after work expense: $260
+    # 50% disregard: $260 * 0.50 = $130
+    # Countable earned: $130
+    ok_tanf_countable_earned_income: 130

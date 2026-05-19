@@ -26,5 +26,15 @@
     mt_refundable_credits: 2_000
     is_tax_unit_head_or_spouse: true
     state_code: MT
-  output: 
+  output:
     mt_income_tax_indiv: 4_000
+
+- name: Indiv path disabled in 2024
+  period: 2024
+  input:
+    mt_income_tax_before_refundable_credits_indiv: 6_000
+    mt_refundable_credits: 2_000
+    is_tax_unit_head_or_spouse: true
+    state_code: MT
+  output:
+    mt_income_tax_indiv: 0

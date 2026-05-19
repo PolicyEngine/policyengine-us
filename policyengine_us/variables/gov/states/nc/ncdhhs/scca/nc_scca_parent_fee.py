@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class nc_scca_parent_fee(Variable):
     value_type = int
     entity = SPMUnit
-    label = (
-        "North Carolina Subsidized Child Care Assistance Program parent fee"
-    )
+    label = "North Carolina Subsidized Child Care Assistance Program parent fee"
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.NC

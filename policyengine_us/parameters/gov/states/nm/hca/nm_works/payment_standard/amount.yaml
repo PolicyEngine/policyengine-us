@@ -1,0 +1,62 @@
+description: New Mexico provides this amount as the payment standard under the New Mexico Works program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  breakdown_label:
+    - Assistance unit size
+  label: New Mexico Works payment standard amount
+  reference:
+    - title: 8.102.500.8(D)NMAC - Eligibility Policy
+      href: https://www.srca.nm.gov/parts/title08/08.102.0500.html
+    - title: NM Human Services Register Vol. 41 No. 17 - Removal of Budgetary Allowance
+      href: https://www.hca.nm.gov/wp-content/uploads/HSR-Vol-41-No-17-with-proposed-rule.pdf#page=1
+    - title: NM Works Fact Sheet (2017)
+      href: https://www.hsd.state.nm.us/wp-content/uploads/FileLinks/f13cd6ab72d244089c5bf80111f07524/Temporary_Assistance_to_Needy_Families__TANF__Fact_Sheet_2017.pdf#page=3
+    - title: NM TANF State Plan (2024-2026)
+      href: https://www.hca.nm.gov/wp-content/uploads/TANF-Final-State-Plan-2024-to-2026.pdf#page=19
+
+# Budgetary Adjustment History:
+# Due to state budget constraints, NM implemented a 15% budgetary adjustment on 2011-01-01,
+# reducing the maximum monthly benefit below the payment standard. In August 2015, this was
+# reduced to 7.5%. The adjustment was fully removed on 2018-11-01. The values below reflect
+# the effective payment standard (after any budgetary adjustment) for each period.
+#
+# 2015-08-01: 7.5% budgetary adjustment applied (e.g., size 3: $447 - $38 = $409)
+# 2018-11-01: Budgetary adjustment removed (e.g., size 3: $447)
+# 2023-08-01: 23% increase to payment standards (e.g., size 3: $549)
+
+1:
+  2015-08-01: 244
+  2018-11-01: 266
+  2023-08-01: 327
+2:
+  2015-08-01: 327
+  2018-11-01: 357
+  2023-08-01: 439
+3:
+  2015-08-01: 409
+  2018-11-01: 447
+  2023-08-01: 549
+4:
+  2015-08-01: 493
+  2018-11-01: 539
+  2023-08-01: 663
+5:
+  2015-08-01: 576
+  2018-11-01: 630
+  2023-08-01: 775
+6:
+  2015-08-01: 659
+  2018-11-01: 721
+  2023-08-01: 887
+7:
+  2015-08-01: 743
+  2018-11-01: 812
+  2023-08-01: 999
+8:
+  2015-08-01: 843
+  2018-11-01: 922
+  2023-08-01: 1_134

@@ -13,7 +13,5 @@ class ca_riv_general_relief_countable_vehicle_value(Variable):
         p = parameters(
             period
         ).gov.local.ca.riv.general_relief.property.vehicle_exemption
-        total_vehicle_value = spm_unit.household(
-            "household_vehicles_value", period
-        )
+        total_vehicle_value = spm_unit.household("household_vehicles_value", period)
         return max_(total_vehicle_value - p.amount, 0)

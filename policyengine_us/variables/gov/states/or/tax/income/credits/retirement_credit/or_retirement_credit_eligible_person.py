@@ -14,9 +14,5 @@ class or_retirement_credit_eligible_person(Variable):
         age = person("age", period)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        p = (
-            parameters(period)
-            .gov.states["or"]
-            .tax.income.credits.retirement_income
-        )
+        p = parameters(period).gov.states["or"].tax.income.credits.retirement_income
         return (age >= p.age_threshold) & (is_head | is_spouse)

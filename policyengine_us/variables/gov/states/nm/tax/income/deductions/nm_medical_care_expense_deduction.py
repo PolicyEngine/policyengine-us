@@ -18,18 +18,12 @@ class nm_medical_care_expense_deduction(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.deductions.medical_care_expense
+        p = parameters(period).gov.states.nm.tax.income.deductions.medical_care_expense
         # the deduction amount is based on filing status, agi, and eligible expenses.
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         agi = tax_unit("adjusted_gross_income", period)
-        expenses = add(
-            tax_unit,
-            period,
-            ["medical_out_of_pocket_expenses"],
-        )
+        expenses = tax_unit("itemized_medical_expenses", period)
         # Use `right=True` to reflect "over ... but not over ...".
         rate = select(
             [

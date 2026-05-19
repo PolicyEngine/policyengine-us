@@ -6,6 +6,4 @@ class cohabitating_spouses(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Cohabitating spouses"
-    documentation = (
-        "Whether spouses in joint or separate tax units are cohabitating."
-    )
+    documentation = "Whether spouses in joint or separate tax units are cohabitating."

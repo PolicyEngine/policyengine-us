@@ -1,0 +1,49 @@
+- name: Eligible when all three income tests pass
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_income_eligible: true
+    mo_tanf_standard_of_need_test: true
+    mo_tanf_percentage_of_need_test: true
+  output:
+    mo_tanf_income_eligible: true
+
+- name: Ineligible when 185% test fails
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_income_eligible: false
+    mo_tanf_standard_of_need_test: true
+    mo_tanf_percentage_of_need_test: true
+  output:
+    mo_tanf_income_eligible: false
+
+- name: Ineligible when standard of need test fails
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_income_eligible: true
+    mo_tanf_standard_of_need_test: false
+    mo_tanf_percentage_of_need_test: true
+  output:
+    mo_tanf_income_eligible: false
+
+- name: Ineligible when percentage of need test fails
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_income_eligible: true
+    mo_tanf_standard_of_need_test: true
+    mo_tanf_percentage_of_need_test: false
+  output:
+    mo_tanf_income_eligible: false
+
+- name: Ineligible when all tests fail
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_income_eligible: false
+    mo_tanf_standard_of_need_test: false
+    mo_tanf_percentage_of_need_test: false
+  output:
+    mo_tanf_income_eligible: false

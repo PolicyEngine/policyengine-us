@@ -1,0 +1,124 @@
+# Unit tests for Alaska ATAP countable earned income per person
+# 7 AAC 45.480 - Work incentive deduction
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.480
+# New applicants: $90 flat deduction
+# Continuing recipients: $150 flat + 33% of remainder
+
+- name: New applicant with $500 earned income
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # New applicant: $500 - $90 = $410
+    ak_atap_countable_earned_income_person: [410]
+
+- name: New applicant with $50 earned income (less than deduction)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 50
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # New applicant: max($50 - $90, 0) = $0
+    ak_atap_countable_earned_income_person: [0]
+
+- name: Continuing recipient with $500 earned income
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 500
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # Continuing: $500 - $150 = $350 remainder
+    # 33% disregard: $350 * 0.33 = $115.50
+    # Countable: $500 - $150 - $115.50 = $234.50
+    ak_atap_countable_earned_income_person: [234.5]
+
+- name: Continuing recipient with $100 earned income (less than flat deduction)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 100
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # Continuing: max($100 - $150, 0) = $0 remainder
+    # 33% disregard: $0 * 0.33 = $0
+    # Countable: max($100 - $150 - $0, 0) = $0
+    ak_atap_countable_earned_income_person: [0]
+
+- name: Continuing recipient with $1,000 earned income
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # Continuing: $1,000 - $150 = $850 remainder
+    # 33% disregard: $850 * 0.33 = $280.50
+    # Countable: $1,000 - $150 - $280.50 = $569.50
+    ak_atap_countable_earned_income_person: [569.5]
+
+- name: Zero earned income
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        tanf_gross_earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [adult]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    ak_atap_countable_earned_income_person: [0]

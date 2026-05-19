@@ -1,0 +1,43 @@
+- name: Family at low income (below 100% FPL)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # Below 100% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_low_income: [true, true]
+
+- name: Family above low income threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000  # Above 100% FPL for family of 2
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    il_pi_is_low_income: [false, false]

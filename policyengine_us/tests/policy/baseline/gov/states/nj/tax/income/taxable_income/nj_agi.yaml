@@ -1,22 +1,21 @@
 - name: 1 Test basic formula
   period: 2021
   input:
-    adjusted_gross_income_person: [10_000]
-    nj_additions: [1_000]
-    nj_agi_subtractions: [2_000]
+    employment_income: [10_000]
     state_code: NJ
   output:
-    nj_agi: 9_000
+    nj_total_income: 10_000
+    nj_agi: 10_000
 
 - name: 2 Test that NJ AGI cannot be negative
   period: 2021
   input:
-    adjusted_gross_income: 10_000
-    nj_additions: 1_000
-    nj_agi_subtractions: 20_000
+    employment_income: [5_000]
+    taxable_interest_income: [5_000]
     state_code: NJ
   output:
-    nj_agi: 0
+    nj_total_income: 10_000
+    nj_agi: 10_000
 
 - name: 3 NJ taxpayer with taxable pension income
   absolute_error_margin: 0

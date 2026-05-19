@@ -1,0 +1,211 @@
+# nj_ccap: SPMUnit, float, MONTH
+# Per-child benefit = max(0, weekly_rate * 52/12 - copay_share)
+# Total benefit = min(sum of per-child rates * 52/12, max(expenses - copay, 0))
+# Follows pattern: benefit = min(actual_expenses - copay, max_reimbursement)
+#
+# 2026 FPG: first_person = 15_960, additional = 5_680
+#   Family of 2: 21_640; Family of 3: 27_320
+
+- name: Case 1, basic eligible family positive benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # FPG family of 2: 21_640; FPL ratio = 30_000/21_640 = 1.386
+    # 1 child FT at 101-200% -> copay = 30_000 * 0.02 / 12 = 50 (CC-236 06/24)
+    # annual copay = 600
+    # max weekly = 291.57 (center FT base preschool); annual = 291.57 * 52 = 15_161.64
+    # uncapped = max(14_000 - 600, 0) = 13_400
+    # annual benefit = min(13_400, 15_161.64) = 13_400
+    # monthly = 13_400 / 12 = 1_116.67
+    nj_ccap: 1_116.67
+
+- name: Case 2, ineligible family gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 50_000 > 43_280 (200% FPL for family of 2) -> ineligible
+    nj_ccap: 0
+
+- name: Case 3, benefit capped at maximum rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # FPL ratio = 15_000/21_640 = 0.693 -> copay waived ($0)
+    # max weekly = 291.57 (center FT base preschool); annual = 15_161.64
+    # uncapped = max(25_000 - 0, 0) = 25_000
+    # annual benefit = min(25_000, 15_161.64) = 15_161.64
+    # monthly = 15_161.64 / 12 = 1_263.47
+    nj_ccap: 1_263.47
+
+- name: Case 4, zero expenses gives zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ccap: 0
+
+- name: Case 5, copay exceeds expenses gives zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 10
+        nj_ccap_provider_type: APPROVED_HOME
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # FPL ratio = 42_000/21_640 = 1.941; 1 child PT at 101-200% -> 1% (CC-236 06/24)
+    # annual copay = 42_000 * 0.01 = 420
+    # uncapped = max(1_200 - 420, 0) = 780
+    # max weekly = 59.39 (approved home PT school age); annual = 59.39 * 52 = 3_088.28
+    # annual benefit = min(780, 3_088.28) = 780
+    # monthly = 780 / 12 = 65
+    nj_ccap: 65
+
+- name: Case 6, negative countable income does not inflate benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Negative income -> copay = 0
+    # max weekly = 291.57; annual = 15_161.64
+    # uncapped = max(15_000 - 0, 0) = 15_000
+    # annual = min(15_000, 15_161.64) = 15_000
+    # monthly = 15_000 / 12 = 1_250
+    nj_ccap: 1_250

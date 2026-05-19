@@ -1,4 +1,12 @@
-- name: OK chc unit test 1
+# Oklahoma Child Care/Child Tax Credit Tests
+# Per Form 511-NR instructions page 11
+# Credit = GREATER of:
+#   - 5% of federal CTC
+#   - 20% of federal CDCC
+# AGI limit: $100,000 (MFJ)
+# Prorated for part-year residents by OK AGI / Federal AGI ratio
+
+- name: OK CTC/CDCC - 2021 - CDCC higher than CTC
   period: 2021
   input:
     adjusted_gross_income: 40_000
@@ -7,4 +15,94 @@
     ctc_value: 3_000
     state_code: OK
   output:
+    # 5% CTC: $3,000 * 0.05 = $150
+    # 20% CDCC: $2,000 * 0.20 = $400
+    # Greater is CDCC: $400
+    # Part-year ratio: 20,000 / 40,000 = 0.5
+    # Final credit: $400 * 0.5 = $200
     ok_child_care_child_tax_credit: 2_000 * 0.20 * (20_000 / 40_000)
+
+# 2025 Child Care/Child Tax Credit Tests
+
+- name: OK CTC/CDCC - 2025 - CTC higher than CDCC
+  period: 2025
+  input:
+    adjusted_gross_income: 50_000
+    ok_agi: 50_000
+    cdcc_potential: 500
+    ctc_value: 4_000
+    state_code: OK
+  output:
+    # 5% CTC: $4,000 * 0.05 = $200
+    # 20% CDCC: $500 * 0.20 = $100
+    # Greater is CTC: $200
+    # Full-year resident (ratio = 1)
+    ok_child_care_child_tax_credit: 200
+
+- name: OK CTC/CDCC - 2025 - CDCC higher than CTC
+  period: 2025
+  input:
+    adjusted_gross_income: 60_000
+    ok_agi: 60_000
+    cdcc_potential: 3_000
+    ctc_value: 2_000
+    state_code: OK
+  output:
+    # 5% CTC: $2,000 * 0.05 = $100
+    # 20% CDCC: $3,000 * 0.20 = $600
+    # Greater is CDCC: $600
+    ok_child_care_child_tax_credit: 600
+
+- name: OK CTC/CDCC - 2025 - over $100k AGI limit
+  period: 2025
+  input:
+    adjusted_gross_income: 120_000
+    ok_agi: 120_000
+    cdcc_potential: 2_000
+    ctc_value: 4_000
+    state_code: OK
+  output:
+    # AGI $120,000 > $100,000 limit = no credit
+    ok_child_care_child_tax_credit: 0
+
+- name: OK CTC/CDCC - 2025 - exactly at $100k limit
+  period: 2025
+  input:
+    adjusted_gross_income: 100_000
+    ok_agi: 100_000
+    cdcc_potential: 1_500
+    ctc_value: 3_000
+    state_code: OK
+  output:
+    # AGI exactly at $100,000 limit = eligible
+    # 5% CTC: $3,000 * 0.05 = $150
+    # 20% CDCC: $1,500 * 0.20 = $300
+    # Greater is CDCC: $300
+    ok_child_care_child_tax_credit: 300
+
+- name: OK CTC/CDCC - 2025 - no children (no credit)
+  period: 2025
+  input:
+    adjusted_gross_income: 45_000
+    ok_agi: 45_000
+    cdcc_potential: 0
+    ctc_value: 0
+    state_code: OK
+  output:
+    ok_child_care_child_tax_credit: 0
+
+- name: OK CTC/CDCC - 2025 - part-year resident
+  period: 2025
+  input:
+    adjusted_gross_income: 80_000
+    ok_agi: 40_000
+    cdcc_potential: 2_000
+    ctc_value: 4_000
+    state_code: OK
+  output:
+    # 5% CTC: $4,000 * 0.05 = $200
+    # 20% CDCC: $2,000 * 0.20 = $400
+    # Greater is CDCC: $400
+    # Part-year ratio: 40,000 / 80,000 = 0.5
+    # Final credit: $400 * 0.5 = $200
+    ok_child_care_child_tax_credit: 200

@@ -1,0 +1,49 @@
+- name: Case 1, eligible with highest priority factor (IEP).
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    has_individualized_education_program: true
+    employment_income: 20_000
+  output:
+    il_pfae_eligible: true
+
+- name: Case 2, eligible with highest priority factor (foster care).
+  period: 2024
+  input:
+    state_code: IL
+    age: 3
+    is_in_foster_care: true
+    employment_income: 15_000
+  output:
+    il_pfae_eligible: true
+
+- name: Case 3, eligible with two secondary priority factors.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    parent_has_less_than_high_school_education: true
+    employment_income: 10_000
+  output:
+    # low_income (25pt) + low_education (25pt) = 2 factors
+    il_pfae_eligible: true
+
+- name: Case 4, ineligible age too old.
+  period: 2024
+  input:
+    state_code: IL
+    age: 6
+    has_individualized_education_program: true
+  output:
+    il_pfae_eligible: false
+
+- name: Case 5, ineligible income too high.
+  period: 2024
+  input:
+    state_code: IL
+    age: 4
+    has_individualized_education_program: true
+    employment_income: 150_000
+  output:
+    il_pfae_eligible: false

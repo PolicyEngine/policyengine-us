@@ -1,0 +1,75 @@
+- name: Case 1, no disability in household.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_developmental_delay: false
+
+- name: Case 2, child has developmental delay.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_developmental_delay: true
+
+- name: Case 3, parent is disabled.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_developmental_delay: true
+
+- name: Case 4, both disability and developmental delay.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+      person2:
+        age: 1
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    il_pi_has_developmental_delay: true

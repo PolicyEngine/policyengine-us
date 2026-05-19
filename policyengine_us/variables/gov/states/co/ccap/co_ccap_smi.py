@@ -18,16 +18,12 @@ class co_ccap_smi(Variable):
             instant_str = f"{year}-10-01"
         else:
             instant_str = f"{year - 1}-10-01"
-        four_person_smi = parameters(instant_str).gov.hhs.smi.amount[
-            state_code
-        ]
+        four_person_smi = parameters(instant_str).gov.hhs.smi.amount[state_code]
         adjustment_mapping = parameters(
             instant_str
         ).gov.hhs.smi.household_size_adjustment
         first_person_rate = adjustment_mapping.first_person
-        second_to_sixth_additional_rate = (
-            adjustment_mapping.second_to_sixth_person
-        )
+        second_to_sixth_additional_rate = adjustment_mapping.second_to_sixth_person
         seven_or_more_additional_rate = adjustment_mapping.additional_person
         size_adjustment = (
             first_person_rate

@@ -50,21 +50,25 @@ HEAD_OF_HOUSEHOLD:
       type: nearest
       interval: 50
 metadata:
-  uprating: 
+  label: New York itemized deduction AGI phase out threshold
+  breakdown:
+    - filing_status
+  uprating:
     parameter: gov.irs.uprating
     rounding:
       type: nearest
       interval: 50
   unit: currency-USD
   period: year
-  label: New York itemized deduction AGI phase out threshold
   reference:
-    # New York continued to increase the federal applicable amount with inflation 
+    # New York continued to increase the federal applicable amount with inflation
     - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (b)(1)
-      href: https://www.law.cornell.edu/uscode/text/26/68#b_1 
+      href: https://www.law.cornell.edu/uscode/text/26/68#b_1
     - title: 2021 NY Form IT-196 Instructions Line 40
       href: https://www.tax.ny.gov/pdf/2021/inc/it196i_2021.pdf#page=18
     - title: 2022 NY Form IT-196 Instructions Line 40
       href: https://www.tax.ny.gov/pdf/2022/inc/it196i_2022.pdf#page=18
     - title: 2023 NY Form IT-196 Instructions Line 40
       href: https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it196i-2023.pdf#page=25
+    - title: 2025 Form IT-201-I Instructions
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=14

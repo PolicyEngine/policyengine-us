@@ -1,5 +1,6 @@
-- name: Eligible with no income - full payment standard
+- name: Case 1, eligible with no income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
@@ -9,8 +10,9 @@
     # Benefit = $706 - $0 = $706
     wa_tanf: 706
 
-- name: Eligible with partial income - reduced benefit
+- name: Case 2, eligible with partial income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
@@ -20,8 +22,9 @@
     # Benefit = $706 - $250 = $456
     wa_tanf: 456
 
-- name: Eligible with income equal to payment standard - zero benefit
+- name: Case 3, eligible with income equal to payment standard.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
@@ -31,8 +34,9 @@
     # Benefit = $706 - $706 = $0
     wa_tanf: 0
 
-- name: Eligible with income exceeding payment standard - zero benefit
+- name: Case 4, eligible with income exceeding payment standard.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
@@ -42,8 +46,9 @@
     # Benefit = max($706 - $800, 0) = $0
     wa_tanf: 0
 
-- name: Ineligible household - zero benefit
+- name: Case 5, ineligible household.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: false
@@ -52,47 +57,45 @@
   output:
     wa_tanf: 0
 
-- name: Large family - benefit capped by maximum grant cap
+- name: Case 6, large family with no income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
     wa_tanf_payment_standard: 1_662
     wa_tanf_countable_income: 0
   output:
-    # Benefit before cap = $1,662 - $0 = $1,662
-    # Maximum grant cap = $1,338
-    # Benefit = min($1,662, $1,338) = $1,338
-    wa_tanf: 1_338
+    # Benefit = $1,662 - $0 = $1,662
+    wa_tanf: 1_662
 
-- name: Large family with income - benefit under cap
+- name: Case 7, large family with income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
     wa_tanf_payment_standard: 1_529
     wa_tanf_countable_income: 250
   output:
-    # Benefit before cap = $1,529 - $250 = $1,279
-    # Maximum grant cap = $1,338
-    # Benefit = min($1,279, $1,338) = $1,279 (under cap)
+    # Benefit = $1,529 - $250 = $1,279
     wa_tanf: 1_279
 
-- name: Medium family - benefit exactly at cap
+- name: Case 8, medium family with partial income.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: WA
     wa_tanf_eligible: true
     wa_tanf_payment_standard: 1_392
     wa_tanf_countable_income: 54
   output:
-    # Benefit before cap = $1,392 - $54 = $1,338
-    # Maximum grant cap = $1,338
-    # Benefit = min($1,338, $1,338) = $1,338 (exactly at cap)
+    # Benefit = $1,392 - $54 = $1,338
     wa_tanf: 1_338
 
-- name: Only calculate for WA
+- name: Case 9, only calculate for WA.
   period: 2024-01
+  absolute_error_margin: 0.1
   input:
     state_code: OR
     wa_tanf_eligible: false
@@ -100,3 +103,39 @@
     wa_tanf_countable_income: 0
   output:
     wa_tanf: 0
+
+- name: Case 10, negative countable income caps benefit at payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: -500
+  output:
+    # Benefit capped at payment standard, not $706 - (-$500) = $1,206
+    wa_tanf: 706
+
+- name: Case 11, eligible with no income in 2018-01.
+  period: 2018-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 521
+    wa_tanf_countable_income: 0
+  output:
+    # Benefit = $521 - $0 = $521 (2016 value for size 3)
+    wa_tanf: 521
+
+- name: Case 12, eligible with partial income in 2018-01.
+  period: 2018-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_tanf_eligible: true
+    wa_tanf_payment_standard: 521
+    wa_tanf_countable_income: 200
+  output:
+    # Benefit = $521 - $200 = $321
+    wa_tanf: 321

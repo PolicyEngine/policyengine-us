@@ -1,0 +1,6 @@
+- name: Household weight defaults to 1 when not specified
+  period: 2024
+  input:
+    employment_income: 50_000
+  output:
+    household_weight: 1

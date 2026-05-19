@@ -31,9 +31,9 @@
     people:
       filer: {}
       grandparent:   
-        is_child_dependent: false
+        is_qualifying_child_dependent: false
       child: 
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit:
         members: [filer, grandparent, child]
@@ -52,7 +52,7 @@
       father: {}
       mother: {}    
       child: 
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit:
         members: [father, mother, child]
@@ -71,9 +71,9 @@
       father: {}
       mother: {}    
       child 1: 
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
       child 2:
-        is_child_dependent: true
+        is_qualifying_child_dependent: true
     tax_units:
       tax_unit:
         members: [father, mother, child 1, child 2]

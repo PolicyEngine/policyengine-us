@@ -17,20 +17,22 @@ class ssi_countable_income(Variable):
       - Unearned
       - Parental deemed if child
       - Spousal deemed if married to an ineligible spouse
-      - Applies standard SSI exclusions.
+      - In-kind support and maintenance (ISM) via the PMV rule for Status A
+      - Applies standard SSI exclusions ($20 general, $65 earned, 50% earned).
+
+    ISM is added to unearned income BEFORE exclusions per 20 CFR § 416.1140.
+    The PMV formula includes $20 so that after the general exclusion applies,
+    the net countable ISM equals 1/3 FBR (matching POMS SI 00835.901 values).
     """
 
     def formula(person, period, parameters):
         # The individual's earned income, after the blind/disabled student exclusion
-        pre_reduction_earned_income = person(
-            "ssi_marital_earned_income", period
-        )
+        pre_reduction_earned_income = person("ssi_marital_earned_income", period)
         blind_disabled_working_student_income = person(
             "ssi_blind_or_disabled_working_student_exclusion", period
         )
         earned_income = max_(
-            pre_reduction_earned_income
-            - blind_disabled_working_student_income,
+            pre_reduction_earned_income - blind_disabled_working_student_income,
             0,
         )
 
@@ -43,7 +45,15 @@ class ssi_countable_income(Variable):
         parent_deemed = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
         )
-        total_unearned = unearned_income + parent_deemed
+
+        # ISM (PMV for own-household recipients receiving shelter support) is
+        # counted as unearned income per 20 CFR § 416.1140. It enters
+        # the unearned pool BEFORE exclusions so the $20 general exclusion
+        # naturally applies. POMS SI 00835.901 confirms that the net
+        # countable ISM is 1/3 FBR (PMV minus $20 general exclusion).
+        ism = person("ssi_in_kind_support_and_maintenance", period)
+
+        total_unearned = unearned_income + parent_deemed + ism
 
         # Apply standard SSI exclusions to the individual's own income
         personal_countable = _apply_ssi_exclusions(
@@ -53,13 +63,12 @@ class ssi_countable_income(Variable):
             period,
         )
 
-        # Check if both spouses are eligible
-        both_eligible = person("ssi_marital_both_eligible", period)
+        # Check if couple computation applies (both eligible AND not
+        # separated by a medical facility per 20 CFR 416.414(b)(3))
+        both_eligible = person("ssi_couple_computation_applies", period)
 
         # Add spousal deemed income (only relevant when one spouse is ineligible)
-        spousal_deemed = person(
-            "ssi_income_deemed_from_ineligible_spouse", period
-        )
+        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
 
         # Check if person is eligible (either as individual OR as eligible spouse)
         is_eligible_individual = person("is_ssi_eligible_individual", period)
@@ -72,8 +81,7 @@ class ssi_countable_income(Variable):
             0,
             where(
                 both_eligible,
-                personal_countable / 2,  # Each eligible spouse gets half
-                personal_countable
-                + spousal_deemed,  # Single or with ineligible spouse
+                personal_countable / 2,
+                personal_countable + spousal_deemed,
             ),
         )

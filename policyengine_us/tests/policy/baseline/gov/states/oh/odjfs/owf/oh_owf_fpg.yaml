@@ -1,0 +1,73 @@
+# Test Ohio OWF Federal Poverty Guideline with July 1 effective date
+# For 2024-01 (January): month < 7, uses July 1, 2023 FPL
+# 2023 FPL (contiguous US): first_person = $14,580, additional_person = $5,140
+#
+# NOTE: Cannot test July+ periods because PolicyEngine test system only supports
+# 2024-01 (first month) or 2024 (whole year) formats. The July 1 effective date
+# logic in the variable is correct, but tests must use January periods.
+
+- name: Case 1, January 2024 one person uses 2023 FPL.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 1
+  output:
+    # 2023 FPL first_person = $14,580
+    # Monthly: 14,580 / 12 = 1,215
+    oh_owf_fpg: 1_215
+
+- name: Case 2, January 2024 three persons uses 2023 FPL.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 3
+  output:
+    # 2023 FPL: 14,580 + 5,140 * 2 = 24,860
+    # Monthly: 24,860 / 12 = 2,071.67
+    oh_owf_fpg: 2_071.67
+
+- name: Case 3, January 2024 four persons uses 2023 FPL.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 4
+  output:
+    # 2023 FPL: 14,580 + 5,140 * 3 = 30,000
+    # Monthly: 30,000 / 12 = 2,500
+    oh_owf_fpg: 2_500
+
+- name: Case 4, January 2025 one person uses 2024 FPL.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 1
+  output:
+    # 2024 FPL first_person = $15,060
+    # Monthly: 15,060 / 12 = 1,255
+    oh_owf_fpg: 1_255
+
+- name: Case 5, January 2025 two persons uses 2024 FPL.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 2
+  output:
+    # 2024 FPL: 15,060 + 5,380 = 20,440
+    # Monthly: 20,440 / 12 = 1,703.33
+    oh_owf_fpg: 1_703.33
+
+- name: Case 6, January 2025 three persons uses 2024 FPL.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    spm_unit_size: 3
+  output:
+    # 2024 FPL: 15,060 + 5,380 * 2 = 25,820
+    # Monthly: 25,820 / 12 = 2,151.67
+    oh_owf_fpg: 2_151.67

@@ -32,8 +32,23 @@
   period: 2023
   input:
     filing_status: JOINT
-    taxable_public_pension_income: 30_000  
+    taxable_public_pension_income: 30_000
     state_code: MN
     adjusted_gross_income: 300_000
   output:
     mn_public_pension_subtraction: 0
+
+# 2025 test case
+# Joint filer with taxable public pension income, AGI below reduction start
+# 2025 reduction start for JOINT: $108,320
+# 2025 cap for JOINT: $27,080
+# Since AGI ($100,000) < reduction start ($108,320), full cap applies
+- name: MN public pension subtraction 2025 joint below threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    taxable_public_pension_income: 30_000
+    state_code: MN
+    adjusted_gross_income: 100_000
+  output:
+    mn_public_pension_subtraction: 27_080

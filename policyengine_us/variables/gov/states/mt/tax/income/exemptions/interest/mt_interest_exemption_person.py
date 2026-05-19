@@ -17,7 +17,5 @@ class mt_interest_exemption_person(Variable):
         total_deduction = person.tax_unit("mt_interest_exemption", period)
         deduction_rate = np.zeros_like(total_interest_income)
         mask = total_interest_income != 0
-        deduction_rate[mask] = (
-            interest_income[mask] / total_interest_income[mask]
-        )
+        deduction_rate[mask] = interest_income[mask] / total_interest_income[mask]
         return total_deduction * deduction_rate

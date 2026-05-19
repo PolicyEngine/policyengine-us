@@ -51,3 +51,60 @@
     exemptions_count: 2
   output:
     ri_exemptions: 6_800
+
+# 2025 tests - Exemption: $5,100, phaseout start: $254,250, increment: $7,250
+- name: 2025 - Household with 1 exemption below phaseout threshold
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_agi: 200_000
+    exemptions_count: 1
+  output:
+    ri_exemptions: 5_100
+
+- name: 2025 - Household with 2 exemptions below phaseout threshold
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_agi: 250_000
+    exemptions_count: 2
+  output:
+    ri_exemptions: 10_200
+
+- name: 2025 - Household with 2 exemptions at phaseout threshold
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_agi: 254_250
+    exemptions_count: 2
+  output:
+    ri_exemptions: 10_200
+
+- name: 2025 - Household with 2 exemptions one increment above threshold
+  # AGI $261,500 = $254,250 + $7,250 (1 increment)
+  # Reduction = 20% per increment = 20%
+  # Exemptions = 2 * $5,100 * 0.8 = $8,160
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_agi: 261_500
+    exemptions_count: 2
+  output:
+    ri_exemptions: 8_160
+
+- name: 2025 - Household with 3 exemptions fully phased out
+  # AGI $290,500 = $254,250 + 5 * $7,250 (5 increments)
+  # Reduction = 5 * 20% = 100%
+  # Exemptions = $0
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    state_code: RI
+    ri_agi: 290_500
+    exemptions_count: 3
+  output:
+    ri_exemptions: 0

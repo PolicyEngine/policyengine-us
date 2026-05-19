@@ -21,3 +21,84 @@
     long_term_capital_gains: -1_000
   output:
     az_long_term_capital_gains_subtraction: 0
+
+- name: 2025 - Basic capital gains subtraction
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 40_000
+  output:
+    # $40,000 * 25% = $10,000
+    az_long_term_capital_gains_subtraction: 10_000
+
+- name: 2025 - Large capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 100_000
+  output:
+    # $100,000 * 25% = $25,000
+    az_long_term_capital_gains_subtraction: 25_000
+
+- name: 2025 - Small capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 4_000
+  output:
+    # $4,000 * 25% = $1,000
+    az_long_term_capital_gains_subtraction: 1_000
+
+- name: 2025 - Zero capital gains
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: 0
+  output:
+    az_long_term_capital_gains_subtraction: 0
+
+- name: 2025 - Negative capital gains (loss) not subtracted
+  period: 2025
+  input:
+    state_code: AZ
+    long_term_capital_gains: -5_000
+  output:
+    az_long_term_capital_gains_subtraction: 0
+# Issue #7289: When short-term capital losses exceed long-term capital gains,
+# resulting in a net capital loss, no LTCG is included in federal AGI,
+# so the AZ LTCG subtraction should be zero.
+- name: Net capital loss should result in zero LTCG subtraction
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: -100_000
+        long_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Net capital gains = -50,000 (loss), so no LTCG in federal AGI
+    az_long_term_capital_gains_subtraction: 0
+
+- name: Net capital gain allows LTCG subtraction
+  period: 2024
+  input:
+    people:
+      person1:
+        short_term_capital_gains: -10_000
+        long_term_capital_gains: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # Net capital gains = 40,000 (gain), so 25% of $50K LTCG = $12,500
+    az_long_term_capital_gains_subtraction: 12_500

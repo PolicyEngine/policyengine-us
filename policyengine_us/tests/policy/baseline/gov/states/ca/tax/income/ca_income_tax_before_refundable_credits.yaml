@@ -20,3 +20,15 @@
     ca_renter_credit: 200
   output:
     ca_income_tax_before_refundable_credits: 0
+
+- name: Includes AMT and mental health services tax
+  period: 2025
+  input:
+    state_code: CA
+    ca_income_tax_before_credits: 50_000
+    ca_non_refundable_credits: 1_000
+    ca_amt: 2_000
+    ca_mental_health_services_tax: 5_000
+  output:
+    # (50000 - 1000) + 2000 + 5000 = 56000
+    ca_income_tax_before_refundable_credits: 56_000

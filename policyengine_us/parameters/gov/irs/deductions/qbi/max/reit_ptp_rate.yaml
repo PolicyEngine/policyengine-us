@@ -1,0 +1,13 @@
+description: REIT and PTP income is deducted at this rate under the qualified business income deduction.
+metadata:
+  label: REIT/PTP income deduction rate
+  unit: /1
+  period: year
+  reference:
+    - title: 26 U.S. Code § 199A(b)(1)(B) - Combined qualified business income amount
+      href: https://www.law.cornell.edu/uscode/text/26/199A#b_1_B
+    - title: IRS Form 8995 Lines 6-9 - REIT and PTP Component
+      href: https://www.irs.gov/pub/irs-pdf/f8995.pdf
+values:
+  2013-01-01: 0.0
+  2018-01-01: 0.2

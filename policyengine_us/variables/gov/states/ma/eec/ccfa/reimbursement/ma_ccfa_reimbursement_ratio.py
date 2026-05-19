@@ -11,7 +11,5 @@ class ma_ccfa_reimbursement_ratio(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.reimbursement_rates
-        childcare_hours_per_day = person(
-            "childcare_hours_per_day", period.this_year
-        )
+        childcare_hours_per_day = person("childcare_hours_per_day", period.this_year)
         return p.amount_ratio.calc(childcare_hours_per_day)

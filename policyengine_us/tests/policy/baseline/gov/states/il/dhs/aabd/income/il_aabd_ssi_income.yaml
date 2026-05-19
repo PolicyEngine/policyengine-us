@@ -1,0 +1,37 @@
+- name: Default behavior - uses calculated SSI
+  period: 2024-01
+  input:
+    state_code: IL
+    ssi: 12_000  # Annual SSI input
+    ssi_reported: 0
+    il_aabd_use_reported_ssi: false
+  output:
+    il_aabd_ssi_income: 1_000  # Monthly (12_000 / 12)
+
+- name: Override - uses reported SSI when flag is true
+  period: 2024-01
+  input:
+    state_code: IL
+    ssi: 12_000  # Annual calculated SSI
+    ssi_reported: 0  # Reported as 0
+    il_aabd_use_reported_ssi: true
+  output:
+    il_aabd_ssi_income: 0  # Uses reported value (0 / 12 = 0)
+
+- name: Override with partial reported SSI
+  period: 2024-01
+  input:
+    state_code: IL
+    ssi: 12_000  # Annual calculated SSI
+    ssi_reported: 6_000  # Reported partial amount (annual)
+    il_aabd_use_reported_ssi: true
+  output:
+    il_aabd_ssi_income: 500  # Monthly (6_000 / 12)
+
+- name: Default behavior without explicit flag
+  period: 2024-01
+  input:
+    state_code: IL
+    ssi: 9_000  # Annual
+  output:
+    il_aabd_ssi_income: 750  # Monthly (9_000 / 12)

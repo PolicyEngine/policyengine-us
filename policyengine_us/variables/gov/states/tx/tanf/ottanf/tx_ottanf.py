@@ -7,7 +7,9 @@ class tx_ottanf(Variable):
     label = "Texas One-Time TANF (OTTANF) payment"
     unit = USD
     definition_period = MONTH
-    reference = "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy"
+    reference = (
+        "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-2410-general-policy"
+    )
     defined_for = "tx_ottanf_eligible"
 
     def formula(spm_unit, period, parameters):

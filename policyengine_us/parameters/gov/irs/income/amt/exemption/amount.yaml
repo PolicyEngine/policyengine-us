@@ -1,5 +1,8 @@
 description: AMT exemption amount
 metadata:
+  label: AMT exemption amount
+  breakdown:
+    - filing_status
   unit: currency-USD
   period: year
   propagate_metadata_to_children: true

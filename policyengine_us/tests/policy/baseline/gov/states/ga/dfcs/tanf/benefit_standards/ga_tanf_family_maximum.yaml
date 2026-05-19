@@ -1,0 +1,153 @@
+# Unit tests for ga_tanf_family_maximum variable
+# Tests the lookup from family_maximum/base table plus additional increment
+# for families larger than max_table_size (11)
+#
+# Formula:
+#   capped_size = min(unit_size, 11)
+#   base_amount = family_maximum.base[capped_size]
+#   additional = max(unit_size - 11, 0) * $17
+#   total = base_amount + additional
+
+- name: Family size 1.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 1
+  output:
+    # Size 1: $155 from base table
+    ga_tanf_family_maximum: 155
+
+- name: Family size 2.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 2
+  output:
+    # Size 2: $235 from base table
+    ga_tanf_family_maximum: 235
+
+- name: Family size 3.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 3
+  output:
+    # Size 3: $280 from base table
+    ga_tanf_family_maximum: 280
+
+- name: Family size 4.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 4
+  output:
+    # Size 4: $330 from base table
+    ga_tanf_family_maximum: 330
+
+- name: Family size 5.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 5
+  output:
+    # Size 5: $378 from base table
+    ga_tanf_family_maximum: 378
+
+- name: Family size 6.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 6
+  output:
+    # Size 6: $410 from base table
+    ga_tanf_family_maximum: 410
+
+- name: Family size 7.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 7
+  output:
+    # Size 7: $444 from base table
+    ga_tanf_family_maximum: 444
+
+- name: Family size 8.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 8
+  output:
+    # Size 8: $470 from base table
+    ga_tanf_family_maximum: 470
+
+- name: Family size 9.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 9
+  output:
+    # Size 9: $496 from base table
+    ga_tanf_family_maximum: 496
+
+- name: Family size 10.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 10
+  output:
+    # Size 10: $530 from base table
+    ga_tanf_family_maximum: 530
+
+- name: Family size 11 at max table boundary.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 11
+  output:
+    # Size 11: $568 from base table (max table size)
+    # No additional increment since size equals max_table_size
+    ga_tanf_family_maximum: 568
+
+- name: Family size 12 exceeds table by 1.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 12
+  output:
+    # Base: $568 (size 11 max)
+    # Additional: 1 * $17 = $17
+    # Total: $568 + $17 = $585
+    ga_tanf_family_maximum: 585
+
+- name: Family size 13 exceeds table by 2.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 13
+  output:
+    # Base: $568 (size 11 max)
+    # Additional: 2 * $17 = $34
+    # Total: $568 + $34 = $602
+    ga_tanf_family_maximum: 602
+
+- name: Large family size 15 exceeds table by 4.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 15
+  output:
+    # Base: $568 (size 11 max)
+    # Additional: 4 * $17 = $68
+    # Total: $568 + $68 = $636
+    ga_tanf_family_maximum: 636
+
+- name: Very large family size 20.
+  period: 2025-01
+  input:
+    state_code: GA
+    spm_unit_size: 20
+  output:
+    # Base: $568 (size 11 max)
+    # Additional: 9 * $17 = $153
+    # Total: $568 + $153 = $721
+    ga_tanf_family_maximum: 721

@@ -1,0 +1,137 @@
+# Unit tests for Alaska ATAP gross income limit (185% of need standard)
+# 7 AAC 45.520 - Qualifying standards
+# https://www.law.cornell.edu/regulations/alaska/7-AAC-45.520
+# Gross income limit = floor(need_standard * 1.85)
+
+- name: Family size 1 (not eligible)
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+    households:
+      household:
+        members: [adult]
+        state_code: AK
+  output:
+    # Size 1: need_standard = 0, so gross limit = 0
+    ak_atap_gross_income_limit: 0
+
+- name: Family size 2 (1 adult, 1 child)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 5
+    households:
+      household:
+        members: [adult, child1]
+        state_code: AK
+  output:
+    # Size 2: $1,908 * 1.85 = $3,529.80
+    ak_atap_gross_income_limit: 3_529.8
+
+- name: Family size 3 (1 adult, 2 children)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 30
+      child1:
+        age: 8
+      child2:
+        age: 5
+    households:
+      household:
+        members: [adult, child1, child2]
+        state_code: AK
+  output:
+    # Size 3: $2,149 * 1.85 = $3,975.65
+    ak_atap_gross_income_limit: 3_975.65
+
+- name: Family size 4 (1 adult, 3 children)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 35
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    households:
+      household:
+        members: [adult, child1, child2, child3]
+        state_code: AK
+  output:
+    # Size 4: $2,388 * 1.85 = $4,417.80
+    ak_atap_gross_income_limit: 4_417.8
+
+- name: Family size 8 (max table size)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7]
+        state_code: AK
+  output:
+    # Size 8: $3,351 * 1.85 = $6,199.35
+    ak_atap_gross_income_limit: 6_199.35
+
+- name: Family size 10 (beyond table)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 40
+      child1:
+        age: 17
+      child2:
+        age: 15
+      child3:
+        age: 13
+      child4:
+        age: 11
+      child5:
+        age: 9
+      child6:
+        age: 7
+      child7:
+        age: 5
+      child8:
+        age: 3
+      child9:
+        age: 1
+    households:
+      household:
+        members: [adult, child1, child2, child3, child4, child5, child6, child7, child8, child9]
+        state_code: AK
+  output:
+    # Size 10: need_standard = $3,835, $3,835 * 1.85 = $7,094.75
+    ak_atap_gross_income_limit: 7_094.75

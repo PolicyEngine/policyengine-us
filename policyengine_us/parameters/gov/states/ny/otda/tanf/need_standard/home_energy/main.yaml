@@ -1,0 +1,26 @@
+description: New York provides this monthly home energy allowance under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 7)
+  breakdown_label:
+    - Assistance unit size
+  label: New York TANF home energy allowance
+  reference:
+    - title: N.Y. Comp. Codes R. & Regs. Tit. 18 § 352.2(d) - Home energy payments (Schedule SA-2b)
+      href: https://www.law.cornell.edu/regulations/new-york/18-NYCRR-352.2
+
+1:
+  1981-07-01: 14.10
+2:
+  1981-07-01: 22.50
+3:
+  1981-07-01: 30
+4:
+  1981-07-01: 38.70
+5:
+  1981-07-01: 47.70
+6:
+  1981-07-01: 55.20

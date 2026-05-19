@@ -1,0 +1,171 @@
+description: States determine whether the asset test applies under the Medicare Savings Programs.
+metadata:
+  unit: bool
+  period: year
+  label: MSP asset test applies
+  breakdown:
+    - state_code
+  reference:
+    - title: Medicare Savings Programs | Medicare.gov
+      href: https://www.medicare.gov/basics/costs/help/medicare-savings-programs
+    - title: Medicare Interactive - Medicare Savings Program Income and Asset Limits
+      href: https://www.medicareinteractive.org/understanding-medicare/cost-saving-programs/medicare-savings-programs-qmb-slmb-qi/medicare-savings-program-income-and-asset-limits
+    - title: Maine Revised Statutes Title 22, Section 3174-LLL, Medicare savings program
+      href: https://legislature.maine.gov/statutes/22/title22sec3174-LLL.html
+    - title: MassHealth EOM 24-03, Medicare Savings Programs
+      href: https://www.mass.gov/doc/eom-24-03-medicare-savings-programs-formerly-known-as-masshealth-senior-buy-in-and-masshealth-buy-in-programs-0/download
+# Federal MSP rules apply the asset test by default; states that have
+# eliminated it in current law are set to false from 2024.
+AL:
+  0000-01-01: true
+  2024-01-01: false
+AK:
+  0000-01-01: true
+  2024-01-01: true
+AZ:
+  0000-01-01: true
+  2024-01-01: false
+AR:
+  0000-01-01: true
+  2024-01-01: true
+CA:
+  0000-01-01: true
+  2024-01-01: false
+CO:
+  0000-01-01: true
+  2024-01-01: true
+CT:
+  0000-01-01: true
+  2024-01-01: false
+DE:
+  0000-01-01: true
+  2024-01-01: false
+DC:
+  0000-01-01: true
+  2024-01-01: false
+FL:
+  0000-01-01: true
+  2024-01-01: true
+GA:
+  0000-01-01: true
+  2024-01-01: true
+HI:
+  0000-01-01: true
+  2024-01-01: true
+ID:
+  0000-01-01: true
+  2024-01-01: true
+IL:
+  0000-01-01: true
+  2024-01-01: true
+IN:
+  0000-01-01: true
+  2024-01-01: true
+IA:
+  0000-01-01: true
+  2024-01-01: true
+KS:
+  0000-01-01: true
+  2024-01-01: true
+KY:
+  0000-01-01: true
+  2024-01-01: true
+LA:
+  0000-01-01: true
+  2024-01-01: false
+ME:
+  0000-01-01: true
+  2024-01-01: false
+MD:
+  0000-01-01: true
+  2024-01-01: true
+MA:
+  0000-01-01: true
+  2024-01-01: false
+MI:
+  0000-01-01: true
+  2024-01-01: true
+MN:
+  0000-01-01: true
+  2024-01-01: true
+MS:
+  0000-01-01: true
+  2024-01-01: false
+MO:
+  0000-01-01: true
+  2024-01-01: true
+MT:
+  0000-01-01: true
+  2024-01-01: true
+NE:
+  0000-01-01: true
+  2024-01-01: true
+NV:
+  0000-01-01: true
+  2024-01-01: true
+NH:
+  0000-01-01: true
+  2024-01-01: true
+NJ:
+  0000-01-01: true
+  2024-01-01: true
+NM:
+  0000-01-01: true
+  2024-01-01: false
+NY:
+  0000-01-01: true
+  2024-01-01: false
+NC:
+  0000-01-01: true
+  2024-01-01: true
+ND:
+  0000-01-01: true
+  2024-01-01: true
+OH:
+  0000-01-01: true
+  2024-01-01: true
+OK:
+  0000-01-01: true
+  2024-01-01: true
+OR:
+  0000-01-01: true
+  2024-01-01: false
+PA:
+  0000-01-01: true
+  2024-01-01: true
+RI:
+  0000-01-01: true
+  2024-01-01: true
+SC:
+  0000-01-01: true
+  2024-01-01: true
+SD:
+  0000-01-01: true
+  2024-01-01: true
+TN:
+  0000-01-01: true
+  2024-01-01: true
+TX:
+  0000-01-01: true
+  2024-01-01: true
+UT:
+  0000-01-01: true
+  2024-01-01: true
+VT:
+  0000-01-01: true
+  2024-01-01: false
+VA:
+  0000-01-01: true
+  2024-01-01: true
+WA:
+  0000-01-01: true
+  2024-01-01: true
+WV:
+  0000-01-01: true
+  2024-01-01: true
+WI:
+  0000-01-01: true
+  2024-01-01: true
+WY:
+  0000-01-01: true
+  2024-01-01: true

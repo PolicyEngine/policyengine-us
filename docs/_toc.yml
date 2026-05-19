@@ -63,6 +63,8 @@ parts:
       - file: validation/taxsim
   - caption: Usage
     chapters:
+      - file: usage/microsimulation
+      - file: usage/parameter-discovery
       - file: usage/speed
   - caption: Examples
     chapters:

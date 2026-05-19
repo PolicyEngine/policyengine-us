@@ -20,9 +20,7 @@ class nh_disabled_exemption(Variable):
 
         # Get the individual's spouse disabled and age status.
         disabled_spouse = tax_unit("disabled_spouse", period)
-        age_spouse = (
-            tax_unit("age_spouse", period) < p.disability_age_threshold
-        )
+        age_spouse = tax_unit("age_spouse", period) < p.disability_age_threshold
         spouse_eligible = (disabled_spouse & age_spouse).astype(int)
 
         # Calculate total blind exemption.

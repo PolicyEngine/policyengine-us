@@ -5,17 +5,21 @@ class mt_medical_expense_deduction_indiv(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    label = "Montana medical expense deduction when married couples are filing separately"
+    label = (
+        "Montana medical expense deduction when married couples are filing separately"
+    )
     reference = (
         "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=7",
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-21/section-15-30-2131/",
         # MT Code § 15-30-2131 (2022) (1)(g)(i)
     )
     unit = USD
-    defined_for = StateCode.MT
+    defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
-        expense = person("medical_out_of_pocket_expenses", period)
+        expense = person("medical_expense_health_insurance_premiums", period) + person(
+            "other_medical_expenses", period
+        )
         p = parameters(period).gov.irs.deductions.itemized.medical
         # Law does not define Montana AGI as the cap.
         # Tax form points to page 1, line 14, which is Montana AGI.

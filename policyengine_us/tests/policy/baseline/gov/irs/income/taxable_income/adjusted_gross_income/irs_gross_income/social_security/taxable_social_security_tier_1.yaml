@@ -1,0 +1,157 @@
+# Unit tests for taxable_social_security_tier_1
+# Tests the tier 1 (0-50%) taxation of Social Security benefits
+# Reference: IRC §86(a)(1)
+#
+# Thresholds for 2024:
+#   SINGLE: base=$25,000, adjusted_base=$34,000
+#   JOINT: base=$32,000, adjusted_base=$44,000
+#   SEPARATE (cohabitating): base=$0, adjusted_base=$0
+
+- name: Single filer below base threshold - no taxation
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = $10K + $10K (half SS) = $20K < $25K base
+    taxable_social_security_tier_1: 0
+
+- name: Single filer in tier 1 only (between thresholds)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = $20K + $10K (half SS) = $30K
+    # $30K > $25K base but < $34K adjusted_base → tier 1 only
+    # Tier 1 = min(0.5 * $20K, 0.5 * ($30K - $25K))
+    #        = min($10K, $2.5K) = $2,500
+    taxable_social_security_tier_1: 2_500
+
+- name: Single filer in tier 2 (above adjusted base)
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 30_000
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    # Combined income = $50K + $15K = $65K > $34K adjusted_base
+    # Tier 1 in tier 2 = bracket_amount
+    # bracket_amount = min(amount_under_para_1, 0.5 * ($34K - $25K))
+    #                = min(min($15K, 0.5*$40K), $4.5K)
+    #                = min(min($15K, $20K), $4.5K) = $4,500
+    taxable_social_security_tier_1: 4_500
+
+- name: Joint filers below base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 20_000
+      person2:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = $0 + $10K (half SS) = $10K < $32K base
+    taxable_social_security_tier_1: 0
+
+- name: Joint filers in tier 1 only
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 24_000
+        employment_income: 20_000
+      person2:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = $20K + $12K (half SS) = $32K
+    # $32K = $32K base threshold → just at threshold
+    # Excess = $32K - $32K = $0
+    taxable_social_security_tier_1: 0
+
+- name: Joint filers slightly above base threshold
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 24_000
+        employment_income: 25_000
+      person2:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # Combined income = $25K + $12K = $37K
+    # $37K > $32K base but < $44K adjusted → tier 1 only
+    # Tier 1 = min(0.5 * $24K, 0.5 * ($37K - $32K))
+    #        = min($12K, $2.5K) = $2,500
+    taxable_social_security_tier_1: 2_500
+
+- name: Zero social security benefits
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 0
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+  output:
+    taxable_social_security_tier_1: 0

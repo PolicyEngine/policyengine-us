@@ -1,0 +1,228 @@
+# Tests for nh_ccap_income_eligible (SPMUnit, MONTH)
+# Income must be <= 85% SMI, OR family is TANF-enrolled.
+# He-C 6910.06(a)(1), He-C 6910.06(b)
+#
+# 2025 NH SMI (eff 2024-10-01): $146,582
+# Family of 3 adjustment: 0.52 + 0.16*2 = 0.84
+# SMI for family of 3: 146,582 * 0.84 = $123,128.88/year
+# 85% SMI = $104,659.55/year = $8,721.63/month
+# Family of 2 adjustment: 0.52 + 0.16 = 0.68
+# SMI for family of 2: 146,582 * 0.68 = $99,675.76/year
+# 85% SMI = $84,724.40/year = $7,060.37/month
+
+- name: Case 1, income well below 85% SMI, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # $36,000/yr = $3,000/mo < $8,721.63 → eligible
+    nh_ccap_income_eligible: true
+
+- name: Case 2, income above 85% SMI, ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 108_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # $108,000/yr = $9,000/mo > $8,721.63 (85% SMI for 3) → ineligible
+    nh_ccap_income_eligible: false
+
+- name: Case 3, income above 85% SMI but TANF enrolled, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 108_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # TANF enrolled → income eligible regardless of income
+    nh_ccap_income_eligible: true
+
+- name: Case 4, single parent with one child, income below 85% SMI, eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 30_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # $30,000/yr = $2,500/mo < $7,060.37 (85% SMI for 2) → eligible
+    nh_ccap_income_eligible: true
+
+- name: Case 5, self-employment income counted toward income test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 108_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NH
+  output:
+    # $108,000/yr = $9,000/mo > $8,721.63 (85% SMI for 3) → ineligible
+    nh_ccap_income_eligible: false
+
+# --- Edge Cases ---
+
+- name: Case 6, income just below 85% SMI threshold, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_724
+        # 2025 NH SMI family of 2: $146,582 * 0.68 = $99,675.76/yr
+        # 85% SMI = $84,724.40/yr = $7,060.37/mo
+        # $84,724/yr = $7,060.33/mo <= $7,060.37 → eligible
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_income_eligible: true
+
+- name: Case 7, income just above 85% SMI threshold, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_725
+        # $84,725/yr = $7,060.42/mo > $7,060.37 → ineligible
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_income_eligible: false
+
+- name: Case 8, zero income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_income_eligible: true
+
+- name: Case 9, negative self-employment income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Negative income <= 85% SMI → eligible
+    nh_ccap_income_eligible: true
+
+- name: Case 10, TANF enrolled with zero income, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    nh_ccap_income_eligible: true

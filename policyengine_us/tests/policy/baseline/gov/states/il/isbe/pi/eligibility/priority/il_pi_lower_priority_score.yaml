@@ -1,0 +1,102 @@
+- name: Case 1, no lower priority factors married couple.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # No factors = 0 pts
+    il_pi_lower_priority_score: [0, 0, 0]
+
+- name: Case 2, single parent only.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Single parent (10) = 10 pts for child only
+    il_pi_lower_priority_score: [0, 10]
+
+- name: Case 3, poverty and single parent.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+      person2:
+        age: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Single parent (10) + poverty (10) = 20 pts for child only
+    il_pi_lower_priority_score: [0, 20]
+
+- name: Case 4, teen parent family.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+      person3:
+        age: 1
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        il_tanf: 0
+        il_isbe_was_teen_parent_at_first_birth: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    # Teen parent (10) = 10 pts for child only
+    il_pi_lower_priority_score: [0, 0, 10]

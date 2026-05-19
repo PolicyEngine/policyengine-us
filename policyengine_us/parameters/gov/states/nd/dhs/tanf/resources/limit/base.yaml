@@ -1,0 +1,14 @@
+description: North Dakota limits resources to this amount based on household size under the Temporary Assistance for Needy Families program.
+metadata:
+  label: North Dakota TANF resource limit base
+  unit: currency-USD
+  period: month
+  reference:
+    - title: North Dakota Policy Manual 400-19-55-05-05 Asset Limits
+      href: https://www.nd.gov/dhs/policymanuals/40019/400_19_55_05_05.htm
+    - title: N.D. Admin Code 75-02-01.2-22 Asset Limits
+      href: https://www.law.cornell.edu/regulations/north-dakota/N-D-A-C-75-02-1.2-22
+1:
+  1997-07-01: 3_000
+2:
+  1997-07-01: 6_000

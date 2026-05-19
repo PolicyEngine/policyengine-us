@@ -1,0 +1,23 @@
+description: Delaware deducts up to this amount of dependent care expenses per dependent from countable income under the Temporary Assistance for Needy Families program.
+
+metadata:
+  period: month
+  label: Delaware TANF dependent care deduction amount
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Delaware DHSS Administrative Notice A-07-2022 - October 2022 COLA (TANF Maximum Dependent Care Deductions)
+      href: https://dhss.delaware.gov/wp-content/uploads/sites/11/dss/pdf/OCT2022COLA.pdf#page=8
+    - title: 16 Del. Admin. Code SS 4000-4008 - Determining Financial Eligibility and Grant Amounts in TANF
+      href: https://www.law.cornell.edu/regulations/delaware/16-Del-Admin-Code-SS-4000-4008
+
+brackets:
+  - threshold:
+      2009-10-01: 0
+    amount:
+      2009-10-01: 200
+  - threshold:
+      2009-10-01: 2
+    amount:
+      2009-10-01: 175

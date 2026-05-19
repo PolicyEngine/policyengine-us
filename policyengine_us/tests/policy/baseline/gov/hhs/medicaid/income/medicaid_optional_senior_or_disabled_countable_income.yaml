@@ -1,0 +1,75 @@
+- name: Earned income keeps the SSI 65-dollar exclusion and 50-percent phaseout in North Carolina.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 12_000
+    state_code: NC
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 5_490
+
+- name: Connecticut applies its state disregard only to unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 12_000
+    state_code: CT
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 5_610
+
+- name: New Hampshire's lower individual disregard produces a higher countable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 12_000
+    state_code: NH
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 5_532
+
+- name: Connecticut subtracts its 2025 disregard from unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 12_000
+    state_code: CT
+  output:
+    medicaid_optional_senior_or_disabled_countable_income: 5_580
+
+- name: One spouse in a Medicaid-funded facility uses separate SSI computation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        ssi_unearned_income: 25_000
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    ssi_couple_computation_applies: [false, false]
+    medicaid_optional_senior_or_disabled_countable_income: [24_760, 0]
+
+- name: In-kind support and maintenance counts as unearned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_receives_outside_shelter_support: true
+    state_code: NC
+  output:
+    ssi_in_kind_support_and_maintenance: 4_108
+    medicaid_optional_senior_or_disabled_countable_income: 3_868

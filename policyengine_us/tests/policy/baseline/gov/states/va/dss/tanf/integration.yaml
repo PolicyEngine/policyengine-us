@@ -1,0 +1,723 @@
+# Virginia TANF Integration Tests
+# Tests the full TANF calculation pipeline end-to-end
+# Uses 2021-01 period to validate base values (multiplier = 1.0)
+
+- name: Group III locality - Single parent family with moderate earned income
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 30
+        employment_income_before_lsr: 12_000
+      person2:
+        is_child: true
+        age: 5
+      person3:
+        is_child: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $1,017/month
+    va_tanf_need_standard: 1_017
+    #
+    # Grant standard: $508/month
+    va_tanf_grant_standard: 508
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $12,000/12 = $1,000/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($1,000 - $167, 0) = $833
+    #   After 20%: $833 * 0.8 = $666.40
+    #   Childcare: min($500, $175 * 2) = $350/month
+    #   After childcare: max($666.40 - $350, 0) = $316.40
+    va_tanf_countable_earned_income: 316.4
+    #
+    # Childcare deduction: min($500, $350) = $350/month
+    va_tanf_childcare_deduction: 350
+    #
+    # Countable income: $316.40 + $0 = $316.40
+    va_tanf_countable_income: 316.4
+    #
+    # Income eligibility: $316.40 <= $1,017? YES (and gross $1,000 <= $1,017)
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $508 - $316.40 = $191.60
+    va_tanf: 191.6
+
+- name: Group II locality - Single parent family
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 28
+        employment_income_before_lsr: 6_000
+      person2:
+        is_child: true
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $663/month
+    va_tanf_need_standard: 663
+    #
+    # Grant standard: $332/month
+    va_tanf_grant_standard: 332
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $6,000/12 = $500/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: max($500 - $167, 0) = $333
+    #   After 20%: $333 * 0.8 = $266.40
+    #   Childcare: min($300, $175) = $175/month
+    #   After childcare: max($266.40 - $175, 0) = $91.40
+    va_tanf_countable_earned_income: 91.4
+    #
+    # Childcare deduction: min($300, $175) = $175/month
+    va_tanf_childcare_deduction: 175
+    #
+    # Countable income: $91.40 + $0 = $91.40
+    va_tanf_countable_income: 91.4
+    #
+    # Income eligibility: $91.40 <= $663? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $332 - $91.40 = $240.60
+    va_tanf: 240.6
+
+- name: TANF-UP scenario - Two able-bodied adults in Group III locality
+  period: 2021-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person2:
+        age: 32
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person3:
+        age: 8
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 4
+    # Group III locality (Arlington County)
+    # TANF-UP eligible: both parents are able-bodied (not disabled)
+    va_up_tanf_eligibility: true
+    #
+    # Need standard (Group III, size 4): $1,178/month
+    va_tanf_need_standard: 1_178
+    #
+    # UP Grant standard (Group III, size 4): $513/month
+    va_tanf_up_grant_standard: 513
+    #
+    # No earned income
+    va_tanf_countable_earned_income: 0
+    #
+    # Childcare: min($500, $175 * 2) = $350/month
+    va_tanf_childcare_deduction: 350
+    #
+    # Countable income: $0 + $0 = $0
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $1,178? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit (TANF-UP): $513 - $0 = $513
+    # Maximum UP (Group III): $648/month
+    # $513 >= $10 and <= $648, so benefit = $513
+    va_tanf: 513
+
+- name: Income exceeds need standard - Not eligible
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 35
+        employment_income_before_lsr: 30_000
+      person2:
+        is_child: true
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $30,000/12 = $2,500/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $2,500 - $167 = $2,333
+    #   After 20%: $2,333 * 0.8 = $1,866.40
+    #   Childcare: min($300, $175) = $175/month
+    #   After childcare: max($1,866.40 - $175, 0) = $1,691.40
+    va_tanf_countable_earned_income: 1_691.4
+    #
+    # Childcare deduction: min($300, $175) = $175/month
+    va_tanf_childcare_deduction: 175
+    #
+    # Countable income: $1,691.40 + $0 = $1,691.40
+    va_tanf_countable_income: 1_691.4
+    #
+    # Income eligibility:
+    #   Step 1: gross $2,500 <= need $842? NO (fails)
+    va_tanf_income_eligibility: false
+    #
+    # Not eligible, so benefit = $0
+    va_tanf: 0
+
+- name: Group II locality - Family with infant (higher care deduction)
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 25
+        employment_income_before_lsr: 7_000
+      person2:
+        is_child: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $663/month
+    va_tanf_need_standard: 663
+    #
+    # Grant standard: $332/month
+    va_tanf_grant_standard: 332
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $7,000/12 = $583.33/month
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $583.33 - $167 = $416.33
+    #   After 20%: $416.33 * 0.8 = $333.07
+    #   Childcare: min($300, $200) = $200/month (infant under 2)
+    #   After childcare: max($333.07 - $200, 0) = $133.07
+    va_tanf_countable_earned_income: 133.07
+    #
+    # Childcare deduction: min($300, $200) = $200/month
+    va_tanf_childcare_deduction: 200
+    #
+    # Countable income: $133.07 + $0 = $133.07
+    va_tanf_countable_income: 133.07
+    #
+    # Income eligibility:
+    #   Step 1: gross $583.33 <= need $663? YES
+    #   Step 2: countable $133.07 <= grant $332? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $332 - $133.07 = $198.93
+    va_tanf: 198.93
+
+- name: Family with earned and unearned income (child support)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 32
+        employment_income_before_lsr: 6_000
+        child_support_received: 2_400
+      person2:
+        is_child: true
+        age: 7
+      person3:
+        is_child: true
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $1,017/month
+    va_tanf_need_standard: 1_017
+    #
+    # Grant standard: $508/month
+    va_tanf_grant_standard: 508
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $6,000/12 = $500/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($500 - $167, 0) = $333
+    #   After 20%: $333 * 0.8 = $266.40
+    #   Childcare: min($500, $175 * 2) = $350/month
+    #   After childcare: max($266.40 - $350, 0) = $0
+    va_tanf_countable_earned_income: 0
+    #
+    # Unearned income (monthly):
+    #   Child support received: $2,400/12 = $200/month
+    #   Child support disregard: $100/month
+    #   Countable child support: $200 - $100 = $100/month
+    va_tanf_countable_unearned_income: 100
+    #
+    # Childcare deduction: min($500, $350) = $350/month
+    va_tanf_childcare_deduction: 350
+    #
+    # Countable income: $0 + $100 = $100
+    va_tanf_countable_income: 100
+    #
+    # Income eligibility:
+    #   Step 1: gross $700 (earned $500 + unearned $200) <= need $1,017? YES
+    #   Step 2: countable $100 <= grant $508? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $508 - $100 = $408
+    va_tanf: 408
+
+- name: Large family (size 8) in Group III locality
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 38
+        employment_income_before_lsr: 10_000
+      person2:
+        is_father: true
+        age: 40
+        employment_income_before_lsr: 0
+        is_disabled: true
+      person3:
+        is_child: true
+        age: 16
+      person4:
+        is_child: true
+        age: 14
+      person5:
+        is_child: true
+        age: 11
+      person6:
+        is_child: true
+        age: 8
+      person7:
+        is_child: true
+        age: 5
+      person8:
+        is_child: true
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: VA
+        county_str: FAIRFAX_COUNTY_VA
+  output:
+    # Family size: 8
+    # Group III locality (Fairfax County)
+    #
+    # Need standard (size 8): $1,868/month
+    va_tanf_need_standard: 1_868
+    #
+    # Grant standard (size 8): $933/month
+    va_tanf_grant_standard: 933
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $10,000/12 = $833.33/month
+    #   Flat exclusion (size 8, uses size 6+ rate): $240/month
+    #   After flat: max($833.33 - $240, 0) = $593.33
+    #   After 20%: $593.33 * 0.8 = $474.67
+    #   Childcare: min($1,500, $1,225) = $1,225/month
+    #     - 1 disabled adult: $175/month
+    #     - 6 children age 2+: $175 * 6 = $1,050/month
+    #   After childcare: max($474.67 - $1,225, 0) = $0
+    va_tanf_countable_earned_income: 0
+    #
+    # Childcare deduction: min($1,500, $1,225) = $1,225/month
+    va_tanf_childcare_deduction: 1_225
+    #
+    # Countable income: $0 + $0 = $0
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $1,868? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $933 - $0 = $933
+    # Maximum (Group III): $745/month
+    # $933 > $745, so capped at $745
+    va_tanf: 745
+
+- name: Family with disabled adult as care recipient
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 45
+        employment_income_before_lsr: 9_000
+      person2:
+        is_father: true
+        age: 50
+        employment_income_before_lsr: 0
+        is_disabled: true
+      person3:
+        is_child: true
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group II locality (Pittsylvania County)
+    #
+    # Need standard: $836/month
+    va_tanf_need_standard: 836
+    #
+    # Grant standard: $417/month
+    va_tanf_grant_standard: 417
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $9,000/12 = $750/month
+    #   Flat exclusion (size 3): $167/month
+    #   After flat: max($750 - $167, 0) = $583
+    #   After 20%: $583 * 0.8 = $466.40
+    #   Childcare: min($500, $350) = $350/month
+    #     - 1 disabled adult age 50 (2+): $175/month
+    #     - 1 child age 12 (2+): $175/month
+    #   After childcare: max($466.40 - $350, 0) = $116.40
+    va_tanf_countable_earned_income: 116.4
+    #
+    # Childcare deduction: min($500, $350) = $350/month
+    va_tanf_childcare_deduction: 350
+    #
+    # Countable income: $116.40 + $0 = $116.40
+    va_tanf_countable_income: 116.4
+    #
+    # Income eligibility: $116.40 <= $836? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $417 - $116.40 = $300.60
+    va_tanf: 300.6
+
+- name: Family with only unearned income (child support)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 35
+        employment_income_before_lsr: 0
+        child_support_received: 1_800
+      person2:
+        is_child: true
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # No earned income
+    va_tanf_countable_earned_income: 0
+    #
+    # Unearned income (monthly):
+    #   Child support: $1,800/12 = $150/month
+    #   Disregard: min($150, $100) = $100
+    #   Countable: $150 - $100 = $50/month
+    va_tanf_countable_unearned_income: 50
+    #
+    # Childcare deduction: $0 (no expenses)
+    va_tanf_childcare_deduction: 0
+    #
+    # Countable income: $0 + $50 = $50
+    va_tanf_countable_income: 50
+    #
+    # Income eligibility:
+    #   Step 1: gross $150 <= need $842? YES
+    #   Step 2: countable $50 <= grant $422? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $422 - $50 = $372
+    va_tanf: 372
+
+- name: Gross income exactly at need standard boundary
+  absolute_error_margin: 0.01
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 30
+        employment_income_before_lsr: 10_104
+      person2:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $10,104/12 = $842/month (exactly at need standard)
+    #   Flat exclusion (size 2): $167/month
+    #   After flat: $842 - $167 = $675
+    #   After 20%: $675 * 0.8 = $540
+    #   Childcare: min($175, $175) = $175/month
+    #   After childcare: max($540 - $175, 0) = $365
+    va_tanf_countable_earned_income: 365
+    #
+    # Childcare deduction: $175/month
+    va_tanf_childcare_deduction: 175
+    #
+    # Countable income: $365 + $0 = $365
+    va_tanf_countable_income: 365
+    #
+    # Income eligibility:
+    #   Step 1: gross $842 <= need $842? YES (at boundary)
+    #   Step 2: countable $365 <= grant $422? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $422 - $365 = $57
+    va_tanf: 57
+
+- name: TANF-UP scenario in Group II locality
+  period: 2021-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person2:
+        age: 28
+        employment_income_before_lsr: 0
+        is_disabled: false
+      person3:
+        is_child: true
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+        county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    # Family size: 3
+    # Group II locality (Pittsylvania County)
+    # TANF-UP eligible: two able-bodied adults
+    va_up_tanf_eligibility: true
+    #
+    # Need standard (Group II, size 3): $836/month
+    va_tanf_need_standard: 836
+    #
+    # UP Grant standard (Group II, size 3): $363/month
+    va_tanf_up_grant_standard: 363
+    #
+    # No income
+    va_tanf_countable_income: 0
+    #
+    # Income eligibility: $0 <= $836? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit (TANF-UP): $363 - $0 = $363
+    va_tanf: 363
+
+- name: Single person household (pregnant woman)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 22
+        employment_income_before_lsr: 3_600
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 1
+    # Group III locality (Arlington County)
+    #
+    # Need standard (size 1): $631/month
+    va_tanf_need_standard: 631
+    #
+    # Grant standard (size 1): $316/month
+    va_tanf_grant_standard: 316
+    #
+    # Earned income deduction (monthly):
+    #   Gross earned: $3,600/12 = $300/month
+    #   Flat exclusion (size 1): $167/month
+    #   After flat: max($300 - $167, 0) = $133
+    #   After 20%: $133 * 0.8 = $106.40
+    va_tanf_countable_earned_income: 106.4
+    #
+    # Countable income: $106.40
+    va_tanf_countable_income: 106.4
+    #
+    # Income eligibility:
+    #   Step 1: gross $300 <= need $631? YES
+    #   Step 2: countable $106.40 <= grant $316? YES
+    va_tanf_income_eligibility: true
+    #
+    # Benefit: $316 - $106.40 = $209.60
+    va_tanf: 209.6
+
+- name: Step 1 passes but Step 2 fails (high unearned income)
+  period: 2021-01
+  input:
+    people:
+      person1:
+        is_mother: true
+        age: 30
+        employment_income_before_lsr: 4_800
+        child_support_received: 4_800
+      person2:
+        is_child: true
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        county_str: ARLINGTON_COUNTY_VA
+  output:
+    # Family size: 2
+    # Group III locality (Arlington County)
+    #
+    # Need standard: $842/month
+    va_tanf_need_standard: 842
+    #
+    # Grant standard: $422/month
+    va_tanf_grant_standard: 422
+    #
+    # Gross income (monthly):
+    #   Gross earned: $4,800/12 = $400/month
+    #   Gross unearned: $4,800/12 = $400/month
+    #   Total gross: $800/month
+    #
+    # Step 1: $800 <= $842? YES (passes)
+    #
+    # Countable earned:
+    #   After flat ($167): max($400 - $167, 0) = $233
+    #   After 20%: $233 * 0.8 = $186.40
+    va_tanf_countable_earned_income: 186.4
+    #
+    # Countable unearned:
+    #   Child support: $400 - $100 disregard = $300
+    va_tanf_countable_unearned_income: 300
+    #
+    # Total countable: $186.40 + $300 = $486.40
+    va_tanf_countable_income: 486.4
+    #
+    # Step 2: $486.40 <= $422? NO (fails)
+    va_tanf_income_eligibility: false
+    #
+    # Not eligible
+    va_tanf: 0

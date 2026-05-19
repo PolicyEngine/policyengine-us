@@ -16,4 +16,4 @@ class ne_cdcc_refundable_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ne.tax.income.credits.cdcc.refundable
         us_agi = tax_unit("adjusted_gross_income", period)
-        return us_agi < p.income_limit
+        return us_agi <= p.income_limit

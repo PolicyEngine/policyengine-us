@@ -18,7 +18,5 @@ class ca_riv_general_relief_needs_standards(Variable):
         housing_expense = spm_unit("housing_cost", period)
         capped_housing_benefit = min_(housing_expense, p.housing[capped_size])
         return (
-            capped_housing_benefit
-            + p.food[capped_size]
-            + p.personal_needs[capped_size]
+            capped_housing_benefit + p.food[capped_size] + p.personal_needs[capped_size]
         )

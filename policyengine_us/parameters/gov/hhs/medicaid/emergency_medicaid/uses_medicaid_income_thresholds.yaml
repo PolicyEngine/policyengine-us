@@ -1,0 +1,13 @@
+description: The United States requires Emergency Medicaid applicants to meet the same income thresholds as regular Medicaid for their eligibility category.
+values:
+  1987-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Emergency Medicaid uses Medicaid income thresholds
+  reference:
+    - title: 42 USC 1396b(v)(2)(B) - Emergency Medicaid Eligibility Requirements
+      href: https://www.law.cornell.edu/uscode/text/42/1396b#v_2_B
+    - title: 42 CFR 435.406 - Citizenship and Noncitizen Eligibility
+      href: https://www.law.cornell.edu/cfr/text/42/435.406

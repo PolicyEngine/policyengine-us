@@ -15,12 +15,15 @@ class dc_deduction_indiv(Variable):
 
     def formula(person, period, parameters):
         tax_unit_deduction = person.tax_unit("dc_deduction_joint", period)
-        # The above references say the following:
-        # "You may allocate this [tax-unit deduction] amount as you wish."
-        # Here we allocate in proportion to head and spouse DC AGI
         person_agi = person("dc_agi", period)
-        tax_unit_agi = person.tax_unit.sum(person_agi)
-        share = np.zeros_like(tax_unit_agi)
-        mask = tax_unit_agi > 0
-        share[mask] = person_agi[mask] / tax_unit_agi[mask]
-        return share * tax_unit_deduction
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        tax = parameters(period).gov.states.dc.tax.income
+
+        head_agi = person.tax_unit.sum(person_agi * head)
+        spouse_agi = person.tax_unit.sum(person_agi * spouse)
+        head_allocation = allocate_joint_amount_to_minimize_combined_tax(
+            tax.rates, head_agi, spouse_agi, tax_unit_deduction
+        )
+        spouse_allocation = tax_unit_deduction - head_allocation
+        return where(head, head_allocation, where(spouse, spouse_allocation, 0))

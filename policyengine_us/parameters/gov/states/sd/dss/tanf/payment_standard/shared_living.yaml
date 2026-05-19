@@ -1,0 +1,104 @@
+description: South Dakota provides this amount as the payment standard for shared living arrangements under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: South Dakota TANF shared living payment standard
+  reference:
+    - title: ARSD 67:10:05:03 - Payment Standards (2016)
+      href: https://sdlegislature.gov/api/Rules/Archived/10994.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2021)
+      href: https://sdlegislature.gov/api/Rules/Archived/11393.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2022)
+      href: https://sdlegislature.gov/api/Rules/Archived/12036.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2023)
+      href: https://sdlegislature.gov/api/Rules/Archived/14008.pdf#page=1
+    - title: ARSD 67:10:05:03 - Payment Standards (2025)
+      href: https://sdlegislature.gov/Rules/Administrative/67:10:05:03
+  # Note: 2025 values reflect 10% benefit reduction effective August 2025.
+  # The state plans gradual annual reductions until reaching 35% total.
+  # Source: https://southdakotasearchlight.com/2025/07/15/south-dakota-legislative-committee-finalizes-benefit-cuts-tanf-needy-families/
+1:
+  values:
+    2016-09-01: 278
+    2021-07-01: 285
+    2022-07-01: 302
+    2023-07-01: 317
+    2025-08-01: 285
+2:
+  values:
+    2016-09-01: 379
+    2021-07-01: 388
+    2022-07-01: 411
+    2023-07-01: 432
+    2025-08-01: 389
+3:
+  values:
+    2016-09-01: 445
+    2021-07-01: 456
+    2022-07-01: 483
+    2023-07-01: 507
+    2025-08-01: 456
+4:
+  values:
+    2016-09-01: 510
+    2021-07-01: 522
+    2022-07-01: 553
+    2023-07-01: 581
+    2025-08-01: 523
+5:
+  values:
+    2016-09-01: 574
+    2021-07-01: 588
+    2022-07-01: 623
+    2023-07-01: 654
+    2025-08-01: 589
+6:
+  values:
+    2016-09-01: 639
+    2021-07-01: 654
+    2022-07-01: 693
+    2023-07-01: 728
+    2025-08-01: 655
+7:
+  values:
+    2016-09-01: 702
+    2021-07-01: 719
+    2022-07-01: 762
+    2023-07-01: 800
+    2025-08-01: 720
+8:
+  values:
+    2016-09-01: 768
+    2021-07-01: 786
+    2022-07-01: 833
+    2023-07-01: 875
+    2025-08-01: 788
+9:
+  values:
+    2016-09-01: 833
+    2021-07-01: 853
+    2022-07-01: 904
+    2023-07-01: 949
+    2025-08-01: 854
+10:
+  values:
+    2016-09-01: 895
+    2021-07-01: 916
+    2022-07-01: 971
+    2023-07-01: 1_020
+    2025-08-01: 918
+11:
+  values:
+    2016-09-01: 959
+    2021-07-01: 982
+    2022-07-01: 1_041
+    2023-07-01: 1_093
+    2025-08-01: 984
+12:
+  values:
+    2016-09-01: 1_023
+    2021-07-01: 1_048
+    2022-07-01: 1_111
+    2023-07-01: 1_167
+    2025-08-01: 1_050

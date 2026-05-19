@@ -13,9 +13,7 @@ class is_lifeline_eligible(Variable):
         p = parameters(period).gov.fcc.lifeline
         household = spm_unit.household
         is_on_tribal_land = household("is_on_tribal_land", period)
-        non_tribal_lifeline_programs = add(
-            spm_unit, period, p.categorical_eligibility
-        )
+        non_tribal_lifeline_programs = add(spm_unit, period, p.categorical_eligibility)
         tribal_lifeline_programs = add(
             spm_unit, period, p.tribal_categorical_eligibility
         )

@@ -1,0 +1,59 @@
+# Kansas TANF income eligibility test
+# Eligible if countable income < payment standard (maximum benefit)
+# Source: KEESM 7110, K.A.R. 30-4-110
+
+- name: Case 1, no income.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 0
+    ks_tanf_maximum_benefit: 386
+  output:
+    ks_tanf_income_eligible: true
+
+- name: Case 2, income below payment standard.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 200
+    ks_tanf_maximum_benefit: 386
+  output:
+    ks_tanf_income_eligible: true
+
+- name: Case 3, income equals payment standard.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 386
+    ks_tanf_maximum_benefit: 386
+  output:
+    # Per KEESM 7110: income must be LESS THAN payment standard
+    # 386 < 386 = false
+    ks_tanf_income_eligible: false
+
+- name: Case 4, income exceeds payment standard.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 400
+    ks_tanf_maximum_benefit: 386
+  output:
+    ks_tanf_income_eligible: false
+
+- name: Case 5, income significantly exceeds payment standard.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 1_000
+    ks_tanf_maximum_benefit: 386
+  output:
+    ks_tanf_income_eligible: false
+
+- name: Case 6, family of 4 income below limit.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_countable_income: 400
+    ks_tanf_maximum_benefit: 454
+  output:
+    ks_tanf_income_eligible: true
