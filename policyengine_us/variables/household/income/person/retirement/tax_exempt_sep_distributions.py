@@ -7,3 +7,4 @@ class tax_exempt_sep_distributions(Variable):
     label = "tax-exempt SEP distributions"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.tax_exempt_pension_income"

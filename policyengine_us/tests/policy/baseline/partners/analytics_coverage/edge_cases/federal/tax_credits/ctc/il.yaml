@@ -1,0 +1,140 @@
+- name: ctc_joint_just_below_phase_out_400000 (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 399000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code_str: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2200.0
+        ctc_value: 2200.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 399000.0
+        income_tax: 71028.0
+- name: ctc_joint_just_above_phase_out (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 401000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code_str: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2150.0
+        ctc_value: 2150.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 401000.0
+        income_tax: 71558.0

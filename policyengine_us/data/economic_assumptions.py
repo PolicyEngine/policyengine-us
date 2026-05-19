@@ -12,6 +12,38 @@ from policyengine_us.data.dataset_schema import (
 # is updated with new projection years, datasets will automatically
 # extend to match — no hardcoded year constant to maintain.
 CPI_U_PARAM_PATH = "gov.bls.cpi.cpi_u"
+DEFAULT_MICRODATA_UPRATING = (
+    "calibration.gov.cbo.income_by_source.adjusted_gross_income"
+)
+
+MICRODATA_UPRATING_OVERRIDES = {
+    "american_opportunity_credit": DEFAULT_MICRODATA_UPRATING,
+    "cdcc_relevant_expenses": DEFAULT_MICRODATA_UPRATING,
+    "employment_income": "calibration.gov.irs.soi.employment_income",
+    "employment_income_last_year": "calibration.gov.irs.soi.employment_income",
+    "energy_efficient_home_improvement_credit": DEFAULT_MICRODATA_UPRATING,
+    "foreign_tax_credit": DEFAULT_MICRODATA_UPRATING,
+    "interest_deduction": DEFAULT_MICRODATA_UPRATING,
+    "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",
+    "misc_deduction": DEFAULT_MICRODATA_UPRATING,
+    "person_weight": "calibration.gov.census.populations.total",
+    "pre_tax_contributions": DEFAULT_MICRODATA_UPRATING,
+    "rent": "gov.bls.cpi.cpi_u",
+    "savers_credit": DEFAULT_MICRODATA_UPRATING,
+    "self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+    "self_employed_health_insurance_ald": DEFAULT_MICRODATA_UPRATING,
+    "self_employed_pension_contribution_ald": DEFAULT_MICRODATA_UPRATING,
+    "social_security": "calibration.gov.irs.soi.social_security",
+    "spm_unit_weight": "calibration.gov.census.populations.total",
+    "spm_unit_spm_threshold": DEFAULT_MICRODATA_UPRATING,
+    "state_and_local_sales_or_income_tax": DEFAULT_MICRODATA_UPRATING,
+    "sstb_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+    "taxable_pension_income": "calibration.gov.irs.soi.taxable_pension_income",
+    "taxable_unemployment_compensation": DEFAULT_MICRODATA_UPRATING,
+    "tax_unit_weight": "calibration.gov.census.populations.total",
+    "tax_exempt_pension_income": DEFAULT_MICRODATA_UPRATING,
+    "total_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+}
 
 
 def get_parameter_last_year(parameter) -> int:
@@ -100,11 +132,10 @@ def _apply_uprating(dataset: USMultiYearDataset, system=None) -> USMultiYearData
 def _apply_single_year_uprating(current, previous, system):
     """Apply multiplicative uprating from previous year to current year.
 
-    For each variable column in each entity DataFrame, looks up the
-    variable's uprating parameter path in ``system.variables``.  If the
-    variable has an uprating parameter, computes the growth factor as
-    ``param(current_year) / param(previous_year)`` and multiplies the
-    column by that factor.
+    For each variable column in each entity DataFrame, looks up its
+    dataset-extension uprating parameter path. Formula and adds/subtracts
+    variables cannot use Core variable-level uprating, so their dataset-only
+    upraters live in ``MICRODATA_UPRATING_OVERRIDES`` instead.
 
     Variables without an uprating parameter (or whose uprating parameter
     evaluates to 0 for the previous year) are left unchanged — they were
@@ -122,7 +153,9 @@ def _apply_single_year_uprating(current, previous, system):
             if col not in system.variables:
                 continue
             var = system.variables[col]
-            uprating_path = getattr(var, "uprating", None)
+            uprating_path = MICRODATA_UPRATING_OVERRIDES.get(col) or getattr(
+                var, "uprating", None
+            )
             if uprating_path is None:
                 continue
 

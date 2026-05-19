@@ -1,3 +1,134 @@
+## [1.698.0] - 2026-05-19
+
+### Added
+
+- Implemented the Alaska Child Care Assistance Program (CCAP) for PASS II (post-ATAP transitional) and PASS III (general low-income); PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled.
+
+### Changed
+
+- Replaced the full US County enum (3,175 values) with a 29-value AKCCAPRateRegion enum for Alaska CCAP rate-region lookups, cutting the AK CCAP test suite from ~10 minutes to ~12 seconds.
+
+
+## [1.697.0] - 2026-05-19
+
+### Added
+
+- YAML tests under tests/policy/baseline/partners/ that fail CI when a PR would change calculation results for any household API partner, surfaced as a standalone "Household API Partners" CI check. Includes (1) customer fixture mirrors for Amplifi, Impactica, and MyFriendBen, (2) analytics_coverage/ with 81 per-signature test cases grouped by state (one per unique input-variable shape sent through the production API), and (3) analytics_coverage/edge_cases/ with 642 boundary cases organized as federal/{category}/{program}/ (tax_credits, nutrition, healthcare, childcare, cash, housing, utility, composition) and state/{xx}/{program}.yaml. Cases target binding thresholds — income at FPL boundaries, age cutoffs, asset limits, immigration status, household composition — using state-aware values (e.g., per-state SNAP BBCE multipliers).
+
+
+## [1.696.0] - 2026-05-19
+
+### Added
+
+- Added Utah Homeowner's/Renter's Relief.
+
+
+## [1.695.0] - 2026-05-19
+
+### Added
+
+- Implemented Minnesota's renter's credit under Minn. Stat. §290.0693 for tax year 2024 onward, including household-income adjustments, rent constituting property taxes, refundable credit integration, and TAXSIM state property tax credit coverage.
+
+
+## [1.694.0] - 2026-05-19
+
+### Added
+
+- Add SC OBBBA non-conformity addition for 2025 (standard deduction increase, senior deduction, tip/overtime/auto loan deductions).
+
+
+## [1.693.6] - 2026-05-18
+
+### Fixed
+
+- Restricted the New Mexico net capital gains 40% deduction to zero from 2025-01-01 per HB0037 (2024), which amended NMSA 7-2-34(A)(2) to apply the 40% element only to gains from the sale of a business. The capped element (up to $1,000) continues to apply.
+
+
+## [1.693.5] - 2026-05-18
+
+### Fixed
+
+- Backdate Massachusetts TAFDC and EAEDC standard assistance amounts to include FY25 (April 2025) 10% increase. The FY24 raise scheduled for April 2024 was rescinded by 9C cuts in January 2024; the actual increase came from the FY25 budget.
+
+
+## [1.693.4] - 2026-05-18
+
+### Fixed
+
+- Update 2026 Social Security benefit parameters to official SSA amounts and project wage-indexed thresholds with statutory NAWI formulas.
+
+
+## [1.693.3] - 2026-05-18
+
+### Fixed
+
+- Extend long-run dollar-input upraters through 2100 and limit the Trustees core threshold reform to federal wage-indexed tax parameters.
+
+
+## [1.693.2] - 2026-05-18
+
+### Fixed
+
+- Use HUD Section 8 income limits to determine housing assistance eligibility.
+
+
+## [1.693.1] - 2026-05-17
+
+### Changed
+
+- Compute the Supplemental Poverty Measure capped housing subsidy from housing assistance, the SPM threshold housing portion, and HUD tenant payment.
+
+
+## [1.693.0] - 2026-05-17
+
+### Added
+
+- Added a BEA NIPA proprietors' income mapping variable.
+
+
+## [1.692.1] - 2026-05-17
+
+### Changed
+
+- Gate housing assistance on a take-up input and use HUD Fair Market Rent as the national payment-standard fallback.
+
+
+## [1.692.0] - 2026-05-17
+
+### Added
+
+- Added the HUD Fair Market Rent CSV data store, a `hud_fair_market_rent` variable, and a `download_hud_fmr` helper script (Phase 1: county-level FY2025 with a placeholder seed row — full data refresh runs via the script with a free HUD API key).
+
+
+## [1.691.14] - 2026-05-17
+
+### Changed
+
+- Remove redundant uprating metadata and class-level aggregation metadata from variables that already define their computation explicitly.
+
+
+## [1.691.13] - 2026-05-17
+
+### Changed
+
+- Include child support received and workers' compensation in SPM resources, and keep SPM housing and energy subsidies on canonical input variables.
+
+
+## [1.691.12] - 2026-05-16
+
+### Fixed
+
+- Extend the CRFB non-refundable Social Security credit reform so it continues feeding into non-refundable credits after 2035.
+
+
+## [1.691.11] - 2026-05-16
+
+### Fixed
+
+- Subtract Form 4952 investment-income elections from net capital gain for the federal capital-gains tax.
+- Update the 2026 Social Security payroll cap to the official SSA contribution and benefit base.
+
+
 ## [1.691.10] - 2026-05-14
 
 ### Fixed
