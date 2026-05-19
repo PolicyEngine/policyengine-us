@@ -1,4 +1,10 @@
-description: Alaska uses these unearned income sources for countable income under the Child Care Assistance Program. We don't include TANF (Manual §4080-3 ¶6.i) at the moment to avoid a circular dependency — `ak_atap` depends on `childcare_expenses` (via its childcare deduction), which depends on `ak_ccap`. We also don't include adoption assistance (Manual §4080-3 ¶6.c) or foster care payments (Manual §4080-3 ¶6.d) at the moment because we don't track those income types as variables.
+# Note: We don't include TANF (Manual §4080-3 ¶6.i) at the moment to avoid a
+# circular dependency — `ak_atap` depends on `childcare_expenses` (via its
+# childcare deduction), which depends on `ak_ccap`.
+# We also don't include adoption assistance (Manual §4080-3 ¶6.c) or foster
+# care payments (Manual §4080-3 ¶6.d) at the moment because we don't track
+# those income types as variables.
+description: Alaska uses these unearned income sources for countable income under the Child Care Assistance Program.
 values:
   2022-01-01:
     - child_support_received
@@ -20,7 +26,7 @@ metadata:
   period: year
   label: Alaska CCAP countable unearned income sources
   reference:
-    - title: CCAP Policies and Procedures Manual, Section 4080-3 Unearned Income
+    - title: Alaska CCAP Policies and Procedures Manual §4080-3 Unearned Income
       href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=231
     - title: 7 AAC 41.335 Family income and contribution schedule (Alaska Administrative Code)
       href: https://www.akleg.gov/statutesPDF/aac%20Title%207.pdf#page=907

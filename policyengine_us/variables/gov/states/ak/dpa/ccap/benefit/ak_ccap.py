@@ -22,6 +22,9 @@ class ak_ccap(Variable):
         # the MA CCFA / CO CCAP / RI CCAP convention. We use
         # `spm_unit_pre_subsidy_childcare_expenses` (not `childcare_expenses`)
         # to avoid a cycle with state TANF programs.
+        # Manual §4370-4 registration fee (up to $50/year/child) is paid by the State directly
+        # to the licensed provider — NOT by the family — so it's outside the modeled monthly
+        # subsidy: ak_ccap = max(0, min(charged, max_rate) - copay).
         total_per_child = add(spm_unit, period, ["ak_ccap_benefit_per_child"])
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period

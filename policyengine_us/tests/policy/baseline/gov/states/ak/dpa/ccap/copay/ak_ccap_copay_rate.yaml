@@ -312,3 +312,222 @@
   output:
     # ratio >= 0.18 -> 3% band
     ak_ccap_copay_rate: 0.03
+
+# ---------------------------------------------------------------------------
+# At-threshold pinning for each inner copay bracket boundary. The sliding
+# scale uses single_amount semantics (numpy.digitize, right=False), so a
+# value at-or-above a threshold lands in the upper band. Each case sits
+# $0.01/month above the threshold ratio (so the computed ratio is
+# unambiguously >= the threshold even with float-precision wiggle) and
+# pins the upper-band rate. The "just below" side is already covered by
+# Case 11 (just below 0.18 -> 2%) above.
+# Family of 4 monthly SMI = 8_673; ratio = countable / 8_673.
+# ---------------------------------------------------------------------------
+
+- name: Case 13, family of 4 just at 0.01 ratio lands in 1% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 86.74 / 8_673 = 0.010001 -> 1% band (>= 0.01)
+        # Annual = 86.74 * 12 = 1_040.88
+        employment_income: 1_040.88
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.01
+
+- name: Case 14, family of 4 just at 0.09 ratio lands in 2% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 780.58 / 8_673 = 0.090001 -> 2% band (>= 0.09)
+        # Annual = 780.58 * 12 = 9_366.96
+        employment_income: 9_366.96
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.02
+
+- name: Case 15, family of 4 just at 0.26 ratio lands in 4% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 2_254.99 / 8_673 = 0.260001 -> 4% band (>= 0.26)
+        # Annual = 2_254.99 * 12 = 27_059.88
+        employment_income: 27_059.88
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.04
+
+- name: Case 16, family of 4 just at 0.35 ratio lands in 5% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 3_035.56 / 8_673 = 0.350001 -> 5% band (>= 0.35)
+        # Annual = 3_035.56 * 12 = 36_426.72
+        employment_income: 36_426.72
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.05
+
+- name: Case 17, family of 4 just at 0.43 ratio lands in 6% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 3_729.40 / 8_673 = 0.430001 -> 6% band (>= 0.43)
+        # Annual = 3_729.40 * 12 = 44_752.80
+        employment_income: 44_752.80
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.06
+
+- name: Case 18, family of 4 just at 0.52 ratio lands in 7% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 4_509.97 / 8_673 = 0.520001 -> 7% band (>= 0.52)
+        # Annual = 4_509.97 * 12 = 54_119.64
+        employment_income: 54_119.64
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.07
+
+- name: Case 19, family of 4 just at 0.61 ratio lands in 8% band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 5_290.54 / 8_673 = 0.610001 -> 8% band (>= 0.61)
+        # Annual = 5_290.54 * 12 = 63_486.48
+        employment_income: 63_486.48
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.08
+
+- name: Case 20, family of 4 just at 0.73 ratio lands in 9% cap band.
+  period: 2022-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        # Monthly 6_331.30 / 8_673 = 0.730001 -> 9% band (>= 0.73, cap)
+        # Annual = 6_331.30 * 12 = 75_975.60
+        employment_income: 75_975.60
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AK
+  output:
+    ak_ccap_copay_rate: 0.09

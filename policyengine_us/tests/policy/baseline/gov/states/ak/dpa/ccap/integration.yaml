@@ -153,9 +153,12 @@
   output:
     ak_ccap_child_eligible: [false, true]
     ak_ccap_eligible: true
+    # Countable income = 0 (no earnings, no unearned) -> 0% copay band
+    ak_ccap_copay_rate: 0
+    # Anchorage center FT_MONTH school age = 884
+    ak_ccap_max_provider_rate_per_child: [0, 884]
     # is_tanf_enrolled=True -> copay waived to 0 per Manual §4040-3 D
     ak_ccap_copay: 0
-    # Anchorage center FT_MONTH school age = 884
     # Benefit = 884 - 0 = 884
     ak_ccap: 884
 
@@ -186,6 +189,10 @@
     # 6_000 > 5_012.45 -> ineligible
     ak_ccap_income_eligible: false
     ak_ccap_eligible: false
+    # 6_000/mo earnings -> countable_income 6_000
+    ak_ccap_countable_income: 6_000
+    # Anchorage center FT_MONTH preschool = 1_019 (rate computed independent of eligibility)
+    ak_ccap_max_provider_rate_per_child: [0, 1_019]
     ak_ccap: 0
 
 - name: Case 5, special needs child gets supplement on top of standard child.

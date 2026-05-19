@@ -5,7 +5,8 @@ class ak_ccap_special_needs_supplement(Variable):
     value_type = float
     entity = Person
     unit = USD
-    label = "Alaska CCAP special needs (Alaska IN!) supplement per child"
+    label = "Alaska CCAP maximum special-needs (Alaska IN!) supplement per child"
+    documentation = "Maximum allowable per-child special-needs supplement under 7 AAC 41.060(b). Actual supplement amounts can be lower because the per-case CC51 authorization (a percentage between 0% and 100% of the authorized rate) is not observed; we apply the full cap to every disabled child."
     definition_period = MONTH
     defined_for = "ak_ccap_child_eligible"
     reference = (

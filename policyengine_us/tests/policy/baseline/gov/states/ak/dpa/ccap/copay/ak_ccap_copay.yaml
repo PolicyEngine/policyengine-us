@@ -72,3 +72,60 @@
     # SMI ratio = 4_800 / 8_673 = 0.5534 -> 7% band (>= 0.52, < 0.61)
     # copay = 4_800 * 0.07 = 336.00
     ak_ccap_copay: 336.00
+
+# ---------------------------------------------------------------------------
+# is_disabled toggle: copay depends only on income / family-size SMI, not on
+# disability status. The SN supplement (a different variable) is what changes
+# when a child is disabled. The pair below pins that invariant.
+# ---------------------------------------------------------------------------
+
+- name: Case 4, family of 3 with non-disabled child has same copay as disabled-child case.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 36_000  # 3_000/mo
+      other_parent:
+        age: 28
+      child:
+        age: 4
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [parent, other_parent, child]
+    households:
+      household:
+        members: [parent, other_parent, child]
+        state_code: AK
+  output:
+    # Family of 3 monthly SMI = 7_285
+    # ratio = 3_000 / 7_285 = 0.4118 -> 5% band; copay = 3_000 * 0.05 = 150
+    ak_ccap_copay: 150.00
+
+- name: Case 5, identical family but disabled child has identical copay (SN supplement is separate).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 36_000  # 3_000/mo
+      other_parent:
+        age: 28
+      child:
+        age: 4
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent, other_parent, child]
+    households:
+      household:
+        members: [parent, other_parent, child]
+        state_code: AK
+  output:
+    # Same income, same family size -> same copay as Case 4.
+    # The SN supplement (ak_ccap_special_needs_supplement) flows through
+    # ak_ccap (benefit), not ak_ccap_copay.
+    ak_ccap_copay: 150.00

@@ -31,7 +31,9 @@ class ak_ccap_max_provider_rate_per_child(Variable):
             is_part_day, AKCCAPCareSchedule.PT_DAY, AKCCAPCareSchedule.FT_DAY
         )
         month_schedule = where(
-            is_part_day, AKCCAPCareSchedule.PT_MONTH, AKCCAPCareSchedule.FT_MONTH
+            is_part_day,
+            AKCCAPCareSchedule.PT_MONTH,
+            AKCCAPCareSchedule.FT_MONTH,
         )
 
         provider_conditions = [

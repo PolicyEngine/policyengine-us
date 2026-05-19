@@ -88,3 +88,26 @@
   output:
     # Assets > 1_000_000 -> asset check fails -> ineligible
     ak_ccap_eligible: false
+
+- name: Case 5, family with assets exactly at $1M CCDF limit is eligible (boundary inclusive).
+  period: 2022-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_assets: 1_000_000  # exactly at $1M CCDF limit
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # is_ccdf_asset_eligible uses <= so assets == 1_000_000 -> eligible
+    ak_ccap_eligible: true

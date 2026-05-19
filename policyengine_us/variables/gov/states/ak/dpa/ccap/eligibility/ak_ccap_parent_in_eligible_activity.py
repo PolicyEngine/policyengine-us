@@ -27,5 +27,9 @@ class ak_ccap_parent_in_eligible_activity(Variable):
         n_parents = spm_unit.sum(is_head_or_spouse)
         n_failing_parents = spm_unit.sum(is_head_or_spouse & ~individually_eligible)
         all_parents_qualify = (n_parents >= 1) & (n_failing_parents == 0)
+        # Manual §4070-3 D requires each parent in the family to be in an eligible activity.
+        # We fall back to the federal CCDF activity test for activities not separately modeled
+        # (job search, training, CC24 incapacity), which can be slightly broader than Alaska's
+        # strict "each parent" test. Documented simplification.
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
         return all_parents_qualify | fallback
