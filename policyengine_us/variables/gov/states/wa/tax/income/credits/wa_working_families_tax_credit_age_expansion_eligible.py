@@ -15,10 +15,9 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # ESSB 6346 Sec. 901(2)(a)(ii)(D): individuals who would otherwise
         # qualify for EITC except for age can qualify if at least age 18.
-        wftc = parameters(
+        p = parameters(
             period
-        ).gov.states.wa.tax.income.credits.working_families_tax_credit
-        p = wftc.age_expansion
+        ).gov.states.wa.tax.income.credits.working_families_tax_credit.age_expansion
 
         expansion_in_effect = p.in_effect
         person = tax_unit.members
@@ -31,9 +30,9 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         child_count = tax_unit.sum(
             person("is_qualifying_child_dependent", period) & has_tin
         )
-        # RCW 82.08.0206(2)(d) freezes WFTC to the federal EITC rules as of
-        # wftc.federal_eitc_snapshot_date (currently 2022-06-09).
-        frozen_eitc = parameters.gov.irs.credits.eitc(wftc.federal_eitc_snapshot_date)
+        # RCW 82.08.0206(2)(d) pins WFTC to the federal EITC rules as in
+        # effect on June 9, 2022; this snapshot date is a statutory literal.
+        frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
         frozen_investment_income_eligible = (
             tax_unit("eitc_relevant_investment_income", period)
             <= frozen_eitc.phase_out.max_investment_income

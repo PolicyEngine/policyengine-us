@@ -23,11 +23,12 @@ class wa_working_families_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.wa.tax.income.credits.working_families_tax_credit
-        # RCW 82.08.0206 pins Washington's WFTC to the federal EITC rules as
-        # in effect on the date stored in
-        # gov.states.wa.tax.income.credits.working_families_tax_credit.federal_eitc_snapshot_date
-        # (currently 2022-06-09, the date the statute references).
-        frozen_eitc = parameters.gov.irs.credits.eitc(p.federal_eitc_snapshot_date)
+        # RCW 82.08.0206(2)(d) pins Washington's WFTC to the federal EITC
+        # rules as in effect on June 9, 2022. The snapshot date is a
+        # statutory literal; policyengine-core parameters do not support
+        # date-valued types, so the date appears here rather than in the
+        # parameter tree.
+        frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")
         person = tax_unit.members
         has_tin = person("has_tin", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
