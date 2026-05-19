@@ -2,6 +2,8 @@ description: Minnesota provides this amount as the representative payee service 
 
 values:
   2011-01-01: 25
+  2024-01-01: 54
+  2025-01-01: 55
   2026-01-01: 57
 
 metadata:
@@ -9,7 +11,13 @@ metadata:
   period: month
   label: Minnesota Supplemental Aid representative payee fee amount
   reference:
-    - title: Minn. Stat. § 256D.44 Subd. 5(f) (Representative payee fee)
+    - title: Minn. Stat. § 256D.44 Subd. 5(f) (Fee equal to the maximum monthly amount allowed by SSA, effective 2024-01-01)
       href: https://www.revisor.mn.gov/statutes/cite/256D.44
+    - title: 2023 Minn. Laws Chapter 70, Article 10, Section 22 (Amendment effective January 1, 2024)
+      href: https://www.revisor.mn.gov/laws/2023/0/Session+Law/Chapter/70/
+    - title: Minn. Stat. § 256D.44 Subd. 5(f), 2022 version (Prior $25 cap - "10% of recipient's gross income or $25, whichever is less")
+      href: https://www.revisor.mn.gov/statutes/2022/cite/256D.44
     - title: MN DHS Combined Manual 0023.21 - Representative Payee Services (01/2026)
       href: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-073585.pdf#page=7
+    - title: SSA POMS GN 00506.200 C.2 - Fee Amounts (annual non-DAA maximum)
+      href: https://secure.ssa.gov/poms.nsf/lnx/0200506200
