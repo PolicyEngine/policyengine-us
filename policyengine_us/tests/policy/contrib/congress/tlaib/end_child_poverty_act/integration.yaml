@@ -95,3 +95,64 @@
     non_refundable_ctc: 800
     household_benefits: 0
     spm_unit_benefits: 0
+
+- name: Census SPM cash support leaves remain benefits under End Child Poverty Act reform.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 30
+    child_support_received: 1
+    workers_compensation: 2
+    educational_assistance: 3
+    financial_assistance: 4
+    survivor_benefits: 5
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_state_benefits: 0
+  output:
+    household_benefits: 1 + 2 + 3 + 4 + 5
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5
+
+- name: End Child Poverty Act household benefits exclude housing subsidy if HUD is abolished.
+  period: 2024
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.hud.abolition: true
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    age: 30
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 10
+    household_state_benefits: 0
+  output:
+    household_benefits: 0
