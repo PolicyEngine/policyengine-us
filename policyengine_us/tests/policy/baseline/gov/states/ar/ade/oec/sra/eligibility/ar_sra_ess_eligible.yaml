@@ -450,3 +450,34 @@
         state_code: AR
   output:
     is_ar_sra_ess_eligible: false
+
+- name: Case 20, ESS Year-1 alt path - unearned income alone does NOT trigger the gate (FSU 4.1.5.1 'earnings alone').
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 15
+        # Zero earned income keeps TEA-earned-income at $0, below the $513/mo limit.
+        employment_income: 0
+        # High unearned income ($30k/yr = $2,500/mo) would push total TEA
+        # countable income above $513 — but FSU 4.1.5.1 says 'earnings alone'.
+        social_security: 30_000
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Earned income = $0 (under $513 TEA limit); work hours = 15 (under 20).
+    # No adult student. Alt path does not trigger because earnings alone do
+    # not exceed the TEA limit; unearned income is excluded from this gate.
+    is_ar_sra_ess_eligible: false

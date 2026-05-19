@@ -131,3 +131,22 @@
         state_code: AR
   output:
     is_ar_sra_age_eligible: [false, false]
+
+- name: Case 9, disabled child age 13 is age-eligible (disability extension activates at the standard cutoff).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Confirms the disability extension picks up where the standard 13-year
+    # cutoff leaves off; a disabled 13-year-old remains eligible (< 19).
+    is_ar_sra_age_eligible: [false, true]

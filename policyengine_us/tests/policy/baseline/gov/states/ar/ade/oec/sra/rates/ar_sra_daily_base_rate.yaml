@@ -278,3 +278,69 @@
         state_code: AR
   output:
     ar_sra_daily_base_rate: 40.70
+
+- name: Case 17, Benton/Washington preschool REGULAR full time base rate is 33.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    # B/W preschool rate matches Statewide ($33) at the regular tier.
+    ar_sra_daily_base_rate: 33.00
+
+- name: Case 18, Benton/Washington school-aged REGULAR full time base rate is 28.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    # B/W school-aged rate matches Statewide ($28) at the regular tier.
+    ar_sra_daily_base_rate: 28.00
+
+- name: Case 19, Benton/Washington preschool REGULAR part time base rate is 16.50.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 16.50
+
+- name: Case 20, Benton/Washington school-aged REGULAR part time base rate is 14.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 14.00

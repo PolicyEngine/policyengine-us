@@ -104,7 +104,7 @@
     is_ar_sra_eligible: true
     ar_sra: 0
 
-- name: Case 4, 4% cap binds - rate-sheet copay exceeds 4% of gross.
+- name: Case 4, 4% cap binds - rate-sheet copay exceeds 4% of countable income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -135,14 +135,14 @@
         county_str: PULASKI_COUNTY_AR
   output:
     is_ar_sra_eligible: true
-    # Monthly gross = 30,695 / 12 = $2,557.92
+    # Monthly countable income = 30,695 / 12 = $2,557.92
     # 4% cap = $102.32; rate-sheet copay $154 exceeds cap.
     # cap_savings = $154 - $102.32 = $51.68
     # uncapped subsidy = daily_state_payment * 22 = $28 * 22 = $616
     # ar_sra = $616 + $51.68 = $667.68
     ar_sra: 667.68
 
-- name: Case 5, negative gross income is clamped at zero before applying 4% cap.
+- name: Case 5, negative countable income is clamped at zero before applying 4% cap.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -150,7 +150,7 @@
       person1:
         age: 28
         weekly_hours_worked: 35
-        # Self-employment loss exceeds wages; gross_income would be negative.
+        # Self-employment loss exceeds wages; countable income would be negative.
         self_employment_income: -20_000
         employment_income: 5_000
         immigration_status: CITIZEN
@@ -174,8 +174,49 @@
         county_str: PULASKI_COUNTY_AR
   output:
     is_ar_sra_eligible: true
-    # Net income < 0 -> LE_40 tier (state share 1.00, copay 0).
+    # Net countable income < 0 -> LE_40 tier (state share 1.00, copay 0).
     # No copay so 4% cap is moot; full state payment.
-    # ar_sra = $35 * 22 = $770. Without the max_(gross, 0) clamp,
+    # ar_sra = $35 * 22 = $770. Without the max_(countable, 0) clamp,
     # cap_savings could become negative and corrupt the subsidy.
     ar_sra: 770
+
+- name: Case 6, per-child payable-copay clamp - actual expense below rate-sheet copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # GT_40_LE_60 tier: rate-sheet copay = $7/day = $154/month.
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Annual $1,500 -> monthly $125, below $154/mo rate-sheet copay.
+        spm_unit_pre_subsidy_childcare_expenses: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # monthly_expense = $125; rate-sheet monthly_copay = $154.
+    # payable_copay = min($154, $125) = $125 (per-child clamp).
+    # Monthly countable income = $30,695 / 12 = $2,557.92; 4% cap = $102.32.
+    # cap_savings = $125 - $102.32 = $22.68.
+    # uncapped_subsidy per child = min(max($125 - $154, 0), $616) = 0.
+    # Return = min(0 + $22.68, $125) = $22.68.
+    # Without the per-child clamp, cap_savings would be $51.68 and ar_sra $51.68.
+    ar_sra: 22.68

@@ -1,7 +1,10 @@
-description: Arkansas caps the total family copay at this share of gross monthly income under the School Readiness Assistance program.
+description: Arkansas caps the total family copay at this share of countable monthly income under the School Readiness Assistance program.
 # CCDF rules cap copays at 7% of gross family income; Arkansas's CCDF State
 # Plan §3.1.1 self-certifies a stricter 4% maximum. The cap applies per
 # family, regardless of the number of children participating in CCDF.
+# The State Plan's "gross income" wording is reconciled against FSU §4.3.3
+# (file p.20), which excludes children's SSI and Social Security from the
+# budget — the cap base is therefore countable (adult) income.
 values:
   2025-11-01: 0.04
 

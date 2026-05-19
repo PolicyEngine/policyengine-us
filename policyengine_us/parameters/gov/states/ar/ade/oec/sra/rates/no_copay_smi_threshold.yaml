@@ -1,4 +1,9 @@
-description: Arkansas sets this share of state median income as the no-copay threshold for non-school-aged children under the School Readiness Assistance program.
+description: Arkansas zeroes the family copay for non-school-aged children whose family income is at or below this share of state median income under the School Readiness Assistance program. School-aged children always incur a copay (state share is 80% / 70%, not 100%) and are unaffected by this threshold.
+# Source conflict: CCDF State Plan §2.3.1(b) describes a no-cost-of-care waiver
+# for families at or below 75% SMI, while the Nov 2025 operational rate sheet
+# only zeroes the copay for families at or below 40% SMI. The model follows
+# the rate sheet (40%) because it is the operational document the agency uses
+# to compute family copays. The 75% State Plan provision is not modeled.
 values:
   2025-11-01: 0.4
 

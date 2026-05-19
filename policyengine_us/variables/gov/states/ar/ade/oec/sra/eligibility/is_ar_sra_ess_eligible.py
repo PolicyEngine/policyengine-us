@@ -26,12 +26,17 @@ class is_ar_sra_ess_eligible(Variable):
             "is_full_time_college_student", period.this_year
         )
         any_adult_student = spm_unit.sum(adult_is_student) > 0
-        # FSU §4.1.5.1 Year-1 alt path: earnings make family TEA-income-ineligible.
-        tea_income_ineligible = ~spm_unit("ar_tea_income_eligible", period)
+        # FSU §4.1.5.1 Year-1 alt path: earnings *alone* make family
+        # TEA-income-ineligible. The "alone" qualifier constrains the gate
+        # input to earned income — unearned income (pension, child support,
+        # Social Security) does not count toward this specific test.
+        tea_earned = spm_unit("ar_tea_countable_earned_income", period)
+        tea_limit = parameters(period).gov.states.ar.dhs.tea.income.income_limit
+        earnings_make_tea_ineligible = tea_earned > tea_limit
         year_1_active = (
             (max_adult_hours >= p.activity_hours_ess_year_1)
             | any_adult_student
-            | tea_income_ineligible
+            | earnings_make_tea_ineligible
         )
         year_2_active = (
             max_adult_hours >= p.activity_hours_ess_year_2

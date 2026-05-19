@@ -92,3 +92,160 @@
     # Statewide / Preschool / REGULAR / FT base = $33.00, share = 0.60
     # daily copay = $33 * (1 - 0.60) = $13.20
     ar_sra_daily_copay: [0, 13.20]
+
+- name: Case 4, Infant Benton/Washington FT at GT_60 SMI has positive copay (30 percent of B/W base).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 75% SMI -> GT_60 tier
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: BENTON_COUNTY_AR
+  output:
+    # Benton/Washington / Infant / REGULAR / FT base = $38.00, share = 0.70
+    # daily copay = $38 * (1 - 0.70) = $11.40
+    ar_sra_daily_copay: [0, 11.40]
+
+- name: Case 5, Toddler Statewide PT at GT_40_LE_60 SMI has positive copay (40 percent of PT base).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 50% SMI -> GT_40_LE_60 tier
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        # Below the 7-hr FT threshold -> PART_TIME
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / REGULAR / PT base = $17.50, share = 0.60
+    # daily copay = $17.50 * (1 - 0.60) = $7.00
+    ar_sra_daily_copay: [0, 7.00]
+
+- name: Case 6, Infant Statewide FT NIGHT_WEEKEND at GT_60 SMI shows the 10 percent supplement flows to copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 75% SMI -> GT_60 tier
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: NIGHT_WEEKEND
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Infant / NIGHT_WEEKEND / FT base = $39.60, share = 0.70
+    # daily copay = $39.60 * (1 - 0.70) = $11.88
+    ar_sra_daily_copay: [0, 11.88]
+
+- name: Case 7, Toddler Statewide FT SN2 at GT_40_LE_60 SMI shows the 40 percent special-needs supplement flows to copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / SN2 / FT base = $49.00, share = 0.80
+    # daily copay = $49 * (1 - 0.80) = $9.80
+    ar_sra_daily_copay: [0, 9.80]
+
+- name: Case 8, Toddler Statewide FT SN3 at GT_60 SMI confirms SN3 matches SN2 (premium tier).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / SN3 / FT base = $49.00, share = 0.70
+    # daily copay = $49 * (1 - 0.70) = $14.70
+    ar_sra_daily_copay: [0, 14.70]

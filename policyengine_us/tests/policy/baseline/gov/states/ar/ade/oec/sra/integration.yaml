@@ -760,3 +760,71 @@
     # Negative income -> LE_40 tier (share=1.00, copay=0) -> cap_savings=0.
     # Toddler Statewide FT LE_40: monthly state payment = $35 * 22 = $770.
     ar_sra: 770
+
+- name: Case 21, October 2025 is the last pre-effect month - eligibility is false, benefit is zero.
+  period: 2025-10
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # in_effect flips to true on 2025-11-01; otherwise-eligible families
+    # produce no benefit in October.
+    is_ar_sra_eligible: false
+    ar_sra: 0
+
+- name: Case 22, November 2025 is the first post-effect month - same family is eligible and receives the full Statewide Toddler LE_40 benefit.
+  period: 2025-11
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # in_effect now true; LE_40 tier (share=1.00, copay=0) gives full base.
+    # Toddler Statewide FT LE_40: monthly state payment = $35 * 22 = $770.
+    is_ar_sra_eligible: true
+    ar_sra: 770

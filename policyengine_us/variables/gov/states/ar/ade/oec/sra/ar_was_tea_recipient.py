@@ -8,4 +8,4 @@ class ar_was_tea_recipient(Variable):
     definition_period = YEAR
     defined_for = StateCode.AR
     default_value = False
-    reference = "https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=16"
+    reference = "https://dese.ade.arkansas.gov/Files/FSU-Procedural-Manual-June-2023_UPDATED_20230629075344.pdf#page=12"

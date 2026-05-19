@@ -24,3 +24,14 @@
     state_code: AR
   output:
     ar_sra_zone: STATEWIDE
+
+- name: Case 4, non-AR household with a B/W county string still defaults to STATEWIDE (state-guard).
+  period: 2026-01
+  input:
+    # defined_for filters output, not the rate-table lookup; the formula's
+    # explicit state == "AR" check is what prevents non-AR rows from being
+    # classified as Benton/Washington when the county string coincides.
+    county_str: BENTON_COUNTY_AR
+    state_code: TX
+  output:
+    ar_sra_zone: STATEWIDE
