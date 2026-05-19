@@ -34,9 +34,10 @@ class sstb_qualified_business_income(Variable):
         positive_sstb_gross = max_(0, sstb_gross)
         positive_gross_total = positive_non_sstb_gross + positive_sstb_gross
         qbi_deductions = add(person, period, p.deduction_definition)
-        sstb_share = where(
-            positive_gross_total > 0,
-            positive_sstb_gross / positive_gross_total,
-            0,
+        sstb_share = np.divide(
+            positive_sstb_gross,
+            positive_gross_total,
+            out=np.zeros_like(positive_gross_total),
+            where=positive_gross_total > 0,
         )
         return max_(0, sstb_gross - qbi_deductions * sstb_share)

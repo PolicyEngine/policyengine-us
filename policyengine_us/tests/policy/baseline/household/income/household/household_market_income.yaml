@@ -46,6 +46,32 @@
   output:
     household_market_income: 50_000
 
+- name: Farm operations income is market income
+  period: 2026
+  input:
+    people:
+      person:
+        farm_operations_income: 50_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 50_000
+
+- name: Other Census income leaves are market income.
+  period: 2026
+  input:
+    people:
+      person:
+        miscellaneous_income: 10_000
+        alimony_income: 5_000
+        strike_benefits: 1_000
+    households:
+      household:
+        members: [person]
+  output:
+    household_market_income: 16_000
+
 - name: Employment income plus UC does not double count
   period: 2026
   input:

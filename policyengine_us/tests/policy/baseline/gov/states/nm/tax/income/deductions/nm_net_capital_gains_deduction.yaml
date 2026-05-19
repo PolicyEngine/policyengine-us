@@ -33,3 +33,43 @@
     state_code: NM
   output:
     nm_net_capital_gains_deduction: 500
+
+# HB0037 (2024) restricts the 40% element to business-sale gains from
+# 2025-01-01; PolicyEngine does not model business-sale gains separately,
+# so the 40% element is zero and only the capped element applies.
+
+- name: 2025 single — only the capped $2,500 element applies (no business-sale modeling)
+  period: 2025
+  input:
+    filing_status: SINGLE
+    capital_gains: 500_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 2_500
+
+- name: 2025 single with very large gains — still only the $2,500 capped element
+  period: 2025
+  input:
+    filing_status: SINGLE
+    capital_gains: 3_000_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 2_500
+
+- name: 2025 separate — capped element halved
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    capital_gains: 2_000_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 1_250
+
+- name: 2024 above $1M — pre-HB0037 40% element still applies
+  period: 2024
+  input:
+    filing_status: SINGLE
+    capital_gains: 3_000_000
+    state_code: NM
+  output:
+    nm_net_capital_gains_deduction: 1_200_000

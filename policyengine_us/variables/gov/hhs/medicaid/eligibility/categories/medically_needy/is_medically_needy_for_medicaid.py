@@ -11,7 +11,7 @@ class is_medically_needy_for_medicaid(Variable):
     def formula(person, period, parameters):
         in_category = person("is_in_medicaid_medically_needy_category", period)
         personal_income = person("ssi_countable_income", period)
-        medical_expenses = person("medical_out_of_pocket_expenses", period)
+        medical_expenses = person("medicaid_medically_needy_medical_expenses", period)
         personal_assets = person("ssi_countable_resources", period)
         tax_unit = person.tax_unit
         income = tax_unit.sum(personal_income - medical_expenses)

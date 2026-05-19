@@ -7,5 +7,6 @@ class household_business_assets_equity(Variable):
     label = "Business asset equity"
     documentation = "Net equity in business assets held by the household."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

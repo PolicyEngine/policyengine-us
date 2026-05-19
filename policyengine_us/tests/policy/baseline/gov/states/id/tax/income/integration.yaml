@@ -228,3 +228,41 @@
   output:
     # Grocery credit: 2 people * $155 = $310 (aged credit not in effect for 2025)
     id_grocery_credit: 310
+
+- name: Idaho joint senior filers receive the OBBBA enhanced senior deduction in 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_interest_income: 100_000
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      person2:
+        age: 70
+        taxable_interest_income: 100_000
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        itemized_taxable_income_deductions: 60_000
+        id_salt_deduction: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 16
+  output:
+    additional_senior_deduction: 6_000
+    id_additional_senior_deduction: 6_000
+    id_qualified_business_income_and_federal_schedule_1a_deductions: 6_000
+    id_taxable_income: 134_000

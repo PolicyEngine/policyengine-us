@@ -1,0 +1,29 @@
+- name: Housing subsidy is capped at the SPM housing need less tenant payment.
+  period: 2024
+  input:
+    spm_unit_spm_threshold_housing_portion: 17_720
+    is_eligible_for_housing_assistance: true
+    hud_hap: 30_000
+    hud_ttp: 10_000
+  output:
+    spm_unit_capped_housing_subsidy: 7_720
+
+- name: Housing subsidy is not reduced when below the SPM cap.
+  period: 2024
+  input:
+    spm_unit_spm_threshold_housing_portion: 17_720
+    is_eligible_for_housing_assistance: true
+    hud_hap: 5_000
+    hud_ttp: 10_000
+  output:
+    spm_unit_capped_housing_subsidy: 5_000
+
+- name: Housing subsidy cap floors at zero.
+  period: 2024
+  input:
+    spm_unit_spm_threshold_housing_portion: 4_000
+    is_eligible_for_housing_assistance: true
+    hud_hap: 5_000
+    hud_ttp: 5_000
+  output:
+    spm_unit_capped_housing_subsidy: 0

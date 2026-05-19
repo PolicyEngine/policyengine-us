@@ -1,0 +1,12 @@
+description: Washington sets the minimum weekly benefit to this amount under the Paid Family and Medical Leave program.
+
+values:
+  2020-01-01: 100
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: Washington PFML minimum weekly benefit amount
+  reference:
+    - title: RCW 50A.15.020(6)(b) Benefit—Amount and duration
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=50A.15.020

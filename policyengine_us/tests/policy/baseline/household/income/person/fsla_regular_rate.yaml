@@ -1,0 +1,39 @@
+- name: FLSA regular rate uses annual employment income when wages and hours are available
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 100000
+    hourly_wage: 20
+    is_paid_hourly: true
+  output:
+    fsla_regular_rate: 34.9650
+
+- name: FLSA regular rate matches hourly wage when annual income reconciles
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 57200
+    hourly_wage: 20
+    is_paid_hourly: true
+  output:
+    fsla_regular_rate: 20
+
+- name: FLSA regular rate falls back to hourly wage when annual employment income is unavailable
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 0
+    hourly_wage: 25
+    is_paid_hourly: true
+  output:
+    fsla_regular_rate: 25
+
+- name: FLSA regular rate is zero without annual employment income or hourly wage
+  period: 2024
+  input:
+    hours_worked_last_week: 50
+    employment_income: 0
+    hourly_wage: 0
+    is_paid_hourly: true
+  output:
+    fsla_regular_rate: 0

@@ -1,0 +1,29 @@
+description: Washington limits Early Childhood Education and Assistance Program participants to children within this age range.
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: false
+  - threshold:
+      2024-01-01: 3
+    amount:
+      2024-01-01: true
+  - threshold:
+      2024-01-01: 6
+    amount:
+      2024-01-01: false
+
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  period: year
+  label: Washington ECEAP children age range
+  reference:
+    - title: RCW 43.216.505 Eligible children
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505
+    - title: WAC 110-425-0080 Children eligible for enrollment
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=110-425-0080
+    - title: DCYF ECEAP and Head Start program page
+      href: https://dcyf.wa.gov/services/early-learning-providers/eceap

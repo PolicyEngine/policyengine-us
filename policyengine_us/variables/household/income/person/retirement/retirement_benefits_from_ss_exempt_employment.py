@@ -11,3 +11,4 @@ class retirement_benefits_from_ss_exempt_employment(Variable):
     )
     reference = "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=18"
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

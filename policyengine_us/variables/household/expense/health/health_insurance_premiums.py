@@ -7,8 +7,8 @@ class health_insurance_premiums(Variable):
     label = "Health insurance premiums"
     unit = USD
     definition_period = YEAR
-
-    adds = [
-        "health_insurance_premiums_without_medicare_part_b",
-        "medicare_part_b_premiums",
-    ]
+    documentation = (
+        "Person-level health insurance premiums supplied directly as an input. "
+        "SPM MOOP and statutory medical expense definitions use decomposed "
+        "premium aggregates."
+    )

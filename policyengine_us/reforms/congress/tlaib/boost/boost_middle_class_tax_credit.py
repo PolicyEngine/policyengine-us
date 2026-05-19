@@ -58,7 +58,14 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
-                "spm_unit_broadband_subsidy",
+                "child_support_received",
+                "workers_compensation",
+                "educational_assistance",
+                "financial_assistance",
+                "survivor_benefits",
+                # Broadband subsidies.
+                "acp",
+                "ebb",
                 "tanf",
                 "high_efficiency_electric_home_rebate",
                 "residential_efficiency_electrification_rebate",
@@ -68,6 +75,12 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "spm_unit_capped_housing_subsidy",
                 "household_state_benefits",
             ]
+            if parameters(period).gov.hud.abolition:
+                BENEFITS = [
+                    benefit
+                    for benefit in BENEFITS
+                    if benefit != "spm_unit_capped_housing_subsidy"
+                ]
             previous_benefits = add(household, period, BENEFITS)
             middle_class_credit = add(
                 household, period, ["boost_middle_class_tax_credit"]
@@ -101,7 +114,14 @@ def create_boost_middle_class_tax_credit() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
-                "spm_unit_broadband_subsidy",
+                "child_support_received",
+                "workers_compensation",
+                "educational_assistance",
+                "financial_assistance",
+                "survivor_benefits",
+                # Broadband subsidies.
+                "acp",
+                "ebb",
                 "spm_unit_energy_subsidy",
                 "tanf",
                 "high_efficiency_electric_home_rebate",
