@@ -1,1 +1,1 @@
-Implemented the Alaska Child Care Assistance Program (CCAP) including PASS III general subsidy and PASS II post-ATAP transitional eligibility.
+Implemented the Alaska Child Care Assistance Program (CCAP) for PASS II (post-ATAP transitional) and PASS III (general low-income); PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled.

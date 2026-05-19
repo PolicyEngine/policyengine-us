@@ -187,3 +187,114 @@
   output:
     # 100 + 200 = 300/month
     ak_ccap_countable_income: 300
+
+# Cases 10-14: excluded income per Manual section 4080-5
+# (PFD, EITC, ATAP/TA Diversion, SNAP, WIC, and other federal non-cash benefits).
+# These sources are NOT listed in earned_sources.yaml or unearned_sources.yaml,
+# so the formula simply omits them.
+
+- name: Case 10, PFD does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ak_permanent_fund_dividend: 1_702  # 2024 PFD amount
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 11, EITC does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 2_500  # federal earned income tax credit
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 12, ATAP (TA Diversion) does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap: 500  # monthly ATAP benefit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 13, SNAP and WIC do not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        wic: 50  # monthly WIC value
+      person2:
+        age: 4
+        wic: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 300  # monthly SNAP
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 14, combined PFD + EITC + ATAP yields zero countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ak_permanent_fund_dividend: 1_702
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
