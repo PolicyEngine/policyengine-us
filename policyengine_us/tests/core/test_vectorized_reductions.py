@@ -86,6 +86,72 @@ def test_has_qdiv_or_ltcg_reduces_per_tax_unit_not_across_simulation():
     ]
 
 
+def test_eitc_earned_income_reduces_per_tax_unit_not_across_simulation():
+    simulation = Simulation(
+        situation={
+            "people": {
+                "person1": {
+                    "age": {"2026": 35},
+                    "employment_income": {"2026": 5_000},
+                },
+                "person2": {
+                    "age": {"2026": 35},
+                    "self_employment_income": {"2026": -6_000},
+                },
+                "person3": {
+                    "age": {"2026": 35},
+                    "employment_income": {"2026": 2_000},
+                },
+                "person4": {
+                    "age": {"2026": 35},
+                    "employment_income": {"2026": 8_000},
+                    "farm_operations_income": {"2026": -10_000},
+                },
+            },
+            "tax_units": {
+                "tax_unit1": {"members": ["person1", "person2"]},
+                "tax_unit2": {"members": ["person3"]},
+                "tax_unit3": {"members": ["person4"]},
+            },
+            "spm_units": {
+                "spm_unit1": {"members": ["person1", "person2"]},
+                "spm_unit2": {"members": ["person3"]},
+                "spm_unit3": {"members": ["person4"]},
+            },
+            "families": {
+                "family1": {"members": ["person1", "person2"]},
+                "family2": {"members": ["person3"]},
+                "family3": {"members": ["person4"]},
+            },
+            "marital_units": {
+                "marital_unit1": {"members": ["person1", "person2"]},
+                "marital_unit2": {"members": ["person3"]},
+                "marital_unit3": {"members": ["person4"]},
+            },
+            "households": {
+                "household1": {
+                    "members": ["person1", "person2"],
+                    "state_code": {"2026": "CA"},
+                },
+                "household2": {
+                    "members": ["person3"],
+                    "state_code": {"2026": "CA"},
+                },
+                "household3": {
+                    "members": ["person4"],
+                    "state_code": {"2026": "CA"},
+                },
+            },
+        }
+    )
+
+    assert simulation.calculate("eitc_earned_income", 2026).tolist() == [
+        0,
+        2_000,
+        0,
+    ]
+
+
 def test_numpy_any_all_outputs_specify_axis_or_stay_in_control_flow():
     variables_dir = Path(__file__).parents[2] / "variables"
     offenders = []
