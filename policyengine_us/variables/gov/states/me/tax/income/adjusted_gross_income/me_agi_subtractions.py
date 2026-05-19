@@ -16,4 +16,5 @@ class me_agi_subtractions(Variable):
         "us_govt_interest",
         "me_pension_income_deduction",
         "me_529_plan_subtraction",
+        "me_affordability_payment_subtraction",
     ]

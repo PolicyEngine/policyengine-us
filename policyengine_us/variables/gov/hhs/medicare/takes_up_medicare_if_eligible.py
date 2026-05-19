@@ -4,6 +4,6 @@ from policyengine_us.model_api import *
 class takes_up_medicare_if_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Takes up Medicare if eligible"
+    label = "Whether an eligible person takes up Medicare"
     definition_period = YEAR
     default_value = True

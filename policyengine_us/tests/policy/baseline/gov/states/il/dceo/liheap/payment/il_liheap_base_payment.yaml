@@ -148,3 +148,50 @@
     # Bracket 1, size 6, nat gas -> $1,760
     # min(1,760, 2,000) = 1,760
     il_liheap_base_payment: 1_760
+
+# Legacy fallback tests — verify heating_cooling_expense still caps the benefit.
+- name: Case 7, legacy fallback to heating_cooling_expense, not capped.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_liheap_heating_type: NAT_GAS_OTHER
+        heating_cooling_expense: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # heating_expense_person unset → falls back to heating_cooling_expense (2_000)
+    # Bracket 1, size 1, nat gas -> $1,260
+    # min(1_260, 2_000) = 1_260
+    il_liheap_base_payment: 1_260
+
+- name: Case 8, legacy fallback to heating_cooling_expense, capped at expense.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        irs_gross_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        il_liheap_heating_type: ALL_ELECTRIC
+        heating_cooling_expense: 150
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # heating_expense_person unset → falls back to heating_cooling_expense (150)
+    # Bracket 1, size 1, all electric -> $840
+    # min(840, 150) = 150 (capped)
+    il_liheap_base_payment: 150

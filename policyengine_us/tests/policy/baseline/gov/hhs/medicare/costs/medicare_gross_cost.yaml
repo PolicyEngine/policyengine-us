@@ -1,0 +1,28 @@
+- name: unit test 1 - enrolled, premium-free Part A gets full gross Medicare value
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 40
+    adjusted_gross_income:
+      2023: 50_000
+    tax_exempt_interest_income:
+      2023: 0
+  output:
+    medicare_gross_cost: 14_500
+
+- name: unit test 2 - premiums do not reduce gross Medicare value
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    medicare_quarters_of_coverage: 20
+    adjusted_gross_income:
+      2023: 500_000
+    tax_exempt_interest_income:
+      2023: 0
+    filing_status: SINGLE
+  output:
+    medicare_gross_cost: 14_500

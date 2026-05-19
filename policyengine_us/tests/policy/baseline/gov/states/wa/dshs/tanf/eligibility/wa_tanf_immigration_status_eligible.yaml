@@ -1,0 +1,140 @@
+- name: Case 1, US citizen is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CITIZEN
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 2, refugee just arrived is eligible (bar-exempt).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: REFUGEE
+    years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 3, asylee just arrived is eligible (bar-exempt).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: ASYLEE
+    years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 4, Cuban or Haitian entrant just arrived is eligible (bar-exempt).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 5, LPR in 5-year bar is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+  output:
+    wa_tanf_immigration_status_eligible: false
+
+- name: Case 6, LPR at exactly 5 years is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 5
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 6b, LPR at 4 years is ineligible (just inside 5-year bar).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 4
+  output:
+    wa_tanf_immigration_status_eligible: false
+
+- name: Case 7, LPR past 5-year bar is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 8, LPR using default years_since_us_entry is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 9, undocumented immigrant is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: UNDOCUMENTED
+  output:
+    wa_tanf_immigration_status_eligible: false
+
+- name: Case 10, DACA recipient is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: DACA
+  output:
+    wa_tanf_immigration_status_eligible: false
+
+- name: Case 11, deportation-withheld just arrived is eligible (bar-exempt).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: DEPORTATION_WITHHELD
+    years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 12, conditional entrant in 5-year bar is ineligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CONDITIONAL_ENTRANT
+    years_since_us_entry: 2
+  output:
+    wa_tanf_immigration_status_eligible: false
+
+- name: Case 13, conditional entrant past 5-year bar is eligible.
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CONDITIONAL_ENTRANT
+    years_since_us_entry: 6
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 14, Afghan or Ukrainian humanitarian parolee just arrived is eligible (bar-exempt).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: PAROLED_ONE_YEAR
+    years_since_us_entry: 0
+  output:
+    wa_tanf_immigration_status_eligible: true
+
+- name: Case 15, citizen with default years_since_us_entry is eligible (locks citizen short-circuit).
+  period: 2024-01
+  input:
+    state_code: WA
+    immigration_status: CITIZEN
+    # years_since_us_entry intentionally omitted to rely on the default; the
+    # is_citizen short-circuit must keep citizens eligible regardless.
+  output:
+    wa_tanf_immigration_status_eligible: true

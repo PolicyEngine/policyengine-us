@@ -32,9 +32,9 @@ class loss_ald(Variable):
         self_employment_loss = tax_unit.sum(indiv_se_loss)
 
         # Schedule F farm business income/losses.
-        indiv_farm_income = max_(0, person("farm_operations_income", period))
+        indiv_farm_operations_income = max_(0, person("farm_operations_income", period))
         indiv_farm_loss = max_(0, -person("farm_operations_income", period))
-        farm_income = tax_unit.sum(indiv_farm_income)
+        farm_operations_income = tax_unit.sum(indiv_farm_operations_income)
         farm_loss = tax_unit.sum(indiv_farm_loss)
 
         # Schedule E rental, farm-rent, and estate/trust items.
@@ -66,7 +66,7 @@ class loss_ald(Variable):
         # Total business losses subject to Section 461(l) limitation
         total_business_income = (
             self_employment_income
-            + farm_income
+            + farm_operations_income
             + rental_income
             + farm_rent_income
             + estate_income

@@ -18,7 +18,7 @@ class pa_ccw_adjusted_income(Variable):
         )
         alimony_paid = add(spm_unit, period, ["alimony_expense"])
         child_support_paid = add(spm_unit, period, ["child_support_expense"])
-        medical_expenses = add(spm_unit, period, ["medical_out_of_pocket_expenses"])
+        medical_expenses = spm_unit("pa_ccw_medical_expenses", period)
         medical_deduction = max_(
             medical_expenses - gross * p.medical_expense_threshold, 0
         )
