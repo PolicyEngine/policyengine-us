@@ -1,3 +1,10 @@
+## [1.694.0] - 2026-05-19
+
+### Added
+
+- Add SC OBBBA non-conformity addition for 2025 (standard deduction increase, senior deduction, tip/overtime/auto loan deductions).
+
+
 ## [1.693.6] - 2026-05-18
 
 ### Fixed
