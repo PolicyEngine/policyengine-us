@@ -21,12 +21,25 @@ class ut_homeowner_renter_relief_eligible(Variable):
         statuses = filing_status.possible_values
         age_eligible = (age_head >= p.age_threshold) | (age_spouse >= p.age_threshold)
         surviving_spouse = filing_status == statuses.SURVIVING_SPOUSE
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit.spm_unit(
+            "ut_homeowner_renter_relief_household_income", period
+        )
         paid_rent_or_property_tax = (
             add(tax_unit, period, ["rent", "real_estate_taxes"]) > 0
+        )
+        claimants = tax_unit.members("is_tax_unit_head_or_spouse", period)
+        claimant_is_tax_unit_dependent = tax_unit.any(
+            claimants & tax_unit.members("is_tax_unit_dependent", period)
+        )
+        claimant_is_dependent_elsewhere = tax_unit(
+            "head_is_dependent_elsewhere", period
+        ) | tax_unit("spouse_is_dependent_elsewhere", period)
+        claimant_is_dependent = (
+            claimant_is_tax_unit_dependent | claimant_is_dependent_elsewhere
         )
         return (
             (age_eligible | surviving_spouse)
             & (income <= p.income_limit)
             & paid_rent_or_property_tax
+            & ~claimant_is_dependent
         )

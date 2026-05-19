@@ -17,7 +17,9 @@ class ut_homeowner_renter_relief(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ut.tax.property.homeowner_renter_relief
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit.spm_unit(
+            "ut_homeowner_renter_relief_household_income", period
+        )
         maximum = p.maximum.calc(income)
         rent = add(tax_unit, period, ["rent"])
         renter_credit = min_(rent * p.renter.rate.calc(income), maximum)
