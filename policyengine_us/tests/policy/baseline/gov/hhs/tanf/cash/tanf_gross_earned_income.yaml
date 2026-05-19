@@ -1,0 +1,6 @@
+- name: Includes monthly SSTB self-employment income before LSR
+  period: 2024-01
+  input:
+    sstb_self_employment_income_before_lsr: 12_000
+  output:
+    tanf_gross_earned_income: 1_000
