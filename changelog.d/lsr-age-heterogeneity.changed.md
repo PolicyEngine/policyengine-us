@@ -1,0 +1,1 @@
+Reintroduce age-specific labor supply response multipliers without changing the legacy scalar income elasticity path, and fix the labor-supply-response zero guard so nonzero primary or secondary substitution elasticities are not skipped.
