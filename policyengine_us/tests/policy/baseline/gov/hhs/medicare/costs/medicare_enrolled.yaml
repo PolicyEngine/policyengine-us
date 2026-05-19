@@ -1,0 +1,21 @@
+- name: Case 1, non-eligible person is not enrolled when enrollment is omitted.
+  period: 2025
+  input:
+    age: 64
+  output:
+    medicare_enrolled: false
+
+- name: Case 2, eligible person defaults to enrolled.
+  period: 2025
+  input:
+    age: 65
+  output:
+    medicare_enrolled: true
+
+- name: Case 3, eligible person declining take-up is not enrolled.
+  period: 2025
+  input:
+    age: 65
+    takes_up_medicare_if_eligible: false
+  output:
+    medicare_enrolled: false
