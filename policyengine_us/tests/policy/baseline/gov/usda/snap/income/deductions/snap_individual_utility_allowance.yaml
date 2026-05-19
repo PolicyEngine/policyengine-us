@@ -85,7 +85,7 @@
 
 - name: NC TUA HH size 1 in FY2025
   period: 2025-01
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: NC

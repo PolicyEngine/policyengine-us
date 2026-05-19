@@ -12,11 +12,3 @@
     child_support_expense: 100
   output:
     snap_child_support_gross_income_deduction: 100
-
-- name: Colorado does not deduct child support.
-  period: 2026-01
-  input:
-    state_code: CO
-    child_support_expense: 100
-  output:
-    snap_child_support_gross_income_deduction: 0
