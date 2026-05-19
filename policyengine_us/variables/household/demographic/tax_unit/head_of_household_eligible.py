@@ -10,6 +10,8 @@ class head_of_household_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         married = tax_unit("tax_unit_married", period)
+        filing_status = tax_unit("filing_status", period)
+        joint = filing_status == filing_status.possible_values.JOINT
         person = tax_unit.members
         # IRC 7703(b) "considered unmarried" applies to the taxpayer (head or
         # spouse), not to dependents. A separated dependent must not trigger
@@ -32,8 +34,11 @@ class head_of_household_eligible(Variable):
         has_qualifying_person = tax_unit.sum(is_hoh_qualifying) > 0
         # IRC 7703(b) treated-unmarried status supports HoH only through the
         # child-abode path, not the broader qualifying-relative route.
+        # IRC 7703(b)(1) further requires the taxpayer to file a separate
+        # return: a JOINT filer who is separated cannot claim HoH because
+        # the joint return forecloses the "considered unmarried" path.
         treated_unmarried_qualifies = tax_unit.sum(is_qualifying_child) > 0
         surviving_spouse = tax_unit("surviving_spouse_eligible", period)
         unmarried_qualifies = has_qualifying_person & ~married & ~is_separated
-        separated_qualifies = treated_unmarried_qualifies & is_separated
+        separated_qualifies = treated_unmarried_qualifies & is_separated & ~joint
         return (unmarried_qualifies | separated_qualifies) & ~surviving_spouse

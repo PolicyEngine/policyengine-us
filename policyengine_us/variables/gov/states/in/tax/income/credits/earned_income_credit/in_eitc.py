@@ -20,12 +20,12 @@ class in_eitc(Variable):
             federal_eitc = tax_unit("eitc", period)
             return federal_eitc * ip.earned_income.match_rate
         if ip.earned_income.static_conformity_in_effect:
-            # IC 6-3-1-11 (Indiana's IRC definition for IC 6-3.1-21):
-            #   - TY 2023 through 2025: IRC as in effect on January 1, 2023.
-            #   - TY 2026 onward: IRC as in effect on July 4, 2025, per SB 243
-            #     of 2026 (signed by Governor Braun, advancing conformity to
-            #     include sections of H.R. 1 / Public Law 119-21).
-            snapshot_date = "2025-07-04" if period.start.year >= 2026 else "2023-01-01"
+            # IC 6-3-1-11 (Indiana's IRC definition for IC 6-3.1-21) pins the
+            # federal-law reference date used to compute the EITC. The exact
+            # snapshot date lives in
+            # `gov.states.in.tax.income.credits.earned_income.static_conformity_snapshot_date`
+            # (2023-01-01 for TY 2023-2025; 2025-07-04 for TY 2026+ per SB 243).
+            snapshot_date = ip.earned_income.static_conformity_snapshot_date
             frozen_eitc = parameters.gov.irs.credits.eitc(snapshot_date)
             child_count = tax_unit("eitc_child_count", period)
             demographic_eligible = calculate_eitc_demographic_eligibility(
@@ -60,8 +60,9 @@ class in_eitc(Variable):
         pi_rate = fp.eitc.phase_in_rate.calc(kids)
         po_start = fp.eitc.phase_out.start.calc(kids)  # no JOINT bonus
         po_rate = fp.eitc.phase_out.rate.calc(kids)
-        if str(period) == "2021":
-            # ... additional decoupling of parameters for childless taxpayers
+        if ip.earned_income.childless.in_effect:
+            # 2021-only decoupled-childless-parameter branch, gated by
+            # gov.states.in.tax.income.credits.earned_income.childless.in_effect.
             maximum0 = ip.earned_income.childless.maximum
             pi_rate0 = ip.earned_income.childless.phase_in_rate
             po_start0 = ip.earned_income.childless.phase_out_start

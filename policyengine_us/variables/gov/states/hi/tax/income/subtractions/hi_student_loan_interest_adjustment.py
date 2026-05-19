@@ -29,6 +29,10 @@ class hi_student_loan_interest_deduction(Variable):
         status = filing_status.possible_values
         separate = filing_status == status.SEPARATE
         phase_out_start = p_sli.phase_out.start[filing_status]
+        # SEPARATE filers receive no Hawaii SLI deduction; we still need a
+        # non-zero divisor here so the vectorized phase-out arithmetic does
+        # not divide by zero. The where(separate, 0, ...) guard below masks
+        # the result.
         phase_out_divisor = p_sli.phase_out.divisor[filing_status]
         reduction_share = min_(
             1, max_(0, (hi_magi - phase_out_start) / phase_out_divisor)
