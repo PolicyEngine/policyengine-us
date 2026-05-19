@@ -16,13 +16,13 @@
   output:
     nd_renters_refund_eligible: true
 
-- name: Case 2, disabled renter under age 65 is eligible.
+- name: Case 2, permanently disabled renter under age 65 is eligible.
   period: 2026
   input:
     people:
       person1:
         age: 40
-        is_disabled: true
+        is_permanently_and_totally_disabled: true
         rent: 9_600
     tax_units:
       tax_unit:
@@ -60,6 +60,25 @@
       person1:
         age: 65
         rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 6, non-permanent disability does not qualify.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        rent: 9_600
     tax_units:
       tax_unit:
         members: [person1]

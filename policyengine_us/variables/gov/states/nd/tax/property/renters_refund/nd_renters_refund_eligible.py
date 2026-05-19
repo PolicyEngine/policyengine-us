@@ -14,9 +14,9 @@ class nd_renters_refund_eligible(Variable):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period.this_year)
-        is_disabled = person("is_disabled", period)
+        is_permanently_disabled = person("is_permanently_and_totally_disabled", period)
         age_or_disability_eligible = tax_unit.any(
-            ((age >= p.age_threshold) | is_disabled) & head_or_spouse,
+            ((age >= p.age_threshold) | is_permanently_disabled) & head_or_spouse,
         )
         income = tax_unit("adjusted_gross_income", period)
         rent = add(tax_unit, period, ["rent"])
