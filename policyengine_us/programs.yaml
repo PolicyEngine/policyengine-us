@@ -1116,16 +1116,6 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
-  - id: ny_drive_clean_rebate
-    name: NY Drive Clean Rebate
-    full_name: New York Drive Clean Rebate
-    category: Energy
-    agency: State
-    status: complete
-    coverage: NY
-    variable: ny_drive_clean_rebate
-    parameter_prefix: gov.states.ny.nyserda.drive_clean
-
   - id: nj_unemployment_insurance
     name: New Jersey Unemployment Insurance
     full_name: New Jersey Unemployment Insurance
@@ -1136,6 +1126,16 @@ programs:
     variable: nj_unemployment_insurance
     parameter_prefix: gov.states.nj.dol.unemployment_insurance
     verified_years: "2024-2026"
+
+  - id: ny_drive_clean_rebate
+    name: NY Drive Clean Rebate
+    full_name: New York Drive Clean Rebate
+    category: Energy
+    agency: State
+    status: complete
+    coverage: NY
+    variable: ny_drive_clean_rebate
+    parameter_prefix: gov.states.ny.nyserda.drive_clean
 
   - id: tx_fpp_benefit
     name: Texas FPP

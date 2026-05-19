@@ -1,12 +1,12 @@
-description: New Jersey calculates the partial benefit rate as the weekly benefit rate multiplied by this factor.
+description: New Jersey allows partial benefits equal to the weekly benefit rate plus a 20% earnings disregard, expressed here as a (1 + disregard) multiplier on the weekly benefit rate. The reduced payable benefit is `multiplier * weekly_benefit_rate - weekly_gross_wages`, floored at 0 and capped at the full weekly benefit rate.
 
 metadata:
   unit: /1
   period: year
-  label: New Jersey UI partial benefit rate multiplier
+  label: New Jersey UI partial benefit rate multiplier (1 + earnings disregard)
   reference:
-    - title: N.J.S.A. 43:21-3(b) - Weekly benefits for unemployment
-      href: https://law.justia.com/codes/new-jersey/title-43/section-43-21-3/
+    - title: N.J.S.A. 43:21-3(b) - Partial unemployment benefits and earnings disregard
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf
     - title: NJ Division of Unemployment Insurance - FAQ Factors that affect your weekly benefit rate
       href: https://www.nj.gov/labor/myunemployment/help/faqs/reducebenefits.shtml
     - title: NJ Division of Employer Accounts - Unemployment Insurance
