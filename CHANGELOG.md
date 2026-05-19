@@ -1,3 +1,10 @@
+## [1.696.0] - 2026-05-19
+
+### Added
+
+- Added Utah Homeowner's/Renter's Relief.
+
+
 ## [1.695.0] - 2026-05-19
 
 ### Added
