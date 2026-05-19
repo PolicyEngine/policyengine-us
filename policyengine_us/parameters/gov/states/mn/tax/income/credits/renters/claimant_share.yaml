@@ -1,0 +1,128 @@
+description: Minnesota sets the claimant share of excess rent constituting property taxes by household income under the renter's credit.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Minnesota renter's credit claimant share
+  reference:
+    - title: Minnesota Statutes 290.0693, Subd. 3(a) — Claimant share column
+      href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
+    - title: 2025 Schedule M1RENT, Renter's Credit
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-03/m1rent-25.pdf#page=5
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0.05
+  - threshold:
+      values:
+        2024-01-01: 6_480
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.1
+  - threshold:
+      values:
+        2024-01-01: 15_090
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.15
+  - threshold:
+      values:
+        2024-01-01: 21_540
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.2
+  - threshold:
+      values:
+        2024-01-01: 30_160
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.25
+  - threshold:
+      values:
+        2024-01-01: 36_630
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.3
+  - threshold:
+      values:
+        2024-01-01: 45_230
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.35
+  - threshold:
+      values:
+        2024-01-01: 51_690
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.4
+  - threshold:
+      values:
+        2024-01-01: 60_320
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.45
+  - threshold:
+      values:
+        2024-01-01: 66_790
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 0.5
+  - threshold:
+      values:
+        2024-01-01: 75_390
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 10
+    amount:
+      2024-01-01: 1
