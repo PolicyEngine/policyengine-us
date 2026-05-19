@@ -12,6 +12,7 @@ INPUT_VARIABLES = [
     "ssi_reported",
     "tax_exempt_403b_distributions",
     "taxable_ira_distributions",
+    "taxable_roth_conversions",
     "w2_wages_from_qualified_business",
     "roth_ira_contributions",
     "social_security_retirement",
