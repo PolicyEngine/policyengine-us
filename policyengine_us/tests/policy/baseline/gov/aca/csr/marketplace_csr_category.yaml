@@ -56,17 +56,70 @@
     marketplace_csr_actuarial_value: 0
     marketplace_effective_actuarial_value: 0.7
 
-- name: Case 5, APTC-eligible silver enrollee below 100 percent FPL receives 94 percent AV CSR.
+- name: Case 5, below-FPL lawfully present silver enrollee receives 94 percent AV CSR before 2026 repeal.
+  absolute_error_margin: 0.001
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+        selected_marketplace_plan_category: SILVER
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]
+    person_receives_aca: [true]
+    marketplace_csr_eligible: true
+    marketplace_csr_category: AV_94
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_csr_actuarial_value: 0.94
+    marketplace_effective_actuarial_value: 0.94
+
+- name: Case 6, below-FPL lawfully present silver enrollee receives no CSR after 2026 repeal.
   absolute_error_margin: 0.001
   period: 2026
   input:
-    pays_aca_premium: true
-    is_aca_ptc_eligible: true
-    aca_magi_fraction: 0.75
-    selected_marketplace_plan_category: SILVER
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+        selected_marketplace_plan_category: SILVER
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
   output:
-    person_receives_aca: true
-    marketplace_csr_eligible: true
-    marketplace_csr_category: AV_94
-    marketplace_csr_actuarial_value: 0.94
-    marketplace_effective_actuarial_value: 0.94
+    aca_ptc_below_fpl_immigration_exception: false
+    is_aca_ptc_eligible: [false]
+    person_receives_aca: [false]
+    marketplace_csr_eligible: false
+    marketplace_csr_category: NONE
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_csr_actuarial_value: 0
+    marketplace_effective_actuarial_value: 0.7
