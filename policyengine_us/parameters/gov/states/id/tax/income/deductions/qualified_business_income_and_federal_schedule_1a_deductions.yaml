@@ -1,0 +1,22 @@
+description: Idaho allows these qualified business income and federal Schedule 1-A deductions.
+values:
+  2018-01-01:
+    - qualified_business_income_deduction
+  2025-01-01:
+    - qualified_business_income_deduction
+    - id_additional_senior_deduction
+    - tip_income_deduction
+    - overtime_income_deduction
+    - auto_loan_interest_deduction
+  2029-01-01:
+    - qualified_business_income_deduction
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho qualified business income and federal Schedule 1-A deductions
+  reference:
+    - title: Idaho Tax Commission - Update on filing 2025 Idaho income taxes now that conformity is law
+      href: https://tax.idaho.gov/pressrelease/update-on-filing-2025-idaho-income-taxes-now-that-conformity-is-law/
+    - title: H.R.1 - One Big Beautiful Bill Act
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
