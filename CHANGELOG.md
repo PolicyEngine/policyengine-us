@@ -1,3 +1,10 @@
+## [1.699.1] - 2026-05-19
+
+### Fixed
+
+- Fix Medicare enrollment defaults by modeling enrollment as eligibility-gated take-up.
+
+
 ## [1.699.0] - 2026-05-19
 
 ### Added
