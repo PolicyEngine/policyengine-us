@@ -6,6 +6,12 @@ class nj_unemployment_insurance_dependency_allowance(Variable):
     entity = Person
     label = "New Jersey unemployment insurance dependency allowance rate"
     unit = "/1"
+    documentation = (
+        "Dependency benefits rely on the user-provided count of qualifying "
+        "dependents at claim establishment. Phase-1 scope: the statutory "
+        "rule allowing only one spouse to receive dependency benefits when "
+        "both spouses establish claims is not derived in-model."
+    )
     definition_period = YEAR
     reference = (
         "https://www.nj.gov/labor/myunemployment/before/about/howtoapply/dependencybenefits.shtml",

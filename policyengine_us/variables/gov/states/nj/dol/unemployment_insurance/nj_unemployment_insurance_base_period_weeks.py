@@ -16,5 +16,6 @@ class nj_unemployment_insurance_base_period_weeks(Variable):
         "in N.J.S.A. 43:21-19(c) are not derived in-model."
     )
     definition_period = YEAR
+    default_value = 0
     reference = "https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf"
     defined_for = StateCode.NJ

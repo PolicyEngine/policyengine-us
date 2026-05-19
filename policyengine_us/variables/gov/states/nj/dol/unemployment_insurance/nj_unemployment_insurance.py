@@ -33,12 +33,17 @@ class nj_unemployment_insurance(Variable):
         p = parameters(period).gov.states.nj.dol.unemployment_insurance
         available_weeks = min_(qualifying_base_weeks, p.max_benefit_weeks)
         actual_weeks = min_(weeks_claimed, available_weeks)
+        partial_benefit_disregard = max_(
+            np.floor(weekly_benefit * (p.partial_benefit_rate_multiplier - 1)),
+            p.min_partial_benefit_disregard,
+        )
         reduced_weekly_benefit = min_(
             weekly_benefit,
             np.floor(
                 max_(
                     0,
-                    weekly_benefit * p.partial_benefit_rate_multiplier
+                    weekly_benefit
+                    + partial_benefit_disregard
                     - np.floor(weekly_gross_wages),
                 )
             ),

@@ -7,5 +7,6 @@ class nj_unemployment_insurance_weeks_claimed(Variable):
     label = "New Jersey unemployment insurance weeks claimed"
     unit = "week"
     definition_period = YEAR
+    default_value = 0
     reference = "https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf"
     defined_for = StateCode.NJ

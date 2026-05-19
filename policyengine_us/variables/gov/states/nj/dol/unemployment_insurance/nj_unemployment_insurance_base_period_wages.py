@@ -14,5 +14,6 @@ class nj_unemployment_insurance_base_period_wages(Variable):
         "pre-aggregate base-period wages before inputting this amount."
     )
     definition_period = YEAR
+    default_value = 0
     reference = "https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf"
     defined_for = StateCode.NJ

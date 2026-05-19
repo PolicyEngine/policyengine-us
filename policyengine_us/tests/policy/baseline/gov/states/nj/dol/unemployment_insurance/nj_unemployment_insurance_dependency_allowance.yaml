@@ -162,3 +162,27 @@
     people:
       person:
         nj_unemployment_insurance_dependency_allowance: 0
+
+- name: NJ UI dependency allowance rate - employed spouse bars above-cap dependents (2024)
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person:
+        age: 40
+        nj_unemployment_insurance_qualifying_dependents: 5
+        nj_unemployment_insurance_spouse_employed_when_claim_established: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_dependency_allowance: 0

@@ -556,3 +556,155 @@
       person:
         nj_unemployment_insurance_eligible: true
         nj_unemployment_insurance: 0
+
+- name: NJ UI statutory five-dollar partial disregard floor applies (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 800
+        nj_unemployment_insurance_weeks_claimed: 1
+        nj_unemployment_insurance_weekly_gross_wages: 20
+        nj_unemployment_insurance_working_less_than_full_time: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # WBR = floor($40 * 60%) = $24. The 20% disregard floors to $4,
+        # so the statutory $5 floor applies: $24 + $5 - $20 = $9.
+        nj_unemployment_insurance_weekly_benefit_rate: 24
+        nj_unemployment_insurance: 9
+
+- name: NJ UI partial benefits stop at the partial benefit rate boundary (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 360
+        nj_unemployment_insurance_working_less_than_full_time: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # WBR = $300 and the partial benefit rate is $360.
+        nj_unemployment_insurance_weekly_benefit_rate: 300
+        nj_unemployment_insurance: 0
+
+- name: NJ UI partial benefits remain zero above the partial benefit rate boundary (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 361
+        nj_unemployment_insurance_working_less_than_full_time: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_weekly_benefit_rate: 300
+        nj_unemployment_insurance: 0
+
+- name: NJ UI weeks are capped by base weeks when claimed weeks exceed both caps (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        nj_unemployment_insurance_base_period_weeks: 24
+        nj_unemployment_insurance_base_period_wages: 12_000
+        nj_unemployment_insurance_weeks_claimed: 30
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        # Claims exceed the 26-week cap and the 24 qualifying base weeks.
+        nj_unemployment_insurance_eligible: true
+        nj_unemployment_insurance_weekly_benefit_rate: 300
+        nj_unemployment_insurance: 7200
+
+- name: NJ UI part-time integration verifies intermediate values (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 31
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 100.75
+        nj_unemployment_insurance_working_less_than_full_time: true
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 10_000
+        nj_unemployment_insurance_average_weekly_wage: 500
+        nj_unemployment_insurance_weekly_benefit_rate: 300
+        nj_unemployment_insurance_dependency_allowance: 0
+        nj_unemployment_insurance_weekly_benefit: 300
+        nj_unemployment_insurance_weeks_claimed: 10
+        nj_unemployment_insurance_weekly_gross_wages: 100.75
+        nj_unemployment_insurance_working_less_than_full_time: true
+        nj_unemployment_insurance: 2600

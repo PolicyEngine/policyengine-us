@@ -237,3 +237,23 @@
       person:
         # 2026 alternative threshold is $15,500
         nj_unemployment_insurance_eligible: true
+
+- name: NJ UI eligible when both monetary routes pass (2026)
+  period: 2026
+  input:
+    people:
+      person:
+        age: 38
+        nj_unemployment_insurance_base_period_weeks: 20
+        nj_unemployment_insurance_base_period_wages: 15_500
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NJ
+  output:
+    people:
+      person:
+        nj_unemployment_insurance_eligible: true
