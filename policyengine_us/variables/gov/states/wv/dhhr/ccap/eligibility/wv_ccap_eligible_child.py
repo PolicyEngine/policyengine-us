@@ -13,10 +13,8 @@ class wv_ccap_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        # Manual Sec 3.1.2 extends eligibility to ages 13-17 if EITHER the
-        # child is under court supervision (Sec 3.1.2.1) OR has special
-        # needs (Sec 3.1.2.2). We only model the special-needs branch
-        # because we don't track court-supervision status at the moment.
+        # NOTE: we don't track court-supervision (§3.1.2.1) at the moment, so the
+        # 13-17 extension applies only via the special-needs branch (§3.1.2.2).
         p = parameters(period).gov.states.wv.dhhr.ccap.eligibility
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)

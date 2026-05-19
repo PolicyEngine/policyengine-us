@@ -16,7 +16,7 @@ class wv_ccap_child_age_category(Variable):
     definition_period = MONTH
     label = "West Virginia CCAP child age category"
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6831/download?inline"
+    reference = "https://bfa.wv.gov/media/6831/download?inline#page=1"
 
     def formula(person, period, parameters):
         age_in_months = person("age", period.this_year) * MONTHS_IN_YEAR

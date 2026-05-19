@@ -36,8 +36,7 @@
     # === Eligibility ===
     wv_ccap_eligible_child: [false, true]
 
-    # Single income test at 85% SMI: WV family-of-2 = 4_366.82/mo
-    # monthly income = 2_000 <= 4_366.82 -> eligible
+    # 185% FPL family of 2 = $39,127.50/yr; $24,000/yr → eligible.
     wv_ccap_income_eligible: true
     is_ccdf_asset_eligible: true
     wv_ccap_eligible: true
@@ -124,7 +123,7 @@
     people:
       person1:
         age: 35
-        # Above 85% SMI family of 2 (52_401.86/yr)
+        # Above 185% FPL family of 2 ($39,127.50/yr).
         employment_income: 60_000
         immigration_status: CITIZEN
         weekly_hours_worked: 40
@@ -148,7 +147,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 5_000 > 4_366.82 (85% SMI family of 2)
+    # $60,000/yr > 185% FPL family of 2 ($39,127.50/yr).
     wv_ccap_income_eligible: false
     wv_ccap_eligible: false
     wv_ccap: 0

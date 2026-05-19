@@ -14,7 +14,7 @@ class wv_ccap_informal_age_group(Variable):
     definition_period = MONTH
     label = "West Virginia CCAP informal care age group"
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6831/download?inline"
+    reference = "https://bfa.wv.gov/media/6831/download?inline#page=1"
 
     def formula(person, period, parameters):
         age_in_months = person("age", period.this_year) * MONTHS_IN_YEAR

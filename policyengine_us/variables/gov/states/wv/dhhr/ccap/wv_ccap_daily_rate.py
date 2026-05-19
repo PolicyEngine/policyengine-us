@@ -11,7 +11,7 @@ class wv_ccap_daily_rate(Variable):
     label = "West Virginia CCAP daily provider reimbursement rate"
     definition_period = MONTH
     defined_for = "wv_ccap_eligible_child"
-    reference = "https://bfa.wv.gov/media/6831/download?inline"
+    reference = "https://bfa.wv.gov/media/6831/download?inline#page=1"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wv.dhhr.ccap.rates

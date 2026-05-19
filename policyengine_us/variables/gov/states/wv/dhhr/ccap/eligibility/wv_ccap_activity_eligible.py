@@ -14,11 +14,8 @@ class wv_ccap_activity_eligible(Variable):
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         hours_worked = person("weekly_hours_worked", period.this_year)
-        meets_work_requirement = hours_worked >= p.activity_hours
         is_student = person("is_full_time_student", period.this_year)
-        individually_eligible = meets_work_requirement | is_student
-        # A unit with no head or spouse (e.g., a child-only record) has no
-        # caretaker to be in a qualifying activity and must not pass.
+        individually_eligible = (hours_worked >= p.activity_hours) | is_student
         has_caretaker = spm_unit.sum(is_head_or_spouse) > 0
         no_ineligible_caretaker = (
             spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0

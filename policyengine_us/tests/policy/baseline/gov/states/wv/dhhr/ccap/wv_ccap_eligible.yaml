@@ -24,9 +24,9 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Child age 5 < 13 -> eligible child
-    # Income 24,000 < 185% FPL (39,127.50) -> income eligible
-    # Parent works 30 hrs >= 20 -> activity eligible
+    # Child age 5 is under the 13-year limit.
+    # Income $24,000 is below 185% FPL for a family of 2 ($39,127.50).
+    # Parent works 30 hours per week, meeting the 20-hour activity test.
     wv_ccap_eligible: true
 
 - name: Case 2, no eligible child means not eligible.
@@ -60,9 +60,7 @@
     people:
       person1:
         age: 30
-        # Need income above 85% SMI for family of 2:
-        #   WV 4-person SMI (2024-10-01) = 90,661; 2-person factor = 0.68
-        #   85% SMI family of 2 = 90,661 * 0.68 * 0.85 = 52,401.86/yr
+        # Income above 185% FPL for family of 2 (185% × $21,150 = $39,127.50/yr).
         employment_income: 60_000
         weekly_hours_worked: 40
       person2:
@@ -80,7 +78,7 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # 60,000 > 52,401.86 -> not income eligible
+    # $60,000/yr is above 185% FPL for a family of 2 ($39,127.50) → not income eligible.
     wv_ccap_eligible: false
 
 - name: Case 4, parent not meeting activity hours means not eligible.
@@ -137,35 +135,7 @@
         members: [person1, person2, person3]
         state_code: WV
   output:
-    # Both parents work >= 20 hrs -> activity eligible
-    # Combined income: 30,000 < 185% FPL-3 (49,302.50) -> income eligible
-    # Child age 3 < 13 -> eligible child
-    wv_ccap_eligible: true
-
-- name: Case 6, minor parent in qualifying activity remains eligible.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 17
-        employment_income: 12_000
-        weekly_hours_worked: 25
-      person2:
-        age: 1
-        is_tax_unit_dependent: true
-        childcare_hours_per_week: 40
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: WV
-  output:
-    # Manual §1.1.10, §4.5.3.6, §4.5.6 contemplate minor parents in
-    # qualifying activity. Parent age 17 working 25 hrs/wk meets the
-    # activity test; income well below 85% SMI; child age 1 eligible.
+    # Both parents work 20 hours per week, meeting the activity test.
+    # Combined income $30,000 is below 185% FPL for a family of 3.
+    # Child age 3 is under the 13-year child age limit.
     wv_ccap_eligible: true

@@ -15,4 +15,4 @@ class wv_ccap_quality_tier(Variable):
     definition_period = MONTH
     label = "West Virginia CCAP provider quality tier"
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6831/download?inline"
+    reference = "https://bfa.wv.gov/media/6831/download?inline#page=1"

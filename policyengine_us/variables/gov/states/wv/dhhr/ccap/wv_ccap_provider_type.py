@@ -17,4 +17,4 @@ class wv_ccap_provider_type(Variable):
     definition_period = MONTH
     label = "West Virginia CCAP child care provider type"
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6831/download?inline"
+    reference = "https://bfa.wv.gov/media/6831/download?inline#page=1"

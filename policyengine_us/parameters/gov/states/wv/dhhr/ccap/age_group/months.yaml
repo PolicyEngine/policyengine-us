@@ -7,13 +7,8 @@ metadata:
   label: West Virginia CCAP child age group by months
   reference:
     - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
-      href: https://bfa.wv.gov/media/6831/download?inline
+      href: https://bfa.wv.gov/media/6831/download?inline#page=1
 
-# Maps age in months to WVCCAPChildAgeCategory enum index:
-# 0 = INFANT (0-24 months)
-# 1 = TODDLER (25-36 months)
-# 2 = PRESCHOOL (37-59 months)
-# 3 = SCHOOL_AGE (60+ months)
 brackets:
   - threshold:
       2024-01-01: 0

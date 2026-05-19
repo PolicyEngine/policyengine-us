@@ -1,4 +1,4 @@
-description: West Virginia sets this co-payment share of income by federal poverty level ratio under the Child Care Assistance Program.
+description: West Virginia sets this co-payment share of income per child by federal poverty level ratio under the Child Care Assistance Program.
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -7,15 +7,13 @@ metadata:
   label: West Virginia CCAP co-payment rate by FPL ratio
   reference:
     - title: WV Child Care Subsidy Appendix A — Sliding Fee Scale (Oct 1, 2024)
-      href: https://bfa.wv.gov/media/6826/download?inline
+      href: https://bfa.wv.gov/media/6826/download?inline#page=1
     - title: WV CCDF State Plan FFY 2025-2027, Section 3.1.2 — Sliding Fee Scale
-      href: https://bfa.wv.gov/media/39915/download?inline#page=39
+      href: https://bfa.wv.gov/media/39915/download?inline#page=40
 
-# Simplified percentage approximation of the 176-cell sliding fee scale.
-# Derived from the 3-person family column in Appendix A as a representative
-# middle case. Actual daily dollar fees vary by family size; this percentage
-# approximation produces reasonable copay amounts across family sizes.
-# The 7% cap (max_share parameter) provides an upper bound per CCDF rules.
+# Percentage approximation of the Appendix A daily fee schedule, derived from
+# the 3-person family column. The wv_ccap_copay formula multiplies by the
+# number of eligible children (capped at 3 per Manual §6.4.3).
 brackets:
   - threshold:
       2024-10-01: 0
