@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ut_homeowner_renter_relief_household_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Household
     label = "Utah homeowner's/renter's relief household income"
     unit = USD
     definition_period = YEAR
@@ -19,10 +19,13 @@ class ut_homeowner_renter_relief_household_income(Variable):
     )
     defined_for = StateCode.UT
 
-    def formula(spm_unit, period, parameters):
+    def formula(household, period, parameters):
         p = parameters(period).gov.states.ut.tax.property.homeowner_renter_relief
-        person = spm_unit.members
+        person = household.members
         person_agi = person("adjusted_gross_income_person", period)
+        nontaxable_income = person(
+            "ut_homeowner_renter_relief_nontaxable_income", period
+        )
         is_adult = person("age", period) >= p.adult_age_threshold
         tax_unit_person_agi = person.tax_unit.sum(person_agi)
         tax_unit_agi = person.tax_unit("adjusted_gross_income", period)
@@ -35,4 +38,6 @@ class ut_homeowner_renter_relief_household_income(Variable):
             * tax_unit_has_adult
             * tax_unit_agi
         )
-        return spm_unit.sum(person_agi * is_adult + tax_unit_agi_fallback)
+        return household.sum(
+            (person_agi + nontaxable_income) * is_adult + tax_unit_agi_fallback
+        )
