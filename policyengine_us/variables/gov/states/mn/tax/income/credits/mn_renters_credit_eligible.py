@@ -23,8 +23,14 @@ class mn_renters_credit_eligible(Variable):
         p = parameters(period).gov.states.mn.tax.income.credits.renters
 
         claimants = tax_unit.members("is_tax_unit_head_or_spouse", period)
-        claimant_is_dependent = tax_unit.any(
+        claimant_is_tax_unit_dependent = tax_unit.any(
             claimants & tax_unit.members("is_tax_unit_dependent", period)
+        )
+        claimant_is_dependent_elsewhere = tax_unit(
+            "head_is_dependent_elsewhere", period
+        ) | tax_unit("spouse_is_dependent_elsewhere", period)
+        claimant_is_dependent = (
+            claimant_is_tax_unit_dependent | claimant_is_dependent_elsewhere
         )
 
         return (

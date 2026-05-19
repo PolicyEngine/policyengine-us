@@ -77,3 +77,25 @@
     rent: 6_000
     mn_rent_constituting_property_taxes: 1_020
     mn_renters_credit: 629
+
+- name: Case 4, claimed dependent claimant is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        pre_subsidy_rent: 10_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mn_renters_credit_qualifying_crp: true
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_renters_credit_eligible: false
+    mn_renters_credit: 0

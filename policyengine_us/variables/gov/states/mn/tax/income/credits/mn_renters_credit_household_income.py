@@ -18,7 +18,7 @@ class mn_renters_credit_household_income(Variable):
         minimum_age = p.credits.renters.age_threshold
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        household_agi = tax_unit("adjusted_gross_income", period) + (
+        household_agi = tax_unit.spm_unit("mn_renters_credit_household_agi", period) + (
             tax_unit("spouse_separate_adjusted_gross_income", period) * separate
         )
         exemption_amount = p.exemptions.amount
