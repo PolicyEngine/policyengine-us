@@ -1,3 +1,14 @@
+## [1.698.0] - 2026-05-19
+
+### Added
+
+- Implemented the Alaska Child Care Assistance Program (CCAP) for PASS II (post-ATAP transitional) and PASS III (general low-income); PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled.
+
+### Changed
+
+- Replaced the full US County enum (3,175 values) with a 29-value AKCCAPRateRegion enum for Alaska CCAP rate-region lookups, cutting the AK CCAP test suite from ~10 minutes to ~12 seconds.
+
+
 ## [1.697.0] - 2026-05-19
 
 ### Added
