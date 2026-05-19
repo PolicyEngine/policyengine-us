@@ -19,3 +19,19 @@
     takes_up_medicare_if_eligible: false
   output:
     medicare_enrolled: false
+
+- name: Explicit false enrollment input overrides default take-up.
+  period: 2025
+  input:
+    age: 65
+    medicare_enrolled: false
+  output:
+    medicare_enrolled: false
+
+- name: Explicit enrollment input overrides eligibility gate.
+  period: 2025
+  input:
+    age: 64
+    medicare_enrolled: true
+  output:
+    medicare_enrolled: true
