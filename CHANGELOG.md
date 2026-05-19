@@ -1,3 +1,21 @@
+## [1.700.0] - 2026-05-19
+
+### Added
+
+- Add statutory American Opportunity Credit student eligibility inputs and compute eligibility from those inputs.
+
+### Changed
+
+- Reintroduce age-specific labor supply response multipliers without changing the legacy scalar income elasticity path, and fix the labor-supply-response zero guard so nonzero primary or secondary substitution elasticities are not skipped.
+
+### Fixed
+
+- Fixed the Maryland pension exclusion maximum amount for 2026.
+- Count SSTB self-employment income in Social Security, state and benefit income definitions, and mixed-category QBID allocation.
+- Fixed Idaho's OBBBA Schedule 1-A deduction conformity after 2028.
+- Fix EITC earned income calculations for self-employment loss netting.
+
+
 ## [1.699.1] - 2026-05-19
 
 ### Fixed
