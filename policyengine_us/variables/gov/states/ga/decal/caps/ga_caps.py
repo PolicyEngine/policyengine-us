@@ -30,6 +30,10 @@ class ga_caps(Variable):
         family_fee = spm_unit("ga_caps_family_fee", period)
         net_base = max_(base_monthly - family_fee, 0)
 
+        # CCDF Plan §4.3.3 phrases the Quality Rated bonus as a per-provider
+        # add-on. We don't distinguish provider rating per child at the moment,
+        # so we collapse to one family-level effective bonus rate weighted by
+        # each child's maximum weekly benefit.
         quality_rating = person("ga_caps_quality_rating", period)
         star_count = select(
             [

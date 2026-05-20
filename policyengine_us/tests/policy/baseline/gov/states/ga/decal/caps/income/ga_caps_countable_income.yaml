@@ -1,0 +1,170 @@
+# GA CAPS countable income (SPM-unit-level sum).
+# Policy Manual §8.4.1 (applicable income, page 49) lists 12 countable types
+# plus Social Security retirement; §8.4.2 excludes SSA disability/survivors/SSI.
+# §8.4.3 excludes income from a child age 17 or younger (is_adult filter).
+# Annual inputs auto-divide to monthly under MONTH definition.
+
+- name: Case 1, single adult with employment income only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 1_000
+
+- name: Case 2, child earnings excluded under §8.4.3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+      person2:
+        age: 12
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 0
+
+- name: Case 3, mixed adult and child earnings — only adult counts.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 12
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 2_000
+
+- name: Case 4, multiple income sources on a single adult.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: 6_000
+        dividend_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 1_600
+
+- name: Case 5, two-adult household sums both.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 32
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 3_000
+
+- name: Case 6, non-earnings sources counted (pension + veterans benefits).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        pension_income: 18_000
+        veterans_benefits: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 2_000
+
+- name: Case 7, Social Security retirement counted under §8.4.1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 67
+        social_security_retirement: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 2_000
+
+- name: Case 8, Social Security dependents benefits counted under §8.4.1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security_dependents: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 1_000
+
+- name: Case 9, Social Security disability excluded under §8.4.2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security_disability: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_countable_income: 0

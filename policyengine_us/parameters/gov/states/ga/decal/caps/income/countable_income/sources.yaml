@@ -12,6 +12,8 @@ values:
     - rental_income
     - dividend_income
     - pension_income
+    - social_security_retirement
+    - social_security_dependents
     - military_basic_pay
     # The following are counted per CAPS Policy Manual §8.4 but have
     # no matching variables:
@@ -26,4 +28,4 @@ metadata:
   label: Georgia CAPS countable income sources
   reference:
     - title: Georgia CAPS Policy Manual, Section 8.4 (Applicable Income)
-      href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=48
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=49

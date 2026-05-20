@@ -8,7 +8,7 @@ class ga_caps_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=48"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=49"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.income.countable_income

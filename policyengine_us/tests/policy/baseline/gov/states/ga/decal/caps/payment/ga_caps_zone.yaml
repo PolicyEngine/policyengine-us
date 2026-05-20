@@ -1,7 +1,7 @@
 # GA CAPS zone assignment
-# Zone 1: 14 counties (Fulton, Cobb, DeKalb, etc.)
+# Zone 1: 14 counties (Fulton, Cobb, DeKalb, etc.) — default
 # Zone 2: 46 counties (Chatham, Bibb, etc.)
-# Zone 3: all remaining counties (default)
+# Zone 3: ~99 remaining Georgia counties (Appling, etc.)
 
 - name: Case 1, Fulton County is Zone 1.
   period: 2026-01
@@ -71,7 +71,6 @@
         state_code: GA
         county_str: APPLING_COUNTY_GA
   output:
-    # Not in Zone 1 or Zone 2 -> Zone 3 (default)
     ga_caps_zone: ZONE_3
 
 - name: Case 6, Camden County is Zone 1.

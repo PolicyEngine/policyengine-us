@@ -16,6 +16,10 @@ class ga_caps_eligible_child(Variable):
         p = parameters(period).gov.states.ga.decal.caps.age_threshold
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
+        # Per Policy Manual §6.4.1, the age 13-17 extension also covers children
+        # whose case plan requires child care as part of court-ordered supervision;
+        # we don't track court-ordered supervision at the moment, so only the
+        # disability pathway is modeled.
         age_eligible = where(is_disabled, age <= p.disabled_child, age < p.child)
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
