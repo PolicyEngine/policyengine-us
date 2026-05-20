@@ -105,3 +105,45 @@
         state_code: PA
   output:
     pa_property_tax_or_rent_rebate_income: 8_568
+
+- name: Case 7, represented PA-1000 Line 11 income sources are included.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        gambling_winnings: 1_000
+        alimony_income: 2_000
+        workers_compensation: 3_000
+        disability_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_income: 20_000
+
+- name: Case 8, CSRS exclusion is capped by each recipient's CSRS income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        csrs_retirement_pay: 5_000
+      person2:
+        age: 65
+        csrs_retirement_pay: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_income: 8_568
