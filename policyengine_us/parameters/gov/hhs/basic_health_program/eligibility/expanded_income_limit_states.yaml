@@ -8,8 +8,9 @@ values:
   2025-01-01:
     - NY
   # CMS approved termination of New York's section 1332 waiver effective
-  # 2026-07-01. Since this eligibility variable is annual, the first full
-  # post-termination year uses the standard 200% FPL BHP limit.
+  # 2026-07-01. Because this eligibility variable is annual, we keep NY on
+  # the 250% FPL expanded ceiling through 2026 (the waiver still applies for
+  # H1 2026) and revert to the standard 200% FPL BHP ceiling starting 2027.
   2027-01-01:
     []
 
