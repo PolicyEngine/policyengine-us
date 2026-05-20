@@ -18,14 +18,14 @@ class md_ccs_income_eligible(Variable):
         countable_income = spm_unit("md_ccs_countable_income", period)
         # Maryland freezes the SMI base year on a fiscal-year schedule (MSDE
         # Feb 4, 2026 W&M briefing slide 21): FY2019-2022 used 2018 SMI,
-        # FY2023-2024 used 2021 SMI, FY2025+ uses current SMI. PolicyEngine's
-        # hhs_smi parameter only has data from 2021-10-01 forward, so the
-        # FY2019-2022 freeze (2018 SMI) will return zero until earlier SMI
-        # entries are added.
+        # FY2023-2024 used 2021 SMI, FY2025+ uses current SMI.
         if p.smi_freeze_in_effect:
-            size = spm_unit("spm_unit_size", period)
-            state = spm_unit.household("state_code_str", period)
-            smi_value = smi(size, state, f"{p.smi_frozen_year}-10-01", parameters)
+            size = spm_unit("spm_unit_size", period.this_year)
+            state = spm_unit.household("state_code_str", period.this_year)
+            smi_value = (
+                smi(size, state, f"{p.smi_frozen_year}-10-01", parameters)
+                / MONTHS_IN_YEAR
+            )
         else:
             smi_value = spm_unit("hhs_smi", period)
         enrolled = spm_unit("md_ccs_enrolled", period)

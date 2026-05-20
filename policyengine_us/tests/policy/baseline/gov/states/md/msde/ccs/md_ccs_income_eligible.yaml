@@ -113,3 +113,30 @@
     # Monthly 85% SMI threshold: 149,249 * 0.85 / 12 = 10,571.81
     # 10,833.33 > 10,571.81 -> not eligible
     md_ccs_income_eligible: false
+
+- name: Case 5, frozen SMI is converted to monthly before comparing income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # Monthly countable income: 100,000 / 12 = 8,333.33
+    # Frozen FY2024 four-person SMI uses 2021 MD SMI: 124,807
+    # Monthly 75% SMI threshold: 124,807 * 0.75 / 12 = 7,800.44
+    # 8,333.33 > 7,800.44 -> not eligible
+    md_ccs_income_eligible: false
