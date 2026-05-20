@@ -45,3 +45,13 @@
     # Both Schedule C ($50k) and K-1 Box 14 ($30k) are subject to SE tax.
     # 80_000 * (1 - 0.5 * 0.153) = 80_000 * 0.9235 = 73_880
     taxable_self_employment_income: 73_880
+
+- name: SSTB self-employment income is subject to SE tax.
+  period: 2024
+  input:
+    self_employment_income: 50_000
+    sstb_self_employment_income: 30_000
+  output:
+    # Both non-SSTB ($50k) and SSTB ($30k) Schedule C income are subject to SE tax.
+    # 80_000 * (1 - 0.5 * 0.153) = 80_000 * 0.9235 = 73_880
+    taxable_self_employment_income: 73_880

@@ -10,10 +10,9 @@ class mt_income_tax_before_refundable_credits_unit(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        income_tax_before_credits_indiv = add(
-            tax_unit, period, ["mt_income_tax_before_refundable_credits_indiv"]
-        )
-        income_tax_before_credits_joint = tax_unit(
-            "mt_income_tax_before_refundable_credits_joint", period
-        )
-        return min_(income_tax_before_credits_indiv, income_tax_before_credits_joint)
+        p = parameters(period).gov.states.mt.tax.income
+        indiv = add(tax_unit, period, ["mt_income_tax_before_refundable_credits_indiv"])
+        joint = tax_unit("mt_income_tax_before_refundable_credits_joint", period)
+        if p.married_filing_separately_on_same_return_allowed:
+            return min_(indiv, joint)
+        return joint

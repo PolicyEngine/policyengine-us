@@ -1,0 +1,47 @@
+- name: One filer with a valid SSN and the other filer with an ITIN qualifies for child CTC under senate finance rules
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: CITIZEN
+      spouse:
+        is_tax_unit_spouse: true
+        ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    filer_meets_child_ctc_identification_requirements: true
+
+- name: An ITIN-only filer cannot claim child CTC once the stricter filer SSN rule takes effect
+  period: 2026
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    filer_meets_child_ctc_identification_requirements: false
+
+- name: An ITIN-only filer could still claim child CTC before 2025
+  period: 2024
+  absolute_error_margin: 0.9
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ssn_card_type: NONE
+        has_itin: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    filer_meets_child_ctc_identification_requirements: true

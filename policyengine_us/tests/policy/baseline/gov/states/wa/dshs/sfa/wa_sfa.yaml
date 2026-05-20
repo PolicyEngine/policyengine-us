@@ -1,0 +1,95 @@
+- name: Case 1, eligible LPR in bar with no income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    # Benefit = $706 - $0 = $706 (uses TANF payment standard per WAC 388-478-0020)
+    wa_sfa: 706
+
+- name: Case 2, eligible LPR in bar with partial income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 250
+  output:
+    # Benefit = $706 - $250 = $456
+    wa_sfa: 456
+
+- name: Case 3, eligible with income equal to payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 706
+  output:
+    wa_sfa: 0
+
+- name: Case 4, eligible with income exceeding payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 900
+  output:
+    # Benefit capped at 0, not negative
+    wa_sfa: 0
+
+- name: Case 5, ineligible household.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: false
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: 0
+  output:
+    wa_sfa: 0
+
+- name: Case 6, negative countable income capped at payment standard.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 706
+    wa_tanf_countable_income: -500
+  output:
+    # max_ on countable_income prevents negative-income inflation
+    wa_sfa: 706
+
+- name: Case 7, eligible LPR in bar in 2023.
+  period: 2023-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 654
+    wa_tanf_countable_income: 0
+  output:
+    # Confirms 2023 coverage exists (household_state_benefits.yaml lists
+    # wa_sfa starting 2023-01-01).
+    wa_sfa: 654
+
+- name: Case 8, eligible LPR in bar in 2025.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    state_code: WA
+    wa_sfa_eligible: true
+    wa_tanf_payment_standard: 750
+    wa_tanf_countable_income: 0
+  output:
+    # Confirms 2025 coverage (parameter values may differ; the test pins
+    # the calculation, not a specific payment-standard amount).
+    wa_sfa: 750

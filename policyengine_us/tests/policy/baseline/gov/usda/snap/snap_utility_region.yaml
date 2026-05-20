@@ -75,6 +75,34 @@
   output:
     snap_utility_region: AK_SE
 
+- name: Case 6b, Alaska Southeast region (Haines Borough per FSP-77).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: HAINES_BOROUGH_AK
+  output:
+    snap_utility_region: AK_SE
+
+- name: Case 6c, Alaska Southeast region (Petersburg Borough per FSP-77).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: PETERSBURG_BOROUGH_AK
+  output:
+    snap_utility_region: AK_SE
+
 - name: Case 7, Alaska Southwest region (Bristol Bay per FSP-77).
   period: 2025
   input:

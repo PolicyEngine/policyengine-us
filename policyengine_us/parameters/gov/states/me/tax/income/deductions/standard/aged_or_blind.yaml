@@ -1,0 +1,54 @@
+description: Maine additional standard deduction per aged or blind box checked, by filing status. Because Maine conforms to the IRC as of December 31, 2024 (36 MRSA § 111) and did not adopt the One Big Beautiful Bill Act (OBBBA), the additional amount for 2025 remains at the pre-OBBBA federal projection rather than the OBBBA level.
+metadata:
+  label: Maine additional standard deduction for aged or blind
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 36 MRSA § 111 (Maine IRC conformity as of December 31, 2024)
+    href: https://www.mainelegislature.org/legis/statutes/36/title36sec111.html
+  - title: 36 MRSA § 5124-C (Maine standard deduction)
+    href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
+  - title: Maine 2025 Form 1040ME Individual Income Tax Booklet, Standard Deduction Chart for line 17 (page 4)
+    href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf
+SINGLE:
+  2018-01-01: 1_600
+  2019-01-01: 1_650
+  2021-01-01: 1_700
+  2022-01-01: 1_750
+  2023-01-01: 1_850
+  2024-01-01: 1_950
+  2025-01-01: 2_000
+JOINT:
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600
+SEPARATE:
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 1_600
+  2019-01-01: 1_650
+  2021-01-01: 1_700
+  2022-01-01: 1_750
+  2023-01-01: 1_850
+  2024-01-01: 1_950
+  2025-01-01: 2_000
+SURVIVING_SPOUSE:
+  2018-01-01: 1_300
+  2019-01-01: 1_300
+  2021-01-01: 1_350
+  2022-01-01: 1_400
+  2023-01-01: 1_500
+  2024-01-01: 1_550
+  2025-01-01: 1_600

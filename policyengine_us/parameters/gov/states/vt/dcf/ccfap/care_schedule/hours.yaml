@@ -1,0 +1,27 @@
+description: Vermont sets these weekly hour thresholds for child care schedule classification under the Child Care Financial Assistance Program.
+
+brackets:
+  - threshold:
+      2009-02-09: 0
+    amount:
+      2009-02-09: 0  # PART_TIME
+  - threshold:
+      2009-02-09: 25.0001  # Above 25 hours
+    amount:
+      2009-02-09: 1  # FULL_TIME
+  - threshold:
+      2009-02-09: 50.0001  # Above 50 hours
+    amount:
+      2009-02-09: 2  # EXTENDED_CARE
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Vermont CCFAP care schedule hour thresholds
+  reference:
+    - title: CCFAP Regulations Section I B 3
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/CDD/CCFAP/CCFAP-Regulations.pdf#page=4
+    - title: CCFAP Capped State Rates Important Definitions (July 13, 2025)
+      href: https://outside.vermont.gov/dept/DCF/Policies%20Procedures%20Guidance/CDD-Guidance-CCFAP-Capped-Rates.pdf#page=1

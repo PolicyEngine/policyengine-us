@@ -1,0 +1,12 @@
+- name: CHIP take-up defaults to true.
+  period: 2026
+  input: {}
+  output:
+    takes_up_chip_if_eligible: true
+
+- name: Explicit false CHIP take-up is honored.
+  period: 2026
+  input:
+    takes_up_chip_if_eligible: false
+  output:
+    takes_up_chip_if_eligible: false

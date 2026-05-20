@@ -1,0 +1,165 @@
+# de_poc_age_group: Person, Enum, MONTH
+# Maps child age and hours to age group for rate lookup:
+#   age < 1 -> INFANT
+#   age < 2 -> TODDLER
+#   age < 6 -> PRESCHOOL
+#   age >= 6, hours/day >= 4 -> SCHOOL_AGE_FULL_TIME
+#   age >= 6, hours/day < 4 -> SCHOOL_AGE_PART_TIME
+
+- name: Case 1, infant age 0.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, INFANT]
+
+- name: Case 2, toddler age 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, TODDLER]
+
+- name: Case 3, preschool age 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, PRESCHOOL]
+
+- name: Case 4, preschool age 5 at upper boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, PRESCHOOL]
+
+- name: Case 5, school age full-time at 4 or more hours per day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        childcare_hours_per_day: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, SCHOOL_AGE_FULL_TIME]
+
+- name: Case 6, school age part-time at fewer than 4 hours per day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        childcare_hours_per_day: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, SCHOOL_AGE_PART_TIME]
+
+- name: Case 7, school age at exactly 4 hours per day is full-time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, SCHOOL_AGE_FULL_TIME]
+
+- name: Case 8, multi-child household with infant, preschooler, and school-age.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 35
+      child_infant:
+        age: 0
+        childcare_hours_per_day: 8
+      child_preschool:
+        age: 4
+        childcare_hours_per_day: 6
+      child_school:
+        age: 8
+        childcare_hours_per_day: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child_infant, child_preschool, child_school]
+    households:
+      household:
+        members: [parent, child_infant, child_preschool, child_school]
+        state_code: DE
+  output:
+    de_poc_age_group: [NONE, INFANT, PRESCHOOL, SCHOOL_AGE_FULL_TIME]

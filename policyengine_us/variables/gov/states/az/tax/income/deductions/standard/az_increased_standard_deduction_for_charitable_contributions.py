@@ -14,7 +14,7 @@ class az_increased_standard_deduction_for_charitable_contributions(Variable):
         p = parameters(period).gov.states.az.tax.income.deductions.standard.increased
         charitable_deduction = tax_unit("charitable_deduction", period)
         charitable_contributions_credit = tax_unit(
-            "az_charitable_contributions_credit", period
+            "az_charitable_contributions_credit_potential", period
         )
         charitable_deduction_after_credit = max_(
             charitable_deduction - charitable_contributions_credit, 0

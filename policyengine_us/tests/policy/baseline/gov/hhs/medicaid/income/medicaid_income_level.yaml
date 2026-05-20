@@ -1,0 +1,140 @@
+- name: Case 1, child income below the filing threshold is excluded from Medicaid household income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        own_children_in_household: 1
+      person2:
+        age: 10
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    medicaid_household_income_member: [20_000, 0]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [20_000, 20_000]
+    medicaid_income_level: [0.978474, 0.978474]
+    tax_unit_medicaid_income_level: 0.978474
+  absolute_error_margin: 0.001
+
+- name: Case 2, child income above the filing threshold is included in Medicaid household income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        own_children_in_household: 1
+      person2:
+        age: 10
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_person_is_required_to_file: [true, true]
+    medicaid_household_income_member: [20_000, 16_000]
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [36_000, 36_000]
+    medicaid_income_level: [1.761252, 1.761252]
+  absolute_error_margin: 0.001
+
+- name: Case 3, a child living with both parents uses the non-filer household while parents still use their own tax households.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        own_children_in_household: 1
+      person2:
+        age: 32
+        employment_income: 8_000
+        own_children_in_household: 1
+      person3:
+        age: 10
+    tax_units:
+      tax_unit1:
+        members: [person1, person3]
+        cohabitating_spouses: true
+      tax_unit2:
+        members: [person2]
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+  output:
+    medicaid_uses_non_filer_rules: [false, false, true]
+    medicaid_household_size: [3, 2, 3]
+    medicaid_household_income: [20_000, 20_000, 20_000]
+    medicaid_income_level: [0.774593, 0.978474, 0.774593]
+  absolute_error_margin: 0.001
+
+- name: Case 4, the pregnant applicant gets the pregnancy household-size adjustment but the spouse does not by default.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_820
+        current_pregnancies: 1
+      person2:
+        age: 30
+        employment_income: 0
+        current_pregnancies: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_group_str: CONTIGUOUS_US
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    medicaid_household_size: [3, 2]
+    medicaid_household_income: [25_820, 25_820]
+    medicaid_income_level: [1, 1.262231]
+    tax_unit_medicaid_income_level: 1
+  absolute_error_margin: 0.001

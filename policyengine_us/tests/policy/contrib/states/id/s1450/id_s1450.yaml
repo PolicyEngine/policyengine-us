@@ -1,0 +1,194 @@
+# Idaho S1450 - Extends Idaho CTC indefinitely by removing the 2026 sunset.
+# The Idaho CTC provides $205 per qualifying child (under 17).
+# Without this reform, the credit expires after 2025.
+
+- name: Case 1, single child in 2026.
+  # One qualifying child under 17, credit = $205
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # 1 qualifying child * $205 = $205
+    id_ctc: 205
+
+- name: Case 2, multiple children in 2026.
+  # Three qualifying children, credit = $615
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    # 3 qualifying children * $205 = $615
+    id_ctc: 615
+
+- name: Case 3, MFJ filing status with two children.
+  # Married couple with two qualifying children
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head: true
+      person2:
+        age: 36
+        is_tax_unit_spouse: true
+      person3:
+        age: 14
+        is_tax_unit_dependent: true
+      person4:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: ID
+  output:
+    # 2 qualifying children * $205 = $410
+    id_ctc: 410
+
+- name: Case 4, credit continues in 2027.
+  # Verify credit continues beyond 2026
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # 1 qualifying child * $205 = $205
+    id_ctc: 205
+
+- name: Case 5, no qualifying children.
+  # No children under 17, credit = $0
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # No qualifying children = $0
+    id_ctc: 0
+
+- name: Case 6, child exactly age 17 not qualifying.
+  # Child age 17 does not qualify (must be under 17)
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # Child age 17 is not qualifying (must be under 17)
+    id_ctc: 0
+
+- name: Case 7, non-Idaho resident gets zero.
+  # Different state, credit = $0 (defined_for check)
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.id.s1450.s1450.id_s1450
+  input:
+    gov.contrib.states.id.s1450.in_effect: true
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # Non-Idaho resident gets $0
+    id_ctc: 0

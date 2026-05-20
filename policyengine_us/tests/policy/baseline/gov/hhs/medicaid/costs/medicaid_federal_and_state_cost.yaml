@@ -1,0 +1,34 @@
+- name: Federal and state Medicaid cost sum to total cost (MS child, FY2026, 76.90% FMAP)
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: MS
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: INFANT
+    medicaid_cost: 10_000
+  output:
+    medicaid_federal_cost: 7_690
+    medicaid_state_cost: 2_310
+
+- name: California expansion adult federal cost uses 90% FMAP
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    state_code: CA
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+    medicaid_cost: 10_000
+  output:
+    medicaid_federal_cost: 9_000
+    medicaid_state_cost: 1_000
+
+- name: Non-eligible person has zero federal and state cost (medicaid_cost naturally zero)
+  period: 2026
+  input:
+    state_code: MS
+    is_medicaid_eligible: false
+  output:
+    medicaid_federal_cost: 0
+    medicaid_state_cost: 0

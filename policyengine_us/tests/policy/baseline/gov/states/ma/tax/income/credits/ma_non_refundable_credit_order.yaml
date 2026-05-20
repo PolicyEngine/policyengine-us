@@ -1,0 +1,8 @@
+- name: Applied non-refundable credits follow filing order
+  period: 2020
+  input:
+    state_code: MA
+    ma_income_tax_before_credits: 100
+    ma_limited_income_tax_credit_potential: 80
+  output:
+    ma_limited_income_tax_credit: 80

@@ -14,7 +14,6 @@ class state_standard_deduction(Variable):
         FEDERAL_STANDARD_DEDUCTION_STATES = [
             "CT",  # Connecticut
             "ID",  # Idaho
-            "ME",  # Maine
             "MO",  # Missouri
             "ND",  # North Dakota
             "NM",  # New Mexico

@@ -1,0 +1,25 @@
+description: Maine limits affordability payment eligibility to filers with federal adjusted gross income below this amount under the Affordability Payment Program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Maine affordability payment income limit
+  reference:
+    - title: H.P. 1491, L.D. 2212, Part T, Sec. T-1, sub-§1(C)(2)
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=157
+  breakdown:
+    - filing_status
+SINGLE:
+  values:
+    2025-01-01: 50_000
+SEPARATE:
+  values:
+    2025-01-01: 50_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2025-01-01: 75_000
+JOINT:
+  values:
+    2025-01-01: 100_000
+SURVIVING_SPOUSE:
+  values:
+    2025-01-01: 100_000

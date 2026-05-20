@@ -4,7 +4,7 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true   
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -22,10 +22,10 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -43,13 +43,13 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 35
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -67,10 +67,10 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -82,19 +82,143 @@
   output:
     slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
 
+- name: NY single filer with 25-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 25
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    is_aca_family_tier_dependent_child: [false, true]
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY single filer with 26-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 26
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    is_aca_ny_age_29_dependent_child: [false, true]
+    is_aca_family_tier_dependent_child: [false, true]
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY single filer with 29-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 29
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    is_aca_ny_age_29_dependent_child: [false, true]
+    is_aca_family_tier_dependent_child: [false, true]
+    slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+
+- name: NY single filer with 30-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    is_aca_ny_age_29_dependent_child: [false, false]
+    is_aca_family_tier_dependent_child: [false, false]
+    slcsp_family_tier_category: TWO_ADULTS
+
+- name: NY 26-year-old dependent without a covered adult is not child-only
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 55
+        is_tax_unit_dependent: false
+        pays_aca_premium: false
+      person2:
+        age: 26
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    is_aca_ny_age_29_dependent_child: [false, true]
+    is_aca_family_tier_dependent_child: [false, true]
+    slcsp_family_tier_category: ONE_ADULT
+
 - name: NY two parents with child
   period: 2023
   input:
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -112,7 +236,7 @@
     people:
       person1:
         age: 15
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -130,7 +254,7 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -148,13 +272,13 @@
     people:
       person1:
         age: 30
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person2:
         age: 32
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
       person3:
         age: 5
-        is_aca_ptc_eligible: true
+        pays_aca_premium: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -165,6 +289,87 @@
         state_fips: 50
   output:
     slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: VT married couple with 25-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 25
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    is_aca_family_tier_dependent_child: [false, false, true]
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: VT married couple with 60-year-old dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person2:
+        age: 30
+        is_tax_unit_dependent: false
+        pays_aca_premium: true
+      person3:
+        age: 60
+        is_tax_unit_dependent: true
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: VT
+        state_fips: 50
+  output:
+    is_aca_family_tier_dependent_child: [false, false, false]
+    slcsp_family_tier_category: TWO_ADULTS
+
+- name: NY high-income adult uses family tier category even when PTC-ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: false
+    slcsp_family_tier_category: ONE_ADULT
 
 - name: Non-family tier state uses individual age rating
   period: 2023

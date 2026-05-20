@@ -48,13 +48,12 @@ class vt_military_retirement_income_based_exemption(Variable):
         agi_below_threshold = max_(p.partial_exemption_threshold - agi, 0)
 
         # Use mask to avoid division by zero
-        valid_threshold_difference = threshold_difference != 0
-        partial_exemption_amount = where(
-            valid_threshold_difference,
-            tax_unit_military_retirement_pay
-            * agi_below_threshold
-            / threshold_difference,
-            0,
+        valid_threshold_difference = thresholds_are_finite & (threshold_difference != 0)
+        partial_exemption_amount = np.divide(
+            tax_unit_military_retirement_pay * agi_below_threshold,
+            threshold_difference,
+            out=np.zeros_like(agi, dtype=float),
+            where=valid_threshold_difference,
         )
 
         # Calculate exemption amounts for each case

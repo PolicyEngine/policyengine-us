@@ -1,0 +1,32 @@
+description: Maine LD 229 income tax brackets for head-of-household filers (§5111 sub-§2-G).
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
+  label: Maine LD 229 head-of-household filer brackets
+  reference:
+    - title: Maine LD 229 Committee Amendment C-A (H-649)
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP0152&item=2&snum=132
+
+brackets:
+  - threshold:
+      2026-01-01: 0
+    rate:
+      2026-01-01: 0.055
+  - threshold:
+      2026-01-01: 41_150
+    rate:
+      2026-01-01: 0.0675
+  - threshold:
+      2026-01-01: 97_450
+    rate:
+      2026-01-01: 0.0715
+  - threshold:
+      2026-01-01: 216_750
+    rate:
+      2026-01-01: 0.0775
+  - threshold:
+      2026-01-01: 750_000
+    rate:
+      2026-01-01: 0.0895

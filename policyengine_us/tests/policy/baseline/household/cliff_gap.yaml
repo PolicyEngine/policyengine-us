@@ -4,6 +4,7 @@
   input:
     age: 40
     employment_income: 100_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
@@ -16,6 +17,7 @@
   input:
     age: 40
     employment_income: 100_000 + 2_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:
@@ -28,6 +30,7 @@
   input:
     age: 40
     employment_income: 100_000
+    marketplace_net_premium: 0
     taxable_interest_income: 100_000
     state_fips: 48  # TX
   output:  # as expected from above two test results
@@ -150,4 +153,4 @@
         members: [person1, person2]
         state_fips: 11  # DC
   output:  # as expected from above two test results
-    cliff_gap: [486.5, 470.47]
+    cliff_gap: [486.5, 461.5]

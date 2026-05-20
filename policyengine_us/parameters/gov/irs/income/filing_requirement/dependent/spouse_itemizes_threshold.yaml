@@ -1,0 +1,12 @@
+description: The Internal Revenue Service requires married dependents whose spouse itemizes deductions on a separate return to file when gross income is at least this amount.
+values:
+  2014-01-01: 5
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRS dependent filing threshold for married dependents with itemizing spouses
+  reference:
+    - title: IRS Publication 501 (2014), Table 2. 2014 Filing Requirements for Dependents
+      href: https://www.irs.gov/pub/irs-prior/p501--2014.pdf#page=4
+    - title: IRS Publication 501 (2024), Table 2. 2024 Filing Requirements for Dependents
+      href: https://www.irs.gov/publications/p501

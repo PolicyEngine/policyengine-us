@@ -1,0 +1,41 @@
+- name: Illinois All Kids Premium Level 1 tax unit with one child pays 15 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: IL
+  output:
+    il_chip_premium: 180
+
+- name: Illinois All Kids Premium Level 2 tax unit with three children is capped at 80 dollars monthly.
+  period: 2024
+  input:
+    people:
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2, child3]
+        tax_unit_medicaid_income_level: 2.50
+    households:
+      household:
+        members: [child1, child2, child3]
+        state_code: IL
+  output:
+    il_chip_premium: 960

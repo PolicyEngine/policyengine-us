@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class dc_cdcc(Variable):
@@ -14,7 +17,14 @@ class dc_cdcc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        # DC matches the potential federal credit
-        us_cdcc = tax_unit("cdcc_potential", period)
-        p_dc = parameters(period).gov.states.dc.tax.income.credits
-        return us_cdcc * p_dc.cdcc.match
+        ordered_credits = parameters(
+            period
+        ).gov.states.dc.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "dc_income_tax_before_credits",
+            "dc_cdcc",
+            "dc_cdcc_potential",
+        )

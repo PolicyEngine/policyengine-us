@@ -1,0 +1,77 @@
+# Vermont Reach Up special housing allowance
+# Per Reach Up Rule 2244.3 / Procedure P-2230A: SHA is paid only when
+# actual housing expenses exceed the maximum monthly housing allowance
+# ($400 outside Chittenden, $450 in Chittenden). Amount = min(excess, $90).
+# Tests use MONTH period (2024-01); YEAR-defined inputs are annualized.
+
+- name: Case 1, non-Chittenden rent above cap+$90 yields the full $90 SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 9_600  # $800/month, $400 above $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 90
+
+- name: Case 2, household without rent receives no SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 0
+  output:
+    vt_reach_up_special_housing_allowance: 0
+
+- name: Case 3, non-VT state returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    pre_subsidy_rent: 9_600
+  output:
+    vt_reach_up_special_housing_allowance: 0
+
+- name: Case 4, non-Chittenden mortgage above cap+$90 yields the full $90 SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    mortgage_payments: 14_400  # $1,200/month, $800 above $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 90
+
+- name: Case 5, non-Chittenden real estate taxes only above cap+$90 yields full $90.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    real_estate_taxes: 7_200  # $600/month, $200 above $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 90
+
+- name: Case 6, non-Chittenden insurance just above cap yields partial SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    homeowners_insurance: 5_760  # $480/month, $80 above $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 80
+
+- name: Case 7, non-Chittenden rent at cap yields no SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 4_800  # $400/month, exactly at $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 0
+
+- name: Case 8, non-Chittenden rent below cap yields no SHA.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    pre_subsidy_rent: 3_600  # $300/month, below $400 cap
+  output:
+    vt_reach_up_special_housing_allowance: 0

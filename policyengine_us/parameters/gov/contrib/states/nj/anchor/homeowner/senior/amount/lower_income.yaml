@@ -1,0 +1,16 @@
+description: >-
+  New Jersey sets the ANCHOR senior homeowner lower-income benefit to this amount
+  after the $250 bonus expires following FY2026.
+values:
+  0000-01-01: 0
+  2027-01-01: 1_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Jersey ANCHOR senior homeowner lower-income amount (post-bonus)
+  reference:
+    - title: P.L. 2023, c.75, Section 15 - ANCHOR Senior Bonus (sunset FY2026)
+      href: https://pub.njleg.state.nj.us/Bills/2022/PL23/75_.PDF#page=11
+    - title: ANCHOR Program - How Benefits Are Calculated
+      href: https://www.nj.gov/treasury/taxation/anchor/calculated.shtml

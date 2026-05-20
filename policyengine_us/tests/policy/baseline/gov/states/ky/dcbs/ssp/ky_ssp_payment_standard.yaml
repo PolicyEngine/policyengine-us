@@ -1,0 +1,154 @@
+- name: Case 1, PCH individual.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: PCH
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: ONE
+  output:
+    # PCH.INDIVIDUAL.ONE = $1,610/mo
+    ky_ssp_payment_standard: 1_610
+
+- name: Case 2, CIS individual.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CIS
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: ONE
+  output:
+    # CIS.INDIVIDUAL.ONE = $1,514/mo
+    ky_ssp_payment_standard: 1_514
+
+- name: Case 3, FCH individual.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: FCH
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: ONE
+  output:
+    # FCH.INDIVIDUAL.ONE = $1,166/mo
+    ky_ssp_payment_standard: 1_166
+
+- name: Case 4, Caretaker individual.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CARETAKER
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: ONE
+  output:
+    # CARETAKER.INDIVIDUAL.ONE = $1,056/mo
+    ky_ssp_payment_standard: 1_056
+
+- name: Case 5, Caretaker couple both eligible, one receives care.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CARETAKER
+    ky_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # §9(1)(c) couple total $1,552/mo stored per-person as $776/mo.
+    ky_ssp_payment_standard: 776
+
+- name: Case 6, Caretaker couple both eligible, both receive care.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CARETAKER
+    ky_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+    ky_ssp_care_receivers: BOTH
+  output:
+    # §9(1)(c) couple total $1,606/mo stored per-person as $803/mo.
+    ky_ssp_payment_standard: 803
+
+- name: Case 7, Caretaker couple one eligible with ineligible spouse (individual rate).
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CARETAKER
+    ky_ssp_claim_type: COUPLE_ONE_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # §9(1)(c)1: eligible spouse with ineligible spouse uses individual rate.
+    # CARETAKER.COUPLE_ONE_ELIGIBLE.ONE = $1,056/mo.
+    ky_ssp_payment_standard: 1_056
+
+- name: Case 8, PCH couple both eligible — each uses full individual per-person rate.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: PCH
+    ky_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # PCH has no reduced couple rate (§9(1)(a)); each person's standard is
+    # the individual rate. $1,610/mo per person.
+    ky_ssp_payment_standard: 1_610
+
+- name: Case 9, NONE category returns zero payment standard.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: NONE
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: ONE
+  output:
+    ky_ssp_payment_standard: 0
+
+- name: Case 10, CIS couple both eligible — each uses full individual per-person rate.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CIS
+    ky_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # CIS has no reduced couple rate (§9(1)(d)). Per-person $1,514/mo.
+    ky_ssp_payment_standard: 1_514
+
+- name: Case 11, FCH couple both eligible — each uses full individual per-person rate.
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: FCH
+    ky_ssp_claim_type: COUPLE_BOTH_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # FCH has no reduced couple rate (§9(1)(b)). Per-person $1,166/mo.
+    ky_ssp_payment_standard: 1_166
+
+- name: Case 12, PCH couple one eligible (individual rate).
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: PCH
+    ky_ssp_claim_type: COUPLE_ONE_ELIGIBLE
+    ky_ssp_care_receivers: ONE
+  output:
+    # PCH.COUPLE_ONE_ELIGIBLE.ONE = $1,610/mo.
+    ky_ssp_payment_standard: 1_610
+
+- name: Case 13, Caretaker couple one eligible, care_receivers=BOTH (unused dimension).
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: CARETAKER
+    ky_ssp_claim_type: COUPLE_ONE_ELIGIBLE
+    ky_ssp_care_receivers: BOTH
+  output:
+    # CARETAKER.COUPLE_ONE_ELIGIBLE.BOTH = $1,056/mo.
+    ky_ssp_payment_standard: 1_056
+
+- name: Case 14, PCH care_receivers=BOTH individual (dimension unused for non-Caretaker).
+  period: 2026-01
+  input:
+    state_code: KY
+    ky_ssp_category: PCH
+    ky_ssp_claim_type: INDIVIDUAL
+    ky_ssp_care_receivers: BOTH
+  output:
+    # PCH.INDIVIDUAL.BOTH = $1,610/mo (same as ONE — dimension unused for PCH).
+    ky_ssp_payment_standard: 1_610

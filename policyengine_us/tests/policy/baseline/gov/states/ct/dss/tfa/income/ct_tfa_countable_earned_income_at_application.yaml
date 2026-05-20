@@ -107,3 +107,15 @@
     # person2: 100 - 90 = 10
     # person3: 0 - 90 = 0 (capped at 0)
     ct_tfa_countable_earned_income_at_application: [110, 10, 0]
+
+# --- Historical period: $90 deduction was same in 2020 ---
+
+- name: Case 9, 2020 new applicant deduction.
+  period: 2020-01
+  absolute_error_margin: 0.1
+  input:
+    tanf_gross_earned_income: 100
+    state_code: CT
+  output:
+    # 100 - 90 = 10
+    ct_tfa_countable_earned_income_at_application: 10

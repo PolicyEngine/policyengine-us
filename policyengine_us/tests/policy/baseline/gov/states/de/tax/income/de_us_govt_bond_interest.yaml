@@ -1,0 +1,7 @@
+- name: DE includes US government bond interest in subtractions
+  period: 2024
+  input:
+    state_code: DE
+    us_govt_interest_person: 5_000
+  output:
+    de_subtractions: 5_000

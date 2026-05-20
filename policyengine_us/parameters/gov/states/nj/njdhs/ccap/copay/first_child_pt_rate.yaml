@@ -1,0 +1,30 @@
+description: New Jersey sets this copayment percentage for the first child in part-time care under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: New Jersey CCAP first child part-time copayment rate by FPL ratio
+  reference:
+    - title: CC-236 Copayment Schedule
+      href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Copayment_Schedule.pdf#page=1
+    - title: NJ DHS Important Information - Copayment
+      href: https://www.childcarenj.gov/Parents/CCAP/ImportantInfo
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 0
+  - threshold:
+      2024-01-01: 1.0001
+    amount:
+      2024-01-01: 0
+      2024-08-01: 0.01
+      2026-03-01: 0.02
+  - threshold:
+      2024-01-01: 2.0001
+    amount:
+      2024-01-01: 0
+      2024-08-01: 0.015
+      2026-03-01: 0.025

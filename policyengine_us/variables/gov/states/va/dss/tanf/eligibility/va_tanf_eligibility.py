@@ -16,7 +16,7 @@ class va_tanf_eligibility(Variable):
         income_eligible = spm_unit("va_tanf_income_eligibility", period)
         # At least one person must be a citizen or qualified noncitizen
         has_eligible_member = (
-            add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
         )
         # no resource test for VA TANF
         return demographic_eligible & income_eligible & has_eligible_member

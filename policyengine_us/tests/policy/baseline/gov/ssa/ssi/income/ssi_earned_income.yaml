@@ -11,3 +11,10 @@
     dividend_income: 5
   output:
     ssi_earned_income: 2
+
+- name: Includes SSTB self-employment income.
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+  output:
+    ssi_earned_income: 100_000

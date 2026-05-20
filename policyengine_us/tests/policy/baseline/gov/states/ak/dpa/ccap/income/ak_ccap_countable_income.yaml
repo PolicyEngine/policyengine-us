@@ -1,0 +1,300 @@
+# ak_ccap_countable_income: SPMUnit, float (USD), MONTH
+# max(0, earned + unearned - child_support_paid)
+# Earned income from minors (age < 18) is excluded per Manual 4080-1.
+# Unearned income counts for all members regardless of age.
+
+- name: Case 1, adult earned income only.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # yearly
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 36_000 / 12 = 3_000/month
+    ak_ccap_countable_income: 3_000
+
+- name: Case 2, earned plus unearned income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # yearly
+        child_support_received: 6_000  # yearly
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 3, minor child's earned income is excluded.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000  # yearly
+      teen:
+        age: 16
+        employment_income: 6_000  # yearly -- excluded (age < 18)
+      young_child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, teen, young_child]
+    households:
+      household:
+        members: [parent, teen, young_child]
+        state_code: AK
+  output:
+    # Only parent earnings count: 36_000 / 12 = 3_000/month
+    ak_ccap_countable_income: 3_000
+
+- name: Case 4, minor child unearned income counts.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000  # yearly
+      child:
+        age: 10
+        social_security: 6_000  # yearly -- unearned counts for all ages
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 5, child support paid is deducted.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # yearly
+        child_support_expense: 6_000  # yearly deducted
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # (36_000 - 6_000) / 12 = 2_500/month
+    ak_ccap_countable_income: 2_500
+
+- name: Case 6, child support deduction does not produce negative income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # yearly
+        child_support_expense: 24_000  # exceeds income
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # max(0, 1_000 - 2_000) = 0
+    ak_ccap_countable_income: 0
+
+- name: Case 7, zero income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 8, newly added unearned sources are counted (workers_comp, capital_gains).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        workers_compensation: 12_000  # /yr -> 1_000/mo
+        capital_gains: 6_000  # /yr -> 500/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 1_000 + 500 = 1_500/month (TANF excluded to avoid circular dependency
+    # with ak_atap, which depends on childcare_expenses -> ak_ccap)
+    ak_ccap_countable_income: 1_500
+
+- name: Case 9, additional new unearned sources (interest, dividend).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        interest_income: 1_200  # /yr -> 100/mo
+        dividend_income: 2_400  # /yr -> 200/mo
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 100 + 200 = 300/month
+    ak_ccap_countable_income: 300
+
+# Cases 10-14: excluded income per Manual section 4080-5
+# (PFD, EITC, ATAP/TA Diversion, SNAP, WIC, and other federal non-cash benefits).
+# These sources are NOT listed in earned_sources.yaml or unearned_sources.yaml,
+# so the formula simply omits them.
+
+- name: Case 10, PFD does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ak_permanent_fund_dividend: 1_702  # 2024 PFD amount
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 11, EITC does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        eitc: 2_500  # federal earned income tax credit
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 12, ATAP (TA Diversion) does not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap: 500  # monthly ATAP benefit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 13, SNAP and WIC do not count toward CCAP countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        wic: 50  # monthly WIC value
+      person2:
+        age: 4
+        wic: 50
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 300  # monthly SNAP
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0
+
+- name: Case 14, combined PFD + EITC + ATAP yields zero countable income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ak_permanent_fund_dividend: 1_702
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ak_atap: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 2_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    ak_ccap_countable_income: 0

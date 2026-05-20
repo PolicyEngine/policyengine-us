@@ -1,0 +1,23 @@
+description: Kansas caps the 529 plan contributions subtraction at this amount per beneficiary by filing status.
+metadata:
+  label: Kansas 529 plan contribution subtraction cap per beneficiary
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Kansas State Treasurer - 529 Savings Program
+    href: https://www.kansasstatetreasurer.ks.gov/learn_quest.html
+  - title: Kansas Department of Revenue FAQ
+    href: https://www.ksrevenue.gov/faqs-taxii.html
+
+JOINT:
+  2021-01-01: 6_000
+SURVIVING_SPOUSE:
+  2021-01-01: 6_000
+SINGLE:
+  2021-01-01: 3_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 3_000
+SEPARATE:
+  2021-01-01: 3_000

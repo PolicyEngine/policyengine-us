@@ -1,15 +1,22 @@
 - name: Single filer with 10k of income
   period: 2023
-  input: 
+  input:
     state_code: KY
-    cdcc: 10_000
+    cdcc: 10000
+    ky_income_tax_before_non_refundable_credits_unit: 1000000
+    ky_personal_tax_credits: 0
+    ky_family_size_tax_credit: 0
+    ky_tuition_tax_credit: 0
   output:
-    ky_cdcc: 2_000
-
+    ky_cdcc: 2000
 - name: No income
   period: 2021
-  input: 
+  input:
     state_code: KY
     cdcc: 0
+    ky_income_tax_before_non_refundable_credits_unit: 1000000
+    ky_personal_tax_credits: 0
+    ky_family_size_tax_credit: 0
+    ky_tuition_tax_credit: 0
   output:
     ky_cdcc: 0

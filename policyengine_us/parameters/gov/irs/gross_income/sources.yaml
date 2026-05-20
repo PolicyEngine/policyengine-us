@@ -3,9 +3,11 @@ values:
   2010-01-01:
     - irs_employment_income
     - self_employment_income
+    - sstb_self_employment_income
     - partnership_s_corp_income
-    - farm_income
+    - farm_operations_income
     - farm_rent_income
+    - other_net_gain_gross_income
     - capital_gains
     - taxable_interest_income
     - rental_income
@@ -20,6 +22,7 @@ values:
     - taxable_social_security
     - illicit_income
     - taxable_retirement_distributions
+    - taxable_roth_conversions
     - miscellaneous_income
     # Listed separately on 1040 line 8g.
     - ak_permanent_fund_dividend

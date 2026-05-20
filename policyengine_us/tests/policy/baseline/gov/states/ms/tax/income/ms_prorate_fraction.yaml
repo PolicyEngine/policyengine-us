@@ -97,3 +97,29 @@
         state_code: MS
   output:
     ms_prorate_fraction: [1, 0]
+
+- name: Itemized deductions above the standard deduction are used in allocation
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ms_agi: 16_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        ms_agi: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        ms_itemized_deductions_unit: 8_000
+        ms_total_exemptions: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_prorate_fraction: [0.75, 0.25]

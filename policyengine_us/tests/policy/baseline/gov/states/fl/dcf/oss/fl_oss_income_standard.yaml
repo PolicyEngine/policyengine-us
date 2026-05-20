@@ -1,0 +1,80 @@
+# Tests for fl_oss_income_standard variable.
+# Redesign income standard = provider rate + $54 (frozen old PNA offset).
+# Protected income standard = provider rate (same value).
+
+- name: Case 1, Redesign individual income standard Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Redesign provider rate (I) = $991.40/month.
+    # Income standard PNA offset = $54/month.
+    # Income standard = $991.40 + $54 = $1,045.40/month.
+    # Annual = $1,045.40 * 12 = $12,544.80.
+    # Monthly output = $12,544.80 / 12 = $1,045.40.
+    fl_oss_income_standard: [1_045.40]
+
+- name: Case 2, Protected individual income standard Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_program_track: PROTECTED
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Protected income standard = provider rate = $1,152/month.
+    # Annual = $1,152 * 12 = $13,824.
+    # Monthly output = $13,824 / 12 = $1,152.
+    fl_oss_income_standard: [1_152]
+
+- name: Case 3, Redesign couple income standard Jan 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+      person2:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 68
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # Couple provider rate (Redesign) = $1,885.80/month.
+    # Couple income standard = couple provider rate + 2 * $54 = $1,885.80 + $108 = $1,993.80/month.
+    # Per person = $1,993.80 / 2 = $996.90/month.
+    # Annual per person = $996.90 * 12 = $11,962.80.
+    # Monthly output = $11,962.80 / 12 = $996.90.
+    fl_oss_income_standard: [996.90, 996.90]

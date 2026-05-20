@@ -1,0 +1,33 @@
+description: Virginia assigns children to these age group categories by age in months for child care reimbursement rates under the Child Care Subsidy Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Virginia CCSP care age group thresholds
+  reference:
+    - title: Virginia Child Care Subsidy Program Guidance Manual Section 7.2
+      href: https://www.childcare.virginia.gov/home/showpublisheddocument/66667/638981099706730000#page=203
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  - threshold:
+      2023-01-01: 16
+    amount:
+      2023-01-01: 1
+  - threshold:
+      2023-01-01: 24
+    amount:
+      2023-01-01: 2
+  - threshold:
+      2023-01-01: 36
+    amount:
+      2023-01-01: 3
+  - threshold:
+      2023-01-01: 60
+    amount:
+      2023-01-01: 4

@@ -15,7 +15,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [person1, person2]
@@ -41,7 +41,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 200
+        spm_unit_cash_assets: 200
     households:
       household:
         members: [person1, person2]
@@ -69,7 +69,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 0
+        spm_unit_cash_assets: 0
     households:
       household:
         members: [person1, person2]
@@ -94,7 +94,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 2_000
+        spm_unit_cash_assets: 2_000
     households:
       household:
         members: [person1, person2]
@@ -116,7 +116,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 300
+        spm_unit_cash_assets: 300
     households:
       household:
         members: [person1, person2]
@@ -144,7 +144,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-        spm_unit_assets: 900
+        spm_unit_cash_assets: 900
     households:
       household:
         members: [person1, person2, person3, person4]
@@ -170,7 +170,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: true
     households:
       household:
@@ -195,7 +195,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
         is_tanf_enrolled: true
     households:
       household:
@@ -219,7 +219,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: true
         childcare_expenses: 3_600
     households:
@@ -260,7 +260,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
-        spm_unit_assets: 800
+        spm_unit_cash_assets: 800
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8]
@@ -285,7 +285,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: false
         childcare_expenses: 6_000
     households:
@@ -318,7 +318,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: true
         childcare_expenses: 4_800
     households:
@@ -351,7 +351,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
     households:
       household:
         members: [person1, person2, person3]
@@ -377,7 +377,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: false
     households:
       household:
@@ -403,7 +403,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
         is_tanf_enrolled: true
     households:
       household:

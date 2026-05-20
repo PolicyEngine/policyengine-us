@@ -1,0 +1,192 @@
+# de_poc_eligible_child: Person, bool, MONTH
+# Eligible if: (age < 13) OR (disabled AND age < 19),
+#   AND is_tax_unit_dependent, AND is_ccdf_immigration_eligible_child
+# Parameters: age_threshold.child = 13, age_threshold.disabled_child = 19
+
+- name: Case 1, young child who is a dependent citizen.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, true]
+
+- name: Case 2, child at age boundary of 12.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, true]
+
+- name: Case 3, child at age 13 without disability is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, false]
+
+- name: Case 4, disabled child age 15 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, true]
+
+- name: Case 5, disabled child at age 18 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, true]
+
+- name: Case 6, disabled child at age 19 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, false]
+
+- name: Case 7, child who is not a dependent is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_poc_eligible_child: [false, false]
+
+- name: Case 8, non-DE household child gets false.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    de_poc_eligible_child: [false, false]
