@@ -9,6 +9,7 @@ class bond_assets(Variable):
         "Value of bonds and government securities. Imputed from SIPP TVAL_BOND."
     )
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
     reference = (

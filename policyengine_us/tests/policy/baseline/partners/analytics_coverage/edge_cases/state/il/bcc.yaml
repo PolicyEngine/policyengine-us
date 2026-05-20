@@ -1,0 +1,138 @@
+- name: il_bcc_age_64_female_eligible (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: true
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code_str: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        il_bcc_eligible: false
+- name: il_bcc_age_65_age_out (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: true
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code_str: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        il_bcc_eligible: false
+- name: il_bcc_no_qualifying_coverage (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code_str: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        il_bcc_eligible: true
