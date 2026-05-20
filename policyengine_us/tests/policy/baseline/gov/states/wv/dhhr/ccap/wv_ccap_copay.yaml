@@ -1,5 +1,9 @@
 # WV CCAP Co-payment Tests
-# 2025 FPG family of 2: 21_150
+# Appendix A is a 2D table: family size (1-11+) x FPL bracket -> daily fee per child.
+# Manual §6.4.3.2: fees are daily, charged for each child in care.
+# Manual §6.4.3.4: capped at the three youngest children.
+# CCDF Plan §3.1.1: total family fee capped at 7% of gross income.
+# 2025 FPG family of 2 monthly: $1_762.50.
 
 - name: Case 1, income below 40% FPL pays zero copay.
   period: 2025-01
@@ -11,6 +15,7 @@
         employment_income: 6_000
       person2:
         age: 5
+        childcare_days_per_week: 5
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,10 +27,10 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # FPL ratio = 500 / 1_762.50 = 0.2837 < 0.40 -> 0% rate
+    # FPL ratio = 500 / 1_762.50 = 0.2837 < 0.40 -> fee = $0/day.
     wv_ccap_copay: 0
 
-- name: Case 2, mid-range income copay.
+- name: Case 2, mid-range income copay from Appendix A daily fee.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -35,6 +40,7 @@
         employment_income: 18_000
       person2:
         age: 5
+        childcare_days_per_week: 5
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -46,12 +52,13 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 1_500
-    # FPL ratio = 1_500 / 1_762.50 = 0.8511 -> 3% rate
-    # copay = 1_500 * 0.03 = 45
-    wv_ccap_copay: 45
+    # Monthly income $1_500; FPL ratio = 1_500 / 1_762.50 = 0.8511.
+    # Appendix A 2-person "90%" row daily fee = $4.25/child.
+    # 1 eligible child × 5 days/week × 52/12 = 21.67 monthly days.
+    # copay = $4.25 × 21.67 × 1 = $92.08.
+    wv_ccap_copay: 92.08
 
-- name: Case 3, copay capped at 7% of income.
+- name: Case 3, high income 2-person family copay below 7% cap.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -61,6 +68,7 @@
         employment_income: 36_000
       person2:
         age: 5
+        childcare_days_per_week: 5
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -72,14 +80,13 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 3_000
-    # FPL ratio = 3_000 / 1_762.50 = 1.7021 -> 4% bracket rate
-    # uncapped copay = 3_000 * 0.04 = 120
-    # 7% cap = 3_000 * 0.07 = 210
-    # 120 <= 210 -> copay = 120
-    wv_ccap_copay: 120
+    # Monthly income $3_000; FPL ratio = 3_000 / 1_762.50 = 1.7021.
+    # Appendix A 2-person "180%" row daily fee = $8.75/child.
+    # uncapped copay = $8.75 × 21.67 = $189.58.
+    # 7% cap = $3_000 × 0.07 = $210. Cap does not bind for 2-person, 1-child.
+    wv_ccap_copay: 189.58
 
-- name: Case 4, foster family pays zero copay.
+- name: Case 4, foster family pays zero copay even when fee would otherwise apply.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -89,6 +96,7 @@
         employment_income: 36_000
       person2:
         age: 5
+        childcare_days_per_week: 5
         is_in_foster_care: true
     tax_units:
       tax_unit:
@@ -101,4 +109,6 @@
         members: [person1, person2]
         state_code: WV
   output:
+    # Without foster waiver this household would owe $189.58/month (see Case 3);
+    # Manual §6.4.1 / CCDF Plan §3.3.1 waives the family fee.
     wv_ccap_copay: 0

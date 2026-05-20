@@ -50,20 +50,21 @@
     wv_ccap_daily_rate: [0, 37]
 
     # === Copay ===
-    # FPL ratio = 2_000 / 1_762.50 = 1.1348 -> 3.5% bracket
-    # copay = 2_000 * 0.035 = 70
-    wv_ccap_copay: 70
+    # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
+    # Appendix A 2-person "120%" row daily fee = $5.75/child.
+    # 1 eligible child × 5 days/week × 52/12 = 21.67 monthly days.
+    # copay = $5.75 × 21.67 × 1 = $124.58.
+    wv_ccap_copay: 124.58
 
-    # === Daily benefit ===
-    # daily charge = (8_000/12) / (5 * 52/12) = 666.67 / 21.67 = 30.77
-    # daily benefit = min(37, 30.77) = 30.77
+    # === Daily benefit (view variable: rate + supplements capped at daily charge) ===
+    # daily charge = (8_000/12) / 21.67 = 30.77; daily benefit = min(37, 30.77) = 30.77.
     wv_ccap_daily_benefit: [0, 30.77]
 
     # === Monthly benefit ===
-    # total reimbursement = 30.77 * 21.67 = 666.78
-    # uncapped = max(666.67 - 70, 0) = 596.67
-    # benefit = min(596.67, 666.78) = 596.67
-    wv_ccap: 596.67
+    # 21.67 days/month > 20 → per-day billing for base; no supplements.
+    # per_child reimbursement = min($37 × 21.67, $666.67) = $666.67.
+    # benefit = max($666.67 - $124.58, 0) = $542.08.
+    wv_ccap: 542.08
 
 - name: Case 2, low income family with zero copay.
   period: 2025-01
@@ -194,18 +195,19 @@
     # Center Tier II School Age = $35/day
     wv_ccap_daily_rate: [0, 35]
 
-    # daily rate with special needs supplement = 35 + 3 = 38
-    # daily charge = (10_000/12) / 21.67 = 833.33 / 21.67 = 38.46
-    # daily benefit = min(38, 38.46) = 38
+    # Daily benefit (view): rate + supplement capped at daily charge.
+    # daily charge = (10_000/12) / 21.67 = 38.46; daily benefit = min(35+3, 38.46) = 38.
     wv_ccap_daily_benefit: [0, 38]
 
-    # total reimbursement = 38 * 21.67 = 823.33
-    # copay: FPL ratio = 2_000 / 1_762.50 = 1.1348 -> 3.5%
-    # copay = 2_000 * 0.035 = 70
-    wv_ccap_copay: 70
+    # Copay: same 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 21.67 = $124.58.
+    wv_ccap_copay: 124.58
 
-    # benefit = max(823.33 - 70, 0) = 753.33
-    wv_ccap: 753.33
+    # 21.67 days/month > 20 → per-day billing for base.
+    # Manual §7.2.7.2: supplements bill for actual days only (same here, per-day billing).
+    # per_child = min($35 × 21.67 + $3 × 21.67, $833.33)
+    #           = min($823.33, $833.33) = $823.33.
+    # benefit = max($823.33 - $124.58, 0) = $698.75.
+    wv_ccap: 698.75
 
 - name: Case 5, non-WV family gets zero benefit.
   period: 2025-01
@@ -267,12 +269,12 @@
     wv_ccap_eligible: true
     # Center Tier I Toddler = $37/day.
     wv_ccap_daily_rate: [0, 37]
-    # 4 days/week = 17.33 days/month, so monthly-rate billing applies.
-    # Gross reimbursement = 37 * 20 = 740.
-    # Copay = 2_000 monthly income * 3.5% = 70.
-    # Benefit deducts copay from authorized reimbursement, not provider charge.
-    wv_ccap_copay: 70
-    wv_ccap: 670
+    # 4 days/week = 17.33 days/month (in 13-20 monthly-rate range).
+    # Base reimbursement (monthly rate): $37 × 20 = $740.
+    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 17.33 = $99.67.
+    wv_ccap_copay: 99.67
+    # benefit = max($740 - $99.67, 0) = $640.33.
+    wv_ccap: 640.33
 
 # Manual §7.2.7.2: rate supplements are paid for actual days only — the monthly
 # rate does NOT apply to rate supplements. This case is the regression guard.
@@ -312,10 +314,10 @@
     # Center Tier I Toddler = $37/day base; special needs supplement = $3/day.
     wv_ccap_daily_rate: [0, 37]
     # 4 days/week = 17.33 days/month (in 13-20 monthly-rate range).
-    # Base reimbursement (monthly rate): 37 * 20 = 740.
-    # Supplement reimbursement (actual days): 3 * 17.33 = 52.
-    # Total reimbursement: 740 + 52 = 792 (capped at pre_subsidy 1_000).
-    # Copay = 2_000 * 3.5% = 70.
-    # Benefit = 792 - 70 = 722.
-    wv_ccap_copay: 70
-    wv_ccap: 722
+    # Base reimbursement (monthly rate): $37 × 20 = $740.
+    # Supplement reimbursement (actual days, Manual §7.2.7.2): $3 × 17.33 = $52.
+    # Total reimbursement: $740 + $52 = $792 (under pre_subsidy $1_000).
+    # Copay: same as Case 6 (2-person FPL 1.1348, 17.33 days) = $99.67.
+    wv_ccap_copay: 99.67
+    # benefit = max($792 - $99.67, 0) = $692.33.
+    wv_ccap: 692.33

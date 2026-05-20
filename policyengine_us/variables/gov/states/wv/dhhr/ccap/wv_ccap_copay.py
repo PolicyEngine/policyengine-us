@@ -15,19 +15,65 @@ class wv_ccap_copay(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # NOTE: %-of-income approximation of the 176-cell sliding fee scale
-        # (Appendix A), calibrated to the 3-person family column. Per Manual
-        # §6.4.3, the actual fee is charged per child up to 3 children — we
-        # apply that multiplier here. The 7% cap and <40% FPL waiver are in
-        # the rate schedule; foster waiver overrides below.
+        # Appendix A: daily co-payment per child looked up by family size and
+        # FPL ratio. Manual §6.4.3.2: fees are daily, assessed for each child
+        # in care. Manual §6.4.3.4: capped at three youngest children.
         p = parameters(period).gov.states.wv.dhhr.ccap.copayment
         countable_income = spm_unit("wv_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
-        fpl_ratio = where(fpg > 0, countable_income / max_(fpg, 1), 0)
-        per_child_rate = p.rate.calc(fpl_ratio)
-        num_eligible_children = add(spm_unit, period, ["wv_ccap_eligible_child"])
-        billed_children = min_(num_eligible_children, p.max_billed_children)
-        uncapped_copay = countable_income * per_child_rate * billed_children
+        fpl_ratio = where(fpg > 0, countable_income / fpg, 0)
+        family_size = spm_unit("spm_unit_size", period.this_year)
+        # Look up daily fee per child from Appendix A by family size column.
+        # Families with twelve or more people use the eleven-person column.
+        rate = p.rate
+        daily_fee_per_child = select(
+            [
+                family_size == 1,
+                family_size == 2,
+                family_size == 3,
+                family_size == 4,
+                family_size == 5,
+                family_size == 6,
+                family_size == 7,
+                family_size == 8,
+                family_size == 9,
+                family_size == 10,
+            ],
+            [
+                rate.size_1.calc(fpl_ratio),
+                rate.size_2.calc(fpl_ratio),
+                rate.size_3.calc(fpl_ratio),
+                rate.size_4.calc(fpl_ratio),
+                rate.size_5.calc(fpl_ratio),
+                rate.size_6.calc(fpl_ratio),
+                rate.size_7.calc(fpl_ratio),
+                rate.size_8.calc(fpl_ratio),
+                rate.size_9.calc(fpl_ratio),
+                rate.size_10.calc(fpl_ratio),
+            ],
+            default=rate.size_11.calc(fpl_ratio),
+        )
+        person = spm_unit.members
+        is_eligible_child = person("wv_ccap_eligible_child", period)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = is_eligible_child & (weekly_days > 0)
+        num_in_care = spm_unit.sum(in_care)
+        total_monthly_days = (
+            spm_unit.sum(weekly_days * in_care) * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        )
+        # Per Manual §6.4.3.4: fee waived for any child beyond the three
+        # youngest. We don't track child ordering, so apply the cap as a
+        # uniform 3/N scaling across all eligible children in care.
+        billed_share = where(
+            num_in_care > 0,
+            min_(num_in_care, p.max_billed_children) / max_(num_in_care, 1),
+            0,
+        )
+        uncapped_copay = daily_fee_per_child * total_monthly_days * billed_share
+        # CCDF State Plan §3.1.1 caps the family fee at 7% of gross income.
         capped_copay = min_(uncapped_copay, countable_income * p.max_share)
+        # Manual §6.4.1 / CCDF Plan §3.3.1: foster-care children pay no fee.
+        # We model this at the family level (waive the whole family copay if
+        # any child is in foster care); per-child waiver isn't tracked.
         has_foster_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
         return where(has_foster_child, 0, capped_copay)

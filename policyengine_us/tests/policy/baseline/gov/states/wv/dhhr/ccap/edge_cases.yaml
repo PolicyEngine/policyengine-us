@@ -601,28 +601,24 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 8_475 / 12 = 706.25
-    # FPL ratio = 706.25 / 1_762.50 = 0.4007 > 0.4001 -> 2.5% bracket
-    # copay = 706.25 * 0.025 = 17.66
-    # 7% cap = 706.25 * 0.07 = 49.44
-    # min(17.66, 49.44) = 17.66
-    wv_ccap_copay: 17.66
+    # Monthly income = 8_475 / 12 = $706.25. FPL ratio = 0.4007 > 0.4001 → bracket
+    # "above 40% up to 50%" → Appendix A 2-person "50%" row daily fee = $2.00/child.
+    # copay = $2.00 × 21.67 × 1 = $43.33.
+    # 7% cap = $706.25 × 0.07 = $49.44; cap does not bind.
+    wv_ccap_copay: 43.33
 
 # ============================================================
-# Copay hitting 7% cap
+# Copay 7% cap behavior
 # ============================================================
 
-- name: Case 18, copay capped at 7% of income.
+- name: Case 18, high FPL 2-person family copay below 7% cap.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        # High income in 4% bracket (FPL ratio > 1.5001)
-        # Need enrolled to pass 185% FPL threshold
-        # Use income at ~170% FPL to be in 4% bracket
-        # 21_150 * 1.7 = 35_955/yr
+        # ~170% FPL family of 2: 21_150 * 1.7 = 35_955/yr.
         employment_income: 35_955
         immigration_status: CITIZEN
       person2:
@@ -645,29 +641,20 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # monthly income = 35_955 / 12 = 2_996.25
-    # FPL ratio = 2_996.25 / 1_762.50 = 1.7
-    # In 4% bracket (> 1.5001)
-    # uncapped copay = 2_996.25 * 0.04 = 119.85
-    # 7% cap = 2_996.25 * 0.07 = 209.74
-    # min(119.85, 209.74) = 119.85 (not capped in this case)
-    wv_ccap_copay: 119.85
+    # Monthly income = $2_996.25. FPL ratio = 1.7000 → bracket "above 160% up to 170%"
+    # → Appendix A 2-person "170%" row daily fee = $8.25/child.
+    # uncapped copay = $8.25 × 21.67 × 1 = $178.75.
+    # 7% cap = $2_996.25 × 0.07 = $209.74; cap does not bind.
+    wv_ccap_copay: 178.75
 
-- name: Case 19, copay rate higher than 7% cap triggers cap.
+- name: Case 19, large family with three children triggers 7 percent cap.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 30
-        # To trigger the 7% cap, the rate bracket must exceed 7%.
-        # The highest bracket is 4%, so 4% < 7% means cap never binds
-        # under normal operation. But we verify the cap code path works
-        # by testing that the 7% cap is applied correctly.
-        # 4% rate * income = copay; 7% * income = cap
-        # Since 4% < 7%, the cap never binds for this simplified scale.
-        # This test confirms the copay correctly equals the uncapped amount.
-        employment_income: 36_000
+        age: 35
+        employment_income: 42_000
         immigration_status: CITIZEN
       person2:
         age: 3
@@ -676,25 +663,52 @@
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
         childcare_days_per_week: 5
-        pre_subsidy_childcare_expenses: 10_000
+        pre_subsidy_childcare_expenses: 6_000
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 6_000
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 6_000
+      person5:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 17
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1, person2, person3, person4, person5, person6, person7]
     spm_units:
       spm_unit:
-        members: [person1, person2]
-        spm_unit_pre_subsidy_childcare_expenses: 10_000
+        members: [person1, person2, person3, person4, person5, person6, person7]
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3, person4, person5, person6, person7]
         state_code: WV
   output:
-    # monthly income = 36_000 / 12 = 3_000
-    # FPL ratio = 3_000 / 1_762.50 = 1.7021 -> 4% bracket
-    # uncapped copay = 3_000 * 0.04 = 120
-    # 7% cap = 3_000 * 0.07 = 210
-    # min(120, 210) = 120 (cap does not bind)
-    wv_ccap_copay: 120
+    # 7-person family, monthly income $3_500. FPG family-of-7 = $3_945; ratio = 0.887.
+    # Appendix A 7-person "90%" row daily fee = $4.50/child.
+    # 3 eligible children × 5 days × 52/12 = 65 monthly days total.
+    # uncapped copay = $4.50 × 65 × 1 = $292.50.
+    # 7% cap = $3_500 × 0.07 = $245; cap binds.
+    wv_ccap_copay: 245
 
 # ============================================================
 # Activity hours boundary
@@ -1454,12 +1468,12 @@
     # daily benefit = min(45, 13.84) = 13.84
     wv_ccap_daily_benefit: [0, 13.84]
 
-    # total reimbursement = 13.84 * 21.67 = 299.89
-    # FPL ratio = 2_000 / 1_762.50 = 1.1348 -> 3.5% bracket
-    # copay = 2_000 * 0.035 = 70
-    # uncapped = max(300 - 70, 0) = 230
-    # benefit = min(230, 299.89) = 230
-    wv_ccap: 230
+    # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
+    # Appendix A 2-person "120%" row daily fee = $5.75/child; 21.67 days.
+    # copay = $5.75 × 21.67 = $124.58.
+    # 21.67 days > 20 → per-day billing; per_child = min($45 × 21.67, $300) = $300.
+    # benefit = max($300 - $124.58, 0) = $175.42.
+    wv_ccap: 175.42
 
 # ============================================================
 # Zero childcare days/expenses
@@ -1685,21 +1699,22 @@
     # Person3 age 6 = 72 months -> SCHOOL_AGE
     wv_ccap_child_age_category: [SCHOOL_AGE, INFANT, SCHOOL_AGE]
 
-    # FPL ratio = (20_000/12) / (26_650/12) = 0.7505 → 3.0% bracket.
-    # per_child_copay = 1_666.67 × 0.03 = 50; 2 eligible children → 100.
-    wv_ccap_copay: 100
+    # 3-person family, FPL ratio = 1_666.67 / 2_151.67 = 0.7746 → bracket
+    # "above 70% up to 80%" → Appendix A 3-person "80%" row daily fee = $2.25/child.
+    # person2: 5 days/week; person3: 3 days/week → 8 weekly × 52/12 = 34.67 monthly days.
+    # 2 eligible children in care → billed_share = 2/2 = 1.
+    # copay = $2.25 × 34.67 × 1 = $78.00.
+    wv_ccap_copay: 78
 
-    # Person2 (FAMILY_HOME Tier II Infant, 5 days/wk, 6_000/yr):
-    #   monthly expenses 500; actual_days 21.67 (>20 → per-day billing).
-    #   daily_charge = 500/21.667 = 23.077; daily_benefit = min(33, 23.077) = 23.077.
-    #   per_child_reimbursement = min(23.077 × 21.667, 500) = 500.
-    # Person3 (CENTER Tier I School-Age, 3 days/wk, 4_000/yr):
-    #   monthly expenses 333.33; actual_days 13 (in 13-20 → monthly billing, 20 days).
-    #   daily_charge = 333.33/13 = 25.641; daily_benefit = min(32, 25.641) = 25.641.
-    #   per_child_reimbursement = min(25.641 × 20, 333.33) = 333.33.
-    # total reimbursement = 833.33; monthly pre_subsidy = 833.33.
-    # uncapped = max(833.33 - 100, 0) = 733.33; benefit = min(733.33, 833.33) = 733.33.
-    wv_ccap: 733.33
+    # Person2 (FAMILY_HOME Tier II Infant, 5 days/wk, $6_000/yr expenses):
+    #   monthly expenses $500; actual_days 21.67 (>20 → per-day billing).
+    #   per_child = min($33 × 21.67, $500) = $500.
+    # Person3 (CENTER Tier I School-Age, 3 days/wk, $4_000/yr expenses):
+    #   monthly expenses $333.33; actual_days 13 (in 13-20 → monthly rate, 20 days).
+    #   per_child = min($32 × 20, $333.33) = $333.33.
+    # total reimbursement = $500 + $333.33 = $833.33.
+    # benefit = max($833.33 - $78, 0) = $755.33.
+    wv_ccap: 755.33
 
 # ============================================================
 # Child-only SPM unit cannot pass activity test

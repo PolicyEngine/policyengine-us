@@ -27,5 +27,5 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # wv_ccap monthly = ~596.67 -> annual = ~7_160
-    wv_child_care_subsidies: 7_160
+    # Matches integration.yaml Case 1: wv_ccap monthly = $542.08 → annual = ~$6_505.
+    wv_child_care_subsidies: 6_505
