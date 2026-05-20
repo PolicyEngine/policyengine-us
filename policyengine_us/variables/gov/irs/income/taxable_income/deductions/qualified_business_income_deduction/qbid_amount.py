@@ -55,8 +55,19 @@ class qbid_amount(Variable):
         sstb_qbi = sstb_qbi_from_se + where(is_sstb_legacy, non_sstb_qbi, 0)
         non_sstb_qbi_final = where(is_sstb_legacy, 0, non_sstb_qbi)
 
-        has_non_sstb = non_sstb_qbi_final > 0
-        has_sstb = sstb_qbi > 0
+        non_sstb_gross = 0
+        for var in p.income_definition:
+            non_sstb_gross += person(var, period) * person(
+                var + "_would_be_qualified", period
+            )
+        sstb_gross = person("sstb_self_employment_income", period) * person(
+            "sstb_self_employment_income_would_be_qualified", period
+        )
+        non_sstb_gross_final = where(is_sstb_legacy, 0, non_sstb_gross)
+        sstb_gross_final = sstb_gross + where(is_sstb_legacy, non_sstb_gross, 0)
+
+        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final > 0)
+        has_sstb = (sstb_gross_final != 0) | (sstb_qbi > 0)
         has_mixed_categories = has_non_sstb & has_sstb
 
         # Schedule A applies the SSTB applicable percentage to the SSTB's own

@@ -99,6 +99,31 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: uv run ${{ matrix.cmd }}
+  HouseholdAPIPartners:
+    name: Household API Partners
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: |
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run Household API Partners YAML tests
+        env:
+          PYTHONUNBUFFERED: 1
+        run: uv run make test-yaml-no-structural-other-partners
   Contrib:
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
@@ -178,7 +203,7 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [Baseline, Contrib, Rest]
+    needs: [Baseline, HouseholdAPIPartners, Contrib, Rest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
