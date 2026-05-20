@@ -1,0 +1,20 @@
+description: North Dakota counts these income sources under the Renter's Refund program.
+values:
+  2025-01-01:
+    - market_income
+    - social_security
+    - unemployment_compensation
+    - ssi
+    - general_assistance
+    - child_support_received
+    - financial_assistance
+    - survivor_benefits
+metadata:
+  unit: list
+  period: year
+  label: North Dakota Renter's Refund income sources
+  reference:
+    - title: N.D.C.C. § 57-02-08.1(5)(c)
+      href: https://ndlegis.gov/cencode/t57c02.pdf#page=16
+    - title: North Dakota Office of State Tax Commissioner, Renter's Refund application instructions
+      href: https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=2

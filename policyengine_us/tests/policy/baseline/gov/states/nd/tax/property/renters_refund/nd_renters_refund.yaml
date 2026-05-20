@@ -1,5 +1,6 @@
 - name: Case 1, refund follows the state example.
-  period: 2026
+  absolute_error_margin: 0.01
+  period: 2025
   input:
     people:
       person1:
@@ -8,7 +9,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 35_000
+        nd_renters_refund_income: 35_000
     households:
       household:
         members: [person1]
@@ -17,7 +18,8 @@
     nd_renters_refund: 520
 
 - name: Case 2, refund is capped.
-  period: 2026
+  absolute_error_margin: 0.01
+  period: 2025
   input:
     people:
       person1:
@@ -26,7 +28,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 10_000
+        nd_renters_refund_income: 10_000
     households:
       household:
         members: [person1]
@@ -35,7 +37,8 @@
     nd_renters_refund: 600
 
 - name: Case 3, ineligible filer gets no refund.
-  period: 2026
+  absolute_error_margin: 0.01
+  period: 2025
   input:
     people:
       person1:
@@ -44,7 +47,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 35_000
+        nd_renters_refund_income: 35_000
     households:
       household:
         members: [person1]
@@ -53,7 +56,8 @@
     nd_renters_refund: 0
 
 - name: Case 4, qualifying refund is floored at the minimum.
-  period: 2026
+  absolute_error_margin: 0.01
+  period: 2025
   input:
     people:
       person1:
@@ -62,7 +66,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 1_000
+        nd_renters_refund_income: 1_000
     households:
       household:
         members: [person1]

@@ -1,0 +1,41 @@
+- name: Case 1, income includes dependent earnings and Social Security less medical expenses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        social_security: 20_000
+        other_medical_expenses: 2_000
+      person2:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 53_000
+
+- name: Case 2, medical expenses reduce income but not below zero.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_000
+        other_medical_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 0

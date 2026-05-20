@@ -33,3 +33,19 @@
     in_la: true
   output:
     pha_payment_standard: 6_086 * 12
+
+- name: Alameda County 2BR FY2025 falls back to HUD Fair Market Rent
+  period: 2025
+  input:
+    county_fips: "06001"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 32_184
+
+- name: LA County 2BR FY2025 keeps the local payment standard
+  period: 2025
+  input:
+    county_fips: "06037"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 2_666 * 12

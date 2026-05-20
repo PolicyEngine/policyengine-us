@@ -10,6 +10,14 @@
   output:
     nm_modified_gross_income: 80_000
 
+- name: NM modified gross income includes SSTB self-employment income
+  period: 2024
+  input:
+    state_code: NM
+    sstb_self_employment_income: 100_000
+  output:
+    nm_modified_gross_income: 100_000
+
 - name: NM business loss should not reduce modified gross income
   period: 2024
   input:

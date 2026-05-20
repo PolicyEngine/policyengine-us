@@ -18,12 +18,16 @@ class nd_renters_refund_eligible(Variable):
         age_or_disability_eligible = tax_unit.any(
             ((age >= p.age_threshold) | is_permanently_disabled) & head_or_spouse,
         )
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit("nd_renters_refund_income", period)
         rent = add(tax_unit, period, ["rent"])
+        property_tax_exempt = tax_unit(
+            "nd_renters_refund_property_tax_exempt", period
+        )
 
         return (
             age_or_disability_eligible
             & (income <= p.income_limit)
             & (rent > 0)
             & ((rent * p.rent_rate - income * p.income_rate) > 0)
+            & ~property_tax_exempt
         )

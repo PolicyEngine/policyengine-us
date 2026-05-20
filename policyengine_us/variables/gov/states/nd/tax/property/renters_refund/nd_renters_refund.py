@@ -14,7 +14,7 @@ class nd_renters_refund(Variable):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
         refund = max_(
             add(tax_unit, period, ["rent"]) * p.rent_rate
-            - tax_unit("adjusted_gross_income", period) * p.income_rate,
+            - tax_unit("nd_renters_refund_income", period) * p.income_rate,
             0,
         )
-        return where(refund > 0, min_(p.cap, max_(p.minimum, refund)), 0)
+        return min_(p.cap, max_(p.minimum, refund))
