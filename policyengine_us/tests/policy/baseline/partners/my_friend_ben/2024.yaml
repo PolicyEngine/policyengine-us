@@ -1,0 +1,44 @@
+- name: my_friend_ben (2024)
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      '2021359':
+        age: 49
+        employment_income: 0
+        self_employment_income: 0
+        rental_income: 0
+        taxable_pension_income: 0
+        social_security: 0
+        unemployment_compensation: 0
+        capital_gains: 0
+        taxable_ira_distributions: 0
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members:
+          - '2021359'
+        state_code: CO
+    families:
+      family:
+        members:
+          - '2021359'
+    spm_units:
+      spm_unit:
+        members:
+          - '2021359'
+    tax_units:
+      main_tax_unit:
+        members:
+          - '2021359'
+  output:
+    people:
+      '2021359':
+        co_family_affordability_credit: 0.0
+    tax_units:
+      main_tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        eitc: 0.0
+        ctc_value: 0.0

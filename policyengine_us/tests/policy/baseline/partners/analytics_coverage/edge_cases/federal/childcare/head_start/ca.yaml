@@ -1,0 +1,174 @@
+- name: head_start_child_age_3_eligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        head_start: 20347.29
+- name: head_start_low_income_age_4 (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        head_start: 20347.29
+- name: head_start_above_income_limit (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 50000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        head_start: 0.0
