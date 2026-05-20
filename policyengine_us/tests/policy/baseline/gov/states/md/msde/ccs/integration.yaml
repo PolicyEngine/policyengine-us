@@ -17,6 +17,7 @@
         employment_income: 50_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 3
         is_tax_unit_dependent: true
@@ -60,12 +61,13 @@
     md_ccs_weekly_copay: 3
 
     # === Benefit ===
-    # Default county: Allegany = Region Z, REGULAR, UNIT_3 -> $207/week
-    # annual max reimbursement: $207 * 52 = $10,764
+    # 2025-01 uses 5/23/22 historical schedule (current schedule effective 2026-03-01).
+    # Default county: Allegany = Region Z, Center, REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: $183 * 52 = $9,516
     # annual copay: $3 * 52 = $156
     # uncapped: max(12,000 - 156, 0) = 11,844
-    # capped: min(11,844, 10,764) = 10,764
-    # monthly: 10,764 / 12 = 897
+    # capped: min(11,844, 9,516) = 9,516
+    # monthly: 9,516 / 12 = 793.00
     md_ccs: 793
 
 - name: Case 2, two-parent family with two children and mixed income.
@@ -78,11 +80,13 @@
         employment_income: 60_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 33
         self_employment_income: 20_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person3:
         age: 7
         is_tax_unit_dependent: true
@@ -136,9 +140,15 @@
     md_ccs_weekly_copay: 5
 
     # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule.
+    # Default county: Allegany = Region Z, Center.
+    # person3 (age 7, REGULAR, UNIT_3): $183 * 1 = $183/week
+    # person4 (age 3, REGULAR, UNIT_2): $183 * (2/3) = $122/week
+    # weekly max: $183 + $122 = $305 -> annual max reimbursement: $305 * 52 = $15,860
     # annual copay: $5 * 52 = $260
-    # annual benefit: max(18,000 - 260, 0) = 17,740
-    # monthly: 17,740 / 12 = 1_478.33
+    # uncapped: max(18,000 - 260, 0) = 17,740
+    # capped: min(17,740, 15,860) = 15,860
+    # monthly: 15,860 / 12 = 1,321.67
     md_ccs: 1_321.67
 
 - name: Case 3, TCA recipient family with zero copay.
@@ -151,6 +161,7 @@
         employment_income: 15_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -201,10 +212,12 @@
         employment_income: 100_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 33
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person3:
         age: 5
         is_tax_unit_dependent: true
@@ -249,9 +262,13 @@
     md_ccs_weekly_copay: 6
 
     # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule. Default county: Allegany = Region Z, Center.
+    # person3 (age 5, REGULAR, UNIT_3): $183; person4 (age 3, REGULAR, UNIT_3): $183
+    # annual max reimbursement: ($183 + $183) * 52 = $19,032
     # annual copay: $6 * 52 = $312
-    # annual benefit: max(20,000 - 312, 0) = 19,688
-    # monthly: 19,688 / 12 = 1_640.67
+    # uncapped: max(20,000 - 312, 0) = 19,688
+    # capped: min(19,688, 19,032) = 19,032
+    # monthly: 19,032 / 12 = 1,586.00
     md_ccs: 1_586
 
 - name: Case 5, enrolled family between 75 and 85 percent SMI with continuation eligibility.
@@ -264,10 +281,12 @@
         employment_income: 120_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 33
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person3:
         age: 6
         is_tax_unit_dependent: true
@@ -313,14 +332,14 @@
     md_ccs_weekly_copay: 6
 
     # === Benefit ===
-    # Default county: Allegany = Region Z
-    # person3 (age 6): REGULAR, UNIT_3 -> $207/week
-    # person4 (age 2 = 24 months, not < 24): REGULAR, UNIT_3 -> $207/week
-    # annual max reimbursement: ($207 + $207) * 52 = $21,528
+    # 2025-01 uses 5/23/22 historical schedule. Default county: Allegany = Region Z, Center.
+    # person3 (age 6): REGULAR, UNIT_3 -> $183/week
+    # person4 (age 2 = 24 months, not < 24): REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: ($183 + $183) * 52 = $19,032
     # annual copay: $6 * 52 = $312
     # uncapped: max(22,000 - 312, 0) = 21,688
-    # capped: min(21,688, 21,528) = 21,528
-    # monthly: 21,528 / 12 = 1,794
+    # capped: min(21,688, 19,032) = 19,032
+    # monthly: 19,032 / 12 = 1,586.00
     md_ccs: 1_586
 
 - name: Case 6, SSI recipient with disabled teenager.
@@ -334,6 +353,7 @@
         ssi: 9_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 16
         is_disabled: true
@@ -373,11 +393,12 @@
     md_ccs_weekly_copay: 0
 
     # === Benefit ===
-    # Default county: Allegany = Region Z, REGULAR, UNIT_3 -> $207/week
-    # annual max reimbursement: $207 * 52 = $10,764
+    # 2025-01 uses 5/23/22 historical schedule.
+    # Default county: Allegany = Region Z, Center, REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: $183 * 52 = $9,516
     # uncapped: max(15,000 - 0, 0) = 15,000
-    # capped: min(15,000, 10,764) = 10,764
-    # monthly: 10,764 / 12 = 897
+    # capped: min(15,000, 9,516) = 9,516
+    # monthly: 9,516 / 12 = 793.00
     md_ccs: 793
 
 - name: Case 7, family with income above 85 percent SMI is not eligible even when enrolled.
@@ -390,10 +411,12 @@
         employment_income: 140_000
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person2:
         age: 33
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
+        weekly_hours_worked: 40
       person3:
         age: 5
         is_tax_unit_dependent: true

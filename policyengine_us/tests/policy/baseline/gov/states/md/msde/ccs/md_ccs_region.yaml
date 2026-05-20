@@ -1,0 +1,72 @@
+# Tests for md_ccs_region (Household-level, Enum)
+# Verifies the 23-county-plus-Baltimore-City mapping into 7 rate regions.
+
+- name: Cecil County maps to Region U.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: CECIL_COUNTY_MD
+  output:
+    md_ccs_region: REGION_U
+
+- name: Caroline County maps to Region V.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: CAROLINE_COUNTY_MD
+  output:
+    md_ccs_region: REGION_V
+
+- name: Anne Arundel County maps to Region W.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: ANNE_ARUNDEL_COUNTY_MD
+  output:
+    md_ccs_region: REGION_W
+
+- name: Howard County maps to Region X.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: HOWARD_COUNTY_MD
+  output:
+    md_ccs_region: REGION_X
+
+- name: Baltimore County maps to Region Y.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: BALTIMORE_COUNTY_MD
+  output:
+    md_ccs_region: REGION_Y
+
+- name: Allegany County maps to Region Z.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_region: REGION_Z
+
+- name: Baltimore City maps to Region BC.
+  period: 2025-01
+  input:
+    households:
+      household:
+        state_code: MD
+        county: BALTIMORE_CITY_MD
+  output:
+    md_ccs_region: REGION_BC

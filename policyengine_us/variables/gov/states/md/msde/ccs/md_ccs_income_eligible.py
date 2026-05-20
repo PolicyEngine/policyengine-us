@@ -22,11 +22,10 @@ class md_ccs_income_eligible(Variable):
         # hhs_smi parameter only has data from 2021-10-01 forward, so the
         # FY2019-2022 freeze (2018 SMI) will return zero until earlier SMI
         # entries are added.
-        base_year = p.smi_base_year
-        if base_year > 0:
+        if p.smi_freeze_in_effect:
             size = spm_unit("spm_unit_size", period)
             state = spm_unit.household("state_code_str", period)
-            smi_value = smi(size, state, f"{int(base_year)}-10-01", parameters)
+            smi_value = smi(size, state, f"{p.smi_frozen_year}-10-01", parameters)
         else:
             smi_value = spm_unit("hhs_smi", period)
         enrolled = spm_unit("md_ccs_enrolled", period)

@@ -10,7 +10,8 @@ class md_ccs_weekly_copay(Variable):
     defined_for = StateCode.MD
     reference = (
         "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.12",
-        "https://mgaleg.maryland.gov/2024RS/Chapters_noln/CH_717_sb0362E.pdf#page=1",
+        "https://mgaleg.maryland.gov/2024RS/Chapters_noln/CH_717_sb0362E.pdf#page=19",
+        "https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0995E.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):

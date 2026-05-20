@@ -1,0 +1,87 @@
+# Tests for md_ccs_service_unit (Person-level, Enum)
+# Boundary thresholds: 0 → UNIT_1, 3.0001 → UNIT_2, 6 → UNIT_3
+# Hours = exactly 3 stays in UNIT_1; hours = exactly 6 lands in UNIT_3.
+
+- name: Zero hours is UNIT_1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_1]
+
+- name: Exactly 3 hours is UNIT_1 (≤3 hours per day).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_1]
+
+- name: 3.5 hours is UNIT_2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 3.5
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_2]
+
+- name: 5.999 hours is UNIT_2 (just below 6-hour boundary).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 5.999
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_2]
+
+- name: Exactly 6 hours is UNIT_3 (≥6 hours per day).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 6
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_3]
+
+- name: 12 hours is UNIT_3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 12
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_service_unit: [UNIT_3]

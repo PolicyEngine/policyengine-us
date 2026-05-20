@@ -22,7 +22,10 @@ class md_ccs_service_unit(Variable):
         p = parameters(period).gov.states.md.msde.ccs.copay
         units = p.unit_hours.calc(hours_per_day)
         return select(
-            [units == 3, units == 2],
-            [MDCCSServiceUnit.UNIT_3, MDCCSServiceUnit.UNIT_2],
-            default=MDCCSServiceUnit.UNIT_1,
+            [units == 3, units == 2, units == 1],
+            [
+                MDCCSServiceUnit.UNIT_3,
+                MDCCSServiceUnit.UNIT_2,
+                MDCCSServiceUnit.UNIT_1,
+            ],
         )
