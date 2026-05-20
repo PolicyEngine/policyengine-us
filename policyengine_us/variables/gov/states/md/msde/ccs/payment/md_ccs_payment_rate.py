@@ -35,7 +35,7 @@ class md_ccs_payment_rate(Variable):
                 provider_type == MDCCSProviderType.LICENSED_CENTER,
                 provider_type == MDCCSProviderType.LICENSED_FAMILY,
                 provider_type == MDCCSProviderType.INFORMAL,
+                provider_type == MDCCSProviderType.NONE,
             ],
-            [center_rate, family_rate, informal_rate],
-            default=center_rate,
+            [center_rate, family_rate, informal_rate, 0],
         )

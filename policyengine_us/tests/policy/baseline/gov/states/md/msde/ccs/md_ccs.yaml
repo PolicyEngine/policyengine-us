@@ -16,6 +16,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -28,7 +29,7 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Default provider: LICENSED_CENTER, default county: Allegany = Region Z
+    # Provider: LICENSED_CENTER (set), default county: Allegany = Region Z
     # age 5 = REGULAR, 8hrs = UNIT_3
     # weekly rate: $207, annual max reimbursement: $207 * 52 = $10,764
     # weekly copay: $3, annual copay: $3 * 52 = $156
@@ -80,6 +81,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
         members: [person1, person2]

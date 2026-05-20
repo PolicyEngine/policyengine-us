@@ -15,7 +15,7 @@ class md_ccs_service_unit(Variable):
     definition_period = MONTH
     defined_for = StateCode.MD
     label = "Maryland CCS service unit category"
-    reference = "https://dsd.maryland.gov/regulations/Pages/13A.14.06.11.aspx"
+    reference = "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.11"
 
     def formula(person, period, parameters):
         hours_per_day = person("childcare_hours_per_day", period.this_year)

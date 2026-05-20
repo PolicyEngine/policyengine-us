@@ -9,8 +9,8 @@ class md_ccs_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.MD
     reference = (
-        "https://dsd.maryland.gov/regulations/Pages/13A.14.06.03.aspx",
-        "https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0275e.pdf",
+        "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.03",
+        "https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0995E.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):

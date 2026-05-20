@@ -7,7 +7,7 @@ class md_ccs_eligible_child(Variable):
     label = "Eligible child for Maryland Child Care Scholarship (CCS)"
     definition_period = MONTH
     defined_for = StateCode.MD
-    reference = "https://dsd.maryland.gov/regulations/Pages/13A.14.06.02.aspx"
+    reference = "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.md.msde.ccs.age_threshold
@@ -15,8 +15,7 @@ class md_ccs_eligible_child(Variable):
         is_disabled = person("is_disabled", period.this_year)
         age_limit = where(is_disabled, p.disabled_child, p.child)
         age_eligible = age < age_limit
-        is_dependent = person("is_tax_unit_dependent", period.this_year)
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )
-        return age_eligible & is_dependent & immigration_eligible
+        return age_eligible & immigration_eligible

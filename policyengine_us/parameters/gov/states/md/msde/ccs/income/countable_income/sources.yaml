@@ -3,7 +3,7 @@ values:
   2022-05-01:
     - employment_income
     # Note: self_employment_income is handled separately in the formula
-    # with a 30% deduction per COMAR 13A.14.06.03(F)(8)(a)(i)
+    # with a 30% deduction per COMAR 13A.14.06.03F(8)(a)(i)
     - social_security
     - pension_income
     - interest_income
@@ -18,14 +18,18 @@ values:
     - farm_income
     - military_retirement_pay
     # NOT included:
-    # - child_support_received (excluded per Chapters 525/526 of 2022)
+    # - child_support_received (excluded per Chapter 525 of 2022 / HB 995)
+    # COMAR-listed sources we don't model at the moment: commissions, tips,
+    # bonuses, annuities, estate income, military entitlements.
 
 metadata:
   unit: list
   period: year
   label: Maryland CCS countable income sources
   reference:
-    - title: COMAR 13A.14.06.02 - Definition of "Gross income"
+    - title: COMAR 13A.14.06.02B(28) - Definition of "Gross income"
       href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02
-    - title: Chapters 525/526 of 2022
-      href: https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0275e.pdf#page=1
+    - title: Chapter 525 of 2022 (HB 995) - child support excluded
+      href: https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0995E.pdf#page=1
+    - title: Chapter 526 of 2022 (SB 920)
+      href: https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_526_sb0920E.pdf#page=1

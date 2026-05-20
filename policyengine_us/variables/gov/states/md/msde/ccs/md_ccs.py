@@ -9,7 +9,7 @@ class md_ccs(Variable):
     definition_period = MONTH
     defined_for = "md_ccs_eligible"
     reference = (
-        "https://dsd.maryland.gov/regulations/Pages/13A.14.06.11.aspx",
+        "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.11",
         "https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates",
     )
 

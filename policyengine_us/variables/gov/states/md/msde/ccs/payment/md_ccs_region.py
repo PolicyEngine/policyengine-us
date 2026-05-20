@@ -14,6 +14,9 @@ class MDCCSRegion(Enum):
 class md_ccs_region(Variable):
     value_type = Enum
     entity = Household
+    # Non-MD households fall through to REGION_W; masked by defined_for on
+    # consumers, but the load-bearing default is needed because vectorized
+    # formula execution does not short-circuit on defined_for.
     possible_values = MDCCSRegion
     default_value = MDCCSRegion.REGION_W
     definition_period = MONTH

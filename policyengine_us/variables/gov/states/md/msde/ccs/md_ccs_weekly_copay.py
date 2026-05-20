@@ -9,21 +9,22 @@ class md_ccs_weekly_copay(Variable):
     definition_period = MONTH
     defined_for = StateCode.MD
     reference = (
-        "https://dsd.maryland.gov/regulations/Pages/13A.14.06.12.aspx",
-        "https://mgaleg.maryland.gov/2024RS/Chapters_noln/CH_717_sb0482e.pdf",
+        "https://regs.maryland.gov/us/md/exec/comar/13A.14.06.12",
+        "https://mgaleg.maryland.gov/2024RS/Chapters_noln/CH_717_sb0362E.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.msde.ccs.copay
 
-        # TCA/SSI recipients pay $0 copayment per COMAR 13A.14.06.12(A)(1)
+        # TCA/SSI recipients pay $0 copayment per COMAR 13A.14.06.12A(1).
+        # We don't track TANF applicants separately from recipients at the
+        # moment; the regulation covers both.
         is_tca = spm_unit("is_tanf_enrolled", period)
         receives_ssi = add(spm_unit, period, ["ssi"]) > 0
 
-        # SNAP/WIC recipients have copayments waived per Chapters 525/526 of 2022
-        # Use bare inputs to avoid circular dependency through SNAP/TANF/childcare chain
-        is_snap = spm_unit("md_ccs_receives_snap", period)
-        receives_wic = spm_unit("md_ccs_receives_wic", period)
+        # SNAP/WIC recipients have copayments waived per Chapter 525 of 2022 (HB 995).
+        is_snap = add(spm_unit, period, ["snap"]) > 0
+        receives_wic = add(spm_unit, period, ["wic"]) > 0
         exempt = is_tca | receives_ssi | is_snap | receives_wic
 
         # Weekly copay per child based on service unit (enum-keyed lookup)
@@ -35,7 +36,10 @@ class md_ccs_weekly_copay(Variable):
         is_eligible_child = person("md_ccs_eligible_child", period)
         weekly_per_child = where(is_eligible_child, weekly_per_child, 0)
 
-        # Copay assessed for up to max_children_with_copay children
+        # Copay assessed for up to max_children_with_copay children.
+        # We don't track the COMAR youngest/2nd/3rd-child rank distinction at
+        # the moment — moot under the flat $1/$2/$3 schedule, where every child
+        # at the same service unit pays the same amount.
         eligible_child_count = add(spm_unit, period, ["md_ccs_eligible_child"])
         capped_count = min_(eligible_child_count, p.max_children_with_copay)
         total_weekly = spm_unit.sum(weekly_per_child)
