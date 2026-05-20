@@ -1,0 +1,1 @@
+Apply Georgia HB463 (2025-2026): cut the flat individual income tax rate to 4.99%, raise the standard deduction to $30,000 joint / $15,000 single, raise the dependent exemption to $5,000, increase the age-65+ retirement income exclusion to $70,000 in 2027, and add qualified-overtime and cash-tip exclusions for tax years 2026-2028.
