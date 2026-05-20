@@ -20,9 +20,7 @@ class nd_renters_refund_eligible(Variable):
         )
         income = tax_unit("nd_renters_refund_income", period)
         rent = add(tax_unit, period, ["rent"])
-        property_tax_exempt = tax_unit(
-            "nd_renters_refund_property_tax_exempt", period
-        )
+        property_tax_exempt = tax_unit("nd_renters_refund_property_tax_exempt", period)
 
         return (
             age_or_disability_eligible
