@@ -73,3 +73,64 @@
         state_code: ND
   output:
     nd_renters_refund: 5
+
+- name: Case 5, refund derives income from upstream inputs.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 20_000
+        social_security_retirement: 15_000
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        itemized_medical_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 35_000
+    nd_renters_refund: 520
+
+- name: Case 6, property-tax-exempt quarters receive no refund.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+        nd_renters_refund_property_tax_exempt: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 0
+
+- name: Case 7, pre-2025 refund is capped at the prior cap.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 18_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund: 400

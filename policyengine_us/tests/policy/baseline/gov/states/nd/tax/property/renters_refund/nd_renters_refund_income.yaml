@@ -6,7 +6,7 @@
       person1:
         age: 30
         employment_income: 30_000
-        social_security: 20_000
+        social_security_retirement: 20_000
         other_medical_expenses: 2_000
       person2:
         age: 16
@@ -39,3 +39,26 @@
         state_code: ND
   output:
     nd_renters_refund_income: 0
+
+- name: Case 3, income includes unemployment and excludes nonincome sources.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 8_000
+        general_assistance: 4_000
+        ssi: 6_000
+        child_support_received: 3_000
+        financial_assistance: 4_000
+        survivor_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_income: 12_000

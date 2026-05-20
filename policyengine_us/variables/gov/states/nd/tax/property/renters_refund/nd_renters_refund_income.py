@@ -9,7 +9,7 @@ class nd_renters_refund_income(Variable):
     definition_period = YEAR
     reference = (
         "https://ndlegis.gov/cencode/t57c02.pdf#page=16",
-        "https://www.tax.nd.gov/sites/www/files/documents/forms/homestead-disabled-renters/renters-refund-application.pdf#page=2",
+        "https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=2",
     )
     defined_for = StateCode.ND
 

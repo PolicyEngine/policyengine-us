@@ -1,10 +1,17 @@
 description: North Dakota limits income to this amount under the Renter's Refund program.
 values:
-  2025-01-01: 70_000
+  2009-01-01: 42_000
+  2023-01-01: 70_000
 metadata:
   unit: currency-USD
   period: year
   label: North Dakota Renter's Refund income limit
   reference:
-    - title: North Dakota Office of State Tax Commissioner | Renter's Refund
-      href: https://www.tax.nd.gov/renters-refund
+    - title: North Dakota Office of State Tax Commissioner | Property Tax History | 2009 Session
+      href: https://www.tax.nd.gov/property-tax-history
+    - title: North Dakota House Bill 1158, Section 1
+      href: https://ndlegis.gov/assembly/68-2023/regular/documents/23-0351-06000.pdf#page=1
+    - title: North Dakota House Bill 1158, Section 8
+      href: https://ndlegis.gov/assembly/68-2023/regular/documents/23-0351-06000.pdf#page=6
+    - title: North Dakota Office of State Tax Commissioner | Property Tax Credits for North Dakota Homeowners and Renters
+      href: https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=7

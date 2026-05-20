@@ -2,11 +2,17 @@ from policyengine_us.model_api import *
 
 
 class nd_renters_refund_eligible(Variable):
+    """Approximate claimant eligibility using the tax-unit head or spouse."""
+
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the North Dakota Renter's Refund"
     definition_period = YEAR
-    reference = "https://www.tax.nd.gov/renters-refund"
+    reference = (
+        "https://ndlegis.gov/cencode/t57c02.pdf#page=15",
+        "https://ndlegis.gov/cencode/t57c02.pdf#page=16",
+        "https://www.tax.nd.gov/sites/www/files/documents/guidelines/homestead-veterans-renters/credits-for-nd-homeowners-renters-guideline.pdf#page=7",
+    )
     defined_for = StateCode.ND
 
     def formula(tax_unit, period, parameters):
@@ -25,7 +31,6 @@ class nd_renters_refund_eligible(Variable):
         return (
             age_or_disability_eligible
             & (income <= p.income_limit)
-            & (rent > 0)
             & ((rent * p.rent_rate - income * p.income_rate) > 0)
             & ~property_tax_exempt
         )
