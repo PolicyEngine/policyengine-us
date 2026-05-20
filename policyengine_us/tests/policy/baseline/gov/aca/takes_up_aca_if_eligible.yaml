@@ -1,0 +1,46 @@
+- name: Case 1, default simulated Marketplace take-up preserves existing ACA take-up behavior.
+  period: 2026
+  output:
+    simulated_aca_take_up_if_eligible: true
+    takes_up_aca_if_eligible: true
+
+- name: Case 2, reported Marketplace coverage triggers take-up when simulated take-up is disabled.
+  period: 2026
+  input:
+    people:
+      person1:
+        has_marketplace_health_coverage_at_interview: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        simulated_aca_take_up_if_eligible: false
+  output:
+    takes_up_aca_if_eligible: true
+
+- name: Case 3, no reported Marketplace coverage means no take-up when simulated take-up is disabled.
+  period: 2026
+  input:
+    people:
+      person1:
+        has_marketplace_health_coverage_at_interview: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        simulated_aca_take_up_if_eligible: false
+  output:
+    takes_up_aca_if_eligible: false
+
+- name: Case 4, reported Marketplace coverage for one member triggers tax-unit take-up.
+  period: 2026
+  input:
+    people:
+      person1:
+        has_marketplace_health_coverage_at_interview: false
+      person2:
+        has_marketplace_health_coverage_at_interview: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        simulated_aca_take_up_if_eligible: false
+  output:
+    takes_up_aca_if_eligible: true
