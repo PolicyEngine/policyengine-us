@@ -1,0 +1,220 @@
+- name: Case 1, single eligible adult, not shared housing, full single MAP.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 343
+
+- name: Case 2, married eligible couple, not shared housing, full married MAP.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 460
+
+- name: Case 3, only one of two persons eligible, returns single MAP.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 343
+
+- name: Case 4, single eligible adult shared with one other (15 percent reduction).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+  output:
+    ca_scc_general_assistance_base_amount: 291.55
+
+- name: Case 5, single eligible adult shared with two others (20 percent reduction).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+  output:
+    ca_scc_general_assistance_base_amount: 274.4
+
+- name: Case 6, single eligible adult shared with three or more (25 percent reduction).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+  output:
+    ca_scc_general_assistance_base_amount: 257.25
+
+- name: Case 7, married couple shared with one (15 percent reduction on married MAP).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+  output:
+    ca_scc_general_assistance_base_amount: 391
+
+- name: Case 8, married couple shared with two (20 percent reduction on married MAP).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+  output:
+    # 460 * 0.80 = 368
+    ca_scc_general_assistance_base_amount: 368
+
+- name: Case 9, married couple shared with three or more (25 percent reduction on married MAP).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+  output:
+    # 460 * 0.75 = 345
+    ca_scc_general_assistance_base_amount: 345

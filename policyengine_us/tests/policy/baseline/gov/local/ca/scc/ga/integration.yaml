@@ -1,0 +1,294 @@
+- name: Case 1, eligible single adult with zero income receives full single MAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 343
+
+- name: Case 2, eligible single adult with $100/month employment income, fill-the-gap benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        employment_income: 1_200
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 100
+    ca_scc_general_assistance: 243
+
+- name: Case 3, eligible married couple with zero income receives full married MAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 460
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 460
+
+- name: Case 4, ineligible due to SSI receipt.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 100
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 0
+
+- name: Case 5, ineligible due to personal property over $500 limit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 501
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 0
+
+- name: Case 6, ineligible due to undocumented immigration status.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 0
+
+- name: Case 7, single eligible adult sharing housing with one other, MAP reduced 15 percent.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+  output:
+    ca_scc_general_assistance_base_amount: 291.55
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 291.55
+
+- name: Case 8, expanded income source workers_compensation counted in countable income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        workers_compensation: 2_400
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 200
+    ca_scc_general_assistance: 143
+
+- name: Case 9, married couple plus minor child — child does not affect base amount.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    # Child fails age_eligible and head-or-spouse — only person1 and person2 count.
+    # num_eligible == 2 -> married MAP $460; countable income = 0; benefit = 460.
+    ca_scc_general_assistance_base_amount: 460
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 460
+
+- name: Case 10, two-adult SPMUnit with one undocumented spouse — only eligible person counted.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  output:
+    # Only person1 is eligible; num_eligible == 1 -> single MAP $343.
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 343
+
+- name: Case 11, SPMUnit-level shared housing reduction applies once across all members.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Shared with two other persons -> 20% reduction on married MAP.
+        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+  output:
+    # 460 * 0.80 = 368; countable income = 0; benefit = 368.
+    ca_scc_general_assistance_base_amount: 368
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 368

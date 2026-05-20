@@ -1,0 +1,55 @@
+- name: Case 1, adult age 30 is eligible.
+  period: 2024
+  input:
+    age: 30
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: true
+
+- name: Case 2, minor age 17 is ineligible.
+  period: 2024
+  input:
+    age: 17
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: false
+
+- name: Case 3, age exactly 18 is eligible at boundary.
+  period: 2024
+  input:
+    age: 18
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: true
+
+- name: Case 4, age 25 is eligible.
+  period: 2024
+  input:
+    age: 25
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: true
+
+- name: Case 5, infant age 0 is ineligible.
+  period: 2024
+  input:
+    age: 0
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: false
+
+- name: Case 6, age 17.99 (float) is ineligible just below 18.
+  period: 2024
+  input:
+    age: 17.99
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: false
+
+- name: Case 7, age 100 is eligible.
+  period: 2024
+  input:
+    age: 100
+    in_scc: true
+  output:
+    ca_scc_general_assistance_age_eligible: true

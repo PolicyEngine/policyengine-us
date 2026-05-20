@@ -1,0 +1,70 @@
+- name: Case 1, head with employment income only.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 1_200
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_income_person: 100
+
+- name: Case 2, head with multiple expanded sources sums correctly.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 1_200
+    social_security: 2_400
+    workers_compensation: 600
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_income_person: 350
+
+- name: Case 3, non head or spouse contributes zero.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: false
+    employment_income: 12_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 4, head with zero income.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 5, head with negative self-employment income passes through (no flooring).
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    self_employment_income: -12_000
+    in_scc: true
+  output:
+    # Formula uses pure adds across sources; negative SE income flows through as -1_000/month.
+    ca_scc_general_assistance_countable_income_person: -1_000
+
+- name: Case 6, head with employment plus workers_comp plus taxable_pension summed.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 1_200
+    workers_compensation: 600
+    taxable_pension_income: 2_400
+    in_scc: true
+  output:
+    # (1_200 + 600 + 2_400) / 12 = 350
+    ca_scc_general_assistance_countable_income_person: 350
+
+- name: Case 7, head with truly zero income across all sources.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    self_employment_income: 0
+    social_security: 0
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_income_person: 0

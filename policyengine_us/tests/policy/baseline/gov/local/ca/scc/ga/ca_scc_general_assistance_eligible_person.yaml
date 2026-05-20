@@ -1,0 +1,95 @@
+- name: Case 1, single adult citizen with low income, eligible.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: CITIZEN
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: true
+
+- name: Case 2, ineligible due to SSI receipt.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 100
+    personal_property: 100
+    immigration_status: CITIZEN
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 3, ineligible because not head or spouse.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: false
+    ssi: 0
+    personal_property: 100
+    immigration_status: CITIZEN
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 4, ineligible due to undocumented status.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: UNDOCUMENTED
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 5, ineligible due to age under 18 (blocker short-circuits).
+  period: 2024-01
+  input:
+    age: 17
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: CITIZEN
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 6, ineligible due to personal property over $500 (blocker short-circuits).
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 501
+    immigration_status: CITIZEN
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 7, ineligible due to DACA status (blocker short-circuits).
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: DACA
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false
+
+- name: Case 8, eligible with legal permanent resident status (qualified immigration path).
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: true

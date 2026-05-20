@@ -1,0 +1,62 @@
+- name: Case 1, countable income below single MAP, eligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 342
+    ca_scc_general_assistance_base_amount: 343
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: true
+
+- name: Case 2, countable income equal to single MAP, ineligible (strict less-than per GA 200).
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 343
+    ca_scc_general_assistance_base_amount: 343
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: false
+
+- name: Case 3, countable income above single MAP, ineligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 344
+    ca_scc_general_assistance_base_amount: 343
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: false
+
+- name: Case 4, countable income below married MAP, eligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 459
+    ca_scc_general_assistance_base_amount: 460
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: true
+
+- name: Case 5, zero countable income with single MAP, eligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance_base_amount: 343
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: true
+
+- name: Case 6, married MAP one cent above threshold, ineligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 460.01
+    ca_scc_general_assistance_base_amount: 460
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: false
+
+- name: Case 7, income far above threshold, ineligible.
+  period: 2024-01
+  input:
+    ca_scc_general_assistance_countable_income: 10_000
+    ca_scc_general_assistance_base_amount: 343
+    in_scc: true
+  output:
+    ca_scc_general_assistance_income_eligible: false

@@ -1,0 +1,20 @@
+description: Santa Clara County excludes this share of the maximum aid payment for shared housing recipients under the General Assistance program.
+metadata:
+  unit: /1
+  period: year
+  label: Santa Clara County General Assistance shared housing reduction rate
+  breakdown:
+    - ca_scc_general_assistance_shared_housing_status
+  reference:
+    - title: Santa Clara County General Assistance Handbook, GA 282 (Shared Housing)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/14Payment/Shared_Housing.htm
+    - title: Santa Clara County General Assistance Need Standards Chart (GA 282 footnote)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/charts/assets/4GA/NeedStnds.htm
+NOT_SHARED:
+  2016-04-01: 0
+SHARED_WITH_ONE:
+  2016-04-01: 0.15
+SHARED_WITH_TWO:
+  2016-04-01: 0.2
+SHARED_WITH_THREE_OR_MORE:
+  2016-04-01: 0.25
