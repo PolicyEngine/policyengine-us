@@ -7,6 +7,7 @@ class il_hbwd_countable_assets(Variable):
     entity = Person
     label = "Illinois Health Benefits for Workers with Disabilities countable assets"
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.381",
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-120.510",

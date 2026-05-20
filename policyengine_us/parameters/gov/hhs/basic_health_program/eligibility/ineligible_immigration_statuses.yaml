@@ -1,0 +1,28 @@
+description: Basic Health Program excludes these immigration statuses from lawfully present eligibility.
+values:
+  2015-01-01:
+    - DACA
+    - UNDOCUMENTED
+
+  # The 2024 DACA eligibility rule amended lawfully present definitions for
+  # Marketplace and Basic Health Program eligibility before the 2025 repeal.
+  2024-11-01:
+    - UNDOCUMENTED
+
+  2025-08-25:
+    - DACA
+    - UNDOCUMENTED
+
+metadata:
+  label: Basic Health Program ineligible immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: 42 CFR § 600.305 - Eligible individuals
+      href: https://www.law.cornell.edu/cfr/text/42/600.305
+    - title: 45 CFR § 155.20 - Lawfully present definition
+      href: https://www.law.cornell.edu/cfr/text/45/155.20
+    - title: 89 FR 39392 - DACA Recipients Eligibility Final Rule (2024-11-01)
+      href: https://www.federalregister.gov/documents/2024/05/08/2024-09661/clarifying-the-eligibility-of-deferred-action-for-childhood-arrivals-daca-recipients-and-certain
+    - title: 90 FR 27220 - Marketplace Integrity and Affordability Final Rule (2025-08-25)
+      href: https://www.federalregister.gov/documents/2025/06/25/2025-11606/patient-protection-and-affordable-care-act-marketplace-integrity-and-affordability

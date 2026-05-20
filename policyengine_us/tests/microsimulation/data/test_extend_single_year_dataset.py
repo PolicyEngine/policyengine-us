@@ -125,6 +125,30 @@ class TestApplySingleYearUprating:
         # Then — age has no uprating, should be unchanged
         np.testing.assert_array_equal(current.person["age"].values, AGE_BASE)
 
+    def test_given_computed_variable_with_microdata_override_then_values_scaled(
+        self, base_dataset
+    ):
+        # Given
+        current = base_dataset.copy()
+        current.time_period = str(BASE_YEAR + 1)
+        previous = base_dataset
+        variables = {
+            "employment_income": MockVariable("employment_income", uprating=None)
+        }
+        system = MockSystem(
+            variables=variables,
+            parameters=build_mock_parameters(
+                {EMPLOYMENT_INCOME_UPRATING: EMPLOYMENT_INCOME_PARAM_VALUES}
+            ),
+        )
+
+        # When
+        _apply_single_year_uprating(current, previous, system)
+
+        # Then
+        expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
+        np.testing.assert_allclose(current.person["employment_income"].values, expected)
+
     def test_given_household_variable_with_uprating_then_values_scaled(
         self, base_dataset, mock_system
     ):

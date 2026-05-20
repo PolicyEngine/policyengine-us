@@ -21,19 +21,15 @@ class snap(Variable):
         is_in_microsim = hasattr(spm_unit.simulation, "dataset")
         if parameters(period).gov.usda.snap.abolish_snap:
             return 0
-        elif parameters(period).gov.simulation.reported_snap:
-            return spm_unit("snap_reported", period)
-        else:
-            value = add(
-                spm_unit,
-                period,
-                [
-                    "snap_normal_allotment",
-                    "snap_emergency_allotment",
-                    "dc_snap_temporary_local_benefit",
-                ],
-            )
-            if is_in_microsim:
-                return value * takes_up
-            else:
-                return value
+        value = add(
+            spm_unit,
+            period,
+            [
+                "snap_normal_allotment",
+                "snap_emergency_allotment",
+                "dc_snap_temporary_local_benefit",
+            ],
+        )
+        if is_in_microsim:
+            return value * takes_up
+        return value

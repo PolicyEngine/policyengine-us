@@ -29,3 +29,14 @@
     state_code: IL
   output:
     il_aabd_utility_allowance: 18.45  # 9.45 + 9
+
+- name: Vectorized utility allowances use elementwise caps
+  period: 2022-01
+  input:
+    spm_unit_size: [1, 6]
+    county_str: [COOK_COUNTY_IL, BOND_COUNTY_IL]
+    water_expense: [60, 0]
+    coal_expense: [0, 144]
+    state_code: [IL, IL]
+  output:
+    il_aabd_utility_allowance: [3.8, 12]

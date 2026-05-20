@@ -175,13 +175,15 @@ class SelectiveTestRunner:
 
     @staticmethod
     def is_test_infrastructure_file(path: str) -> bool:
-        return path.endswith(TEST_INFRASTRUCTURE_FILES)
+        return Path(path).name in TEST_INFRASTRUCTURE_FILES
 
     def get_direct_changed_tests(self, changed_files: Set[str]) -> Set[str]:
         return {
             file
             for file in changed_files
-            if self.is_test_file(file) and not self.is_test_infrastructure_file(file)
+            if self.is_test_file(file)
+            and not self.is_test_infrastructure_file(file)
+            and Path(file).exists()
         }
 
     def get_diff_files(self, base_ref: str):
@@ -272,7 +274,7 @@ class SelectiveTestRunner:
         for file in changed_files:
             # Changed test files are already the most precise signal.
             if self.is_test_file(file):
-                if not self.is_test_infrastructure_file(file):
+                if not self.is_test_infrastructure_file(file) and Path(file).exists():
                     test_paths.add(file)
                 continue
 

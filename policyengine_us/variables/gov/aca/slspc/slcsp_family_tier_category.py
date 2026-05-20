@@ -34,21 +34,30 @@ class slcsp_family_tier_category(Variable):
         # Get inputs
         state_code = tax_unit.household("state_code_str", period)
 
-        # Get the maximum child age from parameters
-        max_child_age = parameters(period).gov.aca.slcsp.max_child_age
-
-        # For tests, since the age variable is defined yearly but we're running monthly
-        # tests, we need to use the direct age values from the input file
         person = tax_unit.members
-        member_ages = person("monthly_age", period)
-
-        # Define adult status using the parameter instead of hardcoded value
         pays_premium = person("pays_aca_premium", period)
-        is_premium_paying_adult = (member_ages > max_child_age) & pays_premium
-        eligible_adult_count = tax_unit.sum(is_premium_paying_adult)
-        # More efficient than recounting: total - adults = children
-        eligible_people = tax_unit.sum(pays_premium)
-        eligible_child_count = eligible_people - eligible_adult_count
+        dependent_child = person("is_aca_family_tier_dependent_child", period)
+        non_dependent_adult_count = tax_unit.sum(pays_premium & ~dependent_child)
+        anchored_child_count = tax_unit.sum(dependent_child)
+
+        under_child_only_age = (
+            person("monthly_age", period)
+            <= parameters(period).gov.aca.slcsp.max_child_age
+        )
+        child_only_child = pays_premium & under_child_only_age
+        unanchored_adult_count = tax_unit.sum(pays_premium & ~child_only_child)
+        unanchored_child_count = tax_unit.sum(child_only_child)
+        has_adult_anchor = non_dependent_adult_count > 0
+        eligible_adult_count = where(
+            has_adult_anchor,
+            non_dependent_adult_count,
+            unanchored_adult_count,
+        )
+        eligible_child_count = where(
+            has_adult_anchor,
+            anchored_child_count,
+            unanchored_child_count,
+        )
 
         # Common conditions for both states
         one_adult_no_children = (eligible_adult_count == 1) & (

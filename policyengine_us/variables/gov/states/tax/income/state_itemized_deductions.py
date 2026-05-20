@@ -7,7 +7,6 @@ class state_itemized_deductions(Variable):
     label = "State itemized deductions"
     unit = USD
     definition_period = YEAR
-    adds = "gov.states.household.state_itemized_deductions"
 
     def formula(tax_unit, period, parameters):
         federal_itemized_states = parameters(
