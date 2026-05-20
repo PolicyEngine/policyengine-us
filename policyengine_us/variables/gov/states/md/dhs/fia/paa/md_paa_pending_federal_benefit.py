@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class md_paa_pending_federal_benefit(Variable):
     value_type = bool
     entity = Person
-    label = "Maryland PAA pending federal cash benefit applicant"
+    label = "Maryland PAA federal cash benefit applicant pending decision or denied for income"
     definition_period = MONTH
     defined_for = StateCode.MD
     default_value = False
