@@ -64,6 +64,12 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                 ],
             )
         )
+        life_insurance_benefits = tax_unit.sum(
+            head_or_spouse * person("life_insurance_benefits", period)
+        )
+        taxable_life_insurance_benefits = max_(
+            0, life_insurance_benefits - p.death_benefit_exclusion
+        )
         csrs_pay = person("csrs_retirement_pay", period)
         csrs_income = tax_unit.sum(head_or_spouse * csrs_pay)
         csrs_exclusion = tax_unit.sum(
@@ -78,6 +84,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
             + p.benefit_income_rate * half_counted_benefits
             + tax_exempt_income
             + pa_1000_line_11_income
+            + taxable_life_insurance_benefits
             + csrs_income
             - csrs_exclusion,
         )
