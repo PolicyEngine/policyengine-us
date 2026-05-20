@@ -5,6 +5,11 @@ metadata:
   label: Assessed-to-market property value ratio
   breakdown:
     - state_code
+  reference:
+    - title: Michigan Compiled Laws Section 211.27a(1)
+      href: https://legislature.mi.gov/Laws/MCL?objectName=mcl-211-27a
+    - title: West Virginia State Tax Department, Ad Valorem Property Tax
+      href: https://tax.wv.gov/Business/PropertyTax/Pages/AdValoremPropertyTax.aspx
 # Default to 1 until state-specific assessed-to-market value ratios are modeled.
 AL:
   0000-01-01: 1
@@ -49,7 +54,7 @@ MD:
 MA:
   0000-01-01: 1
 MI:
-  0000-01-01: 1
+  0000-01-01: 0.5
 MN:
   0000-01-01: 1
 MS:
@@ -101,7 +106,7 @@ VA:
 WA:
   0000-01-01: 1
 WV:
-  0000-01-01: 1
+  0000-01-01: 0.6
 WI:
   0000-01-01: 1
 WY:
