@@ -8,7 +8,7 @@ class MDCCSRegion(Enum):
     REGION_X = "Region X"
     REGION_Y = "Region Y"
     REGION_Z = "Region Z"
-    BALTIMORE_CITY = "Baltimore City"
+    REGION_BC = "Region BC"
 
 
 class md_ccs_region(Variable):
@@ -33,7 +33,7 @@ class md_ccs_region(Variable):
         is_region_x = np.isin(county, p.region_x_counties)
         is_region_y = np.isin(county, p.region_y_counties)
         is_region_z = np.isin(county, p.region_z_counties)
-        is_baltimore_city = np.isin(county, p.baltimore_city_counties)
+        is_region_bc = np.isin(county, p.region_bc_counties)
         return select(
             [
                 is_region_u,
@@ -42,7 +42,7 @@ class md_ccs_region(Variable):
                 is_region_x,
                 is_region_y,
                 is_region_z,
-                is_baltimore_city,
+                is_region_bc,
             ],
             [
                 MDCCSRegion.REGION_U,
@@ -51,7 +51,7 @@ class md_ccs_region(Variable):
                 MDCCSRegion.REGION_X,
                 MDCCSRegion.REGION_Y,
                 MDCCSRegion.REGION_Z,
-                MDCCSRegion.BALTIMORE_CITY,
+                MDCCSRegion.REGION_BC,
             ],
             default=MDCCSRegion.REGION_W,
         )

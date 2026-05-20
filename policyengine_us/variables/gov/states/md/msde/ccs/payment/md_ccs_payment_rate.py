@@ -20,15 +20,17 @@ class md_ccs_payment_rate(Variable):
         service_unit = person("md_ccs_service_unit", period)
         region = person.household("md_ccs_region", period)
 
-        # Formal rates: by region, age group, and service unit
-        center_rate = p.formal.licensed_center[region][age_group][service_unit]
-        family_rate = p.formal.licensed_family[region][age_group][service_unit]
+        # Rate tables store UNIT_3 base rates (three units of service per day).
+        # COMAR 13A.14.06.11.B(3), .11.C(2), .11.D direct: multiply by
+        # unit_count / 3 to derive UNIT_2 (2/3) and UNIT_1 (1/3) rates.
+        unit_share = p.unit_count[service_unit] / 3
+        center_rate = p.formal.licensed_center[region][age_group] * unit_share
+        family_rate = p.formal.licensed_family[region][age_group] * unit_share
 
-        # Informal rates: by county, age group, and service unit
         county = person.household("county_str", period)
         in_md = person.household("state_code_str", period) == "MD"
         safe_county = where(in_md, county, "ALLEGANY_COUNTY_MD")
-        informal_rate = p.informal.rates[safe_county][age_group][service_unit]
+        informal_rate = p.informal.rates[safe_county][age_group] * unit_share
 
         return select(
             [

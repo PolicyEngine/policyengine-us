@@ -1,123 +1,64 @@
-description: Maryland provides these weekly reimbursement rates for licensed child care centers under the Child Care Scholarship program.
+description: Maryland provides these weekly UNIT_3 (full-time) reimbursement rates for licensed child care centers under the Child Care Scholarship program. UNIT_2 and UNIT_1 rates are derived in the formula by multiplying by unit_count / 3 per COMAR 13A.14.06.11.
 
 metadata:
   period: week
   unit: currency-USD
-  label: Maryland CCS licensed center weekly rates
+  label: Maryland CCS licensed center weekly UNIT_3 rates
   breakdown:
     - md_ccs_region
     - md_ccs_age_group
-    - md_ccs_service_unit
   reference:
-    - title: Maryland CCS Scholarship Rates (Formal Rates, 60th Percentile, 2024 Market Rate Survey)
+    - title: Maryland CCS Scholarship Rates (current schedule, 60th Percentile of 2024 Market Rate Survey, effective 2026-03-01)
       href: https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
-    - title: 2024 Maryland Market Rate Survey & Narrow Cost Analysis (Nov 2024)
-      href: https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/md-market-rate-survey-2024-2.pdf
-    - title: MSDE FY27 Operating Budget Analysis (DLS) - 2026-03-01 rate implementation
-      href: https://mgaleg.maryland.gov/pubs/budgetfiscal/2027fy-budget-docs-operating-R00A99-MSDE-Early-Childhood-Development.pdf
+    - title: Maryland CCS Scholarship Rates as of 5/23/22 (Wayback Machine snapshot)
+      href: https://web.archive.org/web/20220616202551/https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
 
 REGION_U:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 244
-    UNIT_2:
-      2026-03-01: 163
-    UNIT_1:
-      2026-03-01: 82
+    2022-05-23: 205
+    2026-03-01: 244
   INFANT:
-    UNIT_3:
-      2026-03-01: 325
-    UNIT_2:
-      2026-03-01: 217
-    UNIT_1:
-      2026-03-01: 109
+    2022-05-23: 296
+    2026-03-01: 325
 REGION_V:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 200
-    UNIT_2:
-      2026-03-01: 133
-    UNIT_1:
-      2026-03-01: 67
+    2022-05-23: 175
+    2026-03-01: 200
   INFANT:
-    UNIT_3:
-      2026-03-01: 264
-    UNIT_2:
-      2026-03-01: 176
-    UNIT_1:
-      2026-03-01: 88
+    2022-05-23: 242
+    2026-03-01: 264
 REGION_W:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 305
-    UNIT_2:
-      2026-03-01: 204
-    UNIT_1:
-      2026-03-01: 102
+    2022-05-23: 262
+    2026-03-01: 305
   INFANT:
-    UNIT_3:
-      2026-03-01: 420
-    UNIT_2:
-      2026-03-01: 280
-    UNIT_1:
-      2026-03-01: 140
+    2022-05-23: 370
+    2026-03-01: 420
 REGION_X:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 424
-    UNIT_2:
-      2026-03-01: 283
-    UNIT_1:
-      2026-03-01: 142
+    2022-05-23: 381
+    2026-03-01: 424
   INFANT:
-    UNIT_3:
-      2026-03-01: 554
-    UNIT_2:
-      2026-03-01: 369
-    UNIT_1:
-      2026-03-01: 185
+    2022-05-23: 481
+    2026-03-01: 554
 REGION_Y:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 278
-    UNIT_2:
-      2026-03-01: 185
-    UNIT_1:
-      2026-03-01: 93
+    2022-05-23: 278
+    2026-03-01: 312
   INFANT:
-    UNIT_3:
-      2026-03-01: 378
-    UNIT_2:
-      2026-03-01: 252
-    UNIT_1:
-      2026-03-01: 126
+    2022-05-23: 378
+    2026-03-01: 427
 REGION_Z:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 207
-    UNIT_2:
-      2026-03-01: 138
-    UNIT_1:
-      2026-03-01: 69
+    2022-05-23: 183
+    2026-03-01: 207
   INFANT:
-    UNIT_3:
-      2026-03-01: 297
-    UNIT_2:
-      2026-03-01: 198
-    UNIT_1:
-      2026-03-01: 99
-BALTIMORE_CITY:
+    2022-05-23: 262
+    2026-03-01: 297
+REGION_BC:
   REGULAR:
-    UNIT_3:
-      2026-03-01: 282
-    UNIT_2:
-      2026-03-01: 188
-    UNIT_1:
-      2026-03-01: 94
+    2022-05-23: 250
+    2026-03-01: 282
   INFANT:
-    UNIT_3:
-      2026-03-01: 376
-    UNIT_2:
-      2026-03-01: 251
-    UNIT_1:
-      2026-03-01: 126
+    2022-05-23: 303
+    2026-03-01: 376

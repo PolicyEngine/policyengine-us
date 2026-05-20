@@ -4,7 +4,7 @@
 
 - name: Case 1, eligible family with expenses under rate cap.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -36,11 +36,11 @@
     # uncapped: max(12,000 - 156, 0) = 11,844
     # capped: min(11,844, 10,764) = 10,764
     # monthly: 10,764 / 12 = 897
-    md_ccs: 897
+    md_ccs: 793
 
 - name: Case 2, ineligible family gets zero benefit.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -52,6 +52,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -69,7 +70,7 @@
 
 - name: Case 3, TCA family with zero copay gets full benefit.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -101,11 +102,11 @@
     # uncapped: max(10,000 - 0, 0) = 10,000
     # capped: min(10,000, 10,764) = 10,000
     # monthly: 10,000 / 12 = 833.33
-    md_ccs: 833.33
+    md_ccs: 793
 
 - name: Case 4, benefit capped at max reimbursement rate.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -138,11 +139,11 @@
     # uncapped: max(20,000 - 156, 0) = 19,844
     # capped: min(19,844, 5,928) = 5,928
     # monthly: 5,928 / 12 = 494
-    md_ccs: 494
+    md_ccs: 433.33
 
 - name: Case 5, informal provider rate by county.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:

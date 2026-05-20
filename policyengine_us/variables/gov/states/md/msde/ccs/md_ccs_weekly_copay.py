@@ -22,10 +22,13 @@ class md_ccs_weekly_copay(Variable):
         is_tca = spm_unit("is_tanf_enrolled", period)
         receives_ssi = add(spm_unit, period, ["ssi"]) > 0
 
-        # SNAP/WIC recipients have copayments waived per Chapter 525 of 2022 (HB 995).
-        is_snap = add(spm_unit, period, ["snap"]) > 0
-        receives_wic = add(spm_unit, period, ["wic"]) > 0
-        exempt = is_tca | receives_ssi | is_snap | receives_wic
+        # SNAP/WIC recipients have copayments waived per Chapter 525 of 2022
+        # (HB 995). Uses bare-input receives_snap (SPMUnit) and receives_wic
+        # (Person, summed) rather than the computed snap/wic benefits to
+        # avoid the cycle through snap_dependent_care_deduction → childcare_expenses → md_ccs.
+        is_snap = spm_unit("receives_snap", period)
+        is_wic = add(spm_unit, period, ["receives_wic"]) > 0
+        exempt = is_tca | receives_ssi | is_snap | is_wic
 
         # Weekly copay per child based on service unit (enum-keyed lookup)
         person = spm_unit.members

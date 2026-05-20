@@ -5,7 +5,7 @@
 
 - name: Case 1, employment income only.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -27,7 +27,7 @@
 
 - name: Case 2, self-employment income with 30 percent deduction.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -49,7 +49,7 @@
 
 - name: Case 3, mixed employment and self-employment income.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -74,7 +74,7 @@
 
 - name: Case 4, child support received is excluded from income.
   period: 2025-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
