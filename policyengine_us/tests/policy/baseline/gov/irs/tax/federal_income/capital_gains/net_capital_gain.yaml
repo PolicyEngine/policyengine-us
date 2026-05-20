@@ -1,0 +1,14 @@
+- name: Case 1, investment-income election reduces net capital gain.
+  period: 2026
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 10_000
+        short_term_capital_gains: -1_000
+        qualified_dividend_income: 2_000
+        investment_income_elected_form_4952: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    net_capital_gain: 10_500
