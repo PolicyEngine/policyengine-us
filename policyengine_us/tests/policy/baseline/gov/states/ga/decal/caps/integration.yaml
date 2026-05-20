@@ -1,5 +1,11 @@
 # GA CAPS Integration Tests
 #
+# Period: tests use 2026-01 intentionally. CAPS parameters are dated
+# 2026-03-02 (current Appendix C/D rates), and PolicyEngine backcasts the
+# first dated value, so a 2026-01 test exercises the current rules.
+# This avoids 2027-01 where FPG and SMI would be uprated rather than using
+# the published 2026 values cited in the inline calculation comments.
+#
 # 2026 FPG (Contiguous US):
 #   first_person = 15,960, additional = 5,680
 #   Family of 2: 21,640

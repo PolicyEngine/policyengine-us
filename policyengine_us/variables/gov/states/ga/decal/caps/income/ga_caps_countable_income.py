@@ -12,8 +12,7 @@ class ga_caps_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.income.countable_income
-        sources = p.sources
         person = spm_unit.members
         is_adult = person("is_adult", period.this_year)
-        adult_income = sum(person(source, period) * is_adult for source in sources)
-        return spm_unit.sum(adult_income)
+        person_income = add(person, period, p.sources)
+        return spm_unit.sum(person_income * is_adult)
