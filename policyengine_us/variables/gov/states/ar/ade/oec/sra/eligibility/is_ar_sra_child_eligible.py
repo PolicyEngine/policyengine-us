@@ -7,7 +7,7 @@ class is_ar_sra_child_eligible(Variable):
     label = "Eligible child for Arkansas SRA"
     definition_period = MONTH
     defined_for = StateCode.AR
-    reference = "https://www.publichealthlawcenter.org/sites/default/files/Arkansas%20Title%20016%20Division%2022%20Rule%208.pdf#page=11"
+    reference = "https://dese.ade.arkansas.gov/Files/2025-2027_CCDF_State_Plan_Final_4.26.24.1REV_OEC.pdf#page=18"
 
     def formula(person, period, parameters):
         age_eligible = person("is_ar_sra_age_eligible", period)
