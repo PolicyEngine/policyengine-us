@@ -159,3 +159,25 @@
         state_code: IN
   output:
     in_over_65_property_tax_credit_eligible: false
+
+- name: Case 9, current surviving spouse status qualifies with prior-prior-year single income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status:
+          2024: SINGLE
+          2026: SURVIVING_SPOUSE
+        adjusted_gross_income:
+          2024: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_over_65_property_tax_credit_eligible: true

@@ -1,0 +1,36 @@
+- name: impactica (2025)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      Child_0:
+        age: 1
+      you:
+        age: 30
+        employment_income: 4752.0
+    households:
+      household:
+        members:
+          - you
+          - Child_0
+        state_code_str: OR
+    spm_units:
+      spm_unit:
+        members:
+          - you
+          - Child_0
+        snap_assets: 0.0
+        snap_excess_shelter_expense_deduction: 672
+    tax_units:
+      tax_unit:
+        basic_standard_deduction: 0
+        members:
+          - you
+          - Child_0
+  output:
+    people:
+      you:
+        is_medicaid_eligible: true
+    spm_units:
+      spm_unit:
+        snap: 4709.7
