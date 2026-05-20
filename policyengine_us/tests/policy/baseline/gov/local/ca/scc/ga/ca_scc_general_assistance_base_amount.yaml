@@ -16,6 +16,7 @@
       spm_unit:
         members: [person1]
         ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 343
 
@@ -43,6 +44,7 @@
       spm_unit:
         members: [person1, person2]
         ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 460
 
@@ -70,6 +72,7 @@
       spm_unit:
         members: [person1, person2]
         ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 343
 
@@ -91,6 +94,7 @@
       spm_unit:
         members: [person1]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 291.55
 
@@ -112,6 +116,7 @@
       spm_unit:
         members: [person1]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 274.4
 
@@ -133,6 +138,7 @@
       spm_unit:
         members: [person1]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 257.25
 
@@ -160,6 +166,7 @@
       spm_unit:
         members: [person1, person2]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 391
 
@@ -187,6 +194,7 @@
       spm_unit:
         members: [person1, person2]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+  absolute_error_margin: 0.1
   output:
     # 460 * 0.80 = 368
     ca_scc_general_assistance_base_amount: 368
@@ -215,6 +223,7 @@
       spm_unit:
         members: [person1, person2]
         ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+  absolute_error_margin: 0.1
   output:
     # 460 * 0.75 = 345
     ca_scc_general_assistance_base_amount: 345

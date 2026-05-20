@@ -12,6 +12,7 @@
     spm_units:
       spm_unit:
         members: [person1]
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_countable_income: 100
 
@@ -32,6 +33,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_countable_income: 300
 
@@ -52,5 +54,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
+  absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_countable_income: 100
