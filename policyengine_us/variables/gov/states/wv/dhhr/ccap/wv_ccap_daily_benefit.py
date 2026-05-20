@@ -8,7 +8,7 @@ class wv_ccap_daily_benefit(Variable):
     label = "West Virginia CCAP daily benefit per child"
     definition_period = MONTH
     defined_for = "wv_ccap_eligible_child"
-    reference = "https://bfa.wv.gov/media/6766/download?inline#page=73"
+    reference = "https://bfa.wv.gov/media/6766/download?inline#page=79"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wv.dhhr.ccap

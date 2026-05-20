@@ -204,9 +204,8 @@
     # copay = 2_000 * 0.035 = 70
     wv_ccap_copay: 70
 
-    # uncapped = max(833.33 - 70, 0) = 763.33
-    # benefit = min(763.33, 823.33) = 763.33
-    wv_ccap: 763.33
+    # benefit = max(823.33 - 70, 0) = 753.33
+    wv_ccap: 753.33
 
 - name: Case 5, non-WV family gets zero benefit.
   period: 2025-01
@@ -234,3 +233,89 @@
         state_code: VA
   output:
     wv_ccap: 0
+
+- name: Case 6, copay reduces capped provider reimbursement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_days_per_week: 4
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible: true
+    # Center Tier I Toddler = $37/day.
+    wv_ccap_daily_rate: [0, 37]
+    # 4 days/week = 17.33 days/month, so monthly-rate billing applies.
+    # Gross reimbursement = 37 * 20 = 740.
+    # Copay = 2_000 monthly income * 3.5% = 70.
+    # Benefit deducts copay from authorized reimbursement, not provider charge.
+    wv_ccap_copay: 70
+    wv_ccap: 670
+
+# Manual §7.2.7.2: rate supplements are paid for actual days only — the monthly
+# rate does NOT apply to rate supplements. This case is the regression guard.
+- name: Case 7, supplement billed by actual days even when monthly rate applies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        is_disabled: true
+        ssi: 0
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_days_per_week: 4
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible: true
+    # Center Tier I Toddler = $37/day base; special needs supplement = $3/day.
+    wv_ccap_daily_rate: [0, 37]
+    # 4 days/week = 17.33 days/month (in 13-20 monthly-rate range).
+    # Base reimbursement (monthly rate): 37 * 20 = 740.
+    # Supplement reimbursement (actual days): 3 * 17.33 = 52.
+    # Total reimbursement: 740 + 52 = 792 (capped at pre_subsidy 1_000).
+    # Copay = 2_000 * 3.5% = 70.
+    # Benefit = 792 - 70 = 722.
+    wv_ccap_copay: 70
+    wv_ccap: 722

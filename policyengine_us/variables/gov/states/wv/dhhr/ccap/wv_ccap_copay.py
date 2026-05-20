@@ -10,7 +10,7 @@ class wv_ccap_copay(Variable):
     defined_for = StateCode.WV
     reference = (
         "https://bfa.wv.gov/media/6826/download?inline#page=1",
-        "https://bfa.wv.gov/media/6766/download?inline#page=64",
+        "https://bfa.wv.gov/media/6766/download?inline#page=65",
         "https://bfa.wv.gov/media/39915/download?inline#page=40",
     )
 
