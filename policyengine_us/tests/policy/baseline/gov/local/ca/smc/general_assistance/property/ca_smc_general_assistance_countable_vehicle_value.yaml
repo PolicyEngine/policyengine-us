@@ -1,0 +1,26 @@
+- name: Case 1, one vehicle is fully excluded.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 1
+    household_vehicles_value: 20_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 2, average value of vehicles beyond the first is countable.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 2
+    household_vehicles_value: 20_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 10_000
+
+- name: Case 3, no vehicle value is countable when no vehicles are owned.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 0
+    household_vehicles_value: 0
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0

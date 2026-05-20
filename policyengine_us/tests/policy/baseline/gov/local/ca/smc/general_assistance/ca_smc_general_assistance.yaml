@@ -1,0 +1,26 @@
+- name: Case 1, eligible unit receives standard less countable income.
+  period: 2026-01
+  input:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_countable_income: 200
+  output:
+    ca_smc_general_assistance: 532
+
+- name: Case 2, benefit floors at zero.
+  period: 2026-01
+  input:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_countable_income: 800
+  output:
+    ca_smc_general_assistance: 0
+
+- name: Case 3, ineligible unit receives zero.
+  period: 2026-01
+  input:
+    ca_smc_general_assistance_eligible: false
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_countable_income: 0
+  output:
+    ca_smc_general_assistance: 0

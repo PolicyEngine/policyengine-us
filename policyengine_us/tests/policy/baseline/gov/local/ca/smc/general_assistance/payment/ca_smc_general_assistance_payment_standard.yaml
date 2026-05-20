@@ -1,0 +1,39 @@
+- name: Case 1, independent living standard.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_payment_standard: 732
+
+- name: Case 2, drug and alcohol treatment center standard.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_living_arrangement: DRUG_ALCOHOL_TREATMENT_CENTER
+  output:
+    ca_smc_general_assistance_payment_standard: 732
+
+- name: Case 3, NMOHC without referral standard.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_living_arrangement: NMOHC_WITHOUT_REFERRAL
+  output:
+    ca_smc_general_assistance_payment_standard: 732
+
+- name: Case 4, NMOHC with referral 2025 standard.
+  period: 2025-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance_payment_standard: 1_599.07
+
+- name: Case 5, NMOHC with referral 2026 standard.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance_payment_standard: 1_626.07

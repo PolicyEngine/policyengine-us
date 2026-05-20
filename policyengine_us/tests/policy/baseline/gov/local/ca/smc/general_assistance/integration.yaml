@@ -1,0 +1,144 @@
+- name: Case 1, independent living unit with no income receives full standard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance: 732
+
+- name: Case 2, independent living unit with income receives reduced benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_400
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_income: 200
+    ca_smc_general_assistance: 532
+
+- name: Case 3, income above independent living standard makes unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_796
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_income: 733
+    ca_smc_general_assistance_income_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 4, NMOHC with referral uses 2025 standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance: 1_599.07
+
+- name: Case 5, NMOHC with referral uses 2026 standard and offsets income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_000
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance_payment_standard: 1_626.07
+    ca_smc_general_assistance_countable_income: 250
+    ca_smc_general_assistance: 1_376.07
+
+- name: Case 6, property at limit makes unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_464
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_property_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 7, one vehicle is excluded from property.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_463
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+    ca_smc_general_assistance_property_eligible: true
+    ca_smc_general_assistance: 732
