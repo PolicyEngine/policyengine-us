@@ -4,8 +4,12 @@
 - name: Cecil County maps to Region U.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: CECIL_COUNTY_MD
   output:
@@ -14,8 +18,12 @@
 - name: Caroline County maps to Region V.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: CAROLINE_COUNTY_MD
   output:
@@ -24,8 +32,12 @@
 - name: Anne Arundel County maps to Region W.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: ANNE_ARUNDEL_COUNTY_MD
   output:
@@ -34,8 +46,12 @@
 - name: Howard County maps to Region X.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: HOWARD_COUNTY_MD
   output:
@@ -44,8 +60,12 @@
 - name: Baltimore County maps to Region Y.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: BALTIMORE_COUNTY_MD
   output:
@@ -54,8 +74,12 @@
 - name: Allegany County maps to Region Z.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: ALLEGANY_COUNTY_MD
   output:
@@ -64,8 +88,12 @@
 - name: Baltimore City maps to Region BC.
   period: 2025-01
   input:
+    people:
+      person1:
+        age: 30
     households:
       household:
+        members: [person1]
         state_code: MD
         county: BALTIMORE_CITY_MD
   output:
