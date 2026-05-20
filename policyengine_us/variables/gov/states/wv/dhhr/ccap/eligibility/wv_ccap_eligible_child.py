@@ -17,9 +17,11 @@ class wv_ccap_eligible_child(Variable):
         # 13-17 extension applies only via the special-needs branch (§3.1.2.2).
         p = parameters(period).gov.states.wv.dhhr.ccap.eligibility
         age = person("age", period.this_year)
-        is_disabled = person("is_disabled", period.this_year)
+        has_developmental_delay = person("has_developmental_delay", period.this_year)
         age_eligible = where(
-            is_disabled, age < p.special_needs_child_age_limit, age < p.child_age_limit
+            has_developmental_delay,
+            age < p.special_needs_child_age_limit,
+            age < p.child_age_limit,
         )
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year

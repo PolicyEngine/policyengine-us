@@ -15,6 +15,9 @@ class wv_ccap_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # NOTE: we don't model minor-parent eligibility (Manual §1.1.10, §4.5.3.6, §4.5.6)
         # because tax-unit head/spouse status excludes people under 18.
+        # We don't enforce the WV minimum-wage earnings floor (Manual §3.5) or
+        # split joint-custody households into two families (Manual §3.2.3) at
+        # the moment.
         has_eligible_child = add(spm_unit, period, ["wv_ccap_eligible_child"]) > 0
         income_eligible = spm_unit("wv_ccap_income_eligible", period)
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)

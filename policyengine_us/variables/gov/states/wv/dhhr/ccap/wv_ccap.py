@@ -19,6 +19,12 @@ class wv_ccap(Variable):
         # Manual §7.2.7.2: rate supplements (special needs, shift differential)
         # are paid for actual days of care only — the monthly rate does NOT
         # apply to rate supplements.
+        # We don't track per-day attendance hours at the moment, so every
+        # attended day is paid at the full-day rate; the part-day conversion
+        # (§7.2.7.6 — 2/3 rate for 2-4 hrs, 1/3 for < 2 hrs), the full-day
+        # 4-hr minimum (§7.2.7.5), the 18-hour daily cap (§7.2.1), and the
+        # two-provider-per-child billing rule (§6.4.2, §7.2.3, §7.2.5) are
+        # not modeled.
         p = parameters(period).gov.states.wv.dhhr.ccap
         person = spm_unit.members
         weekly_care_days = person("childcare_days_per_week", period.this_year)
@@ -32,8 +38,10 @@ class wv_ccap(Variable):
             monthly_care_days,
         )
         daily_rate = person("wv_ccap_daily_rate", period)
-        is_disabled = person("is_disabled", period.this_year)
-        special_needs_supplement = where(is_disabled, p.supplements.special_needs, 0)
+        has_developmental_delay = person("has_developmental_delay", period.this_year)
+        special_needs_supplement = where(
+            has_developmental_delay, p.supplements.special_needs, 0
+        )
         non_trad = person("wv_ccap_non_traditional_hours", period)
         non_trad_supplement = where(non_trad, p.supplements.non_traditional_hours, 0)
         daily_supplement = special_needs_supplement + non_trad_supplement

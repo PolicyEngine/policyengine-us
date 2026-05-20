@@ -10,6 +10,11 @@ class wv_ccap_activity_eligible(Variable):
     reference = "https://bfa.wv.gov/media/6766/download?inline#page=32"
 
     def formula(spm_unit, period, parameters):
+        # NOTE: we use is_full_time_student as a proxy for Manual §3.6.3, which
+        # requires specific credit-hour minimums and excludes web-only courses.
+        # We don't track high-school students (§3.6.2.2 exempts them from the
+        # weekly-hours floor) or CPS Safety/Treatment Plan recipients
+        # (§3.6.4 exempts them from activity hours) at the moment.
         p = parameters(period).gov.states.wv.dhhr.ccap.eligibility
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)

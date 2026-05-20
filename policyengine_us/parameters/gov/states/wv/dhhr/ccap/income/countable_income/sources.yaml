@@ -3,6 +3,7 @@ values:
   2024-01-01:
     - employment_income
     - self_employment_income
+    - farm_operations_income
     - social_security
     - ssi
     - unemployment_compensation
@@ -24,6 +25,18 @@ values:
     # The is_tanf_enrolled bypass in wv_ccap_income_eligible already
     # makes TANF-active families categorically income-eligible.
     # - tanf  # would belong here
+    #
+    # Provisions we don't model at the moment:
+    # - §5.2.5.11 child-earnings exclusion (under-18 earnings of non-head/spouse)
+    #   — we don't filter income sources by age of earner.
+    # - §5.2.4.3 sub-categories beyond TANF/SSI: Relative Caretaker Pay, WV
+    #   Employment Assistance Program, WV Works Post-Employment Supplements
+    #   — these don't have PolicyEngine variables at the moment.
+    # - §5.2.4.10 vocational-rehabilitation payments and §5.2.4.13 DoD
+    #   Transitional Compensation (parent-directed portion) — no corresponding
+    #   PolicyEngine variables at the moment.
+    # - §5.2.4.11 catch-all "any other monies received on a regular basis"
+    #   — open-ended residual category we can't enumerate exhaustively.
 
 metadata:
   unit: list

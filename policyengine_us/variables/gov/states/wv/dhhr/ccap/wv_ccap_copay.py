@@ -11,7 +11,7 @@ class wv_ccap_copay(Variable):
     reference = (
         "https://bfa.wv.gov/media/6826/download?inline#page=1",
         "https://bfa.wv.gov/media/6766/download?inline#page=65",
-        "https://bfa.wv.gov/media/39915/download?inline#page=40",
+        "https://bfa.wv.gov/media/39915/download?inline#page=42",
     )
 
     def formula(spm_unit, period, parameters):
@@ -73,7 +73,11 @@ class wv_ccap_copay(Variable):
         # CCDF State Plan §3.1.1 caps the family fee at 7% of gross income.
         capped_copay = min_(uncapped_copay, countable_income * p.max_share)
         # Manual §6.4.1 / CCDF Plan §3.3.1: foster-care children pay no fee.
-        # We model this at the family level (waive the whole family copay if
-        # any child is in foster care); per-child waiver isn't tracked.
+        # We don't track per-child fee waivers at the moment, so we waive the
+        # whole family copay if any child is in foster care.
+        # We don't track kinship-care placements (CCDF Plan §3.3.1(vi)),
+        # CPS Safety/Treatment Plans (Manual §6.4.1), or protective-services
+        # status (CCDF Plan §3.3.1(vi)) at the moment, so the corresponding
+        # fee waivers are not applied.
         has_foster_child = add(spm_unit, period, ["is_in_foster_care"]) > 0
         return where(has_foster_child, 0, capped_copay)

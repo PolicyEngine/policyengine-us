@@ -8,6 +8,6 @@ class wv_ccap_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6766/download?inline#page=49"
+    reference = "https://bfa.wv.gov/media/6766/download?inline#page=51"
 
     adds = "gov.states.wv.dhhr.ccap.income.countable_income.sources"

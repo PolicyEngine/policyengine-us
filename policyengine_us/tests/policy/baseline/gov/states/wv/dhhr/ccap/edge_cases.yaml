@@ -461,7 +461,7 @@
         # Disabled child age 17.99 -> < 18 -> eligible
         age: 17.99
         is_tax_unit_dependent: true
-        is_disabled: true
+        has_developmental_delay: true
         immigration_status: CITIZEN
     tax_units:
       tax_unit:
@@ -488,7 +488,7 @@
         # Disabled child age 18 -> NOT < 18 -> ineligible
         age: 18
         is_tax_unit_dependent: true
-        is_disabled: true
+        has_developmental_delay: true
         immigration_status: CITIZEN
     tax_units:
       tax_unit:
@@ -1334,7 +1334,7 @@
       person2:
         age: 8
         is_tax_unit_dependent: true
-        is_disabled: true
+        has_developmental_delay: true
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I

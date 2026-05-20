@@ -15,7 +15,9 @@ class wv_ccap_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # NOTE: We model the Appendix A intake cap (~185% FPL). The 85% SMI
         # "Over-Income Policy Exception" for enrolled recipients (Manual §4.7.1)
-        # is not modeled at the moment.
+        # is not modeled at the moment. We also don't distinguish child-only
+        # TANF cases (Manual §3.2.1.4 requires them to pass the FPL test) from
+        # full TANF — is_tanf_enrolled treats both as categorically eligible.
         p = parameters(period).gov.states.wv.dhhr.ccap.income
         countable_income = spm_unit("wv_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)

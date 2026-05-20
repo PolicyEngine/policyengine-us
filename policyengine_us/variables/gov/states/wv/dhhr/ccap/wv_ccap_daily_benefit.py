@@ -8,13 +8,15 @@ class wv_ccap_daily_benefit(Variable):
     label = "West Virginia CCAP daily benefit per child"
     definition_period = MONTH
     defined_for = "wv_ccap_eligible_child"
-    reference = "https://bfa.wv.gov/media/6766/download?inline#page=79"
+    reference = "https://bfa.wv.gov/media/6766/download?inline#page=80"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wv.dhhr.ccap
         daily_rate = person("wv_ccap_daily_rate", period)
-        is_disabled = person("is_disabled", period.this_year)
-        special_needs_supplement = where(is_disabled, p.supplements.special_needs, 0)
+        has_developmental_delay = person("has_developmental_delay", period.this_year)
+        special_needs_supplement = where(
+            has_developmental_delay, p.supplements.special_needs, 0
+        )
         non_trad = person("wv_ccap_non_traditional_hours", period)
         non_trad_supplement = where(non_trad, p.supplements.non_traditional_hours, 0)
         total_rate = daily_rate + special_needs_supplement + non_trad_supplement
