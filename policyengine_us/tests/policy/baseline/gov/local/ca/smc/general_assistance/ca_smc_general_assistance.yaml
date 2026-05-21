@@ -24,3 +24,12 @@
     ca_smc_general_assistance_countable_income: 0
   output:
     ca_smc_general_assistance: 0
+
+- name: Case 4, negative countable income floors at zero, benefit caps at standard.
+  period: 2026-01
+  input:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_countable_income: -200
+  output:
+    ca_smc_general_assistance: 732

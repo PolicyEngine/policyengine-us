@@ -1,0 +1,21 @@
+description: San Mateo County provides this maximum monthly payment under the General Assistance program, based on the recipient's living arrangement.
+INDEPENDENT_LIVING:
+  2023-10-01: 732
+DRUG_ALCOHOL_TREATMENT_CENTER:
+  2023-10-01: 732
+NMOHC_WITHOUT_REFERRAL:
+  2023-10-01: 732
+NMOHC_WITH_REFERRAL:
+  2025-01-01: 1_599.07
+  2026-01-01: 1_626.07
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - ca_smc_general_assistance_living_arrangement
+  label: San Mateo County General Assistance payment standard
+  reference:
+    - title: San Mateo County Human Services Agency Standards of Assistance, General Assistance
+      href: https://www.smcgov.org/media/156974/download?inline=
+    - title: San Mateo County Board File 26-290, Modification to the General Assistance Program Rules and Regulations
+      href: https://sanmateocounty.legistar.com/ViewReport.ashx?GID=659&GUID=LATEST&ID=94585&M=R&N=TextL5&Title=Board+Memo#page=1

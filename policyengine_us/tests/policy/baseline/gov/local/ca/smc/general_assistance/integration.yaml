@@ -142,3 +142,25 @@
     ca_smc_general_assistance_countable_vehicle_value: 0
     ca_smc_general_assistance_property_eligible: true
     ca_smc_general_assistance: 732
+
+- name: Case 8, single parent with a young child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: false
+    ca_smc_general_assistance: 0

@@ -16,4 +16,4 @@ class ca_smc_general_assistance_living_arrangement(Variable):
     defined_for = "in_smc"
     possible_values = CaSMCGeneralAssistanceLivingArrangement
     default_value = CaSMCGeneralAssistanceLivingArrangement.INDEPENDENT_LIVING
-    reference = "https://www.smcgov.org/media/156974/download?inline=#page=1"
+    reference = "https://www.smcgov.org/media/156974/download?inline="

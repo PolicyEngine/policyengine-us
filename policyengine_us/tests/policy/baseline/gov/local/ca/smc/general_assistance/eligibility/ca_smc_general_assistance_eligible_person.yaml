@@ -1,0 +1,46 @@
+- name: Case 1, adult citizen is eligible.
+  period: 2026-01
+  input:
+    age: 18
+    immigration_status: CITIZEN
+    in_smc: true
+  output:
+    ca_smc_general_assistance_eligible_person: true
+
+- name: Case 2, child citizen is ineligible.
+  period: 2026-01
+  input:
+    age: 17
+    immigration_status: CITIZEN
+    in_smc: true
+  output:
+    ca_smc_general_assistance_eligible_person: false
+
+- name: Case 3, adult with ineligible immigration status is ineligible.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    in_smc: true
+  output:
+    ca_smc_general_assistance_eligible_person: false
+
+- name: Case 4, active SSI recipient is ineligible.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    in_smc: true
+    ssi_reported: 12_000
+  output:
+    ca_smc_general_assistance_eligible_person: false
+
+- name: Case 5, SSI-pending applicant (eligible category but not yet receiving) remains eligible.
+  period: 2026-01
+  input:
+    age: 65
+    immigration_status: CITIZEN
+    in_smc: true
+    ssi_reported: 0
+  output:
+    ca_smc_general_assistance_eligible_person: true

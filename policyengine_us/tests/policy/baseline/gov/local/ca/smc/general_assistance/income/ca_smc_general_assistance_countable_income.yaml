@@ -15,3 +15,73 @@
         members: [person1]
   output:
     ca_smc_general_assistance_countable_income: 100
+
+- name: Case 2, earned income receives the 20 percent CalFresh-aligned deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_smc_general_assistance_countable_income: 800
+
+- name: Case 3, unearned income receives no earned income deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        rental_income: 12_000
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_smc_general_assistance_countable_income: 1_000
+
+- name: Case 4, negative self-employment income flows in without inflating the deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        self_employment_income: -2_400
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_smc_general_assistance_countable_income: -200
+
+- name: Case 5, peer-convergence sources (workers compensation, rental income, dividend income) count as unearned.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        workers_compensation: 1_200
+        rental_income: 1_200
+        dividend_income: 1_200
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_smc_general_assistance_countable_income: 300
