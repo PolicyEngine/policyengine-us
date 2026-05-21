@@ -1,3 +1,10 @@
+## [1.703.1] - 2026-05-21
+
+### Changed
+
+- Update Medicaid work requirement eligibility to reflect CMS community engagement guidance.
+
+
 ## [1.703.0] - 2026-05-21
 
 ### Added
