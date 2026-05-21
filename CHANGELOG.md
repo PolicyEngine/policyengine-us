@@ -1,3 +1,10 @@
+## [1.701.0] - 2026-05-21
+
+### Added
+
+- Added a data-overridable SSI disability criteria variable for calibrated SSI simulations.
+
+
 ## [1.700.2] - 2026-05-20
 
 ### Changed
