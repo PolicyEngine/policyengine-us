@@ -1,0 +1,67 @@
+- name: Case 1, center infant base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 64.15
+
+- name: Case 2, center preschool quality enhanced rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+        az_ccap_quality_enhanced_provider: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 58.80
+
+- name: Case 3, special needs rate for a quality provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+        az_ccap_quality_enhanced_provider: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+    az_ccap_daily_rate: 89.81
+
+- name: Case 4, relative provider rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: RELATIVE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 15

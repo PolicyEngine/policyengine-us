@@ -1,0 +1,65 @@
+- name: Case 1, non-enrolled family at initial threshold is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_980
+      person2:
+        age: 4
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # $43,980/year = $3,665/month, the family-size-3 initial threshold.
+    az_ccap_income_eligible: true
+
+- name: Case 2, non-enrolled family above initial threshold is not income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 44_000
+      person2:
+        age: 4
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_ccap_income_eligible: false
+
+- name: Case 3, enrolled family above initial threshold but below ongoing threshold is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 44_000
+      person2:
+        age: 4
+      person3:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        az_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_ccap_income_eligible: true
+

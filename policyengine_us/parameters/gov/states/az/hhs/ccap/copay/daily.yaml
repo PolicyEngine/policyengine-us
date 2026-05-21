@@ -1,0 +1,29 @@
+description: Arizona provides this amount as the daily copay under the Child Care Assistance Program.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Arizona CCAP daily copay by fee level
+  breakdown:
+    - range(0,8)
+  breakdown_labels:
+    - Fee level
+  reference:
+    - title: Arizona DES Child Care Assistance Gross Monthly Income Eligibility Chart and Fee Schedule FFY 2026
+      href: https://des.az.gov/sites/default/files/dl/CCA-0229AFY26.pdf#page=1
+0:
+  2025-10-01: 0
+1:
+  2025-10-01: 0.5
+2:
+  2025-10-01: 0.5
+3:
+  2025-10-01: 0.5
+4:
+  2025-10-01: 1
+5:
+  2025-10-01: 1.5
+6:
+  2025-10-01: 2.5
+7:
+  2025-10-01: 2.5
+

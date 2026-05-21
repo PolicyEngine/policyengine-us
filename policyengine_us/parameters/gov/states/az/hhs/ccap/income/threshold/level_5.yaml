@@ -1,0 +1,39 @@
+description: Arizona limits gross income to this amount under the Child Care Assistance Program.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Arizona CCAP fee level 5 income threshold
+  breakdown:
+    - range(0,13)
+  breakdown_labels:
+    - Family size
+  reference:
+    - title: Arizona DES Child Care Assistance Gross Monthly Income Eligibility Chart and Fee Schedule FFY 2026
+      href: https://des.az.gov/sites/default/files/dl/CCA-0229AFY26.pdf#page=1
+0:
+  2025-10-01: 0
+1:
+  2025-10-01: 2_023
+2:
+  2025-10-01: 2_733
+3:
+  2025-10-01: 3_443
+4:
+  2025-10-01: 4_154
+5:
+  2025-10-01: 4_864
+6:
+  2025-10-01: 5_574
+7:
+  2025-10-01: 6_286
+8:
+  2025-10-01: 6_996
+9:
+  2025-10-01: 7_706
+10:
+  2025-10-01: 8_417
+11:
+  2025-10-01: 9_127
+12:
+  2025-10-01: 9_837
+
