@@ -1,0 +1,17 @@
+- name: Case 1, veterans benefits count and SSI does not.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        veterans_benefits: 1_200
+        ssi: 1_200
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_smc_general_assistance_countable_income: 100

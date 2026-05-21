@@ -16,6 +16,8 @@ Official source URLs:
 - Standards of Assistance PDF, C-335 Rev. 12.2025: https://www.smcgov.org/media/156974/download?inline=#page=1
 - 2026 NMOHC Board memo, File 26-290, Board date 2026-04-07: https://sanmateocounty.legistar.com/ViewReport.ashx?GID=659&GUID=LATEST&ID=94585&M=R&N=TextL5&Title=Board+Memo#page=1
 - 2026 time-limit resolution attachment: https://sanmateocounty.legistar.com/View.ashx?G=1088EC25-A43A-408F-A57C-73C0A70269AB&GUID=7A7BFB1E-AD23-4AC9-A6B2-82EAFFEDABC7&ID=15171150&M=F#page=1
+- SSA-1696 Appointment of Representative: https://www.ssa.gov/forms/ssa-1696.pdf
+- SSP-14 Authorization for Reimbursement of Interim Assistance: https://www.cdss.ca.gov/cdssweb/entres/forms/english/ssp14.pdf
 
 Extracted rules:
 - Purpose and administration: County-funded temporary financial support for low-income San Mateo County residents, paid by EBT, direct deposit, or vendor payments for housing/utilities. Source: fact sheet page 1.
@@ -23,7 +25,8 @@ Extracted rules:
 - Immigration: qualified immigrants may be eligible, including lawful permanent residents, refugees, asylum applicants or asylees, conditional entrants, people granted withholding of deportation/removal, and Cuban/Haitian entrants. Source: fact sheet page 1.
 - Work requirement: employable recipients must be available for full-time employment and comply with Vocational Rehabilitation Services unless excepted. Examples include full-time employment, required home care for specified relatives, age 65+, school attendance for high-school diploma, child under 16, limited English proficiency, disability, or approved training/rehabilitation. Source: fact sheet page 1.
 - Time limits: the February 2025 fact sheet says no time limit if clients follow requirements and remain eligible. A later Board resolution establishes six months of aid in a twelve-month period for employable GA recipients. Sources: fact sheet page 2; time-limit resolution page 1.
-- Counted income: earnings, unemployment benefits, disability benefits, self-employment income, retirement benefits, interest income, child or spousal support, and other means of income or support. Source: fact sheet page 2.
+- Counted income: earnings, unemployment benefits, disability benefits, self-employment income, retirement benefits, interest income, child or spousal support, and other means of income or support. The program page also lists Social Security award letters, child support and alimony, unemployment/disability stubs, and veteran's benefits as examples of proof of income. Sources: fact sheet page 2; General Assistance program page.
+- SSI/SSP interim assistance reimbursement: SSP-14 authorizes reimbursement from retroactive SSI/SSP benefits for county interim assistance paid while SSA decides eligibility or reinstatement. This supports an administrative reimbursement rule, not counting current SSI/SSP as ordinary General Assistance income. Source: SSP-14 page 1.
 - Income test: applicant countable income is compared with the GA payment standard based on living arrangement. Source: fact sheet page 2.
 - Maximum aid payments in current public chart: independent living $732, drug and alcohol treatment center $732, NMOHC without BHRS/SMMC referral $732, NMOHC with BHRS/SMMC referral $1,599.07. Source: standards PDF page 1.
 - NMOHC update: Board File 26-290 recommends and documents an increase for SSI-pending NMOHC facility GA recipients with BHRS/SMMC referral from $1,599.07 to $1,626.07 effective 2026-01-01. Source: NMOHC Board memo pages 1-2.
