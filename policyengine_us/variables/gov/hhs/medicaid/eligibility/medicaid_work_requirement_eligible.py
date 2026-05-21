@@ -27,6 +27,10 @@ class medicaid_work_requirement_eligible(Variable):
         is_enrolled_at_least_half_time = person(
             "is_full_time_student", period
         ) | person("is_part_time_college_student", period)
+        pass_through_eligible = person(
+            "medicaid_community_engagement_pass_through_eligible",
+            period.first_month,
+        )
         # Pregnant or postpartum medical assistance.
         is_pregnant_or_postpartum = person("is_pregnant_for_medicaid_nfc", period)
         # Has attained age of 19 and is under 65 is require to work p.693 (bb)
@@ -65,6 +69,7 @@ class medicaid_work_requirement_eligible(Variable):
         )
         exempted_from_work = (
             is_enrolled_at_least_half_time
+            | pass_through_eligible
             | is_pregnant_or_postpartum
             | former_foster_care_youth
             | has_ihs_coverage
