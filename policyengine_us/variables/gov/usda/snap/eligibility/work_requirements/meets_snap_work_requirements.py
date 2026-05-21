@@ -6,7 +6,11 @@ class meets_snap_work_requirements(Variable):
     entity = SPMUnit
     label = "SPM Unit is eligible for SNAP benefits via work requirements"
     definition_period = MONTH
-    reference = "https://www.fns.usda.gov/snap/work-requirements"
+    reference = (
+        "https://www.fns.usda.gov/snap/work-requirements",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#f_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.24#b",
+    )
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
@@ -31,4 +35,4 @@ class meets_snap_work_requirements(Variable):
             abawd_work_requirements & general_work_requirements,
             general_work_requirements,
         )
-        return spm_unit.sum(~meets_work_requirements_person) == 0
+        return spm_unit.any(meets_work_requirements_person)
