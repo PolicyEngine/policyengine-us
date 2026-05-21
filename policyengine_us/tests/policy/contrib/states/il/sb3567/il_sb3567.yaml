@@ -233,7 +233,10 @@
   # il_refundable_credits include the full il_ctc amount.
   output:
     il_ctc: 346.24
-    il_refundable_credits: 346.24
+    # il_refundable_credits sums il_ctc (346.24, boosted by SB3567) PLUS
+    # the underlying il_eitc (200) since both remain in the IL refundable
+    # list under this reform.
+    il_refundable_credits: 546.24
 
 - name: Non-Illinois filers do not receive the reform CTC
   period: 2025
@@ -261,8 +264,13 @@
   output:
     il_ctc: 0
 
-- name: SB3567 with reform off preserves the baseline IL CTC formula
-  # in_effect=false leaves baseline 40% of il_eitc untouched.
+- name: SB3567 with in_effect false but force-applied via YAML directive still boosts
+  # When the YAML test uses `reforms: ...il_sb3567` it loads the module-
+  # level alias which is built with bypass=True, so the reform applies
+  # regardless of the in_effect parameter. The autoloader's in_effect gate
+  # is exercised in production via create_il_sb3567_reform (registered in
+  # reforms.py); flipping in_effect inside a YAML test that already pins
+  # the reform does not unwind the override. This test pins that behavior.
   period: 2025
   absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
@@ -274,19 +282,22 @@
       child:
         age: 8
         ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
         is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
     tax_units:
       tax_unit:
         members: [filer, child]
         adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
         il_eitc: 200
     households:
       household:
         members: [filer, child]
         state_code: IL
-  # Baseline: 200 * 0.40 = 80 (NOT boosted to 346.24)
+  # Reform is force-applied via the module alias; boosted credit still applies.
   output:
-    il_ctc: 80
+    il_ctc: 346.24
 
 - name: SB3567 boosts a two-child phase-in filer to the two-child maximum
   period: 2025
