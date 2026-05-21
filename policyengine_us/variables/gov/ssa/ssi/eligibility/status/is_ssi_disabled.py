@@ -10,4 +10,6 @@ class is_ssi_disabled(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#a_3_A"
 
     def formula(person, period, parameters):
-        return person("meets_ssi_disability_criteria", period)
+        meets_disability_criteria = person("meets_ssi_disability_criteria", period)
+        engaged_in_sga = person("ssi_engaged_in_sga", period)
+        return meets_disability_criteria & ~engaged_in_sga
