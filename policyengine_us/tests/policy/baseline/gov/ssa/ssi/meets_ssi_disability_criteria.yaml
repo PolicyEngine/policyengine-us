@@ -1,0 +1,23 @@
+- name: Case 1, disabled and not engaged in substantial gainful activity.
+  period: 2024
+  input:
+    is_disabled: true
+    ssi_engaged_in_sga: false
+  output:
+    meets_ssi_disability_criteria: true
+
+- name: Case 2, disabled but engaged in substantial gainful activity.
+  period: 2024
+  input:
+    is_disabled: true
+    ssi_engaged_in_sga: true
+  output:
+    meets_ssi_disability_criteria: false
+
+- name: Case 3, not disabled and not engaged in substantial gainful activity.
+  period: 2024
+  input:
+    is_disabled: false
+    ssi_engaged_in_sga: false
+  output:
+    meets_ssi_disability_criteria: false
