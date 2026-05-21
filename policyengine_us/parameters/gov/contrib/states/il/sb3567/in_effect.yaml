@@ -3,8 +3,10 @@ description: Illinois applies the SB3567 three-tier child tax credit boost under
 # values here reflect the introduced text. The bill leaves 35 ILCS 5/244(b)
 # refundability intact, so this reform does NOT make the credit non-refundable.
 
+# Default false from 0000-01-01 so the autoloader resolves the toggle at
+# any simulation period; flip to true (via reform input) when modeling SB3567.
 values:
-  2025-01-01: false
+  0000-01-01: false
 
 metadata:
   unit: bool
