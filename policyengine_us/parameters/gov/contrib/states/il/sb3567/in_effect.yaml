@@ -1,14 +1,23 @@
-description: Illinois SB3567 modifies the child tax credit formula and makes the credit nonrefundable if this is true.
+description: Illinois applies the SB3567 three-tier child tax credit boost under the Illinois Child Tax Credit program when this is true.
+# NOTE: SB3567 is pending in the 104th General Assembly as of 2026-05;
+# values here reflect the introduced text. The bill leaves 35 ILCS 5/244(b)
+# refundability intact, so this reform does NOT make the credit non-refundable.
 
 values:
-  0000-01-01: false
+  2025-01-01: false
 
 metadata:
   unit: bool
   period: year
   label: Illinois SB3567 child tax credit reform in effect
   reference:
-    - title: Illinois SB3567 (104th General Assembly) full text
+    - title: Illinois SB3567 (104th General Assembly) - full bill text (Sec. 244 begins on page 2)
       href: https://www.ilga.gov/documents/legislation/104/SB/PDF/10400SB3567lv.pdf#page=2
-    - title: 35 ILCS 5/244 Child tax credit
+    - title: 35 ILCS 5/244 (a) and (b) - Illinois Child Tax Credit (formula amended; refundability preserved)
       href: https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244
+    - title: 35 ILCS 5/212 - Illinois Earned Income Tax Credit (the underlying state credit)
+      href: https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K212
+    - title: IRC § 32 - federal EITC (defines the phase-in plateau cited as Tier (1)-(2) threshold)
+      href: https://www.law.cornell.edu/uscode/text/26/32
+    - title: IRC § 152 - definition of "qualifying dependents" referenced in Tier (1)-(2)
+      href: https://www.law.cornell.edu/uscode/text/26/152
