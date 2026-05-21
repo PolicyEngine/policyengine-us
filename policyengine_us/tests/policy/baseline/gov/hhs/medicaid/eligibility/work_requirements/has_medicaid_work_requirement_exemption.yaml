@@ -1,0 +1,39 @@
+- name: Return false if no conditions set
+  period: '2027-03'
+  output:
+    has_medicaid_work_requirement_exemption: false
+
+- name: Return true if is_totally_disabled_veteran
+  period: '2027-03'
+  input:
+    is_totally_disabled_veteran: true
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+- name: Return true if is_medically_frail
+  period: '2027-03'
+  input:
+    is_medically_frail: true
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+- name: Return true if is_pregnant
+  period: '2027-03'
+  input:
+    is_pregnant: true
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+- name: Return true if <19 years old
+  period: '2027-03'
+  input:
+    age: 18
+  output:
+    has_medicaid_work_requirement_exemption: true
+
+- name: Return true if 65 or older
+  period: '2027-03'
+  input:
+    age: 65
+  output:
+    has_medicaid_work_requirement_exemption: true

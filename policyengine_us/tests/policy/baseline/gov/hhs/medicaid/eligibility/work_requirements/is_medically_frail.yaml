@@ -1,0 +1,52 @@
+- name: Return false if no conditions set
+  period: 2027
+  output:
+    is_medically_frail: false
+
+
+- name: return true if blind
+  period: 2027
+  input:
+    is_blind: true
+  output:
+    is_medically_frail: true
+
+
+- name: return true if has disability as defined by SSI
+  period: 2027
+  input:
+    is_ssi_disabled: true
+  output:
+    is_medically_frail: true
+
+
+- name: return true if has substance_use_disorder
+  period: 2027
+  input:
+    has_substance_use_disorder: true
+  output:
+    is_medically_frail: true
+
+
+- name: return true if has_disabling_mental_disorder
+  period: 2027
+  input:
+    has_disabling_mental_disorder: true
+  output:
+    is_medically_frail: true
+
+
+- name: return true if has_adl_impairment
+  period: 2027
+  input:
+    has_adl_impairment: true
+  output:
+    is_medically_frail: true
+
+
+- name: return true if has_serious_or_complex_medical_condition
+  period: 2027
+  input:
+    has_serious_or_complex_medical_condition: true
+  output:
+    is_medically_frail: true

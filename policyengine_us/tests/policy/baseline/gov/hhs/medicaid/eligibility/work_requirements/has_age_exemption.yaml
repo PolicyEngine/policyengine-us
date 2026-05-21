@@ -1,0 +1,19 @@
+- name: Return false if no conditions set
+  period: 2027-03
+  output:
+    has_age_exemption: false
+
+- name: Return true if less than 19
+  period: 2027-03
+  input:
+    age: 18
+  output:
+    has_age_exemption: true
+
+- name: Return true if greater than or equal to 65
+  period: 2027-03
+  input:
+    age: 65
+  output:
+    has_age_exemption: true
+
