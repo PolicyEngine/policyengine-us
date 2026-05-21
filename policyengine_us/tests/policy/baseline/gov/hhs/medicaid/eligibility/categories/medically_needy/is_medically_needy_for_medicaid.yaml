@@ -20,3 +20,31 @@
         state_code: MA
   output:
     is_medically_needy_for_medicaid: false
+
+- name: Case 1, disabled person qualifies after medical spenddown.
+  period: 2026
+  input:
+    is_disabled: true
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 12_000
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    is_medically_needy_for_medicaid: true
+
+- name: Case 2, disabled person above spenddown income limit is ineligible.
+  period: 2026
+  input:
+    is_disabled: true
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 13_000
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    is_medically_needy_for_medicaid: false

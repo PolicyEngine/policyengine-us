@@ -170,3 +170,21 @@
   output:
     medicaid_category: SENIOR_OR_DISABLED
     is_medicaid_eligible: true
+
+- name: Case 4, medically needy pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
+
+- name: Case 5, working disabled Buy-In pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    is_medicaid_eligible: true

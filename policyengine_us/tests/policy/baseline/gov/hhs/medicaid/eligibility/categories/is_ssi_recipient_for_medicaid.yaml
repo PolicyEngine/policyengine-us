@@ -12,3 +12,19 @@
     state_code: CT
   output:
     is_ssi_recipient_for_medicaid: false
+
+- name: Case 1, SSI recipient in Alaska qualifies through SSI criteria.
+  period: 2026
+  input:
+    ssi: 1
+    state_code: AK
+  output:
+    is_ssi_recipient_for_medicaid: true
+
+- name: Case 2, SSI recipient in Oklahoma qualifies through SSI criteria.
+  period: 2026
+  input:
+    ssi: 1
+    state_code: OK
+  output:
+    is_ssi_recipient_for_medicaid: true

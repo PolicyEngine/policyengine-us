@@ -1,0 +1,127 @@
+- name: Case 1, disabled worker qualifies for the California 250 Percent Working Disabled Program.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 50_000
+        social_security_disability: 20_000
+        ssi_countable_resources: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_wdp_disability_eligible: true
+    ca_wdp_work_eligible: true
+    ca_wdp_income_eligible: true
+    ca_wdp_asset_eligible: true
+    ca_wdp_eligible: true
+    is_working_disabled_buy_in_for_medicaid: true
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    is_medicaid_eligible: true
+
+- name: Case 2, worker above the income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 100_000
+        ssi_countable_resources: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_wdp_income_eligible: false
+    ca_wdp_eligible: false
+
+- name: Case 3, disabled person with no work is ineligible.
+  period: 2026
+  input:
+    state_code: CA
+    is_disabled: true
+    social_security_disability: 20_000
+    ssi_countable_resources: 10_000
+  output:
+    ca_wdp_work_eligible: false
+    ca_wdp_eligible: false
+
+- name: Case 4, worker above the asset limit is ineligible.
+  period: 2026
+  input:
+    state_code: CA
+    is_disabled: true
+    employment_income: 20_000
+    ssi_countable_resources: 130_001
+  output:
+    ca_wdp_asset_eligible: false
+    ca_wdp_eligible: false
+
+- name: Case 5, assets do not affect eligibility while California asset tests are eliminated.
+  period: 2025
+  input:
+    state_code: CA
+    is_disabled: true
+    employment_income: 20_000
+    ssi_countable_resources: 1_000_000
+  output:
+    ca_wdp_asset_eligible: true
+    ca_wdp_eligible: true
+
+- name: Case 6, high non-disability unearned income fails the SSI SSP income screen.
+  period: 2026
+  input:
+    state_code: CA
+    is_disabled: true
+    employment_income: 1_000
+    pension_income: 20_000
+    ssi_countable_resources: 10_000
+  output:
+    ca_wdp_income_eligible: true
+    ca_wdp_ssi_ssp_income_eligible: false
+    ca_wdp_eligible: false
+
+- name: Case 7, undocumented workers fail the WDP immigration status screen.
+  period: 2026
+  input:
+    state_code: CA
+    is_disabled: true
+    employment_income: 20_000
+    immigration_status: UNDOCUMENTED
+    ssi_countable_resources: 10_000
+  output:
+    ca_wdp_immigration_status_eligible: false
+    ca_wdp_eligible: false
+
+- name: Case 8, adult applicant FPL unit does not increase for a dependent child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 90_000
+        ssi_countable_resources: 10_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_wdp_income_eligible: [false, true]
+    ca_wdp_eligible: [false, false]
