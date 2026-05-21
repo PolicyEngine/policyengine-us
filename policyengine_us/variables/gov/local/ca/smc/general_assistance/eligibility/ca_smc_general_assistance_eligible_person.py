@@ -13,7 +13,8 @@ class ca_smc_general_assistance_eligible_person(Variable):
     )
 
     def formula(person, period, parameters):
-        adult = person("age", period.this_year) >= 18
+        p = parameters(period).gov.local.ca.smc.general_assistance
+        adult = person("age", period.this_year) >= p.minimum_age
         immigration_eligible = person(
             "ca_smc_general_assistance_immigration_status_eligible_person",
             period,

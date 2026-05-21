@@ -1,35 +1,96 @@
-- name: Case 1, eligible unit receives standard less countable income.
+- name: Case 1, eligible single adult receives standard less countable income.
   period: 2026-01
   input:
-    ca_smc_general_assistance_eligible: true
-    ca_smc_general_assistance_payment_standard: 732
-    ca_smc_general_assistance_countable_income: 200
+    people:
+      person1:
+        ca_smc_general_assistance_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_eligible: true
+        ca_smc_general_assistance_payment_standard: 732
+        ca_smc_general_assistance_countable_income: 200
   output:
     ca_smc_general_assistance: 532
 
-- name: Case 2, benefit floors at zero.
+- name: Case 2, benefit floors at zero when income exceeds standard.
   period: 2026-01
   input:
-    ca_smc_general_assistance_eligible: true
-    ca_smc_general_assistance_payment_standard: 732
-    ca_smc_general_assistance_countable_income: 800
+    people:
+      person1:
+        ca_smc_general_assistance_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_eligible: true
+        ca_smc_general_assistance_payment_standard: 732
+        ca_smc_general_assistance_countable_income: 800
   output:
     ca_smc_general_assistance: 0
 
 - name: Case 3, ineligible unit receives zero.
   period: 2026-01
   input:
-    ca_smc_general_assistance_eligible: false
-    ca_smc_general_assistance_payment_standard: 732
-    ca_smc_general_assistance_countable_income: 0
+    people:
+      person1:
+        ca_smc_general_assistance_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_eligible: false
+        ca_smc_general_assistance_payment_standard: 732
+        ca_smc_general_assistance_countable_income: 0
   output:
     ca_smc_general_assistance: 0
 
 - name: Case 4, negative countable income floors at zero, benefit caps at standard.
   period: 2026-01
   input:
-    ca_smc_general_assistance_eligible: true
-    ca_smc_general_assistance_payment_standard: 732
-    ca_smc_general_assistance_countable_income: -200
+    people:
+      person1:
+        ca_smc_general_assistance_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_eligible: true
+        ca_smc_general_assistance_payment_standard: 732
+        ca_smc_general_assistance_countable_income: -200
   output:
     ca_smc_general_assistance: 732
+
+- name: Case 5, two eligible adults each receive their own benefit at the SPM unit level.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_smc_general_assistance_eligible_person: true
+      person2:
+        ca_smc_general_assistance_eligible_person: true
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_eligible: true
+        ca_smc_general_assistance_payment_standard: 732
+        ca_smc_general_assistance_countable_income: 400
+  output:
+    ca_smc_general_assistance: 1_064

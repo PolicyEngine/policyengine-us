@@ -15,6 +15,10 @@ class ca_smc_general_assistance_countable_vehicle_value(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.smc.general_assistance.property
+        n_eligible = add(
+            spm_unit, period, ["ca_smc_general_assistance_eligible_person"]
+        )
+        applicants = max_(n_eligible, 1)
         household = spm_unit.household
         vehicle_count = household("household_vehicles_owned", period)
         vehicle_value = household("household_vehicles_value", period)
@@ -23,9 +27,11 @@ class ca_smc_general_assistance_countable_vehicle_value(Variable):
             vehicle_value / vehicle_count,
             0,
         )
-        additional_vehicle_equity = average_vehicle_value * max_(vehicle_count - 1, 0)
+        additional_vehicle_count = max_(vehicle_count - applicants, 0)
+        additional_vehicle_equity = average_vehicle_value * additional_vehicle_count
         return where(
-            additional_vehicle_equity < p.additional_vehicle_combined_equity_limit,
+            additional_vehicle_equity
+            < p.additional_vehicle_combined_equity_limit * applicants,
             0,
             additional_vehicle_equity,
         )

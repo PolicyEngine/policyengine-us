@@ -42,3 +42,50 @@
     household_vehicles_value: 4_000
   output:
     ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 6, two adults with two vehicles each exempt their own; no additional vehicle is countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 7, three adults with three vehicles each exempt their own; no additional vehicle is countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 25
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_smc: true
+        household_vehicles_owned: 3
+        household_vehicles_value: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
