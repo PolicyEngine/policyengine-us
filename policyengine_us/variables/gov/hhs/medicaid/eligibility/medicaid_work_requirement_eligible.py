@@ -61,7 +61,11 @@ class medicaid_work_requirement_eligible(Variable):
         is_blind = person("is_blind", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
         eligible_disabled = is_blind | is_disabled | is_incapable_of_self_care
+        # Current and recent incarceration exclusions/exceptions.
         is_incarcerated = person("is_incarcerated", period)
+        was_recently_incarcerated = person(
+            "was_recently_incarcerated_for_medicaid_ce", period
+        )
         # parent, guardian, caretaker of a dependent child 13 years of age or under  p.694 (III)
         child_age_eligible = age <= p.dependent_age_limit
         has_eligible_dependent_child = person.tax_unit.any(
@@ -78,6 +82,7 @@ class medicaid_work_requirement_eligible(Variable):
             | eligible_veteran
             | eligible_disabled
             | is_incarcerated
+            | was_recently_incarcerated
         )
         meets_base_requirement = (
             meets_monthly_work_hours | meets_monthly_income | exempted_from_work

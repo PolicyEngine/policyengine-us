@@ -176,3 +176,32 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 20, current incarceration exempts a person from Medicaid work requirements.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_incarcerated: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 21, recent incarceration exempts a person from Medicaid work requirements.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    was_recently_incarcerated_for_medicaid_ce: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 22, no incarceration exception leaves a nonworking person ineligible.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    medicaid_community_engagement_pass_through_eligible: false
+    is_incarcerated: false
+    was_recently_incarcerated_for_medicaid_ce: false
+  output:
+    medicaid_work_requirement_eligible: false
