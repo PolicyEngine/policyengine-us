@@ -1,3 +1,72 @@
+## [1.702.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.702.0] - 2026-05-21
+
+### Added
+
+- Added the North Dakota Renter's Refund.
+- Added the Pennsylvania Property Tax/Rent Rebate standard rebate.
+
+
+## [1.701.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.701.0] - 2026-05-21
+
+### Added
+
+- Added a data-overridable SSI disability criteria variable for calibrated SSI simulations.
+
+
+## [1.700.2] - 2026-05-20
+
+### Changed
+
+- Apply Georgia HB463 (2025-2026): cut the flat individual income tax rate to 4.99%, raise the standard deduction to $30,000 joint / $15,000 single, raise the dependent exemption to $5,000, increase the age-65+ retirement income exclusion to $70,000 in 2027, and add qualified-overtime and cash-tip exclusions for tax years 2026-2028.
+
+
+## [1.700.1] - 2026-05-20
+
+No significant changes.
+
+
+## [1.700.0] - 2026-05-19
+
+### Added
+
+- Add statutory American Opportunity Credit student eligibility inputs and compute eligibility from those inputs.
+
+### Changed
+
+- Reintroduce age-specific labor supply response multipliers without changing the legacy scalar income elasticity path, and fix the labor-supply-response zero guard so nonzero primary or secondary substitution elasticities are not skipped.
+
+### Fixed
+
+- Fixed the Maryland pension exclusion maximum amount for 2026.
+- Count SSTB self-employment income in Social Security, state and benefit income definitions, and mixed-category QBID allocation.
+- Fixed Idaho's OBBBA Schedule 1-A deduction conformity after 2028.
+- Fix EITC earned income calculations for self-employment loss netting.
+
+
+## [1.699.1] - 2026-05-19
+
+### Fixed
+
+- Fix Medicare enrollment defaults by modeling enrollment as eligibility-gated take-up.
+
+
+## [1.699.0] - 2026-05-19
+
+### Added
+
+- Added `gov.contrib.refundable_credit_conversion` reform: a configurable refundable flat credit composed of per-taxpayer, per-CTC-dependent, per-other-dependent, per-household, and per-earner earnings-subsidy components. The credit is appended to the federal refundable credit list when `in_effect` is true. Repealing existing credits and deductions is handled separately via direct overrides to baseline parameters.
+
+
 ## [1.698.0] - 2026-05-19
 
 ### Added
