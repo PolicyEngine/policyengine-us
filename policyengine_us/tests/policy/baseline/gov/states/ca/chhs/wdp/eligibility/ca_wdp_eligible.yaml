@@ -125,3 +125,45 @@
   output:
     ca_wdp_income_eligible: [false, true]
     ca_wdp_eligible: [false, false]
+
+- name: Case 9, joint tax filing alone does not trigger the married SSI SSP standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 1_000
+        pension_income: 20_000
+        ssi_countable_resources: 10_000
+        is_tax_unit_head: true
+        is_ssi_spousal_deeming_applies: false
+      person2:
+        age: 45
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_wdp_ssi_ssp_income_eligible: [false, true]
+    ca_wdp_eligible: [false, false]
+
+- name: Case 10, SSI spousal deeming triggers the married SSI SSP standard.
+  period: 2026
+  input:
+    state_code: CA
+    is_disabled: true
+    employment_income: 1_000
+    pension_income: 20_000
+    ssi_countable_resources: 10_000
+    is_ssi_spousal_deeming_applies: true
+  output:
+    ca_wdp_ssi_ssp_income_eligible: true

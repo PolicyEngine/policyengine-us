@@ -36,9 +36,11 @@ class ca_wdp_ssi_ssp_income_eligible(Variable):
         p = parameters(
             period.first_month
         ).gov.states.ca.cdss.state_supplement.payment_standard
-        is_joint = person.tax_unit("tax_unit_is_joint", period)
+        uses_couple_standard = person("ssi_claim_is_joint", period) | person(
+            "is_ssi_spousal_deeming_applies", period
+        )
         monthly_standard = where(
-            is_joint,
+            uses_couple_standard,
             p.aged_or_disabled.amount.married,
             p.aged_or_disabled.amount.single,
         )
