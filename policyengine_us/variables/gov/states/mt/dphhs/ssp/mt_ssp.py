@@ -26,8 +26,7 @@ class mt_ssp(Variable):
         couple_active = couple_per_spouse > 0
         base_amount = where(couple_active, couple_per_spouse, individual)
         # Residual countable income (federal SSI exhausted) spills onto
-        # the state supplement; uncapped_ssi is YEAR-defined so the
-        # framework auto-divides to monthly when accessed with period.
+        # the state supplement.
         uncapped_ssi = person("uncapped_ssi", period)
         reduction = max_(0, -uncapped_ssi)
         per_person = max_(0, base_amount - reduction) * eligible

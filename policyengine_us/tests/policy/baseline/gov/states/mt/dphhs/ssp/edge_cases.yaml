@@ -24,9 +24,9 @@
   input:
     people:
       person1:
-        # Annual $0.01 -> monthly ~$0.000833 in the MONTH formula; still > 0
-        # so eligibility passes. Spillover deduction = max_(0, -uncapped_ssi)
-        # = 0 since uncapped_ssi is positive, so full individual rate applies.
+        # Small positive uncapped SSI still passes eligibility. Spillover
+        # deduction = max_(0, -uncapped_ssi) = 0 since uncapped_ssi is
+        # positive, so full individual rate applies.
         uncapped_ssi: 0.01
         mt_ssp_payment_category: TRANSITIONAL_LIVING
     spm_units:
@@ -53,7 +53,7 @@
         # case explicitly verifies the (ssi == 0, uncapped_ssi > 0) boundary.
         is_ssi_eligible: true
         ssi: 0
-        uncapped_ssi: 12
+        uncapped_ssi: 1
         mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
     spm_units:
       spm_unit:
@@ -63,7 +63,7 @@
         members: [person1]
         state_code: MT
   output:
-    # uncapped_ssi annual $12 -> monthly $1; spillover = max_(0, -1) = 0;
+    # uncapped_ssi $1; spillover = max_(0, -1) = 0;
     # G/H/I tier = $94 - $0 = $94.
     mt_ssp_eligible: true
     mt_ssp: 94

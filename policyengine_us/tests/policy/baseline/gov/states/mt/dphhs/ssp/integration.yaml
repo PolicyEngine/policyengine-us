@@ -64,15 +64,15 @@
   input:
     people:
       person1:
-        # Couple split federal SSI: $11,316 individual FBR -> use joint
-        # total $1,415/mo = $16,980/yr -> half is $8,490 each.
-        ssi: 8_490
+        # Couple split federal SSI: joint total $1,415/mo -> half is
+        # $707.50 each.
+        ssi: 707.50
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         ssi_claim_is_joint: true
         mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
       person2:
-        ssi: 8_490
+        ssi: 707.50
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         ssi_claim_is_joint: true
@@ -101,13 +101,13 @@
   input:
     people:
       person1:
-        ssi: 8_490
+        ssi: 707.50
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         ssi_claim_is_joint: true
         mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
       person2:
-        ssi: 8_490
+        ssi: 707.50
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         ssi_claim_is_joint: true
@@ -214,9 +214,8 @@
       person1:
         age: 10
         is_disabled: true
-        # Disabled minor receives federal SSI at 2024 individual FBR
-        # ($943/mo = $11,316/yr).
-        ssi: 11_316
+        # Disabled minor receives federal SSI at 2024 individual FBR ($943/mo).
+        ssi: 943
         mt_ssp_payment_category: FOSTER_CARE
     spm_units:
       spm_unit:
@@ -262,9 +261,9 @@
     people:
       person1:
         is_ssi_eligible: true
-        # 2024 individual FBR = $11,316/yr -> uncapped_ssi positive,
+        # 2024 individual FBR = $943/mo -> uncapped_ssi positive,
         # spillover deduction = max_(0, -uncapped_ssi) = 0.
-        ssi: 11_316
+        ssi: 943
         mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
     spm_units:
       spm_unit:
@@ -285,8 +284,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # 2010 federal SSI individual FBR = $674/mo = $8,088/yr.
-        ssi: 8_088
+        # 2010 federal SSI individual FBR = $674/mo.
+        ssi: 674
         mt_ssp_payment_category: FOSTER_CARE
     spm_units:
       spm_unit:
