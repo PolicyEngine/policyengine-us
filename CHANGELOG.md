@@ -1,3 +1,10 @@
+## [1.705.1] - 2026-05-22
+
+### Fixed
+
+- Traditional 401(k) and 403(b) elective deferrals no longer incorrectly reduce the FICA (Social Security and Medicare) wage base. Under IRC §3121(a), only Section 125 cafeteria plan items (employer-sponsored health premiums and HSA payroll contributions) reduce FICA wages. This fixes understated Social Security and Medicare tax in any simulation with retirement deferrals.
+
+
 ## [1.705.0] - 2026-05-22
 
 ### Added
