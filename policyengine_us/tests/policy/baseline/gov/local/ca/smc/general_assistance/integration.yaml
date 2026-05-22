@@ -5,6 +5,7 @@
       person1:
         age: 30
         immigration_status: CITIZEN
+        is_in_work_program: true
     households:
       household:
         members: [person1]
@@ -47,6 +48,7 @@
         age: 30
         unemployment_compensation: 8_796
         immigration_status: CITIZEN
+        is_in_work_program: true
     households:
       household:
         members: [person1]
@@ -68,6 +70,7 @@
       person1:
         age: 30
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_in_work_program: true
     households:
       household:
         members: [person1]
@@ -128,6 +131,7 @@
       person1:
         age: 30
         immigration_status: CITIZEN
+        is_in_work_program: true
     households:
       household:
         members: [person1]
@@ -173,9 +177,11 @@
       person1:
         age: 30
         immigration_status: CITIZEN
+        is_in_work_program: true
       person2:
         age: 28
         immigration_status: CITIZEN
+        is_in_work_program: true
     households:
       household:
         members: [person1, person2]
@@ -196,6 +202,7 @@
         age: 30
         immigration_status: CITIZEN
         ssi: 0
+        is_in_work_program: true
       person2:
         age: 65
         immigration_status: CITIZEN
@@ -267,12 +274,15 @@
       person1:
         age: 30
         immigration_status: CITIZEN
+        is_in_work_program: true
       person2:
         age: 28
         immigration_status: CITIZEN
+        is_in_work_program: true
       person3:
         age: 25
         immigration_status: CITIZEN
+        is_in_work_program: true
     households:
       household:
         members: [person1, person2, person3]

@@ -30,13 +30,15 @@ class ca_smc_general_assistance_meets_work_requirements(Variable):
         is_senior = person("age", period.this_year) >= p.senior_exemption_age
         is_disabled = person("is_disabled", period)
         is_full_time_student = person("is_full_time_student", period)
-        is_not_english_proficient = ~person("is_english_proficient", period)
+        is_lep_household = person.household(
+            "is_non_english_speaking_home", period.this_year
+        )
         is_in_work_program = person("is_in_work_program", period)
         return (
             is_working
             | is_senior
             | is_disabled
             | is_full_time_student
-            | is_not_english_proficient
+            | is_lep_household
             | is_in_work_program
         )
