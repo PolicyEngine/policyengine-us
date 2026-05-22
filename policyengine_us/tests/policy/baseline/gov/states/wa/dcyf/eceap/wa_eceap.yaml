@@ -1,0 +1,121 @@
+- name: Eligible 4-year-old, school-day default, receives the school-day per-slot value.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap: [0, 15_638]
+
+- name: Eligible 4-year-old in part-day model receives the part-day per-slot value.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+        wa_eceap_slot_type: PART_DAY
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap: [0, 9_835]
+
+- name: Eligible 4-year-old in working-day model receives the working-day per-slot value.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+        wa_eceap_slot_type: WORKING_DAY
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap: [0, 23_411]
+
+- name: Ineligible high-income 4-year-old receives zero (defined_for filter).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 200_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap: [0, 0]
+
+- name: Oregon family, not eligible due to residency.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_eceap: [0, 0]

@@ -12,12 +12,16 @@ class tip_income_deduction(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         tip_income = person("tip_income", period)
+        occupation_requirement_met = person(
+            "tip_income_deduction_occupation_requirement_met", period
+        )
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.tip_income
         start = p.phase_out.start[filing_status]
         agi_excess = max_(agi - start, 0)
         phase_out_amount = agi_excess * p.phase_out.rate
-        total_tip_income = tax_unit.sum(tip_income)
+        qualified_tip_income = tip_income * occupation_requirement_met
+        total_tip_income = tax_unit.sum(qualified_tip_income)
         capped_tip_income = min_(p.cap, total_tip_income)
         return max_(0, capped_tip_income - phase_out_amount)

@@ -12,6 +12,6 @@ class de_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # Per DSSM 4002: Resource limit is $10,000
         p = parameters(period).gov.states.de.dhss.tanf
-        resources = spm_unit("spm_unit_assets", period.this_year)
+        resources = spm_unit("spm_unit_cash_assets", period.this_year)
 
         return resources <= p.resource_limit

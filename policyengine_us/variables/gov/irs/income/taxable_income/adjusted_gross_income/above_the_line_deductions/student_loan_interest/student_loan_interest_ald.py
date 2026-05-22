@@ -16,7 +16,20 @@ class student_loan_interest_ald(Variable):
         p = parameters(period).gov.irs.ald.student_loan_interest
         filing_status = person.tax_unit("filing_status", period)
         cap = p.cap[filing_status]
-        capped_interest = min_(interest, cap)
+        # IRC § 221(b)(1) caps the deduction at the return level, not per
+        # spouse. Sum eligible filers' interest, cap at the return level,
+        # then allocate the capped total back proportionally.
+        eligible = person("student_loan_interest_ald_eligible", period)
+        eligible_interest = interest * eligible
+        tax_unit_interest = person.tax_unit.sum(eligible_interest)
+        capped_tax_unit_interest = min_(tax_unit_interest, cap)
+        share = np.divide(
+            eligible_interest,
+            tax_unit_interest,
+            out=np.zeros_like(eligible_interest, dtype=float),
+            where=tax_unit_interest > 0,
+        )
+        capped_interest = capped_tax_unit_interest * share
         joint = filing_status == filing_status.possible_values.JOINT
         # Combine the income for units filing jointly
         modified_agi = person("student_loan_interest_ald_magi", period)
@@ -32,5 +45,4 @@ class student_loan_interest_ald(Variable):
         mask = divisor != 0
         reduction_rate[mask] = income_excess[mask] / divisor[mask]
         reduction_amount = capped_interest * reduction_rate
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return max_(capped_interest - reduction_amount, 0) * head_or_spouse
+        return max_(capped_interest - reduction_amount, 0)

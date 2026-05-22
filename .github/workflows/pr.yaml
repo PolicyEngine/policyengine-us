@@ -10,9 +10,9 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Check formatting
@@ -21,7 +21,7 @@ jobs:
     name: Check changelog fragment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check for changelog fragment
         run: |
           FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
@@ -31,22 +31,64 @@ jobs:
             echo "Types: added, changed, fixed, removed, breaking"
             exit 1
           fi
+  BundleMetadataContract:
+    name: Validate bundle metadata contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Install package
+        run: uv pip install --system .
+      - name: Install bundle validation tooling
+        # Pin the test-only bundle contract dependency until policyengine-bundles
+        # has published releases suitable for ordinary dependency specifiers.
+        run: uv pip install --system "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
+      - name: Validate runtime metadata contract
+        run: python -m pytest policyengine_us/tests/test_build_metadata.py
+  Python-Compat:
+    name: Install + smoke-import (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Install package
+        run: uv pip install --system .
+      - name: Smoke-import
+        run: |
+          python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
+    env:
+      SELECTIVE_TEST_MAX_TARGETS: 25
+      SELECTIVE_TEST_MAX_FILES: 250
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 10
       - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }} --depth=1
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
@@ -91,9 +133,9 @@ jobs:
           fi
       - name: Upload coverage to Codecov
         if: ${{ always() && steps.coverage.outputs.has_coverage == 'true' }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
-          file: ./coverage.xml
+          files: ./coverage.xml
           fail_ci_if_error: false
           flags: unittests
           name: codecov-umbrella
@@ -101,101 +143,133 @@ jobs:
           verbose: true
       - name: Build package
         run: uv build
-  NonStructural-States:
-    name: Full Suite - Baseline States
+  Baseline:
+    name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: states-non-ny-shard-1
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 1/2
+          - group: states-non-ny-shard-2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 2/2
+          - group: states-ny
+            cmd: make test-yaml-no-structural-states-ny
+          - group: irs-household
+            cmd: make test-yaml-no-structural-other-irs-household
+          - group: ssa
+            cmd: make test-yaml-no-structural-other-ssa
+          - group: rest
+            cmd: make test-yaml-no-structural-other-rest
+          - group: contrib
+            cmd: make test-yaml-no-structural-other-contrib
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests (states in 3 batches)
+      - name: Run Baseline YAML tests (${{ matrix.group }})
         env:
           PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running non-structural YAML tests (states, 3 batches)..."
-          uv run make test-yaml-no-structural-states
-  NonStructural-Other:
-    name: Full Suite - Baseline (excl States) & Reform & Python
+        run: uv run ${{ matrix.cmd }}
+  HouseholdAPIPartners:
+    name: Household API Partners
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run non-structural YAML tests (other)
+      - name: Run Household API Partners YAML tests
         env:
           PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running non-structural YAML tests (other)..."
-          uv run make test-yaml-no-structural-other
-      - name: Run Python-based tests
-        env:
-          PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running Python-based tests..."
-          uv run make test-other
-  Structural-Heavy:
-    name: Full Suite - Structural (States)
+        run: uv run make test-yaml-no-structural-other-partners
+  Contrib:
+    name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: states-shard-1
+            target: test-yaml-structural-heavy-shard-1
+          - group: states-shard-2
+            target: test-yaml-structural-heavy-shard-2
+          - group: other-shard-1
+            target: test-yaml-structural-other
+          - group: other-shard-2
+            target: test-yaml-structural-other-shard-2
+          - group: congress
+            target: test-yaml-structural-congress
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run structural YAML tests (states)
+      - name: Run Contrib YAML tests (${{ matrix.group }})
         env:
           PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running structural YAML tests (contrib/states)..."
-          uv run make test-yaml-structural-heavy
-  Structural:
-    name: Full Suite - Structural (Other)
+        run: uv run make ${{ matrix.target }}
+  Rest:
+    name: Full Suite - Rest (Python + variables/ YAMLs)
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v8.1.0
       - name: Install dependencies
         run: uv sync --extra dev
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run structural YAML tests (other)
+      - name: Run Python tests (code_health, core, microsimulation, utilities, top-level)
         env:
           PYTHONUNBUFFERED: 1
-        run: |
-          echo "Running structural YAML tests (contrib excl states)..."
-          uv run make test-yaml-structural
+        run: uv run make test-other
+      - name: Run tests/variables YAML tests
+        if: always()
+        env:
+          PYTHONUNBUFFERED: 1
+        run: uv run make test-yaml-variables
+      - name: Run tests/policy/reform YAML tests
+        if: always()
+        env:
+          PYTHONUNBUFFERED: 1
+        run: uv run make test-yaml-reform

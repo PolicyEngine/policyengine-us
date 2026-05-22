@@ -1,0 +1,286 @@
+description: Connecticut provides these weekly rates for center-based care under the Care 4 Kids program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Connecticut C4K center weekly rates
+  breakdown:
+    - ct_c4k_care_level
+    - ct_c4k_region
+    - ct_c4k_age_group
+  reference:
+    - title: C4K Weekly Payment Rates Jan-Jun 2024
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/01/Care-4-Kids-Weekly-Payment-Rates-Jan-1-Jun-30-2024.pdf#page=1
+    - title: C4K Weekly Payment Rates Jul 2024
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/01/Care-4-Kids-Weekly-Payment-Rates-2024.pdf#page=1
+    - title: C4K Weekly Payment Rates Jan-Jun 2025
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/12/Care-4-Kids-Weekly-Payment-Rates-jan-june.2025.pdf#page=1
+    - title: C4K Weekly Payment Rates Jul 2025-Jun 2026
+      href: https://www.ctcare4kids.com/wp-content/uploads/2024/12/Care-4-Kids-Weekly-Payment-Rates-jul-june.2026.pdf#page=1
+
+FULL_TIME_PLUS:
+  EASTERN:
+    INFANT_TODDLER:
+      2024-01-01: 344
+      2024-07-01: 382
+      2025-07-01: 424
+    PRE_SCHOOL:
+      2024-01-01: 275
+      2024-07-01: 305
+      2025-07-01: 339
+    SCHOOL_AGE:
+      2024-01-01: 193
+      2024-07-01: 214
+      2025-07-01: 238
+  NORTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 454
+      2024-07-01: 504
+      2025-07-01: 559
+    PRE_SCHOOL:
+      2024-01-01: 302
+      2024-07-01: 335
+      2025-07-01: 372
+    SCHOOL_AGE:
+      2024-01-01: 213
+      2024-07-01: 236
+      2025-07-01: 262
+  NORTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 386
+      2024-07-01: 428
+      2025-07-01: 475
+    PRE_SCHOOL:
+      2024-01-01: 297
+      2024-07-01: 330
+      2025-07-01: 366
+    SCHOOL_AGE:
+      2024-01-01: 223
+      2024-07-01: 248
+      2025-07-01: 275
+  SOUTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 446
+      2024-07-01: 495
+      2025-07-01: 549
+    PRE_SCHOOL:
+      2024-01-01: 312
+      2024-07-01: 346
+      2025-07-01: 384
+    SCHOOL_AGE:
+      2024-01-01: 245
+      2024-07-01: 272
+      2025-07-01: 302
+  SOUTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 565
+      2024-07-01: 627
+      2025-07-01: 696
+    PRE_SCHOOL:
+      2024-01-01: 363
+      2024-07-01: 403
+      2025-07-01: 447
+    SCHOOL_AGE:
+      2024-01-01: 255
+      2024-07-01: 283
+      2025-07-01: 314
+
+FULL_TIME:
+  EASTERN:
+    INFANT_TODDLER:
+      2024-01-01: 256
+      2024-07-01: 284
+      2025-07-01: 315
+    PRE_SCHOOL:
+      2024-01-01: 205
+      2024-07-01: 228
+      2025-07-01: 253
+    SCHOOL_AGE:
+      2024-01-01: 144
+      2024-07-01: 160
+      2025-07-01: 178
+  NORTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 339
+      2024-07-01: 376
+      2025-07-01: 417
+    PRE_SCHOOL:
+      2024-01-01: 225
+      2024-07-01: 250
+      2025-07-01: 278
+    SCHOOL_AGE:
+      2024-01-01: 159
+      2024-07-01: 176
+      2025-07-01: 195
+  NORTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 289
+      2024-07-01: 321
+      2025-07-01: 356
+    PRE_SCHOOL:
+      2024-01-01: 222
+      2024-07-01: 246
+      2025-07-01: 273
+    SCHOOL_AGE:
+      2024-01-01: 167
+      2024-07-01: 185
+      2025-07-01: 205
+  SOUTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 333
+      2024-07-01: 370
+      2025-07-01: 411
+    PRE_SCHOOL:
+      2024-01-01: 233
+      2024-07-01: 259
+      2025-07-01: 287
+    SCHOOL_AGE:
+      2024-01-01: 183
+      2024-07-01: 203
+      2025-07-01: 225
+  SOUTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 422
+      2024-07-01: 468
+      2025-07-01: 519
+    PRE_SCHOOL:
+      2024-01-01: 271
+      2024-07-01: 301
+      2025-07-01: 334
+    SCHOOL_AGE:
+      2024-01-01: 191
+      2024-07-01: 212
+      2025-07-01: 235
+
+HALF_TIME:
+  EASTERN:
+    INFANT_TODDLER:
+      2024-01-01: 174
+      2024-07-01: 193
+      2025-07-01: 214
+    PRE_SCHOOL:
+      2024-01-01: 140
+      2024-07-01: 155
+      2025-07-01: 172
+    SCHOOL_AGE:
+      2024-01-01: 93
+      2024-07-01: 103
+      2025-07-01: 114
+  NORTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 230
+      2024-07-01: 255
+      2025-07-01: 283
+    PRE_SCHOOL:
+      2024-01-01: 153
+      2024-07-01: 170
+      2025-07-01: 189
+    SCHOOL_AGE:
+      2024-01-01: 105
+      2024-07-01: 117
+      2025-07-01: 130
+  NORTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 196
+      2024-07-01: 218
+      2025-07-01: 242
+    PRE_SCHOOL:
+      2024-01-01: 151
+      2024-07-01: 168
+      2025-07-01: 186
+    SCHOOL_AGE:
+      2024-01-01: 111
+      2024-07-01: 123
+      2025-07-01: 137
+  SOUTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 226
+      2024-07-01: 251
+      2025-07-01: 279
+    PRE_SCHOOL:
+      2024-01-01: 159
+      2024-07-01: 176
+      2025-07-01: 195
+    SCHOOL_AGE:
+      2024-01-01: 122
+      2024-07-01: 135
+      2025-07-01: 150
+  SOUTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 286
+      2024-07-01: 317
+      2025-07-01: 352
+    PRE_SCHOOL:
+      2024-01-01: 184
+      2024-07-01: 204
+      2025-07-01: 226
+    SCHOOL_AGE:
+      2024-01-01: 125
+      2024-07-01: 139
+      2025-07-01: 154
+
+QUARTER_TIME:
+  EASTERN:
+    INFANT_TODDLER:
+      2024-01-01: 88
+      2024-07-01: 98
+      2025-07-01: 109
+    PRE_SCHOOL:
+      2024-01-01: 70
+      2024-07-01: 78
+      2025-07-01: 87
+    SCHOOL_AGE:
+      2024-01-01: 49
+      2024-07-01: 54
+      2025-07-01: 60
+  NORTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 115
+      2024-07-01: 128
+      2025-07-01: 142
+    PRE_SCHOOL:
+      2024-01-01: 77
+      2024-07-01: 85
+      2025-07-01: 94
+    SCHOOL_AGE:
+      2024-01-01: 54
+      2024-07-01: 60
+      2025-07-01: 67
+  NORTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 98
+      2024-07-01: 109
+      2025-07-01: 121
+    PRE_SCHOOL:
+      2024-01-01: 75
+      2024-07-01: 83
+      2025-07-01: 92
+    SCHOOL_AGE:
+      2024-01-01: 57
+      2024-07-01: 63
+      2025-07-01: 70
+  SOUTH_CENTRAL:
+    INFANT_TODDLER:
+      2024-01-01: 113
+      2024-07-01: 125
+      2025-07-01: 139
+    PRE_SCHOOL:
+      2024-01-01: 79
+      2024-07-01: 88
+      2025-07-01: 98
+    SCHOOL_AGE:
+      2024-01-01: 62
+      2024-07-01: 69
+      2025-07-01: 77
+  SOUTHWEST:
+    INFANT_TODDLER:
+      2024-01-01: 143
+      2024-07-01: 159
+      2025-07-01: 176
+    PRE_SCHOOL:
+      2024-01-01: 92
+      2024-07-01: 102
+      2025-07-01: 113
+    SCHOOL_AGE:
+      2024-01-01: 64
+      2024-07-01: 71
+      2025-07-01: 79

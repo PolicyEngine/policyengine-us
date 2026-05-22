@@ -7,4 +7,4 @@ class social_security_retirement(Variable):
     definition_period = YEAR
     label = "Social Security retirement benefits"
     unit = USD
-    uprating = "gov.ssa.uprating"
+    uprating = "calibration.gov.irs.soi.social_security"

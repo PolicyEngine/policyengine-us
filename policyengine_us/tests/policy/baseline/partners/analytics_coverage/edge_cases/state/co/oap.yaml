@@ -1,0 +1,104 @@
+- name: co_oap_age_60_single_eligible (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code_str: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 0.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 12060.0
+- name: co_oap_single_resources_above_1500_ineligible (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 1501
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code_str: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 0.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 12060.0

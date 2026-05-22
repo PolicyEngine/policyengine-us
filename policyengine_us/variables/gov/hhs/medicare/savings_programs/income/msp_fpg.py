@@ -29,7 +29,7 @@ class msp_fpg(Variable):
         # Note: These are raw FPL values. Published limits are $20 higher
         # because we apply the $20 exclusion to income (msp_countable_income)
         # rather than adding it to the threshold.
-        married = person.spm_unit("spm_unit_is_married", period)
+        married = person.spm_unit("spm_unit_is_married", period.this_year)
         state_group = person.household("state_group_str", period)
         p = parameters(period).gov.hhs.fpg
         p1 = p.first_person[state_group]

@@ -1,0 +1,16 @@
+description: Federal medical assistance percentage for the ACA expansion adult group (newly eligible adults under section 1902(a)(10)(A)(i)(VIII)).
+metadata:
+  unit: /1
+  period: year
+  label: Medicaid expansion FMAP
+  reference:
+  - title: 42 U.S.C. § 1396d(y) — FMAP for the adult group
+    href: https://www.law.cornell.edu/uscode/text/42/1396d
+  - title: Patient Protection and Affordable Care Act of 2010, Pub. L. 111-148, § 2001(a)(3)
+    href: https://www.congress.gov/bill/111th-congress/house-bill/3590/text
+values:
+  2014-01-01: 1.0
+  2017-01-01: 0.95
+  2018-01-01: 0.94
+  2019-01-01: 0.93
+  2020-01-01: 0.90

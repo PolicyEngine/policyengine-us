@@ -1,0 +1,47 @@
+description: The District of Columbia provides this amount as the monthly state supplementation for an individual under the Optional State Supplemental Payment program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: DC OSSP individual payment
+  breakdown:
+    - dc_ossp_living_arrangement
+  reference:
+    - title: DC Code § 4-205.49 - Special living arrangements
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.49
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - District of Columbia Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/dc.pdf#page=1
+    - title: SSA POMS SI 01415.050 - Coding and Monthly Payment Levels for the District of Columbia, January 2018
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415050#d
+    - title: SSA POMS SI 01415.055 - Coding and Monthly Payment Levels for the District of Columbia, January 2023
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415055
+    - title: SSA POMS SI 01415.056 - Coding and Monthly Payment Levels for the District of Columbia, January 2024
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415056#d
+    - title: SSA POMS SI 01415.057 - Coding and Monthly Payment Levels for the District of Columbia, January 2025
+      href: https://secure.ssa.gov/apps10/poms.Nsf/lnx/0501415057#d
+    - title: SSA POMS SI 01415.058 - Coding and Monthly Payment Levels for the District of Columbia, January 2026
+      href: https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415058#d
+
+OS_A:
+  2011-01-01: 485
+  2018-01-01: 640
+  2023-01-01: 640
+  2024-01-01: 674.16
+  2025-01-01: 678
+  2026-01-01: 681
+OS_B:
+  2011-01-01: 595
+  2018-01-01: 750
+  2023-01-01: 750
+  2024-01-01: 784.16
+  2025-01-01: 788
+  2026-01-01: 791
+OS_G:
+  2011-01-01: 40
+  2018-01-01: 40
+  2023-02-01: 70
+  2024-01-01: 73.20
+  2025-01-01: 76
+  2026-01-01: 79
+NONE:
+  2011-01-01: 0

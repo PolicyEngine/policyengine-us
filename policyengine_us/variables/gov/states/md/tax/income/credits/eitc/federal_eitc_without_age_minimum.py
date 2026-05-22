@@ -12,38 +12,17 @@ class federal_eitc_without_age_minimum(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        # set up simulation clone
-        simulation = tax_unit.simulation
-        simulation.max_spiral_loops = 10
-        simulation._check_for_cycle = lambda *args: None
-        EITC_VARIABLES = [
-            "eitc_agi_limit",
-            "eitc_child_count",
-            "eitc_eligible",
-            "eitc_demographic_eligible",
-            "eitc_investment_income_eligible",
-            "eitc_maximum",
-            "eitc_phased_in",
-            "eitc_reduction",
-            "eitc",
-        ]
-        for variable in EITC_VARIABLES:
-            simulation.get_holder(variable).delete_arrays()
-
-        # modify EITC minimum age condition in simulation clone
-        tbs = simulation.tax_benefit_system
-        original_age = tbs.parameters.gov.irs.credits.eitc.eligibility.age.min(period)
-        tbs.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
-            value=0,
-            period=period,
+        # Per Md. Code Tax-Gen. § 10-704(c)(3), unmarried childless filers
+        # claim the state EITC as if the federal § 32 minimum-age requirement
+        # did not apply. Recompose the federal EITC without the demographic
+        # gate; other federal § 32 rules (investment income, SSN) still apply.
+        phased_in = tax_unit("eitc_phased_in", period)
+        maximum = tax_unit("eitc_maximum", period)
+        reduction = tax_unit("eitc_reduction", period)
+        investment_eligible = tax_unit("eitc_investment_income_eligible", period)
+        filer_has_ssn = tax_unit("filer_meets_eitc_identification_requirements", period)
+        return (
+            min_(phased_in, max_(0, maximum - reduction))
+            * investment_eligible
+            * filer_has_ssn
         )
-        tbs.parameters.gov.irs.credits.eitc._at_instant_cache = {}
-        eitc = simulation.calculate("eitc", period)
-        for variable in EITC_VARIABLES:
-            simulation.get_holder(variable).delete_arrays()
-        tbs.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
-            value=original_age,
-            period=period,
-        )
-        tbs.parameters.gov.irs.credits.eitc._at_instant_cache = {}
-        return eitc

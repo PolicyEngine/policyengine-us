@@ -3,7 +3,6 @@
   input:
     age: 65
     is_medicare_eligible: true
-    medicare_enrolled: true
     medicare_quarters_of_coverage: 40
     adjusted_gross_income:
       2023: 50_000  # IRMAA uses income from 2 years prior
@@ -17,7 +16,6 @@
   input:
     age: 65
     is_medicare_eligible: true
-    medicare_enrolled: true
     medicare_quarters_of_coverage: 20
     adjusted_gross_income:
       2023: 50_000  # IRMAA uses income from 2 years prior
@@ -31,7 +29,6 @@
   input:
     age: 65
     is_medicare_eligible: true
-    medicare_enrolled: true
     medicare_quarters_of_coverage: 40
     adjusted_gross_income:
       2023: 500_000  # IRMAA uses income from 2 years prior
@@ -46,7 +43,7 @@
   input:
     age: 65
     is_medicare_eligible: true
-    medicare_enrolled: false
+    takes_up_medicare_if_eligible: false
   output:
     medicare_cost: 0
 
@@ -55,7 +52,6 @@
   input:
     age: 70
     is_medicare_eligible: true
-    medicare_enrolled: true
     medicare_quarters_of_coverage: 40
     adjusted_gross_income:
       2019: 50_000  # IRMAA uses income from 2 years prior
@@ -63,3 +59,13 @@
       2019: 0
   output:
     medicare_cost: 9_298  # $11,080 - $1,782 Part B (2021: $148.50*12)
+
+- name: unit test 6 - direct Part B premium input
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 3_000
+  output:
+    medicare_cost: 11_500  # $14,500 spending - $3,000 Part B premium

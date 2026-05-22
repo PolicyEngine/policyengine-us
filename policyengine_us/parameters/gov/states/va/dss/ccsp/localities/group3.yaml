@@ -1,0 +1,31 @@
+description: Virginia lists these localities as Income Cap Group III under the Child Care Subsidy Program.
+
+values:
+  2023-01-01:
+    # Counties
+    - ARLINGTON_COUNTY_VA
+    - CLARKE_COUNTY_VA
+    - CULPEPER_COUNTY_VA
+    - FAIRFAX_COUNTY_VA
+    - FAUQUIER_COUNTY_VA
+    - KING_GEORGE_COUNTY_VA
+    - LOUDOUN_COUNTY_VA
+    - PRINCE_WILLIAM_COUNTY_VA
+    - SPOTSYLVANIA_COUNTY_VA
+    - STAFFORD_COUNTY_VA
+    - WARREN_COUNTY_VA
+    # Cities
+    - ALEXANDRIA_CITY_VA
+    - FAIRFAX_CITY_VA
+    - FALLS_CHURCH_CITY_VA
+    - FREDERICKSBURG_CITY_VA
+    # - MANASSAS_CITY_VA  # not in county_enum
+    - MANASSAS_PARK_CITY_VA
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP Income Cap Group III localities
+  reference:
+    - title: Virginia Child Care Subsidy Program Guidance Manual Appendix Z
+      href: https://www.childcare.virginia.gov/home/showpublisheddocument/66667/638981099706730000#page=206

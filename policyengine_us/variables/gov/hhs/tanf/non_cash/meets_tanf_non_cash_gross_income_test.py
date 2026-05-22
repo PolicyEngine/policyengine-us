@@ -13,5 +13,22 @@ class meets_tanf_non_cash_gross_income_test(Variable):
         # All limits and incomes here expressed as % of FPG.
         limits = parameters(period).gov.hhs.tanf.non_cash.income_limit
         gross_limit = limits.gross[state]
+        hheod = spm_unit("is_tanf_non_cash_hheod", period)
+        gross_limit = where(hheod, limits.gross_hheod[state], gross_limit)
+
+        ny = state == "NY"
+        has_dependent_care = spm_unit("snap_dependent_care_deduction", period) > 0
+        has_earned_income = spm_unit("snap_earned_income", period) > 0
+        ny_gross_limit = where(
+            has_dependent_care | hheod,
+            limits.ny.dependent_care,
+            where(
+                has_earned_income,
+                limits.ny.earned_income,
+                limits.gross.NY,
+            ),
+        )
+        gross_limit = where(ny, ny_gross_limit, gross_limit)
+
         gross_income = spm_unit("snap_gross_income_fpg_ratio", period)
         return gross_income <= gross_limit

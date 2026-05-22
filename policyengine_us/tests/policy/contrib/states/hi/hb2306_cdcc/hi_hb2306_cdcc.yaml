@@ -1,0 +1,59 @@
+# Tests for Hawaii HB 2306 HD1 CDCC Rate Reform
+# HB 2306 increases the CDCC applicable percentage from max 25% to max 50%
+# with a gradual phase-down extending to AGI $160,000+
+
+- name: HB 2306 CDCC - no childcare expenses returns zero
+  period: 2027
+  reforms: policyengine_us.reforms.states.hi.hb2306_cdcc.hi_hb2306_cdcc.hi_hb2306_cdcc
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.hi.hb2306.cdcc.in_effect: true
+    people:
+      person:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: HI
+  output:
+    # No childcare expenses, so credit is 0
+    hi_cdcc: 0
+
+- name: HB 2306 CDCC - low AGI gets 50% rate
+  period: 2027
+  reforms: policyengine_us.reforms.states.hi.hb2306_cdcc.hi_hb2306_cdcc.hi_hb2306_cdcc
+  absolute_error_margin: 1
+  input:
+    gov.contrib.states.hi.hb2306.cdcc.in_effect: true
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 50_000
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 5_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    # HB 2306 rate: 50% for AGI under $80,000
+    # Qualified expenses: min($10,000 floor for 1 child, $5,000 actual) = $5,000
+    # Credit = 50% * $5,000 = $2,500
+    hi_cdcc: 2_500

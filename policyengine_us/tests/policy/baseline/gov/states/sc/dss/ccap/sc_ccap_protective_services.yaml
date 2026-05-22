@@ -1,0 +1,79 @@
+# SC CCAP protective services category tests
+# sc_ccap_protective_services is SPMUnit, MONTH
+# True when family has foster child, is homeless, or has child
+# receiving/needing protective services (Section 2.4, p.65)
+
+- name: Case 1, foster child triggers protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_protective_services: true
+
+- name: Case 2, homeless family triggers protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+        is_homeless: true
+  output:
+    sc_ccap_protective_services: true
+
+- name: Case 3, child receiving protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_protective_services: true
+
+- name: Case 4, no protective services indicators.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_protective_services: false

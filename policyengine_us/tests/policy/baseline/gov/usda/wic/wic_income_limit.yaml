@@ -1,0 +1,44 @@
+- name: Two-person WIC income limit uses 2025 guidelines before July 2026.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    wic_income_limit: 39_128
+
+- name: Pregnancy increases the WIC income unit by one.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [parent]
+  output:
+    wic_income_limit: 39_128
+
+- name: Guam uses the contiguous U.S. WIC income limit.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: GU
+  output:
+    wic_income_limit: 39_128

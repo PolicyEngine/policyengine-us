@@ -6,11 +6,13 @@ values:
     - ms_national_guard_or_reserve_pay_adjustment # Line 55
     - alimony_expense # Line 53
     - ms_retirement_income_exemption
+    - us_govt_interest_person
+    - ms_529_deduction
 metadata:
   label: Mississippi adjusted gross income adjustments
   period: year
   unit: list
-  reference: 
+  reference:
     - title: Mississippi Resident Income Tax Instruction
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
     - title: 2020 Mississippi Code Title 27 - Income Tax and Withholding Article 1

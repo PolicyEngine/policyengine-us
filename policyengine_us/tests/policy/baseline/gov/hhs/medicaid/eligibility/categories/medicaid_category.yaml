@@ -1,0 +1,23 @@
+- name: Case 1, medically needy category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 2, working disabled Buy-In category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+
+- name: Case 3, mandatory adult category takes priority over Buy-In.
+  period: 2026
+  input:
+    is_adult_for_medicaid: true
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: ADULT

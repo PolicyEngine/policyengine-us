@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ny_household_credit(Variable):
@@ -11,35 +14,14 @@ class ny_household_credit(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ny.tax.income.credits.household_credit
-        filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
-        # Include spouse's AGI if filing separately.
-        agi = add(
+        ordered_credits = parameters(
+            period
+        ).gov.states.ny.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
             tax_unit,
             period,
-            ["adjusted_gross_income", "spouse_separate_adjusted_gross_income"],
+            ordered_credits,
+            "ny_income_tax_before_credits",
+            "ny_household_credit",
+            "ny_household_credit_potential",
         )
-        # Single filers: based only on AGI.
-        single = filing_status == filing_statuses.SINGLE
-        # Use `right=True` to reflect "over...but not over".
-        amount_if_single = p.single.calc(agi, right=True)
-        single_amount = single * amount_if_single
-        # All others are based on AGI & size.
-        # In the case of married filing separate, based on the combined AGI and size.
-        size = add(
-            tax_unit,
-            period,
-            ["tax_unit_size", "spouse_separate_tax_unit_size"],
-        )
-        separate = filing_status == filing_statuses.SEPARATE
-        non_single_base = p.non_single.base.calc(agi, right=True)
-        non_single_additional = p.non_single.additional.calc(agi, right=True)
-        total_amount_if_not_single = non_single_base + non_single_additional * (
-            size - 1
-        )
-        amount_if_not_single = np.ceil(
-            total_amount_if_not_single / where(separate, 2, 1)
-        )
-        non_single_amount = amount_if_not_single * ~single
-        return single_amount + non_single_amount

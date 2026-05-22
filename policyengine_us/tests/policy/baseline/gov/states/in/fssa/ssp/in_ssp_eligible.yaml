@@ -1,0 +1,41 @@
+- name: Case 1, SAPN-eligible individual.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: true
+        in_ssp_rcap_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_eligible: true
+
+- name: Case 2, RCAP-eligible individual.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: false
+        in_ssp_rcap_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_eligible: true
+
+- name: Case 3, neither SAPN nor RCAP eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        in_ssp_sapn_eligible: false
+        in_ssp_rcap_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_eligible: false

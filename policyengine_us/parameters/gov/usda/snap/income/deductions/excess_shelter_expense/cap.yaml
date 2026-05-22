@@ -7,6 +7,11 @@ CONTIGUOUS_US:
   1999-10-01: 280
   2000-10-01: 340
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 504
+  2016-10-01: 517
+  2017-10-01: 535
+  2018-10-01: 552
+  2019-10-01: 569
   2020-10-01: 586
   2021-10-01: 597
   2022-10-01: 624
@@ -20,7 +25,12 @@ AK_URBAN:
   1999-10-01: 483
   2000-10-01: 543
   # Subsequent: Updated based on CPI-U.
-  2020-01-01: 936
+  2015-10-01: 805
+  2016-10-01: 826
+  2017-10-01: 854
+  2018-10-01: 881
+  2019-10-01: 908
+  2020-10-01: 936
   2021-10-01: 954
   2022-10-01: 996
   2023-10-01: 1_073
@@ -33,6 +43,11 @@ AK_RURAL_1:
   1999-10-01: 483
   2000-10-01: 543
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 805
+  2016-10-01: 826
+  2017-10-01: 854
+  2018-10-01: 881
+  2019-10-01: 908
   2020-10-01: 936
   2021-10-01: 954
   2022-10-01: 996
@@ -46,6 +61,11 @@ AK_RURAL_2:
   1999-10-01: 483
   2000-10-01: 543
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 805
+  2016-10-01: 826
+  2017-10-01: 854
+  2018-10-01: 881
+  2019-10-01: 908
   2020-10-01: 936
   2021-10-01: 954
   2022-10-01: 996
@@ -59,6 +79,11 @@ GU:
   1999-10-01: 339
   2000-10-01: 399
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 592
+  2016-10-01: 607
+  2017-10-01: 627
+  2018-10-01: 647
+  2019-10-01: 667
   2020-10-01: 688
   2021-10-01: 701
   2022-10-01: 732
@@ -72,6 +97,11 @@ HI:
   1999-10-01: 398
   2000-10-01: 458
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 679
+  2016-10-01: 697
+  2017-10-01: 720
+  2018-10-01: 743
+  2019-10-01: 766
   2020-10-01: 790
   2021-10-01: 805
   2022-10-01: 840
@@ -85,6 +115,11 @@ VI:
   1999-10-01: 208
   2000-10-01: 268
   # Subsequent: Updated based on CPI-U.
+  2015-10-01: 397
+  2016-10-01: 408
+  2017-10-01: 421
+  2018-10-01: 435
+  2019-10-01: 448
   2020-10-01: 462
   2021-10-01: 471
   2022-10-01: 492
@@ -99,19 +134,19 @@ metadata:
   reference:
     - title: 7 U.S. Code § 2014(e)(6)(B) # Values from 1996-08-22 to 2000-10-01.
       href: https://www.law.cornell.edu/uscode/text/7/2014#e_6_B
-    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Maximum Allotments and Deductions
-      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf
-    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
-      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+    - title: SNAP FY2022 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
+    - title: SNAP FY2021 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf#page=2
     # This page links to other PDFs.
     - title: USDA Cost of Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/COLA
-    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2024 Income Eligibility Standards
-      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY24-Maximum-Allotments-and-Deductions.pdf
-    - title: SNAP - Fiscal Year 2025 Cost-of-Living Adjustments, Supplemental Nutrition Assistance Program Deductions, Maximum Excess Shelter Deductions
-      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy25.pdf#page=5
-    - title: SNAP - Fiscal Year 2026 Cost-of-Living Adjustments
-      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-cola-fy26memo.pdf#page=6
+    - title: SNAP FY2024 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY24-Maximum-Allotments-and-Deductions.pdf#page=2
+    - title: SNAP FY2025 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/fy-2025-cola
+    - title: SNAP FY2026 Cost-of-Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/cola/fy26
   breakdown:
     - snap_region
   uprating: gov.usda.snap.uprating

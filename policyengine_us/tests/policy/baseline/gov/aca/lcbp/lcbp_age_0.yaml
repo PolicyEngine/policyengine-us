@@ -1,0 +1,55 @@
+- name: lcbp_age_0 2026 Alaska rating area 1
+  period: 2026-01
+  input:
+    state_code: AK
+    slcsp_rating_area: 1
+  output:
+    lcbp_age_0: 507
+
+- name: lcbp_age_0 2026 California rating area 15
+  period: 2026-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 15
+  output:
+    lcbp_age_0: 271
+
+- name: lcbp_age_0 2026 Florida rating area 4
+  period: 2026-01
+  input:
+    state_code: FL
+    slcsp_rating_area: 4
+  output:
+    lcbp_age_0: 403
+
+- name: lcbp_age_0 2026 Nebraska rating area 1
+  period: 2026-01
+  input:
+    state_code: NE
+    slcsp_rating_area: 1
+  output:
+    lcbp_age_0: 386
+
+- name: lcbp_age_0 2026 New York rating area 1
+  period: 2026-01
+  input:
+    state_code: NY
+    slcsp_rating_area: 1
+  output:
+    lcbp_age_0: 507
+
+- name: lcbp_age_0 2026 Vermont rating area 1
+  period: 2026-01
+  input:
+    state_code: VT
+    slcsp_rating_area: 1
+  output:
+    lcbp_age_0: 824
+
+- name: lcbp_age_0 with unknown rating area (zero)
+  period: 2026-01
+  input:
+    state_code: CA
+    slcsp_rating_area: 0
+  output:
+    lcbp_age_0: 0

@@ -23,13 +23,12 @@ class is_medicaid_eligible(Variable):
 
         p = parameters(period).gov.hhs.medicaid.eligibility
         federal_work_requirement_eligible = True
+        federal_medicaid_eligible = categorically_eligible & immigration_status_eligible
         if p.work_requirements.applies:
             work_requirement_eligible = person(
                 "medicaid_work_requirement_eligible", period
             )
-            federal_work_requirement_eligible = where(
-                adult_group, work_requirement_eligible, True
-            )
+            federal_work_requirement_eligible = ~adult_group | work_requirement_eligible
 
         ar_p = parameters(period).gov.states.ar.dhs.medicaid.work_requirements
         ar_work_requirement_eligible = True
@@ -42,8 +41,7 @@ class is_medicaid_eligible(Variable):
             )
         return (
             (
-                categorically_eligible
-                & immigration_status_eligible
+                federal_medicaid_eligible
                 & federal_work_requirement_eligible
                 & ar_work_requirement_eligible
             )

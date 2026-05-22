@@ -23,4 +23,4 @@ class ga_retirement_exclusion_person(Variable):
         retirement_income = person(
             "ga_retirement_income_exclusion_retirement_income", period
         )
-        return min_(retirement_income, cap)
+        return max_(0, min_(retirement_income, cap))

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class wi_married_couple_credit(Variable):
@@ -17,18 +20,14 @@ class wi_married_couple_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        fstatus = tax_unit("filing_status", period)
-        eligible = fstatus == fstatus.possible_values.JOINT
-        p = parameters(period).gov.states.wi.tax.income.credits
-        person = tax_unit.members
-        income = add(person, period, p.married_couple.income_sources)
-        floored_income = max_(0, income)
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        head_income = tax_unit.sum(is_head * floored_income)
-        spouse_income = tax_unit.sum(is_spouse * floored_income)
-        lower_income = min_(head_income, spouse_income)
-        return min_(
-            eligible * lower_income * p.married_couple.rate,
-            p.married_couple.max,
+        ordered_credits = parameters(
+            period
+        ).gov.states.wi.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
+            tax_unit,
+            period,
+            ordered_credits,
+            "wi_income_tax_before_credits",
+            "wi_married_couple_credit",
+            "wi_married_couple_credit_potential",
         )

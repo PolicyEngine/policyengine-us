@@ -1,0 +1,28 @@
+description: Virginia defines these localities as the West Ready Region under the Child Care Subsidy Program.
+
+metadata:
+  unit: list
+  period: year
+  label: Virginia CCSP West Ready Region localities
+  reference:
+    - title: VDOE Maximum Reimbursement Rates FY 2024
+      href: https://data.virginia.gov/dataset/general-child-care-subsidy-program-maximum-reimbursement-rates
+
+values:
+  2023-08-01:
+    - ALLEGHANY_COUNTY_VA
+    - BATH_COUNTY_VA
+    - BOTETOURT_COUNTY_VA
+    # - BUENA_VISTA_CITY_VA  # not in county_enum
+    # - COVINGTON_CITY_VA  # not in county_enum
+    - CRAIG_COUNTY_VA
+    - FRANKLIN_COUNTY_VA
+    - HENRY_COUNTY_VA
+    - HIGHLAND_COUNTY_VA
+    - LEXINGTON_CITY_VA
+    # - MARTINSVILLE_CITY_VA  # not in county_enum
+    - PATRICK_COUNTY_VA
+    - ROANOKE_CITY_VA
+    - ROANOKE_COUNTY_VA
+    - ROCKBRIDGE_COUNTY_VA
+    # - SALEM_CITY_VA  # not in county_enum

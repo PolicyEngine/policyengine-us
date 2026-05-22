@@ -1,4 +1,4 @@
-description: Georgia accounts for the following income sources under the retirement exclusion.  
+description: Georgia accounts for these non-earned income sources on lines 6 through 13 of the retirement income exclusion worksheet.
 metadata:
   label: Georgia retirement income exclusion income sources
   period: year
@@ -17,8 +17,7 @@ values:
   - interest_income
   - dividend_income
   - rental_income # royalties included in the rental income
-  - capital_gains
+  - ga_retirement_exclusion_countable_capital_gains
   - alimony_income  
   - taxable_pension_income
   - taxable_ira_distributions
-  - ga_retirement_exclusion_countable_earned_income # earned income: capped

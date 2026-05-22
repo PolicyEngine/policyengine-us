@@ -34,7 +34,7 @@ thresholds:
     unit: currency-USD
     label: Individual income tax rate thresholds
     breakdown:
-      - range(1, 7)
+      - range(1, 8)
       - filing_status
     breakdown_labels:
       - Bracket
@@ -566,7 +566,7 @@ thresholds:
         2018-01-01: 300_000
         2019-01-01: 306_175
         2020-01-01: 311_025
-        2021-01-01: 329_850
+        2021-01-01: 314_150
         2022-01-01: 323_925
         2023-01-01: 346_875
         2024-01-01: 365_600

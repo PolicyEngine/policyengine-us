@@ -1,0 +1,231 @@
+# SC CCAP eligible child tests
+
+- name: Case 1, eligible child under 13.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+
+- name: Case 2, child age 13 ineligible without disability.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, false]
+
+- name: Case 3, disabled child age 15 eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+
+- name: Case 4, disabled child age 19 ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, false]
+
+- name: Case 5, undocumented child ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, false]
+
+- name: Case 6, child who is not a tax dependent is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Policy Manual 2.1.7: child must be a dependent
+    sc_ccap_eligible_child: [false, false]
+
+- name: Case 7, adult is never an eligible child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false]
+
+- name: Case 8, disabled child age 18 eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+
+- name: Case 9, infant eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]
+
+- name: Case 10, child age 12 at boundary eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_ccap_eligible_child: [false, true]

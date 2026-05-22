@@ -1,5 +1,7 @@
 # NY TANF Integration Tests
-# Tests full eligibility and benefit calculation chain
+# Tests full eligibility and benefit calculation chain.
+# Need standard now sums basic monthly allowance, home energy, supplemental
+# home energy, and shelter (capped at the local agency NYC schedule).
 
 - name: Case 1, post-reform eligible family receives benefit.
   period: 2023-01
@@ -17,7 +19,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
   output:
     # Employment income: $6,000/year = $500/month
     tanf_gross_earned_income: [500, 0]
@@ -29,20 +31,21 @@
     # Countable income = $100 (no unearned)
     ny_tanf_countable_income: 100
 
-    # Need standard for 2 people = $252
-    ny_tanf_need_standard: 252
+    # Need standard for 2 people, no shelter:
+    # Basic ($252) + home energy ($22.50) + supp. energy ($17) = $291.50
+    ny_tanf_need_standard: 291.50
 
     # Resource limit: $2,500 (non-elderly), assets $1,000 → eligible
     ny_tanf_resources_eligible: true
 
-    # Income test: $100 < $252 → eligible
+    # Income test: $100 < $291.50 → eligible
     ny_tanf_income_eligible: true
 
     # Overall eligible
     ny_tanf_eligible: true
 
-    # Benefit: $252 - $100 = $152
-    ny_tanf: 152
+    # Benefit: $291.50 - $100 = $191.50
+    ny_tanf: 191.50
 
 - name: Case 2, pre-reform family with gross income test.
   period: 2022-01
@@ -62,7 +65,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        spm_unit_assets: 1_500
+        spm_unit_cash_assets: 1_500
   output:
     # Employment income: $4,800/year = $400/month
     tanf_gross_earned_income: [400, 0, 0]
@@ -75,20 +78,21 @@
     # Countable income = $179.80
     ny_tanf_countable_income: 179.8
 
-    # Need standard for 3 people = $336
-    ny_tanf_need_standard: 336
+    # Need standard for 3 people, no shelter:
+    # Basic ($336) + home energy ($30) + supp. energy ($23) = $389
+    ny_tanf_need_standard: 389
 
-    # Gross income test: $400 <= $336 × 1.85 = $621.60 → passes
+    # Gross income test: $400 <= $389 × 1.85 = $719.65 → passes
     ny_tanf_gross_income_eligible: true
 
-    # Income test: $179.80 < $336 → eligible
+    # Income test: $179.80 < $389 → eligible
     ny_tanf_income_eligible: true
 
     # Resource limit: $2,000 (pre-reform), assets $1,500 → eligible
     ny_tanf_resources_eligible: true
 
-    # Benefit: $336 - $179.80 = $156.20
-    ny_tanf: 156.2
+    # Benefit: $389 - $179.80 = $209.20
+    ny_tanf: 209.20
 
 - name: Case 3, elderly household qualifies for higher resource limit.
   period: 2023-01
@@ -107,7 +111,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # No earned income
     ny_tanf_countable_earned_income: [0, 0]
@@ -118,17 +122,17 @@
     # Countable income = $200
     ny_tanf_countable_income: 200
 
-    # Need standard for 2 people = $252
-    ny_tanf_need_standard: 252
+    # Need standard for 2 people, no shelter: $291.50
+    ny_tanf_need_standard: 291.50
 
     # Higher resource limit ($3,750) for age 60+ → $3,000 eligible
     ny_tanf_resources_eligible: true
 
-    # Income test: $200 < $252 → eligible
+    # Income test: $200 < $291.50 → eligible
     ny_tanf_income_eligible: true
 
-    # Benefit: $252 - $200 = $52
-    ny_tanf: 52
+    # Benefit: $291.50 - $200 = $91.50
+    ny_tanf: 91.50
 
 - name: Case 4, income exceeds needs test.
   period: 2023-01
@@ -146,7 +150,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 500
+        spm_unit_cash_assets: 500
   output:
     # Employment income: $12,000/year = $1,000/month
     tanf_gross_earned_income: [1000, 0]
@@ -157,10 +161,10 @@
     # Countable income = $350
     ny_tanf_countable_income: 350
 
-    # Need standard for 2 people = $252
-    ny_tanf_need_standard: 252
+    # Need standard for 2 people, no shelter: $291.50
+    ny_tanf_need_standard: 291.50
 
-    # Income test: $350 >= $252 → NOT eligible
+    # Income test: $350 >= $291.50 → NOT eligible
     ny_tanf_income_eligible: false
 
     # Not eligible overall
@@ -185,7 +189,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # Resources: $3,000 > $2,500 limit → NOT eligible
     ny_tanf_resources_eligible: false
@@ -202,7 +206,7 @@
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 7_200
+        employment_income_before_lsr: 8_400
       person2:
         age: 5
     households:
@@ -212,29 +216,29 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 1_000
+        spm_unit_cash_assets: 1_000
   output:
-    # Gross income: $7,200/year = $600/month
-    tanf_gross_earned_income: [600, 0]
+    # Gross income: $8,400/year = $700/month
+    tanf_gross_earned_income: [700, 0]
 
-    # Need standard (2 people): $252
-    # 185% threshold: $252 × 1.85 = $466.20
-    # Gross income $600 > $466.20 → would FAIL pre-reform!
+    # Need standard (2 people, no shelter): $291.50
+    # 185% threshold: $291.50 × 1.85 = $539.275
+    # Gross income $700 > $539.275 → would FAIL pre-reform!
     ny_tanf_gross_income_eligible: false
 
-    # But post-reform EID: $600 × 0.50 = $300
-    # Then work expense: $300 - $150 = $150 countable
-    ny_tanf_countable_earned_income: [150, 0]
-    ny_tanf_countable_income: 150
+    # But post-reform EID: $700 × 0.50 = $350
+    # Then work expense: $350 - $150 = $200 countable
+    ny_tanf_countable_earned_income: [200, 0]
+    ny_tanf_countable_income: 200
 
-    # $150 < $252 need standard → PASSES needs test!
+    # $200 < $291.50 need standard → PASSES needs test!
     ny_tanf_income_eligible: true
 
     # Overall eligible (reform eliminated gross income test)
     ny_tanf_eligible: true
 
-    # Benefit: $252 - $150 = $102
-    ny_tanf: 102
+    # Benefit: $291.50 - $200 = $91.50
+    ny_tanf: 91.50
 
 - name: Case 7, post-reform disabled non-elderly qualifies for higher resource limit.
   period: 2023-01
@@ -254,7 +258,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        spm_unit_assets: 3_000
+        spm_unit_cash_assets: 3_000
   output:
     # No earned income
     ny_tanf_countable_earned_income: [0, 0]
@@ -264,8 +268,8 @@
     tanf_gross_unearned_income: [0, 0]
     ny_tanf_countable_income: 0
 
-    # Need standard for 2 people = $252
-    ny_tanf_need_standard: 252
+    # Need standard for 2 people, no shelter: $291.50
+    ny_tanf_need_standard: 291.50
 
     # Resources: $3,000
     # Standard limit: $2,500 → would FAIL
@@ -273,11 +277,11 @@
     # $3,000 <= $3,750 → PASSES (post-reform disability qualifier)
     ny_tanf_resources_eligible: true
 
-    # Income test: $0 < $252 → eligible
+    # Income test: $0 < $291.50 → eligible
     ny_tanf_income_eligible: true
 
     # Overall eligible
     ny_tanf_eligible: true
 
-    # Benefit: $252 - $0 = $252
-    ny_tanf: 252
+    # Benefit: $291.50 - $0 = $291.50
+    ny_tanf: 291.50

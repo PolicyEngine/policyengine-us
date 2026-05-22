@@ -8,81 +8,93 @@ description: Massachusetts provides the following Low Income Home Energy Assista
   NONE:
     2021-10-01: 0 
 1:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 2_100
     2022-10-01: 1_600
     2023-10-01: 1_950
     2024-10-01: 1_500
-  UTILITY_AND_HEAT_IN_RENT: 
+    2025-10-01: 1_400
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 1_525
     2022-10-01: 1_100
     2023-10-01: 1_450
     2024-10-01: 1_025
+    2025-10-01: 925
   NONE:
     2021-10-01: 0
 2:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 1_902
     2022-10-01: 1_408
     2023-10-01: 1_716
-    2024-10-01: 1_320 
-  UTILITY_AND_HEAT_IN_RENT: 
+    2024-10-01: 1_320
+    2025-10-01: 1_232
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 1_342
     2022-10-01: 968
     2023-10-01: 1_276
     2024-10-01: 902
+    2025-10-01: 814
   NONE:
     2021-10-01: 0
 3:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 1_728
     2022-10-01: 1_239
     2023-10-01: 1_510
     2024-10-01: 1_162
-  UTILITY_AND_HEAT_IN_RENT: 
+    2025-10-01: 1_084
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 1_181
     2022-10-01: 852
     2023-10-01: 1_123
     2024-10-01: 794
+    2025-10-01: 716
   NONE:
     2021-10-01: 0
 4:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 1_574
     2022-10-01: 1_090
     2023-10-01: 1_329
     2024-10-01: 1_022
-  UTILITY_AND_HEAT_IN_RENT: 
+    2025-10-01: 954
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 1_039
     2022-10-01: 750
     2023-10-01: 988
     2024-10-01: 699
+    2025-10-01: 630
   NONE:
     2021-10-01: 0
 5:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 1_574
     2022-10-01: 1_090
     2023-10-01: 1_329
-    2024-10-01: 1_022 
-  UTILITY_AND_HEAT_IN_RENT: 
+    2024-10-01: 1_022
+    2025-10-01: 954
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 1_039
     2022-10-01: 750
     2023-10-01: 988
-    2024-10-01: 699 
+    2024-10-01: 699
+    2025-10-01: 630
   NONE:
     2021-10-01: 0
 6:
-  DELIVERABLE_FUEL: 
+  DELIVERABLE_FUEL:
     2021-10-01: 1_439
     2022-10-01: 960
     2023-10-01: 1_169
-    2024-10-01: 900   
-  UTILITY_AND_HEAT_IN_RENT: 
+    2024-10-01: 900
+    2025-10-01: 840
+  UTILITY_AND_HEAT_IN_RENT:
     2021-10-01: 915
     2022-10-01: 660
     2023-10-01: 870
     2024-10-01: 615
+    2025-10-01: 555
   NONE:
     2021-10-01: 0
 
@@ -97,11 +109,13 @@ metadata:
     - Benefit level
     - Utility category
   reference:
-    - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
-      href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf 
-    - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
-      href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download 
-    - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels 
+    - title: Fiscal Year 2022 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.masslegalservices.org/system/files/blog/FY_2022_LIHEAP_Income_Eligibility_and_Benefit_Chart_APRIL_2022_UTILITY_Increase.pdf
+    - title: Fiscal Year 2023 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.mass.gov/doc/fy-2023-liheap-income-eligibility-and-benefit-level-chart-october-2022/download
+    - title: Fiscal Year 2024 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
       href: https://www.commteam.org/wp-content/uploads/2024/03/FY-2024-LIHEAP-Income-Eligibility-and-Benefit-Chart_Incomes-March-2024-Increase.pdf
     - title: Fiscal Year 2025 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
-      href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download 
+      href: https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download
+    - title: Fiscal Year 2026 Home Energy Assistance Program (HEAP) Income Eligibility and Benefit Levels
+      href: https://www.mass.gov/info-details/learn-about-home-energy-assistance-heap

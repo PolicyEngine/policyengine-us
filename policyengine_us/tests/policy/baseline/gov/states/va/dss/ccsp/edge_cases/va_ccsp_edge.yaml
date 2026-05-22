@@ -1,0 +1,225 @@
+# Virginia CCSP benefit edge case tests
+# Focus: zero expenses, expenses less than copay, negative income prevention,
+#   zero income full subsidy, ineligible returns zero
+#
+# Benefit = max(expenses - copay, 0)
+# defined_for = "va_ccsp_eligible" -> ineligible SPMUnits get 0
+
+- name: Case 1, zero childcare expenses yields zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Eligible but no expenses -> benefit = max(0 - 60, 0) = 0
+    va_ccsp: 0
+
+- name: Case 2, expenses exactly equal to copay yields zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Monthly copay = $60, need annual expenses = 60 * 12 = 720
+        spm_unit_pre_subsidy_childcare_expenses: 720
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly income: 36,000/12 = 3,000
+    # FPG ratio: 3,000/(20,440/12) = 1.761 -> $60 copay
+    # Monthly expenses: 720/12 = 60
+    # Benefit: max(60 - 60, 0) = $0
+    va_ccsp: 0
+
+- name: Case 3, expenses $1 more than copay yields $1 benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Monthly copay = $60, need monthly expenses = $61
+        # Annual = 61 * 12 = 732
+        spm_unit_pre_subsidy_childcare_expenses: 732
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Monthly expenses: 732/12 = 61
+    # Benefit: max(61 - 60, 0) = $1
+    va_ccsp: 1
+
+- name: Case 4, large expenses with zero income gives full subsidy.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    # Zero income -> $0 copay
+    # Monthly expenses: 24,000/12 = 2,000
+    # Benefit: max(2,000 - 0, 0) = $2,000
+    va_ccsp: 2_000
+
+- name: Case 5, TANF family gets full expenses as benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 14_400
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+        va_ccsp_ready_region: CAPITAL_AREA
+  output:
+    # TANF -> $0 copay
+    # Monthly expenses: 14,400/12 = 1,200
+    # Benefit: max(1,200 - 0, 0) = $1,200
+    va_ccsp: 1_200
+
+- name: Case 6, ineligible family returns zero benefit even with expenses.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_attending_days_per_month: 23
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Income 200,000 >> 185% FPG = 37,814 -> ineligible
+    # defined_for = "va_ccsp_eligible" filters out -> $0
+    va_ccsp: 0
+
+- name: Case 7, family of 1 adult with no children gets zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+        va_ccsp_locality_group: GROUP_III
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # No eligible children -> ineligible -> $0
+    va_ccsp: 0

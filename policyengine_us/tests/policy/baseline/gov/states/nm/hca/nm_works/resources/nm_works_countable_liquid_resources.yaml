@@ -1,0 +1,15 @@
+- name: Countable liquid resources follow modeled cash assets.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 1_499
+  output:
+    nm_works_countable_liquid_resources: 1_499
+
+- name: Zero cash assets means zero countable liquid resources.
+  period: 2024-01
+  input:
+    state_code: NM
+    spm_unit_cash_assets: 0
+  output:
+    nm_works_countable_liquid_resources: 0

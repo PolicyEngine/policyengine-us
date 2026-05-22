@@ -1,0 +1,22 @@
+- name: CHIP-eligible and takes up - enrolled
+  period: 2026
+  input:
+    is_chip_eligible: true
+  output:
+    chip_enrolled: true
+
+- name: CHIP-eligible but non-enroller - not enrolled
+  period: 2026
+  input:
+    is_chip_eligible: true
+    takes_up_chip_if_eligible: false
+  output:
+    chip_enrolled: false
+
+- name: Not CHIP-eligible - not enrolled regardless of take-up
+  period: 2026
+  input:
+    is_chip_eligible: false
+    takes_up_chip_if_eligible: true
+  output:
+    chip_enrolled: false

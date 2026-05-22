@@ -16,7 +16,9 @@ class tn_ff_eligible(Variable):
 
         # Must have at least one citizen or legal immigrant
         # Use federal immigration eligibility directly
-        has_citizen = add(spm_unit, period, ["is_citizen_or_legal_immigrant"]) > 0
+        has_citizen = (
+            add(spm_unit, period.this_year, ["is_citizen_or_legal_immigrant"]) > 0
+        )
 
         # Must meet income eligibility
         income_eligible = spm_unit("tn_ff_income_eligible", period)

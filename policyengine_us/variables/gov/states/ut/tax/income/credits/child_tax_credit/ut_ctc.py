@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    applied_state_non_refundable_credit,
+)
 
 
 class ut_ctc(Variable):
@@ -10,23 +13,14 @@ class ut_ctc(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ut.tax.income.credits.ctc
-        person = tax_unit.members
-        ctc_eligible_child = person("ctc_qualifying_child", period)
-        age = person("age", period)
-        ut_child_age_eligible = p.child_age_threshold.calc(age)
-        eligible_child = ctc_eligible_child & ut_child_age_eligible
-        eligible_children = tax_unit.sum(eligible_child)
-        base_amount = p.amount * eligible_children
-        # Utah reduces the CTC based on the state income in addition to
-        # tax exempt interest income
-        relevant_income = add(
+        ordered_credits = parameters(
+            period
+        ).gov.states.ut.tax.income.credits.non_refundable
+        return applied_state_non_refundable_credit(
             tax_unit,
             period,
-            ["tax_exempt_interest_income", "ut_taxable_income"],
+            ordered_credits,
+            "ut_income_tax_before_non_refundable_credits",
+            "ut_ctc",
+            "ut_ctc_potential",
         )
-        filing_status = tax_unit("filing_status", period)
-        reduction_start = p.reduction.start[filing_status]
-        excess_income = max_(relevant_income - reduction_start, 0)
-        reduction = excess_income * p.reduction.rate
-        return max_(base_amount - reduction, 0)

@@ -6,6 +6,12 @@ values:
   2022-01-01: 1_500
   2023-01-01: 1_600
   2024-01-01: 1_700
+  # IRS Rev. Proc. 24-40 (TY 2025) p.8 and Rev. Proc. 25-32 (TY 2026)
+  # p.13 both hold the refundable CTC amount at $1,700 under current
+  # law (the statutory cap has not been indexed high enough to round up).
+  2025-01-01: 1_700
+  2026-01-01: 1_700
+  # CBO forecast.
   2027-01-01: 1_800
   2029-01-01: 1_900
   2032-01-01: 2_000

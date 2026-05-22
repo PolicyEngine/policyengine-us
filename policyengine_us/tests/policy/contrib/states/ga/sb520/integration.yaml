@@ -93,9 +93,9 @@
         state_code: GA
   output:
     # GA EITC = 20% of federal EITC
-    # Federal EITC for single parent with 1 child earning $25,000 is approximately $4,242
-    # GA EITC = $4,242 * 0.20 = $848
-    ga_eitc: 848
+    # Federal EITC for single parent with 1 child earning $25,000 is approximately $4,249
+    # GA EITC = $4,249 * 0.20 = $850
+    ga_eitc: 850
 
 - name: Case 5, 2027 progressive brackets for single filer.
   period: 2027

@@ -1,0 +1,195 @@
+- name: Case 1, single with low income gets max AABD.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: ($4,800 - $240 disregard) / 12 = $380/mo
+    ssi_countable_income: [380]
+    # SSI: ($11,604 - $4,560) / 12 = $587/mo
+    ssi: [587]
+    id_aabd_eligible: [true]
+    # Need: $545 - $380 = $165; min($165, $53) = $53
+    id_aabd: [53]
+
+- name: Case 2, single with moderate income gets reduced AABD.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 6_240
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: ($6,240 - $240) / 12 = $500/mo
+    ssi_countable_income: [500]
+    # SSI: ($11,604 - $6,000) / 12 = $467/mo
+    ssi: [467]
+    id_aabd_eligible: [true]
+    # Need: $545 - $500 = $45; min($45, $53) = $45
+    id_aabd: [45]
+
+- name: Case 3, single with high income receives SSI but no AABD need.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 7_200
+        id_aabd_living_arrangement: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: ($7,200 - $240) / 12 = $580/mo
+    ssi_countable_income: [580]
+    # SSI: ($11,604 - $6,960) / 12 = $387/mo
+    ssi: [387]
+    id_aabd_eligible: [true]
+    # Need: max(0, $545 - $580) = $0
+    id_aabd: [0]
+
+- name: Case 4, couple both SSI recipients.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 2_400
+        id_aabd_living_arrangement: COUPLE
+      person2:
+        age: 70
+        social_security: 2_400
+        id_aabd_living_arrangement: COUPLE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    # Combined SS: $4,800/yr, disregard $240 once
+    # Combined countable: $4,560/yr, per person: $2,280/yr = $190/mo
+    ssi_countable_income: [190, 190]
+    # Couple FBR: $17,400/yr, SSI: $12,840/yr, per person: $535/mo
+    ssi: [535, 535]
+    id_aabd_eligible: [true, true]
+    # Per-person allowance: $768/2 = $384
+    # Need: $384 - $190 = $194; max per person: $20/2 = $10
+    # AABD: min($194, $10) = $10
+    id_aabd: [10, 10]
+
+- name: Case 5, SIGRIF resident with low income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 2_400
+        id_aabd_living_arrangement: SIGRIF
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: ($2,400 - $240) / 12 = $180/mo
+    ssi_countable_income: [180]
+    # SSI: ($11,604 - $2,160) / 12 = $787/mo
+    ssi: [787]
+    id_aabd_eligible: [true]
+    # Need: $349 - $180 = $169; min($169, $169) = $169
+    id_aabd: [169]
+
+- name: Case 6, room and board resident with low income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        id_aabd_living_arrangement: ROOM_AND_BOARD
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: $380/mo
+    ssi_countable_income: [380]
+    # SSI: $587/mo
+    ssi: [587]
+    id_aabd_eligible: [true]
+    # Need: $770 - $380 = $390; min($390, $198) = $198
+    id_aabd: [198]
+
+- name: Case 7, essential person arrangement with low income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        id_aabd_living_arrangement: ESSENTIAL_PERSON
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # Countable: $380/mo (individual, not couple)
+    ssi_countable_income: [380]
+    # SSI: $587/mo
+    ssi: [587]
+    id_aabd_eligible: [true]
+    # Need: $768 - $380 = $388; min($388, $18) = $18
+    id_aabd: [18]
+
+- name: Case 8, asymmetric couple, one not ABD gets individual rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 4_800
+        id_aabd_living_arrangement: SINGLE
+      person2:
+        age: 30
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+        marital_unit_id: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_aabd_eligible: [true, false]
+    # Person1: individual, countable $380/mo
+    # Need: $545 - $380 = $165; min($165, $53) = $53
+    id_aabd: [53, 0]

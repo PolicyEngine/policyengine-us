@@ -1,0 +1,223 @@
+# nj_ccap_countable_income: SPMUnit, float, MONTH
+# Sums income sources via adds parameter list.
+# Excludes TANF cash benefits.
+# Sources: employment_income, self_employment_income, social_security_retirement,
+#   social_security_disability, social_security_survivors, ssi, dividend_income,
+#   interest_income, rental_income, pension_income, unemployment_compensation,
+#   workers_compensation, alimony_income, child_support_received.
+# All are YEAR-defined; in MONTH test, input annual, output monthly (annual/12).
+
+- name: Case 1, employment income only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    # 36_000 / 12 = 3_000/month
+    nj_ccap_countable_income: 3_000
+
+- name: Case 2, multiple income sources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        child_support_received: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    nj_ccap_countable_income: 2_500
+
+- name: Case 3, TANF excluded from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nj_wfnj: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Only employment counts: 12_000 / 12 = 1_000/month
+    # TANF (nj_wfnj) not in sources list -> excluded
+    nj_ccap_countable_income: 1_000
+
+- name: Case 4, zero income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_countable_income: 0
+
+- name: Case 5, two earners in household.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 32
+        employment_income: 18_000
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # (30_000 + 18_000) / 12 = 4_000/month
+    nj_ccap_countable_income: 4_000
+
+# Cases 6-8 exercise the minor-earnings exclusion. N.J.A.C. 10:15 does
+# not enumerate an explicit regulatory exclusion, so PolicyEngine
+# applies the same conservative `age >= 18` filter Virginia uses per
+# 8VAC20-790-40(H): earned income of household members under 18 is
+# excluded from NJ CCAP countable income. This matches the NJ CC-1
+# application (03/24) Section D, which does not collect minor
+# children's earnings. Unearned income (child support, SSI, survivors
+# benefits) counts for all SPM-unit members regardless of age.
+- name: Case 6, working teen's employment income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 36_000
+      teen:
+        age: 16
+        employment_income: 6_000
+      young_child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, teen, young_child]
+    households:
+      household:
+        members: [parent, teen, young_child]
+        state_code: NJ
+  output:
+    # Parent earnings: 36,000 / 12 = 3,000/month
+    # Teen's $6,000 wages are excluded (age < 18)
+    nj_ccap_countable_income: 3_000
+
+- name: Case 7, minor child's self-employment income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child_entrepreneur:
+        age: 15
+        self_employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, child_entrepreneur]
+    households:
+      household:
+        members: [parent, child_entrepreneur]
+        state_code: NJ
+  output:
+    # Only parent's earnings count: 24,000 / 12 = 2,000/month
+    nj_ccap_countable_income: 2_000
+
+- name: Case 8, minor child's unearned income remains countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      child:
+        age: 10
+        social_security_survivors: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # Parent earnings 24,000 + child SSA survivor 6,000 = 30,000
+    # Monthly: 30,000 / 12 = 2,500
+    # The `age >= 18` filter applies only to earned income; unearned
+    # income (survivors benefits, child support, SSI, etc.) counts for
+    # all SPM-unit members regardless of age, as on CC-1 Section D's
+    # "Other income or benefits to family unit" line.
+    nj_ccap_countable_income: 2_500
+
+- name: Case 9, adult non-applicant's earnings count (not just applicant/co-applicant).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+      adult_relative:
+        age: 25
+        employment_income: 18_000
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, adult_relative, child]
+    households:
+      household:
+        members: [parent, adult_relative, child]
+        state_code: NJ
+  output:
+    # Parent + adult relative both age >= 18 → both count
+    # (24,000 + 18,000) / 12 = 3,500/month
+    # This distinguishes the age-based rule from a narrower
+    # applicant/co-applicant-only rule; an adult family member's
+    # earnings still contribute to household countable income.
+    nj_ccap_countable_income: 3_500
