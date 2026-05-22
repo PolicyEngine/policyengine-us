@@ -1,3 +1,10 @@
+## [1.704.0] - 2026-05-22
+
+### Added
+
+- Add Maryland Public Assistance to Adults (state SSP).
+
+
 ## [1.703.2] - 2026-05-22
 
 No significant changes.
