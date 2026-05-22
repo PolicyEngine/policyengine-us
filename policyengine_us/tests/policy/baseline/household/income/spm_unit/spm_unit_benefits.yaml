@@ -43,3 +43,29 @@
     basic_income: 0
   output:
     spm_unit_benefits: 0
+
+- name: Benefits include Missouri State Supplementary Payments.
+  period: 2026
+  input:
+    mo_ssp: 10
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    spm_unit_energy_subsidy: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+  output:
+    spm_unit_benefits: 10
