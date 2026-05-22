@@ -1,0 +1,50 @@
+- name: Case 1, federal fiscal year 2024 has eleven SSI payments.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi:
+          2023: 1_200
+          2024: 1_200
+  output:
+    # October 2023 SSI was paid in September 2023, before FY 2024.
+    ssi_federal_fiscal_year_outlays: 1_100
+
+- name: Case 2, federal fiscal year 2025 has twelve SSI payments.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi:
+          2024: 1_200
+          2025: 1_200
+  output:
+    ssi_federal_fiscal_year_outlays: 1_200
+
+- name: Case 3, federal fiscal year 2028 has thirteen SSI payments.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi:
+          2027: 1_200
+          2028: 1_200
+  output:
+    # October 2028 SSI is paid in September 2028, inside FY 2028.
+    ssi_federal_fiscal_year_outlays: 1_300
+
+- name: Case 4, federal fiscal year 2029 has eleven SSI payments.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi:
+          2028: 1_200
+          2029: 1_200
+  output:
+    # October 2028 SSI was already paid in FY 2028.
+    ssi_federal_fiscal_year_outlays: 1_100

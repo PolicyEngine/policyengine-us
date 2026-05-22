@@ -1,0 +1,132 @@
+- name: SAB pathway with is_blind=true is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SAB pathway with is_blind=false is not category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: false
+
+- name: SNC RCF_LEVEL_I aged resident is category-eligible without blindness.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SNC RCF_LEVEL_I resident who is not aged, blind, or disabled is not category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: false
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: false
+
+- name: SNC RCF_LEVEL_I disabled resident is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SNC RCF_LEVEL_II_OR_ALF is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SNC INTERMEDIATE_OR_SKILLED_NO_LOC is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mo_ssp_living_arrangement: INTERMEDIATE_OR_SKILLED_NO_LOC
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: SNC SNF_OR_ICF_NON_MEDICAID is category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: true
+
+- name: NONE arrangement is not category-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: true
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_category_eligible: false

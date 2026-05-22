@@ -86,3 +86,52 @@
         is_tax_unit_dependent: true
   output:
     medicaid_work_requirement_eligible: [false, true]
+
+- name: Case 10, half-time college student meets the work requirement.
+  period: 2027
+  input:
+    age: 30
+    is_part_time_college_student: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 11, monthly income at the federal minimum wage safe harbor meets the work requirement.
+  period: 2027
+  input:
+    age: 30
+    employment_income: 6_960
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 12, former foster care youth is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 25
+    was_in_foster_care: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 13, Medicare-eligible adult is excepted from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    social_security_disability: 1_000
+    months_receiving_social_security_disability: 24
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 14, incarcerated adult is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    is_incarcerated: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 15, person with Indian Health Service coverage is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    has_indian_health_service_coverage_at_interview: true
+  output:
+    medicaid_work_requirement_eligible: true

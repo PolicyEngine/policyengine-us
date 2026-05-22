@@ -3,8 +3,8 @@
 #
 # Eligibility: aged/blind/disabled AND in a Medicaid LTC facility AND in Louisiana.
 # Formula: la_oss (monthly) = min(max(PNA - ssi - ssi_countable_income, 0), max_payment).
-# Both ssi and ssi_countable_income are YEAR-period; PolicyEngine divides by 12
-# when the formula reads them at MONTH.
+# ssi is monthly; ssi_countable_income is annual and PolicyEngine divides by 12
+# when the monthly formula reads it.
 #
 # Pre-July-2025: PNA = $38, max payment = $8/month. Federal SSI institutional FBR = $30/mo.
 # From July 1, 2025: PNA = $45, max payment = $15/month.
@@ -21,7 +21,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -41,7 +41,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -60,7 +60,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: OWN_HOUSEHOLD
         ssi_countable_income: 0
-        ssi: 11_928
+        ssi: 994
     households:
       household:
         members: [person1]
@@ -98,7 +98,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -117,7 +117,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -138,13 +138,13 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
       person2:
         age: 70
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1, person2]
@@ -164,7 +164,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -183,7 +183,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]
@@ -221,13 +221,13 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
       person2:
         age: 70
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: OWN_HOUSEHOLD
         ssi_countable_income: 0
-        ssi: 11_928
+        ssi: 994
     households:
       household:
         members: [person1, person2]
@@ -247,7 +247,7 @@
         is_ssi_aged_blind_disabled: true
         ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
         ssi_countable_income: 0
-        ssi: 360
+        ssi: 30
     households:
       household:
         members: [person1]

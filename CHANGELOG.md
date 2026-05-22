@@ -1,3 +1,75 @@
+## [1.705.1] - 2026-05-22
+
+### Fixed
+
+- Traditional 401(k) and 403(b) elective deferrals no longer incorrectly reduce the FICA (Social Security and Medicare) wage base. Under IRC §3121(a), only Section 125 cafeteria plan items (employer-sponsored health premiums and HSA payroll contributions) reduce FICA wages. This fixes understated Social Security and Medicare tax in any simulation with retirement deferrals.
+
+
+## [1.705.0] - 2026-05-22
+
+### Added
+
+- Implement Missouri State Supplementary Payment (SAB and SNC components) under DSS Family Support Division.
+
+
+## [1.704.0] - 2026-05-22
+
+### Added
+
+- Add Maryland Public Assistance to Adults (state SSP).
+
+
+## [1.703.2] - 2026-05-22
+
+No significant changes.
+
+
+## [1.703.1] - 2026-05-21
+
+### Changed
+
+- Update Medicaid work requirement eligibility to reflect CMS community engagement guidance.
+
+
+## [1.703.0] - 2026-05-21
+
+### Added
+
+- Added the Indiana Over 65 Property Tax Credit.
+
+
+## [1.702.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.702.0] - 2026-05-21
+
+### Added
+
+- Added the North Dakota Renter's Refund.
+- Added the Pennsylvania Property Tax/Rent Rebate standard rebate.
+
+
+## [1.701.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.701.0] - 2026-05-21
+
+### Added
+
+- Added a data-overridable SSI disability criteria variable for calibrated SSI simulations.
+
+
+## [1.700.2] - 2026-05-20
+
+### Changed
+
+- Apply Georgia HB463 (2025-2026): cut the flat individual income tax rate to 4.99%, raise the standard deduction to $30,000 joint / $15,000 single, raise the dependent exemption to $5,000, increase the age-65+ retirement income exclusion to $70,000 in 2027, and add qualified-overtime and cash-tip exclusions for tax years 2026-2028.
+
+
 ## [1.700.1] - 2026-05-20
 
 No significant changes.
