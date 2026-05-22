@@ -6,7 +6,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 200  # $200/month
+        ssi: 2_400  # $200/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -24,7 +24,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 967  # $967/month
+        ssi: 11_604  # $967/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -42,7 +42,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1  # $1/month
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -170,7 +170,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 0.5
+        ssi: 6  # $0.50/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -188,7 +188,7 @@
       person1:
         age: 16
         is_blind: true
-        ssi: 200
+        ssi: 2_400
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -223,7 +223,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 200  # $200/month
+        ssi: 2_400  # $200/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -241,7 +241,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1  # $1/month
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -259,7 +259,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 200  # $200/month
+        ssi: 2_400  # $200/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -277,7 +277,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 828  # $828/month
+        ssi: 9_936  # $828/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -295,7 +295,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1_000  # $1,000/month
+        ssi: 12_000  # $1,000/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -313,7 +313,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1  # $1/month
+        ssi: 12  # $1/month annualized
         self_employment_income: -60_000_000
         mo_ssp_living_arrangement: SAB
     households:
@@ -333,7 +333,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 1  # $1/month
+        ssi: 12  # $1/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -351,7 +351,7 @@
       person1:
         age: 50
         is_blind: true
-        ssi: 916.70  # $916.70/month
+        ssi: 11_000.40  # $916.70/month annualized
         mo_ssp_living_arrangement: SAB
     households:
       household:
@@ -478,3 +478,22 @@
     ssi: 100
     mo_ssp_eligible: true
     mo_ssp: 136
+
+- name: Case 25, SAB applicant above the resource limit receives no grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        ssi_countable_resources: 100_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: false
+    mo_ssp: 0

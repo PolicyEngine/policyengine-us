@@ -16,11 +16,11 @@ class mo_ssp_eligible(Variable):
         # SAB applicants must apply for SSI but the grant is paid regardless
         # of receipt; SNC eligibility turns on the facility-cost-vs-income
         # need test, not SSI receipt. We don't track the SAB SSI-application
-        # requirement, Missouri-specific resource limits, the closed
-        # 1973-conversion State Pension cohort, or Supplemental Nursing Care
-        # physician medical-need tests.
+        # requirement, the closed 1973-conversion State Pension cohort, or
+        # Supplemental Nursing Care physician medical-need tests.
         in_category = person("mo_ssp_category_eligible", period)
         age_eligible = person("mo_ssp_age_eligible", period)
+        resource_eligible = person("mo_ssp_resource_eligible", period)
         living_arrangement = person("mo_ssp_living_arrangement", period)
         categories = living_arrangement.possible_values
         is_sab = living_arrangement == categories.SAB
@@ -39,4 +39,10 @@ class mo_ssp_eligible(Variable):
         snc_countable_income = person("mo_snc_countable_income", period)
         facility_base_charge = person("mo_snc_facility_base_charge", period)
         snc_need_eligible = ~is_snc | (snc_countable_income < facility_base_charge)
-        return in_category & age_eligible & sab_income_eligible & snc_need_eligible
+        return (
+            in_category
+            & age_eligible
+            & resource_eligible
+            & sab_income_eligible
+            & snc_need_eligible
+        )
