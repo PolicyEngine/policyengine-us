@@ -74,7 +74,7 @@ class md_paa_eligible(Variable):
         is_rehab = (
             living_arrangement == living_arrangement.possible_values.REHAB_RESIDENCE
         )
-        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        federal_la = person("ssi_federal_living_arrangement", period)
         is_medical_facility = (
             federal_la == federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
         )

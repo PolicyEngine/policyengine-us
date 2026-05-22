@@ -11,7 +11,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # gates eligibility
+        ssi: 800  # gates eligibility
         ssi_earned_income: 0
         ssi_unearned_income: 0
         ssi_countable_resources: 1_000
@@ -31,7 +31,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_earned_income: 0
         ssi_unearned_income: 0
         ssi_countable_resources: 1_000
@@ -55,7 +55,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: NONE
     households:
@@ -72,7 +72,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_earned_income: 0
         ssi_unearned_income: 0
         ssi_countable_resources: 1_000
@@ -92,7 +92,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         # Self-employment loss should not reduce countable income below zero.
         self_employment_income: -60_000_000
         ssi_countable_resources: 1_000
@@ -113,7 +113,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -130,7 +130,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         # $2,500/mo non-SSI unearned * 12 = $30,000/yr.
         social_security: 30_000
         ssi_countable_resources: 1_000
@@ -154,7 +154,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_D
     households:
@@ -174,7 +174,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # gates eligibility
+        ssi: 800  # gates eligibility
         social_security: 960  # $80/mo unearned (in addition to medical SSI)
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: REHAB_RESIDENCE

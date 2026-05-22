@@ -147,7 +147,7 @@
         state_code: MD
   output:
     is_ssi_eligible: [true]
-    # Federal SSI = $30/mo medical-facility rate (annualized $360).
+    # Federal SSI = $30/mo medical-facility rate.
     ssi: [30]
     md_paa_eligible: [true]
     # combined = 0 + 106 = 106. imputed SSI = $30.
@@ -311,7 +311,7 @@
         is_blind: false
         is_disabled: false
         immigration_status: CITIZEN
-        ssi: 9_600  # gates eligibility
+        ssi: 800  # gates eligibility
         ssi_countable_resources: 1_000
         employment_income: 0
         md_paa_living_arrangement: CARE_HOME_LEVEL_C

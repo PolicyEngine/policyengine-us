@@ -15,7 +15,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600  # $800/mo SSI as input (YEAR-defined)
+        ssi: 800  # $800/mo SSI as input
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -31,7 +31,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: NONE
     households:
@@ -64,7 +64,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -101,7 +101,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 3_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -204,7 +204,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 2_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -220,7 +220,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 2_001
         md_paa_living_arrangement: CARE_HOME_LEVEL_B
     households:
@@ -336,7 +336,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: REHAB_RESIDENCE
         # ssi_lives_in_medical_treatment_facility intentionally NOT set.
@@ -357,7 +357,7 @@
     people:
       person1:
         age: 70
-        ssi: 9_600
+        ssi: 800
         ssi_countable_resources: 1_000
         md_paa_living_arrangement: CARE_HOME_LEVEL_C
         ssi_lives_in_medical_treatment_facility: true
