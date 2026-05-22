@@ -707,6 +707,12 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MD
+        status: complete
+        name: Maryland PAA
+        full_name: Maryland Public Assistance to Adults
+        variable: md_paa
+        parameter_prefix: gov.states.md.dhs.fia.paa
       - state: MI
         status: complete
         name: Michigan SSP

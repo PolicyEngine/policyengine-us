@@ -26,6 +26,7 @@ class spm_unit_benefits(Variable):
             "hi_oss",
             "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
