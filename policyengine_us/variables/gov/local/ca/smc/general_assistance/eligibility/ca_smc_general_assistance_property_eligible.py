@@ -16,8 +16,4 @@ class ca_smc_general_assistance_property_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.smc.general_assistance.property
         countable = spm_unit("ca_smc_general_assistance_countable_property", period)
-        n_eligible = add(
-            spm_unit, period, ["ca_smc_general_assistance_eligible_person"]
-        )
-        applicants = max_(n_eligible, 1)
-        return countable < p.limit * applicants
+        return countable < p.limit

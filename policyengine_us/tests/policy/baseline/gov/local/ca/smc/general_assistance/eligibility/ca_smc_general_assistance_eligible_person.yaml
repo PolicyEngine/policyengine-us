@@ -31,7 +31,7 @@
     age: 30
     immigration_status: CITIZEN
     in_smc: true
-    ssi_reported: 12_000
+    ssi: 12_000
   output:
     ca_smc_general_assistance_eligible_person: false
 
@@ -41,6 +41,6 @@
     age: 65
     immigration_status: CITIZEN
     in_smc: true
-    ssi_reported: 0
+    ssi: 0
   output:
     ca_smc_general_assistance_eligible_person: true

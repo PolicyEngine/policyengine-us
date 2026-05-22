@@ -1253,7 +1253,17 @@ programs:
     status: complete
     coverage: Alameda County
     variable: ca_ala_general_assistance
-    parameter_prefix: gov.local.ca.ala.ga
+    parameter_prefix: gov.local.ca.ala.general_assistance
+
+  - id: ca_smc_general_assistance
+    name: San Mateo County General Assistance
+    full_name: San Mateo County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Mateo County
+    variable: ca_smc_general_assistance
+    parameter_prefix: gov.local.ca.smc.general_assistance
 
   - id: nyc_income_tax
     name: NYC income tax
