@@ -1,0 +1,22 @@
+- name: Case 1, medically needy maps to aged or disabled.
+  period: 2026
+  input:
+    medicaid_category: MEDICALLY_NEEDY
+  output:
+    medicaid_group: AGED_DISABLED
+
+- name: Case 2, working disabled Buy-In maps to aged or disabled.
+  period: 2026
+  input:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+  output:
+    medicaid_group: AGED_DISABLED
+
+- name: Case 3, adult category takes priority over raw Buy-In eligibility for spending group.
+  period: 2026
+  input:
+    is_adult_for_medicaid: true
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: ADULT
+    medicaid_group: EXPANSION_ADULT

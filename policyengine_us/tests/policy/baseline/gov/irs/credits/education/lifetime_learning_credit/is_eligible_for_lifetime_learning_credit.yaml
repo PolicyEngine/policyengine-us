@@ -1,0 +1,72 @@
+- name: Student at eligible institution with TIN can qualify for LLC
+  period: 2024
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+  output:
+    is_eligible_for_lifetime_learning_credit: true
+
+- name: Student must attend an eligible educational institution for LLC
+  period: 2024
+  input:
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+  output:
+    is_eligible_for_lifetime_learning_credit: false
+
+- name: LLC requires Form 1098-T or an exception starting in 2016
+  period: 2024
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_tin: true
+  output:
+    is_eligible_for_lifetime_learning_credit: false
+
+- name: LLC Form 1098-T requirement does not apply before 2016
+  period: 2015
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_tin: true
+  output:
+    is_eligible_for_lifetime_learning_credit: true
+
+- name: LLC accepts TIN before 2026
+  period: 2025
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+    ssn_card_type: NONE
+  output:
+    is_eligible_for_lifetime_learning_credit: true
+
+- name: LLC requires qualifying SSN starting in 2026
+  period: 2026
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+    ssn_card_type: NONE
+  output:
+    is_eligible_for_lifetime_learning_credit: false
+
+- name: Nonresident alien taxpayers cannot claim LLC
+  period: 2024
+  input:
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+    is_nonresident_alien_for_lifetime_learning_credit: true
+  output:
+    is_eligible_for_lifetime_learning_credit: false
+
+- name: Married filing separately cannot claim LLC
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
+  output:
+    is_eligible_for_lifetime_learning_credit: false

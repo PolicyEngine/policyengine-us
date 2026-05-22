@@ -11,6 +11,7 @@ values:
     - is_ssi_recipient_for_medicaid
     - is_optional_senior_or_disabled_for_medicaid
     - is_medically_needy_for_medicaid
+    - is_working_disabled_buy_in_for_medicaid
 metadata:
   unit: list
   label: "Medicaid categories"

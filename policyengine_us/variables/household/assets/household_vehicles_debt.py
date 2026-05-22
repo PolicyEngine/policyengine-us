@@ -7,5 +7,6 @@ class household_vehicles_debt(Variable):
     label = "Vehicle debt"
     documentation = "Outstanding debt secured by household vehicles."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

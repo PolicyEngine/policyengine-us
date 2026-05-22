@@ -460,8 +460,14 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
+    coverage: AK, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
     state_implementations:
+      - state: AK
+        status: complete
+        name: CCAP
+        full_name: Alaska Child Care Assistance Program
+        variable: ak_ccap
+        notes: Modeled as PASS II/III; PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled
       - state: CA
         status: complete
         name: CalWORKs childcare

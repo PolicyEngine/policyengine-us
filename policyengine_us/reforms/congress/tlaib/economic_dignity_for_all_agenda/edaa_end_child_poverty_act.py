@@ -96,6 +96,12 @@ def create_ecpa_only() -> Reform:
         def formula(household, period, parameters):
             # Start with baseline benefits from parameters
             BENEFITS = list(parameters(period).gov.household.household_benefits)
+            if parameters(period).gov.hud.abolition:
+                BENEFITS = [
+                    benefit
+                    for benefit in BENEFITS
+                    if benefit != "spm_unit_capped_housing_subsidy"
+                ]
 
             # Add ECPA child benefit
             BENEFITS.append("ecpa_child_benefit")
@@ -122,6 +128,11 @@ def create_ecpa_only() -> Reform:
                 "wic",
                 "free_school_meals",
                 "reduced_price_school_meals",
+                "child_support_received",
+                "workers_compensation",
+                "educational_assistance",
+                "financial_assistance",
+                "survivor_benefits",
                 # Broadband subsidies.
                 "acp",
                 "ebb",
