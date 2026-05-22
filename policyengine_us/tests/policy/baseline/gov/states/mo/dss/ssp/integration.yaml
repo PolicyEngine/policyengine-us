@@ -7,7 +7,7 @@
         age: 50
         is_blind: true
         is_ssi_disabled: true
-        ssi: 2_400  # $200/month annualized
+        ssi: 200  # $200/month
         mo_ssp_living_arrangement: SAB
     tax_units:
       tax_unit:
@@ -28,8 +28,6 @@
     mo_ssp: 717
     # SAB pathway: no PNA add-on.
     mo_ssp_personal_needs_allowance: 0
-    # spm_unit and household aggregation passes mo_ssp through.
-    household_state_benefits: 717
 
 - name: Case 2, aged Missouri resident in SNF non-Medicaid receives SNC plus PNA.
   period: 2026-01
@@ -60,7 +58,6 @@
     mo_ssp_eligible: true
     mo_ssp_personal_needs_allowance: 50
     mo_ssp: 440
-    household_state_benefits: 440
 
 - name: Case 3, disabled Missouri resident in RCF Level II receives flat SNC amount.
   period: 2026-01
@@ -91,7 +88,6 @@
     # SNC RCF Level II/ALF $292 + PNA $50 = $342.
     mo_ssp: 342
     mo_ssp_personal_needs_allowance: 50
-    household_state_benefits: 342
 
 - name: Case 4, non-Missouri resident with same SAB inputs receives nothing.
   period: 2026-01
@@ -121,7 +117,6 @@
     # defined_for = StateCode.MO zeroes out non-MO output.
     mo_ssp_eligible: false
     mo_ssp: 0
-    household_state_benefits: 0
 
 - name: Case 5, FY2025 Missouri couple with one blind spouse receiving SSI.
   period: 2025-01
@@ -132,7 +127,7 @@
         age: 65
         is_blind: true
         is_ssi_aged: true
-        ssi: 2_400  # $200/month annualized
+        ssi: 200  # $200/month
         mo_ssp_living_arrangement: SAB
       person2:
         age: 63
@@ -157,10 +152,6 @@
     # Other spouse: ssi == 0 and arrangement NONE => not eligible => $0.
     mo_ssp_eligible: [true, false]
     mo_ssp: [628, 0]
-    # household_state_benefits is YEAR; in 2025 there's a FY transition at
-    # 2025-07-01 (FY2025 -> FY2026). Jan-Jun: $628/mo; Jul-Dec: $717/mo.
-    # Annual = 6*628 + 6*717 = 8,070; monthly average = 672.5.
-    household_state_benefits: 672.5
 
 - name: Case 6, FY2024 SNF non-Medicaid resident.
   period: 2024-01
@@ -191,7 +182,6 @@
     mo_ssp_eligible: true
     mo_ssp: 440
     mo_ssp_personal_needs_allowance: 50
-    household_state_benefits: 440
 
 - name: Case 7, Missouri adult age 22 disabled in RCF Level I receives flat amount.
   period: 2026-01
@@ -222,7 +212,6 @@
     mo_ssp_eligible: true
     mo_ssp: 206
     mo_ssp_personal_needs_allowance: 50
-    household_state_benefits: 206
 
 - name: Case 8, Missouri couple both eligible in RCF Level II each receive the per-person amount.
   period: 2025-01
@@ -256,7 +245,6 @@
         state_code: MO
   output:
     # SNC formula is per-person; both spouses eligible so each gets
-    # $292 base + $50 PNA = $342, and the spm_unit total is 2 x $342 = $684.
+    # $292 base + $50 PNA = $342.
     mo_ssp_eligible: [true, true]
     mo_ssp: [342, 342]
-    household_state_benefits: 684

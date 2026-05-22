@@ -25,9 +25,7 @@ class mo_ssp_category_eligible(Variable):
             | (living_arrangement == categories.SNF_OR_ICF_NON_MEDICAID)
         )
         is_blind = person("is_blind", period.this_year)
-        is_aged_blind_disabled = person(
-            "is_ssi_aged_blind_disabled", period.this_year
-        )
+        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
         sab_pathway = (living_arrangement == categories.SAB) & is_blind
         snc_pathway = in_snc_facility & is_aged_blind_disabled
         return snc_pathway | sab_pathway

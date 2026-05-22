@@ -46,7 +46,5 @@ class mo_sab_countable_income(Variable):
         # underlying variable is gated on is_ssi_eligible_individual, so SAB
         # applicants who fail federal SSI on resources or immigration won't
         # get spousal deeming captured here — a narrow modeling limitation.
-        spousal_deemed = person(
-            "ssi_income_deemed_from_ineligible_spouse", period
-        )
+        spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
         return own_countable + spousal_deemed
