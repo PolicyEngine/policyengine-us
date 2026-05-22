@@ -1,0 +1,80 @@
+- name: Case 1, ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME individual rate is $94.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # ARM 37.43.104(1): G/H/I tier individual rate frozen at $94 since 1989.
+    mt_ssp_individual: 94
+
+- name: Case 2, FOSTER_CARE individual rate is $52.75.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: FOSTER_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # ARM 37.43.104(1): J tier individual rate frozen at $52.75 since 1989.
+    mt_ssp_individual: 52.75
+
+- name: Case 3, TRANSITIONAL_LIVING individual rate is $26.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # ARM 37.43.104(1): K tier individual rate frozen at $26 since 1989.
+    mt_ssp_individual: 26
+
+- name: Case 4, NONE category returns zero individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # NONE tier maps to $0 in payment/individual.yaml.
+    mt_ssp_individual: 0
+
+- name: Case 5, ineligible person (income too high) gets zero individual rate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Earnings too high to be SSI-eligible.
+        employment_income: 60_000
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Eligibility gate fails -> individual amount is $0.
+    mt_ssp_individual: 0

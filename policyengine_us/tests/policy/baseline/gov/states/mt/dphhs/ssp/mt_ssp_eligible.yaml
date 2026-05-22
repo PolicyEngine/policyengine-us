@@ -1,0 +1,76 @@
+- name: Case 1, Montana resident with positive uncapped SSI in qualifying arrangement is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ssp_eligible: true
+
+- name: Case 2, Montana resident in NONE arrangement is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Living arrangement is not on the qualifying ARM 37.43.103 list.
+    mt_ssp_eligible: false
+
+- name: Case 3, Montana resident with no SSI eligibility (income too high) is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        # Earnings too high to be SSI-eligible -> uncapped_ssi = 0.
+        employment_income: 60_000
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ssp_eligible: false
+
+- name: Case 4, non-Montana resident in qualifying arrangement is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mt_ssp_payment_category: FOSTER_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    # defined_for filter on the eligibility variable returns false outside MT.
+    mt_ssp_eligible: false
+
+- name: Case 5, Group 2 SSI-categorically-eligible person with income above FBR (ssi=0 but uncapped_ssi>0) is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        # Categorically eligible but no payment due to takeup; ARM
+        # 37.43.102(2)(a) covers Group 2 (eligible-except-for-income).
+        ssi: 0
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # uncapped_ssi > 0 gate covers Group 2 (income just below FBR).
+    mt_ssp_eligible: true

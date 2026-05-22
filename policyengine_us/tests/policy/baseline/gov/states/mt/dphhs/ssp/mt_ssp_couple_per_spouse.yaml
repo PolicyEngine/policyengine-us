@@ -1,0 +1,144 @@
+- name: Case 1, ASSISTED_LIVING couple gate met -> each spouse gets $96.50 ($193 / 2).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Couple total $193 / 2 = $96.50 per spouse.
+    mt_ssp_couple_per_spouse: [96.50, 96.50]
+
+- name: Case 2, FOSTER_CARE couple gate met -> each spouse gets $55.25 ($110.50 / 2).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Couple total $110.50 / 2 = $55.25 per spouse.
+    mt_ssp_couple_per_spouse: [55.25, 55.25]
+
+- name: Case 3, TRANSITIONAL_LIVING couple gate met -> each spouse gets $28.50 ($57 / 2).
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: TRANSITIONAL_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Couple total $57 / 2 = $28.50 per spouse.
+    mt_ssp_couple_per_spouse: [28.50, 28.50]
+
+- name: Case 4, mismatched payment categories breaks the couple gate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: FOSTER_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Different categories -> gate fails; caller falls back to individual.
+    mt_ssp_couple_per_spouse: [0, 0]
+
+- name: Case 5, no joint claim breaks the couple gate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # No joint claim -> couple gate fails.
+    mt_ssp_couple_per_spouse: [0, 0]
+
+- name: Case 6, only one spouse eligible breaks the couple gate.
+  absolute_error_margin: 0.01
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        # Spouse has too much income to be SSI-eligible.
+        employment_income: 60_000
+        ssi_claim_is_joint: true
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Only person1 is mt_ssp_eligible -> couple gate fails.
+    mt_ssp_couple_per_spouse: [0, 0]
