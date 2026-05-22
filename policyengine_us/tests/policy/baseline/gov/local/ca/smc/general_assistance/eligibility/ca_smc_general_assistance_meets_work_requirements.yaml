@@ -1,0 +1,85 @@
+- name: Case 1, able-bodied English-proficient adult outside any exemption does not meet work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: false
+
+- name: Case 2, adult with earned income meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+    employment_income: 12_000
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 3, adult with self-employment income meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+    self_employment_income: 6_000
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 4, senior at the exemption age threshold meets work requirements.
+  period: 2026-01
+  input:
+    age: 65
+    in_smc: true
+    is_english_proficient: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 5, adult just below the senior threshold does not meet work requirements.
+  period: 2026-01
+  input:
+    age: 64
+    in_smc: true
+    is_english_proficient: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: false
+
+- name: Case 6, disabled adult meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+    is_disabled: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 7, full-time student meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+    is_full_time_student: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 8, adult with limited English proficiency meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: false
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true
+
+- name: Case 9, adult participating in the work program meets work requirements.
+  period: 2026-01
+  input:
+    age: 30
+    in_smc: true
+    is_english_proficient: true
+    is_in_work_program: true
+  output:
+    ca_smc_general_assistance_meets_work_requirements: true

@@ -7,14 +7,14 @@
   output:
     ca_smc_general_assistance_income_eligible: true
 
-- name: Case 2, income at payment standard is eligible.
+- name: Case 2, income at payment standard is ineligible.
   period: 2026-01
   input:
     in_smc: true
     ca_smc_general_assistance_countable_income: 732
     ca_smc_general_assistance_payment_standard: 732
   output:
-    ca_smc_general_assistance_income_eligible: true
+    ca_smc_general_assistance_income_eligible: false
 
 - name: Case 3, income above payment standard is ineligible.
   period: 2026-01

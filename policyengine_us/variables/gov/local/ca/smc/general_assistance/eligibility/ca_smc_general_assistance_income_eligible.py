@@ -16,4 +16,4 @@ class ca_smc_general_assistance_income_eligible(Variable):
             spm_unit, period, ["ca_smc_general_assistance_eligible_person"]
         )
         per_person_income = where(n_eligible > 0, income / n_eligible, 0)
-        return per_person_income <= standard
+        return per_person_income < standard
