@@ -21,7 +21,7 @@ class mn_msa_payment_category(Variable):
         # Recipients in Medicaid-financed institutional care are paid under
         # the FLA-D personal-needs cap regardless of reported arrangement.
         # Housing-allowance recipients receive the higher living-alone rate.
-        federal_arrangement = person("ssi_federal_living_arrangement", period.this_year)
+        federal_arrangement = person("ssi_federal_living_arrangement", period)
         federal_values = federal_arrangement.possible_values
         in_medicaid_facility = person("is_in_medicaid_facility", period.this_year) | (
             federal_arrangement == federal_values.MEDICAL_TREATMENT_FACILITY

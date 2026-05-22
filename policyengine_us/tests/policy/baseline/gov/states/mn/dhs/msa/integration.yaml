@@ -9,7 +9,7 @@
         is_disabled: false
         immigration_status: CITIZEN
         ssi_countable_resources: 1_000
-        ssi: 11_928  # $994/mo
+        ssi: 994  # $994/mo
         ssi_earned_income: 0
         ssi_unearned_income: 0
         employment_income: 0
@@ -47,7 +47,7 @@
         ssi_countable_resources: 800
         mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
         ssi_claim_is_joint: true
-        ssi: 8_946  # $745.50/mo (couple FBR $1,491 / 2)
+        ssi: 745.50  # $745.50/mo (couple FBR $1,491 / 2)
         ssi_earned_income: 0
         ssi_unearned_income: 0
       person2:
@@ -58,7 +58,7 @@
         ssi_countable_resources: 800
         mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
         ssi_claim_is_joint: true
-        ssi: 8_946
+        ssi: 745.50
         ssi_earned_income: 0
         ssi_unearned_income: 0
     marital_units:
@@ -133,7 +133,7 @@
         ssi_countable_resources: 200
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-        ssi: 360  # $30/mo FLA-D
+        ssi: 30  # $30/mo FLA-D
         ssi_earned_income: 0
         ssi_unearned_income: 0
     marital_units:
@@ -172,7 +172,7 @@
         immigration_status: CITIZEN
         ssi_countable_resources: 500
         mn_msa_housing_assistance_eligible: true
-        ssi: 11_928
+        ssi: 994
         ssi_earned_income: 0
         ssi_unearned_income: 0
     marital_units:
@@ -208,7 +208,7 @@
         is_disabled: false
         immigration_status: CITIZEN
         ssi_countable_resources: 500
-        ssi: 11_928
+        ssi: 994
         self_employment_income: -60_000_000  # extreme negative
     marital_units:
       marital_unit:
@@ -271,7 +271,7 @@
         is_disabled: false
         immigration_status: CITIZEN
         ssi_countable_resources: 1_000
-        ssi: 11_316  # $943/mo (2024 federal individual FBR)
+        ssi: 943  # $943/mo (2024 federal individual FBR)
         ssi_earned_income: 0
         ssi_unearned_income: 0
     marital_units:
@@ -307,7 +307,7 @@
         immigration_status: CITIZEN
         ssi_countable_resources: 800
         ssi_claim_is_joint: false
-        ssi: 11_928  # eligible spouse, full FBR
+        ssi: 994  # eligible spouse, full FBR
         ssi_earned_income: 0
         ssi_unearned_income: 0
       person2:
@@ -356,7 +356,7 @@
         mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
         mn_msa_housing_assistance_eligible: true
         ssi_claim_is_joint: true
-        ssi: 8_946  # $745.50/mo each
+        ssi: 745.50  # $745.50/mo each
         ssi_earned_income: 0
         ssi_unearned_income: 0
       person2:
@@ -368,7 +368,7 @@
         mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
         mn_msa_housing_assistance_eligible: false
         ssi_claim_is_joint: true
-        ssi: 8_946
+        ssi: 745.50
         ssi_earned_income: 0
         ssi_unearned_income: 0
     marital_units:
