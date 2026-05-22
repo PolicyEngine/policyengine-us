@@ -15,18 +15,8 @@ class ca_smc_general_assistance_meets_work_requirements(Variable):
         # the SPM unit), or HSA-approved training/rehabilitation programs at
         # the moment.
         p = parameters(period).gov.local.ca.smc.general_assistance.work_requirement
-        is_working = (
-            add(
-                person,
-                period,
-                [
-                    "employment_income",
-                    "self_employment_income",
-                    "sstb_self_employment_income",
-                ],
-            )
-            > 0
-        )
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        is_working_full_time = weekly_hours_worked >= p.weekly_hours_threshold
         is_senior = person("age", period.this_year) >= p.senior_exemption_age
         is_disabled = person("is_disabled", period)
         is_full_time_student = person("is_full_time_student", period)
@@ -35,7 +25,7 @@ class ca_smc_general_assistance_meets_work_requirements(Variable):
         )
         is_in_work_program = person("is_in_work_program", period)
         return (
-            is_working
+            is_working_full_time
             | is_senior
             | is_disabled
             | is_full_time_student

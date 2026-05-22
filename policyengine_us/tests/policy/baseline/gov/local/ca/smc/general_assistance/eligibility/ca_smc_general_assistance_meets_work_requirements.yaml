@@ -3,26 +3,27 @@
   input:
     age: 30
     in_smc: true
+    weekly_hours_worked_before_lsr: 0
   output:
     ca_smc_general_assistance_meets_work_requirements: false
 
-- name: Case 2, adult with earned income meets work requirements.
+- name: Case 2, adult working at the full-time threshold meets work requirements.
   period: 2026-01
   input:
     age: 30
     in_smc: true
-    employment_income: 12_000
+    weekly_hours_worked_before_lsr: 30
   output:
     ca_smc_general_assistance_meets_work_requirements: true
 
-- name: Case 3, adult with self-employment income meets work requirements.
+- name: Case 3, adult working below the full-time threshold does not meet work requirements.
   period: 2026-01
   input:
     age: 30
     in_smc: true
-    self_employment_income: 6_000
+    weekly_hours_worked_before_lsr: 29
   output:
-    ca_smc_general_assistance_meets_work_requirements: true
+    ca_smc_general_assistance_meets_work_requirements: false
 
 - name: Case 4, senior at the exemption age threshold meets work requirements.
   period: 2026-01
@@ -37,6 +38,7 @@
   input:
     age: 64
     in_smc: true
+    weekly_hours_worked_before_lsr: 0
   output:
     ca_smc_general_assistance_meets_work_requirements: false
 
