@@ -5,7 +5,7 @@ class ssi_others_pay_all_meals(Variable):
     value_type = bool
     entity = Person
     label = "Others in the household pay for all meals for SSI purposes"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.1131",
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0500835200",
