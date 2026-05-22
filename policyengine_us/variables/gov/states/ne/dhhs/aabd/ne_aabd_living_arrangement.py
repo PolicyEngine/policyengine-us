@@ -34,7 +34,7 @@ class ne_aabd_living_arrangement(Variable):
     )
 
     def formula(person, period):
-        federal_arrangement = person("ssi_federal_living_arrangement", period.this_year)
+        federal_arrangement = person("ssi_federal_living_arrangement", period)
         in_medical_facility = (
             federal_arrangement
             == federal_arrangement.possible_values.MEDICAL_TREATMENT_FACILITY

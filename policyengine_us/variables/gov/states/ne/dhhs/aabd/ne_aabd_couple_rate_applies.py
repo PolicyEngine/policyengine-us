@@ -23,8 +23,7 @@ class ne_aabd_couple_rate_applies(Variable):
         joint_claim = person("ssi_claim_is_joint", period.this_year)
         unit_size = person.marital_unit.nb_persons()
         both_ssi_eligible = (
-            person.marital_unit.sum(person("is_ssi_eligible", period.this_year))
-            == unit_size
+            person.marital_unit.sum(person("is_ssi_eligible", period)) == unit_size
         )
         living_arrangement = person("ne_aabd_living_arrangement", period)
         LA = living_arrangement.possible_values

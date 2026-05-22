@@ -6,8 +6,8 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        # uncapped_ssi is annual; $11,604/year = $967/month at the 2025 individual FBR.
-        uncapped_ssi: 11_604
+        # Full 2025 individual FBR.
+        uncapped_ssi: 967
     households:
       household:
         members: [person1]
@@ -23,9 +23,9 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        # Negative annual uncapped_ssi means countable income exceeds the FBR,
+        # Negative uncapped_ssi means countable income exceeds the FBR,
         # so actual ssi = 0 and the person is not an AABD recipient.
-        uncapped_ssi: -2_400
+        uncapped_ssi: -200
     households:
       household:
         members: [person1]
@@ -41,7 +41,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
     households:
       household:
         members: [person1]
@@ -90,8 +90,8 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        # Annual $12 -> $1/month positive SSI -> eligible.
-        uncapped_ssi: 12
+        # $1 positive SSI -> eligible.
+        uncapped_ssi: 1
     households:
       household:
         members: [person1]

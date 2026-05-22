@@ -6,8 +6,8 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        # Federal Code D pays $30/month = $360/year.
-        uncapped_ssi: 360
+        # Federal Code D pays $30/month.
+        uncapped_ssi: 30
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
         # Even with an alternate input, federal Code D wins.
@@ -27,7 +27,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
     households:
       household:
@@ -44,7 +44,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
     households:
       household:
         members: [person1]
@@ -60,7 +60,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
     households:
       household:
@@ -77,7 +77,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: BOARD_AND_ROOM
     households:
       household:
@@ -94,7 +94,7 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_WAIVER
     households:
       household:
@@ -111,7 +111,7 @@
         age: 40
         is_ssi_disabled: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: GROUP_HOME_CHILDREN
     households:
       household:
@@ -128,13 +128,13 @@
         age: 70
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
       person2:
         age: 68
         is_ssi_aged: true
         is_ssi_eligible: true
-        uncapped_ssi: 11_604
+        uncapped_ssi: 967
         # No alternate input -> defaults to INDEPENDENT.
     marital_units:
       marital_unit:
