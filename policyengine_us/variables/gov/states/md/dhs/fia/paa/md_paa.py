@@ -20,14 +20,14 @@ class md_paa(Variable):
         # applicant applies for federal SSI, federal SSI is imputed under
         # federal rules, and Maryland pays the remaining gap to PAA needs.
         # COMAR 07.03.07.08 defines PAA countable income; we approximate it
-        # with ssi_countable_income because PAA historically mirrors SSI's
-        # $20 unearned / $65 earned exclusions. PAA-specific income details
-        # (lump sums, parent contributions, irregular-income carve-outs)
-        # are not tracked at the moment.
+        # with SSI-style exclusions while avoiding ssi_countable_income's
+        # SSI eligibility zero-out. PAA-specific income details (lump sums,
+        # parent contributions, irregular-income carve-outs) are not tracked
+        # at the moment.
         combined_need = person("md_paa_total_cost_of_care", period)
         available_resources = add(
             person,
             period,
-            ["ssi_countable_income", "md_paa_imputed_federal_ssi"],
+            ["md_paa_countable_income", "md_paa_imputed_federal_ssi"],
         )
         return max_(combined_need - available_resources, 0)

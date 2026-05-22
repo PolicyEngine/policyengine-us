@@ -1,6 +1,6 @@
 # Tests for md_paa main benefit variable.
 # Formula (prospective SSI cascade):
-#   paa = max(combined_need - ssi_countable_income - imputed_federal_ssi, 0)
+#   paa = max(combined_need - md_paa_countable_income - imputed_federal_ssi, 0)
 # REHAB residents impute the $30 federal SSI medical-facility rate.
 # 2026 federal SSI individual FBR = $994; PNA = $106.
 
@@ -102,7 +102,7 @@
         members: [person1]
         state_code: MD
   output:
-    # ssi_countable_income floors at 0 by design.
+    # md_paa_countable_income floors at 0 by design.
     # imputed SSI = 994. PAA = 1279 - 994 = 285.
     md_paa: 285
 
@@ -189,3 +189,25 @@
     # imputed SSI = max(30 - 60, 0) = 0.
     # PAA = max(106 - 60, 0) = 46. Partial reduction (not zero).
     md_paa: 46
+
+- name: Case 10, SSDI-only recipient with high SSDI receives no PAA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+        ssi: 0
+        social_security_disability: 30_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    md_paa_countable_income: 2_480
+    md_paa_imputed_federal_ssi: 0
+    md_paa: 0

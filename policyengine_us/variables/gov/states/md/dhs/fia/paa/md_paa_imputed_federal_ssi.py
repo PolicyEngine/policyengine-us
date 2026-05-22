@@ -14,4 +14,6 @@ class md_paa_imputed_federal_ssi(Variable):
     )
 
     def formula(person, period, parameters):
-        return max_(person("uncapped_ssi", period), 0)
+        amount = person("ssi_amount_if_eligible", period)
+        countable_income = person("md_paa_countable_income", period)
+        return max_(amount - countable_income, 0)

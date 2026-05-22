@@ -1,5 +1,6 @@
 # Tests for md_paa_imputed_federal_ssi.
-# Formula: max(uncapped_ssi, 0), gated by Maryland PAA eligibility.
+# Formula: max(ssi_amount_if_eligible - md_paa_countable_income, 0), gated by
+# Maryland PAA eligibility.
 
 - name: Case 1, SSI-eligible CARE Home applicant with no income imputes full individual SSI.
   period: 2026-01
@@ -87,3 +88,24 @@
   output:
     md_paa_eligible: false
     md_paa_imputed_federal_ssi: 0
+
+- name: Case 5, SSDI-only recipient does not need a separate disability flag for imputed SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+        ssi: 0
+        social_security_disability: 12_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    md_paa_countable_income: 980
+    md_paa_imputed_federal_ssi: 14

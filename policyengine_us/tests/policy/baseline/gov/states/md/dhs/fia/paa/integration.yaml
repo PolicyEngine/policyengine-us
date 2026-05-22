@@ -341,10 +341,10 @@
     # person2 not in PAA facility → ineligible. person1 eligible via SSI.
     # person1 cascade: combined = 1173 + 106 = 1279. ssi_amount_if_eligible
     # for an aged spouse paired with a non-ABD spouse falls back to the
-    # individual FBR ($994). Own SSI receipt is excluded from
-    # ssi_countable_income by design, so countable = 0 and imputed SSI =
-    # 994. PAA = 1279 - 994 = 285. Locked intermediates below
-    # guard against regressions in either assumption. Note:
+    # individual FBR ($994). Own SSI receipt is excluded from PAA countable
+    # income by design, so countable = 0 and imputed SSI = 994. PAA =
+    # 1279 - 994 = 285. Locked intermediates below guard against regressions
+    # in either assumption. Note:
     # ssi_amount_if_eligible returns the maximum federal SSI amount a
     # person *would* receive if categorically eligible; it does not gate
     # on receipt, so person2 also returns $994.
