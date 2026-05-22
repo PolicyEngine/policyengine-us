@@ -1,4 +1,4 @@
-description: Payroll deductions that reduce FICA (Social Security and Medicare) wages. Only Section 125 cafeteria plan items qualify; elective deferrals under §401(k) and §403(b) do not reduce the FICA wage base per IRC §3121(a).
+description: Payroll deductions that reduce FICA (Social Security and Medicare) wages without a filing-status-specific cap.
 values:
   2010-01-01:
     - pre_tax_health_insurance_premiums
@@ -10,5 +10,7 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/3121
     - title: IRS Publication 15 (Employer's Tax Guide), Section 5
       href: https://www.irs.gov/publications/p15
+    - title: IRS cafeteria plan FAQ
+      href: https://www.irs.gov/government-entities/federal-state-local-governments/faqs-for-government-entities-regarding-cafeteria-plans
   unit: list
   period: year

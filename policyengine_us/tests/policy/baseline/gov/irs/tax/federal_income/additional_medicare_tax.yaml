@@ -3,7 +3,7 @@
   input:
     filing_status: SINGLE
     taxable_self_employment_income: 1_000
-    irs_employment_income: 10_000
+    employment_income: 10_000
   output:
     additional_medicare_tax: 0
 
@@ -12,6 +12,20 @@
   input:
     filing_status: SINGLE
     taxable_self_employment_income: 100_000
-    irs_employment_income: 1_000_000
+    employment_income: 1_000_000
   output:
     additional_medicare_tax: 8_100 # (1.1M - 200k) * 0.9%
+
+- name: Traditional retirement deferrals do not reduce Additional Medicare wages
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 250_000
+        traditional_401k_contributions: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+  output:
+    additional_medicare_tax: 450 # (250k - 200k) * 0.9%
