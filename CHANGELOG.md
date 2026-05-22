@@ -1,3 +1,10 @@
+## [1.705.0] - 2026-05-22
+
+### Added
+
+- Implement Missouri State Supplementary Payment (SAB and SNC components) under DSS Family Support Division.
+
+
 ## [1.704.0] - 2026-05-22
 
 ### Added
