@@ -42,6 +42,9 @@ class medicaid_work_requirement_eligible(Variable):
             age < p.former_foster_care_age_limit
         )
         # American Indian or Alaska Native / IHS eligibility exclusion.
+        is_aian_exempt = person(
+            "is_american_indian_or_alaska_native_for_medicaid_ce", period
+        )
         has_ihs_coverage = person(
             "has_indian_health_service_coverage_at_interview", period
         )
@@ -76,6 +79,7 @@ class medicaid_work_requirement_eligible(Variable):
             | pass_through_eligible
             | is_pregnant_or_postpartum
             | former_foster_care_youth
+            | is_aian_exempt
             | has_ihs_coverage
             | medicare_eligible
             | has_disabled
