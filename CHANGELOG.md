@@ -1,3 +1,8 @@
+## [1.705.6] - 2026-05-23
+
+No significant changes.
+
+
 ## [1.705.5] - 2026-05-23
 
 No significant changes.
