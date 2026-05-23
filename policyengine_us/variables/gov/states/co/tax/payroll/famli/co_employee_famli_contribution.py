@@ -12,4 +12,4 @@ class co_employee_famli_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.co.tax.payroll.famli.employee_rate
-        return rate * person("taxable_earnings_for_social_security", period)
+        return rate * person("state_payroll_tax_social_security_capped_wages", period)

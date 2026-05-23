@@ -15,12 +15,23 @@ class employer_total_additional_state_payroll_tax(Variable):
     def formula(person, period, parameters):
         state_code = person.household("state_code", period)
         headcount = person("employer_headcount", period)
-        gross_wages = person("employer_total_payroll_tax_gross_wages", period)
+        state_gross_wages = person(
+            "employer_total_state_payroll_tax_gross_wages", period
+        )
+        income_tax_wages = person("employer_total_income_tax_wages", period)
         ss_taxable = person(
             "employer_total_taxable_earnings_for_social_security", period
         )
+        state_ss_capped_wages = person(
+            "employer_total_state_payroll_tax_social_security_capped_wages",
+            period,
+        )
         state_ui_taxable = person(
             "employer_total_taxable_earnings_for_state_unemployment_tax", period
+        )
+        wa_ss_capped_wages = person(
+            "employer_total_wa_payroll_tax_social_security_capped_wages",
+            period,
         )
 
         ca = (
@@ -33,13 +44,13 @@ class employer_total_additional_state_payroll_tax(Variable):
         co_p = parameters(period).gov.states.co.tax.payroll.famli
         co = where(
             headcount >= co_p.employer_headcount_threshold,
-            co_p.employer_rate * ss_taxable,
+            co_p.employer_rate * state_ss_capped_wages,
             0,
         )
 
         dc = (
             parameters(period).gov.states.dc.tax.payroll.paid_leave.employer_rate
-            * gross_wages
+            * state_gross_wages
         )
 
         de_p = parameters(period).gov.states.de.tax.payroll.paid_leave
@@ -59,21 +70,23 @@ class employer_total_additional_state_payroll_tax(Variable):
         ma_p = parameters(period).gov.states.ma.tax.payroll.paid_leave
         ma = where(
             headcount >= ma_p.employer_headcount_threshold,
-            ma_p.medical_rate * (1 - ma_p.medical_employee_share) * ss_taxable,
+            ma_p.medical_rate
+            * (1 - ma_p.medical_employee_share)
+            * state_ss_capped_wages,
             0,
         )
 
         me_p = parameters(period).gov.states.me.tax.payroll.paid_leave
         me = where(
             headcount >= me_p.employer_headcount_threshold,
-            me_p.employer_rate * ss_taxable,
+            me_p.employer_rate * state_ss_capped_wages,
             0,
         )
 
         or_p = parameters(period).gov.states["or"].tax.payroll.paid_leave
         or_tax = where(
             headcount >= or_p.employer_headcount_threshold,
-            or_p.employer_rate * ss_taxable,
+            or_p.employer_rate * state_ss_capped_wages,
             0,
         )
 
@@ -86,13 +99,13 @@ class employer_total_additional_state_payroll_tax(Variable):
 
         vt = (
             parameters(period).gov.states.vt.tax.payroll.child_care.employer_rate
-            * gross_wages
+            * income_tax_wages
         )
 
         wa_p = parameters(period).gov.states.wa.tax.payroll.paid_leave
         wa = where(
             headcount >= wa_p.employer_headcount_threshold,
-            wa_p.total_rate * wa_p.employer_share * ss_taxable,
+            wa_p.total_rate * wa_p.employer_share * wa_ss_capped_wages,
             0,
         )
 

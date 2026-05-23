@@ -67,6 +67,86 @@ class employer_total_taxable_earnings_for_social_security(Variable):
     default_value = 0
 
 
+class employer_total_state_payroll_tax_gross_wages(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer total state payroll tax gross wages"
+    documentation = (
+        "Aggregate employer gross wages for state payroll taxes that include "
+        "federal pre-tax payroll deductions in their wage base."
+    )
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("employer_total_payroll_tax_gross_wages", period)
+
+
+class employer_total_state_payroll_tax_social_security_capped_wages(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer total state payroll tax Social Security capped wages"
+    documentation = (
+        "Aggregate employer gross wages, capped per employee at the Social "
+        "Security contribution and benefit base, for state payroll taxes that "
+        "use that cap but do not exclude federal FICA pre-tax payroll "
+        "deductions."
+    )
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("employer_total_taxable_earnings_for_social_security", period)
+
+
+class employer_total_income_tax_wages(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer total income tax wages"
+    documentation = (
+        "Aggregate employer wages under the federal income tax withholding "
+        "base for employer-only payroll tax calculations."
+    )
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("employer_total_payroll_tax_gross_wages", period)
+
+
+class employer_total_wa_payroll_tax_gross_wages(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer total Washington payroll tax gross wages"
+    documentation = (
+        "Aggregate employer Washington paid leave and WA Cares gross wages, "
+        "excluding tips."
+    )
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("employer_total_state_payroll_tax_gross_wages", period)
+
+
+class employer_total_wa_payroll_tax_social_security_capped_wages(Variable):
+    value_type = float
+    entity = Person
+    label = "Employer total Washington payroll tax Social Security capped wages"
+    documentation = (
+        "Aggregate employer Washington paid leave gross wages, excluding tips, "
+        "capped per employee at the Social Security contribution and benefit "
+        "base."
+    )
+    unit = USD
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person(
+            "employer_total_state_payroll_tax_social_security_capped_wages", period
+        )
+
+
 class employer_total_taxable_earnings_for_federal_unemployment_tax(Variable):
     value_type = float
     entity = Person
