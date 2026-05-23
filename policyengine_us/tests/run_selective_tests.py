@@ -338,6 +338,14 @@ class SelectiveTestRunner:
                 )
         return total
 
+    @staticmethod
+    def get_changed_python_coverage_patterns(changed_files: Set[str]) -> List[str]:
+        return [
+            file
+            for file in changed_files
+            if file.endswith(".py") and "/tests/" not in file
+        ]
+
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
@@ -397,6 +405,23 @@ class SelectiveTestRunner:
 
         # Construct pytest command
         if with_coverage:
+            # Only track coverage for the specific files that changed in the PR
+            include_patterns = []
+            if changed_files:
+                # Only include Python files that were actually changed (excluding test directories)
+                changed_py_files = self.get_changed_python_coverage_patterns(
+                    changed_files
+                )
+                if changed_py_files:
+                    include_patterns = changed_py_files
+                else:
+                    print(
+                        "No changed Python source files; running tests without "
+                        "coverage."
+                    )
+                    with_coverage = False
+
+        if with_coverage:
             # Use coverage to run the tests
             # First check if coverage is importable
             try:
@@ -408,16 +433,7 @@ class SelectiveTestRunner:
                 print("Please ensure coverage is installed: pip install coverage")
                 return 1
 
-            # Only track coverage for the specific files that changed in the PR
-            include_patterns = []
-            if changed_files:
-                # Only include Python files that were actually changed (excluding test directories)
-                changed_py_files = [
-                    f for f in changed_files if f.endswith(".py") and "/tests/" not in f
-                ]
-                if changed_py_files:
-                    include_patterns = changed_py_files
-            else:
+            if not changed_files:
                 # Fallback to directory-based patterns if no changed files provided
                 for test_path in test_paths:
                     base_test_path = test_path
@@ -441,6 +457,7 @@ class SelectiveTestRunner:
                             "policyengine_us/parameters/contrib/*.py"
                         )
 
+        if with_coverage:
             pytest_args = [
                 sys.executable,
                 "-m",

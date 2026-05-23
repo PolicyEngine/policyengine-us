@@ -29,6 +29,29 @@ def test_runner_unit_test_is_not_treated_as_infrastructure():
     )
 
 
+def test_yaml_only_changes_do_not_request_python_coverage():
+    assert (
+        SelectiveTestRunner.get_changed_python_coverage_patterns(
+            {
+                "policyengine_us/parameters/gov/states/nm/tax/income/modified_gross_income.yaml",
+                "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/nm_modified_gross_income.yaml",
+            }
+        )
+        == []
+    )
+
+
+def test_changed_tests_are_not_coverage_targets():
+    assert SelectiveTestRunner.get_changed_python_coverage_patterns(
+        {
+            "policyengine_us/tests/core/test_run_selective_tests.py",
+            "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py",
+        }
+    ) == [
+        "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py"
+    ]
+
+
 def test_limit_test_paths_prefers_directly_changed_tests_for_broad_changes():
     runner = SelectiveTestRunner()
     runner.max_test_targets = 1
