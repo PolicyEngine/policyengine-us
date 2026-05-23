@@ -12,7 +12,7 @@
     adjusted_gross_income: 40_000
     ok_agi: 20_000
     cdcc_potential: 2_000
-    ctc_value: 3_000
+    ok_federal_ctc: 3_000
     state_code: OK
   output:
     # 5% CTC: $3,000 * 0.05 = $150
@@ -30,7 +30,7 @@
     adjusted_gross_income: 50_000
     ok_agi: 50_000
     cdcc_potential: 500
-    ctc_value: 4_000
+    ok_federal_ctc: 4_000
     state_code: OK
   output:
     # 5% CTC: $4,000 * 0.05 = $200
@@ -45,7 +45,7 @@
     adjusted_gross_income: 60_000
     ok_agi: 60_000
     cdcc_potential: 3_000
-    ctc_value: 2_000
+    ok_federal_ctc: 2_000
     state_code: OK
   output:
     # 5% CTC: $2,000 * 0.05 = $100
@@ -59,7 +59,7 @@
     adjusted_gross_income: 120_000
     ok_agi: 120_000
     cdcc_potential: 2_000
-    ctc_value: 4_000
+    ok_federal_ctc: 4_000
     state_code: OK
   output:
     # AGI $120,000 > $100,000 limit = no credit
@@ -71,7 +71,7 @@
     adjusted_gross_income: 100_000
     ok_agi: 100_000
     cdcc_potential: 1_500
-    ctc_value: 3_000
+    ok_federal_ctc: 3_000
     state_code: OK
   output:
     # AGI exactly at $100,000 limit = eligible
@@ -86,7 +86,7 @@
     adjusted_gross_income: 45_000
     ok_agi: 45_000
     cdcc_potential: 0
-    ctc_value: 0
+    ok_federal_ctc: 0
     state_code: OK
   output:
     ok_child_care_child_tax_credit: 0
@@ -97,7 +97,7 @@
     adjusted_gross_income: 80_000
     ok_agi: 40_000
     cdcc_potential: 2_000
-    ctc_value: 4_000
+    ok_federal_ctc: 4_000
     state_code: OK
   output:
     # 5% CTC: $4,000 * 0.05 = $200
@@ -106,3 +106,46 @@
     # Part-year ratio: 40,000 / 80,000 = 0.5
     # Final credit: $400 * 0.5 = $200
     ok_child_care_child_tax_credit: 200
+
+- name: OK CTC includes federal non-refundable CTC used against unearned-income tax
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 79_445
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        is_tax_unit_head: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    marital_units:
+      marital_unit:
+        members: [head]
+      child1_marital_unit:
+        members: [child1]
+      child2_marital_unit:
+        members: [child2]
+    families:
+      family:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: OK
+  output:
+    ctc_value: 0
+    ok_federal_ctc: 2_799
+    ok_child_care_child_tax_credit: 140
+    taxsim_ok_child_tax_credit_component: 140
