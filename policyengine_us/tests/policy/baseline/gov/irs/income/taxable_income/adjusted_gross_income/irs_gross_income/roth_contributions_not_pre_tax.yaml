@@ -1,0 +1,32 @@
+- name: Roth 401(k) contributions do not reduce IRS employment income.
+  period: 2025
+  input:
+    employment_income: 100_000
+    roth_401k_contributions: 20_000
+  output:
+    pre_tax_contributions: 0
+    irs_employment_income: 100_000
+
+- name: Roth 403(b) contributions do not reduce IRS employment income.
+  period: 2025
+  input:
+    employment_income: 100_000
+    roth_403b_contributions: 15_000
+  output:
+    pre_tax_contributions: 0
+    irs_employment_income: 100_000
+
+- name: Mixed traditional and Roth contributions reduce wages only by the traditional amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 100_000
+    traditional_401k_contributions: 10_000
+    roth_401k_contributions: 10_000
+    traditional_403b_contributions: 5_000
+    roth_403b_contributions: 5_000
+  output:
+    capped_traditional_401k_contributions: 7_833.33
+    capped_traditional_403b_contributions: 3_916.67
+    pre_tax_contributions: 11_750
+    irs_employment_income: 88_250
