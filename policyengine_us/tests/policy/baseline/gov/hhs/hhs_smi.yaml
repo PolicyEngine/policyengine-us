@@ -37,3 +37,35 @@
     state_code_str: CA
   output:
     hhs_smi: 110_879
+
+- name: Household size 2, State TX, period 2018 (FFY 2018 SMI)
+  period: 2018
+  input:
+    spm_unit_size: 2
+    state_code_str: TX
+  output:
+    hhs_smi: 0.68 * 72_518
+
+- name: Household size 3, State OR, period 2019 (FFY 2019 SMI)
+  period: 2019
+  input:
+    spm_unit_size: 3
+    state_code_str: OR
+  output:
+    hhs_smi: 0.84 * 78_683
+
+- name: Household size 4, State CO, period 2020 (FFY 2020 SMI)
+  period: 2020
+  input:
+    spm_unit_size: 4
+    state_code_str: CO
+  output:
+    hhs_smi: 95_544
+
+- name: Household size 5, State MA, period 2021 (FFY 2021 SMI)
+  period: 2021
+  input:
+    spm_unit_size: 5
+    state_code_str: MA
+  output:
+    hhs_smi: 1.16 * 125_335

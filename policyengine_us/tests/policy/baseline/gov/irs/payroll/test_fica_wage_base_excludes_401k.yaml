@@ -1,0 +1,27 @@
+- name: 401(k) deferrals do not reduce FICA wage base
+  period: 2025
+  input:
+    employment_income: 106_706
+    traditional_401k_contributions: 6_006
+    pre_tax_health_insurance_premiums: 0
+    health_savings_account_payroll_contributions: 0
+  output:
+    payroll_tax_gross_wages: 106_706
+
+- name: Section 125 premiums do reduce FICA wage base
+  period: 2025
+  input:
+    employment_income: 106_706
+    traditional_401k_contributions: 6_006
+    pre_tax_health_insurance_premiums: 5_606
+    health_savings_account_payroll_contributions: 6_750
+  output:
+    payroll_tax_gross_wages: 94_350
+
+- name: 403(b) deferrals do not reduce FICA wage base
+  period: 2025
+  input:
+    employment_income: 80_000
+    traditional_403b_contributions: 10_000
+  output:
+    payroll_tax_gross_wages: 80_000

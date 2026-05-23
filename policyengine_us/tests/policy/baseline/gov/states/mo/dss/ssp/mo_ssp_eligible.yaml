@@ -1,0 +1,371 @@
+- name: Case 1, blind adult receiving SSI in MO with SAB arrangement is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: true
+
+- name: Case 1b, blind adult with no SSI in MO with SAB arrangement is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB can be paid even when SSI is zero; the claimant must apply for or
+    # receive SSI, but that application requirement is not modeled.
+    mo_ssp_eligible: true
+
+- name: Case 2, SNC applicant with income above the facility base charge is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 18_000  # $1,500/month annualized
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC need test fails: $1,500 countable income exceeds $1,300 facility
+    # base charge, so no SNC grant is payable regardless of SSI receipt.
+    mo_ssp_eligible: false
+
+- name: Case 2b, SNC applicant with no SSI but income below the facility charge is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400  # $1,200/month annualized
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC need test passes: $1,200 countable income is below the $1,300
+    # facility base charge. SSI receipt is not required — the facility-cost
+    # need test handles SNC income eligibility.
+    mo_ssp_eligible: true
+
+- name: Case 3, adult receiving SSI not in MO is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # defined_for = StateCode.MO filters non-MO residents.
+    mo_ssp_eligible: false
+
+- name: Case 4, child age 17 receiving SSI in SAB arrangement is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Below SAB age threshold of 18.
+    mo_ssp_eligible: false
+
+- name: Case 5, adult receiving SSI in NONE arrangement is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # NONE arrangement => not category-eligible.
+    mo_ssp_eligible: false
+
+- name: Case 6, adult age 19 with SAB arrangement is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB threshold is 18, so 19 qualifies.
+    mo_ssp_eligible: true
+
+- name: Case 7, adult age 20 in RCF Level I is not eligible due to SNC age threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC categories require age 21+.
+    mo_ssp_eligible: false
+
+- name: Case 8, non-blind adult in SAB arrangement is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB pathway requires is_blind.
+    mo_ssp_eligible: false
+
+- name: Case 9, disabled adult age 21 in SNF non-Medicaid is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        is_disabled: true
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Exactly meets SNC age threshold and the ABD category requirement.
+    mo_ssp_eligible: true
+
+- name: Case 10, adult exactly age 18 with SAB arrangement is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Exactly meets SAB age threshold of 18.
+    mo_ssp_eligible: true
+
+- name: Case 11, disabled adult exactly age 21 with RCF Level I is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        is_disabled: true
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Exactly meets SNC age threshold of 21 and the ABD category requirement.
+    mo_ssp_eligible: true
+
+- name: Case 12, adult age 20 in RCF Level I is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC categories require age 21+; 20 is below threshold.
+    mo_ssp_eligible: false
+
+- name: Case 13, adult age 17 in SAB arrangement is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB requires age 18+; 17 is below threshold.
+    mo_ssp_eligible: false
+
+- name: Case 14, adult with nominal SSI receipt is still eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0.01
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SAB eligibility is independent of SSI receipt; nominal SSI does not
+    # affect this — the SAB income test uses mo_sab_countable_income against
+    # the consolidated standard.
+    mo_ssp_eligible: true
+
+- name: Case 15, adult with valid eligibility outside Missouri is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # defined_for = StateCode.MO filters non-MO residents to false.
+    mo_ssp_eligible: false
+
+- name: Case 16, SAB applicant with countable income above the monthly limit is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 200
+        employment_income: 30_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 SAB monthly income limit $1,073; mo_sab_countable_income for
+    # blind earner with $30,000 annual employment income exceeds the limit
+    # after SSI-style exclusions, so SAB pathway fails.
+    mo_ssp_eligible: false
+
+- name: Case 17, SAB applicant with non-SSI income at or below the monthly limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 200
+        employment_income: 12_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 SAB monthly income limit $1,073; mo_sab_countable_income after
+    # SSI-style exclusions ($20 general + $65 earned + 50% remainder) on
+    # $1,000 monthly earned income is ~$458/month, within the limit, so SAB
+    # pathway passes.
+    mo_ssp_eligible: true
+
+- name: Case 18, SNC resident who is not aged, blind, or disabled is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: false
+        social_security: 600
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Facility cost exceeds income, but SNC still requires aged, blind, or
+    # disabled categorical eligibility.
+    mo_ssp_eligible: false
+
+- name: Case 19, SAB applicant above the resource limit is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        ssi_countable_resources: 100_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: false

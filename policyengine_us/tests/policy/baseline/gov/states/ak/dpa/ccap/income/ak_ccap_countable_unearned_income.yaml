@@ -1,0 +1,60 @@
+# ak_ccap_countable_unearned_income: SPMUnit, float (USD), MONTH
+# Sums unearned income across all SPMUnit members (no age exclusion).
+# Sources defined in countable_income/unearned_sources.yaml.
+
+- name: Case 1, social security counted as unearned.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000  # /yr
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # 12_000 / 12 = 1_000/month
+    ak_ccap_countable_unearned_income: 1_000
+
+- name: Case 2, child's unearned income counted (no age exclusion for unearned).
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        social_security: 6_000  # /yr -- counted regardless of age
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+  output:
+    # 6_000 / 12 = 500/month
+    ak_ccap_countable_unearned_income: 500
+
+- name: Case 3, zero unearned income returns zero.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_countable_unearned_income: 0

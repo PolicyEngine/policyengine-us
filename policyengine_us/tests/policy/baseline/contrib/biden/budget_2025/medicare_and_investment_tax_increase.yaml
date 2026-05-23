@@ -9,7 +9,7 @@
       head:
         age: 36
         is_tax_unit_head: True
-        irs_employment_income: 500_000
+        employment_income: 500_000
     tax_units:
       tax_unit:
         members: [head]
@@ -19,3 +19,19 @@
   output:
     additional_medicare_tax: 2_700 + 1_200
     net_investment_income_tax: 50 
+
+- name: Traditional retirement deferrals do not reduce increased Additional Medicare wages
+  period: 2024
+  reforms: policyengine_us.reforms.biden.budget_2025.medicare_and_investment_tax_increase.medicare_and_investment_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.medicare.rate: 0.012
+    people:
+      head:
+        employment_income: 450_000
+        traditional_401k_contributions: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    additional_medicare_tax: 2_850 # (450k - 200k) * 0.9% + (450k - 400k) * 1.2%

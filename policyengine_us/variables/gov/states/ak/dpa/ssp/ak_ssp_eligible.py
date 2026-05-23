@@ -5,7 +5,7 @@ class ak_ssp_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Alaska Adult Public Assistance eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     reference = (
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ak.pdf#page=1",
@@ -16,6 +16,6 @@ class ak_ssp_eligible(Variable):
         p = parameters(period).gov.states.ak.dpa.ssp.eligibility
         return (
             person("is_ssi_eligible", period)
-            & (person("age", period) >= p.age_threshold)
+            & (person("age", period.this_year) >= p.age_threshold)
             & ~person.household("ak_ssp_excluded_institutional_setting", period)
         )

@@ -1,0 +1,157 @@
+- name: early_head_start_pregnant_adult (la)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code_str: LA
+        zip_code: '70112'
+        county_str: ORLEANS_PARISH_LA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        early_head_start: 21160.63
+- name: early_head_start_infant_age_0 (la)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code_str: LA
+        zip_code: '70112'
+        county_str: ORLEANS_PARISH_LA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        early_head_start: 0.0
+      child1:
+        early_head_start: 21160.63
+- name: early_head_start_child_age_2_eligible (la)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code_str: LA
+        zip_code: '70112'
+        county_str: ORLEANS_PARISH_LA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        early_head_start: 0.0
+      child1:
+        early_head_start: 21160.63

@@ -5,7 +5,7 @@ class ak_ssp_excluded_institutional_setting(Variable):
     value_type = bool
     entity = Household
     label = "Alaska APA excluded institutional setting"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     default_value = False
     reference = (

@@ -7,7 +7,7 @@
         age: 70
         is_blind: false
 
-        ssi: 11_928  # $994/mo SSI
+        ssi: 994  # monthly SSI
         employment_income: 0
     households:
       household:
@@ -29,7 +29,7 @@
         age: 70
         is_blind: false
 
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 6_000  # $500/mo
     households:
       household:
@@ -52,7 +52,7 @@
         age: 70
         is_blind: false
 
-        ssi: 6_000  # $500/mo < $562 disregard
+        ssi: 500  # monthly SSI below $562 disregard
         employment_income: 0
     households:
       household:
@@ -72,7 +72,7 @@
         age: 70
         is_blind: false
         ct_ssp_resides_in_boarding_home: true
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 0
     households:
       household:
@@ -92,7 +92,7 @@
         age: 70
         is_blind: false
         ct_ssp_lives_with_others: true
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 0
     households:
       household:
@@ -155,7 +155,7 @@
         age: 70
         is_blind: false
 
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         ssi_unearned_income: 23_856  # $1,988/mo other unearned
         employment_income: 0
     households:

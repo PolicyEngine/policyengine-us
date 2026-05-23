@@ -1,9 +1,6 @@
 - name: Disabled
   period: 2024
   input:
-    is_ssi_aged: false
-    is_blind: false
-    ssi_reported: false
     is_disabled: true
     ssi_engaged_in_sga: false
   output:
@@ -12,54 +9,70 @@
 - name: Engaged in SGA
   period: 2024
   input:
-    is_ssi_aged: false
-    is_blind: false
-    ssi_reported: false
     is_disabled: true
     ssi_engaged_in_sga: true
   output:
     is_ssi_disabled: false
 
-- name: SSI Reported
+- name: Reported SSI does not imply disability in the model
   period: 2024
   input:
-    is_ssi_aged: false
-    is_blind: false
     ssi_reported: true
     is_disabled: false
     ssi_engaged_in_sga: false
   output:
-    is_ssi_disabled: true
+    is_ssi_disabled: false
 
-- name: SSI Reported, but engaged in SGA
+- name: Reported SSI and engaged in SGA
   period: 2024
   input:
-    is_ssi_aged: false
-    is_blind: false
     ssi_reported: true
     is_disabled: false
     ssi_engaged_in_sga: true
   output:
     is_ssi_disabled: false
 
-- name: SSI Reported, but blind
+- name: Blind status alone does not imply SSI disabled
   period: 2024
   input:
-    is_ssi_aged: false
     is_blind: true
-    ssi_reported: true
     is_disabled: false
     ssi_engaged_in_sga: false
   output:
     is_ssi_disabled: false
 
-- name: SSI Reported, but aged
+- name: Aged status alone does not imply SSI disabled
   period: 2024
   input:
     is_ssi_aged: true
-    is_blind: false
-    ssi_reported: true
     is_disabled: false
+    ssi_engaged_in_sga: false
+  output:
+    is_ssi_disabled: false
+
+- name: Data-provided SSI disability criteria can identify SSI disability
+  period: 2024
+  input:
+    meets_ssi_disability_criteria: true
+    is_disabled: false
+    ssi_engaged_in_sga: false
+  output:
+    is_ssi_disabled: true
+
+- name: Data-provided SSI disability criteria remains subject to SGA
+  period: 2024
+  input:
+    meets_ssi_disability_criteria: true
+    is_disabled: false
+    ssi_engaged_in_sga: true
+  output:
+    is_ssi_disabled: false
+
+- name: Data-provided SSI disability criteria can exclude broad disability
+  period: 2024
+  input:
+    meets_ssi_disability_criteria: false
+    is_disabled: true
     ssi_engaged_in_sga: false
   output:
     is_ssi_disabled: false
