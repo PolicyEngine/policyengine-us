@@ -94,3 +94,13 @@
     ssi_engaged_in_sga: false
   output:
     is_ssi_disabled: false
+
+- name: Data-provided SSI disability criteria wins during transition
+  period: 2024
+  input:
+    would_pass_ssa_disability_screen: true
+    meets_ssi_disability_criteria: false
+    is_disabled: false
+    ssi_engaged_in_sga: false
+  output:
+    is_ssi_disabled: false
