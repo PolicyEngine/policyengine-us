@@ -17,5 +17,5 @@ class ma_employer_paid_leave_contribution(Variable):
         p = parameters(period).gov.states.ma.tax.payroll.paid_leave
         liable = person("employer_headcount", period) >= p.employer_headcount_threshold
         rate = p.medical_rate * (1 - p.medical_employee_share)
-        taxable_wages = person("taxable_earnings_for_social_security", period)
+        taxable_wages = person("state_payroll_tax_social_security_capped_wages", period)
         return where(liable, rate * taxable_wages, 0)

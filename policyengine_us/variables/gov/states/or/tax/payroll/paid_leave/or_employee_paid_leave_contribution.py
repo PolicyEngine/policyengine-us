@@ -12,5 +12,5 @@ class or_employee_paid_leave_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states["or"].tax.payroll.paid_leave.employee_rate
-        taxable_wages = person("taxable_earnings_for_social_security", period)
+        taxable_wages = person("state_payroll_tax_social_security_capped_wages", period)
         return rate * taxable_wages

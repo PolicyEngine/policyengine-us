@@ -15,5 +15,5 @@ class wa_employer_paid_leave_contribution(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.tax.payroll.paid_leave
         liable = person("employer_headcount", period) >= p.employer_headcount_threshold
-        taxable_wages = person("taxable_earnings_for_social_security", period)
+        taxable_wages = person("wa_payroll_tax_social_security_capped_wages", period)
         return where(liable, p.total_rate * p.employer_share * taxable_wages, 0)

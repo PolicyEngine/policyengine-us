@@ -12,4 +12,4 @@ class dc_employer_paid_leave_tax(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.dc.tax.payroll.paid_leave.employer_rate
-        return rate * person("payroll_tax_gross_wages", period)
+        return rate * person("state_payroll_tax_gross_wages", period)
