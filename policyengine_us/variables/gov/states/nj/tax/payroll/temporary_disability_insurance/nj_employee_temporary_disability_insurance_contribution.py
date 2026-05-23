@@ -14,7 +14,7 @@ class nj_employee_temporary_disability_insurance_contribution(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nj.tax.payroll.temporary_disability_insurance
-        taxable_wages = min_(
-            person("state_payroll_tax_gross_wages", period), p.taxable_wage_base
+        taxable_wages = person(
+            "nj_temporary_disability_insurance_taxable_wages", period
         )
         return p.employee_rate * taxable_wages

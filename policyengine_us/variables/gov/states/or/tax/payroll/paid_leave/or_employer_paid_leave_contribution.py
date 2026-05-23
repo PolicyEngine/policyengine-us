@@ -13,5 +13,5 @@ class or_employer_paid_leave_contribution(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states["or"].tax.payroll.paid_leave
         liable = person("employer_headcount", period) >= p.employer_headcount_threshold
-        taxable_wages = person("state_payroll_tax_social_security_capped_wages", period)
+        taxable_wages = person("or_paid_leave_taxable_wages", period)
         return where(liable, p.employer_rate * taxable_wages, 0)

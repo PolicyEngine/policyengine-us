@@ -1,17 +1,17 @@
 from policyengine_us.model_api import *
 
 
-class wa_payroll_tax_gross_wages(Variable):
+class wa_long_term_care_taxable_wages(Variable):
     value_type = float
     entity = Person
-    label = "Washington payroll tax gross wages"
+    label = "Washington WA Cares taxable wages"
     documentation = (
-        "Gross wages for Washington paid leave and WA Cares premiums, excluding tips."
+        "Wages subject to WA Cares premiums, excluding tips and including "
+        "federal pre-tax payroll deductions."
     )
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.WA
-    reference = "https://paidleave.wa.gov/employer-roles-responsibilities/"
 
     def formula(person, period, parameters):
         return max_(

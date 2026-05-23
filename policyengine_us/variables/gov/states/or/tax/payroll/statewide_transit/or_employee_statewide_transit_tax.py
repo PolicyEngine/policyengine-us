@@ -16,4 +16,4 @@ class or_employee_statewide_transit_tax(Variable):
             .gov.states["or"]
             .tax.payroll.statewide_transit.employee_rate
         )
-        return rate * person("irs_employment_income", period)
+        return rate * person("or_statewide_transit_taxable_wages", period)
