@@ -76,3 +76,19 @@
         roth_ira_contributions: 3_000
   output:
     savers_credit_qualified_contributions: 7_000
+
+- name: Case 7, Puerto Rico retirement deduction uses capped IRA contributions.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        pr_agi_person: 10_000
+        traditional_ira_contributions: 9_000
+        roth_ira_contributions: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: PR
+  output:
+    pr_retirement_deduction: 5_000
