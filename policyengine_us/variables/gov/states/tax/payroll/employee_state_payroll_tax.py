@@ -10,6 +10,7 @@ EMPLOYEE_STATE_PAYROLL_TAX_COMPONENTS = [
     "nj_employee_state_payroll_tax",
     "ny_employee_state_payroll_tax",
     "or_employee_state_payroll_tax",
+    "pa_employee_state_payroll_tax",
     "ri_employee_state_payroll_tax",
     "vt_employee_state_payroll_tax",
     "wa_employee_state_payroll_tax",
