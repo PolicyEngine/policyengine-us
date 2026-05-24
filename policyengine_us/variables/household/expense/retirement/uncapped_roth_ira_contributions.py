@@ -9,6 +9,4 @@ class uncapped_roth_ira_contributions(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        desired = person("roth_ira_contributions_desired", period)
-        legacy_desired = person("roth_ira_contributions", period)
-        return where(desired > 0, desired, legacy_desired)
+        return person("roth_ira_contributions_desired", period)

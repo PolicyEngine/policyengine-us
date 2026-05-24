@@ -45,23 +45,23 @@ class mn_homestead_credit_refund_household_income(Variable):
             tax_unit,
             period,
             [
-                "capped_traditional_401k_contributions",
-                "capped_roth_401k_contributions",
-                "capped_traditional_403b_contributions",
-                "capped_roth_403b_contributions",
-                "capped_traditional_ira_contributions",
-                "capped_roth_ira_contributions",
-                "capped_self_employed_pension_contributions",
+                "traditional_401k_contributions",
+                "roth_401k_contributions",
+                "traditional_403b_contributions",
+                "roth_403b_contributions",
+                "traditional_ira_contributions",
+                "roth_ira_contributions",
+                "self_employed_pension_contributions",
             ],
         )
         retirement_additions = add(
             tax_unit,
             period,
             [
-                "capped_traditional_401k_contributions",
-                "capped_traditional_403b_contributions",
-                "capped_traditional_ira_contributions",
-                "capped_self_employed_pension_contributions",
+                "traditional_401k_contributions",
+                "traditional_403b_contributions",
+                "traditional_ira_contributions",
+                "self_employed_pension_contributions",
             ],
         )
         compensation = add(

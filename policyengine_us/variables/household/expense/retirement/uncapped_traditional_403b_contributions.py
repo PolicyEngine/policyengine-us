@@ -9,6 +9,4 @@ class uncapped_traditional_403b_contributions(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        desired = person("traditional_403b_contributions_desired", period)
-        legacy_desired = person("traditional_403b_contributions", period)
-        return where(desired > 0, desired, legacy_desired)
+        return person("traditional_403b_contributions_desired", period)

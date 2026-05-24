@@ -51,7 +51,7 @@
       person1:
         age: 66
         employment_income: 60_000
-        traditional_401k_contributions: 10_000
+        traditional_401k_contributions_desired: 10_000
         is_tax_unit_head: true
       person2:
         is_tax_unit_dependent: true
@@ -77,7 +77,7 @@
       person1:
         age: 40
         self_employment_income: 50_000
-        self_employed_pension_contributions: 10_000
+        self_employed_pension_contributions_desired: 10_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -132,7 +132,7 @@
     mn_homestead_credit_refund_eligible: false
     mn_homestead_credit_refund: 0
 
-- name: Case 7, over-limit desired IRA contributions use statutory capped amounts.
+- name: Case 7, over-limit desired IRA contributions use contribution amounts.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -153,6 +153,6 @@
         members: [person1]
         state_code: MN
   output:
-    capped_traditional_ira_contributions: 3_500
-    capped_roth_ira_contributions: 3_500
+    traditional_ira_contributions: 3_500
+    roth_ira_contributions: 3_500
     mn_homestead_credit_refund_household_income: 46_500

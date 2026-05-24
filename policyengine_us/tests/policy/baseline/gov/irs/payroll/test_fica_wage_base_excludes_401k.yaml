@@ -2,7 +2,7 @@
   period: 2025
   input:
     employment_income: 106_706
-    traditional_401k_contributions: 6_006
+    traditional_401k_contributions_desired: 6_006
     pre_tax_health_insurance_premiums: 0
     health_savings_account_payroll_contributions: 0
   output:
@@ -12,7 +12,7 @@
   period: 2025
   input:
     employment_income: 106_706
-    traditional_401k_contributions: 6_006
+    traditional_401k_contributions_desired: 6_006
     pre_tax_health_insurance_premiums: 5_606
     health_savings_account_payroll_contributions: 6_750
   output:
@@ -22,6 +22,6 @@
   period: 2025
   input:
     employment_income: 80_000
-    traditional_403b_contributions: 10_000
+    traditional_403b_contributions_desired: 10_000
   output:
     payroll_tax_gross_wages: 80_000

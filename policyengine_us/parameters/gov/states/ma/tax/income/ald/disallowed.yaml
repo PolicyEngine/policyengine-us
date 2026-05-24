@@ -2,18 +2,18 @@ description: Above-the-line deductions disallowed in Massachusetts income tax.
 values:
   2001-01-01:
     - loss_ald # (c)
-    - capped_traditional_ira_contributions # (f)
+    - traditional_ira_contributions # (f)
     - early_withdrawal_penalty # (h)
     - self_employment_tax_ald
   2018-01-01:
     - loss_ald # (c)
-    - capped_traditional_ira_contributions # (f)
+    - traditional_ira_contributions # (f)
     - early_withdrawal_penalty # (h)
     - self_employment_tax_ald
     - alimony_income  # is a US ALD only in 2018 through 2025
   2026-01-01:
     - loss_ald # (c)
-    - capped_traditional_ira_contributions # (f)
+    - traditional_ira_contributions # (f)
     - early_withdrawal_penalty # (h)
     - self_employment_tax_ald
 metadata:
