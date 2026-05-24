@@ -19,18 +19,6 @@ class roth_ira_contributions(Variable):
     )
 
     def formula(person, period, parameters):
-        raw = person("uncapped_roth_ira_contributions", period)
-        total_desired = add(
-            person,
-            period,
-            [
-                "uncapped_traditional_ira_contributions",
-                "uncapped_roth_ira_contributions",
-            ],
-        )
-        # Behavioral assumption: no IRA type is prioritized. Preserve desired
-        # allocation shares by applying one scale factor to both IRA types.
-        scale = min_(
-            person("ira_contribution_limit", period) / max_(total_desired, 1), 1
-        )
-        return raw * scale
+        desired = person("roth_ira_contributions_desired", period)
+        scale = person("ira_contribution_scale", period)
+        return desired * scale

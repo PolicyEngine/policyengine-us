@@ -8,11 +8,13 @@
         roth_ira_contributions_desired: 2_000
   output:
     ira_contribution_limit: 7_000
+    ira_contribution_scale: 1
     traditional_ira_contributions: 4_000
     roth_ira_contributions: 2_000
 
 - name: Case 2, IRA contributions above the base limit are allocated proportionally.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -21,11 +23,13 @@
         roth_ira_contributions_desired: 3_000
   output:
     ira_contribution_limit: 7_000
+    ira_contribution_scale: 0.583333
     traditional_ira_contributions: 5_250
     roth_ira_contributions: 1_750
 
 - name: Case 3, IRA catch-up contribution raises the combined limit.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -34,6 +38,7 @@
         roth_ira_contributions_desired: 3_000
   output:
     ira_contribution_limit: 8_000
+    ira_contribution_scale: 0.666667
     traditional_ira_contributions: 6_000
     roth_ira_contributions: 2_000
 
@@ -46,6 +51,7 @@
         traditional_ira_contributions_desired: 2_000
         roth_ira_contributions_desired: 8_000
   output:
+    ira_contribution_scale: 0.7
     traditional_ira_contributions: 1_400
     roth_ira_contributions: 5_600
 

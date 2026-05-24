@@ -6,6 +6,7 @@
     roth_401k_contributions_desired: 8_000
   output:
     elective_deferral_limit: 23_500
+    elective_deferral_contribution_scale: 1
     traditional_401k_contributions: 12_000
     roth_401k_contributions: 8_000
 
@@ -18,6 +19,7 @@
     roth_401k_contributions_desired: 10_000
   output:
     elective_deferral_limit: 23_500
+    elective_deferral_contribution_scale: 0.783333
     traditional_401k_contributions: 15_666.67
     roth_401k_contributions: 7_833.33
     pre_tax_contributions: 15_666.67
@@ -33,6 +35,7 @@
     roth_403b_contributions_desired: 5_000
   output:
     elective_deferral_limit: 34_750
+    elective_deferral_contribution_scale: 0.86875
     traditional_401k_contributions: 17_375
     roth_401k_contributions: 8_687.50
     traditional_403b_contributions: 4_343.75
