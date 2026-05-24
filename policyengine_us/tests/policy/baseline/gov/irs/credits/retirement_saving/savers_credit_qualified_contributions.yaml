@@ -7,6 +7,7 @@
     roth_ira_contributions: 1_000
     roth_401k_contributions: 1_000
     roth_403b_contributions: 1_000
+    self_employment_income: 1_000
     self_employed_pension_contributions: 1_000
     able_contributions_person: 100
     retirement_distributions: 1_000
@@ -27,3 +28,12 @@
     retirement_distributions: 2_000
   output:
     savers_credit_qualified_contributions: 0
+
+- name: Self-employed pension contributions count after applying the annual additions cap
+  period: 2026
+  input:
+    self_employment_income: 100_000
+    self_employed_pension_contributions: 100_000
+  output:
+    capped_self_employed_pension_contributions: 72_000
+    savers_credit_qualified_contributions: 72_000
