@@ -12,4 +12,4 @@ class pa_employee_unemployment_compensation_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.pa.tax.payroll.unemployment.employee_rate
-        return rate * person("state_payroll_tax_gross_wages", period)
+        return rate * max_(0, person("employment_income", period))
