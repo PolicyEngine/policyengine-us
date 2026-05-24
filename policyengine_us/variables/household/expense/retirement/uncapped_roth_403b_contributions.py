@@ -9,6 +9,6 @@ class uncapped_roth_403b_contributions(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        reported = person("roth_403b_contributions_reported", period)
-        legacy_reported = person("roth_403b_contributions", period)
-        return where(reported > 0, reported, legacy_reported)
+        desired = person("roth_403b_contributions_desired", period)
+        legacy_desired = person("roth_403b_contributions", period)
+        return where(desired > 0, desired, legacy_desired)

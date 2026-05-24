@@ -9,6 +9,6 @@ class uncapped_traditional_401k_contributions(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        reported = person("traditional_401k_contributions_reported", period)
-        legacy_reported = person("traditional_401k_contributions", period)
-        return where(reported > 0, reported, legacy_reported)
+        desired = person("traditional_401k_contributions_desired", period)
+        legacy_desired = person("traditional_401k_contributions", period)
+        return where(desired > 0, desired, legacy_desired)

@@ -15,7 +15,7 @@ class capped_traditional_403b_contributions(Variable):
 
     def formula(person, period, parameters):
         raw = person("uncapped_traditional_403b_contributions", period)
-        total_reported = add(
+        total_desired = add(
             person,
             period,
             [
@@ -26,6 +26,6 @@ class capped_traditional_403b_contributions(Variable):
             ],
         )
         scale = min_(
-            person("elective_deferral_limit", period) / max_(total_reported, 1), 1
+            person("elective_deferral_limit", period) / max_(total_desired, 1), 1
         )
         return raw * scale

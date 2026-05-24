@@ -6,5 +6,5 @@ class roth_401k_contributions(Variable):
     entity = Person
     label = "Roth 401(k) contributions"
     unit = USD
-    documentation = "Reported contributions to Roth 401(k) accounts."
+    documentation = "Legacy input for desired contributions to Roth 401(k) accounts."
     definition_period = YEAR

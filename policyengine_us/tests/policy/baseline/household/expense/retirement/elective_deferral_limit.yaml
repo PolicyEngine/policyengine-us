@@ -1,4 +1,4 @@
-- name: Case 1, reported deferrals below the elective deferral limit.
+- name: Case 1, legacy desired deferrals below the elective deferral limit.
   period: 2025
   input:
     age: 35
@@ -26,15 +26,15 @@
     capped_roth_401k_contributions: 7_833.33
     pre_tax_contributions: 15_666.67
 
-- name: Case 3, reported inputs use the enhanced catch-up limit across 401(k) and 403(b) deferrals.
+- name: Case 3, desired inputs use the enhanced catch-up limit across 401(k) and 403(b) deferrals.
   period: 2025
   absolute_error_margin: 0.01
   input:
     age: 62
-    traditional_401k_contributions_reported: 20_000
-    roth_401k_contributions_reported: 10_000
-    traditional_403b_contributions_reported: 5_000
-    roth_403b_contributions_reported: 5_000
+    traditional_401k_contributions_desired: 20_000
+    roth_401k_contributions_desired: 10_000
+    traditional_403b_contributions_desired: 5_000
+    roth_403b_contributions_desired: 5_000
   output:
     elective_deferral_limit: 34_750
     capped_traditional_401k_contributions: 17_375

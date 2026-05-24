@@ -4,7 +4,7 @@
     people:
       person1:
         self_employment_income: 100_000
-        self_employed_pension_contributions: 100_000
+        self_employed_pension_contributions_desired: 100_000
   output:
     self_employed_pension_contribution_limit: 72_000
     capped_self_employed_pension_contributions: 72_000
@@ -16,7 +16,7 @@
     people:
       person1:
         self_employment_income: 50_000
-        self_employed_pension_contributions: 100_000
+        self_employed_pension_contributions_desired: 100_000
   output:
     self_employed_pension_contribution_limit: 50_000
     capped_self_employed_pension_contributions: 50_000
@@ -31,7 +31,7 @@
         employment_income: 100_000
         self_employment_income: 100_000
         traditional_401k_contributions: 50_000
-        self_employed_pension_contributions: 72_000
+        self_employed_pension_contributions_desired: 72_000
   output:
     elective_deferral_limit: 35_750
     capped_traditional_401k_contributions: 35_750
@@ -46,9 +46,21 @@
         age: 50
         self_employment_income: 100_000
         traditional_ira_contributions: 9_000
-        self_employed_pension_contributions: 72_000
+        self_employed_pension_contributions_desired: 72_000
   output:
     ira_contribution_limit: 8_000
     capped_traditional_ira_contributions: 8_000
+    self_employed_pension_contribution_limit: 72_000
+    capped_self_employed_pension_contributions: 72_000
+
+- name: Desired self-employed pension contributions override legacy desired input.
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income: 100_000
+        self_employed_pension_contributions: 1_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
     self_employed_pension_contribution_limit: 72_000
     capped_self_employed_pension_contributions: 72_000

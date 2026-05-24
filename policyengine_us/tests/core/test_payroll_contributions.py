@@ -48,7 +48,7 @@ def make_simulation(
                         PERIOD: pre_tax_health_insurance_premiums
                     },
                     "tip_income": {PERIOD: tip_income},
-                    "traditional_401k_contributions_reported": {
+                    "traditional_401k_contributions_desired": {
                         PERIOD: traditional_401k_contributions
                     },
                 }

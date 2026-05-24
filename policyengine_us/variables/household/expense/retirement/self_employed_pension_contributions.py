@@ -7,6 +7,7 @@ class self_employed_pension_contributions(Variable):
     label = "Self-employed pension contributions"
     unit = USD
     documentation = (
-        "Pension plan contributions associated with plans for the self employed."
+        "Legacy input for desired pension plan contributions associated "
+        "with plans for the self employed."
     )
     definition_period = YEAR

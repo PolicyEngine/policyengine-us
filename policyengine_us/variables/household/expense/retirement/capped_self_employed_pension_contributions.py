@@ -14,6 +14,8 @@ class capped_self_employed_pension_contributions(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/415#c"
 
     def formula(person, period, parameters):
-        contributions = person("self_employed_pension_contributions", period)
+        desired = person("self_employed_pension_contributions_desired", period)
+        legacy_desired = person("self_employed_pension_contributions", period)
+        contributions = where(desired > 0, desired, legacy_desired)
         limit = person("self_employed_pension_contribution_limit", period)
         return min_(contributions, limit)

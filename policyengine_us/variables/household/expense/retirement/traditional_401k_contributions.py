@@ -6,5 +6,7 @@ class traditional_401k_contributions(Variable):
     entity = Person
     label = "Traditional 401(k) contributions"
     unit = USD
-    documentation = "Reported contributions to traditional 401(k) accounts."
+    documentation = (
+        "Legacy input for desired contributions to traditional 401(k) accounts."
+    )
     definition_period = YEAR
