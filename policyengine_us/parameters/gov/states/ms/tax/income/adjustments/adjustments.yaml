@@ -1,7 +1,7 @@
 description: Mississippi subtracts these adjustments from federal adjusted gross income when computing state adjusted gross income.
 values:
   2020-01-01:
-    - capped_traditional_ira_contributions # Line 50
+    - traditional_ira_contributions # Line 50
     - ms_self_employment_adjustment # Line 61
     - ms_national_guard_or_reserve_pay_adjustment # Line 55
     - alimony_expense # Line 53

@@ -4,8 +4,8 @@ values:
     # Only the traditional (pre-tax) variants reduce taxable wages.
     # Roth 401(k)/403(b) contributions are designated Roth contributions
     # under IRC §402A and are includible in gross income.
-    - capped_traditional_401k_contributions
-    - capped_traditional_403b_contributions
+    - traditional_401k_contributions
+    - traditional_403b_contributions
     # Only explicit pre-tax payroll health premiums reduce taxable wages.
     - pre_tax_health_insurance_premiums
     # HSA contributions can be either through pre-tax.

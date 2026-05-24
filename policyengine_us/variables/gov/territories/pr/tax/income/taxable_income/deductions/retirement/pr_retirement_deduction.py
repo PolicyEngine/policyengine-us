@@ -21,8 +21,8 @@ class pr_retirement_deduction(Variable):
             person,
             period,
             [
-                "capped_traditional_ira_contributions",
-                "capped_roth_ira_contributions",
+                "traditional_ira_contributions",
+                "roth_ira_contributions",
             ],
         )
         return min_(max_deduction, contributions)
