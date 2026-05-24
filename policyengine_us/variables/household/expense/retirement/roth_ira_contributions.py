@@ -7,7 +7,6 @@ class roth_ira_contributions(Variable):
     label = "Roth IRA contributions"
     unit = USD
     documentation = (
-        "Legacy input for desired contributions to Roth Individual Retirement "
-        "Accounts."
+        "Legacy input for desired contributions to Roth Individual Retirement Accounts."
     )
     definition_period = YEAR
