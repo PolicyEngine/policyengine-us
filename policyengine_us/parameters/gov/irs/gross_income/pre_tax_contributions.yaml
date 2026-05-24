@@ -2,6 +2,7 @@ description: The US subtracts these payroll deductions from wages and salaries w
 values:
   2010-01-01:
     # Assumes all are pre-tax.
+    # Roth 401(k)/403(b) contributions are post-tax and intentionally excluded.
     - traditional_401k_contributions
     - traditional_403b_contributions
     # Only explicit pre-tax payroll health premiums reduce taxable wages.
