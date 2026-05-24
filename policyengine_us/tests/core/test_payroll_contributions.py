@@ -632,6 +632,14 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
             id="ME",
         ),
         pytest.param(
+            "MN",
+            {
+                "mn_paid_leave_taxable_wages": 7_000,
+                "mn_employee_paid_leave_contribution": 30.8,
+            },
+            id="MN",
+        ),
+        pytest.param(
             "NJ",
             {
                 "nj_temporary_disability_insurance_taxable_wages": 7_000,
@@ -661,6 +669,14 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
                 "or_employer_paid_leave_contribution": 28,
             },
             id="OR",
+        ),
+        pytest.param(
+            "PA",
+            {
+                "pa_employee_unemployment_compensation_contribution": 4.9,
+                "pa_employee_state_payroll_tax": 4.9,
+            },
+            id="PA",
         ),
     ],
 )
