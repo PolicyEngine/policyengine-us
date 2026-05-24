@@ -27,7 +27,7 @@ class ct_c4k_countable_income(Variable):
         is_adult = person("age", period.this_year) >= 18
         is_parent = person("is_tax_unit_head_or_spouse", period.this_year)
         earnings_counted = is_adult | is_parent
-        earned_per_person = sum(person(source, period) for source in p.earned_sources)
+        earned_per_person = add(person, period, p.earned_sources)
         earned_income = spm_unit.sum(earned_per_person * earnings_counted)
         unearned_income = add(spm_unit, period, p.unearned_sources)
         deductions = add(spm_unit, period, p.deductions)
