@@ -1,4 +1,4 @@
-- name: Dependent Social Security benefits do not count as tax unit Social Security.
+- name: Dependent Social Security benefits do not count for taxability.
   period: 2026
   input:
     people:
@@ -15,9 +15,10 @@
       household:
         members: [person1, person2]
   output:
-    tax_unit_social_security: 2_000
+    tax_unit_social_security: 10_400
+    tax_unit_social_security_for_taxability: 2_000
 
-- name: Tax unit Social Security is zero when only dependents receive benefits.
+- name: Taxability base is zero when only dependents receive benefits.
   period: 2026
   input:
     people:
@@ -33,4 +34,5 @@
       household:
         members: [person1, person2]
   output:
-    tax_unit_social_security: 0
+    tax_unit_social_security: 8_400
+    tax_unit_social_security_for_taxability: 0

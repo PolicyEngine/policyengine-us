@@ -51,7 +51,8 @@
         state_code: UT
   output:
     social_security: [0, 8_400, 0]
-    tax_unit_social_security: 0
+    tax_unit_social_security: 8_400
+    tax_unit_social_security_for_taxability: 0
     tax_unit_taxable_social_security: 0
     taxable_social_security: [0, 0, 0]
     irs_gross_income: [43_500.68, 0, 0]
