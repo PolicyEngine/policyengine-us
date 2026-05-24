@@ -331,6 +331,15 @@ def make_employer_total_simulation(
             id="OR",
         ),
         pytest.param(
+            "PA",
+            {
+                "pa_employee_unemployment_compensation_contribution": 70,
+                "pa_employee_state_payroll_tax": 70,
+                "employee_state_payroll_tax": 70,
+            },
+            id="PA",
+        ),
+        pytest.param(
             "RI",
             {
                 "ri_employee_temporary_disability_insurance_contribution": 1_100,
