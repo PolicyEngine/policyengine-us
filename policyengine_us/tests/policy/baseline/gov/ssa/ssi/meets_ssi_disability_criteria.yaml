@@ -22,18 +22,18 @@
   output:
     meets_ssi_disability_criteria: false
 
-- name: Data-provided SSA disability screen can identify SSI disability criteria
+- name: Data-provided SSI disability criteria can override broad disability
   period: 2024
   input:
-    would_pass_ssa_disability_screen: true
+    meets_ssi_disability_criteria: true
     is_disabled: false
   output:
     meets_ssi_disability_criteria: true
 
-- name: Data-provided SSA disability screen can exclude broad disability
+- name: Data-provided SSI disability criteria can exclude broad disability
   period: 2024
   input:
-    would_pass_ssa_disability_screen: false
+    meets_ssi_disability_criteria: false
     is_disabled: true
   output:
     meets_ssi_disability_criteria: false

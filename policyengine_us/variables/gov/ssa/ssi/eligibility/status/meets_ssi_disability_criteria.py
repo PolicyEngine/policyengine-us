@@ -13,4 +13,4 @@ class meets_ssi_disability_criteria(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#a_3_A"
 
     def formula(person, period, parameters):
-        return person("would_pass_ssa_disability_screen", period)
+        return person("is_disabled", period)

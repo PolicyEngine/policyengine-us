@@ -68,39 +68,11 @@
   output:
     is_ssi_disabled: false
 
-- name: Data-provided SSA disability screen can identify SSI disability
-  period: 2024
-  input:
-    would_pass_ssa_disability_screen: true
-    is_disabled: false
-    ssi_engaged_in_sga: false
-  output:
-    is_ssi_disabled: true
-
-- name: Data-provided SSA disability screen remains subject to SGA
-  period: 2024
-  input:
-    would_pass_ssa_disability_screen: true
-    is_disabled: false
-    ssi_engaged_in_sga: true
-  output:
-    is_ssi_disabled: false
-
 - name: Data-provided SSI disability criteria can exclude broad disability
   period: 2024
   input:
     meets_ssi_disability_criteria: false
     is_disabled: true
-    ssi_engaged_in_sga: false
-  output:
-    is_ssi_disabled: false
-
-- name: Data-provided SSI disability criteria wins during transition
-  period: 2024
-  input:
-    would_pass_ssa_disability_screen: true
-    meets_ssi_disability_criteria: false
-    is_disabled: false
     ssi_engaged_in_sga: false
   output:
     is_ssi_disabled: false
