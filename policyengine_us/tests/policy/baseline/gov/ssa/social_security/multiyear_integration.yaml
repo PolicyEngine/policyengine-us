@@ -1,12 +1,10 @@
 # Multi-year Social Security integration tests
 # These demonstrate period-spanning capabilities for Social Security benefits.
-# Each test opts into the computed benefit chain by setting
-# `gov.simulation.reported_social_security_retirement: false`.
+# `social_security_retirement` remains the survey/input variable for microsimulation.
 
 - name: Worker at FRA with substantial career history
   period: 2024
   input:
-    gov.simulation.reported_social_security_retirement: false
     age: 67  # Born 1957, 6 months past FRA (66y 6m)
     # Demonstrate complete multi-year earnings history format
     employment_income:
@@ -27,13 +25,10 @@
     ss_pia: 1_144.60       # PIA formula: 90% * 1,174 + 32% * (1,449.12-1,174) 
     ss_retirement_age_adjustment_factor: 1.04  # 4% delayed credit (6 months past FRA)  
     ss_covered_earnings_this_year: 30_000     # Current year earnings
-    # Final annual benefit: PIA * 12 * adjustment = 1,144.60 * 12 * 1.04
-    social_security_retirement: 14_284.607   # No earnings test past FRA
 
 - name: Early retiree with 42-year career history
   period: 2024
   input:
-    gov.simulation.reported_social_security_retirement: false
     age: 62  # Born 1962
     # Demonstrate multi-year earnings history format
     employment_income:
@@ -52,12 +47,10 @@
     # Multi-year calculation with actual historical data
     ss_aime: 2_303.1982   # Based on 10 years of provided earnings history
     ss_pia: 1_417.90      # Based on AIME calculation
-    social_security_retirement: 11_910.355  # Early retirement reduction applied
 
 - name: High earner approaching retirement
   period: 2024
   input:
-    gov.simulation.reported_social_security_retirement: false
     age: 65  # Still working, testing earnings test
     employment_income:
       1980-01-01: 25_000
@@ -69,12 +62,10 @@
   output:
     # Working beneficiary under earnings test limit
     ss_covered_earnings_this_year: 20_000
-    social_security_retirement: 11_478.172  # Benefit with earnings under test limit
 
 - name: Maximum benefit recipient
   period: 2024
   input:
-    gov.simulation.reported_social_security_retirement: false
     age: 70  # Delayed retirement
     employment_income:
       1975-01-01: 15_000
@@ -86,4 +77,3 @@
   output:
     # Delayed retirement with high lifetime earnings  
     ss_retirement_age_adjustment_factor: 1.32  # 32% delayed credit
-    social_security_retirement: 15_486.77  # Maximum benefit with delayed retirement

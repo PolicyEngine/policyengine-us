@@ -1,0 +1,13 @@
+- name: Case 1, California WDP qualifies as working disabled Buy-In.
+  period: 2026
+  input:
+    ca_wdp_eligible: true
+  output:
+    is_working_disabled_buy_in_for_medicaid: true
+
+- name: Case 2, no state Buy-In pathway defaults to false.
+  period: 2026
+  input:
+    ca_wdp_eligible: false
+  output:
+    is_working_disabled_buy_in_for_medicaid: false

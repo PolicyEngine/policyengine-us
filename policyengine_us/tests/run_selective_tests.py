@@ -24,6 +24,12 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
+    {
+        "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/reform",
+    }
+)
 
 
 class SelectiveTestRunner:
@@ -169,13 +175,15 @@ class SelectiveTestRunner:
 
     @staticmethod
     def is_test_infrastructure_file(path: str) -> bool:
-        return path.endswith(TEST_INFRASTRUCTURE_FILES)
+        return Path(path).name in TEST_INFRASTRUCTURE_FILES
 
     def get_direct_changed_tests(self, changed_files: Set[str]) -> Set[str]:
         return {
             file
             for file in changed_files
-            if self.is_test_file(file) and not self.is_test_infrastructure_file(file)
+            if self.is_test_file(file)
+            and not self.is_test_infrastructure_file(file)
+            and Path(file).exists()
         }
 
     def get_diff_files(self, base_ref: str):
@@ -266,7 +274,7 @@ class SelectiveTestRunner:
         for file in changed_files:
             # Changed test files are already the most precise signal.
             if self.is_test_file(file):
-                if not self.is_test_infrastructure_file(file):
+                if not self.is_test_infrastructure_file(file) and Path(file).exists():
                     test_paths.add(file)
                 continue
 
@@ -330,9 +338,26 @@ class SelectiveTestRunner:
                 )
         return total
 
+    @staticmethod
+    def get_changed_python_coverage_patterns(changed_files: Set[str]) -> List[str]:
+        return [
+            file
+            for file in changed_files
+            if file.endswith(".py") and "/tests/" not in file
+        ]
+
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
+        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        if deferred_paths:
+            deferred_list = ", ".join(sorted(deferred_paths))
+            print(
+                "\nQuick Feedback is deferring slow directory target(s) "
+                f"to the full suite jobs: {deferred_list}."
+            )
+            test_paths = test_paths - deferred_paths
+
         total_test_files = self.count_test_files(test_paths)
         if (
             len(test_paths) <= self.max_test_targets
@@ -380,6 +405,23 @@ class SelectiveTestRunner:
 
         # Construct pytest command
         if with_coverage:
+            # Only track coverage for the specific files that changed in the PR
+            include_patterns = []
+            if changed_files:
+                # Only include Python files that were actually changed (excluding test directories)
+                changed_py_files = self.get_changed_python_coverage_patterns(
+                    changed_files
+                )
+                if changed_py_files:
+                    include_patterns = changed_py_files
+                else:
+                    print(
+                        "No changed Python source files; running tests without "
+                        "coverage."
+                    )
+                    with_coverage = False
+
+        if with_coverage:
             # Use coverage to run the tests
             # First check if coverage is importable
             try:
@@ -391,16 +433,7 @@ class SelectiveTestRunner:
                 print("Please ensure coverage is installed: pip install coverage")
                 return 1
 
-            # Only track coverage for the specific files that changed in the PR
-            include_patterns = []
-            if changed_files:
-                # Only include Python files that were actually changed (excluding test directories)
-                changed_py_files = [
-                    f for f in changed_files if f.endswith(".py") and "/tests/" not in f
-                ]
-                if changed_py_files:
-                    include_patterns = changed_py_files
-            else:
+            if not changed_files:
                 # Fallback to directory-based patterns if no changed files provided
                 for test_path in test_paths:
                     base_test_path = test_path
@@ -424,6 +457,7 @@ class SelectiveTestRunner:
                             "policyengine_us/parameters/contrib/*.py"
                         )
 
+        if with_coverage:
             pytest_args = [
                 sys.executable,
                 "-m",

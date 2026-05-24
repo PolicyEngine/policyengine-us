@@ -8,6 +8,8 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 2_220  # $185 * 12 months
 
@@ -21,6 +23,8 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 4_440  # $370 * 12 months
 
@@ -34,6 +38,8 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 7_546.8  # $628.90 * 12 months
 
@@ -47,6 +53,8 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 3_108  # $259 * 12 months
 
@@ -60,6 +68,8 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 2_220  # $185 * 12 months
 
@@ -73,5 +83,33 @@
     tax_exempt_interest_income:
       2023: 0
     is_medicare_eligible: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
   output:
     medicare_part_b_premium: 7_546.8  # $628.90 * 12 months
+
+- name: MSP coverage fully offsets standard Part B premium
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    gross_medicare_part_b_premium: 2_220
+    base_part_b_premium: 2_220
+    msp_income_eligible: true
+    msp_asset_eligible: true
+  output:
+    medicare_part_b_premium: 0
+
+- name: MSP coverage preserves IRMAA above the standard Part B premium
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    gross_medicare_part_b_premium: 4_440
+    base_part_b_premium: 2_220
+    msp_income_eligible: true
+    msp_asset_eligible: true
+  output:
+    medicare_part_b_premium: 2_220

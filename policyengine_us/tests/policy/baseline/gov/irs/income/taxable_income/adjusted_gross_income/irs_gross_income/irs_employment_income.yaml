@@ -14,3 +14,42 @@
   output:
     irs_employment_income: 70
 
+- name: Health insurance premiums do not reduce IRS employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    health_insurance_premiums_without_medicare_part_b: 20
+    medicare_part_b_premium: 30
+  output:
+    pre_tax_contributions: 0
+    irs_employment_income: 100
+
+- name: Explicit pre-tax health insurance premiums reduce IRS employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    pre_tax_health_insurance_premiums: 20
+  output:
+    pre_tax_contributions: 20
+    irs_employment_income: 80
+
+- name: Retirement and HSA payroll deductions reduce IRS employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    traditional_401k_contributions_desired: 10
+    traditional_403b_contributions_desired: 5
+    health_savings_account_payroll_contributions: 3
+  output:
+    pre_tax_contributions: 18
+    irs_employment_income: 82
+
+- name: Roth 401k and 403b contributions do not reduce IRS employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    roth_401k_contributions_desired: 10
+    roth_403b_contributions_desired: 5
+  output:
+    pre_tax_contributions: 0
+    irs_employment_income: 100

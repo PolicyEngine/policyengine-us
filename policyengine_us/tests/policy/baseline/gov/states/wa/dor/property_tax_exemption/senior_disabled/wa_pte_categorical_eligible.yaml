@@ -1,0 +1,144 @@
+- name: Case 1, person aged 61 (at threshold) is categorically eligible by age.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 61
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pte_categorical_eligible: true
+
+- name: Case 2, person under age threshold who is disabled is categorically eligible by disability.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pte_categorical_eligible: true
+
+- name: Case 3, person under age threshold who is not disabled is not categorically eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pte_categorical_eligible: false
+
+- name: Case 4, person aged 70 who is also disabled is categorically eligible (OR semantics).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pte_categorical_eligible: true
+
+- name: Case 5, 2019 person aged 61 is ineligible (pre-2020 threshold was 62).
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 61
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Pre-2020 the WA age threshold was 62 (RCW 84.36.381(3)(a)(i) before
+    # ESHB 1105 took effect 2020-01-01). 61 < 62 -> not categorically eligible.
+    wa_pte_categorical_eligible: false
+
+- name: Case 6, 2019 person aged 62 is categorically eligible at the pre-2020 threshold.
+  period: 2019
+  input:
+    people:
+      person1:
+        age: 62
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Pre-2020 threshold was 62; age 62 >= 62 -> categorically eligible.
+    wa_pte_categorical_eligible: true
+
+- name: Case 7, 2024 person aged 60 is ineligible (2020+ threshold is 61).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # ESHB 1105 lowered the age threshold to 61 effective 2020-01-01.
+    # 60 < 61 -> not categorically eligible.
+    wa_pte_categorical_eligible: false

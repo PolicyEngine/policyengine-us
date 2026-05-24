@@ -365,7 +365,7 @@
 
         ct_ssp_has_therapeutic_diet: false
         self_employment_income: -60_000_000  # Extreme negative income
-        ssi: 11_928  # $994/mo (kept as input for edge case)
+        ssi: 994  # monthly SSI (kept as input for edge case)
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -534,7 +534,7 @@
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 6_744  # $562/mo = exactly the community disregard
+        ssi: 562  # monthly SSI exactly equals the community disregard
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -737,7 +737,7 @@
     ct_ssp_person: 0
     ct_ssp: 0
 
-- name: Case 14, CT SSP flows through to spm_unit_benefits.
+- name: Case 14, Medicaid facility recipient receives reduced SSI and CT SSP.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -775,7 +775,3 @@
     # --- State SSP ---
     ct_ssp_person: 75
     ct_ssp: 75
-
-    # --- Benefits rollup ---
-    # spm_unit_benefits includes SSI ($30) + CT SSP ($75) + other programs
-    spm_unit_benefits: 404.67

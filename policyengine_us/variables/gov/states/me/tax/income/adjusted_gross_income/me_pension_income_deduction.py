@@ -6,44 +6,52 @@ class me_pension_income_deduction(Variable):
     entity = TaxUnit
     label = "Maine pension income deduction"
     unit = USD
-    documentation = "Maine pension income deduction, which subtracts from federal AGI to compute Maine AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_1s_fillable.pdf#page=2"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-
-        # Get the non-militariy pension income of each person (Pension Income Deduction Worksheet, Line 1).
-        pension_income = person("pension_income", period)
-
-        # Get the deduction cap (Pension Income Deduction Worksheet, Line 2)
-        deduction_cap = parameters(
+        p = parameters(
             period
-        ).gov.states.me.tax.income.agi.subtractions.pension_exclusion.cap
+        ).gov.states.me.tax.income.agi.subtractions.pension_exclusion
 
-        # Get the total social security for each person (Pension Income Deduction Worksheet, Line 3)
+        # Per-person non-military pension deduction (Pension Income Deduction
+        # Worksheet, lines P1-P5).
+        pension_income = person("pension_income", period)
         gross_ss = person("social_security", period)
+        ss_reduced_cap = max_(p.cap - gross_ss, 0)
+        non_military_deduction = min_(pension_income, ss_reduced_cap)
 
-        # Subtract Line 3 from Line 2 to get new cap (line 4).
-        ss_reduced_cap = max_(deduction_cap - gross_ss, 0)
-
-        # Get the pension income deduction (line 5).
-        pension_income_deduction = min_(pension_income, ss_reduced_cap)
-
-        # Get the military retirement pay (line 6).
         military_retirement_pay = person("military_retirement_pay", period)
 
-        # Get the total deduction.
-        deduction = pension_income_deduction + military_retirement_pay
-
-        # Return the total deduction for the tax unit.
+        # Restrict to the head (and spouse if filing jointly) per Schedule 1S
+        # line 4.
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
-        return where(
-            is_joint,
-            tax_unit.sum(where(is_head | is_spouse, deduction, 0)),
-            tax_unit.sum(where(is_head, deduction, 0)),
+        non_military_head_only = tax_unit.sum(where(is_head, non_military_deduction, 0))
+        non_military_with_spouse = tax_unit.sum(
+            where(is_head | is_spouse, non_military_deduction, 0)
         )
+        total_non_military = where(
+            is_joint, non_military_with_spouse, non_military_head_only
+        )
+        military_head_only = tax_unit.sum(where(is_head, military_retirement_pay, 0))
+        military_with_spouse = tax_unit.sum(
+            where(is_head | is_spouse, military_retirement_pay, 0)
+        )
+        total_military = where(is_joint, military_with_spouse, military_head_only)
+
+        # Phaseout fraction (Worksheet for Phaseout of Non-Military Pension
+        # Income Deduction). Military retirement pay is fully deducted
+        # under 36 M.R.S. § 5122(2)(M-2)(1)(b) and is not reduced by the
+        # § 5122(2)(M-3) phaseout.
+        agi = tax_unit("adjusted_gross_income", period)
+        start = p.phaseout.start[filing_status]
+        width = p.phaseout.width[filing_status]
+        excess = max_(agi - start, 0)
+        phaseout_fraction = min_(excess / width, 1)
+        allowed_non_military = total_non_military * (1 - phaseout_fraction)
+        return allowed_non_military + total_military

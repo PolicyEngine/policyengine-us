@@ -20,23 +20,23 @@
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on state deductions
+- name: When tax liability is equal, itemization is based on federal deduction comparison
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_itemized_deductions: 14_000
-    state_standard_deduction: 11_000
+    itemized_taxable_income_deductions: 14_000
+    standard_deduction: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on state deductions, unit itemizes
+- name: When tax liability is equal and itemized below standard, unit does not itemize
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_itemized_deductions: 14_000
-    state_standard_deduction: 16_000
+    itemized_taxable_income_deductions: 14_000
+    standard_deduction: 16_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
@@ -177,4 +177,4 @@
   output:
     ok_itemized_deductions: 0
     tax_unit_itemizes: false
-    ok_income_tax: 3_483
+    ok_income_tax: 3_410.03

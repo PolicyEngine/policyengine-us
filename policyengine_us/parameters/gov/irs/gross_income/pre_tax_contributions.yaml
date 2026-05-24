@@ -1,11 +1,13 @@
 description: The US subtracts these payroll deductions from wages and salaries when determining the taxable amount.
 values:
   2010-01-01:
-    # Assumes all are pre-tax.
+    # Only the traditional (pre-tax) variants reduce taxable wages.
+    # Roth 401(k)/403(b) contributions are designated Roth contributions
+    # under IRC §402A and are includible in gross income.
     - traditional_401k_contributions
     - traditional_403b_contributions
-    # Assumes employer for now.
-    - health_insurance_premiums
+    # Only explicit pre-tax payroll health premiums reduce taxable wages.
+    - pre_tax_health_insurance_premiums
     # HSA contributions can be either through pre-tax.
     - health_savings_account_payroll_contributions
 metadata:
