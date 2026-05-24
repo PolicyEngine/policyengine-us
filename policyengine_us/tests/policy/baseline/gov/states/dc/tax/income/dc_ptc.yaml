@@ -270,3 +270,25 @@
   output:
     dc_ptc: 0  # No credit when there's no rent or property taxes paid
     dc_income_tax: 0
+
+- name: dc_ptc is zero outside DC.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+        real_estate_taxes: 3_150
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    dc_ptc: 0
+    taxsim_state_property_tax_credit: 0
+    state_property_tax_credit: 0
