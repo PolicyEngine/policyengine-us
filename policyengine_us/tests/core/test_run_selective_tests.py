@@ -105,6 +105,25 @@ def test_limit_test_paths_defers_slow_ssa_baseline_directory():
     assert limited_paths == set()
 
 
+def test_limit_test_paths_defers_slow_household_directories():
+    runner = SelectiveTestRunner()
+
+    changed_files = {
+        "policyengine_us/variables/household/income/person/fsla_overtime_premium.py",
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/microsimulation" not in limited_paths
+    assert "policyengine_us/tests/policy/baseline/household" not in limited_paths
+    assert limited_paths == {
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
+
+
 def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
     runner = SelectiveTestRunner()
 
