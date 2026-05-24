@@ -50,8 +50,8 @@
   output:
     mi_homestead_property_tax_credit_countable_property_tax: 2_100
     mi_homestead_property_tax_credit_household_resource_exemption: 80.8
-    mi_homestead_property_tax_credit_eligible: true
-    mi_allowable_homestead_property_tax_credit: 48.48
+    mi_homestead_property_tax_credit_eligible: false
+    mi_allowable_homestead_property_tax_credit: 0
     mi_homestead_property_tax_credit_pre_alternate_senior_amount: 0
     mi_homestead_property_tax_credit: 0
 
@@ -401,3 +401,44 @@
     mi_homestead_property_tax_credit_eligible: true
     mi_allowable_homestead_property_tax_credit: 1_900
     mi_homestead_property_tax_credit: 1_900
+
+- name: 2025 household resources above line 33 limit, ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_pension_income: 29_092
+        taxable_interest_income: 14_196
+        social_security: 30_000
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        rent: 62_436
+      person2:
+        age: 11
+      person3:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    families:
+      family:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    mi_household_resources: 73_288
+    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_property_tax_credit: 0
