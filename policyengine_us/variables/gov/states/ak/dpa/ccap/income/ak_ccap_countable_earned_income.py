@@ -26,7 +26,5 @@ class ak_ccap_countable_earned_income(Variable):
         adult_age = parameters(period).gov.states.ak.dpa.ccap.age_threshold.adult
         person = spm_unit.members
         is_adult = person("age", period.this_year) >= adult_age
-        earned_per_person = sum(
-            person(source, period) for source in p_income.earned_sources
-        )
+        earned_per_person = add(person, period, p_income.earned_sources)
         return spm_unit.sum(earned_per_person * is_adult)
