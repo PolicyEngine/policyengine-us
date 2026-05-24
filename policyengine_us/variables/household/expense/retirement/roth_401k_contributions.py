@@ -8,7 +8,9 @@ class roth_401k_contributions(Variable):
     unit = USD
     documentation = (
         "Roth 401(k) contributions after applying the combined 401(k) and "
-        "403(b) elective deferral limit."
+        "403(b) elective deferral limit. If desired deferrals exceed the "
+        "limit, PolicyEngine preserves desired allocation shares by scaling "
+        "each deferral in the shared limit group proportionally."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/402#g"
@@ -25,6 +27,9 @@ class roth_401k_contributions(Variable):
                 "uncapped_roth_403b_contributions",
             ],
         )
+        # Behavioral assumption: no deferral type is prioritized. Preserve
+        # desired allocation shares by applying one scale factor to all 401(k)
+        # and 403(b) deferrals subject to this combined limit.
         scale = min_(
             person("elective_deferral_limit", period) / max_(total_desired, 1), 1
         )

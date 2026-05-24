@@ -8,7 +8,9 @@ class roth_ira_contributions(Variable):
     unit = USD
     documentation = (
         "Roth IRA contributions after applying the combined traditional "
-        "and Roth IRA contribution limit."
+        "and Roth IRA contribution limit. If desired IRA contributions exceed "
+        "the limit, PolicyEngine preserves desired allocation shares by "
+        "scaling traditional and Roth IRA contributions proportionally."
     )
     definition_period = YEAR
     reference = (
@@ -26,6 +28,8 @@ class roth_ira_contributions(Variable):
                 "uncapped_roth_ira_contributions",
             ],
         )
+        # Behavioral assumption: no IRA type is prioritized. Preserve desired
+        # allocation shares by applying one scale factor to both IRA types.
         scale = min_(
             person("ira_contribution_limit", period) / max_(total_desired, 1), 1
         )

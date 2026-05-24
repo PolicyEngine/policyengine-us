@@ -9,7 +9,7 @@
     traditional_401k_contributions: 12_000
     roth_401k_contributions: 8_000
 
-- name: Case 2, desired deferral inputs above the base elective deferral limit.
+- name: Case 2, desired deferrals above the base elective deferral limit are scaled proportionally.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -22,7 +22,7 @@
     roth_401k_contributions: 7_833.33
     pre_tax_contributions: 15_666.67
 
-- name: Case 3, desired inputs use the enhanced catch-up limit across 401(k) and 403(b) deferrals.
+- name: Case 3, desired deferrals are scaled proportionally across 401(k) and 403(b) deferrals.
   period: 2025
   absolute_error_margin: 0.01
   input:
