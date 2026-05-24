@@ -49,8 +49,8 @@ class mn_homestead_credit_refund_household_income(Variable):
                 "roth_401k_contributions",
                 "traditional_403b_contributions",
                 "roth_403b_contributions",
-                "traditional_ira_contributions",
-                "roth_ira_contributions",
+                "capped_traditional_ira_contributions",
+                "capped_roth_ira_contributions",
                 "self_employed_pension_contributions",
             ],
         )
@@ -60,7 +60,7 @@ class mn_homestead_credit_refund_household_income(Variable):
             [
                 "traditional_401k_contributions",
                 "traditional_403b_contributions",
-                "traditional_ira_contributions",
+                "capped_traditional_ira_contributions",
                 "self_employed_pension_contributions",
             ],
         )

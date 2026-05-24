@@ -131,3 +131,28 @@
   output:
     mn_homestead_credit_refund_eligible: false
     mn_homestead_credit_refund: 0
+
+- name: Case 7, over-limit desired IRA contributions use statutory capped amounts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        traditional_ira_contributions_desired: 20_000
+        roth_ira_contributions_desired: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    capped_traditional_ira_contributions: 3_500
+    capped_roth_ira_contributions: 3_500
+    mn_homestead_credit_refund_household_income: 46_500
