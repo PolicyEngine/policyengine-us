@@ -24,3 +24,35 @@
   output:
     basic_income: 0
     adjusted_gross_income: 0
+
+- name: Dependent Social Security benefits do not increase head AGI.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 43_500
+        taxable_interest_income: 0.68
+        is_tax_unit_head: true
+      person2:
+        age: 16
+        social_security_dependents: 8_400
+        is_tax_unit_dependent: true
+      person3:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    social_security: [0, 8_400, 0]
+    tax_unit_social_security: 0
+    tax_unit_taxable_social_security: 0
+    taxable_social_security: [0, 0, 0]
+    irs_gross_income: [43_500.68, 0, 0]
+    adjusted_gross_income: 43_500.68
