@@ -104,3 +104,24 @@
   output:
     # No enhanced catch-up before 2025
     k401_catch_up_limit: 7_500
+
+- name: Case 15, age 50 in 2026 receives 2026 standard limit.
+  period: 2026
+  input:
+    age: 50
+  output:
+    k401_catch_up_limit: 8_000
+
+- name: Case 16, age 62 in 2026 receives 2026 enhanced limit.
+  period: 2026
+  input:
+    age: 62
+  output:
+    k401_catch_up_limit: 11_250
+
+- name: Case 17, age 64 in 2026 reverts to 2026 standard limit.
+  period: 2026
+  input:
+    age: 64
+  output:
+    k401_catch_up_limit: 8_000

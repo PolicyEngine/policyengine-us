@@ -1,0 +1,123 @@
+- name: Case 1, reported deferrals below the elective deferral limit.
+  period: 2025
+  input:
+    age: 35
+    traditional_401k_contributions: 12_000
+    roth_401k_contributions: 8_000
+  output:
+    elective_deferral_limit: 23_500
+    traditional_401k_contributions: 12_000
+    roth_401k_contributions: 8_000
+    capped_traditional_401k_contributions: 12_000
+    capped_roth_401k_contributions: 8_000
+
+- name: Case 2, legacy deferral inputs above the base elective deferral limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    traditional_401k_contributions: 20_000
+    roth_401k_contributions: 10_000
+  output:
+    elective_deferral_limit: 23_500
+    traditional_401k_contributions: 20_000
+    roth_401k_contributions: 10_000
+    capped_traditional_401k_contributions: 15_666.67
+    capped_roth_401k_contributions: 7_833.33
+    pre_tax_contributions: 15_666.67
+
+- name: Case 3, reported inputs use the enhanced catch-up limit across 401(k) and 403(b) deferrals.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 62
+    traditional_401k_contributions_reported: 20_000
+    roth_401k_contributions_reported: 10_000
+    traditional_403b_contributions_reported: 5_000
+    roth_403b_contributions_reported: 5_000
+  output:
+    elective_deferral_limit: 34_750
+    capped_traditional_401k_contributions: 17_375
+    capped_roth_401k_contributions: 8_687.50
+    capped_traditional_403b_contributions: 4_343.75
+    capped_roth_403b_contributions: 4_343.75
+
+- name: Case 4, SECURE 2.0 enhanced catch-up applies from ages 60 through 63.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 49
+      person2:
+        age: 50
+      person3:
+        age: 59
+      person4:
+        age: 60
+      person5:
+        age: 63
+      person6:
+        age: 64
+  output:
+    elective_deferral_limit: [23_500, 31_000, 31_000, 34_750, 34_750, 31_000]
+
+- name: Case 5, capped traditional deferrals reduce income tax wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions: 50_000
+  output:
+    traditional_401k_contributions: 50_000
+    capped_traditional_401k_contributions: 23_500
+    pre_tax_contributions: 23_500
+    irs_employment_income: 76_500
+
+- name: Case 6, capped traditional deferrals do not reduce FICA wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 100_000
+    traditional_401k_contributions: 50_000
+  output:
+    capped_traditional_401k_contributions: 23_500
+    payroll_tax_gross_wages: 100_000
+
+- name: Case 7, capped Roth deferrals count for the saver's credit.
+  period: 2025
+  input:
+    age: 40
+    traditional_401k_contributions: 30_000
+    roth_401k_contributions: 17_000
+    retirement_distributions: 0
+  output:
+    capped_traditional_401k_contributions: 15_000
+    capped_roth_401k_contributions: 8_500
+    savers_credit_qualified_contributions: 23_500
+
+- name: Case 8, the 2026 standard catch-up applies from ages 50 through 59.
+  period: 2026
+  input:
+    age: 55
+    traditional_401k_contributions: 32_500
+  output:
+    elective_deferral_limit: 32_500
+    capped_traditional_401k_contributions: 32_500
+
+- name: Case 9, the SECURE 2.0 enhanced catch-up applies in 2026.
+  period: 2026
+  input:
+    age: 62
+    traditional_401k_contributions: 35_750
+  output:
+    elective_deferral_limit: 35_750
+    capped_traditional_401k_contributions: 35_750
+
+- name: Case 10, age 64 returns to the standard catch-up in 2026.
+  period: 2026
+  input:
+    age: 64
+    traditional_401k_contributions: 35_750
+  output:
+    elective_deferral_limit: 32_500
+    capped_traditional_401k_contributions: 32_500
