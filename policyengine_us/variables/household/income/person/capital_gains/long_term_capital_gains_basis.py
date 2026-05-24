@@ -11,3 +11,4 @@ class long_term_capital_gains_basis(Variable):
         "stored for capital-gains basis indexation analysis."
     )
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.long_term_capital_gains"
