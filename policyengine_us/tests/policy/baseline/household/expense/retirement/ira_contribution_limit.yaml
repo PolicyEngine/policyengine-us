@@ -1,0 +1,78 @@
+- name: Case 1, IRA contributions below the base limit are unchanged.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        traditional_ira_contributions: 4_000
+        roth_ira_contributions: 2_000
+  output:
+    ira_contribution_limit: 7_000
+    capped_traditional_ira_contributions: 4_000
+    capped_roth_ira_contributions: 2_000
+
+- name: Case 2, IRA contributions above the base limit are capped proportionally.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        traditional_ira_contributions: 9_000
+        roth_ira_contributions: 3_000
+  output:
+    ira_contribution_limit: 7_000
+    capped_traditional_ira_contributions: 5_250
+    capped_roth_ira_contributions: 1_750
+
+- name: Case 3, IRA catch-up contribution raises the combined limit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        traditional_ira_contributions: 9_000
+        roth_ira_contributions: 3_000
+  output:
+    ira_contribution_limit: 8_000
+    capped_traditional_ira_contributions: 6_000
+    capped_roth_ira_contributions: 2_000
+
+- name: Case 4, reported IRA variables override legacy inputs.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        traditional_ira_contributions: 100
+        roth_ira_contributions: 100
+        traditional_ira_contributions_reported: 2_000
+        roth_ira_contributions_reported: 8_000
+  output:
+    capped_traditional_ira_contributions: 1_400
+    capped_roth_ira_contributions: 5_600
+
+- name: Case 5, federal above-the-line deductions use capped traditional IRA contributions.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        traditional_ira_contributions: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    above_the_line_deductions: 7_000
+    adjusted_gross_income: 93_000
+
+- name: Case 6, Saver's Credit qualified contributions use capped IRA contributions.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        traditional_ira_contributions: 9_000
+        roth_ira_contributions: 3_000
+  output:
+    savers_credit_qualified_contributions: 7_000

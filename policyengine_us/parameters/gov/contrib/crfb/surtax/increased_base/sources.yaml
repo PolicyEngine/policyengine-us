@@ -2,7 +2,7 @@ description: Additional income sources for CRFB surtax expanded base beyond IRS 
 values:
   2010-01-01:
     # Retirement contributions (IRA, 401k, 403b)
-    - traditional_ira_contributions
+    - capped_traditional_ira_contributions
     - traditional_401k_contributions
     - traditional_403b_contributions
     # HSA contributions (no Archer MSA variable exists)
