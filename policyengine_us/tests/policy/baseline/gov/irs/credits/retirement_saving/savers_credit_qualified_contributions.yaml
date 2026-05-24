@@ -8,7 +8,7 @@
     roth_401k_contributions: 1_000
     roth_403b_contributions: 1_000
     self_employment_income: 1_000
-    self_employed_pension_contributions: 1_000
+    self_employed_pension_contributions_desired: 1_000
     able_contributions_person: 100
     retirement_distributions: 1_000
   output:
@@ -23,7 +23,7 @@
     roth_ira_contributions: 0
     roth_401k_contributions: 0
     roth_403b_contributions: 0
-    self_employed_pension_contributions: 0
+    self_employed_pension_contributions_desired: 0
     able_contributions_person: 500
     retirement_distributions: 2_000
   output:
@@ -33,7 +33,7 @@
   period: 2026
   input:
     self_employment_income: 100_000
-    self_employed_pension_contributions: 100_000
+    self_employed_pension_contributions_desired: 100_000
   output:
-    capped_self_employed_pension_contributions: 72_000
+    self_employed_pension_contributions: 72_000
     savers_credit_qualified_contributions: 72_000

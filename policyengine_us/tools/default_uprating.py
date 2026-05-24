@@ -43,7 +43,7 @@ INPUT_VARIABLES = [
     "spm_unit_total_income_reported",
     "alimony_income",
     "prior_year_minimum_tax_credit",
-    "self_employed_pension_contributions",
+    "self_employed_pension_contributions_desired",
     "taxable_unemployment_compensation",
     "employment_income_last_year",
     "taxable_sep_distributions",

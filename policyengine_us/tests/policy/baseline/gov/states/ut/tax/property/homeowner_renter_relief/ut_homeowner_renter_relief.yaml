@@ -220,7 +220,7 @@
       person1:
         age: 66
         self_employment_income: 100_000
-        self_employed_pension_contributions: 100_000
+        self_employed_pension_contributions_desired: 100_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -230,5 +230,5 @@
         members: [person1]
         state_code: UT
   output:
-    capped_self_employed_pension_contributions: 72_000
+    self_employed_pension_contributions: 72_000
     ut_homeowner_renter_relief_nontaxable_income: 72_000

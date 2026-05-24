@@ -7,7 +7,7 @@ values:
     - capped_traditional_403b_contributions
     - capped_roth_401k_contributions
     - capped_roth_403b_contributions
-    - capped_self_employed_pension_contributions
+    - self_employed_pension_contributions
     - able_contributions_person
 
   2026-01-01:
@@ -17,7 +17,7 @@ values:
     - capped_traditional_403b_contributions
     - capped_roth_401k_contributions
     - capped_roth_403b_contributions
-    - capped_self_employed_pension_contributions
+    - self_employed_pension_contributions
 
 metadata:
   unit: list

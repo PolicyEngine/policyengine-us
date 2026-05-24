@@ -12,5 +12,5 @@ class self_employed_pension_contribution_ald_person(Variable):
 
     def formula(person, period, parameters):
         earnings = max_(0, person("total_self_employment_income", period))
-        contributions = person("capped_self_employed_pension_contributions", period)
+        contributions = person("self_employed_pension_contributions", period)
         return min_(earnings, contributions)
