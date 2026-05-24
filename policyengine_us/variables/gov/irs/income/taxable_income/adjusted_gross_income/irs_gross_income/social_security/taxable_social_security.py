@@ -12,9 +12,7 @@ class taxable_social_security(Variable):
         unit_tss = person.tax_unit("tax_unit_taxable_social_security", period)
         # allocate unit_tss to head and spouse in proportion to social_security
         ind_socsec = person("social_security", period)
-        unit_socsec = person.tax_unit(
-            "tax_unit_social_security_for_taxability", period
-        )
+        unit_socsec = person.tax_unit("tax_unit_social_security_for_taxability", period)
         # Compute each person's share of tax unit's Social Security benefits.
         # Use mask instead of where to avoid divide-by-zero warnings. Default to zero.
         person_frac = np.zeros_like(unit_socsec)
