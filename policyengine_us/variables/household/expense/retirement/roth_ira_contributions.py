@@ -6,5 +6,8 @@ class roth_ira_contributions(Variable):
     entity = Person
     label = "Roth IRA contributions"
     unit = USD
-    documentation = "Reported contributions to Roth Individual Retirement Accounts."
+    documentation = (
+        "Legacy input for desired contributions to Roth Individual Retirement "
+        "Accounts."
+    )
     definition_period = YEAR

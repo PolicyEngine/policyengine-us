@@ -7,6 +7,7 @@ class traditional_ira_contributions(Variable):
     label = "Traditional IRA contributions"
     unit = USD
     documentation = (
-        "Reported contributions to traditional Individual Retirement Accounts."
+        "Legacy input for desired contributions to traditional Individual "
+        "Retirement Accounts."
     )
     definition_period = YEAR

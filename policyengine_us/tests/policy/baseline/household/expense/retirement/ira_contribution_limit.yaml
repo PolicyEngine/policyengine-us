@@ -37,7 +37,7 @@
     capped_traditional_ira_contributions: 6_000
     capped_roth_ira_contributions: 2_000
 
-- name: Case 4, reported IRA variables override legacy inputs.
+- name: Case 4, desired IRA variables override legacy inputs.
   period: 2024
   input:
     people:
@@ -45,8 +45,8 @@
         age: 45
         traditional_ira_contributions: 100
         roth_ira_contributions: 100
-        traditional_ira_contributions_reported: 2_000
-        roth_ira_contributions_reported: 8_000
+        traditional_ira_contributions_desired: 2_000
+        roth_ira_contributions_desired: 8_000
   output:
     capped_traditional_ira_contributions: 1_400
     capped_roth_ira_contributions: 5_600

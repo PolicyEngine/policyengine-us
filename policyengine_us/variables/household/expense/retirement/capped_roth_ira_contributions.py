@@ -18,7 +18,7 @@ class capped_roth_ira_contributions(Variable):
 
     def formula(person, period, parameters):
         raw = person("uncapped_roth_ira_contributions", period)
-        total_reported = add(
+        total_desired = add(
             person,
             period,
             [
@@ -27,6 +27,6 @@ class capped_roth_ira_contributions(Variable):
             ],
         )
         scale = min_(
-            person("ira_contribution_limit", period) / max_(total_reported, 1), 1
+            person("ira_contribution_limit", period) / max_(total_desired, 1), 1
         )
         return raw * scale
