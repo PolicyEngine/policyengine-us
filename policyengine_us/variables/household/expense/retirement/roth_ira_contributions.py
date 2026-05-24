@@ -6,5 +6,5 @@ class roth_ira_contributions(Variable):
     entity = Person
     label = "Roth IRA contributions"
     unit = USD
-    documentation = "Contributions to Roth Individual Retirement Accounts."
+    documentation = "Reported contributions to Roth Individual Retirement Accounts."
     definition_period = YEAR
