@@ -1,0 +1,10 @@
+description: Whether basis indexation is capped so it cannot turn a long-term capital gain into a loss.
+values:
+  2013-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Capital gains basis indexation no-loss cap
+  reference:
+    - title: Yale Budget Lab, Indexing Capital Gains to Inflation
+      href: https://budgetlab.yale.edu/research/indexing-capital-gains-inflation

@@ -1,0 +1,123 @@
+- name: Case 1, inactive capital gains basis indexation leaves long-term gains unchanged.
+  period: 2026
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 5_000
+        long_term_capital_gains_basis: 10_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 0
+    long_term_capital_gains_indexation_adjustment: [0]
+    long_term_capital_gains: [5_000]
+
+- name: Case 2, retrospective indexation applies the no-loss cap.
+  period: 2026
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_retrospective
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 100
+        long_term_capital_gains_basis: 1_000_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 100
+    long_term_capital_gains_indexation_adjustment: [100]
+    long_term_capital_gains: [0]
+
+- name: Case 3, prospective indexation excludes assets purchased before 2026.
+  period: 2026
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_prospective
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 5_000
+        long_term_capital_gains_basis: 10_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 0
+    long_term_capital_gains_indexation_adjustment: [0]
+    long_term_capital_gains: [5_000]
+
+- name: Case 4, prospective indexation applies to assets purchased after 2025.
+  period: 2027
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_prospective
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 100
+        long_term_capital_gains_basis: 1_000_000
+        long_term_capital_gains_years_held: 1.1
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 100
+    long_term_capital_gains_indexation_adjustment: [100]
+    long_term_capital_gains: [0]
+
+- name: Case 5, tax-unit indexation allocates a capped mixed-spouse adjustment to the gain holder.
+  period: 2026
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_retrospective
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: 500
+        long_term_capital_gains_basis: 800_000
+        long_term_capital_gains_years_held: 10
+      person2:
+        long_term_capital_gains_before_response: -200
+        long_term_capital_gains_basis: 200_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 300
+    long_term_capital_gains_indexation_adjustment: [300, 0]
+    long_term_capital_gains: [200, -200]
+    net_capital_gains: 0
+
+- name: Case 6, no-loss cap prevents larger net long-term losses.
+  period: 2026
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_retrospective
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: -500
+        long_term_capital_gains_basis: 1_000_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 0
+    long_term_capital_gains_indexation_adjustment: [0]
+    long_term_capital_gains: [-500]
+
+- name: Case 7, losses-allowed benchmark can increase net long-term losses.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.capital_gains_indexation.capital_gains_indexation_retrospective_losses_allowed
+  input:
+    people:
+      person1:
+        long_term_capital_gains_before_response: -500
+        long_term_capital_gains_basis: 1_000_000
+        long_term_capital_gains_years_held: 10
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    tax_unit_long_term_capital_gains_indexation_adjustment: 334_063.66
+    long_term_capital_gains_indexation_adjustment: [334_063.66]
+    long_term_capital_gains: [-334_563.66]
