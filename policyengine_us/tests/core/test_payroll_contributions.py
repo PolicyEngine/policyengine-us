@@ -301,6 +301,15 @@ def make_employer_total_simulation(
             id="ME",
         ),
         pytest.param(
+            "MN",
+            {
+                "mn_employee_paid_leave_contribution": 440,
+                "mn_employee_state_payroll_tax": 440,
+                "employee_state_payroll_tax": 440,
+            },
+            id="MN",
+        ),
+        pytest.param(
             "NJ",
             {
                 "nj_employee_temporary_disability_insurance_contribution": 190,
