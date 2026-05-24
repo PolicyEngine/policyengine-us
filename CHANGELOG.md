@@ -1,3 +1,8 @@
+## [1.705.12] - 2026-05-24
+
+No significant changes.
+
+
 ## [1.705.11] - 2026-05-23
 
 No significant changes.
