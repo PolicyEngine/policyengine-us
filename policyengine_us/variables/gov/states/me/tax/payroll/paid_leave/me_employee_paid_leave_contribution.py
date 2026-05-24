@@ -15,4 +15,4 @@ class me_employee_paid_leave_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.me.tax.payroll.paid_leave.employee_rate
-        return rate * person("state_payroll_tax_social_security_capped_wages", period)
+        return rate * person("me_paid_leave_taxable_wages", period)

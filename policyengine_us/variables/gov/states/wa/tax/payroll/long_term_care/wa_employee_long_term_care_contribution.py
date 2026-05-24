@@ -12,4 +12,4 @@ class wa_employee_long_term_care_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.wa.tax.payroll.long_term_care.employee_rate
-        return rate * person("wa_payroll_tax_gross_wages", period)
+        return rate * person("wa_long_term_care_taxable_wages", period)

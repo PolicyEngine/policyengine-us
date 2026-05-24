@@ -15,5 +15,7 @@ class ny_employee_disability_benefits_contribution(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.tax.payroll.disability_benefits
-        uncapped = p.employee_rate * person("state_payroll_tax_gross_wages", period)
+        uncapped = p.employee_rate * person(
+            "ny_disability_benefits_taxable_wages", period
+        )
         return min_(uncapped, p.annual_max_contribution)

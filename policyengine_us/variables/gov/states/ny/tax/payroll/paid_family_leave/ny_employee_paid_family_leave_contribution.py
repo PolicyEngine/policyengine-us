@@ -12,5 +12,7 @@ class ny_employee_paid_family_leave_contribution(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.tax.payroll.paid_family_leave
-        uncapped = p.employee_rate * person("state_payroll_tax_gross_wages", period)
+        uncapped = p.employee_rate * person(
+            "ny_paid_family_leave_taxable_wages", period
+        )
         return min_(uncapped, p.annual_max_contribution)
