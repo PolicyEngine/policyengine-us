@@ -1,3 +1,10 @@
+## [1.706.0] - 2026-05-24
+
+### Added
+
+- Cap traditional and Roth 401(k) and 403(b) contributions at the IRC Section 402(g) elective deferral limit, including age-based catch-ups.
+
+
 ## [1.705.23] - 2026-05-24
 
 No significant changes.
