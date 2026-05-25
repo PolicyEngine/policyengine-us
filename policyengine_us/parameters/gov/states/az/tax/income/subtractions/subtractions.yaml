@@ -22,7 +22,11 @@ values:
     - az_529a_able_account_subtraction # Line 34b
     - az_adoption_expense_subtraction # Other subtractions - Item D
     - az_families_tax_rebate_subtraction # Line 36, Item U
-    - az_mctcp_subtraction # Form 140 page 6 Item V (MCTCP worksheet total, EO 2025-15)
+    # MCTCP worksheet (Item V on Form 140 page 6) per Executive Order 2025-15
+    - tip_income_deduction # MCTCP worksheet Line 2 (Sch 1-A Line 13)
+    - overtime_income_deduction # MCTCP worksheet Line 3 (Sch 1-A Line 21)
+    - auto_loan_interest_deduction # MCTCP worksheet Line 4 (Sch 1-A Line 30)
+    - additional_senior_deduction # MCTCP worksheet Line 5 (Sch 1-A Line 37)
 metadata:
   unit: list
   period: year
