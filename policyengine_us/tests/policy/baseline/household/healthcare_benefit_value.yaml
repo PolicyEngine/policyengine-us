@@ -13,3 +13,12 @@
         medicaid_cost_if_enrolled: 3_564.1
   output: 
     healthcare_benefit_value: 3_564.1
+
+- name: Case 2, MSP limited-benefit cost is a healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 2_434.8
+  output:
+    healthcare_benefit_value: 2_434.8
