@@ -104,7 +104,7 @@ Downloaded PDFs, extracted text, and 300-DPI page renders are stored under `/tmp
 ## Requirement Notes
 
 - Eligibility group: aged, blind, or disabled individuals. The CMS STCs use "aged, blind, or disabled"; the state page/fact sheet emphasizes age 65+ or disability. Reuse `is_ssi_aged_blind_disabled`.
-- Medicare exclusion: sources use no Medicare / not Medicare eligible / not covered by or entitled to Medicare. PolicyEngine's `is_medicare_eligible` treats all age-65+ people as eligible, which would erase the aged-without-Medicare pathway. Use `medicare_enrolled` as the operational no-Medicare proxy and document this model choice.
+- Medicare exclusion: sources use no Medicare / not Medicare eligible / not covered by or entitled to Medicare. Use `is_medicare_eligible` rather than Medicare take-up so HMW eligibility does not change when modeled Medicare enrollment changes. This may understate eligibility for rare age-65+ people who are not actually entitled to Medicare until PolicyEngine has a narrower Medicare entitlement input.
 - Pregnancy exclusion: state page and fact sheet say pregnant people cannot qualify. Use `is_pregnant`.
 - Long-term care institution exclusion: CMS STCs exclude inpatients in long-term care institutions. Use `is_in_medicaid_facility` as available proxy.
 - Income: at or below 135% FPL for the individual/couple, using SSI-based methodology and state-plan exclusions. Reuse `medicaid_optional_senior_or_disabled_countable_income` and the applicant's `marital_unit` so spouses in separate tax units are still counted and dependents do not expand the limit.

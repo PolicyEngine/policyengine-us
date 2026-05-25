@@ -43,12 +43,11 @@
   output:
     ms_hmw_eligible: false
 
-- name: Case 4, Medicare enrollee does not qualify through HMW.
+- name: Case 4, Medicare-eligible person does not qualify through HMW.
   period: 2026
   input:
     age: 67
     state_code: MS
-    takes_up_medicare_if_eligible: true
     is_ssi_disabled: true
     is_pregnant: false
     is_in_medicaid_facility: false
@@ -58,7 +57,7 @@
   output:
     ms_hmw_eligible: false
 
-- name: Case 5, non-Medicare senior can qualify through HMW.
+- name: Case 5, Medicare-eligible senior still fails HMW when not enrolled.
   period: 2026
   input:
     age: 67
@@ -70,7 +69,7 @@
     tax_unit_fpg: 10_000
     ssi_countable_resources: 3_999
   output:
-    ms_hmw_eligible: true
+    ms_hmw_eligible: false
 
 - name: Case 6, pregnant disabled adult does not qualify through HMW.
   period: 2026

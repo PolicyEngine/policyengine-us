@@ -5,6 +5,11 @@ class ms_hmw_non_medicare_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Meets the Healthier Mississippi Waiver Medicare exclusion"
+    documentation = (
+        "The Healthier Mississippi Waiver excludes people eligible for "
+        "Medicare. Use Medicare eligibility rather than Medicare enrollment "
+        "so Medicaid eligibility does not depend on modeled Medicare take-up."
+    )
     definition_period = YEAR
     defined_for = StateCode.MS
     reference = (
@@ -14,4 +19,4 @@ class ms_hmw_non_medicare_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        return ~person("medicare_enrolled", period)
+        return ~person("is_medicare_eligible", period)
