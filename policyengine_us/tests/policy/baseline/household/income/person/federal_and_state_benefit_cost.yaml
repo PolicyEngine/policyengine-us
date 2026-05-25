@@ -71,3 +71,18 @@
   output:
     federal_benefit_cost: 2_434.8
     state_benefit_cost: 0
+
+- name: Case 6, QMB Medicare Savings Program cost flows to federal and state benefit cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    federal_benefit_cost: 2_667.4
+    state_benefit_cost: 2_667.4
