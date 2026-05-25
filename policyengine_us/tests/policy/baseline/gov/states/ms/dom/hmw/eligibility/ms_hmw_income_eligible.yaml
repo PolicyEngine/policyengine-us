@@ -1,0 +1,36 @@
+- name: Case 1, countable income at 135 percent of poverty passes.
+  period: 2026
+  input:
+    state_code: MS
+    medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_unit_fpg: 10_000
+  output:
+    ms_hmw_income_eligible: true
+
+- name: Case 2, countable income over 135 percent of poverty fails.
+  period: 2026
+  input:
+    state_code: MS
+    medicaid_optional_senior_or_disabled_countable_income: 13_501
+    tax_unit_fpg: 10_000
+  output:
+    ms_hmw_income_eligible: false
+
+- name: Case 3, joint tax unit income at 135 percent of poverty passes.
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_750
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_750
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_fpg: 10_000
+  output:
+    ms_hmw_income_eligible: [true, true]

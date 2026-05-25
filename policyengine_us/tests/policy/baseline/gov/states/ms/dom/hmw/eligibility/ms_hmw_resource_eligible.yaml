@@ -1,0 +1,53 @@
+- name: Case 1, individual resources below limit pass.
+  period: 2026
+  input:
+    state_code: MS
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_resource_eligible: true
+
+- name: Case 2, individual resources at limit fail.
+  period: 2026
+  input:
+    state_code: MS
+    ssi_countable_resources: 4_000
+  output:
+    ms_hmw_resource_eligible: false
+
+- name: Case 3, joint tax unit resources below couple limit pass.
+  period: 2026
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 2_999
+      person2:
+        ssi_countable_resources: 2_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    ms_hmw_resource_eligible: [true, true]
+
+- name: Case 4, joint tax unit resources at couple limit fail.
+  period: 2026
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 3_000
+      person2:
+        ssi_countable_resources: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    ms_hmw_resource_eligible: [false, false]

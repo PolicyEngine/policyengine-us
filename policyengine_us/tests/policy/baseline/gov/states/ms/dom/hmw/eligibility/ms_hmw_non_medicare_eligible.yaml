@@ -1,0 +1,15 @@
+- name: Case 1, person not enrolled in Medicare passes Medicare exclusion.
+  period: 2026
+  input:
+    state_code: MS
+    medicare_enrolled: false
+  output:
+    ms_hmw_non_medicare_eligible: true
+
+- name: Case 2, person enrolled in Medicare fails Medicare exclusion.
+  period: 2026
+  input:
+    state_code: MS
+    medicare_enrolled: true
+  output:
+    ms_hmw_non_medicare_eligible: false
