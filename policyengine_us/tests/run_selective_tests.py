@@ -26,6 +26,8 @@ STOP_TEST_DIRS = frozenset(
 )
 QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
     {
+        "policyengine_us/tests/microsimulation",
+        "policyengine_us/tests/policy/baseline/household",
         "policyengine_us/tests/policy/baseline/gov/ssa",
         "policyengine_us/tests/policy/reform",
     }
