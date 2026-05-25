@@ -244,3 +244,22 @@
         # Other 3 qtrs = $10,000 >= 0.5 * $11,088 = $5,544.
         # Standard test would fail because $40,000 < 1.5 * $30,000 = $45,000.
         ny_ui_monetarily_eligible: true
+
+- name: Case 13, boundary - HQ one dollar below 2026 minimum fails test 1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_499
+        ny_ui_base_period_wages: 15_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $3,499 < $3,500 (2026 minimum) -> fails test 1.
+        ny_ui_monetarily_eligible: false
