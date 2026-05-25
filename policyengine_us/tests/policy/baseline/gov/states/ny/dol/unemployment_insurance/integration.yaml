@@ -1,6 +1,6 @@
-# Integration tests for New York Unemployment Insurance (NY UI).
+# Integration tests for New York unemployment insurance.
 # End-to-end scenarios checking ny_ui together with intermediate variables.
-# References: NY Lab. Law §§ 522, 525, 527, 590; NYSDOL P803 (Oct 2025),
+# References: NY Lab. Law §§ 525, 527, 590; NYSDOL P803 (Oct 2025),
 # P832 (Feb 2026).
 
 - name: Case 1, standard full unemployment with 4-quarter wage history.
@@ -13,7 +13,7 @@
         ny_ui_high_quarter_wages: 8_000
         ny_ui_base_period_wages: 28_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 26
+        weeks_unemployed: 26
         ny_ui_weekly_hours_worked: 0
         ny_ui_gross_weekly_earnings: 0
     households:
@@ -29,7 +29,7 @@
         #   Base $28,000 >= 1.5 * $8,000 = $12,000.
         ny_ui_monetarily_eligible: true
         # WBR (§ 590): 4 quarters, HQ > $3,575 -> floor($8,000 / 26) = $307.
-        # $104 <= $307 <= $504 (2025 range) -> WBR = $307.
+        # $136 <= $307 <= $504 (2025 range) -> WBR = $307.
         ny_ui_weekly_benefit_rate: 307
         # Weekly payable: 0 hours, 0 earnings -> full WBR.
         ny_ui_weekly_payable: 307
@@ -47,7 +47,7 @@
         ny_ui_second_high_quarter_wages: 4_288
         ny_ui_base_period_wages: 8_788
         ny_ui_quarters_with_wages: 2
-        ny_ui_weeks_unemployed: 10
+        weeks_unemployed: 10
         ny_ui_weekly_hours_worked: 0
         ny_ui_gross_weekly_earnings: 0
     households:
@@ -78,7 +78,7 @@
         ny_ui_high_quarter_wages: 10_000
         ny_ui_base_period_wages: 35_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 4
+        weeks_unemployed: 4
         ny_ui_weekly_hours_worked: 13
         ny_ui_gross_weekly_earnings: 200
     households:
@@ -112,7 +112,7 @@
         ny_ui_high_quarter_wages: 10_000
         ny_ui_base_period_wages: 35_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 4
+        weeks_unemployed: 4
         ny_ui_weekly_hours_worked: 5
         ny_ui_gross_weekly_earnings: 600
     households:
@@ -141,7 +141,7 @@
         ny_ui_high_quarter_wages: 2_000
         ny_ui_base_period_wages: 8_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 10
+        weeks_unemployed: 10
         ny_ui_weekly_hours_worked: 0
         ny_ui_gross_weekly_earnings: 0
     households:
@@ -167,7 +167,7 @@
         ny_ui_high_quarter_wages: 50_000
         ny_ui_base_period_wages: 150_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 26
+        weeks_unemployed: 26
         ny_ui_weekly_hours_worked: 0
         ny_ui_gross_weekly_earnings: 0
     households:
@@ -196,7 +196,7 @@
         ny_ui_high_quarter_wages: 13_000
         ny_ui_base_period_wages: 52_000
         ny_ui_quarters_with_wages: 4
-        ny_ui_weeks_unemployed: 26
+        weeks_unemployed: 26
         ny_ui_weekly_hours_worked: 0
         ny_ui_gross_weekly_earnings: 0
     households:
@@ -208,7 +208,7 @@
       person1:
         # Monetarily eligible: HQ $13,000; 4 qtrs; $52,000 >= 1.5 * $13,000.
         ny_ui_monetarily_eligible: true
-        # WBR: floor($13,000 / 26) = $500; within 2025 range ($104-$504).
+        # WBR: floor($13,000 / 26) = $500; within 2025 range ($136-$504).
         ny_ui_weekly_benefit_rate: 500
         ny_ui_weekly_payable: 500
         # Annual benefit: $500 * 26 = $13,000; MBA = $500 * 26 = $13,000.

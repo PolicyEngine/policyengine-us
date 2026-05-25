@@ -4,10 +4,11 @@ from policyengine_us.model_api import *
 class ny_ui_weekly_payable(Variable):
     value_type = float
     entity = Person
-    label = "NY UI weekly payable amount"
+    label = "New York unemployment insurance weekly payable amount"
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/LAB/590"
+    defined_for = "ny_ui_monetarily_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.dol.unemployment_insurance.benefit
@@ -16,8 +17,6 @@ class ny_ui_weekly_payable(Variable):
         gross_weekly_earnings = person("ny_ui_gross_weekly_earnings", period)
         weekly_hours_worked = person("ny_ui_weekly_hours_worked", period)
         hours_tier_rate = person("ny_ui_hours_tier_rate", period)
-        monetarily_eligible = person("ny_ui_monetarily_eligible", period)
-
         earnings_cap_disqualified = gross_weekly_earnings > p.max_amount
         partially_employed = (weekly_hours_worked > 0) & ~earnings_cap_disqualified
         partial_payment_eligible = gross_weekly_earnings < (
@@ -38,4 +37,4 @@ class ny_ui_weekly_payable(Variable):
             ],
             default=weekly_benefit_rate,
         )
-        return amount * monetarily_eligible
+        return amount

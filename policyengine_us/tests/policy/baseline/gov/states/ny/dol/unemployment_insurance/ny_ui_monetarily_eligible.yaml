@@ -3,7 +3,7 @@
 #   1. High-quarter wages >= statutory minimum ($3,400 in 2025; $3,500 from 2026-01-05).
 #   2. Wages paid in at least 2 calendar quarters of the base period.
 #   3. Total base-period wages >= 1.5 x high-quarter wages (standard case)
-#      OR other 3 quarters >= $9,559 when HQ >= $19,118 (capped case).
+#      OR other quarters >= half of the high-quarter cap (capped case).
 # Reference: NY Lab. Law § 527; NYSDOL P832 (Feb 2026).
 
 - name: Case 1, fully eligible - all three tests pass.
@@ -221,4 +221,26 @@
       person1:
         # HQ $19,118 >= cap $19,118 -> capped test applies.
         # Other 3 qtrs = $9,559 >= 0.5 * $19,118 = $9,559 -> passes capped test.
+        ny_ui_monetarily_eligible: true
+
+- name: Case 12, 2025 capped high earner passes despite failing 1.5x test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 30_000
+        # Other 3 quarters total = $40,000 - $30,000 = $10,000.
+        ny_ui_base_period_wages: 40_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $30,000 >= 2025 cap $11,088 -> capped test applies.
+        # Other 3 qtrs = $10,000 >= 0.5 * $11,088 = $5,544.
+        # Standard test would fail because $40,000 < 1.5 * $30,000 = $45,000.
         ny_ui_monetarily_eligible: true

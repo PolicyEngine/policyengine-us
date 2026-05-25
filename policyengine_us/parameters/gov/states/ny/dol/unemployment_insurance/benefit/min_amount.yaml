@@ -2,6 +2,11 @@ description: New York sets this minimum weekly benefit rate under the Unemployme
 
 values:
   2020-01-01: 104
+  2021-01-01: 108
+  2022-01-01: 116
+  2023-01-01: 124
+  2024-01-01: 132
+  2025-01-01: 136
   2026-01-01: 140
 
 metadata:
@@ -9,7 +14,11 @@ metadata:
   period: week
   label: New York UI minimum weekly benefit rate
   reference:
-    - title: NY Labor Law § 590 — Rights to benefits
+    - title: NY Labor Law § 590(5)(a) — Rights to benefits
       href: https://www.nysenate.gov/legislation/laws/LAB/590
+    - title: 2024 Form NYS-50, Employer's Guide to Unemployment Insurance, Wage Reporting, and Withholding Tax
+      href: https://www.tax.ny.gov/forms/publications/2024/wt/nys50-1224.htm
+    - title: 2025 Form NYS-50, Employer's Guide to Unemployment Insurance, Wage Reporting, and Withholding Tax
+      href: https://www.tax.ny.gov/forms/publications/wt/nys50.htm
     - title: NYSDOL P832 (Feb 2026), page 2
-      href: https://dol.ny.gov/system/files/documents/2026/02/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2
+      href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

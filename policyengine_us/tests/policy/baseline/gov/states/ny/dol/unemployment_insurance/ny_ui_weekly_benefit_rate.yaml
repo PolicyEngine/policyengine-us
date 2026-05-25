@@ -7,7 +7,8 @@
 #   $3,576 <= HQ <= $4,000 -> WBR_raw = floor(HQ / 26)
 #   HQ <= $3,575 -> WBR_raw = floor(HQ / 25)
 # Final WBR = min(max(WBR_raw, min_amount), max_amount).
-# min_amount: $104 (2020-), $140 (2026-01-01).
+# min_amount: $104 (2020), $108 (2021), $116 (2022), $124 (2023),
+# $132 (2024), $136 (2025), $140 (2026-01-01).
 # max_amount: $504 (2020-), $869 (2025-10-06).
 # Reference: NY Lab. Law § 590(5); NYSDOL P832 (Feb 2026).
 
@@ -98,8 +99,8 @@
       person1:
         # 4 quarters, HQ $3,000 <= $3,575 -> divisor 25.
         # $3,000 / 25 = $120; floor = $120.
-        # $120 >= $104 (2025 minimum) -> WBR = $120.
-        ny_ui_weekly_benefit_rate: 120
+        # $120 < $136 (2025 minimum) -> WBR lifted to $136.
+        ny_ui_weekly_benefit_rate: 136
 
 - name: Case 5, high earner capped at pre-Oct-2025 maximum of $504.
   period: 2025
@@ -164,7 +165,7 @@
       person1:
         # HQ $3,575 > $3,575 is FALSE -> divisor 25.
         # floor($3,575 / 25) = $143.
-        # $104 <= $143 <= $504 -> WBR = $143.
+        # $136 <= $143 <= $504 -> WBR = $143.
         ny_ui_weekly_benefit_rate: 143
 
 - name: Case 8, boundary - HQ one dollar above low threshold switches to standard divisor 26.
@@ -186,7 +187,7 @@
       person1:
         # HQ $3,576 > $3,575 TRUE -> standard divisor 26.
         # floor($3,576/26)=$137 < $143 formula floor -> raw lifted to $143.
-        # $104 <= $143 <= $504 -> WBR = $143.
+        # $136 <= $143 <= $504 -> WBR = $143.
         ny_ui_weekly_benefit_rate: 143
 
 - name: Case 9, boundary - HQ one dollar above low threshold in 2026, lifted by new minimum.
@@ -231,5 +232,67 @@
       person1:
         # 2 quarters; HQ $4,000 > $4,000 is FALSE, $4,000 > $3,575 TRUE -> tier 2.
         # floor($4,000 / 26) = $153.
-        # $104 <= $153 <= $504 -> WBR = $153.
+        # $136 <= $153 <= $504 -> WBR = $153.
         ny_ui_weekly_benefit_rate: 153
+
+- name: Case 11, 3-quarter case with HQ above $4,000 uses averaged top quarters.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 4_500
+        ny_ui_second_high_quarter_wages: 4_288
+        ny_ui_base_period_wages: 12_000
+        ny_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 3 quarters, HQ $4,500 > $4,000 -> tier 1.
+        # avg = ($4,500 + $4,288) / 2 = $4,394.
+        # $4,394 / 26 = $169.00; floor = $169.
+        ny_ui_weekly_benefit_rate: 169
+
+- name: Case 12, 2-quarter divisor-26 floor applies below $143.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_576
+        ny_ui_second_high_quarter_wages: 1_000
+        ny_ui_base_period_wages: 4_576
+        ny_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 2 quarters, HQ $3,576 > $3,575 and <= $4,000 -> tier 2.
+        # floor($3,576 / 26) = $137, lifted to the $143 formula floor.
+        ny_ui_weekly_benefit_rate: 143
+
+- name: Case 13, zero wages produce zero WBR rather than the minimum amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        ny_ui_raw_weekly_benefit_rate: 0
+        ny_ui_weekly_benefit_rate: 0

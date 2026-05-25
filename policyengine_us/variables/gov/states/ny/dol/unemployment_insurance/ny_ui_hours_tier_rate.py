@@ -4,9 +4,13 @@ from policyengine_us.model_api import *
 class ny_ui_hours_tier_rate(Variable):
     value_type = float
     entity = Person
-    label = "NY UI hours tier rate"
+    label = "New York unemployment insurance hours tier rate"
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/LAB/590"
+    documentation = (
+        "NY Lab. Law § 590(5)(c) defines partial-unemployment benefit reductions."
+    )
+    defined_for = StateCode.NY
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.dol.unemployment_insurance

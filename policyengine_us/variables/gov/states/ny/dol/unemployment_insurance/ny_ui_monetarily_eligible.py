@@ -4,9 +4,10 @@ from policyengine_us.model_api import *
 class ny_ui_monetarily_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Monetarily eligible for New York Unemployment Insurance"
+    label = "Monetarily eligible for New York unemployment insurance"
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/LAB/527"
+    defined_for = StateCode.NY
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.dol.unemployment_insurance

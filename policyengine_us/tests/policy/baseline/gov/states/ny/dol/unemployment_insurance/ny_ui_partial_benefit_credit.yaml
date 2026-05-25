@@ -134,3 +134,24 @@
         ny_ui_weekly_benefit_rate: 307
         # 0.5 * $307 = $153.50; ceil($153.50) = $154; max($154, $100) = $154.
         ny_ui_partial_benefit_credit: 154
+
+- name: Case 7, WBR $869 after October 2025 yields $435 PBC.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ny_ui_high_quarter_wages: 50_000
+        ny_ui_base_period_wages: 150_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        ny_ui_weekly_benefit_rate: 869
+        # 0.5 * $869 = $434.50; ceil($434.50) = $435.
+        ny_ui_partial_benefit_credit: 435
