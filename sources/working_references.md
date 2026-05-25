@@ -59,3 +59,55 @@ Downloaded PDFs, extracted text, and 300-DPI page renders are stored under `/tmp
 - Allocations to ineligible children.
 - Student earned income, impairment-related work expenses, blind work expenses, PASS, and infrequent/irregular income exclusions.
 - Mississippi-specific second-vehicle, income-producing property, personal-property, and life-insurance resource exclusions beyond existing `ssi_countable_resources` inputs.
+
+# Healthier Mississippi Waiver Working References
+
+## Official Program Name
+
+**Federal Program**: Medicaid section 1115 demonstration
+**State's Official Name**: Healthier Mississippi Waiver
+**Abbreviation**: HMW
+**Source**: Mississippi Division of Medicaid, Healthier Mississippi Waiver page
+**Variable Prefix**: `ms_hmw`
+
+## Official Sources
+
+1. Mississippi Division of Medicaid, Healthier Mississippi Waiver page.
+   - URL: https://medicaid.ms.gov/medicaid-coverage/who-qualifies-for-coverage/healthier-mississippi-waiver/
+   - Key points: enrollment began January 1, 2006; cap is 6,000; eligibility includes age 65 or older or disabled under SSI rules, no Medicare, not pregnant; income no more than 135% FPL; resources below $4,000 individual / $6,000 couple; excluded benefits include long-term care, swing bed, and maternity/newborn care.
+
+2. Mississippi Division of Medicaid, Healthier Mississippi Waiver Fact Sheet 2026.
+   - URL: https://medicaid.ms.gov/wp-content/uploads/2026/02/HMW-Fact-Sheet-2026.pdf#page=1
+   - Relevant pages:
+     - #page=1: enrollment start date, cap, Medicare exclusion, age/disability/pregnancy rules, 135% FPL rule, resource exclusions and countable resources.
+     - #page=2: 2026 monthly income examples, couple income rule, covered service exclusions, application instructions.
+
+3. Centers for Medicare & Medicaid Services / Mississippi Division of Medicaid, Healthier Mississippi Extension, approved September 24, 2024.
+   - URL: https://medicaid.ms.gov/wp-content/uploads/2024/09/Healthier-Mississippi-Extension.pdf#page=1
+   - Relevant pages:
+     - #page=1: expenditure authority for aged, blind, or disabled individuals at or below 135% FPL, not Medicare-eligible, and not otherwise Medicaid state plan eligible.
+     - #page=3: demonstration history and extension through September 30, 2029 with no programmatic changes.
+     - #page=9: eligibility rule, SSI-based income methodology, $4,000/$6,000 resource limits, enrollment cap, and benefit exclusions.
+
+4. Mississippi Division of Medicaid, Member Coverage Descriptions Job Aid, April 3, 2024.
+   - URL: https://medicaid.ms.gov/wp-content/uploads/2024/04/20240403_MES_Gainwell_PRP-101_Member-Coverage-Description-Job_Aid_v0.1.pdf#page=5
+   - Relevant pages:
+     - #page=5: COE 045, "PLAD Healthier MS Waiver - no Medicare"; income up to 135% of poverty; aged or disabled; not eligible for Medicare; $4,000/$6,000 resource test; benefit exclusions.
+
+5. Mississippi Division of Medicaid, Healthier Mississippi Waiver Full Public Notice, July 19, 2022.
+   - URL: https://medicaid.ms.gov/wp-content/uploads/2022/07/Healthier-Mississippi-Waiver-Full-Public-Notice-Website.pdf#page=1
+   - Relevant pages:
+     - #page=1: renewal requested no changes; HMW operated since 2006.
+     - #page=2: statewide operation, over 65 or SSI disability, no Medicare, income below 135% FPL, resources under $4,000/$6,000, not otherwise eligible for Medicaid/CHIP/other waiver, MAGI note, and benefit exclusions.
+     - #page=3: enrollment cap and waiting list process.
+
+## Requirement Notes
+
+- Eligibility group: aged, blind, or disabled individuals. The CMS STCs use "aged, blind, or disabled"; the state page/fact sheet emphasizes age 65+ or disability. Reuse `is_ssi_aged_blind_disabled`.
+- Medicare exclusion: sources use no Medicare / not Medicare eligible / not covered by or entitled to Medicare. Use `is_medicare_eligible` rather than Medicare take-up so HMW eligibility does not change when modeled Medicare enrollment changes. This may understate eligibility for rare age-65+ people who are not actually entitled to Medicare until PolicyEngine has a narrower Medicare entitlement input.
+- Pregnancy exclusion: state page and fact sheet say pregnant people cannot qualify. Use `is_pregnant`.
+- Long-term care institution exclusion: CMS STCs exclude inpatients in long-term care institutions. Use `is_in_medicaid_facility` as available proxy.
+- Income: at or below 135% FPL for the individual/couple, using SSI-based methodology and state-plan exclusions. Reuse `medicaid_optional_senior_or_disabled_countable_income` and the applicant's `marital_unit` so spouses in separate tax units are still counted and dependents do not expand the limit.
+- Resources: below $4,000 individual / $6,000 couple. Reuse `ssi_countable_resources` and the applicant's `marital_unit` to match the individual/couple HMW standard.
+- Not otherwise eligible: HMW is for people not otherwise eligible for Medicaid state plan, CHIP, or other waiver. Explicitly check existing Medicaid category variables; use a non-circular CHIP child proxy because PolicyEngine's `is_chip_eligible` depends on `is_medicaid_eligible`.
+- Enrollment cap: cap is 6,000; allocation/waiting list is not mechanically simulated because PolicyEngine does not have a deterministic slot assignment or current HMW enrollment variable.
