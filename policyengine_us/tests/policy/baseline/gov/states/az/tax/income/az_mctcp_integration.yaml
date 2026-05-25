@@ -1,0 +1,20 @@
+- name: AZ 2025 senior with capital gains receives MCTCP enhanced senior deduction (TaxSim #914)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        is_tax_unit_head: true
+        long_term_capital_gains: 100_000
+        short_term_capital_gains: -25_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # $6,000 enhanced senior deduction propagated to AZ subtractions
+    # Pre-fix az_income_tax was $803.75; post-fix $653.75 ($6,000 × 2.5% AZ flat rate)
+    az_income_tax: 653.75
