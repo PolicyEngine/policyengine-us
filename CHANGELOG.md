@@ -1,3 +1,10 @@
+## [1.707.0] - 2026-05-25
+
+### Added
+
+- Added the Medicaid long-term care home equity limit from H.R. 1.
+
+
 ## [1.706.17] - 2026-05-25
 
 No significant changes.
