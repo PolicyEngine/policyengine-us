@@ -1,4 +1,8 @@
-- name: AZ 2025 senior with capital gains receives MCTCP enhanced senior deduction (TaxSim #914)
+- name: AZ 2025 senior with capital gains receives MCTCP enhanced senior deduction (issue #8503 / TaxSim #914)
+  # Mirrors the reproduction in the issue:
+  #   additional_senior_deduction -> 6000 (federal computed)
+  #   az_subtractions -> includes the 6000 via MCTCP wiring
+  #   az_income_tax -> 653.75 (was 803.75 pre-fix; delta = $6,000 × 2.5% AZ flat rate)
   period: 2025
   input:
     people:
@@ -15,6 +19,6 @@
         members: [head]
         state_code: AZ
   output:
-    # $6,000 enhanced senior deduction propagated to AZ subtractions
-    # Pre-fix az_income_tax was $803.75; post-fix $653.75 ($6,000 × 2.5% AZ flat rate)
+    additional_senior_deduction: 6_000
+    az_subtractions: 31_000  # $25,000 az_long_term_capital_gains_subtraction + $6,000 MCTCP senior
     az_income_tax: 653.75
