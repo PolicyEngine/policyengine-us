@@ -117,7 +117,7 @@
   output:
     medicaid_federal_share: 0.7422
 
-- name: Disabled expansion adult keeps expansion FMAP despite aged-disabled cost group.
+- name: Expansion adult keeps expansion FMAP even when disability criteria are true.
   period: 2026
   input:
     state_code: NC
@@ -126,5 +126,4 @@
     medicaid_category: ADULT
     meets_ssi_disability_criteria: true
   output:
-    medicaid_group: AGED_DISABLED
     medicaid_federal_share: 0.9000

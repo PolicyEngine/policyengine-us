@@ -10,14 +10,9 @@ class MedicaidGroup(Enum):
 
 
 class medicaid_group(Variable):
-    """Maps Medicaid enrollees to broader spending/risk groups.
-
-    Medicaid legal eligibility pathways can change under reforms even when
-    enrollee traits do not. This variable is therefore based first on stable
-    cost/risk traits, not only on the selected legal Medicaid category.
-
+    """Maps fine-grained Medicaid categories to broader spending groups
     Precedence order (highest → lowest):
-    1. Aged, blind, disabled, or Medicare-enrolled → AGED_DISABLED
+    1. Disabled / SSI / medically-needy / Buy-In → AGED_DISABLED
     2. Pregnant                       → NON_EXPANSION_ADULT
     3. Parent                         → NON_EXPANSION_ADULT
     4. Young adult (19-20)            → NON_EXPANSION_ADULT
@@ -38,12 +33,16 @@ class medicaid_group(Variable):
         cat = person("medicaid_category", period)
         cats = cat.possible_values
 
-        aged_disabled = (
-            person("is_ssi_aged", period)
-            | person("is_blind", period)
-            | person("is_disabled", period)
-            | person("meets_ssi_disability_criteria", period)
-            | person("medicare_enrolled", period)
+        # Follow the selected Medicaid category for newly modeled optional
+        # pathways so they do not override mandatory category precedence.
+        # Preserve existing raw SSI and optional aged/disabled cost grouping.
+        disabled = (
+            (cat == cats.SSI_RECIPIENT)
+            | (cat == cats.SENIOR_OR_DISABLED)
+            | (cat == cats.MEDICALLY_NEEDY)
+            | (cat == cats.WORKING_DISABLED_BUY_IN)
+            | person("is_ssi_recipient_for_medicaid", period)
+            | person("is_optional_senior_or_disabled_for_medicaid", period)
         )
 
         # Pregnant OR Parent OR Young adult (19–20) → NON_EXPANSION_ADULT
@@ -74,7 +73,7 @@ class medicaid_group(Variable):
         return select(
             [
                 ~eligible,
-                aged_disabled | il_hbi_senior,
+                disabled | il_hbi_senior,
                 non_expansion_adult,
                 expansion_adult | il_hbi_adult,
                 child | il_hbi_child,
