@@ -40,8 +40,10 @@ class de_pension_exclusion(Variable):
         )
 
         # Filers under a certain age, are only eligible to receive
-        # a pension exclusion of a max amount pre 2022
-        capped_eligible_pension_income = min_(cap, eligible_income)
+        # a pension exclusion of a max amount pre 2022. Floor at zero so a net
+        # capital loss in the eligible-income basket does not mask the cap and
+        # silently zero out the exclusion downstream in de_subtractions.
+        capped_eligible_pension_income = min_(cap, max_(0, eligible_income))
 
         # Filer over a certain age are eligible to receive an exclsuion
         # for the total of pension income and eligible retirement income pre and after 2022

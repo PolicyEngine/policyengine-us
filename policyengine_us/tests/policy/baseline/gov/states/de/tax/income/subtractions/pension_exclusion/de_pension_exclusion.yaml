@@ -57,3 +57,25 @@
     state_code: DE
   output:
     de_pension_exclusion: 12_500
+
+- name: 60+ filer with net capital loss does not get a negative exclusion
+  period: 2025
+  input:
+    age: 75
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: -1_000_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 0
+
+- name: 60+ filer keeps full exclusion when interest exceeds cap and net capital gains are negative
+  period: 2025
+  input:
+    age: 75
+    is_tax_unit_head_or_spouse: true
+    taxable_interest_income: 42_896
+    short_term_capital_gains: -1_424_129
+    long_term_capital_gains: 49_197
+    state_code: DE
+  output:
+    de_pension_exclusion: 12_500
