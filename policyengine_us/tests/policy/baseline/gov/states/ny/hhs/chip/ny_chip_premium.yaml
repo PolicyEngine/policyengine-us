@@ -79,7 +79,7 @@
   output:
     ny_chip_premium: 1620
 
-- name: Case 5, New York Child Health Plus above 400 percent FPL pays the representative full premium.
+- name: Case 5, New York Child Health Plus above 400 percent FPL pays the representative full premium per child.
   period: 2026
   input:
     people:
@@ -104,7 +104,7 @@
         members: [person1, person2, person3, person4]
         state_code: NY
   output:
-    ny_chip_premium: 9_725.04
+    ny_chip_premium: 12_966.72
 
 - name: Case 6, New York Child Health Plus above 400 percent FPL with one child pays the per-child full premium.
   period: 2026

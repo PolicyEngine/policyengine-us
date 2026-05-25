@@ -1,4 +1,4 @@
-description: New York caps the total Child Health Plus monthly premium per family at three children's worth, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
+description: New York caps the total subsidized Child Health Plus monthly premium per family at three children's worth, based on the tax unit's modified adjusted gross income as a fraction of the federal poverty line.
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -55,6 +55,4 @@ brackets:
     amount:
       2020-01-01: 180
       2023-02-01: 0
-      2024-01-01: 801.18
-      2025-01-01: 817.05
-      2026-01-01: 810.42
+      2024-01-01: .inf

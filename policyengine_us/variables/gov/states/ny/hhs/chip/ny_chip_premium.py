@@ -8,11 +8,11 @@ class ny_chip_premium(Variable):
     unit = USD
     documentation = (
         "Annual New York Child Health Plus (separate CHIP) premium paid by "
-        "the tax unit. Per-child monthly premium capped at a three-child "
-        "family maximum, tiered by the tax unit's income as a fraction of "
-        "the federal poverty line. Families above 400 percent FPL pay a "
-        "statewide average full plan premium, because the actual premium "
-        "varies by health plan."
+        "the tax unit. Subsidized per-child monthly premiums are capped at "
+        "a three-child family maximum and tiered by the tax unit's income "
+        "as a fraction of the federal poverty line. Families above 400 "
+        "percent FPL pay an uncapped statewide average full plan premium, "
+        "because the actual premium varies by health plan."
     )
     definition_period = YEAR
     defined_for = StateCode.NY
