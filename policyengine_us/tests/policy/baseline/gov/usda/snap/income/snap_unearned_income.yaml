@@ -16,3 +16,27 @@
     retirement_distributions: 1_000
   output:
     snap_unearned_income: 1_000
+
+- name: Case 4, work-requirement-ineligible adult unearned income is prorated.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        pension_income:
+          2024: 12_000
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    snap_work_requirement_income_proration_fraction: [1, 0.5]
+    snap_unearned_income: 500
