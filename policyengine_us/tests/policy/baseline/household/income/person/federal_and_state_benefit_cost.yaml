@@ -56,3 +56,18 @@
   output:
     federal_benefit_cost: [9_000, 2_600]
     state_benefit_cost: [1_000, 1_400]
+
+- name: Case 5, QI Medicare Savings Program cost flows to federal benefit cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QI
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    federal_benefit_cost: 2_434.8
+    state_benefit_cost: 0
