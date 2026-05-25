@@ -6,8 +6,7 @@
     is_ssi_disabled: true
     is_pregnant: false
     is_in_medicaid_facility: false
-    medicaid_optional_senior_or_disabled_countable_income: 13_500
-    tax_unit_fpg: 10_000
+    medicaid_optional_senior_or_disabled_countable_income: 21_546
     ssi_countable_resources: 3_999
   output:
     ms_hmw_eligible: true
@@ -23,8 +22,7 @@
     is_ssi_disabled: true
     is_pregnant: false
     is_in_medicaid_facility: false
-    medicaid_optional_senior_or_disabled_countable_income: 13_500
-    tax_unit_fpg: 10_000
+    medicaid_optional_senior_or_disabled_countable_income: 21_546
     ssi_countable_resources: 4_000
   output:
     ms_hmw_eligible: false
@@ -37,8 +35,7 @@
     is_ssi_disabled: true
     is_pregnant: false
     is_in_medicaid_facility: false
-    medicaid_optional_senior_or_disabled_countable_income: 13_501
-    tax_unit_fpg: 10_000
+    medicaid_optional_senior_or_disabled_countable_income: 21_547
     ssi_countable_resources: 3_999
   output:
     ms_hmw_eligible: false
@@ -52,7 +49,6 @@
     is_pregnant: false
     is_in_medicaid_facility: false
     medicaid_optional_senior_or_disabled_countable_income: 13_500
-    tax_unit_fpg: 10_000
     ssi_countable_resources: 3_999
   output:
     ms_hmw_eligible: false
@@ -66,7 +62,6 @@
     is_pregnant: false
     is_in_medicaid_facility: false
     medicaid_optional_senior_or_disabled_countable_income: 13_500
-    tax_unit_fpg: 10_000
     ssi_countable_resources: 3_999
   output:
     ms_hmw_eligible: false
@@ -80,7 +75,6 @@
     is_pregnant: true
     is_in_medicaid_facility: false
     medicaid_optional_senior_or_disabled_countable_income: 13_500
-    tax_unit_fpg: 10_000
     ssi_countable_resources: 3_999
   output:
     ms_hmw_eligible: false
@@ -94,7 +88,6 @@
     is_pregnant: false
     is_in_medicaid_facility: false
     medicaid_optional_senior_or_disabled_countable_income: 5_000
-    tax_unit_fpg: 10_000
     ssi_countable_resources: 1_500
   output:
     ms_hmw_eligible: false

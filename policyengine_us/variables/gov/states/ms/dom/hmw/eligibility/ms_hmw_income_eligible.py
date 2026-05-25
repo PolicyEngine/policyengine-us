@@ -17,8 +17,13 @@ class ms_hmw_income_eligible(Variable):
         personal_income = person(
             "medicaid_optional_senior_or_disabled_countable_income", period
         )
-        tax_unit = person.tax_unit
-        p = parameters(period).gov.states.ms.dom.hmw.income.limit
-        return tax_unit.sum(personal_income) <= p.rate * tax_unit(
-            "tax_unit_fpg", period
+        marital_unit = person.marital_unit
+        couple = marital_unit.nb_persons() == 2
+        income = where(couple, marital_unit.sum(personal_income), personal_income)
+        state_group = person.household("state_group_str", period)
+        fpg = parameters(period).gov.hhs.fpg
+        unit_fpg = fpg.first_person[state_group] + (
+            couple * fpg.additional_person[state_group]
         )
+        p = parameters(period).gov.states.ms.dom.hmw.income.limit
+        return income <= p.rate * unit_fpg

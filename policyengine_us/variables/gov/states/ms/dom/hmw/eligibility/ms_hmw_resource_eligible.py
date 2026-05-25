@@ -14,8 +14,13 @@ class ms_hmw_resource_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        resources = tax_unit.sum(person("ssi_countable_resources", period))
-        is_joint = tax_unit("tax_unit_is_joint", period)
+        personal_resources = person("ssi_countable_resources", period)
+        marital_unit = person.marital_unit
+        couple = marital_unit.nb_persons() == 2
+        resources = where(
+            couple,
+            marital_unit.sum(personal_resources),
+            personal_resources,
+        )
         p = parameters(period).gov.states.ms.dom.hmw.resources.limit
-        return resources < where(is_joint, p.couple, p.individual)
+        return resources < where(couple, p.couple, p.individual)
