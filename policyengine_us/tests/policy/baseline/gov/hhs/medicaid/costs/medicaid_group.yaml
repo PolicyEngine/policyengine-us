@@ -2,6 +2,7 @@
   period: 2026
   input:
     medicaid_category: MEDICALLY_NEEDY
+    meets_ssi_disability_criteria: true
   output:
     medicaid_group: AGED_DISABLED
 
@@ -9,6 +10,7 @@
   period: 2026
   input:
     medicaid_category: WORKING_DISABLED_BUY_IN
+    meets_ssi_disability_criteria: true
   output:
     medicaid_group: AGED_DISABLED
 
@@ -20,3 +22,23 @@
   output:
     medicaid_category: ADULT
     medicaid_group: EXPANSION_ADULT
+
+- name: Case 4, disabled adult enrollee uses aged or disabled cost group.
+  period: 2026
+  input:
+    medicaid_category: ADULT
+    meets_ssi_disability_criteria: true
+  output:
+    medicaid_category: ADULT
+    medicaid_group: AGED_DISABLED
+
+- name: Case 5, disabled adult above SGA still uses aged or disabled cost group.
+  period: 2026
+  input:
+    medicaid_category: ADULT
+    meets_ssi_disability_criteria: true
+    employment_income: 100_000
+  output:
+    ssi_engaged_in_sga: true
+    is_ssi_disabled: false
+    medicaid_group: AGED_DISABLED

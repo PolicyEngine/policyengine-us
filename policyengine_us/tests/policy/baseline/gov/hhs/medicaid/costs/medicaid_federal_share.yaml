@@ -116,3 +116,15 @@
     medicaid_category: PREGNANT
   output:
     medicaid_federal_share: 0.7422
+
+- name: Disabled expansion adult keeps expansion FMAP despite aged-disabled cost group.
+  period: 2026
+  input:
+    state_code: NC
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+    meets_ssi_disability_criteria: true
+  output:
+    medicaid_group: AGED_DISABLED
+    medicaid_federal_share: 0.9000

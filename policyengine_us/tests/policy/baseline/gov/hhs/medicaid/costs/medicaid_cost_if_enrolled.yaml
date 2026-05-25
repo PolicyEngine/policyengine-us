@@ -25,6 +25,7 @@
       person:
         is_optional_senior_or_disabled_for_medicaid: true
         is_medicaid_eligible: true
+        meets_ssi_disability_criteria: true
   output: 
     medicaid_cost_if_enrolled: 24_257.3
 
@@ -38,6 +39,7 @@
         members: [person]
     people:
       person:
+        age: 65
         is_ssi_recipient_for_medicaid: true
         is_medicaid_eligible: true
   output: 
