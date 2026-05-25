@@ -31,3 +31,14 @@
     social_security_disability: 0
   output:
     ms_wd_disability_eligible: false
+
+- name: Case 5, broad disability flag alone does not satisfy the SSA disability screen.
+  period: 2026-01
+  input:
+    state_code: MS
+    is_disabled: true
+    meets_ssi_disability_criteria: false
+    is_blind: false
+    social_security_disability: 0
+  output:
+    ms_wd_disability_eligible: false

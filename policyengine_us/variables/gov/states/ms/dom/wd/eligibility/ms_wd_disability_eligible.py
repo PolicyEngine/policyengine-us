@@ -13,7 +13,9 @@ class ms_wd_disability_eligible(Variable):
     defined_for = StateCode.MS
 
     def formula(person, period, parameters):
-        is_disabled = person("is_disabled", period.this_year)
+        meets_ssi_disability_criteria = person(
+            "meets_ssi_disability_criteria", period.this_year
+        )
         is_blind = person("is_blind", period.this_year)
         receives_ssdi = person("social_security_disability", period) > 0
-        return is_disabled | is_blind | receives_ssdi
+        return meets_ssi_disability_criteria | is_blind | receives_ssdi
