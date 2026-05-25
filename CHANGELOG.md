@@ -1,3 +1,14 @@
+## [1.706.15] - 2026-05-25
+
+### Changed
+
+- - Made Medicaid cost if enrolled data-backed and used Medicaid enrollment, rather than the Medicaid dollar value, for categorical eligibility checks.
+
+### Fixed
+
+- Prevent a net capital loss in the Delaware pension exclusion basket from producing a negative subtraction that wipes out other DE subtractions.
+
+
 ## [1.706.14] - 2026-05-25
 
 No significant changes.
