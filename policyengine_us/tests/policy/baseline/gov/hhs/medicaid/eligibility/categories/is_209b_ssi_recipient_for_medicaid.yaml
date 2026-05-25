@@ -14,6 +14,9 @@
     state_code: HI
     ssi: 12_000
     is_optional_senior_or_disabled_income_eligible: false
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 5_000
     is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_209b_ssi_recipient_for_medicaid: false
@@ -66,6 +69,106 @@
   period: 2026
   input:
     state_code: OK
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 8, Minnesota SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: MN
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 9, Missouri SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: MO
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 10, North Dakota SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: ND
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 11, New Hampshire SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: NH
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 12, Virginia SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: VA
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 13, Illinois SSI recipient qualifies after medical spenddown.
+  period: 2026
+  input:
+    state_code: IL
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 11_000
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 14, Missouri SSI recipient qualifies after medical spenddown.
+  period: 2026
+  input:
+    state_code: MO
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 25_000
+    medicaid_medically_needy_medical_expenses: 9_000
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 15, Missouri nonblind child SSI recipient is excluded.
+  period: 2026
+  input:
+    state_code: MO
+    age: 10
+    is_blind: false
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 16, New Hampshire nonblind child SSI recipient is excluded.
+  period: 2026
+  input:
+    state_code: NH
+    age: 10
+    is_blind: false
     ssi: 12_000
     is_optional_senior_or_disabled_income_eligible: true
     is_optional_senior_or_disabled_asset_eligible: true

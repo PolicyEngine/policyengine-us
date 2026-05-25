@@ -14,7 +14,7 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
     reference = (
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.medicaid.gov/resources-for-states/downloads/macpro-ig-more-restrictive-requirements-1902f-209bstates.pdf#page=3",
-        "https://www.ecfr.gov/current/title-42/section-435.121",
+        "https://www.govinfo.gov/link/cfr/42/435?link-type=pdf&sectionnum=121&year=mostrecent",
     )
 
     def formula(person, period, parameters):
@@ -36,6 +36,6 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
             receives_ssi
             & is_209b_state
             & ~is_excluded_nonblind_child
-            & person("is_optional_senior_or_disabled_income_eligible", period)
+            & person("is_209b_ssi_recipient_income_eligible_for_medicaid", period)
             & person("is_optional_senior_or_disabled_asset_eligible", period)
         )
