@@ -1,0 +1,73 @@
+- name: Case 1, Connecticut SSI recipient passes 209(b) income and asset tests.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 2, Hawaii SSI recipient fails 209(b) income test.
+  period: 2026
+  input:
+    state_code: HI
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 3, Illinois SSI recipient fails 209(b) asset test.
+  period: 2026
+  input:
+    state_code: IL
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: false
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 4, Connecticut nonblind child SSI recipient is excluded.
+  period: 2026
+  input:
+    state_code: CT
+    age: 10
+    is_blind: false
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 5, Connecticut blind child SSI recipient is not excluded.
+  period: 2026
+  input:
+    state_code: CT
+    age: 10
+    is_blind: true
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true
+
+- name: Case 6, California SSI recipient is outside the 209(b) pathway.
+  period: 2026
+  input:
+    state_code: CA
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 7, Oklahoma SSI recipient is SSI-criteria, not 209(b).
+  period: 2026
+  input:
+    state_code: OK
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: false

@@ -7,13 +7,14 @@ class is_ssi_recipient_for_medicaid(Variable):
     label = "SSI recipients"
     documentation = (
         "Qualifies for Medicaid due to receiving SSI in Section 1634 and "
-        "SSI-criteria states. Section 209(b) states are not blanket-covered "
-        "because they may apply criteria that are more restrictive than SSI."
+        "SSI-criteria states, or due to satisfying a Section 209(b) state's "
+        "more restrictive SSI-recipient Medicaid criteria."
     )
     definition_period = YEAR
     reference = (
         "https://secure.ssa.gov/apps10/poms.nsf/lnx/0501715010",
         "https://www.law.cornell.edu/uscode/text/42/1396a#f",
+        "https://www.medicaid.gov/resources-for-states/downloads/macpro-ig-more-restrictive-requirements-1902f-209bstates.pdf#page=3",
     )
 
     def formula(person, period, parameters):
@@ -26,4 +27,6 @@ class is_ssi_recipient_for_medicaid(Variable):
             classified == classifications.SSI_CRITERIA
         )
         receives_ssi = person("ssi", period) > 0
-        return receives_ssi & is_covered & covered_classification
+        return (receives_ssi & is_covered & covered_classification) | person(
+            "is_209b_ssi_recipient_for_medicaid", period
+        )

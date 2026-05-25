@@ -1,19 +1,31 @@
-- name: SSI recipient in CA qualifies
+- name: Case 1, SSI recipient in California qualifies through Section 1634.
   period: 2022
   input:
     ssi: 1
   output:
     is_ssi_recipient_for_medicaid: true
 
-- name: SSI recipient in CT (a 209(b) state) does not qualify
-  period: 2022
+- name: Case 2, SSI recipient in Connecticut qualifies through 209(b) rules.
+  period: 2026
   input:
-    ssi: 1
     state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_ssi_recipient_for_medicaid: true
+
+- name: Case 3, SSI recipient in Connecticut fails 209(b) income rules.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_ssi_recipient_for_medicaid: false
 
-- name: Case 1, SSI recipient in Alaska qualifies through SSI criteria.
+- name: Case 4, SSI recipient in Alaska qualifies through SSI criteria.
   period: 2026
   input:
     ssi: 1
@@ -21,7 +33,7 @@
   output:
     is_ssi_recipient_for_medicaid: true
 
-- name: Case 2, SSI recipient in Oklahoma qualifies through SSI criteria.
+- name: Case 5, SSI recipient in Oklahoma qualifies through SSI criteria.
   period: 2026
   input:
     ssi: 1

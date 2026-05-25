@@ -21,3 +21,13 @@
     is_working_disabled_buy_in_for_medicaid: true
   output:
     medicaid_category: ADULT
+
+- name: Case 4, Connecticut SSI recipient passing 209(b) rules is in SSI category.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    medicaid_category: SSI_RECIPIENT
