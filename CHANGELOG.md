@@ -1,3 +1,10 @@
+## [1.709.0] - 2026-05-26
+
+### Added
+
+- Added Alabama senior homestead property tax relief.
+
+
 ## [1.708.0] - 2026-05-26
 
 ### Added
