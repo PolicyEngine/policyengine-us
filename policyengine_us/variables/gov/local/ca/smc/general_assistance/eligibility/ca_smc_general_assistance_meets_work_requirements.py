@@ -19,7 +19,7 @@ class ca_smc_general_assistance_meets_work_requirements(Variable):
         is_working_full_time = weekly_hours_worked >= p.weekly_hours_threshold
         is_senior = person("age", period.this_year) >= p.senior_exemption_age
         is_disabled = person("is_disabled", period)
-        is_full_time_student = person("is_full_time_student", period)
+        is_in_k12_school = person("is_in_k12_school", period.this_year)
         is_lep_household = person.household(
             "is_non_english_speaking_home", period.this_year
         )
@@ -28,7 +28,7 @@ class ca_smc_general_assistance_meets_work_requirements(Variable):
             is_working_full_time
             | is_senior
             | is_disabled
-            | is_full_time_student
+            | is_in_k12_school
             | is_lep_household
             | is_in_work_program
         )

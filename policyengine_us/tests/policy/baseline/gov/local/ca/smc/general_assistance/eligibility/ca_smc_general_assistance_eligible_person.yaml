@@ -45,3 +45,14 @@
     ssi: 0
   output:
     ca_smc_general_assistance_eligible_person: true
+
+- name: Case 6, aged low-quarter LPR (CAPI-eligible) is ineligible for SMC GA.
+  period: 2026-01
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 0
+    in_smc: true
+    ssi: 0
+  output:
+    ca_smc_general_assistance_eligible_person: false

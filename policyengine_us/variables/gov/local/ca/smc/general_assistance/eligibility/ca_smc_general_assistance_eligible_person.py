@@ -15,8 +15,9 @@ class ca_smc_general_assistance_eligible_person(Variable):
     def formula(person, period, parameters):
         # We don't track 15-day county residency, fleeing-felon
         # disqualification, or the requirement to apply for other potential
-        # income at the moment. The SSI gate below captures SSI recipients
-        # but does not separately exclude CAPI recipients.
+        # income at the moment. SSI and CAPI recipients are excluded because
+        # GA is interim aid pending those categorical benefits (Board File
+        # 26-290; SSP-14 IAR framing).
         p = parameters(period).gov.local.ca.smc.general_assistance
         adult = person("age", period.this_year) >= p.minimum_age
         immigration_eligible = person(
@@ -24,7 +25,14 @@ class ca_smc_general_assistance_eligible_person(Variable):
             period,
         )
         not_on_ssi = person("ssi", period) == 0
+        not_capi_eligible = ~person("ca_capi_eligible_person", period.this_year)
         meets_work_requirements = person(
             "ca_smc_general_assistance_meets_work_requirements", period
         )
-        return adult & immigration_eligible & not_on_ssi & meets_work_requirements
+        return (
+            adult
+            & immigration_eligible
+            & not_on_ssi
+            & not_capi_eligible
+            & meets_work_requirements
+        )

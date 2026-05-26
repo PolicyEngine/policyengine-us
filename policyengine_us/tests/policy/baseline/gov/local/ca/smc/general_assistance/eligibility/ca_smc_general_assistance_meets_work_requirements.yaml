@@ -51,12 +51,12 @@
   output:
     ca_smc_general_assistance_meets_work_requirements: true
 
-- name: Case 7, full-time student meets work requirements.
+- name: Case 7, K-12 student meets work requirements.
   period: 2026-01
   input:
     age: 30
     in_smc: true
-    is_full_time_student: true
+    is_in_k12_school: true
   output:
     ca_smc_general_assistance_meets_work_requirements: true
 
