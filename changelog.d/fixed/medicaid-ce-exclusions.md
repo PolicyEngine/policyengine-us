@@ -1,1 +1,1 @@
-Add Medicaid community engagement exclusions for recent incarceration and American Indian or Alaska Native status.
+Add a Medicaid community engagement exclusion input for American Indian or Alaska Native status.
