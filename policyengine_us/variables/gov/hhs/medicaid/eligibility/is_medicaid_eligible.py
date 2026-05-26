@@ -14,7 +14,6 @@ class is_medicaid_eligible(Variable):
     def formula(person, period, parameters):
         category = person("medicaid_category", period)
         categorically_eligible = category != category.possible_values.NONE
-        adult_group = category == category.possible_values.ADULT
         immigration_status_eligible = person(
             "is_medicaid_immigration_status_eligible", period
         )
@@ -28,7 +27,12 @@ class is_medicaid_eligible(Variable):
             work_requirement_eligible = person(
                 "medicaid_work_requirement_eligible", period
             )
-            federal_work_requirement_eligible = ~adult_group | work_requirement_eligible
+            work_requirement_applicable = person(
+                "is_medicaid_work_requirement_applicable_adult", period
+            )
+            federal_work_requirement_eligible = (
+                ~work_requirement_applicable | work_requirement_eligible
+            )
 
         ar_p = parameters(period).gov.states.ar.dhs.medicaid.work_requirements
         ar_work_requirement_eligible = True

@@ -290,3 +290,27 @@
     state_code: AR
   output:
     is_medicaid_eligible: true
+
+- name: Case 15, section 1115 MEC adult is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: false
+
+- name: Case 16, section 1115 MEC adult remains eligible when meeting the income safe harbor.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: true
