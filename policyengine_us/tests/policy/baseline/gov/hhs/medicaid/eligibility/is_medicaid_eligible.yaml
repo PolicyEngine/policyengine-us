@@ -194,6 +194,7 @@
   input:
     medicaid_category: ADULT
     immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
   output:
     is_medicaid_eligible: false
 
