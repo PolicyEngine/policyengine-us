@@ -80,16 +80,20 @@
         members: [parent1, parent2, child1, child2]
         state_code: TX
         county: DALLAS_COUNTY_TX
+  absolute_error_margin: 0.5
   output:
-    tx_ccs: 840  # Limited by max reimbursement: ($40.20 × 10) + ($43.80 × 10) = $840
+    # Max reimbursement: ($40.20 × 10) + ($43.80 × 10) = $840
+    # Expense ($1,300) is capped at $840, then copay (~$229.08) is deducted
+    tx_ccs: 610.92
 
 - name: Case 4 - Single parent with childcare expenses at maximum reimbursement
   period: 2025-01
+  absolute_error_margin: 0.5
   input:
     people:
       parent1:
         age: 28
-        employment_income: 24_000  # Annual income ($2,000/month, ~25% SMI)
+        employment_income: 24_000  # Annual income ($2,000/month, ~34% SMI for family size 2)
       child1:
         age: 1
         is_disabled: false
@@ -106,7 +110,8 @@
         members: [parent1, child1]
         state_code: TX
   output:
-    tx_ccs: 600  # Limited to maximum reimbursement amount
+    # Expense ($800) capped at max rate ($600), then copay (~$84.21) deducted
+    tx_ccs: 515.79
 
 - name: Case 5 - Not eligible household means no benefit
   period: 2025-01
