@@ -1,3 +1,227 @@
+## [1.707.1] - 2026-05-25
+
+No significant changes.
+
+
+## [1.707.0] - 2026-05-25
+
+### Added
+
+- Added the Medicaid long-term care home equity limit from H.R. 1.
+
+
+## [1.706.17] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.16] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.15] - 2026-05-25
+
+### Changed
+
+- - Made Medicaid cost if enrolled data-backed and used Medicaid enrollment, rather than the Medicaid dollar value, for categorical eligibility checks.
+
+### Fixed
+
+- Prevent a net capital loss in the Delaware pension exclusion basket from producing a negative subtraction that wipes out other DE subtractions.
+
+
+## [1.706.14] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.11] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.10] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.9] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.8] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.7] - 2026-05-24
+
+### Fixed
+
+- Fixed `RuntimeWarning: invalid value encountered in divide` in `qbid_amount` when the QBI phaseout length parameter is zero. The unguarded `(taxinc_less_qbid - po_start) / po_length` is now `np.divide(..., where=po_length > 0)` with a fully-phased-out fallback. Resolves the QBI source of the divide warnings tracked in #8216.
+
+
+## [1.706.6] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.5] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.4] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.3] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.2] - 2026-05-24
+
+### Fixed
+
+- Add regression tests asserting Roth 401(k) and 403(b) contributions do not reduce taxable wages, and document the exclusion in the pre-tax contributions parameter.
+
+
+## [1.706.1] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.0] - 2026-05-24
+
+### Added
+
+- Cap traditional and Roth 401(k) and 403(b) contributions at the IRC Section 402(g) elective deferral limit, including age-based catch-ups.
+
+
+## [1.705.23] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.22] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.21] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.20] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.19] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.18] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.17] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.16] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.15] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.14] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.11] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.10] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.9] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.8] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.7] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.6] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.5] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.4] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.3] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.2] - 2026-05-23
+
+No significant changes.
+
+
 ## [1.705.1] - 2026-05-22
 
 ### Fixed

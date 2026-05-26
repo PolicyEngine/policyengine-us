@@ -15,6 +15,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 6439.11
     households:
       household:
         members: &id001
@@ -69,6 +70,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 2001
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id002
@@ -123,6 +125,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id003

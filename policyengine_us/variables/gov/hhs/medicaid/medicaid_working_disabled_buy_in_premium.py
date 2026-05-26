@@ -10,6 +10,7 @@ class medicaid_working_disabled_buy_in_premium(Variable):
     reference = (
         "https://www.dhcs.ca.gov/services/working-disabled-program/",
         "https://hfs.illinois.gov/medicalprograms/hbwd/premiums.html",
+        "https://medicaid.ms.gov/medicaid-coverage/who-qualifies-for-coverage/working-disabled/",
     )
 
     def formula(tax_unit, period, parameters):

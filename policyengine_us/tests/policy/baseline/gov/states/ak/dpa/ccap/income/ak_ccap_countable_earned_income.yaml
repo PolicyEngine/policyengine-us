@@ -78,3 +78,28 @@
         state_code: AK
   output:
     ak_ccap_countable_earned_income: 0
+
+- name: Case 5, multiple adult earned income sources are counted.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 28
+        self_employment_income: 12_000
+      minor:
+        age: 16
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, minor]
+    households:
+      household:
+        members: [person1, person2, minor]
+        state_code: AK
+  output:
+    # (24_000 + 12_000) / 12 = 3_000/month (minor excluded)
+    ak_ccap_countable_earned_income: 3_000

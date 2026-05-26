@@ -41,6 +41,7 @@ class medicaid_group(Variable):
             | (cat == cats.SENIOR_OR_DISABLED)
             | (cat == cats.MEDICALLY_NEEDY)
             | (cat == cats.WORKING_DISABLED_BUY_IN)
+            | (cat == cats.HEALTHIER_MISSISSIPPI_WAIVER)
             | person("is_ssi_recipient_for_medicaid", period)
             | person("is_optional_senior_or_disabled_for_medicaid", period)
         )

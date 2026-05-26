@@ -15,7 +15,7 @@ class taxsim_ok_child_tax_credit_component(Variable):
         p = parameters(period).gov.states.ok.tax.income.credits.child
         us_cdcc = tax_unit("cdcc_potential", period)
         ok_cdcc = us_cdcc * p.cdcc_fraction
-        us_ctc = tax_unit("ctc_value", period)
+        us_ctc = tax_unit("ok_federal_ctc", period)
         ok_ctc = us_ctc * p.ctc_fraction
         ctc_larger_than_cdcc = ok_ctc > ok_cdcc
         combined = tax_unit("ok_child_care_child_tax_credit", period)

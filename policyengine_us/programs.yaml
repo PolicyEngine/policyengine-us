@@ -1050,6 +1050,17 @@ programs:
     parameter_prefix: gov.states.il.hfs.hbwd
     notes: Medicaid buy-in program for workers with disabilities
 
+  - id: ms_wd
+    name: Mississippi WD
+    full_name: Mississippi Working Disabled
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MS
+    variable: ms_wd_eligible
+    parameter_prefix: gov.states.ms.dom.wd
+    notes: Medicaid buy-in program for workers with disabilities
+
   - id: il_ihwap
     name: Illinois IHWAP
     full_name: Illinois Home Weatherization Assistance Program
