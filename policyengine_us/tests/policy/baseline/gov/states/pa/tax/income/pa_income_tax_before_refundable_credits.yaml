@@ -1,0 +1,18 @@
+- name: Pennsylvania refundable credits are split from pre-refundable state income tax aggregates.
+  period: 2026
+  input:
+    state_code: PA
+    pa_income_tax_after_forgiveness: 1_730
+    pa_use_tax: 23
+    pa_refundable_tax_credits: 411
+  output:
+    pa_income_tax_before_refundable_credits: 1_753
+    pa_income_tax: 1_342
+    state_income_tax_before_refundable_credits: 1_753
+    state_refundable_credits: 411
+    state_income_tax: 1_342
+    household_state_tax_before_refundable_credits: 1_753
+    household_refundable_state_tax_credits: 411
+    household_tax_before_refundable_credits: 1_753
+    household_refundable_tax_credits: 411
+    household_tax: 1_342

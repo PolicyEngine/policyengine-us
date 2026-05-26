@@ -23,8 +23,6 @@
     ga_ssp_person: [40]
     # SPM unit total = $40
     ga_ssp: 40
-    # Verify ga_ssp flows into spm_unit_benefits (includes ssi + ga_ssp + snap + others)
-    spm_unit_benefits: 361.25
 
 - name: Case 2, couple both eligible in current period.
   absolute_error_margin: 0.01

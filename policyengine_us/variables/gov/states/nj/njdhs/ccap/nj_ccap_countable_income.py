@@ -26,7 +26,7 @@ class nj_ccap_countable_income(Variable):
         # `age` is YEAR-defined; use period.this_year inside this
         # monthly formula to get the annual value instead of age/12.
         is_adult = person("age", period.this_year) >= 18
-        earned_per_person = sum(person(source, period) for source in p.earned_sources)
+        earned_per_person = add(person, period, p.earned_sources)
         adult_earned_income = spm_unit.sum(earned_per_person * is_adult)
         unearned_income = add(spm_unit, period, p.unearned_sources)
         return adult_earned_income + unearned_income

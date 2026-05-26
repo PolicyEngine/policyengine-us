@@ -14,6 +14,7 @@ class MedicaidCategory(Enum):
     NONE = "None"
     MEDICALLY_NEEDY = "Medically needy"
     WORKING_DISABLED_BUY_IN = "Working disabled Buy-In"
+    HEALTHIER_MISSISSIPPI_WAIVER = "Healthier Mississippi Waiver"
 
 
 class medicaid_category(Variable):
@@ -74,6 +75,9 @@ class medicaid_category(Variable):
             for name, category in variable_to_category.items()
             if name in categories
         }
+        variable_to_category["ms_hmw_eligible"] = (
+            MedicaidCategory.HEALTHIER_MISSISSIPPI_WAIVER
+        )
 
         return select(
             [person(variable, period) for variable in variable_to_category.keys()],

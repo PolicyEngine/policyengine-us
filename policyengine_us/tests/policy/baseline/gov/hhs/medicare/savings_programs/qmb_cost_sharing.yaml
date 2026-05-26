@@ -1,0 +1,16 @@
+- name: Case 1, QMB cost sharing uses the monthly Medicare cost approximation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    msp_category: QMB
+  output:
+    # $14,500 annual Medicare per-capita cost / 12 * 20%.
+    qmb_cost_sharing: 241.67
+
+- name: Case 2, non-QMB MSP categories do not receive QMB cost sharing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    msp_category: SLMB
+  output:
+    qmb_cost_sharing: 0

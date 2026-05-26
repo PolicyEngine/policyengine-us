@@ -1,0 +1,172 @@
+description: Minnesota limits the Homestead Credit Refund to this amount by household income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Minnesota Homestead Credit Refund maximum amount
+  reference:
+    - title: 2024 Form M1PR Instructions, Refund Worksheet
+      href: https://www.taxformfinder.org/forms/2024/2024-minnesota-form-m1pr-instructions.pdf#page=23
+    - title: 2025 Form M1PR Instructions, Refund Worksheet
+      href: https://www.taxformfinder.org/forms/2025/2025-minnesota-form-m1pr-instructions.pdf#page=23
+
+brackets:
+  - threshold:
+      2024-01-01: 0
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 2_140
+        2025-01-01: 2_190
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 4_260
+        2025-01-01: 4_360
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 6_450
+        2025-01-01: 6_600
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 8_610
+        2025-01-01: 8_810
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 10_740
+        2025-01-01: 10_990
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 15_040
+        2025-01-01: 15_380
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 17_170
+        2025-01-01: 17_560
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 19_340
+        2025-01-01: 19_780
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 21_480
+        2025-01-01: 21_970
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 23_610
+        2025-01-01: 24_150
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 30_080
+        2025-01-01: 30_770
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 36_530
+        2025-01-01: 37_370
+    amount:
+      2024-01-01: 3_410
+      2025-01-01: 3_480
+  - threshold:
+      values:
+        2024-01-01: 51_550
+        2025-01-01: 52_720
+    amount:
+      2024-01-01: 2_760
+      2025-01-01: 2_820
+  - threshold:
+      values:
+        2024-01-01: 75_170
+        2025-01-01: 76_880
+    amount:
+      2024-01-01: 2_420
+      2025-01-01: 2_470
+  - threshold:
+      values:
+        2024-01-01: 85_910
+        2025-01-01: 87_860
+    amount:
+      2024-01-01: 2_000
+      2025-01-01: 2_040
+  - threshold:
+      values:
+        2024-01-01: 96_650
+        2025-01-01: 98_850
+    amount:
+      2024-01-01: 1_790
+      2025-01-01: 1_830
+  - threshold:
+      values:
+        2024-01-01: 107_390
+        2025-01-01: 109_840
+    amount:
+      2024-01-01: 1_560
+      2025-01-01: 1_600
+  - threshold:
+      values:
+        2024-01-01: 118_130
+        2025-01-01: 120_820
+    amount:
+      2024-01-01: 1_320
+      2025-01-01: 1_350
+  - threshold:
+      values:
+        2024-01-01: 124_580
+        2025-01-01: 127_420
+    amount:
+      2024-01-01: 1_100
+      2025-01-01: 1_130
+  - threshold:
+      values:
+        2024-01-01: 128_910
+        2025-01-01: 131_840
+    amount:
+      2024-01-01: 900
+      2025-01-01: 920
+  - threshold:
+      values:
+        2024-01-01: 134_110
+        2025-01-01: 137_160
+    amount:
+      2024-01-01: 670
+      2025-01-01: 680
+  - threshold:
+      values:
+        2024-01-01: 139_320
+        2025-01-01: 142_490
+    amount:
+      2024-01-01: 0
