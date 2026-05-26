@@ -48,8 +48,9 @@
         state_code: TX
         county: DALLAS_COUNTY_TX
   output:
-    # Childcare expense ($500/month) - copay (~$105.95) = ~$394.05
-    tx_ccs: 394.05
+    # Max reimbursement (10 days × ~$41.60 BCY2025 expanded Dallas rate) ≈ $415.98
+    # Expense ($500) is capped at $415.98, then copay (~$105.95) is deducted
+    tx_ccs: 310.03
 
 - name: Case 3 - Two children with high childcare expenses
   period: 2025-01
