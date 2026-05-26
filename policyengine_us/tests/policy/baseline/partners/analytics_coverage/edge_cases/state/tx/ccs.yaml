@@ -35,6 +35,8 @@
         ca_calworks_child_care_time_category: MONTHLY
         ca_calworks_child_care_full_time: false
         ca_riv_general_relief_meets_work_requirements: false
+        childcare_attending_days_per_month: 22
+        tx_ccs_payment_rate: 600
     households:
       household:
         members: &id001
@@ -46,6 +48,7 @@
     spm_units:
       spm_unit:
         members: *id001
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     tax_units:
       tax_unit:
         members: *id001
@@ -61,9 +64,13 @@
         members:
         - child1
   output:
+    # Family size 2, $30K income → ~40.7% SMI → monthly copay ~$116.18.
+    # Expense $1,000/month capped at max rate $600, then copay deducted:
+    # monthly tx_ccs = max(min(1000, 600) − 116.18, 0) = $483.82
+    # Annual (12 × $483.82) ≈ $5,805.84
     spm_units:
       spm_unit:
-        tx_ccs: 0.0
+        tx_ccs: 5805.84
 - name: tx_ccs_above_85pct_smi (tx)
   period: 2026
   absolute_error_margin: 0.1
