@@ -34,13 +34,12 @@
   output:
     al_senior_homestead_exemption_eligible: false
 
-- name: Case 3, senior renter is ineligible.
+- name: Case 3, senior without real estate taxes is ineligible.
   period: 2025
   input:
     people:
       person1:
         age: 70
-        rent: 12_000
     tax_units:
       tax_unit:
         members: [person1]

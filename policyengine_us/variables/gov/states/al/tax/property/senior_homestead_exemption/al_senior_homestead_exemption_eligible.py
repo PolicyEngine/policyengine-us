@@ -18,5 +18,4 @@ class al_senior_homestead_exemption_eligible(Variable):
         return (
             (tax_unit("greater_age_head_spouse", period) >= p.age_threshold)
             & (add(tax_unit, period, ["real_estate_taxes"]) > 0)
-            & ~tax_unit("rents", period)
         )
