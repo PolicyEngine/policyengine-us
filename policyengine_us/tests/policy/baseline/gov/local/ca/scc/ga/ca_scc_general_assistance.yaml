@@ -16,7 +16,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 343
 
@@ -39,7 +39,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 243
 
@@ -62,7 +62,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 0
 
@@ -84,7 +84,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 0
 
@@ -107,7 +107,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 343
 
@@ -130,7 +130,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # Benefit must be capped at the MAP ($343), not 343 - (-83_333) = 83_676.
     ca_scc_general_assistance: 343
@@ -154,7 +154,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # countable_income = 4_116 / 12 = 343 == MAP -> income_eligible is strict < so false -> benefit = 0
     ca_scc_general_assistance: 0
@@ -178,7 +178,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # countable = 4_104 / 12 = 342; benefit = 343 - 342 = 1
     ca_scc_general_assistance: 1
@@ -209,7 +209,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # combined countable = (1_200 + 1_200) / 12 = 200; benefit = 460 - 200 = 260
     ca_scc_general_assistance: 260

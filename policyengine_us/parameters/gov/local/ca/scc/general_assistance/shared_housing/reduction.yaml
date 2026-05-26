@@ -4,7 +4,7 @@ metadata:
   period: year
   label: Santa Clara County General Assistance shared housing reduction rate
   breakdown:
-    - ca_scc_general_assistance_shared_housing_status
+    - ca_scc_general_assistance_living_arrangement
   reference:
     - title: Santa Clara County General Assistance Handbook, GA 282 (Shared Housing)
       href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/14Payment/Shared_Housing.htm
@@ -20,3 +20,7 @@ SHARED_WITH_TWO:
   2016-04-01: 0.2
 SHARED_WITH_THREE_OR_MORE:
   2016-04-01: 0.25
+BOARD_AND_CARE:
+  2016-04-01: 0
+MEDICAL_INSTITUTION:
+  2016-04-01: 0

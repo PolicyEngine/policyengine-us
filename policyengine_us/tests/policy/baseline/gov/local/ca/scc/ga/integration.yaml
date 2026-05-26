@@ -16,7 +16,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance_base_amount: 343
     ca_scc_general_assistance_countable_income: 0
@@ -41,7 +41,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance_base_amount: 343
     ca_scc_general_assistance_countable_income: 100
@@ -71,7 +71,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance_base_amount: 460
     ca_scc_general_assistance_countable_income: 0
@@ -95,7 +95,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 0
 
@@ -117,7 +117,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 0
 
@@ -139,7 +139,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance: 0
 
@@ -161,7 +161,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_ONE
   output:
     ca_scc_general_assistance_base_amount: 291.55
     ca_scc_general_assistance_countable_income: 0
@@ -186,7 +186,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     ca_scc_general_assistance_base_amount: 343
     ca_scc_general_assistance_countable_income: 200
@@ -222,7 +222,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # Child fails age_eligible and head-or-spouse — only person1 and person2 count.
     # num_eligible == 2 -> married MAP $460; countable income = 0; benefit = 460.
@@ -254,7 +254,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # Only person1 is eligible; num_eligible == 1 -> single MAP $343.
     ca_scc_general_assistance_base_amount: 343
@@ -286,9 +286,34 @@
       spm_unit:
         members: [person1, person2]
         # Shared with two other persons -> 20% reduction on married MAP.
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_TWO
   output:
     # 460 * 0.80 = 368; countable income = 0; benefit = 368.
     ca_scc_general_assistance_base_amount: 368
     ca_scc_general_assistance_countable_income: 0
     ca_scc_general_assistance: 368
+
+- name: Case 12, Board and Care recipient — absolute amount overrides standard formula.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: BOARD_AND_CARE
+  output:
+    # Override skips the single/married + shared housing formula.
+    ca_scc_general_assistance_base_amount: 929
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 929

@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.local.ca.scc.ga.ca_scc_general_assistance_living_arrangement import (
+    CaSccGeneralAssistanceLivingArrangement,
+)
 
 
 class ca_scc_general_assistance_base_amount(Variable):
@@ -10,7 +13,7 @@ class ca_scc_general_assistance_base_amount(Variable):
     defined_for = "ca_scc_general_assistance_eligible_person"
     reference = (
         "https://stgenssa.sccgov.org/debs/program_handbooks/charts/assets/4GA/NeedStnds.htm",
-        "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/14Payment/Shared_Housing.htm",
+        "https://stgenssa.sccgov.org/debs/Forms/GA_62_en.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):
@@ -20,8 +23,18 @@ class ca_scc_general_assistance_base_amount(Variable):
         )
         num_eligible = spm_unit.sum(eligible_persons)
         unshared = where(num_eligible == 2, p.amount.married, p.amount.single)
-        shared_status = spm_unit(
-            "ca_scc_general_assistance_shared_housing_status", period
+        arrangement = spm_unit("ca_scc_general_assistance_living_arrangement", period)
+        reduction = p.shared_housing.reduction[arrangement]
+        standard = unshared * (1 - reduction)
+        return select(
+            [
+                arrangement == CaSccGeneralAssistanceLivingArrangement.BOARD_AND_CARE,
+                arrangement
+                == CaSccGeneralAssistanceLivingArrangement.MEDICAL_INSTITUTION,
+            ],
+            [
+                p.amount.board_and_care,
+                p.amount.medical_institution,
+            ],
+            default=standard,
         )
-        reduction = p.shared_housing.reduction[shared_status]
-        return unshared * (1 - reduction)

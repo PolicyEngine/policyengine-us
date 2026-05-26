@@ -15,7 +15,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 343
@@ -43,7 +43,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 460
@@ -71,7 +71,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: NOT_SHARED
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 343
@@ -93,7 +93,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_ONE
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 291.55
@@ -115,7 +115,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_TWO
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 274.4
@@ -137,7 +137,7 @@
     spm_units:
       spm_unit:
         members: [person1]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_THREE_OR_MORE
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 257.25
@@ -165,7 +165,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_ONE
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_ONE
   absolute_error_margin: 0.1
   output:
     ca_scc_general_assistance_base_amount: 391
@@ -193,7 +193,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_TWO
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_TWO
   absolute_error_margin: 0.1
   output:
     # 460 * 0.80 = 368
@@ -222,8 +222,54 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_scc_general_assistance_shared_housing_status: SHARED_WITH_THREE_OR_MORE
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_THREE_OR_MORE
   absolute_error_margin: 0.1
   output:
     # 460 * 0.75 = 345
     ca_scc_general_assistance_base_amount: 345
+
+- name: Case 10, single eligible adult in State-licensed Board and Care.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: BOARD_AND_CARE
+  absolute_error_margin: 0.1
+  output:
+    # $901 vendor payment + $28 personal needs = $929 total.
+    ca_scc_general_assistance_base_amount: 929
+
+- name: Case 11, single eligible adult in medical institution.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: MEDICAL_INSTITUTION
+  absolute_error_margin: 0.1
+  output:
+    # Personal needs only; rest of support covered by Medi-Cal.
+    ca_scc_general_assistance_base_amount: 11
