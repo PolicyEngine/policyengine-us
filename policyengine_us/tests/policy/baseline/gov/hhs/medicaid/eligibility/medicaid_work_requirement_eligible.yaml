@@ -159,3 +159,20 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 18, last-week hours above monthly threshold meet the work requirement.
+  period: 2027
+  input:
+    age: 30
+    hours_worked_last_week: 20
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 19, last-week hours below monthly threshold do not meet the work requirement.
+  period: 2027
+  input:
+    age: 30
+    hours_worked_last_week: 18
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
