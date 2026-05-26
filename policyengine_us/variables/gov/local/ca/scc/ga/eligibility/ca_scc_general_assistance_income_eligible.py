@@ -12,4 +12,4 @@ class ca_scc_general_assistance_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         income = spm_unit("ca_scc_general_assistance_countable_income", period)
         limit = spm_unit("ca_scc_general_assistance_base_amount", period)
-        return income < limit
+        return income <= limit

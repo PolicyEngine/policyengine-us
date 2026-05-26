@@ -1279,6 +1279,16 @@ programs:
     variable: ca_ala_general_assistance
     parameter_prefix: gov.local.ca.ala.ga
 
+  - id: ca_scc_general_assistance
+    name: Santa Clara County General Assistance
+    full_name: Santa Clara County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Santa Clara County
+    variable: ca_scc_general_assistance
+    parameter_prefix: gov.local.ca.scc.general_assistance
+
   - id: nyc_income_tax
     name: NYC income tax
     full_name: New York City Income Tax

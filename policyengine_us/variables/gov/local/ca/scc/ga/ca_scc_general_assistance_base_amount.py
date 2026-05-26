@@ -22,7 +22,7 @@ class ca_scc_general_assistance_base_amount(Variable):
             "ca_scc_general_assistance_eligible_person", period
         )
         num_eligible = spm_unit.sum(eligible_persons)
-        unshared = where(num_eligible == 2, p.amount.married, p.amount.single)
+        unshared = where(num_eligible >= 2, p.amount.married, p.amount.single)
         arrangement = spm_unit("ca_scc_general_assistance_living_arrangement", period)
         reduction = p.shared_housing.reduction[arrangement]
         standard = unshared * (1 - reduction)

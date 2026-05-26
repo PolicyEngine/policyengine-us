@@ -156,7 +156,7 @@
         members: [person1]
         ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
-    # countable_income = 4_116 / 12 = 343 == MAP -> income_eligible is strict < so false -> benefit = 0
+    # countable_income = 4_116 / 12 = 343 == MAP -> income_eligible true but fill-the-gap = 343 - 343 = 0
     ca_scc_general_assistance: 0
 
 - name: Case 8, single eligible adult with countable income $1 below single MAP, $1 benefit.

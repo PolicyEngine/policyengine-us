@@ -7,14 +7,14 @@
   output:
     ca_scc_general_assistance_income_eligible: true
 
-- name: Case 2, countable income equal to single MAP, ineligible (strict less-than per GA 200).
+- name: Case 2, countable income equal to single MAP, eligible (GA 200 ineligible only when income exceeds MAP).
   period: 2024-01
   input:
     ca_scc_general_assistance_countable_income: 343
     ca_scc_general_assistance_base_amount: 343
     in_scc: true
   output:
-    ca_scc_general_assistance_income_eligible: false
+    ca_scc_general_assistance_income_eligible: true
 
 - name: Case 3, countable income above single MAP, ineligible.
   period: 2024-01
