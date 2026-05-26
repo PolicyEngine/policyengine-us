@@ -1,0 +1,9 @@
+- name: Case 1, California SDI uses the California HSA addback wage base.
+  period: 2026
+  input:
+    employment_income: 6_000
+    pre_tax_health_insurance_premiums: 1_000
+    health_savings_account_payroll_contributions: 1_000
+    state_code: CA
+  output:
+    ca_employee_state_disability_insurance_contribution: 65

@@ -3,7 +3,7 @@
   input:
     irs_gross_income: 220_000
     filing_status: JOINT
-    auto_loan_interest: 20_000
+    qualified_passenger_vehicle_loan_interest: 20_000
     standard_deduction: 0
     tax_unit_itemizes: false
   output:
@@ -16,7 +16,7 @@
   input:
     irs_gross_income: 220_000
     filing_status: JOINT
-    auto_loan_interest: 20_000
+    qualified_passenger_vehicle_loan_interest: 20_000
     standard_deduction: 0
     tax_unit_itemizes: true
     salt_deduction: 10_000
@@ -24,3 +24,15 @@
     auto_loan_interest_deduction: 6_000
     adjusted_gross_income: 220_000
     taxable_income_deductions: 16_000
+
+- name: Generic auto loan interest is not deductible without qualified interest
+  period: 2026
+  input:
+    irs_gross_income: 220_000
+    filing_status: JOINT
+    auto_loan_interest: 20_000
+    standard_deduction: 0
+    tax_unit_itemizes: false
+  output:
+    auto_loan_interest_deduction: 0
+    taxable_income_deductions: 0

@@ -1,0 +1,20 @@
+- name: Case 1, disability income is excluded from countable income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 10_000
+    social_security_disability: 80_000
+  output:
+    ca_wdp_disability_income: 80_000
+    ca_wdp_countable_income: 4_490
+
+- name: Case 2, non-disability unearned income remains countable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 10_000
+    social_security_retirement: 12_000
+  output:
+    ca_wdp_countable_income: 16_370

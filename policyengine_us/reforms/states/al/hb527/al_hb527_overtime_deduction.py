@@ -16,7 +16,7 @@ def create_al_hb527_overtime_deduction() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.al.hb527
             person = tax_unit.members
-            # Use federal FLSA overtime premium calculation per 29 USC 207
+            # Use the annual federal FLSA overtime premium input.
             overtime_income = person("fsla_overtime_premium", period)
             # Cap at per-taxpayer limit per AL HB527 Section 40-18-15(a)(29)
             person_capped = min_(overtime_income, p.cap)

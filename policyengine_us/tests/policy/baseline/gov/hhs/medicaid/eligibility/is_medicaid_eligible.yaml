@@ -170,3 +170,86 @@
   output:
     medicaid_category: SENIOR_OR_DISABLED
     is_medicaid_eligible: true
+
+- name: Case 4, medically needy pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
+
+- name: Case 5, working disabled Buy-In pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    is_medicaid_eligible: true
+
+- name: Case 6, adult group enrollee is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_eligible: false
+
+- name: Case 7, parent category remains eligible when adult group work requirements apply.
+  period: 2027
+  input:
+    medicaid_category: PARENT
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 8, adult group enrollee meets work requirements through the income safe harbor.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 9, long-term care home equity cap does not remove ordinary Medicaid eligibility.
+  period: 2028
+  input:
+    age: 65
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 10, senior long-term care applicant at the home equity limit remains Medicaid eligible.
+  period: 2028
+  input:
+    age: 65
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_000
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 11, senior long-term care applicant above the home equity limit with a resident spouse is eligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        medicaid_category: SENIOR_OR_DISABLED
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    is_medicaid_eligible: [true, false]

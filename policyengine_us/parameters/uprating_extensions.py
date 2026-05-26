@@ -366,6 +366,16 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # Gross Social Security benefit inputs should age with gross Social
+    # Security benefits, not taxable Social Security income.
+    extend_parameter_values(
+        parameters.calibration.gov.cbo.social_security,
+        last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # CBO income-by-source aggregates are used directly and as anchors for
     # SOI-based income upraters. Extending them in the baseline path keeps
     # long-run nominal data aging independent of scenario-specific reforms.

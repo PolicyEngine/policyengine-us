@@ -82,7 +82,7 @@ jobs:
         with:
           fetch-depth: 10
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }} --depth=1
+        run: git fetch origin ${{ github.base_ref }} --depth=1000
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

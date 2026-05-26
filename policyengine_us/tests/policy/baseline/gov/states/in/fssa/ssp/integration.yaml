@@ -10,7 +10,7 @@
         ssi_claim_is_joint: false
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-        uncapped_ssi: 360
+        uncapped_ssi: 30
     households:
       household:
         members: [person1]
@@ -40,7 +40,7 @@
         ssi_claim_is_joint: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-        uncapped_ssi: 360
+        uncapped_ssi: 30
       person2:
         age: 65
         is_ssi_eligible: true
@@ -48,7 +48,7 @@
         ssi_claim_is_joint: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-        uncapped_ssi: 360
+        uncapped_ssi: 30
     marital_units:
       marital_unit:
         members: [person1, person2]
@@ -105,7 +105,7 @@
         is_ssi_eligible: true
         is_ssi_aged_blind_disabled: true
         is_medicaid_eligible: false
-        ssi: 9_000
+        ssi: 750
         ssi_countable_income: 2_400
         in_resides_in_licensed_residential_facility: true
     households:
@@ -130,7 +130,7 @@
         is_ssi_aged_blind_disabled: true
         is_medicaid_eligible: false
         ssi_claim_is_joint: false
-        uncapped_ssi: 6_000
+        uncapped_ssi: 500
         in_resides_in_licensed_residential_facility: true
     households:
       household:
@@ -141,13 +141,13 @@
     in_ssp_sapn_eligible: false
     # RCAP: ABD, SSI recipient, age >= 18, licensed residential
     in_ssp_rcap_eligible: true
-    # Normal FBR (not in medical facility): uncapped_ssi/12 = $500/mo
+    # Normal FBR (not in medical facility): uncapped_ssi = $500/mo
     ssi: 500
     in_ssp_eligible: true
     in_ssp_sapn: 0
     # RCAP: per diem $49.35/day (licensed, since July 2008)
     # State standard = 49.35 * 365/12 = $1,501.06
-    # uncapped_ssi monthly = 6,000/12 = $500
+    # uncapped_ssi = $500
     # federal_ssi = max(500, 0) = $500
     # supplement = max(1,501.06 - 500, 0) = $1,001.06
     in_ssp_rcap: 1_001.06

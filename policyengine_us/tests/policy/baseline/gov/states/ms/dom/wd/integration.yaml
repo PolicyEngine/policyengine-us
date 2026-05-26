@@ -1,0 +1,131 @@
+- name: Case 1, single disabled worker qualifies and pays a premium.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 40
+    employment_income: 49_380
+    ssi_countable_resources: 23_000
+    is_medicaid_immigration_status_eligible: true
+  output:
+    # Monthly earnings: $4,115.
+    # Countable earnings: ($4,115 - $50 - $65) * 50% = $2,000.
+    ms_wd_gross_earned_income: 4_115
+    ms_wd_countable_earned_income: 2_000
+    ms_wd_earned_income_eligible: true
+    ms_wd_unearned_income_eligible: true
+    ms_wd_resource_eligible: true
+    ms_wd_eligible: true
+    ms_wd_premium: 100
+
+- name: Case 2, disabled worker below forty monthly hours is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 39
+    employment_income: 36_000
+    ssi_countable_resources: 1_000
+    is_medicaid_immigration_status_eligible: true
+  output:
+    ms_wd_work_eligible: false
+    ms_wd_eligible: false
+
+- name: Case 3, disabled worker above the individual resource limit is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 40
+    employment_income: 36_000
+    ssi_countable_resources: 24_001
+    is_medicaid_immigration_status_eligible: true
+  output:
+    ms_wd_resource_eligible: false
+    ms_wd_eligible: false
+
+- name: Case 4, earned income just above two hundred fifty percent FPL is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 40
+    employment_income: 81_192
+    ssi_countable_resources: 1_000
+    is_medicaid_immigration_status_eligible: true
+  output:
+    # Monthly earnings: $6,766; countable earnings: ($6,766 - $115) * 50% = $3,325.50.
+    ms_wd_countable_earned_income: 3_325.50
+    ms_wd_earned_income_eligible: false
+    ms_wd_eligible: false
+
+- name: Case 5, unearned income just above one hundred thirty-five percent FPL is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 40
+    employment_income: 12_000
+    social_security: 22_152
+    ssi_countable_resources: 1_000
+    is_medicaid_immigration_status_eligible: true
+  output:
+    # Monthly unearned income: $1,846; countable unearned income: $1,796.
+    ms_wd_countable_unearned_income: 1_796
+    ms_wd_unearned_income_eligible: false
+    ms_wd_eligible: false
+
+- name: Case 6, married worker budgets an ineligible spouse and qualifies under couple limits.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        monthly_hours_worked: 40
+        employment_income: 48_000
+        ssi_countable_resources: 20_000
+        is_medicaid_immigration_status_eligible: true
+      person2:
+        age: 43
+        social_security: 1_200
+        ssi_countable_resources: 5_000
+        is_medicaid_immigration_status_eligible: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Spouse's $100/month unearned income uses the general exclusion.
+    # Countable earnings: ($4,000 - $65) * 50% = $1,967.50.
+    ms_wd_countable_earned_income: [1_967.50, 1_967.50]
+    ms_wd_countable_unearned_income: [50, 50]
+    ms_wd_income_eligible: [true, true]
+    ms_wd_resource_eligible: [true, true]
+    ms_wd_eligible: [true, false]
+    ms_wd_premium: [0, 0]
+
+- name: Case 7, negative earned income is floored before income eligibility.
+  period: 2026-01
+  input:
+    state_code: MS
+    age: 40
+    is_disabled: true
+    monthly_hours_worked: 40
+    employment_income: -1_200
+    ssi_countable_resources: 1_000
+    is_medicaid_immigration_status_eligible: true
+  output:
+    ms_wd_gross_earned_income: -100
+    ms_wd_countable_earned_income: 0
+    ms_wd_income_eligible: true
+    ms_wd_eligible: true
