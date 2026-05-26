@@ -14,14 +14,14 @@ class tx_over_65_or_disabled_school_district_homestead_exemption_eligible(Variab
         p = parameters(
             period
         ).gov.states.tx.tax.property.school_district_homestead_exemption
+        age_or_disability_eligible = (
+            tax_unit("greater_age_head_spouse", period) >= p.age_threshold
+        ) | tax_unit("disabled_tax_unit_head_or_spouse", period)
+
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period.this_year)
-        is_disabled = person("is_disabled", period)
         is_surviving_spouse = person("is_surviving_spouse", period)
-        age_or_disability_eligible = tax_unit.any(
-            ((age >= p.age_threshold) | is_disabled) & head_or_spouse,
-        )
         surviving_spouse = tax_unit.any(
             (age >= p.surviving_spouse_age_threshold)
             & is_surviving_spouse
