@@ -9,7 +9,7 @@
   output:
     ma_ccfa: 50
 
-- name: Case 2, eligible family.
+- name: Case 2, eligible family, expense exceeds max reimbursement.
   period: 2025-01
   input:
     ma_ccfa_eligible: true
@@ -18,7 +18,9 @@
     ma_ccfa_maximum_reimbursement: 100
     state_code: MA
   output:
-    ma_ccfa: 100
+    # capped expense = min(180, 100) = 100
+    # benefit = max(100 - 50, 0) = 50
+    ma_ccfa: 50
 
 - name: Case 3, integration test, family of 2, $1800 monthly income. 
   period: 2025-01
@@ -52,7 +54,9 @@
     ma_ccfa_total_copay: 3.88
     ma_ccfa_maximum_reimbursement: [0, 1_050]
     ma_ccfa_eligible: true
-    ma_ccfa: 1_050
+    # capped expense = min(annual_expense, monthly_max) = $1,050
+    # benefit = max(1050 - 3.88, 0) = $1,046.12
+    ma_ccfa: 1_046.12
 
 - name: Case 4, TAFDC recipient integration test - automatic eligibility and zero copay.
   period: 2025-01
@@ -138,7 +142,8 @@
   output:
     ma_ccfa_eligible: true
     ma_ccfa_total_copay: 66.15
-    ma_ccfa: 4_215.46
+    # capped expense = monthly_max = $4,215.46; benefit = 4215.46 - 66.15 = $4,149.31
+    ma_ccfa: 4_149.31
 
 - name: Case 6, family child care provider in Western Massachusetts.
   period: 2025-01
@@ -171,7 +176,8 @@
   output:
     ma_ccfa_eligible: true
     ma_ccfa_maximum_reimbursement: [0, 987.8]
-    ma_ccfa: 987.8
+    # computed copay ~3.87; benefit = max(987.8 - 3.87, 0) = 983.93
+    ma_ccfa: 983.93
 
 - name: Case 7, senior caregiver exempt from activity requirements.
   period: 2025-01
@@ -204,7 +210,8 @@
   output:
     ma_ccfa_eligible: true
     ma_ccfa_activity_eligible: true
-    ma_ccfa: 950.58
+    # computed copay ~2.25; benefit = max(950.58 - 2.25, 0) = 948.33
+    ma_ccfa: 948.33
 
 - name: Case 8, income at edge of new applicant limit (50% SMI).
   period: 2025-01
@@ -246,4 +253,5 @@
     ma_ccfa_eligible: true
     ma_ccfa_income_eligible: true
     ma_ccfa_total_copay: 363.16
-    ma_ccfa: 2_074.38
+    # capped expense = monthly_max = $2,074.38; benefit = 2074.38 - 363.16 = $1,711.22
+    ma_ccfa: 1_711.22
