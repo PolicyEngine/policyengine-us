@@ -1,0 +1,36 @@
+- name: Case 1, TAXSIM Social Security AGI below base threshold.
+  period: 2024
+  input:
+    taxsim_gssi: 10_000
+    taxable_ss_magi: 10_000
+    filing_status: SINGLE
+  output:
+    taxsim_v12: 0
+
+- name: Case 2, TAXSIM Social Security AGI in the first tier.
+  period: 2024
+  input:
+    taxsim_gssi: 10_000
+    taxable_ss_magi: 25_000
+    filing_status: SINGLE
+  output:
+    taxsim_v12: 2_500
+
+- name: Case 3, TAXSIM Social Security AGI in the second tier.
+  period: 2024
+  input:
+    taxsim_gssi: 10_000
+    taxable_ss_magi: 40_000
+    filing_status: SINGLE
+  output:
+    taxsim_v12: 8_500
+
+- name: Case 4, TAXSIM Social Security AGI for cohabiting separate filers.
+  period: 2024
+  input:
+    taxsim_gssi: 10_000
+    taxable_ss_magi: 0
+    filing_status: SEPARATE
+    cohabitating_spouses: true
+  output:
+    taxsim_v12: 4_250

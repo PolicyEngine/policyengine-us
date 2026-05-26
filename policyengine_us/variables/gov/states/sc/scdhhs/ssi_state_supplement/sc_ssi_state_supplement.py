@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class sc_ssi_state_supplement(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     label = "South Carolina SSI State Supplement"
     unit = USD
     reference = (
@@ -16,7 +16,7 @@ class sc_ssi_state_supplement(Variable):
     def formula(person, period, parameters):
         # Per S.C. Code Regs. 126-910: OSS = max(0, NIL - countable income)
         p = parameters(period).gov.states.sc.scdhhs.ssi_state_supplement
-        nil = p.net_income_limit * MONTHS_IN_YEAR
+        nil = p.net_income_limit
         countable_income = person("ssi_countable_income", period)
         ssi = person("ssi", period)
         return max_(0, nil - countable_income - ssi)

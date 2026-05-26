@@ -14,13 +14,13 @@ class ga_ssp_eligible_person(Variable):
     )
 
     def formula(person, period, parameters):
-        arrangement = person("ssi_federal_living_arrangement", period.this_year)
+        arrangement = person("ssi_federal_living_arrangement", period)
         in_federal_medicaid_facility = (
             arrangement == arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
         )
         in_georgia_ssp_setting = person(
             "ga_ssp_in_nursing_home_or_institutionalized_hospice",
-            period.this_year,
+            period,
         )
         ssi_amount = person("ssi", period)
         # in_federal_medicaid_facility already confirms MEDICAL_TREATMENT_FACILITY

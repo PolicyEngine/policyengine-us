@@ -2,7 +2,7 @@
   period: 2022
   input:
     school_meal_fpg_ratio: 4
-    medicaid: 0
+    medicaid_enrolled: false
   output:
     is_ca_cvrp_increased_rebate_eligible: true
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     school_meal_fpg_ratio: 4.01
-    medicaid: 0
+    medicaid_enrolled: false
   output:
     is_ca_cvrp_increased_rebate_eligible: false
 
@@ -18,7 +18,7 @@
   period: 2022
   input:
     school_meal_fpg_ratio: 4.01
-    medicaid: 0
+    medicaid_enrolled: false
     ssi: 1
   output:
     is_ca_cvrp_increased_rebate_eligible: true

@@ -16,8 +16,12 @@ def make_simulation(
     *,
     county: Optional[str] = None,
     employment_income: float = WAGES,
+    health_savings_account_payroll_contributions: float = 0,
     employer_headcount: int = 100,
     employer_quarterly_payroll_expense_override: float = -1,
+    pre_tax_health_insurance_premiums: float = 0,
+    tip_income: float = 0,
+    traditional_401k_contributions: float = 0,
 ) -> Simulation:
     household = {
         "members": ["person"],
@@ -33,9 +37,19 @@ def make_simulation(
                 "person": {
                     "age": {PERIOD: 30},
                     "employment_income": {PERIOD: employment_income},
+                    "health_savings_account_payroll_contributions": {
+                        PERIOD: health_savings_account_payroll_contributions
+                    },
                     "employer_headcount": {PERIOD: employer_headcount},
                     "employer_quarterly_payroll_expense_override": {
                         PERIOD: employer_quarterly_payroll_expense_override
+                    },
+                    "pre_tax_health_insurance_premiums": {
+                        PERIOD: pre_tax_health_insurance_premiums
+                    },
+                    "tip_income": {PERIOD: tip_income},
+                    "traditional_401k_contributions_desired": {
+                        PERIOD: traditional_401k_contributions
                     },
                 }
             },
@@ -52,6 +66,61 @@ def calculate(sim: Simulation, variable: str) -> float:
     return sim.calculate(variable, PERIOD)[0]
 
 
+@pytest.mark.parametrize(
+    ("state_code", "variable", "expected"),
+    [
+        pytest.param("CO", "employer_total_co_famli_taxable_wages", 4_000, id="CO"),
+        pytest.param(
+            "DC", "employer_total_dc_paid_leave_taxable_wages", 5_000, id="DC"
+        ),
+        pytest.param(
+            "MA", "employer_total_ma_paid_leave_taxable_wages", 4_000, id="MA"
+        ),
+        pytest.param(
+            "ME", "employer_total_me_paid_leave_taxable_wages", 4_000, id="ME"
+        ),
+        pytest.param(
+            "OR", "employer_total_or_paid_leave_taxable_wages", 4_000, id="OR"
+        ),
+        pytest.param(
+            "VT", "employer_total_vt_child_care_contribution_wages", 5_000, id="VT"
+        ),
+        pytest.param(
+            "WA", "employer_total_wa_paid_leave_taxable_wages", 4_000, id="WA"
+        ),
+    ],
+)
+def test_employer_total_program_wage_base_defaults(
+    state_code: str, variable: str, expected: float
+):
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 30},
+                    "employer_total_payroll_tax_gross_wages": {PERIOD: 5_000},
+                    "employer_total_taxable_earnings_for_social_security": {
+                        PERIOD: 4_000
+                    },
+                }
+            },
+            "households": {
+                "household": {
+                    "members": ["person"],
+                    "state_code": {PERIOD: state_code},
+                }
+            },
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert calculate(sim, variable) == pytest.approx(expected)
+
+
 def make_employer_total_simulation(
     state_code: str,
     *,
@@ -59,6 +128,13 @@ def make_employer_total_simulation(
     employer_state_unemployment_tax_rate_override: float = -1,
     employer_total_payroll_tax_gross_wages: float = WAGES,
     employer_total_taxable_earnings_for_social_security: float = WAGES,
+    employer_total_co_famli_taxable_wages: float = WAGES,
+    employer_total_dc_paid_leave_taxable_wages: float = WAGES,
+    employer_total_ma_paid_leave_taxable_wages: float = WAGES,
+    employer_total_me_paid_leave_taxable_wages: float = WAGES,
+    employer_total_or_paid_leave_taxable_wages: float = WAGES,
+    employer_total_vt_child_care_contribution_wages: float = WAGES,
+    employer_total_wa_paid_leave_taxable_wages: float = WAGES,
     employer_total_taxable_earnings_for_federal_unemployment_tax: float = 7_000,
     employer_total_taxable_earnings_for_state_unemployment_tax: float = 9_000,
     employer_ny_mctmt_zone_1_quarterly_payroll_expense: float = 0,
@@ -94,6 +170,27 @@ def make_employer_total_simulation(
                     },
                     "employer_total_taxable_earnings_for_social_security": {
                         PERIOD: employer_total_taxable_earnings_for_social_security
+                    },
+                    "employer_total_co_famli_taxable_wages": {
+                        PERIOD: employer_total_co_famli_taxable_wages
+                    },
+                    "employer_total_dc_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_dc_paid_leave_taxable_wages
+                    },
+                    "employer_total_ma_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_ma_paid_leave_taxable_wages
+                    },
+                    "employer_total_me_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_me_paid_leave_taxable_wages
+                    },
+                    "employer_total_or_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_or_paid_leave_taxable_wages
+                    },
+                    "employer_total_vt_child_care_contribution_wages": {
+                        PERIOD: employer_total_vt_child_care_contribution_wages
+                    },
+                    "employer_total_wa_paid_leave_taxable_wages": {
+                        PERIOD: employer_total_wa_paid_leave_taxable_wages
                     },
                     "employer_total_taxable_earnings_for_federal_unemployment_tax": {
                         PERIOD: employer_total_taxable_earnings_for_federal_unemployment_tax
@@ -226,6 +323,15 @@ def make_employer_total_simulation(
             id="ME",
         ),
         pytest.param(
+            "MN",
+            {
+                "mn_employee_paid_leave_contribution": 440,
+                "mn_employee_state_payroll_tax": 440,
+                "employee_state_payroll_tax": 440,
+            },
+            id="MN",
+        ),
+        pytest.param(
             "NJ",
             {
                 "nj_employee_temporary_disability_insurance_contribution": 190,
@@ -254,6 +360,15 @@ def make_employer_total_simulation(
                 "employee_state_payroll_tax": 700,
             },
             id="OR",
+        ),
+        pytest.param(
+            "PA",
+            {
+                "pa_employee_unemployment_compensation_contribution": 70,
+                "pa_employee_state_payroll_tax": 70,
+                "employee_state_payroll_tax": 70,
+            },
+            id="PA",
         ),
         pytest.param(
             "RI",
@@ -477,6 +592,275 @@ def test_small_employer_thresholds_zero_employer_paid_leave_share(
 
 
 @pytest.mark.parametrize(
+    ("state_code", "expected"),
+    [
+        pytest.param(
+            "CO",
+            {
+                "co_famli_taxable_wages": 7_000,
+                "co_employee_famli_contribution": 30.8,
+                "co_employer_famli_contribution": 30.8,
+            },
+            id="CO",
+        ),
+        pytest.param(
+            "DC",
+            {
+                "dc_paid_leave_taxable_wages": 7_000,
+                "dc_employer_paid_leave_tax": 52.5,
+            },
+            id="DC",
+        ),
+        pytest.param(
+            "MA",
+            {
+                "ma_paid_leave_taxable_wages": 7_000,
+                "ma_employee_paid_leave_contribution": 32.2,
+                "ma_employer_paid_leave_contribution": 29.4,
+                "ma_taxable_earnings_for_state_unemployment_tax": 7_000,
+                "taxable_earnings_for_state_unemployment_tax": 7_000,
+            },
+            id="MA",
+        ),
+        pytest.param(
+            "ME",
+            {
+                "me_paid_leave_taxable_wages": 7_000,
+                "me_employee_paid_leave_contribution": 35,
+                "me_employer_paid_leave_contribution": 35,
+            },
+            id="ME",
+        ),
+        pytest.param(
+            "MN",
+            {
+                "mn_paid_leave_taxable_wages": 7_000,
+                "mn_employee_paid_leave_contribution": 30.8,
+            },
+            id="MN",
+        ),
+        pytest.param(
+            "NJ",
+            {
+                "nj_temporary_disability_insurance_taxable_wages": 7_000,
+                "nj_family_leave_insurance_taxable_wages": 7_000,
+                "nj_employee_temporary_disability_insurance_contribution": 13.3,
+                "nj_employee_family_leave_insurance_contribution": 16.1,
+                "nj_taxable_earnings_for_state_unemployment_tax": 7_000,
+                "taxable_earnings_for_state_unemployment_tax": 7_000,
+            },
+            id="NJ",
+        ),
+        pytest.param(
+            "NY",
+            {
+                "ny_paid_family_leave_taxable_wages": 7_000,
+                "ny_disability_benefits_taxable_wages": 7_000,
+                "ny_employee_paid_family_leave_contribution": 30.24,
+                "ny_employee_disability_benefits_contribution": 31.2,
+            },
+            id="NY",
+        ),
+        pytest.param(
+            "OR",
+            {
+                "or_paid_leave_taxable_wages": 7_000,
+                "or_employee_paid_leave_contribution": 42,
+                "or_employer_paid_leave_contribution": 28,
+            },
+            id="OR",
+        ),
+        pytest.param(
+            "PA",
+            {
+                "pa_employee_unemployment_compensation_contribution": 4.9,
+                "pa_employee_state_payroll_tax": 4.9,
+            },
+            id="PA",
+        ),
+    ],
+)
+def test_state_payroll_gross_wage_bases_include_pre_tax_deductions(
+    state_code: str, expected: dict[str, float]
+):
+    sim = make_simulation(
+        state_code,
+        employment_income=7_000,
+        health_savings_account_payroll_contributions=1_000,
+        pre_tax_health_insurance_premiums=1_000,
+        traditional_401k_contributions=1_000,
+    )
+
+    assert calculate(sim, "payroll_tax_gross_wages") == pytest.approx(5_000)
+    assert calculate(sim, "irs_employment_income") == pytest.approx(4_000)
+    assert calculate(sim, "taxable_earnings_for_social_security") == pytest.approx(
+        5_000
+    )
+
+    for variable, amount in expected.items():
+        assert calculate(sim, variable) == pytest.approx(amount, abs=0.01)
+
+
+@pytest.mark.parametrize(
+    ("state_code", "expected"),
+    [
+        pytest.param("CO", {"co_famli_taxable_wages": 184_500}, id="CO"),
+        pytest.param("MA", {"ma_paid_leave_taxable_wages": 184_500}, id="MA"),
+        pytest.param("ME", {"me_paid_leave_taxable_wages": 184_500}, id="ME"),
+        pytest.param("OR", {"or_paid_leave_taxable_wages": 184_500}, id="OR"),
+        pytest.param("WA", {"wa_paid_leave_taxable_wages": 184_500}, id="WA"),
+    ],
+)
+def test_state_payroll_social_security_capped_wage_bases(
+    state_code: str, expected: dict[str, float]
+):
+    sim = make_simulation(state_code, employment_income=200_000)
+
+    for variable, amount in expected.items():
+        assert calculate(sim, variable) == pytest.approx(amount)
+
+
+def test_connecticut_paid_leave_uses_fica_taxable_wages():
+    sim = make_simulation(
+        "CT",
+        employment_income=7_000,
+        health_savings_account_payroll_contributions=1_000,
+        pre_tax_health_insurance_premiums=1_000,
+        traditional_401k_contributions=1_000,
+    )
+
+    assert calculate(sim, "payroll_tax_gross_wages") == pytest.approx(5_000)
+    assert calculate(sim, "irs_employment_income") == pytest.approx(4_000)
+    assert calculate(sim, "ct_employee_paid_leave_contribution") == pytest.approx(
+        25, abs=0.01
+    )
+
+
+@pytest.mark.parametrize(
+    ("state_code", "expected"),
+    [
+        pytest.param(
+            "CA",
+            {
+                "ca_taxable_earnings_for_state_unemployment_tax": 7_000,
+                "taxable_earnings_for_state_unemployment_tax": 7_000,
+            },
+            id="CA",
+        ),
+        pytest.param(
+            "MA",
+            {
+                "ma_taxable_earnings_for_state_unemployment_tax": 15_000,
+                "taxable_earnings_for_state_unemployment_tax": 15_000,
+            },
+            id="MA",
+        ),
+        pytest.param(
+            "NJ",
+            {
+                "nj_temporary_disability_insurance_taxable_wages": 171_100,
+                "nj_family_leave_insurance_taxable_wages": 171_100,
+                "nj_taxable_earnings_for_state_unemployment_tax": 42_300,
+                "taxable_earnings_for_state_unemployment_tax": 42_300,
+            },
+            id="NJ",
+        ),
+        pytest.param(
+            "RI",
+            {
+                "ri_temporary_disability_insurance_taxable_wages": 100_000,
+                "ri_taxable_earnings_for_state_unemployment_tax": 29_200,
+                "taxable_earnings_for_state_unemployment_tax": 29_200,
+            },
+            id="RI",
+        ),
+    ],
+)
+def test_state_payroll_state_specific_wage_base_caps(
+    state_code: str, expected: dict[str, float]
+):
+    sim = make_simulation(state_code, employment_income=200_000)
+
+    for variable, amount in expected.items():
+        assert calculate(sim, variable) == pytest.approx(amount)
+
+
+@pytest.mark.parametrize(
+    ("state_code", "expected"),
+    [
+        pytest.param(
+            "OR",
+            {
+                "or_statewide_transit_taxable_wages": 4_000,
+                "or_employee_statewide_transit_tax": 4,
+            },
+            id="OR",
+        ),
+        pytest.param(
+            "RI",
+            {
+                "ri_temporary_disability_insurance_taxable_wages": 4_000,
+                "ri_employee_temporary_disability_insurance_contribution": 44,
+                "ri_taxable_earnings_for_state_unemployment_tax": 4_000,
+                "taxable_earnings_for_state_unemployment_tax": 4_000,
+            },
+            id="RI",
+        ),
+        pytest.param(
+            "VT",
+            {
+                "vt_child_care_contribution_wages": 4_000,
+                "vt_employee_child_care_contribution": 4.4,
+                "vt_employer_child_care_contribution": 13.2,
+            },
+            id="VT",
+        ),
+    ],
+)
+def test_state_payroll_income_tax_wage_bases_exclude_pre_tax_deductions(
+    state_code: str, expected: dict[str, float]
+):
+    sim = make_simulation(
+        state_code,
+        employment_income=7_000,
+        health_savings_account_payroll_contributions=1_000,
+        pre_tax_health_insurance_premiums=1_000,
+        traditional_401k_contributions=1_000,
+    )
+
+    assert calculate(sim, "payroll_tax_gross_wages") == pytest.approx(5_000)
+    assert calculate(sim, "irs_employment_income") == pytest.approx(4_000)
+
+    for variable, amount in expected.items():
+        assert calculate(sim, variable) == pytest.approx(amount, abs=0.01)
+
+
+def test_washington_payroll_gross_wage_base_excludes_tips_not_pre_tax_deductions():
+    sim = make_simulation(
+        "WA",
+        employment_income=8_000,
+        health_savings_account_payroll_contributions=1_000,
+        pre_tax_health_insurance_premiums=1_000,
+        tip_income=1_000,
+        traditional_401k_contributions=1_000,
+    )
+
+    assert calculate(sim, "payroll_tax_gross_wages") == pytest.approx(6_000)
+    assert calculate(sim, "irs_employment_income") == pytest.approx(5_000)
+    assert calculate(sim, "wa_long_term_care_taxable_wages") == pytest.approx(7_000)
+    assert calculate(sim, "wa_paid_leave_taxable_wages") == pytest.approx(7_000)
+    assert calculate(sim, "wa_employee_paid_leave_contribution") == pytest.approx(
+        56.51, abs=0.01
+    )
+    assert calculate(sim, "wa_employer_paid_leave_contribution") == pytest.approx(
+        22.6, abs=0.01
+    )
+    assert calculate(sim, "wa_employee_long_term_care_contribution") == pytest.approx(
+        40.6, abs=0.01
+    )
+
+
+@pytest.mark.parametrize(
     ("headcount", "expected_rate", "expected_contribution"),
     [
         pytest.param(5, 0, 0, id="small-employer-exempt"),
@@ -595,6 +979,44 @@ def test_employer_total_additional_state_payroll_tax(
         employer_headcount=headcount,
         employer_total_taxable_earnings_for_social_security=ss_taxable,
         employer_total_taxable_earnings_for_state_unemployment_tax=state_ui_taxable,
+    )
+
+    assert calculate(
+        sim, "employer_total_additional_state_payroll_tax"
+    ) == pytest.approx(expected, abs=0.01)
+
+
+@pytest.mark.parametrize(
+    ("state_code", "expected"),
+    [
+        pytest.param("CA", 4, id="CA"),
+        pytest.param("CO", 30.8, id="CO"),
+        pytest.param("DC", 52.5, id="DC"),
+        pytest.param("DE", 20, id="DE"),
+        pytest.param("MA", 29.4, id="MA"),
+        pytest.param("ME", 35, id="ME"),
+        pytest.param("OR", 28, id="OR"),
+        pytest.param("RI", 8.4, id="RI"),
+        pytest.param("VT", 13.2, id="VT"),
+        pytest.param("WA", 22.6, id="WA"),
+    ],
+)
+def test_employer_total_additional_state_payroll_tax_uses_state_specific_wage_bases(
+    state_code: str,
+    expected: float,
+):
+    sim = make_employer_total_simulation(
+        state_code,
+        employer_total_payroll_tax_gross_wages=5_000,
+        employer_total_taxable_earnings_for_social_security=5_000,
+        employer_total_co_famli_taxable_wages=7_000,
+        employer_total_dc_paid_leave_taxable_wages=7_000,
+        employer_total_ma_paid_leave_taxable_wages=7_000,
+        employer_total_me_paid_leave_taxable_wages=7_000,
+        employer_total_or_paid_leave_taxable_wages=7_000,
+        employer_total_vt_child_care_contribution_wages=4_000,
+        employer_total_wa_paid_leave_taxable_wages=7_000,
+        employer_total_taxable_earnings_for_state_unemployment_tax=4_000,
     )
 
     assert calculate(
