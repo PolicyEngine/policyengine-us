@@ -1,3 +1,10 @@
+## [1.709.1] - 2026-05-26
+
+### Fixed
+
+- Deduct the Parent Share of Cost from Texas Child Care Services when childcare expense exceeds the Board's maximum reimbursement rate.
+
+
 ## [1.709.0] - 2026-05-26
 
 ### Added
