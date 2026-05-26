@@ -317,3 +317,127 @@
     ca_scc_general_assistance_base_amount: 929
     ca_scc_general_assistance_countable_income: 0
     ca_scc_general_assistance: 929
+
+- name: Case 13, single adult with income exactly at MAP — eligible with zero fill-the-gap.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        # 343 * 12 = 4116 annual → 343/month
+        employment_income: 4_116
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Income exactly equals MAP; per GA 200 "exceeds" is the bar (income > MAP).
+    ca_scc_general_assistance_income_eligible: true
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 343
+    ca_scc_general_assistance: 0
+
+- name: Case 14, undocumented spouse income IS included in GA applicant's budget.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person2:
+        # Per Responsible Relatives "Undocumented Non-citizen Spouse":
+        # immigration status does not affect spouse-for-spouse responsibility.
+        # Spouse is not personally eligible, but their income still counts.
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: UNDOCUMENTED
+        employment_income: 1_200  # 100/month
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Only person1 is eligible → single MAP $343.
+    # Undocumented spouse's $100/month employment_income still flows into budget.
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 100
+    ca_scc_general_assistance: 243
+
+- name: Case 15, SSI-receiving spouse income excluded from GA applicant's budget.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        # SSI-receiving spouse — per Responsible Relatives chapter, their income
+        # and property are excluded from the GA applicant's eligibility budget.
+        age: 67
+        is_tax_unit_head_or_spouse: true
+        ssi: 900
+        personal_property: 100
+        immigration_status: CITIZEN
+        social_security: 12_000  # 1_000/month — would otherwise count
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Only person1 (non-SSI spouse) is GA-eligible → single MAP.
+    # Person2's $1,000/month social_security is excluded → countable_income = 0.
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 343
+
+- name: Case 16, residential care facility auto-derives BOARD_AND_CARE.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        is_in_residential_care_facility: true
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # No explicit living_arrangement — formula derives from is_in_residential_care_facility.
+  output:
+    ca_scc_general_assistance_living_arrangement: BOARD_AND_CARE
+    ca_scc_general_assistance_base_amount: 929
+    ca_scc_general_assistance: 929

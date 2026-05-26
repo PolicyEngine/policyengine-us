@@ -21,3 +21,21 @@ class ca_scc_general_assistance_living_arrangement(Variable):
         "https://stgenssa.sccgov.org/debs/program_handbooks/charts/assets/4GA/NeedStnds.htm",
         "https://stgenssa.sccgov.org/debs/Forms/GA_62_en.pdf#page=2",
     )
+
+    def formula(spm_unit, period, parameters):
+        federal_arrangement = spm_unit.members("ssi_federal_living_arrangement", period)
+        in_medical = (
+            federal_arrangement
+            == federal_arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
+        )
+        any_in_medical = spm_unit.any(in_medical)
+        any_in_rcf = add(spm_unit, period, ["is_in_residential_care_facility"]) > 0
+
+        return select(
+            [any_in_medical, any_in_rcf],
+            [
+                CaSccGeneralAssistanceLivingArrangement.MEDICAL_INSTITUTION,
+                CaSccGeneralAssistanceLivingArrangement.BOARD_AND_CARE,
+            ],
+            default=CaSccGeneralAssistanceLivingArrangement.NOT_SHARED,
+        )
