@@ -15,7 +15,7 @@
         employment_income: 6_000
       person2:
         age: 5
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -40,7 +40,7 @@
         employment_income: 18_000
       person2:
         age: 5
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -54,9 +54,9 @@
   output:
     # Monthly income $1_500; FPL ratio = 1_500 / 1_762.50 = 0.8511.
     # Appendix A 2-person "90%" row daily fee = $4.25/child.
-    # 1 eligible child × 5 days/week × 52/12 = 21.67 monthly days.
-    # copay = $4.25 × 21.67 × 1 = $92.08.
-    wv_ccap_copay: 92.08
+    # 1 eligible child × 22 monthly days.
+    # copay = $4.25 × 22 × 1 = $93.50.
+    wv_ccap_copay: 93.5
 
 - name: Case 3, high income 2-person family copay below 7% cap.
   period: 2025-01
@@ -68,7 +68,7 @@
         employment_income: 36_000
       person2:
         age: 5
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -82,9 +82,9 @@
   output:
     # Monthly income $3_000; FPL ratio = 3_000 / 1_762.50 = 1.7021.
     # Appendix A 2-person "180%" row daily fee = $8.75/child.
-    # uncapped copay = $8.75 × 21.67 = $189.58.
+    # uncapped copay = $8.75 × 22 = $192.50.
     # 7% cap = $3_000 × 0.07 = $210. Cap does not bind for 2-person, 1-child.
-    wv_ccap_copay: 189.58
+    wv_ccap_copay: 192.5
 
 - name: Case 4, foster family pays zero copay even when fee would otherwise apply.
   period: 2025-01
@@ -96,7 +96,7 @@
         employment_income: 36_000
       person2:
         age: 5
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         is_in_foster_care: true
     tax_units:
       tax_unit:
@@ -109,6 +109,92 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Without foster waiver this household would owe $189.58/month (see Case 3);
+    # Without foster waiver this household would owe $192.50/month (see Case 3);
     # Manual §6.4.1 / CCDF Plan §3.3.1 waives the family fee.
     wv_ccap_copay: 0
+
+- name: Case 5, family size above eleven uses eleven-person column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 64_800
+      person2:
+        age: 5
+        childcare_attending_days_per_month: 22
+      person3:
+        age: 4
+      person4:
+        age: 4
+      person5:
+        age: 4
+      person6:
+        age: 4
+      person7:
+        age: 4
+      person8:
+        age: 4
+      person9:
+        age: 4
+      person10:
+        age: 4
+      person11:
+        age: 4
+      person12:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: WV
+  output:
+    # Family size 12 defaults to the 11-person column.
+    # FPL ratio = 5_400 / 6_345.83 = 0.8511, so Appendix A 11-person "90%" row = $4.50/day.
+    # 1 eligible child × 22 monthly days.
+    # copay = $4.50 × 22 = $99.
+    wv_ccap_copay: 99
+
+- name: Case 6, four children in care are capped at three billed children.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+        childcare_attending_days_per_month: 22
+      person3:
+        age: 4
+        childcare_attending_days_per_month: 22
+      person4:
+        age: 3
+        childcare_attending_days_per_month: 22
+      person5:
+        age: 2
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WV
+  output:
+    # Family size 5, FPL ratio = 2_500 / 3_137.50 = 0.7968.
+    # Appendix A 5-person "80%" row daily fee = $2.25/child.
+    # 4 eligible children × 22 monthly days = 88 monthly days.
+    # Three-child cap scales billed days by 3/4: 88 × 3/4 = 66.
+    # copay = $2.25 × 66 = $148.50.
+    wv_ccap_copay: 148.5

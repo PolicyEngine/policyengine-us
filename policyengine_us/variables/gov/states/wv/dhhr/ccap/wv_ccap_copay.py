@@ -11,7 +11,7 @@ class wv_ccap_copay(Variable):
     reference = (
         "https://bfa.wv.gov/media/6826/download?inline#page=1",
         "https://bfa.wv.gov/media/6766/download?inline#page=65",
-        "https://bfa.wv.gov/media/39915/download?inline#page=42",
+        "https://bfa.wv.gov/media/39915/download?inline#page=39",
     )
 
     def formula(spm_unit, period, parameters):
@@ -55,12 +55,12 @@ class wv_ccap_copay(Variable):
         )
         person = spm_unit.members
         is_eligible_child = person("wv_ccap_eligible_child", period)
-        weekly_days = person("childcare_days_per_week", period.this_year)
-        in_care = is_eligible_child & (weekly_days > 0)
-        num_in_care = spm_unit.sum(in_care)
-        total_monthly_days = (
-            spm_unit.sum(weekly_days * in_care) * WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        monthly_care_days = person(
+            "childcare_attending_days_per_month", period.this_year
         )
+        in_care = is_eligible_child & (monthly_care_days > 0)
+        num_in_care = spm_unit.sum(in_care)
+        total_monthly_days = spm_unit.sum(monthly_care_days * in_care)
         # Per Manual §6.4.3.4: fee waived for any child beyond the three
         # youngest. We don't track child ordering, so apply the cap as a
         # uniform 3/N scaling across all eligible children in care.

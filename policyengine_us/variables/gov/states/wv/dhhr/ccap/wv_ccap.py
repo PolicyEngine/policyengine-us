@@ -27,15 +27,11 @@ class wv_ccap(Variable):
         # not modeled.
         p = parameters(period).gov.states.wv.dhhr.ccap
         person = spm_unit.members
-        weekly_care_days = person("childcare_days_per_week", period.this_year)
-        monthly_care_days = weekly_care_days * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
+        monthly_care_days = person(
+            "childcare_attending_days_per_month", period.this_year
+        )
         in_monthly_range = (monthly_care_days >= p.billing.monthly_rate_min_days) & (
             monthly_care_days <= p.billing.monthly_rate_max_days
-        )
-        base_billed_days = where(
-            in_monthly_range,
-            p.billing.monthly_rate_max_days,
-            monthly_care_days,
         )
         daily_rate = person("wv_ccap_daily_rate", period)
         has_developmental_delay = person("has_developmental_delay", period.this_year)
@@ -46,9 +42,14 @@ class wv_ccap(Variable):
         non_trad_supplement = where(non_trad, p.supplements.non_traditional_hours, 0)
         daily_supplement = special_needs_supplement + non_trad_supplement
         pre_subsidy_per_child = person("pre_subsidy_childcare_expenses", period)
+        monthly_rate_maximum = (
+            daily_rate * p.billing.monthly_rate_max_days
+            + daily_supplement * monthly_care_days
+        )
+        per_day_maximum = person("wv_ccap_daily_benefit", period) * monthly_care_days
         per_child_reimbursement = min_(
-            daily_rate * base_billed_days + daily_supplement * monthly_care_days,
             pre_subsidy_per_child,
+            where(in_monthly_range, monthly_rate_maximum, per_day_maximum),
         )
         total_reimbursement = spm_unit.sum(per_child_reimbursement)
         copay = spm_unit("wv_ccap_copay", period)

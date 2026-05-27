@@ -21,13 +21,13 @@ class wv_ccap_daily_benefit(Variable):
         non_trad_supplement = where(non_trad, p.supplements.non_traditional_hours, 0)
         total_rate = daily_rate + special_needs_supplement + non_trad_supplement
         pre_subsidy = person("pre_subsidy_childcare_expenses", period)
-        daily_days = person("childcare_days_per_week", period.this_year) * (
-            WEEKS_IN_YEAR / MONTHS_IN_YEAR
+        monthly_care_days = person(
+            "childcare_attending_days_per_month", period.this_year
         )
-        mask = daily_days > 0
+        mask = monthly_care_days > 0
         daily_charge = np.divide(
             pre_subsidy,
-            daily_days,
+            monthly_care_days,
             out=np.zeros_like(pre_subsidy, dtype=float),
             where=mask,
         )

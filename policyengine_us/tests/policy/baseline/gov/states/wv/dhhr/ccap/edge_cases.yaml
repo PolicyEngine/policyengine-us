@@ -24,7 +24,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -56,7 +56,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -88,7 +88,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -344,7 +344,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 5_000
     tax_units:
       tax_unit:
@@ -551,7 +551,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -587,7 +587,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -603,9 +603,9 @@
   output:
     # Monthly income = 8_475 / 12 = $706.25. FPL ratio = 0.4007 > 0.4001 → bracket
     # "above 40% up to 50%" → Appendix A 2-person "50%" row daily fee = $2.00/child.
-    # copay = $2.00 × 21.67 × 1 = $43.33.
+    # copay = $2.00 × 22 × 1 = $44.
     # 7% cap = $706.25 × 0.07 = $49.44; cap does not bind.
-    wv_ccap_copay: 43.33
+    wv_ccap_copay: 44
 
 # ============================================================
 # Copay 7% cap behavior
@@ -627,7 +627,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -643,9 +643,9 @@
   output:
     # Monthly income = $2_996.25. FPL ratio = 1.7000 → bracket "above 160% up to 170%"
     # → Appendix A 2-person "170%" row daily fee = $8.25/child.
-    # uncapped copay = $8.25 × 21.67 × 1 = $178.75.
+    # uncapped copay = $8.25 × 22 × 1 = $181.50.
     # 7% cap = $2_996.25 × 0.07 = $209.74; cap does not bind.
-    wv_ccap_copay: 178.75
+    wv_ccap_copay: 181.5
 
 - name: Case 19, large family with three children triggers 7 percent cap.
   period: 2025-01
@@ -662,7 +662,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 6_000
       person3:
         age: 5
@@ -670,7 +670,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 6_000
       person4:
         age: 7
@@ -678,7 +678,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 6_000
       person5:
         age: 15
@@ -705,8 +705,8 @@
   output:
     # 7-person family, monthly income $3_500. FPG family-of-7 = $3_945; ratio = 0.887.
     # Appendix A 7-person "90%" row daily fee = $4.50/child.
-    # 3 eligible children × 5 days × 52/12 = 65 monthly days total.
-    # uncapped copay = $4.50 × 65 × 1 = $292.50.
+    # 3 eligible children × 22 monthly days = 66 monthly days total.
+    # uncapped copay = $4.50 × 66 × 1 = $297.
     # 7% cap = $3_500 × 0.07 = $245; cap binds.
     wv_ccap_copay: 245
 
@@ -819,7 +819,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -854,7 +854,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -1303,7 +1303,7 @@
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
         wv_ccap_non_traditional_hours: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 12_000
     tax_units:
       tax_unit:
@@ -1318,8 +1318,8 @@
         state_code: WV
   output:
     # Center Tier I Toddler = $37 + $6 non-trad = $43
-    # daily charge = (12_000/12) / (5 * 52/12) = 1_000 / 21.67 = 46.15
-    # daily benefit = min(43, 46.15) = 43
+    # daily charge = (12_000/12) / 22 = 45.45
+    # daily benefit = min(43, 45.45) = 43
     wv_ccap_daily_benefit: [0, 43]
 
 - name: Case 40, both special needs and non-traditional supplements.
@@ -1339,7 +1339,7 @@
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
         wv_ccap_non_traditional_hours: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 15_000
     tax_units:
       tax_unit:
@@ -1354,8 +1354,8 @@
         state_code: WV
   output:
     # Center Tier I School Age = $32 + $3 special needs + $6 non-trad = $41
-    # daily charge = (15_000/12) / (5 * 52/12) = 1_250 / 21.67 = 57.69
-    # daily benefit = min(41, 57.69) = 41
+    # daily charge = (15_000/12) / 22 = 56.82
+    # daily benefit = min(41, 56.82) = 41
     wv_ccap_daily_benefit: [0, 41]
 
 # ============================================================
@@ -1446,7 +1446,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_III
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         # Low childcare expenses: rate will exceed daily charge
         pre_subsidy_childcare_expenses: 3_600
     tax_units:
@@ -1464,16 +1464,16 @@
     # Center Tier III Infant = $45/day
     wv_ccap_daily_rate: [0, 45]
 
-    # daily charge = (3_600/12) / (5 * 52/12) = 300 / 21.67 = 13.84
-    # daily benefit = min(45, 13.84) = 13.84
-    wv_ccap_daily_benefit: [0, 13.84]
+    # daily charge = (3_600/12) / 22 = 13.64
+    # daily benefit = min(45, 13.64) = 13.64
+    wv_ccap_daily_benefit: [0, 13.64]
 
     # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
-    # Appendix A 2-person "120%" row daily fee = $5.75/child; 21.67 days.
-    # copay = $5.75 × 21.67 = $124.58.
-    # 21.67 days > 20 → per-day billing; per_child = min($45 × 21.67, $300) = $300.
-    # benefit = max($300 - $124.58, 0) = $175.42.
-    wv_ccap: 175.42
+    # Appendix A 2-person "120%" row daily fee = $5.75/child; 22 days.
+    # copay = $5.75 × 22 = $126.50.
+    # 22 days > 20 → per-day billing; per_child = min($45 × 22, $300) = $300.
+    # benefit = max($300 - $126.50, 0) = $173.50.
+    wv_ccap: 173.5
 
 # ============================================================
 # Zero childcare days/expenses
@@ -1494,7 +1494,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
         pre_subsidy_childcare_expenses: 0
     tax_units:
       tax_unit:
@@ -1667,7 +1667,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: FAMILY_HOME
         wv_ccap_quality_tier: TIER_II
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 6_000
       person3:
         age: 6
@@ -1675,7 +1675,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 3
+        childcare_attending_days_per_month: 13
         pre_subsidy_childcare_expenses: 4_000
     tax_units:
       tax_unit:
@@ -1701,20 +1701,20 @@
 
     # 3-person family, FPL ratio = 1_666.67 / 2_151.67 = 0.7746 → bracket
     # "above 70% up to 80%" → Appendix A 3-person "80%" row daily fee = $2.25/child.
-    # person2: 5 days/week; person3: 3 days/week → 8 weekly × 52/12 = 34.67 monthly days.
+    # person2: 22 days/month; person3: 13 days/month → 35 monthly days.
     # 2 eligible children in care → billed_share = 2/2 = 1.
-    # copay = $2.25 × 34.67 × 1 = $78.00.
-    wv_ccap_copay: 78
+    # copay = $2.25 × 35 × 1 = $78.75.
+    wv_ccap_copay: 78.75
 
-    # Person2 (FAMILY_HOME Tier II Infant, 5 days/wk, $6_000/yr expenses):
-    #   monthly expenses $500; actual_days 21.67 (>20 → per-day billing).
-    #   per_child = min($33 × 21.67, $500) = $500.
-    # Person3 (CENTER Tier I School-Age, 3 days/wk, $4_000/yr expenses):
+    # Person2 (FAMILY_HOME Tier II Infant, 22 days/month, $6_000/yr expenses):
+    #   monthly expenses $500; actual_days 22 (>20 → per-day billing).
+    #   per_child = min($33 × 22, $500) = $500.
+    # Person3 (CENTER Tier I School-Age, 13 days/month, $4_000/yr expenses):
     #   monthly expenses $333.33; actual_days 13 (in 13-20 → monthly rate, 20 days).
     #   per_child = min($32 × 20, $333.33) = $333.33.
     # total reimbursement = $500 + $333.33 = $833.33.
-    # benefit = max($833.33 - $78, 0) = $755.33.
-    wv_ccap: 755.33
+    # benefit = max($833.33 - $78.75, 0) = $754.58.
+    wv_ccap: 754.58
 
 # ============================================================
 # Child-only SPM unit cannot pass activity test

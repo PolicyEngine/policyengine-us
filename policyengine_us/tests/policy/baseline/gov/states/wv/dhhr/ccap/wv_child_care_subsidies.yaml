@@ -13,7 +13,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -27,5 +27,5 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Matches integration.yaml Case 1: wv_ccap monthly = $542.08 → annual = ~$6_505.
-    wv_child_care_subsidies: 6_505
+    # Matches integration.yaml Case 1: wv_ccap monthly = $540.17 → annual = ~$6_482.
+    wv_child_care_subsidies: 6_482

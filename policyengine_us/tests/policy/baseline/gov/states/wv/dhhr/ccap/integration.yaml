@@ -19,7 +19,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -52,19 +52,19 @@
     # === Copay ===
     # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
     # Appendix A 2-person "120%" row daily fee = $5.75/child.
-    # 1 eligible child × 5 days/week × 52/12 = 21.67 monthly days.
-    # copay = $5.75 × 21.67 × 1 = $124.58.
-    wv_ccap_copay: 124.58
+    # 1 eligible child × 22 monthly days.
+    # copay = $5.75 × 22 × 1 = $126.50.
+    wv_ccap_copay: 126.5
 
     # === Daily benefit (view variable: rate + supplements capped at daily charge) ===
-    # daily charge = (8_000/12) / 21.67 = 30.77; daily benefit = min(37, 30.77) = 30.77.
-    wv_ccap_daily_benefit: [0, 30.77]
+    # daily charge = (8_000/12) / 22 = 30.30; daily benefit = min(37, 30.30) = 30.30.
+    wv_ccap_daily_benefit: [0, 30.3]
 
     # === Monthly benefit ===
-    # 21.67 days/month > 20 → per-day billing for base; no supplements.
-    # per_child reimbursement = min($37 × 21.67, $666.67) = $666.67.
-    # benefit = max($666.67 - $124.58, 0) = $542.08.
-    wv_ccap: 542.08
+    # 22 days/month > 20 → per-day billing for base; no supplements.
+    # per_child reimbursement = min($37 × 22, $666.67) = $666.67.
+    # benefit = max($666.67 - $126.50, 0) = $540.17.
+    wv_ccap: 540.17
 
 - name: Case 2, low income family with zero copay.
   period: 2025-01
@@ -81,7 +81,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: FAMILY_HOME
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 6_000
     tax_units:
       tax_unit:
@@ -108,13 +108,11 @@
     # FPL ratio = 500 / 1_762.50 = 0.2837 < 0.40 -> 0% copay
     wv_ccap_copay: 0
 
-    # daily charge = 500 / 21.67 = 23.07
-    # daily benefit = min(30, 23.07) = 23.07
-    wv_ccap_daily_benefit: [0, 23.07]
+    # daily charge = 500 / 22 = 22.73
+    # daily benefit = min(30, 22.73) = 22.73
+    wv_ccap_daily_benefit: [0, 22.73]
 
-    # total reimbursement = (500/21.6667) * 21.6667 = 500
-    # uncapped = max(500 - 0, 0) = 500
-    # benefit = min(500, 500) = 500
+    # total reimbursement = min($500 expense, $22.73 × 22) = $500
     wv_ccap: 500
 
 - name: Case 3, ineligible family gets zero benefit.
@@ -134,7 +132,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -170,7 +168,7 @@
         ssi: 0
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_II
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 10_000
     tax_units:
       tax_unit:
@@ -196,18 +194,17 @@
     wv_ccap_daily_rate: [0, 35]
 
     # Daily benefit (view): rate + supplement capped at daily charge.
-    # daily charge = (10_000/12) / 21.67 = 38.46; daily benefit = min(35+3, 38.46) = 38.
-    wv_ccap_daily_benefit: [0, 38]
+    # daily charge = (10_000/12) / 22 = 37.88; daily benefit = min(35+3, 37.88) = 37.88.
+    wv_ccap_daily_benefit: [0, 37.88]
 
-    # Copay: same 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 21.67 = $124.58.
-    wv_ccap_copay: 124.58
+    # Copay: same 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 22 = $126.50.
+    wv_ccap_copay: 126.5
 
-    # 21.67 days/month > 20 → per-day billing for base.
+    # 22 days/month > 20 → per-day billing for base.
     # Manual §7.2.7.2: supplements bill for actual days only (same here, per-day billing).
-    # per_child = min($35 × 21.67 + $3 × 21.67, $833.33)
-    #           = min($823.33, $833.33) = $823.33.
-    # benefit = max($823.33 - $124.58, 0) = $698.75.
-    wv_ccap: 698.75
+    # per_child = min($35 × 22 + $3 × 22, $833.33) = $833.33.
+    # benefit = max($833.33 - $126.50, 0) = $706.83.
+    wv_ccap: 706.83
 
 - name: Case 5, non-WV family gets zero benefit.
   period: 2025-01
@@ -220,7 +217,7 @@
       person2:
         age: 4
         is_tax_unit_dependent: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         pre_subsidy_childcare_expenses: 8_000
     tax_units:
       tax_unit:
@@ -252,7 +249,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 4
+        childcare_attending_days_per_month: 17
         pre_subsidy_childcare_expenses: 12_000
     tax_units:
       tax_unit:
@@ -269,12 +266,12 @@
     wv_ccap_eligible: true
     # Center Tier I Toddler = $37/day.
     wv_ccap_daily_rate: [0, 37]
-    # 4 days/week = 17.33 days/month (in 13-20 monthly-rate range).
+    # 17 days/month is in the 13-20 monthly-rate range.
     # Base reimbursement (monthly rate): $37 × 20 = $740.
-    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 17.33 = $99.67.
-    wv_ccap_copay: 99.67
-    # benefit = max($740 - $99.67, 0) = $640.33.
-    wv_ccap: 640.33
+    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 17 = $97.75.
+    wv_ccap_copay: 97.75
+    # benefit = max($740 - $97.75, 0) = $642.25.
+    wv_ccap: 642.25
 
 # Manual §7.2.7.2: rate supplements are paid for actual days only — the monthly
 # rate does NOT apply to rate supplements. This case is the regression guard.
@@ -296,7 +293,7 @@
         immigration_status: CITIZEN
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
-        childcare_days_per_week: 4
+        childcare_attending_days_per_month: 17
         pre_subsidy_childcare_expenses: 12_000
     tax_units:
       tax_unit:
@@ -313,11 +310,51 @@
     wv_ccap_eligible: true
     # Center Tier I Toddler = $37/day base; special needs supplement = $3/day.
     wv_ccap_daily_rate: [0, 37]
-    # 4 days/week = 17.33 days/month (in 13-20 monthly-rate range).
+    # 17 days/month is in the 13-20 monthly-rate range.
     # Base reimbursement (monthly rate): $37 × 20 = $740.
-    # Supplement reimbursement (actual days, Manual §7.2.7.2): $3 × 17.33 = $52.
-    # Total reimbursement: $740 + $52 = $792 (under pre_subsidy $1_000).
-    # Copay: same as Case 6 (2-person FPL 1.1348, 17.33 days) = $99.67.
-    wv_ccap_copay: 99.67
-    # benefit = max($792 - $99.67, 0) = $692.33.
-    wv_ccap: 692.33
+    # Supplement reimbursement (actual days, Manual §7.2.7.2): $3 × 17 = $51.
+    # Total reimbursement: $740 + $51 = $791 (under pre_subsidy $1_000).
+    # Copay: same as Case 6 (2-person FPL 1.1348, 17 days) = $97.75.
+    wv_ccap_copay: 97.75
+    # benefit = max($791 - $97.75, 0) = $693.25.
+    wv_ccap: 693.25
+
+- name: Case 8, less than thirteen monthly days uses per-day rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 9
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible: true
+    # 9 days/month is below the 13-day monthly-rate threshold.
+    # Center Tier I Toddler = $37/day; daily charge = $1_000 / 9 = $111.11.
+    wv_ccap_daily_benefit: [0, 37]
+    # Copay: 2-person FPL 1.1348 → Appendix A "120%" row $5.75/day × 9 = $51.75.
+    wv_ccap_copay: 51.75
+    # Per-child reimbursement is capped before copay:
+    # max(min($1_000 expense, $37 × 9 max rate) - $51.75, 0) = $281.25.
+    wv_ccap: 281.25

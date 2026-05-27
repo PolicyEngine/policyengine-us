@@ -7,7 +7,7 @@ class wv_ccap_activity_eligible(Variable):
     label = "Eligible for West Virginia CCAP based on activity requirements"
     definition_period = MONTH
     defined_for = StateCode.WV
-    reference = "https://bfa.wv.gov/media/6766/download?inline#page=32"
+    reference = "https://bfa.wv.gov/media/6766/download?inline#page=33"
 
     def formula(spm_unit, period, parameters):
         # NOTE: we use is_full_time_student as a proxy for Manual §3.6.3, which

@@ -13,7 +13,7 @@
         # Age 3 → 36 months → TODDLER.
         age: 3
         is_tax_unit_dependent: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
         pre_subsidy_childcare_expenses: 8_000
@@ -28,9 +28,9 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Center Tier I Toddler = $37/day; daily_charge = (8_000/12)/21.67 = $30.77.
-    # daily_benefit = min(37, 30.77) = 30.77.
-    wv_ccap_daily_benefit: [0, 30.77]
+    # Center Tier I Toddler = $37/day; daily_charge = (8_000/12)/22 = $30.30.
+    # daily_benefit = min(37, 30.30) = 30.30.
+    wv_ccap_daily_benefit: [0, 30.3]
 
 - name: Case 2, daily benefit pays full rate when charge exceeds rate.
   period: 2025-01
@@ -43,7 +43,7 @@
       person2:
         age: 1
         is_tax_unit_dependent: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_II
         pre_subsidy_childcare_expenses: 15_000
@@ -58,8 +58,8 @@
         members: [person1, person2]
         state_code: WV
   output:
-    # Center Tier II Infant = $42/day; daily_charge = (15_000/12)/21.67 = $57.69.
-    # daily_benefit = min(42, 57.69) = 42.
+    # Center Tier II Infant = $42/day; daily_charge = (15_000/12)/22 = $56.82.
+    # daily_benefit = min(42, 56.82) = 42.
     wv_ccap_daily_benefit: [0, 42]
 
 - name: Case 3, non-traditional hours supplement adds 6 dollars per day.
@@ -74,7 +74,7 @@
         # Age 3 → 36 months → TODDLER.
         age: 3
         is_tax_unit_dependent: true
-        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 22
         wv_ccap_provider_type: CENTER
         wv_ccap_quality_tier: TIER_I
         wv_ccap_non_traditional_hours: true
@@ -91,6 +91,6 @@
         state_code: WV
   output:
     # Center Tier I Toddler = $37/day; non-traditional supplement = $6/day.
-    # total_rate = 43; daily_charge = (15_000/12)/21.67 = $57.69.
-    # daily_benefit = min(43, 57.69) = 43.
+    # total_rate = 43; daily_charge = (15_000/12)/22 = $56.82.
+    # daily_benefit = min(43, 56.82) = 43.
     wv_ccap_daily_benefit: [0, 43]
