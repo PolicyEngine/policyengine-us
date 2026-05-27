@@ -61,11 +61,18 @@ jobs:
             exit 0
           fi
 
-          file_list=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d; s/^/- /')
+          file_count=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | wc -l | tr -d ' ')
+          file_list=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | head -20 | sed 's/^/- /')
+
+          if [ "${file_count}" -gt 20 ]; then
+            file_list="${file_list}
+- ...and $((file_count - 20)) more. See the PR file diff for the full list."
+          fi
 
           payload=$(
             jq -n \
               --arg author "${PR_AUTHOR}" \
+              --arg count "${file_count}" \
               --arg files "${file_list}" \
               --arg number "${PR_NUMBER}" \
               --arg title "${PR_TITLE}" \
@@ -75,7 +82,8 @@ jobs:
                   ":warning: Partner API contract tests changed\n" +
                   "PR: <" + $url + "|#" + $number + " " + $title + ">\n" +
                   "Author: " + $author + "\n" +
-                  "Changed files:\n" + $files + "\n\n" +
+                  "Changed partner files: " + $count + "\n" +
+                  "Showing first 20:\n" + $files + "\n\n" +
                   "Please review whether this changes partner-facing API behavior before merge."
                 )
               }'
