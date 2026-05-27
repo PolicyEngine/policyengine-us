@@ -224,6 +224,6 @@
     state_code: RI
   output:
     # Max monthly = 150 * 52 / 12 = 650
-    # Capped expense = min(12_000, 650) = 650
+    # Monthly expense 12_000 / 12 = 1_000 > monthly max -> capped = 650
     # Benefit = max(650 - 120, 0) = 530
     ri_ccap: 530

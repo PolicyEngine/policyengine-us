@@ -12,7 +12,7 @@ class ma_ccfa(Variable):
 
     def formula(spm_unit, period, parameters):
         pre_subsidy_childcare_expenses = spm_unit(
-            "spm_unit_pre_subsidy_childcare_expenses", period.this_year
+            "spm_unit_pre_subsidy_childcare_expenses", period
         )
         copay = spm_unit("ma_ccfa_total_copay", period)
         max_reimbursement = add(spm_unit, period, ["ma_ccfa_maximum_reimbursement"])

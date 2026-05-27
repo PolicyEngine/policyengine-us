@@ -221,6 +221,6 @@
     state_code: NJ
   output:
     # Max monthly = 200 * 52 / 12 = 866.67
-    # Annual expense 20_000 > monthly max -> capped expense = 866.67
+    # Monthly expense 20_000 / 12 = 1_666.67 > monthly max -> capped = 866.67
     # Benefit = max(866.67 - 100, 0) = 766.67
     nj_ccap: 766.67

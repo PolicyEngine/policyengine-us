@@ -208,7 +208,7 @@
     state_code: DE
   output:
     # Max monthly = 150 * 52 / 12 = 650
-    # Capped expense = min(15_000, 650) = 650
+    # Monthly expense 15_000 / 12 = 1_250 > monthly max -> capped = 650
     # Benefit = max(650 - 90, 0) = 560
     de_poc: 560
 

@@ -125,6 +125,6 @@
     state_code: SC
   output:
     # Max monthly = 100 * 52 / 12 = 433.33
-    # Capped expense = min(10_000, 433.33) = 433.33
+    # Monthly expense 10_000 / 12 = 833.33 > monthly max -> capped = 433.33
     # Benefit = max(433.33 - 80, 0) = 353.33
     sc_ccap: 353.33

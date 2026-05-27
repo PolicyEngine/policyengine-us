@@ -138,6 +138,6 @@
     spm_unit_pre_subsidy_childcare_expenses: 12_000
     state_code: PA
   output:
-    # Capped expense = min(12_000, 800) = 800
+    # Monthly expense 12_000 / 12 = 1_000 > monthly max 800 -> capped = 800
     # Benefit = max(800 - 100, 0) = 700 (above min monthly payment floor)
     pa_ccw: 700
