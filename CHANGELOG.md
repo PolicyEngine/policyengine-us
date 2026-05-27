@@ -1,3 +1,10 @@
+## [1.710.0] - 2026-05-27
+
+### Added
+
+- Add an annual approximation of the 2018-2019 Arkansas Works Medicaid work requirement.
+
+
 ## [1.709.1] - 2026-05-26
 
 ### Fixed
