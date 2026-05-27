@@ -160,3 +160,24 @@
         spm_unit_size: 2
   output:
     snap_unit_size: 1
+
+- name: Case 10, work-requirement-ineligible adult reduces unit size.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+  output:
+    snap_unit_size: 1

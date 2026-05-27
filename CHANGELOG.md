@@ -1,3 +1,65 @@
+## [1.710.6] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.5] - 2026-05-27
+
+### Fixed
+
+- Apply rate cap before deducting copay in DC, NJ, SC, RI, PA, ME, MA, VA, and DE child care subsidy formulas, so the family copay is properly deducted from the state's max reimbursement when expenses exceed the cap.
+
+
+## [1.710.4] - 2026-05-27
+
+### Fixed
+
+- Model the recent incarceration exception for Medicaid community engagement requirements.
+
+
+## [1.710.3] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.2] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.1] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.0] - 2026-05-27
+
+### Added
+
+- Add an annual approximation of the 2018-2019 Arkansas Works Medicaid work requirement.
+
+
+## [1.709.1] - 2026-05-26
+
+### Fixed
+
+- Deduct the Parent Share of Cost from Texas Child Care Services when childcare expense exceeds the Board's maximum reimbursement rate.
+
+
+## [1.709.0] - 2026-05-26
+
+### Added
+
+- Added Alabama senior homestead property tax relief.
+
+
+## [1.708.0] - 2026-05-26
+
+### Added
+
+- Add Arizona MCTCP subtraction (Executive Order 2025-15) propagating the OBBBA federal enhanced senior, tip, overtime, and auto loan interest deductions to AZ subtractions starting 2025.
+
+
 ## [1.707.1] - 2026-05-25
 
 No significant changes.

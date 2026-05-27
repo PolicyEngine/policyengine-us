@@ -194,6 +194,7 @@
   input:
     medicaid_category: ADULT
     immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
   output:
     is_medicaid_eligible: false
 
@@ -253,3 +254,63 @@
         members: [person1, person2]
   output:
     is_medicaid_eligible: [true, false]
+
+- name: Case 12, Arkansas 2018 subject adult is ineligible when the historical work requirement approximation is unmet.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: false
+
+- name: Case 13, Arkansas 2018 adult above 100 percent FPL remains eligible because the annual approximation does not subject that cohort.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 1.1
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 14, Arkansas 2019 adults ages 19 to 29 remain eligible because the brief phase-in is not modeled annually.
+  period: 2019
+  input:
+    age: 25
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.8
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 15, section 1115 MEC adult is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: false
+
+- name: Case 16, section 1115 MEC adult remains eligible when meeting the income safe harbor.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: true

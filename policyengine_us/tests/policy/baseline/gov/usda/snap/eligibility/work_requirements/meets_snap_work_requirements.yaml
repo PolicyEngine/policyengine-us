@@ -40,7 +40,6 @@
 
 - name: Case 5, CA pre-HR1 age 55 exempt flows through SPM.
   period: 2026-01
-  absolute_error_margin: 0.9
   input:
     people:
       person1:
@@ -63,7 +62,6 @@
 
 - name: Case 6, non-CA post-HR1 age 55 not exempt.
   period: 2026-01
-  absolute_error_margin: 0.9
   input:
     people:
       person1:
@@ -83,3 +81,63 @@
         state_code: TX
   output:
     meets_snap_work_requirements: false
+
+- name: Case 7, two adults remain eligible when one adult passes.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 8, two adults are ineligible when both adults fail.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    meets_snap_work_requirements: false
+
+- name: Case 9, two adults remain eligible when both adults pass.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    meets_snap_work_requirements: true
