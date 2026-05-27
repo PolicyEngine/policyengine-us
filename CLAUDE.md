@@ -133,7 +133,8 @@ changelog.d/medicaid-ce-exclusions.md
   - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
   - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
   - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Before changing expected outputs in this folder, identify the underlying model change and report the partner impact to the team
+  - Before editing files in this folder, flag the partner-facing risk to the user and ask for explicit confirmation three separate times
+  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations

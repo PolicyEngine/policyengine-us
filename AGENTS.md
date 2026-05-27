@@ -10,9 +10,10 @@ Do not rewrite these expected outputs merely to match changed model behavior or 
 
 Before changing expected outputs in this folder:
 
+- Flag the partner-facing risk to the user.
+- Ask the user for explicit confirmation three separate times before editing partner tests.
 - Identify the model change that caused the partner output change.
 - Preserve the failing behavior as evidence unless the change is intentional.
-- Document the partner-facing impact in the PR or issue.
-- Notify or request review from the API/partner team.
+- Explain the partner-facing impact to the user.
 
-Changing these tests without reporting partner impact is unsafe, even if CI passes afterward.
+Changing these tests without explicit user confirmation is unsafe, even if CI passes afterward.
