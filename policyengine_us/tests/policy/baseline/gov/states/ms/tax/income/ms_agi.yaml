@@ -32,3 +32,12 @@
     employment_income: 500
   output:
     ms_agi: 0
+
+- name: SSTB self-employment income is included in Mississippi AGI
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+    ms_agi_adjustments: 0
+    state_code: MS
+  output:
+    ms_agi: 100_000

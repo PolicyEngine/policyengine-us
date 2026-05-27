@@ -15,8 +15,11 @@ class lifetime_learning_credit_potential(Variable):
         llc = education.lifetime_learning_credit
         person = tax_unit.members
         is_aoc_eligible = person("is_eligible_for_american_opportunity_credit", period)
+        is_llc_eligible = person("is_eligible_for_lifetime_learning_credit", period)
         eligible_expenses = tax_unit.sum(
-            person("qualified_tuition_expenses", period) * ~is_aoc_eligible
+            person("qualified_tuition_expenses", period)
+            * is_llc_eligible
+            * ~is_aoc_eligible
         )
         capped_expenses = min_(llc.expense_limit, eligible_expenses)
         maximum_amount = llc.rate * capped_expenses

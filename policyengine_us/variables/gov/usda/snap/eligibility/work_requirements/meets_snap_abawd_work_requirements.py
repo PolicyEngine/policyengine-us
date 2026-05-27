@@ -42,10 +42,9 @@ class meets_snap_abawd_work_requirements(Variable):
         # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
         work_reg_exempt = person("is_snap_work_registration_exempt_non_age", period)
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
-        # NOTE: (F)-(G) Native American/Indian exemptions per IHCIA
-        # definitions are not yet implemented (requires tribal
-        # membership input variable).
         is_pregnant = person("is_pregnant", period)
+        # (F)-(G) Indian, Urban Indian, or California Indian.
+        is_indian_exempt = person("is_snap_abawd_indian_exempt", period)
         # TODO: HI/AK delayed adoption (2025-11-01) to be handled
         # in a follow-up PR via state-level hr1_in_effect parameters.
         base_conditions = (
@@ -59,8 +58,10 @@ class meets_snap_abawd_work_requirements(Variable):
         # Pre-HR1 exemptions: homeless, veteran
         is_homeless = person.household("is_homeless", period)
         is_veteran = person("is_veteran", period)
+        post_hr1_conditions = base_conditions | is_indian_exempt
+        pre_hr1_conditions = base_conditions | is_homeless | is_veteran
         return where(
             hr1_in_effect,
-            base_conditions,
-            base_conditions | is_homeless | is_veteran,
+            post_hr1_conditions,
+            pre_hr1_conditions,
         )

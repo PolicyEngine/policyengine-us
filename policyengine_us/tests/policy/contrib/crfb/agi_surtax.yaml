@@ -76,12 +76,12 @@
     gov.contrib.crfb.surtax.in_effect: true
     gov.contrib.crfb.surtax.increased_base.in_effect: true
     adjusted_gross_income: 80_000
-    traditional_401k_contributions: 30_000
+    traditional_401k_contributions_desired: 30_000
     filing_status: SINGLE
   output:
-    # AGI 80k + 401k 30k = 110k expanded base
-    # (110k - 100k) * 1% = 100
-    agi_surtax: 100
+    # AGI 80k + 401k contributions 24.5k = 104.5k expanded base
+    # (104.5k - 100k) * 1% = 45
+    agi_surtax: 45
 
 - name: Expanded base with tax-exempt interest
   period: 2026
@@ -104,7 +104,7 @@
     gov.contrib.crfb.surtax.in_effect: true
     gov.contrib.crfb.surtax.increased_base.in_effect: false
     adjusted_gross_income: 80_000
-    traditional_401k_contributions: 30_000
+    traditional_401k_contributions_desired: 30_000
     filing_status: SINGLE
   output:
     # Only AGI 80k used, below 100k threshold

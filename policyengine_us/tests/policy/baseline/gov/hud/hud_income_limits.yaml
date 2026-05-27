@@ -1,0 +1,30 @@
+- name: LA County four-person HUD income limits use FY2024 Section 8 data.
+  period: 2024
+  input:
+    county_fips: "06037"
+    spm_unit_size: 4
+  output:
+    ami: 98_200
+    hud_extremely_low_income_limit: 41_600
+    hud_very_low_income_limit: 69_350
+    hud_low_income_limit: 110_950
+
+- name: Family sizes above eight use HUD's largest published family-size column.
+  period: 2024
+  input:
+    county_fips: "01001"
+    spm_unit_size: 9
+  output:
+    hud_extremely_low_income_limit: 52_720
+    hud_very_low_income_limit: 54_000
+    hud_low_income_limit: 86_400
+
+- name: Unknown counties have no HUD income-limit row.
+  period: 2024
+  input:
+    county_fips: "99999"
+    spm_unit_size: 4
+  output:
+    hud_extremely_low_income_limit: 0
+    hud_very_low_income_limit: 0
+    hud_low_income_limit: 0

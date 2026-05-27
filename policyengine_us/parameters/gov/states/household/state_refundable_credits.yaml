@@ -36,7 +36,7 @@ values:
     - oh_refundable_credits  # Ohio.
     - ok_refundable_credits  # Oklahoma.
     - or_refundable_credits  # Oregon.
-    # Skip PA which has no refundable credits.
+    - pa_refundable_tax_credits  # Pennsylvania.
     - ri_refundable_credits  # Rhode Island.
     - sc_refundable_credits  # South Carolina.
     - wa_refundable_credits  # Washington.
