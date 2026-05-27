@@ -1,3 +1,10 @@
+## [1.710.7] - 2026-05-27
+
+### Fixed
+
+- Validate changed changelog fragment paths in pull request CI.
+
+
 ## [1.710.6] - 2026-05-27
 
 No significant changes.
