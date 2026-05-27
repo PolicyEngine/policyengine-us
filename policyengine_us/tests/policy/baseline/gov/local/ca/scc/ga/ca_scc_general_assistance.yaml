@@ -20,7 +20,7 @@
   output:
     ca_scc_general_assistance: 343
 
-- name: Case 2, single eligible adult with partial earned income.
+- name: Case 2, single eligible adult with partial unearned income.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -31,7 +31,7 @@
         ssi: 0
         personal_property: 0
         immigration_status: CITIZEN
-        employment_income: 1_200
+        social_security: 1_200
     households:
       household:
         members: [person1]
@@ -41,9 +41,10 @@
         members: [person1]
         ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
+    # countable = 1_200/12 = 100; benefit = 343 - 100 = 243.
     ca_scc_general_assistance: 243
 
-- name: Case 3, single eligible adult with income at MAP, zero benefit.
+- name: Case 3, single eligible adult with unearned income at MAP, zero benefit.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -54,7 +55,7 @@
         ssi: 0
         personal_property: 0
         immigration_status: CITIZEN
-        employment_income: 4_116
+        social_security: 4_116
     households:
       household:
         members: [person1]
@@ -64,6 +65,7 @@
         members: [person1]
         ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
+    # countable = 4_116/12 = 343 == MAP; benefit = 0.
     ca_scc_general_assistance: 0
 
 - name: Case 4, ineligible due to SSI receipt.
@@ -146,7 +148,7 @@
         ssi: 0
         personal_property: 0
         immigration_status: CITIZEN
-        employment_income: 4_116
+        social_security: 4_116
     households:
       household:
         members: [person1]
@@ -170,7 +172,7 @@
         ssi: 0
         personal_property: 0
         immigration_status: CITIZEN
-        employment_income: 4_104
+        social_security: 4_104
     households:
       household:
         members: [person1]
@@ -183,7 +185,7 @@
     # countable = 4_104 / 12 = 342; benefit = 343 - 342 = 1
     ca_scc_general_assistance: 1
 
-- name: Case 9, married couple with $200 combined countable income receives $260.
+- name: Case 9, married couple with $200 combined unearned countable income receives $260.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -194,14 +196,14 @@
         ssi: 0
         personal_property: 100
         immigration_status: CITIZEN
-        employment_income: 1_200
+        social_security: 1_200
       person2:
         age: 28
         is_tax_unit_head_or_spouse: true
         ssi: 0
         personal_property: 100
         immigration_status: CITIZEN
-        employment_income: 1_200
+        social_security: 1_200
     households:
       household:
         members: [person1, person2]

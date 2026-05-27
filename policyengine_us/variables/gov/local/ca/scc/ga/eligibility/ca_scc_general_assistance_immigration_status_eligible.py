@@ -12,6 +12,13 @@ class ca_scc_general_assistance_immigration_status_eligible(Variable):
     reference = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/07Citizens_Noncitizens/Non_Citizen_Status.htm"
 
     def formula(person, period, parameters):
+        # GA 141 limits eligibility to noncitizens with the right to remain
+        # permanently or indefinitely. The handbook excludes parolees admitted
+        # "for a specific period of time" — only indefinite-period parolees
+        # qualify. PAROLED_ONE_YEAR is kept in the qualified list because the
+        # PolicyEngine enum represents "Paroled for at Least One Year," which
+        # is typically renewed indefinitely in practice; partners should treat
+        # short fixed-term parolees as UNDOCUMENTED for SCC GA purposes.
         p = parameters(period).gov.local.ca.scc.general_assistance
         immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()

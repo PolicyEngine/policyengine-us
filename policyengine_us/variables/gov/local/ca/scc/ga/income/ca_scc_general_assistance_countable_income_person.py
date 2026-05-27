@@ -14,8 +14,12 @@ class ca_scc_general_assistance_countable_income_person(Variable):
     )
 
     def formula(person, period, parameters):
-        sources = parameters(
-            period
-        ).gov.local.ca.scc.general_assistance.countable_income.sources
+        p = parameters(period).gov.local.ca.scc.general_assistance.countable_income
+        earned = add(person, period, p.earned_sources)
+        deductions = person(
+            "ca_scc_general_assistance_earned_income_deductions", period
+        )
+        unearned = add(person, period, p.unearned_sources)
+        net_earned = max_(earned - deductions, 0)
         receives_ssi = person("ssi", period) > 0
-        return add(person, period, sources) * ~receives_ssi
+        return (net_earned + unearned) * ~receives_ssi

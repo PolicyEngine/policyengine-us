@@ -1,0 +1,32 @@
+- name: Case 1, no earned income produces zero deductions.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    self_employment_income: 0
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_earned_income_deductions: 0
+
+- name: Case 2, non head or spouse contributes zero deductions.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: false
+    employment_income: 24_000
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_earned_income_deductions: 0
+
+- name: Case 3, unearned income alone does not trigger deductions.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    social_security: 12_000
+    workers_compensation: 6_000
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # Deductions only apply to earned income; pure unearned income generates none.
+    ca_scc_general_assistance_earned_income_deductions: 0

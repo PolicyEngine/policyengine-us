@@ -22,7 +22,7 @@
     ca_scc_general_assistance_countable_income: 0
     ca_scc_general_assistance: 343
 
-- name: Case 2, eligible single adult with $100/month employment income, fill-the-gap benefit.
+- name: Case 2, eligible single adult with $100/month unearned income, fill-the-gap benefit.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -33,7 +33,7 @@
         ssi: 0
         personal_property: 100
         immigration_status: CITIZEN
-        employment_income: 1_200
+        social_security: 1_200
     households:
       household:
         members: [person1]
@@ -330,7 +330,7 @@
         personal_property: 100
         immigration_status: CITIZEN
         # 343 * 12 = 4116 annual → 343/month
-        employment_income: 4_116
+        social_security: 4_116
     households:
       household:
         members: [person1]
@@ -366,7 +366,7 @@
         ssi: 0
         personal_property: 50
         immigration_status: UNDOCUMENTED
-        employment_income: 1_200  # 100/month
+        social_security: 1_200  # 100/month
     households:
       household:
         members: [person1, person2]
@@ -377,7 +377,7 @@
         ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
     # Only person1 is eligible → single MAP $343.
-    # Undocumented spouse's $100/month employment_income still flows into budget.
+    # Undocumented spouse's $100/month social_security still flows into budget.
     ca_scc_general_assistance_base_amount: 343
     ca_scc_general_assistance_countable_income: 100
     ca_scc_general_assistance: 243

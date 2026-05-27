@@ -1,10 +1,10 @@
-- name: Case 1, single head with employment income.
+- name: Case 1, single head with unearned income.
   period: 2024-01
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        employment_income: 1_200
+        social_security: 1_200
     households:
       household:
         members: [person1]
@@ -16,16 +16,16 @@
   output:
     ca_scc_general_assistance_countable_income: 100
 
-- name: Case 2, head and spouse both have income, sums across SPMUnit.
+- name: Case 2, head and spouse both have unearned income, sums across SPMUnit.
   period: 2024-01
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        employment_income: 1_200
+        social_security: 1_200
       person2:
         is_tax_unit_head_or_spouse: true
-        social_security: 2_400
+        workers_compensation: 2_400
     households:
       household:
         members: [person1, person2]
@@ -35,6 +35,7 @@
         members: [person1, person2]
   absolute_error_margin: 0.1
   output:
+    # (1_200 + 2_400) / 12 = 300.
     ca_scc_general_assistance_countable_income: 300
 
 - name: Case 3, dependent child income excluded.
@@ -43,10 +44,10 @@
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        employment_income: 1_200
+        social_security: 1_200
       person2:
         is_tax_unit_head_or_spouse: false
-        employment_income: 6_000
+        social_security: 6_000
     households:
       household:
         members: [person1, person2]
