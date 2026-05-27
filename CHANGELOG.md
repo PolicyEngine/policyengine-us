@@ -1,3 +1,10 @@
+## [1.711.0] - 2026-05-27
+
+### Added
+
+- Added coding-agent guidance for partner API contract tests and removed stale working references.
+
+
 ## [1.710.7] - 2026-05-27
 
 ### Fixed
