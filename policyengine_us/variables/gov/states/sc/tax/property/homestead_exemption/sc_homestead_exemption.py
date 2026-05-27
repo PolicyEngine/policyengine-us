@@ -12,8 +12,16 @@ class sc_homestead_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.sc.tax.property.homestead_exemption
+        person = tax_unit.members
+        head = person("is_tax_unit_head", period)
+        joint_spouse = person("is_tax_unit_spouse", period) & person.tax_unit(
+            "tax_unit_is_joint", period
+        )
+        assessed_value = tax_unit.sum(
+            person("assessed_property_value", period) * (head | joint_spouse)
+        )
         assessed_exemption_amount = p.amount * p.assessment_rate
         return min_(
-            add(tax_unit, period, ["assessed_property_value"]),
+            assessed_value,
             assessed_exemption_amount,
         )
