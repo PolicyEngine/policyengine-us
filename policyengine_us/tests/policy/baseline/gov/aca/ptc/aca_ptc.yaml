@@ -1,4 +1,4 @@
-- name: ACA PTC returns zero before 2024
+- name: ACA PTC calculated for 2023 using historical premiums
   absolute_error_margin: 0.01
   period: 2023
   input:
@@ -6,6 +6,19 @@
     slcsp: 1_200
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
+  output:
+    aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
+
+- name: ACA PTC remains zero before available rating-area premium data
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: true
   output:
     aca_ptc: 0
 
