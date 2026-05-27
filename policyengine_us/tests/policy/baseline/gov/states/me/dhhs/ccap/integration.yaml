@@ -155,9 +155,9 @@
     # Max reimbursement: (200 + 136.45) * 52/12 = 336.45 * 4.333 = $1,457.95
     # Expenses (monthly): 20000/12 = $1,666.67
     # Parent fee (monthly): $182
-    # Uncapped = max(1666.67 - 182, 0) = $1,484.67
-    # Benefit = min(1484.67, 1457.95) = $1,457.95
-    me_ccap: 1_458
+    # Capped expenses = min(1666.67, 1457.95) = $1,457.95
+    # Benefit = max(1457.95 - 182, 0) = $1,275.95
+    me_ccap: 1_275.95
 
 - name: Case 3, income above 125% SMI, ineligible.
   period: 2026-01
@@ -301,9 +301,9 @@
     # Max reimbursement: 320 * 52/12 = $1,386.67
     # Expenses (monthly): 25000/12 = $2,083.33
     # Parent fee (monthly): $957.67
-    # Uncapped = max(2083.33 - 957.67, 0) = $1,125.67
-    # Benefit = min(1125.67, 1386.67) = $1,125.67
-    me_ccap: 1_126
+    # Capped expenses = min(2083.33, 1386.67) = $1,386.67
+    # Benefit = max(1386.67 - 957.67, 0) = $429
+    me_ccap: 429
 
 - name: Case 6, disabled child age 15, eligible under special needs.
   period: 2026-01
@@ -363,9 +363,9 @@
     # Max reimbursement: 119 * 52/12 = $515.67
     # Expenses (monthly): 8000/12 = $666.67
     # Parent fee (monthly): $208
-    # Uncapped = max(666.67 - 208, 0) = $458.67
-    # Benefit = min(458.67, 515.67) = $458.67
-    me_ccap: 459
+    # Capped expenses = min(666.67, 515.67) = $515.67
+    # Benefit = max(515.67 - 208, 0) = $307.67
+    me_ccap: 307.67
 
 - name: Case 7, assets over limit, ineligible.
   period: 2026-01
@@ -619,6 +619,6 @@
     # Max reimbursement: (275 + 95.51) * 52/12 = 370.51 * 4.333 = $1,605.54.
     # Expenses (monthly): 30000/12 = $2,500.
     # Parent fee (monthly): $1,079.
-    # Uncapped = max(2500 - 1079, 0) = $1,421.
-    # Benefit = min(1421, 1605.54) = $1,421.
-    me_ccap: 1_421
+    # Capped expenses = min(2500, 1605.54) = $1,605.54.
+    # Benefit = max(1605.54 - 1079, 0) = $526.54.
+    me_ccap: 526.54

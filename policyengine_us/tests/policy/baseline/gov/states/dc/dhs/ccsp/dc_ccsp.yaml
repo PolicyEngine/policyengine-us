@@ -1,4 +1,4 @@
-- name: Case 1, eligible, payment higher. 
+- name: Case 1, eligible, expense exceeds max subsidy amount.
   period: 2025-01
   absolute_error_margin: 0.2
   input:
@@ -7,7 +7,9 @@
     dc_ccsp_maximum_subsidy_amount: 20
     spm_unit_pre_subsidy_childcare_expenses: 30 * 12
   output:
-    dc_ccsp: 20
+    # capped expense = min(30, 20) = 20
+    # benefit = max(20 - 10, 0) = 10
+    dc_ccsp: 10
 
 - name: Case 2, ineligible 
   period: 2025-01
@@ -93,4 +95,6 @@
     dc_ccsp_eligible: true
     dc_ccsp_maximum_subsidy_amount: [0, 0, 986.5]
     dc_ccsp_copay: 18.5
-    dc_ccsp: 981.5
+    # capped expense = min(1000, 986.5) = 986.5
+    # benefit = max(986.5 - 18.5, 0) = 968
+    dc_ccsp: 968
