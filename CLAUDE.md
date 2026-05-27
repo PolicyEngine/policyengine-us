@@ -67,6 +67,19 @@ echo "Description of change." > changelog.d/<branch-name>.<type>.md
 ```
 Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
 
+The fragment must be a top-level file in `changelog.d/`. Do not create type subdirectories.
+
+Correct:
+```text
+changelog.d/medicaid-ce-exclusions.added.md
+```
+
+Incorrect:
+```text
+changelog.d/added/medicaid-ce-exclusions.md
+changelog.d/medicaid-ce-exclusions.md
+```
+
 **DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
 
 ## Project Requirements
