@@ -1,0 +1,30 @@
+- name: Case 1, California uses the national parent Medicaid income limit table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    medicaid_parent_income_limit: 1.14
+  absolute_error_margin: 0.0001
+
+- name: Case 2, Virginia Group II uses the regional LIFC income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: HENRICO_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.336896
+  absolute_error_margin: 0.0001
