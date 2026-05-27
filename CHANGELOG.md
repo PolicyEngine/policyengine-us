@@ -1,3 +1,10 @@
+## [1.710.5] - 2026-05-27
+
+### Fixed
+
+- Apply rate cap before deducting copay in DC, NJ, SC, RI, PA, ME, MA, VA, and DE child care subsidy formulas, so the family copay is properly deducted from the state's max reimbursement when expenses exceed the cap.
+
+
 ## [1.710.4] - 2026-05-27
 
 ### Fixed
