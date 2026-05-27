@@ -205,3 +205,20 @@
     was_recently_incarcerated_for_medicaid_ce: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 23, American Indian or Alaska Native adult is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    is_american_indian_or_alaska_native_for_medicaid_ce: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 24, adult remains ineligible without the AIAN exclusion.
+  period: 2027
+  input:
+    age: 30
+    is_american_indian_or_alaska_native_for_medicaid_ce: false
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
