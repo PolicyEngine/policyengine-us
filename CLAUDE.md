@@ -129,6 +129,12 @@ changelog.d/medicaid-ce-exclusions.md
   - Code that lives near dead code is not necessarily dead — verify each piece independently
   - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
 
+- **PARTNER API CONTRACT TESTS ARE NOT ORDINARY SNAPSHOTS**
+  - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
+  - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
+  - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
+  - Before changing expected outputs in this folder, identify the underlying model change and report the partner impact to the team
+
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
   - NEVER use period.start.year or other conditional checks to return hardcoded values for test cases
