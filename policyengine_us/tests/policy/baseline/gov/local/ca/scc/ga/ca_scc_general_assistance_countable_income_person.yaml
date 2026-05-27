@@ -89,3 +89,16 @@
   output:
     # SSI recipient — all income excluded per Responsible Relatives chapter.
     ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 9, head with disability benefits, railroad benefits, and CA SDI.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    disability_benefits: 1_200
+    railroad_benefits: 2_400
+    ca_state_disability_insurance: 600
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # (1_200 + 2_400 + 600) / 12 = 350.
+    ca_scc_general_assistance_countable_income_person: 350

@@ -38,13 +38,13 @@
   output:
     ca_scc_general_assistance_immigration_status_eligible: true
 
-- name: Case 6, paroled one year is eligible.
+- name: Case 6, paroled one year is ineligible because SCC requires indefinite parole.
   period: 2024
   input:
     in_scc: true
     immigration_status: PAROLED_ONE_YEAR
   output:
-    ca_scc_general_assistance_immigration_status_eligible: true
+    ca_scc_general_assistance_immigration_status_eligible: false
 
 - name: Case 7, undocumented is ineligible.
   period: 2024

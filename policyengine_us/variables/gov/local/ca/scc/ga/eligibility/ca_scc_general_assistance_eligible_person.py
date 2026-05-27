@@ -22,6 +22,7 @@ class ca_scc_general_assistance_eligible_person(Variable):
         # program (here: CAPI for aged/blind/disabled noncitizens) are not
         # eligible for General Assistance.
         capi_eligible = person("ca_capi_eligible_person", period)
+        is_self_employed = person("is_self_employed", period.this_year)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return (
             age_eligible
@@ -29,5 +30,6 @@ class ca_scc_general_assistance_eligible_person(Variable):
             & immigration_status_eligible
             & ~receives_ssi
             & ~capi_eligible
+            & ~is_self_employed
             & is_head_or_spouse
         )

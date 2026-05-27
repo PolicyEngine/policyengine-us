@@ -109,3 +109,16 @@
     # Per GA 202, eligibility for another federal/state cash aid program
     # disqualifies them from GA.
     ca_scc_general_assistance_eligible_person: false
+
+- name: Case 10, ineligible while actively self-employed.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    personal_property: 100
+    immigration_status: CITIZEN
+    is_self_employed: true
+    in_scc: true
+  output:
+    ca_scc_general_assistance_eligible_person: false

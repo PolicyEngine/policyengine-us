@@ -23,5 +23,5 @@ class ca_scc_general_assistance_earned_income_deductions(Variable):
         tax_unit_earned = person.tax_unit("tax_unit_earned_income", period)
         share = where(tax_unit_earned > 0, person_earned / tax_unit_earned, 0)
         federal_tax = person.tax_unit("income_tax_before_credits", period) * share
-        state_tax = person.tax_unit("state_income_tax", period) * share
+        state_tax = person.tax_unit("state_withheld_income_tax", period) * share
         return person_level + federal_tax + state_tax

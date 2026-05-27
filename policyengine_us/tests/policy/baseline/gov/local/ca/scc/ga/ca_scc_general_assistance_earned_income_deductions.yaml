@@ -30,3 +30,27 @@
   output:
     # Deductions only apply to earned income; pure unearned income generates none.
     ca_scc_general_assistance_earned_income_deductions: 0
+
+- name: Case 4, state withheld income tax is deducted from earned income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+        employee_social_security_tax: 0
+        employee_medicare_tax: 0
+        ca_employee_state_disability_insurance_contribution: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_credits: 0
+        state_withheld_income_tax: 120
+        state_income_tax: 0
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_earned_income_deductions: 10
