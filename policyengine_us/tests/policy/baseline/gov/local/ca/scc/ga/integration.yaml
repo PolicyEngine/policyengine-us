@@ -192,7 +192,7 @@
     ca_scc_general_assistance_countable_income: 200
     ca_scc_general_assistance: 143
 
-- name: Case 9, married couple plus minor child — child does not affect base amount.
+- name: Case 9, household with minor child — referred to CalWORKs, ineligible for GA.
   period: 2024-01
   absolute_error_margin: 0.1
   input:
@@ -224,11 +224,11 @@
         members: [person1, person2, person3]
         ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
-    # Child fails age_eligible and head-or-spouse — only person1 and person2 count.
-    # num_eligible == 2 -> married MAP $460; countable income = 0; benefit = 460.
-    ca_scc_general_assistance_base_amount: 460
-    ca_scc_general_assistance_countable_income: 0
-    ca_scc_general_assistance: 460
+    # Per Chapter 2 (Eligibility for Other Programs — CalWORKs) and Chapter 9
+    # (Potential Income and Resources), households with physical custody of a
+    # minor child must apply for CalWORKs and are not eligible for GA.
+    ca_scc_general_assistance_eligible: false
+    ca_scc_general_assistance: 0
 
 - name: Case 10, two-adult SPMUnit with one undocumented spouse — only eligible person counted.
   period: 2024-01
@@ -417,18 +417,49 @@
     ca_scc_general_assistance_countable_income: 0
     ca_scc_general_assistance: 343
 
-- name: Case 16, residential care facility auto-derives BOARD_AND_CARE.
-  period: 2024-01
+- name: Case 16, single mother with 5-year-old child — referred to CalWORKs.
+  period: 2026-01
   absolute_error_margin: 0.1
   input:
     people:
       person1:
-        age: 50
+        age: 28
         is_tax_unit_head_or_spouse: true
         ssi: 0
-        personal_property: 100
+        personal_property: 0
         immigration_status: CITIZEN
-        is_in_residential_care_facility: true
+      person2:
+        age: 5
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Per Chapter 2 and Chapter 9, single parent with custody of a minor child
+    # must apply for CalWORKs and is structurally not eligible for GA.
+    ca_scc_general_assistance_eligible: false
+    ca_scc_general_assistance: 0
+
+- name: Case 17, pregnant single woman — referred to CalWORKs.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 24
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_pregnant: true
     households:
       household:
         members: [person1]
@@ -436,8 +467,196 @@
     spm_units:
       spm_unit:
         members: [person1]
-        # No explicit living_arrangement — formula derives from is_in_residential_care_facility.
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
   output:
-    ca_scc_general_assistance_living_arrangement: BOARD_AND_CARE
-    ca_scc_general_assistance_base_amount: 929
-    ca_scc_general_assistance: 929
+    # Pregnant women age 19+ must apply for CalWORKs per Chapter 2.
+    ca_scc_general_assistance_eligible: false
+    ca_scc_general_assistance: 0
+
+- name: Case 18, aged LPR without 40 SSI quarters — CAPI-eligible, ineligible for GA.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 68
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Per GA 202, eligibility for another federal/state cash aid program
+    # (CAPI for aged/blind/disabled noncitizens without 40 SSI quarters)
+    # disqualifies the person from GA.
+    ca_scc_general_assistance_eligible: false
+    ca_scc_general_assistance: 0
+
+- name: Case 19, single adult living with elderly SSI parent — applicant gets single MAP.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 42
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+      person2:
+        age: 78
+        is_tax_unit_head_or_spouse: true
+        ssi: 900
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Elderly parent receives SSI -> fails SSI gate, excluded from num_eligible.
+    # Parent's $1,000/month Social Security is excluded from countable income
+    # (SSI recipient rule). Only person1 is eligible -> single MAP $343.
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 0
+    ca_scc_general_assistance: 343
+
+- name: Case 20, married couple plus adult college-aged child — couple gets married MAP.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 48
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person3:
+        age: 22
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Adult child (22) is not a minor and not head/spouse -> doesn't trigger
+    # CalWORKs gate and doesn't add to num_eligible. Couple gets married MAP.
+    ca_scc_general_assistance_eligible: true
+    ca_scc_general_assistance_base_amount: 460
+    ca_scc_general_assistance: 460
+
+- name: Case 21, single adult sharing housing with three roommates — 25 percent reduction.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: SHARED_WITH_THREE_OR_MORE
+  output:
+    # 343 * 0.75 = 257.25
+    ca_scc_general_assistance_base_amount: 257.25
+    ca_scc_general_assistance: 257.25
+
+- name: Case 22, three-generation household with minor grandchild — ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person2:
+        age: 35
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 50
+        immigration_status: CITIZEN
+      person3:
+        age: 8
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Minor grandchild in SPM unit triggers the CalWORKs referral rule.
+    # Whole unit is ineligible, even though the grandparent applicant is
+    # not the child's parent.
+    ca_scc_general_assistance_eligible: false
+    ca_scc_general_assistance: 0
+
+- name: Case 23, older single citizen with $250/month Social Security — partial benefit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 63
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 3_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # 3_000 / 12 = 250 monthly unearned (no deductions on unearned).
+    # benefit = 343 - 250 = 93.
+    ca_scc_general_assistance_base_amount: 343
+    ca_scc_general_assistance_countable_income: 250
+    ca_scc_general_assistance: 93

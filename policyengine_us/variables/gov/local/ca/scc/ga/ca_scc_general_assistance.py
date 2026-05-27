@@ -7,7 +7,7 @@ class ca_scc_general_assistance(Variable):
     unit = USD
     definition_period = MONTH
     label = "Santa Clara County General Assistance"
-    defined_for = "ca_scc_general_assistance_income_eligible"
+    defined_for = "ca_scc_general_assistance_eligible"
     reference = "https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/01Policy/Policy.htm"
 
     def formula(spm_unit, period, parameters):
