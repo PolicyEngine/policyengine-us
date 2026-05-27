@@ -1,3 +1,10 @@
+## [1.710.4] - 2026-05-27
+
+### Fixed
+
+- Model the recent incarceration exception for Medicaid community engagement requirements.
+
+
 ## [1.710.3] - 2026-05-27
 
 No significant changes.
