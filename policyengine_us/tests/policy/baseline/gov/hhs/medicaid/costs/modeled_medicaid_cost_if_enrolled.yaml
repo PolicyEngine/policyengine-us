@@ -1,0 +1,18 @@
+- name: Case 1, expansion adult uses per-capita Medicaid estimate.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: NC
+    is_medicaid_eligible: true
+    medicaid_category: ADULT
+  output:
+    modeled_medicaid_cost_if_enrolled: 7_054
+
+- name: Case 2, ineligible person has no estimated Medicaid cost.
+  period: 2026
+  input:
+    state_code: TX
+    is_medicaid_eligible: false
+    medicaid_category: NONE
+  output:
+    modeled_medicaid_cost_if_enrolled: 0
