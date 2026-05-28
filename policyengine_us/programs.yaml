@@ -1151,6 +1151,17 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
+  - id: nj_unemployment_insurance
+    name: New Jersey Unemployment Insurance
+    full_name: New Jersey Unemployment Insurance
+    category: Benefits
+    agency: NJ Department of Labor and Workforce Development
+    status: complete
+    coverage: NJ
+    variable: nj_unemployment_insurance
+    parameter_prefix: gov.states.nj.dol.unemployment_insurance
+    verified_years: "2024-2026"
+
   - id: ny_drive_clean_rebate
     name: NY Drive Clean Rebate
     full_name: New York Drive Clean Rebate

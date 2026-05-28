@@ -1,0 +1,1 @@
+Add New Jersey unemployment insurance rules. Phase-1 compute-only program: callers provide pre-aggregated base-period wages, qualifying base weeks, and qualifying dependents; the modeled benefit is not yet wired into the `unemployment_compensation` aggregate (mirrors the existing PA UC precedent).
