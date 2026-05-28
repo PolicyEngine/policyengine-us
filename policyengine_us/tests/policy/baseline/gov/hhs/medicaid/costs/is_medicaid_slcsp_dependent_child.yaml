@@ -1,6 +1,5 @@
 - name: Anyone at or under the SLCSP child age is a dependent child, dependent or not.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       young_child:
@@ -17,7 +16,6 @@
 
 - name: A non-dependent adult over the child age is not a dependent child.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       adult:
@@ -31,7 +29,6 @@
 
 - name: A tax dependent under 26 is a dependent child.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       dependent_21:
@@ -48,7 +45,6 @@
 
 - name: Outside New York a tax dependent aged 26 or older is not a dependent child.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       dependent_26:
@@ -63,7 +59,6 @@
 
 - name: New York counts tax dependents aged 26-29 as dependent children.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       ny_dependent_26:
@@ -81,7 +76,6 @@
 
 - name: New York stops counting dependents as children at age 30.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       ny_dependent_30:
@@ -96,7 +90,6 @@
 
 - name: A non-dependent New Yorker aged 26-29 is not a dependent child.
   period: 2026
-  absolute_error_margin: 0.1
   input:
     people:
       ny_adult_29:
