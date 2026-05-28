@@ -1,27 +1,3 @@
-- name: Medicaid cost if enrolled is a data input.
-  period: 2026
-  input:
-    medicaid_cost_if_enrolled: 12_000
-  output: 
-    medicaid_cost_if_enrolled: 12_000
-
-- name: Medicaid cost remains zero when not enrolled.
-  period: 2026
-  input:
-    medicaid_cost_if_enrolled: 12_000
-    is_medicaid_eligible: false
-  output: 
-    medicaid_cost: 0
-
-- name: Medicaid cost uses input when enrolled.
-  period: 2026
-  input:
-    medicaid_cost_if_enrolled: 12_000
-    is_medicaid_eligible: true
-    takes_up_medicaid_if_eligible: true
-  output: 
-    medicaid_cost: 12_000
-
 - name: A lone Texas enrollee's cost equals state per-capita Medicaid spending.
   period: 2026
   absolute_error_margin: 1
@@ -29,10 +5,30 @@
     people:
       person1:
         age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
     households:
       household:
         members: [person1]
         state_code: TX
   output:
-    # For a single household the cost index cancels, leaving TX spending / enrollment.
+    # For a single household the cost index cancels, leaving TX spending / enrollment;
+    # an enrolled person's medicaid_cost passes that computed value through unchanged.
     medicaid_cost_if_enrolled: 13_708.50
+    medicaid_cost: 13_708.50
+
+- name: Medicaid cost is zero for a non-enrollee despite a positive per-capita cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # medicaid_cost is defined_for medicaid_enrolled, so it stays zero off-enrollment
+    # even though medicaid_cost_if_enrolled itself computes a positive value.
+    medicaid_cost: 0

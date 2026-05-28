@@ -58,4 +58,24 @@ class medicaid_slcsp_family_tier_multiplier(Variable):
         adult_count = tax_unit("tax_unit_size", period) - child_count
         family_tier_applies = family_category != FamilyTierCategory.INDIVIDUAL_AGE_RATED
         extra_adults = where(family_tier_applies, max_(adult_count - 2, 0), 0)
-        return base_multiplier + extra_adults * one_adult
+        # New York applies a premium loading when the unit covers a tax dependent
+        # aged 26-29 (mirrors slcsp_family_tier_multiplier, minus the
+        # pays_aca_premium gate that is false for Medicaid enrollees).
+        members = tax_unit.members
+        member_age = members("age", period)
+        member_is_dependent = members("is_tax_unit_dependent", period)
+        member_in_ny = (
+            members.household("state_code", period) == state_code.possible_values.NY
+        )
+        ny_age_29_child = (
+            member_in_ny
+            & member_is_dependent
+            & (member_age >= p.family_tier_dependent_child_age_threshold)
+            & (member_age < p.ny_age_29_dependent_child_age_threshold)
+        )
+        age_29_multiplier = where(
+            tax_unit.any(ny_age_29_child),
+            p.ny_age_29_dependent_child_tier_multiplier,
+            1,
+        )
+        return base_multiplier * age_29_multiplier + extra_adults * one_adult
