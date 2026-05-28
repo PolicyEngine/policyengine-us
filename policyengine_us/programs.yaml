@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
+    coverage: AK, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -555,6 +555,11 @@ programs:
         name: Vermont CCFAP
         full_name: Vermont Child Care Financial Assistance Program
         variable: vt_ccfap
+      - state: WA
+        status: complete
+        name: Washington WCCC
+        full_name: Washington Working Connections Child Care
+        variable: wa_wccc
       - state: WV
         status: in_progress
         name: West Virginia CCAP
