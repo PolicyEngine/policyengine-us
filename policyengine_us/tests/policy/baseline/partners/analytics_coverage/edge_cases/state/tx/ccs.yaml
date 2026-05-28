@@ -35,6 +35,7 @@
         ca_calworks_child_care_time_category: MONTHLY
         ca_calworks_child_care_full_time: false
         ca_riv_general_relief_meets_work_requirements: false
+        tx_ccs_payment_rate: 7_200  # $600/month × 12 (YEAR-period dispatch divides by 12)
     households:
       household:
         members: &id001
@@ -46,6 +47,7 @@
     spm_units:
       spm_unit:
         members: *id001
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
     tax_units:
       tax_unit:
         members: *id001
@@ -61,9 +63,11 @@
         members:
         - child1
   output:
+    # Expense $1,000/month capped at max rate $600/month, then copay deducted.
+    # Exercises the post-cap copay deduction path (bug fix in #8510).
     spm_units:
       spm_unit:
-        tx_ccs: 0.0
+        tx_ccs: 5847.79
 - name: tx_ccs_above_85pct_smi (tx)
   period: 2026
   absolute_error_margin: 0.1

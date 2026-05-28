@@ -243,6 +243,7 @@
   input:
     real_estate_taxes: 2_000
     is_disabled: true
+    meets_ssi_disability_criteria: true
     is_tax_unit_head: true
     employment_income: 5_000
     ssi: 0
@@ -260,6 +261,7 @@
   input:
     real_estate_taxes: 2_000
     is_disabled: true
+    meets_ssi_disability_criteria: true
     is_tax_unit_head: true
     employment_income: 5_000
     state_code: MI

@@ -16,6 +16,7 @@
   period: 2026
   input:
     age: 19
+    medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
 
@@ -24,6 +25,7 @@
   input:
     age: 30
     monthly_hours_worked: 79
+    medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
 
@@ -52,10 +54,12 @@
         age: 30
         is_tax_unit_head_or_spouse: true
         monthly_hours_worked: 80
+        medicaid_community_engagement_pass_through_eligible: false
       person2:
         age: 30
         is_tax_unit_head_or_spouse: true
         monthly_hours_worked: 79
+        medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: [true, false]
 
@@ -81,9 +85,11 @@
         age: 30
         is_tax_unit_head_or_spouse: true
         monthly_hours_worked: 0
+        medicaid_community_engagement_pass_through_eligible: false
       person2:
         age: 14
         is_tax_unit_dependent: true
+        medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: [false, true]
 
@@ -135,3 +141,84 @@
     has_indian_health_service_coverage_at_interview: true
   output:
     medicaid_work_requirement_eligible: true
+
+- name: Case 16, pass-through satisfies Medicaid work requirement.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    medicaid_community_engagement_pass_through_eligible: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 17, no direct hours or pass-through fails.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
+
+- name: Case 18, last-week hours above monthly threshold meet the work requirement.
+  period: 2027
+  input:
+    age: 30
+    hours_worked_last_week: 20
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 19, last-week hours below monthly threshold do not meet the work requirement.
+  period: 2027
+  input:
+    age: 30
+    hours_worked_last_week: 18
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
+
+- name: Case 20, current incarceration exempts a person from Medicaid work requirements.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_incarcerated: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 21, recent incarceration exempts a person from Medicaid work requirements.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    was_recently_incarcerated_for_medicaid_ce: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 22, no incarceration exception leaves a nonworking person ineligible.
+  period: 2026
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    medicaid_community_engagement_pass_through_eligible: false
+    is_incarcerated: false
+    was_recently_incarcerated_for_medicaid_ce: false
+  output:
+    medicaid_work_requirement_eligible: false
+
+- name: Case 23, American Indian or Alaska Native adult is excluded from the work requirement.
+  period: 2027
+  input:
+    age: 30
+    is_american_indian_or_alaska_native_for_medicaid_ce: true
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 24, adult remains ineligible without the AIAN exclusion.
+  period: 2027
+  input:
+    age: 30
+    is_american_indian_or_alaska_native_for_medicaid_ce: false
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
