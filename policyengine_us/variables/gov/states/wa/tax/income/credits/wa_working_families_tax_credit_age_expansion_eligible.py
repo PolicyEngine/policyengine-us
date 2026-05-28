@@ -15,6 +15,17 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # ESSB 6346 Sec. 901(2)(a)(ii)(D): individuals who would otherwise
         # qualify for EITC except for age can qualify if at least age 18.
+        #
+        # Methodology note (age): Sec. 901(2)(a)(ii)(D) refers to age as of the
+        # prior tax year. PolicyEngine evaluates a single period, so this
+        # formula uses current-period age_head / age_spouse as an approximation.
+        # The off-by-one-year edge case (filer turning min_age during the tax
+        # year) is not modeled.
+        #
+        # No separate-filer (MFS) guard is applied here because the WFTC is a
+        # state-only credit that, by design, does not honor the federal MFS
+        # bar; the main wa_working_families_tax_credit variable's state-only
+        # path treats `separate` filers as eligible.
         p = parameters(
             period
         ).gov.states.wa.tax.income.credits.working_families_tax_credit.age_expansion
