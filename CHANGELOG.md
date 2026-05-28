@@ -1,3 +1,10 @@
+## [1.712.1] - 2026-05-28
+
+### Fixed
+
+- Fixed YAML syntax error in partner API impact notice workflow.
+
+
 ## [1.712.0] - 2026-05-27
 
 ### Added
