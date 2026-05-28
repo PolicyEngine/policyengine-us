@@ -1,0 +1,297 @@
+- name: Case 1, long-term care recipient at the home equity limit is eligible.
+  period: 2028
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_000
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: true
+
+- name: Case 2, long-term care recipient above the home equity limit is ineligible.
+  period: 2028
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 3, current-law home equity limit applies before 2028.
+  period: 2026
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_130_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 3b, current-law home equity limit uprates in 2027.
+  period: 2027
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_159_000
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: true
+
+- name: Case 4, home equity limit does not apply without long-term care services.
+  period: 2028
+  input:
+    receives_medicaid_long_term_care_services: false
+    home_equity: 1_000_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: true
+
+- name: Case 5, agricultural home at the agricultural home equity limit remains eligible.
+  period: 2028
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_is_on_agricultural_land: true
+    home_equity: 1_189_000
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: true
+
+- name: Case 6, Medicaid facility resident above the home equity limit is ineligible.
+  period: 2028
+  input:
+    is_in_medicaid_facility: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 7, resident spouse exception applies above the home equity limit.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [true, false]
+    is_medicaid_long_term_care_home_equity_eligible: [true, true]
+
+- name: Case 8, resident child exception applies above the home equity limit.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [true, false]
+    is_medicaid_long_term_care_home_equity_eligible: [true, true]
+
+- name: Case 9, agricultural home above the agricultural home equity limit is ineligible.
+  period: 2028
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_is_on_agricultural_land: true
+    home_equity: 1_189_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 10, adult child at the family exception age threshold does not qualify.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        is_separated: true
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [false, false]
+    is_medicaid_long_term_care_home_equity_eligible: [false, true]
+
+- name: Case 11, resident disabled adult child exception applies above the home equity limit.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_disabled: true
+        is_related_to_head_or_spouse: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [true, false]
+    is_medicaid_long_term_care_home_equity_eligible: [true, true]
+
+- name: Case 12, disabled adult child receiving long-term care still triggers the family exception.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_disabled: true
+        is_related_to_head_or_spouse: true
+        receives_medicaid_long_term_care_services: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [true, false]
+    is_medicaid_long_term_care_home_equity_eligible: [true, true]
+
+- name: Case 13, unrelated disabled housemate does not trigger the family exception.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_disabled: true
+        is_related_to_head_or_spouse: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [false, false]
+    is_medicaid_long_term_care_home_equity_eligible: [false, true]
+
+- name: Case 14, dependent long-term care recipient does not qualify through a parent's spouse.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 17
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 45
+      person3:
+        age: 44
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+  output:
+    medicaid_home_equity_limit_family_exception: [false, false, false]
+    is_medicaid_long_term_care_home_equity_eligible: [false, true, true]
+
+- name: Case 15, adult non-spouse relative does not trigger the spouse exception.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 30
+        is_related_to_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_home_equity_limit_family_exception: [false, false]
+    is_medicaid_long_term_care_home_equity_eligible: [false, true]
+
+- name: Case 16, non-agricultural home equity remains capped at one million after 2028.
+  period: 2029
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false
+
+- name: Case 17, agricultural home equity limit continues to uprate after 2028.
+  period: 2029
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_is_on_agricultural_land: true
+    home_equity: 1_217_000
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: true
+
+- name: Case 18, agricultural home above the 2029 uprated limit is ineligible.
+  period: 2029
+  input:
+    receives_medicaid_long_term_care_services: true
+    home_is_on_agricultural_land: true
+    home_equity: 1_217_001
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: false

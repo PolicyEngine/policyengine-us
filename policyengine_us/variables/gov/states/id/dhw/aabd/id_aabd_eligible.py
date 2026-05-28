@@ -20,7 +20,7 @@ class id_aabd_eligible(Variable):
         la = person("id_aabd_living_arrangement", period)
         LA = IDAAbdLivingArrangement
         # Nursing facility residents excluded (Section 501)
-        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        federal_la = person("ssi_federal_living_arrangement", period)
         not_in_medical = (
             federal_la != federal_la.possible_values.MEDICAL_TREATMENT_FACILITY
         )

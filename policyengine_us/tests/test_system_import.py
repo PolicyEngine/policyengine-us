@@ -82,3 +82,14 @@ def test_computed_default_uprated_variables_have_microdata_overrides():
             missing_overrides.append(name)
 
     assert missing_overrides == []
+
+
+def test_capital_gains_indexation_inputs_have_expected_uprating():
+    from policyengine_us.system import CountryTaxBenefitSystem
+
+    system = CountryTaxBenefitSystem()
+    assert (
+        system.variables["long_term_capital_gains_basis"].uprating
+        == "calibration.gov.irs.soi.long_term_capital_gains"
+    )
+    assert system.variables["long_term_capital_gains_years_held"].uprating is None

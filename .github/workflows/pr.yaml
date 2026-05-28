@@ -22,13 +22,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Check for changelog fragment
+        with:
+          fetch-depth: 2
+      - name: Check changed changelog fragments
+        shell: bash
         run: |
-          FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
-          if [ "$FRAGMENTS" -eq 0 ]; then
-            echo "::error::No changelog fragment found in changelog.d/"
-            echo "Add one with: echo 'Description.' > changelog.d/\$(git branch --show-current).<type>.md"
-            echo "Types: added, changed, fixed, removed, breaking"
+          set -euo pipefail
+
+          valid_count=0
+          invalid=0
+
+          while IFS= read -r fragment; do
+            if [ "$fragment" = "changelog.d/.gitkeep" ]; then
+              continue
+            fi
+
+            if [[ "$fragment" =~ ^changelog\.d/[^/]+\.(breaking|added|changed|fixed|removed)\.md$ ]]; then
+              valid_count=$((valid_count + 1))
+            else
+              echo "::error file=${fragment}::Invalid changelog fragment path. Use changelog.d/<name>.<type>.md, where <type> is one of: breaking, added, changed, fixed, removed."
+              invalid=1
+            fi
+          done < <(
+            git diff --name-only --diff-filter=ACMR \
+              HEAD^1 \
+              HEAD \
+              -- changelog.d
+          )
+
+          if [ "$invalid" -ne 0 ]; then
+            exit 1
+          fi
+
+          if [ "$valid_count" -eq 0 ]; then
+            echo "::error::No valid changelog fragment found. Add one like: changelog.d/${{ github.head_ref }}.fixed.md"
             exit 1
           fi
   BundleMetadataContract:
@@ -82,7 +109,7 @@ jobs:
         with:
           fetch-depth: 10
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }} --depth=1
+        run: git fetch origin ${{ github.base_ref }} --depth=1000
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

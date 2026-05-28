@@ -16,5 +16,5 @@ class dc_ccsp(Variable):
         pre_subsidy_childcare_expense = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        uncapped_subsidy_amount = max_(pre_subsidy_childcare_expense - copay, 0)
-        return min_(uncapped_subsidy_amount, maximum_payment)
+        capped_expense = min_(pre_subsidy_childcare_expense, maximum_payment)
+        return max_(capped_expense - copay, 0)

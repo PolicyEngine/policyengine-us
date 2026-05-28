@@ -9,12 +9,14 @@
         is_tax_unit_spouse: false
         is_tax_unit_dependent: false
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_pregnant: false
         immigration_status_str: CITIZEN
         employment_income: 0
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id001
@@ -69,6 +71,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id002
@@ -177,6 +180,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 2000
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id004
@@ -285,6 +289,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id006
@@ -339,6 +344,7 @@
         is_medicare_eligible: false
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
+        medicaid_cost_if_enrolled: 22373.06
     households:
       household:
         members: &id007
