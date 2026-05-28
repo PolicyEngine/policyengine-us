@@ -1,0 +1,56 @@
+- name: New York two adults take the two-adult multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 2
+
+- name: Vermont one adult with a child takes the one-adult-with-children multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    medicaid_slcsp_family_tier_multiplier: 1.93
+
+- name: New York three adults add the one-adult multiplier for each extra adult.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 3

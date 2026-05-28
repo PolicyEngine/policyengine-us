@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.medicaid.costs.state_aggregate import (
+from policyengine_us.variables.gov.hhs.medicaid.costs.state_aggregate_helpers import (
     sum_by_state,
 )
 
@@ -19,6 +19,8 @@ class medicaid_slcsp_state_average_cost_index(Variable):
         state_weight = sum_by_state(weight * positive_index, state)
         state_cost_index = sum_by_state(weight * cost_index * positive_index, state)
 
+        # Fall back to 1 (not 0) when a state has no positive-index weight, so
+        # the household denominator stays strictly positive.
         return np.divide(
             state_cost_index,
             state_weight,

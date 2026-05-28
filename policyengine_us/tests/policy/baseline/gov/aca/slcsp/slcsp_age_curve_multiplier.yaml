@@ -1,0 +1,39 @@
+- name: Case 1, default age curve for a child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    slcsp_age_curve_multiplier: 1
+
+- name: Case 2, default age curve for a forty-year-old.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    slcsp_age_curve_multiplier: 1.6706
+
+- name: Case 3, New York uses a flat adult multiplier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    slcsp_age_curve_multiplier: 1
+

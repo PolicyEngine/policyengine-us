@@ -16,14 +16,9 @@ class medicaid_slcsp_family_tier_category(Variable):
         state = tax_unit.household("state_code_str", period)
         family_tier_applies = tax_unit("slcsp_family_tier_applies", period.first_month)
 
-        person = tax_unit.members
-        age = person("age", period.this_year)
-        p = parameters(period).gov.aca
-        dependent_child = (age <= p.slcsp.max_child_age) | (
-            person("is_tax_unit_dependent", period.this_year)
-            & (age < p.family_tier_dependent_child_age_threshold)
+        child_count = tax_unit.sum(
+            tax_unit.members("is_medicaid_slcsp_dependent_child", period)
         )
-        child_count = tax_unit.sum(dependent_child)
         adult_count = tax_unit("tax_unit_size", period) - child_count
 
         one_adult_no_children = (adult_count == 1) & (child_count == 0)

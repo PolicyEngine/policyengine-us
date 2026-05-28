@@ -34,6 +34,8 @@ class slcsp_age_curve_multiplier(Variable):
                 p.ny.calc(age),
                 p["or"].calc(age),
                 p.ut.calc(age),
+                # VT has no age variation: vt is a flat scalar, not an age scale,
+                # so it is read directly rather than via .calc(age).
                 p.vt,
             ],
             default=p.default.calc(age),

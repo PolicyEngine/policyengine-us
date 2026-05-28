@@ -21,3 +21,18 @@
     takes_up_medicaid_if_eligible: true
   output: 
     medicaid_cost: 12_000
+
+- name: A lone Texas enrollee's cost equals state per-capita Medicaid spending.
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # For a single household the cost index cancels, leaving TX spending / enrollment.
+    medicaid_cost_if_enrolled: 13_708.50

@@ -52,13 +52,10 @@ class medicaid_slcsp_family_tier_multiplier(Variable):
             default=0,
         )
 
-        person = tax_unit.members
-        age = person("age", period.this_year)
-        dependent_child = (age <= p.slcsp.max_child_age) | (
-            person("is_tax_unit_dependent", period.this_year)
-            & (age < p.family_tier_dependent_child_age_threshold)
+        child_count = tax_unit.sum(
+            tax_unit.members("is_medicaid_slcsp_dependent_child", period)
         )
-        adult_count = tax_unit("tax_unit_size", period) - tax_unit.sum(dependent_child)
+        adult_count = tax_unit("tax_unit_size", period) - child_count
         family_tier_applies = family_category != FamilyTierCategory.INDIVIDUAL_AGE_RATED
         extra_adults = where(family_tier_applies, max_(adult_count - 2, 0), 0)
         return base_multiplier + extra_adults * one_adult
