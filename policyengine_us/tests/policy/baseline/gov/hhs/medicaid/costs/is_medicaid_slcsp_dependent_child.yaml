@@ -1,0 +1,110 @@
+- name: Anyone at or under the SLCSP child age is a dependent child, dependent or not.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      young_child:
+        age: 10
+        is_tax_unit_dependent: false
+      child_at_limit:
+        age: 20
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [young_child, child_at_limit]
+  output:
+    is_medicaid_slcsp_dependent_child: [true, true]
+
+- name: A non-dependent adult over the child age is not a dependent child.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult:
+        age: 21
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [adult]
+  output:
+    is_medicaid_slcsp_dependent_child: false
+
+- name: A tax dependent under 26 is a dependent child.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      dependent_21:
+        age: 21
+        is_tax_unit_dependent: true
+      dependent_25:
+        age: 25
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [dependent_21, dependent_25]
+  output:
+    is_medicaid_slcsp_dependent_child: [true, true]
+
+- name: Outside New York a tax dependent aged 26 or older is not a dependent child.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      dependent_26:
+        age: 26
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [dependent_26]
+        state_code: TX
+  output:
+    is_medicaid_slcsp_dependent_child: false
+
+- name: New York counts tax dependents aged 26-29 as dependent children.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      ny_dependent_26:
+        age: 26
+        is_tax_unit_dependent: true
+      ny_dependent_29:
+        age: 29
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [ny_dependent_26, ny_dependent_29]
+        state_code: NY
+  output:
+    is_medicaid_slcsp_dependent_child: [true, true]
+
+- name: New York stops counting dependents as children at age 30.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      ny_dependent_30:
+        age: 30
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [ny_dependent_30]
+        state_code: NY
+  output:
+    is_medicaid_slcsp_dependent_child: false
+
+- name: A non-dependent New Yorker aged 26-29 is not a dependent child.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      ny_adult_29:
+        age: 29
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [ny_adult_29]
+        state_code: NY
+  output:
+    is_medicaid_slcsp_dependent_child: false
