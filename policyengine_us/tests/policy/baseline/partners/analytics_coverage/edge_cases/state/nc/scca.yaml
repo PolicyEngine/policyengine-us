@@ -1,0 +1,132 @@
+- name: nc_scca_preschool_age_5 (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code_str: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        nc_scca_maximum_payment: 13068.0
+- name: nc_scca_school_age_6 (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code_str: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        nc_scca_maximum_payment: 3456.0

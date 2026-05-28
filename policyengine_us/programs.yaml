@@ -460,8 +460,14 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
+      - state: AK
+        status: complete
+        name: CCAP
+        full_name: Alaska Child Care Assistance Program
+        variable: ak_ccap
+        notes: Modeled as PASS II/III; PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled
       - state: CA
         status: complete
         name: CalWORKs childcare
@@ -706,6 +712,12 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MD
+        status: complete
+        name: Maryland PAA
+        full_name: Maryland Public Assistance to Adults
+        variable: md_paa
+        parameter_prefix: gov.states.md.dhs.fia.paa
       - state: MI
         status: complete
         name: Michigan SSP
@@ -717,6 +729,13 @@ programs:
         name: Maine SSP
         full_name: Maine State Supplemental Income Program
         variable: me_ssp
+      - state: MO
+        status: complete
+        name: Missouri SSP
+        full_name: Missouri State Supplementary Payment
+        variable: mo_ssp
+        parameter_prefix: gov.states.mo.dss.ssp
+        verified_years: "2023-2026"
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -1034,6 +1053,17 @@ programs:
     coverage: IL
     variable: il_hbwd
     parameter_prefix: gov.states.il.hfs.hbwd
+    notes: Medicaid buy-in program for workers with disabilities
+
+  - id: ms_wd
+    name: Mississippi WD
+    full_name: Mississippi Working Disabled
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MS
+    variable: ms_wd_eligible
+    parameter_prefix: gov.states.ms.dom.wd
     notes: Medicaid buy-in program for workers with disabilities
 
   - id: il_ihwap

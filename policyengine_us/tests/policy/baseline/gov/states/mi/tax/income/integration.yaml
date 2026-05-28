@@ -175,3 +175,27 @@
     mi_household_resources: 0
     mi_home_heating_credit: 410
     mi_income_tax: -410
+
+- name: 2026 single senior with Social Security can claim the full tier 3 residual standard deduction under PA 24
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 69
+        employment_income: 30_000
+        social_security_retirement: 19_200
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    adjusted_gross_income: 39_260
+    taxable_social_security: 9_260
+    mi_personal_exemptions: 5_950
+    mi_standard_deduction_tier_three: 14_050
+    mi_taxable_income: 10_000
+    mi_income_tax_before_refundable_credits: 425

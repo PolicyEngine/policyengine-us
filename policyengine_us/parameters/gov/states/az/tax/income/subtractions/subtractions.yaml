@@ -11,11 +11,31 @@ values:
     - az_529a_able_account_subtraction # Line 34b
     - az_adoption_expense_subtraction # Other subtractions - Item D
     - az_families_tax_rebate_subtraction # Line 36, Item U
+  2025-01-01:
+    - us_govt_interest # Line 28
+    - az_public_pension_exclusion # Line 29a
+    - az_long_term_capital_gains_subtraction # Line 20 - 24
+    - az_military_retirement_subtraction # Line 29b
+    - taxable_social_security # Line 30
+    - military_service_income # Line 32
+    - az_529_college_savings_plan_subtraction # Line 34a
+    - az_529a_able_account_subtraction # Line 34b
+    - az_adoption_expense_subtraction # Other subtractions - Item D
+    - az_families_tax_rebate_subtraction # Line 36, Item U
+    # MCTCP worksheet (Item V on Form 140 page 6) per Executive Order 2025-15
+    - tip_income_deduction # MCTCP worksheet Line 2 (Sch 1-A Line 13)
+    - overtime_income_deduction # MCTCP worksheet Line 3 (Sch 1-A Line 21)
+    - auto_loan_interest_deduction # MCTCP worksheet Line 4 (Sch 1-A Line 30)
+    - additional_senior_deduction # MCTCP worksheet Line 5 (Sch 1-A Line 37)
 metadata:
   unit: list
   period: year
   label: Arizona adjusted gross income subtractions
   reference:
+    - title: 2025 Arizona MCTCP Worksheet (Form 140 Page 6, Items V/W/X/Y)
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_MCTCP_0.pdf
+    - title: Arizona Executive Order 2025-15
+      href: https://azgovernor.gov/office-arizona-governor/executive-order/2025-15
     - title: 2025 Arizona Form 140 Resident Personal Income Tax Instructions, Line 36
       href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=17
     - title: 2024 Arizona From 140 Resident Personal Income Tax Return, Line 36

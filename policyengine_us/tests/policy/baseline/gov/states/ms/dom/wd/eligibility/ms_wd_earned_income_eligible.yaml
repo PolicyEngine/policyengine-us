@@ -1,0 +1,36 @@
+- name: Case 1, individual at the earned income threshold qualifies.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_countable_earned_income: 3_325
+  output:
+    # 2026 monthly FPL: $1,330; 250% = $3,325.
+    ms_wd_earned_income_eligible: true
+
+- name: Case 2, individual just above the earned income threshold is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_countable_earned_income: 3_325.01
+  output:
+    ms_wd_earned_income_eligible: false
+
+- name: Case 3, couple at the earned income threshold qualifies.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ms_wd_countable_earned_income: 4_508.33
+      person2:
+        ms_wd_countable_earned_income: 4_508.33
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 2026 couple monthly FPL: $1,803.33; 250% = $4,508.33.
+    ms_wd_earned_income_eligible: [true, true]

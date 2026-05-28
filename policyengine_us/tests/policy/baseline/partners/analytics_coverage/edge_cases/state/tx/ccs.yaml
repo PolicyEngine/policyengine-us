@@ -1,0 +1,136 @@
+- name: tx_ccs_low_income_child (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 30000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+        tx_ccs_payment_rate: 7_200  # $600/month × 12 (YEAR-period dispatch divides by 12)
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    # Expense $1,000/month capped at max rate $600/month, then copay deducted.
+    # Exercises the post-cap copay deduction path (bug fix in #8510).
+    spm_units:
+      spm_unit:
+        tx_ccs: 5847.79
+- name: tx_ccs_above_85pct_smi (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 80000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        tx_ccs: 0.0

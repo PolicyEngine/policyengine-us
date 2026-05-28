@@ -1,0 +1,48 @@
+- name: Case 1, no unearned income leaves the general exclusion for earnings.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_earned_income: 4_115
+    ms_wd_gross_unearned_income: 0
+  output:
+    # ($4,115 - $50 general - $65 earned) * 50% = $2,000.
+    ms_wd_countable_earned_income: 2_000
+
+- name: Case 2, unearned income uses the general exclusion before earnings.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_earned_income: 4_065
+    ms_wd_gross_unearned_income: 100
+  output:
+    # ($4,065 - $65 earned) * 50% = $2,000.
+    ms_wd_countable_earned_income: 2_000
+
+- name: Case 3, low earned income floors at zero after exclusions.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_earned_income: 60
+    ms_wd_gross_unearned_income: 0
+  output:
+    ms_wd_countable_earned_income: 0
+
+- name: Case 4, partial unearned income leaves part of the general exclusion for earnings.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_earned_income: 115
+    ms_wd_gross_unearned_income: 30
+  output:
+    # Remaining general exclusion is $20, then ($115 - $20 - $65) * 50% = $15.
+    ms_wd_countable_earned_income: 15
+
+- name: Case 5, negative unearned income does not increase the general exclusion.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_earned_income: 200
+    ms_wd_gross_unearned_income: -100
+  output:
+    # ($200 - $50 general exclusion - $65 earned exclusion) * 50% = $42.50.
+    ms_wd_countable_earned_income: 42.50

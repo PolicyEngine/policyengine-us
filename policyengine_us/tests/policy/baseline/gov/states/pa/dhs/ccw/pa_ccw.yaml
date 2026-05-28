@@ -1,6 +1,6 @@
 # Unit tests for pa_ccw
 # Tests top-level benefit amount
-# Benefit = min(expenses - copay, MCCA max monthly payment)
+# Benefit = max(min(expenses, MCCA max monthly payment) - copay, 0)
 # If benefit < min dept payment ($5/wk -> ~$21.67/mo), benefit = 0
 # defined_for = "pa_ccw_eligible"
 
@@ -125,5 +125,19 @@
   output:
     # With negative income, adjusted income floors at 0
     # Copay should be 0 (chart returns 0 for $0 income)
-    # Benefit = min(expenses - 0, MCCA max) -> capped at MCCA max, not inflated
+    # Benefit = max(min(expenses, MCCA max) - 0, 0) -> capped at MCCA max, not inflated
     pa_ccw_eligible: true
+
+- name: Case 5, copay deducted from capped expense when expense exceeds max rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    pa_ccw_eligible: true
+    pa_ccw_copay: 100
+    pa_ccw_maximum_monthly_payment: 800
+    spm_unit_pre_subsidy_childcare_expenses: 12_000
+    state_code: PA
+  output:
+    # Monthly expense 12_000 / 12 = 1_000 > monthly max 800 -> capped = 800
+    # Benefit = max(800 - 100, 0) = 700 (above min monthly payment floor)
+    pa_ccw: 700

@@ -1,0 +1,213 @@
+- name: ca_yctc_child_age_5_eligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        ca_eitc: 410.16
+        ca_eitc_eligible: true
+        ca_yctc: 1215.95
+        ca_foster_youth_tax_credit: 0.0
+        ca_cdcc: 0.0
+        ca_renter_credit: 0.0
+        adjusted_gross_income: 20000.0
+    spm_units:
+      spm_unit:
+        ca_state_supplement: 0.0
+- name: ca_yctc_child_age_6_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        ca_eitc: 410.16
+        ca_eitc_eligible: true
+        ca_yctc: 0.0
+        ca_foster_youth_tax_credit: 0.0
+        ca_cdcc: 0.0
+        ca_renter_credit: 0.0
+        adjusted_gross_income: 20000.0
+    spm_units:
+      spm_unit:
+        ca_state_supplement: 0.0
+- name: ca_yctc_agi_at_phase_out_27425 (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 27425
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code_str: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        ca_eitc: 174.1
+        ca_eitc_eligible: true
+        ca_yctc: 1215.95
+        ca_foster_youth_tax_credit: 0.0
+        ca_cdcc: 0.0
+        ca_renter_credit: 0.0
+        adjusted_gross_income: 27425.0
+    spm_units:
+      spm_unit:
+        ca_state_supplement: 0.0

@@ -197,6 +197,9 @@ from .states.nj.stay_nj import (
 from .states.nj.anchor import (
     create_nj_anchor_reform,
 )
+from .refundable_credit_conversion import (
+    create_refundable_credit_conversion_reform,
+)
 
 
 from .states.ca.ab2591 import (
@@ -450,6 +453,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
         parameters, period
     )
+    refundable_credit_conversion = create_refundable_credit_conversion_reform(
+        parameters, period
+    )
 
     reforms = [
         afa_reform,
@@ -558,6 +564,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         nj_stay_nj,
         nj_anchor,
         working_parents_tax_relief_act,
+        refundable_credit_conversion,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

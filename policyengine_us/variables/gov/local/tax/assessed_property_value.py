@@ -6,5 +6,6 @@ class assessed_property_value(Variable):
     entity = Person
     label = "Assessed property value"
     unit = USD
+    quantity_type = STOCK
     documentation = "Total assessed value of property owned by this person."
     definition_period = YEAR

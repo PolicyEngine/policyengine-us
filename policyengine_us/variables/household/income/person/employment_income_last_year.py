@@ -8,7 +8,6 @@ class employment_income_last_year(Variable):
     documentation = "Wages and salaries in prior year, including tips and commissions."
     unit = USD
     definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.employment_income"
 
     def formula_2024(person, period, parameters):
         employment_income_target = parameters.calibration.gov.irs.soi.employment_income

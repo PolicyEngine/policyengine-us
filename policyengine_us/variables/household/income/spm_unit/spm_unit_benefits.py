@@ -26,9 +26,11 @@ class spm_unit_benefits(Variable):
             "hi_oss",
             "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
+            "mo_ssp",  # Missouri benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.
@@ -47,6 +49,11 @@ class spm_unit_benefits(Variable):
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
+            "child_support_received",
+            "workers_compensation",
+            "educational_assistance",
+            "financial_assistance",
+            "survivor_benefits",
             "spm_unit_energy_subsidy",
             "tanf",
             # Washington (WA) cash-assistance programs. wa_sfa and wa_rca

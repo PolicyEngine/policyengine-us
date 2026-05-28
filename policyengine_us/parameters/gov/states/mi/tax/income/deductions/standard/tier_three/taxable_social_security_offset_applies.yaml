@@ -1,0 +1,16 @@
+description: Michigan requires filers to reduce the tier three standard deduction by taxable Social Security benefits included in adjusted gross income.
+values:
+  2017-01-01: true
+  2026-01-01: false
+  2029-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Michigan tier three standard deduction taxable Social Security offset applies
+  reference:
+    - title: Michigan Legal Code Section 206.30 - (9)(e)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Social Security Taxation Changes in Public Act 24 of 2025
+      href: https://www.michigan.gov/treasury/reference/taxpayer-notices/2025/11/17/social-security-taxation-changes-in-public-act-24-of-2025
+    - title: Revenue Administrative Bulletin 2026-1
+      href: https://www.michigan.gov/taxes/rep-legal/rab/2026-revenue-administrative-bulletins/revenue-administrative-bulletin-2026-1

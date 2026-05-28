@@ -1,0 +1,18 @@
+- name: SNAP unearned income defaults to zero.
+  period: 2022
+  output:
+    snap_unearned_income: 0
+
+- name: SNAP unearned income ignores taxable Roth conversions.
+  period: 2022
+  input:
+    taxable_roth_conversions: 1_000
+  output:
+    snap_unearned_income: 0
+
+- name: SNAP unearned income still counts retirement distributions.
+  period: 2022
+  input:
+    retirement_distributions: 1_000
+  output:
+    snap_unearned_income: 1_000
