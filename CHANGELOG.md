@@ -1,3 +1,17 @@
+## [1.712.1] - 2026-05-28
+
+### Fixed
+
+- Fixed YAML syntax error in partner API impact notice workflow.
+
+
+## [1.712.0] - 2026-05-27
+
+### Added
+
+- Added Slack notices for partner API contract test changes.
+
+
 ## [1.711.0] - 2026-05-27
 
 ### Added
