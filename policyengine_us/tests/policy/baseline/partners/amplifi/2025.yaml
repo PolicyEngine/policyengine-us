@@ -67,7 +67,7 @@
   output:
     people:
       you:
-        modeled_medicaid_cost: 0.0
+        modeled_medicaid: 0.0
         is_medicaid_eligible: false
         wic: 0.0
         is_aca_ptc_eligible: false
@@ -77,7 +77,7 @@
         ca_state_supplement_eligible_person: false
         ca_ala_general_assistance_eligible_person: false
       member1:
-        modeled_medicaid_cost: 3258.31
+        modeled_medicaid: 3258.31
         is_medicaid_eligible: true
         wic: 711.43
         is_aca_ptc_eligible: false
@@ -87,7 +87,7 @@
         ca_state_supplement_eligible_person: false
         ca_ala_general_assistance_eligible_person: false
       member2:
-        modeled_medicaid_cost: 3258.31
+        modeled_medicaid: 3258.31
         is_medicaid_eligible: true
         wic: 711.27
         is_aca_ptc_eligible: false

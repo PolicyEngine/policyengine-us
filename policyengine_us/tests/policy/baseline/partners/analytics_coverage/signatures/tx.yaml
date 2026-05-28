@@ -90,7 +90,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
       child2:
         age: 3
         is_tax_unit_head: false
@@ -115,7 +114,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
     households:
       household:
         members: &id001
@@ -179,7 +177,7 @@
         is_disabled: false
         is_medicaid_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -199,7 +197,7 @@
         is_disabled: false
         is_medicaid_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -219,7 +217,7 @@
         is_disabled: false
         is_medicaid_eligible: true
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -239,7 +237,7 @@
         is_disabled: false
         is_medicaid_eligible: true
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -352,7 +350,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
       child2:
         age: 3
         is_tax_unit_head: false
@@ -377,7 +374,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
     households:
       household:
         members: *id001
@@ -433,7 +429,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -453,7 +449,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -473,7 +469,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -493,7 +489,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -691,7 +687,7 @@
         early_head_start: 0.0
         head_start: 0.0
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -709,7 +705,7 @@
         early_head_start: 0.0
         head_start: 0.0
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -727,7 +723,7 @@
         early_head_start: 0.0
         head_start: 0.0
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -745,7 +741,7 @@
         early_head_start: 0.0
         head_start: 20347.29
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -854,7 +850,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
       child2:
         age: 3
         is_tax_unit_head: false
@@ -878,7 +873,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
     households:
       household:
         members: *id001
@@ -935,7 +929,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -956,7 +950,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -977,7 +971,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -998,7 +992,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -1107,7 +1101,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
       child2:
         age: 3
         is_tax_unit_head: false
@@ -1131,7 +1124,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
     households:
       household:
         members: *id001
@@ -1188,7 +1180,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1209,7 +1201,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1230,7 +1222,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -1251,7 +1243,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -1364,7 +1356,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
       child2:
         age: 3
         is_tax_unit_head: false
@@ -1389,7 +1380,6 @@
         child_support_expense: 0
         current_pregnancies: 0
         medicare_quarters_of_coverage: 0
-        medicaid_cost_if_enrolled: 3258.31
     households:
       household:
         members: *id001
@@ -1445,7 +1435,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1465,7 +1455,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1485,7 +1475,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -1505,7 +1495,7 @@
         is_medicaid_eligible: true
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 3258.31
+        modeled_medicaid: 3258.31
         medicaid_category: 1
         msp: 0.0
         msp_category: 0
@@ -1700,7 +1690,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1720,7 +1710,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 9
         msp: 0.0
         msp_category: 0
@@ -1740,7 +1730,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 2
         msp: 0.0
         msp_category: 0
@@ -1760,7 +1750,7 @@
         is_medicaid_eligible: false
         is_medicare_eligible: false
         is_optional_senior_or_disabled_for_medicaid: false
-        medicaid: 0.0
+        modeled_medicaid: 0.0
         medicaid_category: 1
         msp: 0.0
         msp_category: 0

@@ -1,0 +1,20 @@
+- name: Case 1, modeled Medicaid is zero when not enrolled.
+  period: 2026
+  input:
+    state_code: NC
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: false
+    medicaid_category: ADULT
+  output:
+    modeled_medicaid: 0
+
+- name: Case 2, modeled Medicaid uses the modeled cost when enrolled.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    state_code: NC
+    is_medicaid_eligible: true
+    takes_up_medicaid_if_eligible: true
+    medicaid_category: ADULT
+  output:
+    modeled_medicaid: 7_054

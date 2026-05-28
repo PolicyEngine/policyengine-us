@@ -1,1 +1,1 @@
-Add parallel modeled Medicaid cost variables for API partner household calculations.
+Add parallel modeled Medicaid variables for API partner household calculations.
