@@ -1,1 +1,0 @@
-Fixed two code-health regressions on main: precompute per-person arrays in `ar_sra_countable_income` (replaces `sum()` over an entity-variable generator), and switch `wa_wccc_provider_type.defined_for` from `"wa_wccc_eligible_child"` to `StateCode.WA` so an input variable no longer carries a non-geographic gate.
