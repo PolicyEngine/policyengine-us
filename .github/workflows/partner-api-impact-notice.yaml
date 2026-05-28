@@ -65,8 +65,7 @@ jobs:
           file_list=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | head -20 | sed 's/^/- /')
 
           if [ "${file_count}" -gt 20 ]; then
-            file_list="${file_list}
-- ...and $((file_count - 20)) more. See the PR file diff for the full list."
+            file_list=$(printf '%s\n- ...and %d more. See the PR file diff for the full list.' "${file_list}" $((file_count - 20)))
           fi
 
           payload=$(
