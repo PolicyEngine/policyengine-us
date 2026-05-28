@@ -1,3 +1,10 @@
+## [1.713.0] - 2026-05-28
+
+### Added
+
+- Implement Washington State Working Connections Child Care (WCCC), the state's child care subsidy program (CCAP-equivalent).
+
+
 ## [1.712.1] - 2026-05-28
 
 ### Fixed
