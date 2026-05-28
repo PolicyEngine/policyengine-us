@@ -18,5 +18,6 @@ class ar_sra_countable_income(Variable):
         # FSU §4.3.2 excludes children's SSI and Social Security; mask by adult status.
         person = spm_unit.members
         is_adult = person("age", period.this_year) >= p.eligibility.adult_age_threshold
-        per_person_income = sum(person(source, period) for source in p.income.sources)
+        per_person_components = [person(source, period) for source in p.income.sources]
+        per_person_income = sum(per_person_components)
         return spm_unit.sum(per_person_income * is_adult)
