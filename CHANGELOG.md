@@ -1,3 +1,10 @@
+## [1.715.0] - 2026-05-28
+
+### Added
+
+- Add Arkansas School Readiness Assistance (SRA) child care subsidy program. The 4% per-family copay ceiling is computed against countable (adult) income — children's SSI and Social Security are excluded per FSU §4.3.3 — and the per-child copay used in that ceiling is clamped to the child's actual provider charge. The ESS Year-1 alt path (FSU §4.1.5.1) is gated on earned income alone exceeding the TEA limit, consistent with the regulation's "earnings alone" wording.
+
+
 ## [1.714.0] - 2026-05-28
 
 ### Added
