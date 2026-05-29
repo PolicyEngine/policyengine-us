@@ -1,3 +1,10 @@
+## [1.715.2] - 2026-05-29
+
+### Changed
+
+- Moved Medicaid conditional cost allocation into PolicyEngine US using an SLCSP age, family-composition, and location cost index.
+
+
 ## [1.715.1] - 2026-05-28
 
 ### Fixed
