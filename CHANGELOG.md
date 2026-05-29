@@ -1,3 +1,10 @@
+## [1.715.3] - 2026-05-29
+
+### Fixed
+
+- Allocate taxable unemployment compensation by actual recipient instead of all to head.
+
+
 ## [1.715.2] - 2026-05-29
 
 ### Changed
