@@ -10,8 +10,8 @@ class spm_unit_health_insurance_premiums(Variable):
     documentation = (
         "Health insurance premium expenses for an SPM unit, combining a "
         "data-imputed other premium component with modeled premium components "
-        "that can respond to policy reforms, including Medicare premiums "
-        "paid out of pocket."
+        "that can respond to policy reforms, including Medicare Part A and "
+        "Part B premiums and the Part D IRMAA surcharge paid out of pocket."
     )
 
     adds = [

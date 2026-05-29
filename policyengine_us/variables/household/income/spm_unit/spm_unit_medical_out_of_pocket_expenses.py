@@ -12,7 +12,8 @@ class spm_unit_medical_out_of_pocket_expenses(Variable):
         "combining health insurance premiums with non-premium medical "
         "expenses. Health insurance premiums include other health insurance "
         "premiums plus modeled Marketplace, CHIP, Medicaid, and Medicare "
-        "premiums net of Medicare Savings Program coverage where modeled. "
+        "Part A and Part B premiums net of Medicare Savings Program coverage "
+        "where modeled, plus the Part D IRMAA surcharge. "
         "Non-premium expenses include other medical expenses and "
         "over-the-counter health expenses."
     )
