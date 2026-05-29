@@ -9,10 +9,8 @@ class has_disabled_dependent(Variable):
     definition_period = MONTH
     reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
-    def formula(person, period, parameters) -> bool:
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_disabled = person("is_disabled", period)
+    def formula(person, period, parameters):
+        is_dependent = person("is_tax_unit_dependent", period.this_year)
+        is_disabled = person("is_disabled", period.this_year)
 
-        return person.tax_unit.any(
-            is_dependent & is_disabled
-        )
+        return person.tax_unit.any(is_dependent & is_disabled)

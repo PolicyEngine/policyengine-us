@@ -12,8 +12,8 @@ class medicaid_work_requirement_eligible(Variable):
         has_exemption = person("has_medicaid_work_requirement_exemption", period)
         has_ce = person("has_medicaid_work_requirement_ce", period)
 
-        return has_exemption or has_ce
-        
+        return has_exemption | has_ce
+
     # def formula(person, period, parameters):
     #     p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
     #     # Works no less than 80 hours p.680 (2)(A)

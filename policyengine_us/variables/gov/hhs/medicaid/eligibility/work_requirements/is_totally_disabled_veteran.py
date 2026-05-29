@@ -9,12 +9,11 @@ class is_totally_disabled_veteran(Variable):
     reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(person, period, parameters):
-        vet_disability_minimum: int = parameters(period).gov.hhs.medicaid.eligibility.work_requirements.total_veteran_disability_minimum
+        vet_disability_minimum = parameters(
+            period
+        ).gov.hhs.medicaid.eligibility.work_requirements.total_veteran_disability_minimum
 
         is_veteran = person("is_veteran", period)
-        veteran_disability_rating = person(
-            "veteran_disability_rating", period
-        )
-        
-        return is_veteran and veteran_disability_rating >= vet_disability_minimum
-    
+        veteran_disability_rating = person("veteran_disability_rating", period)
+
+        return is_veteran & (veteran_disability_rating >= vet_disability_minimum)

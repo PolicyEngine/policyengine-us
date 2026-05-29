@@ -1,38 +1,38 @@
 - name: Return false if no conditions set
-  period: 2027-03
+  period: 2027-01
   output:
     has_medicaid_work_requirement_ce: false
 
 - name: Return true if enrolled at least half-time
-  period: 2027-03
+  period: 2027-01
   input:
     enrolled_half_time_or_more: true
   output:
     has_medicaid_work_requirement_ce: true
 
 - name: Return false if hours are too low
-  period: 2027-03
+  period: 2027-01
   input:
     ce_activity_hours: 79.5
   output:
     has_medicaid_work_requirement_ce: false
 
 - name: Return true if hours >= 80
-  period: 2027-03
+  period: 2027-01
   input:
     ce_activity_hours: 80
   output:
     has_medicaid_work_requirement_ce: true
 
 - name: Return false if income < 580
-  period: 2027-03
+  period: 2027-01
   input:
     ce_activity_income: 579.50
   output:
     has_medicaid_work_requirement_ce: false
 
 - name: Return true if income >= 580
-  period: 2027-03
+  period: 2027-01
   input:
     ce_activity_income: 580
   output:
