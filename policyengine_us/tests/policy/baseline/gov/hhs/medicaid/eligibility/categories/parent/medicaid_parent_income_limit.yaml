@@ -28,3 +28,20 @@
   output:
     medicaid_parent_income_limit: 0.336896
   absolute_error_margin: 0.0001
+
+- name: Case 3, Virginia keeps the statewide parent income limit before LIFC tables.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ARLINGTON_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.54
+  absolute_error_margin: 0.0001

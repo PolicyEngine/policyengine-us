@@ -14,10 +14,13 @@ class medicaid_parent_income_limit(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.categories.parent
+        va_lifc = parameters(period).gov.states.va.dmas.medicaid.lifc
         state = person.household("state_code_str", period)
         state_code = person.household("state_code", period)
-        return where(
-            state_code == StateCode.VA,
-            person("va_medicaid_lifc_income_limit", period),
-            p.income_limit[state],
-        )
+        if va_lifc.in_effect:
+            return where(
+                state_code == StateCode.VA,
+                person("va_medicaid_lifc_income_limit", period),
+                p.income_limit[state],
+            )
+        return p.income_limit[state]
