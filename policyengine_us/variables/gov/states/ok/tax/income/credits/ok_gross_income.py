@@ -16,8 +16,14 @@ class ok_gross_income(Variable):
     def formula(tax_unit, period, parameters):
         # compute comprehensive gross income for all people in tax unit
         p = parameters(period).gov.states.ok.tax.income
-        income = 0
+        capital_gain_sources = [
+            "short_term_capital_gains",
+            "long_term_capital_gains",
+        ]
+        income = max_(0, add(tax_unit, period, capital_gain_sources))
         for source in p.credits.gross_income_sources:
+            if source in capital_gain_sources:
+                continue
             # gross income includes only positive amounts (i.e., no losses)
             income += max_(0, add(tax_unit, period, [source]))
         return income

@@ -1,0 +1,330 @@
+- name: Case 1, single adult at 17.6% SMI, copay waived ($0 tier).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 1,000/mo / 5,679.01/mo = 0.176 (<= 20%, $0 tier).
+    wa_wccc_copay: 0
+
+- name: Case 2, single adult at ~26% SMI, $65 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 1,500/mo / 5,679.01/mo = 0.264 (above 20%, <= 36% -> $65).
+    wa_wccc_copay: 65
+
+- name: Case 3, single adult at ~44% SMI, $90 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 2,500/mo / 5,679.01/mo = 0.440 (above 36%, <= 50% -> $90).
+    wa_wccc_copay: 90
+
+- name: Case 4, single adult at ~53% SMI, $165 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 3,000/mo / 5,679.01/mo = 0.528 (above 50%, <= 60% -> $165).
+    wa_wccc_copay: 165
+
+- name: Case 5, single adult at ~62% SMI, $215 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 42_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 3,500/mo / 5,679.01/mo = 0.616 (above 60% -> $215).
+    wa_wccc_copay: 215
+
+- name: Case 6, homeless household at $90 tier income, copay waived to $0.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: true
+  output:
+    # Homeless waiver overrides bracket; would be $90 without waiver.
+    wa_wccc_copay: 0
+
+- name: Case 7, teen parent in K-12 at $65 tier income, copay waived to $0.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: true
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Teen-parent (HS/HSE under 22) waiver overrides bracket; would be $65 without waiver.
+    wa_wccc_copay: 0
+
+- name: Case 8, zero income, $0 copay tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # SMI fraction = 0; falls in first bracket (at-or-below 20%) -> $0.
+    wa_wccc_copay: 0
+
+- name: Case 9, single adult just below 20% SMI threshold, $0 tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 13_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 1 monthly SMI = 131,054 * 0.52 / 12 = $5,679.007.
+    # Income $13,500/yr = $1,125/mo. Fraction = 1,125 / 5,679.007 = 0.19810.
+    # Below 0.2001 threshold -> first bracket -> $0.
+    wa_wccc_copay: 0
+
+- name: Case 10, single adult just above 20% SMI threshold, $65 tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 13_700
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Income $13,700/yr = $1,141.667/mo. Fraction = 1,141.667 / 5,679.007 = 0.20104.
+    # At or above 0.2001 threshold and at or below 0.3601 -> $65 tier.
+    wa_wccc_copay: 65
+
+- name: Case 11, single adult just above 36% SMI threshold, $90 tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 24_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Income $24,600/yr = $2,050/mo. Fraction = 2,050 / 5,679.007 = 0.36097.
+    # Above 0.3601 threshold and at or below 0.5001 -> $90 tier.
+    wa_wccc_copay: 90
+
+- name: Case 12, single adult just above 50% SMI threshold, $165 tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 34_100
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Income $34,100/yr = $2,841.667/mo. Fraction = 2,841.667 / 5,679.007 = 0.50029.
+    # Above 0.5001 threshold and at or below 0.6001 -> $165 tier.
+    wa_wccc_copay: 165
+
+- name: Case 13, single adult just above 60% SMI threshold, $215 tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        employment_income: 41_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Income $41,000/yr = $3,416.667/mo. Fraction = 3,416.667 / 5,679.007 = 0.60163.
+    # Above 0.6001 threshold -> highest bracket -> $215 tier.
+    wa_wccc_copay: 215

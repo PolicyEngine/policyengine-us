@@ -1,0 +1,172 @@
+# LI activity requirement: each adult head/spouse must engage in
+# >=30 hr/wk of work, education, or full-time study.
+
+- name: Case 1, single parent works 30 hours per week exactly is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: true
+
+- name: Case 2, single parent works 29 hours per week is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 29
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: false
+
+- name: Case 3, single parent works 31 hours per week is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 31
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: true
+
+- name: Case 4, two parents both at or above 30 hours per week are activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 30
+      person2:
+        age: 30
+        weekly_hours_worked: 35
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: true
+
+- name: Case 5, two-parent household with one parent below threshold fails activity test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 35
+      person2:
+        age: 30
+        weekly_hours_worked: 20
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: false
+
+- name: Case 6, adult with zero hours but meets_ccdf_activity_test fallback is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: true
+
+- name: Case 7, two-parent household with one working and one full-time college student is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 35
+      person2:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_college_student: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: true
+
+- name: Case 8, household with only children (no adult) is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_li_activity_eligible: false

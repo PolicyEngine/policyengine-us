@@ -1,0 +1,22 @@
+description: Arkansas limits Medicaid expansion coverage to adults who meet a work requirement under the Arkansas Works program, if this is true.
+
+values:
+  0000-01-01: false
+  2018-01-01: true
+  2020-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Arkansas Medicaid work requirement applies
+  reference:
+    - title: Arkansas Works | Medicaid
+      href: https://www.medicaid.gov/medicaid/section-1115-demo/demonstration-and-waiver-list/81021
+    - title: State Annual Report January-December 2018 | Arkansas Works Section 1115
+      href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/ar/Health-Care-Independence-Program-Private-Option/ar-works-annl-rpt-jan-dec-2018.pdf#page=11
+
+# Annual approximation note:
+# - The underlying waiver operated monthly starting June 1, 2018 and was set aside
+#   by a court in March 2019.
+# - PolicyEngine's default microdata are annual, so this parameter turns the rule on
+#   for calendar years 2018 and 2019 and documents the approximation in code/tests.

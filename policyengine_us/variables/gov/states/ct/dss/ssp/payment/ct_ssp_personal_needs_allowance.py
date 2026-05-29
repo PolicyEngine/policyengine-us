@@ -15,7 +15,7 @@ class ct_ssp_personal_needs_allowance(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ct.dss.ssp
-        arrangement = person("ct_ssp_living_arrangement", period.this_year)
+        arrangement = person("ct_ssp_living_arrangement", period)
         arrangements = arrangement.possible_values
         is_joint_claim = person("ssi_claim_is_joint", period.this_year)
 

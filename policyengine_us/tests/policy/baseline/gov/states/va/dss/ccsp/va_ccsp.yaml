@@ -1,5 +1,5 @@
 # Virginia CCSP benefit amount tests
-# Benefit = min(max(childcare_expenses - copay, 0), monthly_mrr)
+# Benefit = max(min(childcare_expenses, monthly_mrr) - copay, 0)
 
 - name: Case 1, basic benefit calculation.
   period: 2024-01
@@ -35,12 +35,12 @@
     # Income cap: 36,000 * 0.07 / 12 = 210
     # Copay: min(60, 210) = $60
     # Monthly expenses: 12,000 / 12 = 1,000
-    # Benefit before MRR: max(1,000 - 60, 0) = $940
     # Default county ACCOMACK -> SOUTHEASTERN
     # Age 5 = 60 months -> SCHOOL_AGE, CENTER rate = $30/day
     # MRR: $30 * 23 = $690
-    # Benefit: min(940, 690) = $690
-    va_ccsp: 690
+    # Capped expenses: min(1000, 690) = $690
+    # Benefit: max(690 - 60, 0) = $630
+    va_ccsp: 630
 
 - name: Case 2, copay exceeds expenses so benefit is zero.
   period: 2024-01
