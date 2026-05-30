@@ -2,7 +2,7 @@
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 513
+    in_tanf_maximum_benefit: 513
     in_tanf_countable_income_for_payment: 0
     state_code: IN
   output:
@@ -13,7 +13,7 @@
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 513
+    in_tanf_maximum_benefit: 513
     in_tanf_countable_income_for_payment: 200
     state_code: IN
   output:
@@ -24,7 +24,7 @@
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 409
+    in_tanf_maximum_benefit: 409
     in_tanf_countable_income_for_payment: 100
     state_code: IN
   output:
@@ -35,30 +35,95 @@
   period: 2024-01
   input:
     in_tanf_eligible: false
-    in_tanf_payment_standard: 513
+    in_tanf_maximum_benefit: 513
     in_tanf_countable_income_for_payment: 100
     state_code: IN
   output:
     in_tanf: 0
 
-- name: Family with countable income equal to payment standard
+- name: Family with countable income equal to maximum benefit
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 513
+    in_tanf_maximum_benefit: 513
     in_tanf_countable_income_for_payment: 513
     state_code: IN
   output:
     in_tanf: 0
     # Max benefit ($513) - countable income ($513) = $0
 
-- name: Family with countable income exceeding payment standard
+- name: Family with countable income exceeding maximum benefit
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 513
+    in_tanf_maximum_benefit: 513
     in_tanf_countable_income_for_payment: 600
     state_code: IN
   output:
     in_tanf: 0
     # max(513 - 600, 0) = 0
+
+- name: Family of two, adult and child, no income, no SSI, January 2026.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+      person2:
+        age: 5
+        employment_income: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf: 409
+    # 2024-07-01 maximum benefit for a family of 2 (IC 12-14-2-5)
+
+- name: Family of two, no income, January 2024 still pays pre-July-2024 amount.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf: 255
+    # January 2024 is before the 2024-07-01 increase, so the maximum benefit
+    # is still the 2023-07-01 amount ($255) for a family of 2.
+
+- name: Family of two, no income, January 2025 pays the increased amount.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_tanf: 409
+    # 2024-07-01 maximum benefit for a family of 2 ($409)
