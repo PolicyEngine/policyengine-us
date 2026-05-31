@@ -5,11 +5,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     marital_units:
       marital_unit:
@@ -29,11 +29,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     marital_units:
       marital_unit:
@@ -53,11 +53,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
     marital_units:
       marital_unit:
@@ -76,11 +76,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
     marital_units:
       marital_unit:
@@ -99,11 +99,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
     marital_units:
       marital_unit:
@@ -122,11 +122,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
     marital_units:
       marital_unit:
@@ -145,11 +145,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: MEDICAID_FACILITY
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: MEDICAID_FACILITY
     marital_units:
       marital_unit:
@@ -168,11 +168,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
     marital_units:
       marital_unit:
@@ -191,11 +191,11 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: NONE
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: NONE
     marital_units:
       marital_unit:
@@ -214,12 +214,12 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$1,200 -> $100/month per-person excess.
-        uncapped_ssi: -1_200
+        # Monthly uncapped SSI = -$100 per-person excess.
+        uncapped_ssi: -100
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: -1_200
+        uncapped_ssi: -100
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
     marital_units:
       marital_unit:
@@ -239,12 +239,12 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$240 -> $20/month per-person excess.
-        uncapped_ssi: -240
+        # Monthly uncapped SSI = -$20 per-person excess.
+        uncapped_ssi: -20
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: -240
+        uncapped_ssi: -20
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     marital_units:
       marital_unit:
@@ -264,12 +264,12 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$1,200 -> $100/month per-person excess.
-        uncapped_ssi: -1_200
+        # Monthly uncapped SSI = -$100 per-person excess.
+        uncapped_ssi: -100
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: -1_200
+        uncapped_ssi: -100
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     marital_units:
       marital_unit:
@@ -289,12 +289,12 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$60 -> $5/month per-person excess.
-        uncapped_ssi: -60
+        # Monthly uncapped SSI = -$5 per-person excess.
+        uncapped_ssi: -5
         me_ssp_living_arrangement: MEDICAID_FACILITY
       person2:
         is_ssi_eligible: true
-        uncapped_ssi: -60
+        uncapped_ssi: -5
         me_ssp_living_arrangement: MEDICAID_FACILITY
     marital_units:
       marital_unit:

@@ -1,0 +1,58 @@
+- name: Joint filers net self-employment loss against wages
+  period: 2026
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 5_000
+      spouse:
+        age: 35
+        self_employment_income: -6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    eitc_earned_income: 0
+    eitc_phased_in: 0
+
+- name: Self-employment tax deduction reduces positive self-employment earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        self_employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    eitc_earned_income: 18_587.05
+
+- name: Partnership self-employment income counts for EITC earned income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 35
+        partnership_se_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    eitc_earned_income: 9_293.52
+
+- name: Farm operations loss nets against wages for EITC earned income
+  period: 2026
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 8_000
+        farm_operations_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    eitc_earned_income: 0

@@ -22,5 +22,5 @@ class me_ccap(Variable):
         )
 
         actual_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
-        uncapped_benefit = max_(actual_expenses - parent_fee, 0)
-        return min_(uncapped_benefit, max_reimbursement)
+        capped_expenses = min_(actual_expenses, max_reimbursement)
+        return max_(capped_expenses - parent_fee, 0)

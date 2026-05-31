@@ -12,8 +12,12 @@ values:
     - ga_ssp
     # Maine benefits
     - me_ssp
+    # Missouri benefits
+    - mo_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Maryland benefits
+    - md_paa
     # Michigan benefits
     - mi_ssp
     # Minnesota benefits
@@ -69,6 +73,8 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
+    # Washington benefits
+    - wa_child_care_subsidies
   2024-01-01:
     # Delaware benefits
     - de_ssp
@@ -81,8 +87,12 @@ values:
     - ga_ssp
     # Maine benefits
     - me_ssp
+    # Missouri benefits
+    - mo_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Maryland benefits
+    - md_paa
     # Michigan benefits
     - mi_ssp
     # Minnesota benefits
@@ -140,6 +150,10 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
+    # Arkansas benefits
+    - ar_child_care_subsidies
+    # Washington child care subsidies
+    - wa_child_care_subsidies
 metadata:
   unit: list
   period: year

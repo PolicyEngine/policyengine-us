@@ -1,0 +1,37 @@
+- name: South Carolina deducts full 529 contributions
+  period: 2024
+  input:
+    state_code: SC
+    investment_in_529_plan_indv: 5_000
+  output:
+    sc_529_plan_deduction: 5_000
+    sc_subtractions: 5_000
+
+- name: South Carolina sums 529 contributions across joint filers
+  period: 2024
+  input:
+    people:
+      person1:
+        investment_in_529_plan_indv: 7_000
+      person2:
+        investment_in_529_plan_indv: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_529_plan_deduction: 10_000
+    sc_subtractions: 10_000
+
+- name: South Carolina 529 deduction is zero without contributions
+  period: 2024
+  input:
+    state_code: SC
+    investment_in_529_plan_indv: 0
+  output:
+    sc_529_plan_deduction: 0
+    sc_subtractions: 0

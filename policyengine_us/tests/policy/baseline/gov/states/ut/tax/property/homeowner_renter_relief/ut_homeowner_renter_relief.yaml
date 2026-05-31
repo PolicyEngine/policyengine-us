@@ -212,3 +212,23 @@
         state_code: UT
   output:
     ut_homeowner_renter_relief: [850, 0]
+
+- name: Case 12, nontaxable income uses self-employed pension contributions.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    self_employed_pension_contributions: 72_000
+    ut_homeowner_renter_relief_nontaxable_income: 72_000

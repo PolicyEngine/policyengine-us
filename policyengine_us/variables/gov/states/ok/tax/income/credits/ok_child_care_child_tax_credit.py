@@ -27,7 +27,7 @@ class ok_child_care_child_tax_credit(Variable):
     Calculation steps:
     1. Check AGI eligibility (federal AGI <= $100,000)
     2. Calculate OK CDCC: federal_cdcc_potential * 20%
-    3. Calculate OK CTC: federal_ctc_value * 5%
+    3. Calculate OK CTC: federal CTC allowed * 5%
     4. Take the greater of OK CDCC or OK CTC
     5. Prorate by (OK AGI / Federal AGI)
 
@@ -59,8 +59,8 @@ class ok_child_care_child_tax_credit(Variable):
         # Step 2: Calculate OK CDCC amount (20% of federal potential)
         us_cdcc = tax_unit("cdcc_potential", period)
         ok_cdcc = us_cdcc * p.child.cdcc_fraction
-        # Step 3: Calculate OK CTC amount (5% of federal CTC)
-        us_ctc = tax_unit("ctc_value", period)
+        # Step 3: Calculate OK CTC amount (5% of federal CTC allowed)
+        us_ctc = tax_unit("ok_federal_ctc", period)
         ok_ctc = us_ctc * p.child.ctc_fraction
         # Step 4: Compute proration ratio (OK AGI / Federal AGI)
         ok_agi = tax_unit("ok_agi", period)
