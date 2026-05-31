@@ -325,6 +325,7 @@
         is_tax_unit_spouse: false
         is_tax_unit_dependent: false
         is_disabled: true
+        is_usda_disabled: true
         immigration_status_str: CITIZEN
         employment_income: 20000
       spouse:
@@ -377,7 +378,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 4700.99
+        snap: 5796.29
         is_snap_eligible: true
 - name: snap_head_immigration_lpr (federal)
   period: 2026

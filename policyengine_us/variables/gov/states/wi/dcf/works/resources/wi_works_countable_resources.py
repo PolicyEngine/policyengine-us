@@ -7,6 +7,7 @@ class wi_works_countable_resources(Variable):
     label = "Wisconsin Works countable resources"
     unit = USD
     definition_period = YEAR
+    quantity_type = STOCK
     reference = (
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.3.4_COUNTING_ASSETS.htm",
         "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/b",

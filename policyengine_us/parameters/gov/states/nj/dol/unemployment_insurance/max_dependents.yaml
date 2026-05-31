@@ -1,0 +1,14 @@
+description: New Jersey limits the number of dependents that can be claimed for unemployment insurance dependency benefits to this many.
+
+metadata:
+  unit: person
+  period: year
+  label: New Jersey UI maximum dependents for allowance
+  reference:
+    - title: N.J.S.A. 43:21-3(c)(2)(A) - Dependency allowances
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=11
+    - title: NJ Division of Unemployment Insurance - How to claim dependency benefits
+      href: https://www.nj.gov/labor/myunemployment/before/about/howtoapply/dependencybenefits.shtml
+
+values:
+  2015-01-01: 3

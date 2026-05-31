@@ -5,7 +5,7 @@ class nm_ssi_state_supplement_eligible(Variable):
     value_type = bool
     entity = Person
     label = "New Mexico SSI state supplement eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.NM
     reference = (
         "https://srca.nm.gov/parts/title08/08.106.0500.html",
@@ -13,8 +13,8 @@ class nm_ssi_state_supplement_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        ssi_eligible = person("is_ssi_eligible_individual", period)
-        age = person("age", period)
+        ssi_eligible = person("is_ssi_eligible_individual", period.this_year)
+        age = person("age", period.this_year)
         p = parameters(period).gov.states.nm.hca.ssi_supplement
         meets_age = age >= p.min_age
         in_residential_care = person("is_in_adult_residential_care", period)

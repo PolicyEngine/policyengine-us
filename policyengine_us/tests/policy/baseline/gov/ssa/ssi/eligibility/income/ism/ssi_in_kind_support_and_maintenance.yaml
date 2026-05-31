@@ -6,6 +6,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
   output:
     ssi_in_kind_support_and_maintenance: 0
 
@@ -17,6 +18,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_receives_outside_shelter_support: true
   output:
     # PMV monthly = (1/3 x 967) + 20 = 322.33 + 20 = 342.33
@@ -31,6 +33,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_receives_shelter_from_others_in_household: true
         # Not in another's household, so not Status B
   output:
@@ -46,6 +49,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: true
         ssi_others_pay_all_meals: true
@@ -60,6 +64,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
   output:

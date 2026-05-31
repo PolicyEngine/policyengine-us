@@ -37,9 +37,19 @@
   period: 2024
   input:
     employment_income: 100
-    traditional_401k_contributions: 10
-    traditional_403b_contributions: 5
+    traditional_401k_contributions_desired: 10
+    traditional_403b_contributions_desired: 5
     health_savings_account_payroll_contributions: 3
   output:
     pre_tax_contributions: 18
     irs_employment_income: 82
+
+- name: Roth 401k and 403b contributions do not reduce IRS employment income.
+  period: 2024
+  input:
+    employment_income: 100
+    roth_401k_contributions_desired: 10
+    roth_403b_contributions_desired: 5
+  output:
+    pre_tax_contributions: 0
+    irs_employment_income: 100

@@ -1,0 +1,283 @@
+# Overall SRA eligibility = in_effect AND has_eligible_child AND income-eligible
+# AND asset-eligible AND (LI activity OR ESS) AND state_code == AR.
+
+- name: Case 1, all eligibility components met under the LI track.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+
+- name: Case 2, household income above 85 percent SMI fails eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        # Well above the 85% SMI annual cap of ~$52,182 for a family of 2
+        employment_income: 100_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+
+- name: Case 3, no eligible child fails eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+
+- name: Case 4, parent activity below LI threshold and no ESS track fails eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+
+- name: Case 5, ESS track 20 hours per week makes household eligible even below LI threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 20
+        employment_income: 15_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+
+- name: Case 6, household with assets above the CCDF asset limit fails eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+
+- name: Case 7, assets exactly at the $1M CCDF limit are eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+
+- name: Case 8, assets one dollar above the $1M CCDF limit fail eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+
+- name: Case 9, assets just below the $1M CCDF limit are eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 999_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+
+- name: Case 10, period 2025-01 is before the SRA effective date so household is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
