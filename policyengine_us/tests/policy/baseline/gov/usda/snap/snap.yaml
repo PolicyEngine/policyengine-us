@@ -116,3 +116,77 @@
     # And then again subtracted as a deduction from gross income.
     snap_net_income: 0
     snap: 3_522
+
+- name: Case 5, work-requirement-ineligible adult is excluded from SNAP benefit size.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 35
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    meets_snap_work_requirements_person: [true, false]
+    meets_snap_work_requirements: true
+    snap_unit_size: 1
+    snap_max_allotment: 291
+    snap: 291
+
+- name: Case 6, work-requirement-ineligible adult income is prorated for SNAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 35
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        employment_income:
+          2024: 12_000
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_unit_size: 1
+    snap_work_requirement_income_proration_fraction: [1, 0.5]
+    snap_earned_income: 500
+    snap_gross_income: 500
+    snap: 230.40

@@ -240,10 +240,10 @@
 
     # === Benefit ===
     # max annual = 188.33 * 52 = 9,793.16
-    # uncapped = max(10,000 - 4,200, 0) = 5,800
-    # annual benefit = min(5,800, 9,793.16) = 5,800
-    # monthly = 5,800 / 12 = 483.33
-    ri_ccap: 483.33
+    # capped = min(10,000, 9,793.16) = 9,793.16
+    # annual benefit = max(9,793.16 - 4,200, 0) = 5,593.16
+    # monthly = 5,593.16 / 12 = 466.10
+    ri_ccap: 466.10
 
 - name: Case 5, housing insecure family with license exempt care.
   period: 2025-01

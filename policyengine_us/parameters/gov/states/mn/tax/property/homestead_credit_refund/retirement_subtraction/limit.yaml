@@ -1,0 +1,28 @@
+description: Minnesota limits the retirement account subtraction to this amount under the Homestead Credit Refund program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Minnesota Homestead Credit Refund retirement account subtraction limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2024 Form M1PR Instructions, Line 10
+      href: https://www.taxformfinder.org/forms/2024/2024-minnesota-form-m1pr-instructions.pdf#page=9
+    - title: 2025 Form M1PR Instructions, Line 10
+      href: https://www.taxformfinder.org/forms/2025/2025-minnesota-form-m1pr-instructions.pdf#page=9
+
+JOINT:
+  values:
+    2024-01-01: 14_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2024-01-01: 7_000
+SURVIVING_SPOUSE:
+  values:
+    2024-01-01: 7_000
+SINGLE:
+  values:
+    2024-01-01: 7_000
+SEPARATE:
+  values:
+    2024-01-01: 7_000

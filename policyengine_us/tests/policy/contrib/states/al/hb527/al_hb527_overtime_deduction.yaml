@@ -1,4 +1,4 @@
-- name: AL HB527 - Single filer with overtime under cap
+- name: AL HB527 - Single filer with overtime capped
   absolute_error_margin: 0.1
   period: 2025
   reforms: policyengine_us.reforms.states.al.hb527.al_hb527_overtime_deduction.al_hb527_overtime_deduction
@@ -9,7 +9,7 @@
       person:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50  # 10 hours overtime per week
+        fsla_overtime_premium: 5_200
     tax_units:
       tax_unit:
         members: [person]
@@ -19,8 +19,7 @@
         members: [person]
         state_name: AL
   output:
-    # With 50 hours/week and 52k income, overtime premium is calculated by fsla_overtime_premium
-    # Deduction should be capped at $1,000 for single filer
+    # Deduction should be capped at $1,000 for single filer.
     al_hb527_overtime_deduction: 1_000
 
 - name: AL HB527 - Single filer with small overtime amount
@@ -34,7 +33,7 @@
       person:
         age: 35
         employment_income: 42_000
-        hours_worked_last_week: 42  # 2 hours overtime per week
+        fsla_overtime_premium: 976.74
     tax_units:
       tax_unit:
         members: [person]
@@ -44,7 +43,7 @@
         members: [person]
         state_name: AL
   output:
-    # Overtime premium is calculated by FLSA formula: ~$976.74, under $1,000 cap
+    # Overtime premium is under the $1,000 per-person cap.
     al_hb527_overtime_deduction: 976.74
 
 - name: AL HB527 - Joint filers with overtime
@@ -58,11 +57,11 @@
       person1:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 5_200
       person2:
         age: 33
         employment_income: 48_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 4_800
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -72,7 +71,7 @@
         members: [person1, person2]
         state_name: AL
   output:
-    # Both spouses have significant overtime, cap is $2,000 for joint filers
+    # Both spouses have significant overtime, cap is $2,000 for joint filers.
     al_hb527_overtime_deduction: 2_000
 
 - name: AL HB527 - No overtime income
@@ -86,7 +85,7 @@
       person:
         age: 35
         employment_income: 50_000
-        hours_worked_last_week: 40  # No overtime
+        fsla_overtime_premium: 0
     tax_units:
       tax_unit:
         members: [person]
@@ -109,7 +108,7 @@
       person:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 5_200
     tax_units:
       tax_unit:
         members: [person]
@@ -135,7 +134,7 @@
       person1:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 5_200
       person2:
         age: 10
     tax_units:
@@ -160,7 +159,7 @@
       person1:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 5_200
     tax_units:
       tax_unit:
         members: [person1]
@@ -183,11 +182,11 @@
       person1:
         age: 35
         employment_income: 52_000
-        hours_worked_last_week: 50
+        fsla_overtime_premium: 5_200
       person2:
         age: 33
         employment_income: 40_000
-        hours_worked_last_week: 40
+        fsla_overtime_premium: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -197,7 +196,7 @@
         members: [person1, person2]
         state_name: AL
   output:
-    # Person1 overtime capped at $1,000, person2 has $0 overtime
+    # Person1 overtime capped at $1,000, person2 has $0 overtime.
     al_hb527_overtime_deduction: 1_000
 
 - name: AL HB527 - AGI capped at zero when deduction exceeds income

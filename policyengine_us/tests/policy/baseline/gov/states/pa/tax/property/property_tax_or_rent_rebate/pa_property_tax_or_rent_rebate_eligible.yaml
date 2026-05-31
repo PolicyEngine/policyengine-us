@@ -1,0 +1,166 @@
+- name: Case 1, senior homeowner under the income limit is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 48_110
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: true
+
+- name: Case 2, surviving spouse age 50 is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: true
+
+- name: Case 3, permanently disabled adult is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 18
+        is_permanently_and_totally_disabled: true
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: true
+
+- name: Case 4, income above the limit is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 48_111
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: false
+
+- name: Case 5, filer without rent or property tax is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: false
+
+- name: Case 6, widowed filer age 50 is eligible even when not federally surviving spouse.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        is_surviving_spouse: true
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: true
+
+- name: Case 7, tax-exempt income is included for income eligibility.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        tax_exempt_interest_income: 200
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 48_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: false
+
+- name: Case 8, non-permanent disability does not qualify.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: false
+
+- name: Case 9, Line 11 income can push a claimant over the income limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        workers_compensation: 2_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 47_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate_eligible: false

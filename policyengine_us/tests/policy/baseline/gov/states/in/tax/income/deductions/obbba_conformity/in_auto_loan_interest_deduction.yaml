@@ -2,7 +2,7 @@
   period: 2026
   input:
     state_code: IN
-    auto_loan_interest: 2_000
+    qualified_passenger_vehicle_loan_interest: 2_000
     employment_income: 50_000
   output:
     in_auto_loan_interest_deduction: 2_000
@@ -20,7 +20,7 @@
   period: 2025
   input:
     state_code: IN
-    auto_loan_interest: 2_000
+    qualified_passenger_vehicle_loan_interest: 2_000
     employment_income: 50_000
   output:
     in_auto_loan_interest_deduction: 2_000
@@ -28,10 +28,10 @@
 
 - name: Indiana auto loan interest deduction in in_deductions in 2026
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     state_code: IN
-    auto_loan_interest: 2_000
+    qualified_passenger_vehicle_loan_interest: 2_000
     employment_income: 50_000
   output:
     in_auto_loan_interest_deduction: 2_000
@@ -41,8 +41,18 @@
   period: 2027
   input:
     state_code: IN
-    auto_loan_interest: 2_000
+    qualified_passenger_vehicle_loan_interest: 2_000
     employment_income: 50_000
   output:
     in_auto_loan_interest_deduction: 2_000
+    in_deductions: 0
+
+- name: Indiana generic auto loan interest is not deductible without qualified interest
+  period: 2026
+  input:
+    state_code: IN
+    auto_loan_interest: 2_000
+    employment_income: 50_000
+  output:
+    in_auto_loan_interest_deduction: 0
     in_deductions: 0

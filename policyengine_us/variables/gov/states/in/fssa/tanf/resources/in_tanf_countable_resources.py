@@ -7,6 +7,7 @@ class in_tanf_countable_resources(Variable):
     label = "Indiana TANF countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     defined_for = StateCode.IN
     reference = (
         "https://iar.iga.in.gov/code/2026/470/10.3#470-10.3-4-2",

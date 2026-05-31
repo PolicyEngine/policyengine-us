@@ -1,0 +1,221 @@
+- name: Case 1, senior renter with sufficient rent burden is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: true
+
+- name: Case 2, permanently disabled renter under age 65 is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_permanently_and_totally_disabled: true
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: true
+
+- name: Case 3, income above the limit is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 70_001
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 4, renter without sufficient rent burden is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 5, non-senior renter without disability is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 6, non-permanent disability does not qualify.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 7, income above the limit remains ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 70_001
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 8, rent paid for property tax exempt quarters is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+        nd_renters_refund_property_tax_exempt: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 9, income at the limit is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: true
+
+- name: Case 10, married senior renters are eligible as one tax unit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 4_800
+      person2:
+        age: 65
+        rent: 4_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: true
+
+- name: Case 11, senior renter with no rent is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false
+
+- name: Case 12, pre-2023 income above the prior limit is ineligible.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+        rent: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 42_001
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_renters_refund_eligible: false

@@ -69,9 +69,10 @@
   output:
     ctc_value: 0
     ctc: 4_000
-    # Only match 5% of the actual federal CTC
-    ok_child_care_child_tax_credit: 0
-    ok_income_tax: 110
+    ok_federal_ctc: 93.26
+    # Only match 5% of the actual federal CTC allowed.
+    ok_child_care_child_tax_credit: 4.66
+    ok_income_tax: 106
 
 # 2025 Comprehensive Integration Tests
 

@@ -215,3 +215,17 @@
         state_fips: 22
   output:
     la_income_tax: 476
+
+- name: 2026 single filer standard deduction uses prior-calendar-year CPI-U adjustment
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SINGLE
+    la_agi: 40_000
+    tax_unit_itemizes: false
+    la_federal_tax_deduction: 0
+    la_non_refundable_credits: 0
+  output:
+    la_standard_deduction: 12_835
+    la_taxable_income: 27_165
+    la_income_tax_before_refundable_credits: 814.95

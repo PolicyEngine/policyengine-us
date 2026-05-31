@@ -4,13 +4,13 @@
     people:
       person1:
         savers_credit_eligible_person: true
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
         retirement_distributions: 1_000
       person2:
         savers_credit_eligible_person: false
-        traditional_ira_contributions: 0
-        roth_ira_contributions: 0
+        traditional_ira_contributions_desired: 0
+        roth_ira_contributions_desired: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -26,13 +26,13 @@
       person1:
         savers_credit_eligible_person: true
         adjusted_gross_income_person: 39_000
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: true
         adjusted_gross_income_person: 50_000
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -47,12 +47,12 @@
     people:
       person1:
         savers_credit_eligible_person: true
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: true
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -61,19 +61,19 @@
   output:
     savers_credit_person: [0, 0]
 
-- name: Head of household with AGI under the eligible threshold, capped contributions 
+- name: Head of household with AGI under the eligible threshold and distributions
   period: 2023
   input:
     people:
       person1:
         savers_credit_eligible_person: true
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
         retirement_distributions: 4_000
       person2:
         savers_credit_eligible_person: true
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -82,14 +82,14 @@
   output:
     savers_credit_person: [200, 400]
 
-- name: Single uncapped contributions
+- name: Single contributions
   period: 2023
   input:
     people:
       person1:
         savers_credit_eligible_person: true
-        roth_ira_contributions: 500
-        roth_401k_contributions: 1_000
+        roth_ira_contributions_desired: 500
+        roth_401k_contributions_desired: 1_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -98,14 +98,14 @@
   output:
     savers_credit_person: [750]
 
-- name: Single uncapped contributions, middle threshold
+- name: Single contributions, middle threshold
   period: 2023
   input:
     people:
       person1:
         savers_credit_eligible_person: true
-        roth_ira_contributions: 500
-        roth_401k_contributions: 1_000
+        roth_ira_contributions_desired: 500
+        roth_401k_contributions_desired: 1_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -120,12 +120,12 @@
     people:
       person1:
         savers_credit_eligible_person: false
-        traditional_ira_contributions: 3_000
-        roth_ira_contributions: 2_000
+        traditional_ira_contributions_desired: 3_000
+        roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: false
-        traditional_ira_contributions: 0
-        roth_ira_contributions: 0
+        traditional_ira_contributions_desired: 0
+        roth_ira_contributions_desired: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
