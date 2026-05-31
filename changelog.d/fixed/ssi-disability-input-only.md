@@ -1,0 +1,2 @@
+- Made `meets_ssi_disability_criteria` input-only so simulations use data-provided SSA disability-screen imputations instead of falling back to broad disability status.
+- Removed `ssi_federal_fiscal_year_outlays`; SSI formulas remain calendar-year oriented, with reusable payment-date helpers available in `policyengine_us.tools.ssi`.

@@ -9,6 +9,7 @@ class healthcare_benefit_value(Variable):
     unit = USD
     adds = [
         "medicaid_cost",
+        "msp_cost",
         "per_capita_chip",
         "assigned_aca_ptc",
         "co_omnisalud",

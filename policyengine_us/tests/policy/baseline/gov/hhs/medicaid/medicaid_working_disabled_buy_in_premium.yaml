@@ -1,0 +1,13 @@
+- name: Case 1, tax unit sums monthly Buy-In premiums annually.
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_working_disabled_buy_in_premium_person: 300
+      person2:
+        medicaid_working_disabled_buy_in_premium_person: 120
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    medicaid_working_disabled_buy_in_premium: 420

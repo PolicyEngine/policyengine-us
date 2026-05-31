@@ -23,7 +23,7 @@ class va_ccsp_countable_income(Variable):
         # `age` is a YEAR-defined variable; use period.this_year so the
         # monthly formula picks up the annual age rather than age/12.
         is_adult = person("age", period.this_year) >= 18
-        earned_per_person = sum(person(source, period) for source in p.earned_sources)
+        earned_per_person = add(person, period, p.earned_sources)
         adult_earned_income = spm_unit.sum(earned_per_person * is_adult)
         unearned_income = add(spm_unit, period, p.unearned_sources)
         deductions = add(spm_unit, period, p.subtracts)

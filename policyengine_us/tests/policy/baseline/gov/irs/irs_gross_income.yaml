@@ -8,6 +8,13 @@
   output:
     irs_gross_income: 1 + 2 + 3 + 4
 
+- name: IRS gross income includes taxable Roth conversions.
+  period: 2022
+  input:
+    taxable_roth_conversions: 5
+  output:
+    irs_gross_income: 5
+
 - name: IRS gross income includes farm operations income.
   period: 2022
   input:

@@ -345,9 +345,31 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# --- 2015(o)(3)(F)-(G): Indian, Urban Indian, or California Indian ---
+
+- name: Case 24, post-HR1 Indian, Urban Indian, or California Indian exempt.
+  period: 2027
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 25, pre-HR1 Indian exemption input does not change ABAWD rules.
+  period: 2024
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+  output:
+    meets_snap_abawd_work_requirements: false
+
 # --- HR1 removed exemptions: Homeless and veteran ---
 
-- name: Case 24, post-HR1 homeless NOT exempt.
+- name: Case 26, post-HR1 homeless NOT exempt.
   period: 2027
   absolute_error_margin: 0.1
   input:
@@ -358,7 +380,7 @@
   output:
     meets_snap_abawd_work_requirements: false
 
-- name: Case 25, post-HR1 veteran NOT exempt.
+- name: Case 27, post-HR1 veteran NOT exempt.
   period: 2027
   absolute_error_margin: 0.1
   input:

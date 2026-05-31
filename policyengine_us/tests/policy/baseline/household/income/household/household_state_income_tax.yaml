@@ -3,7 +3,7 @@
   input:
     co_income_tax_before_refundable_credits: 3_000
     ne_income_tax_before_refundable_credits: 2_000
-    pa_income_tax: 100
+    pa_income_tax_before_refundable_credits: 100
     hi_refundable_credits: 300
     ok_refundable_credits: 500
     ut_refundable_credits: 400
@@ -20,3 +20,25 @@
     wi_refundable_credits: 200
   output:
     household_state_income_tax: 3_000
+
+- name: Case 3, New Jersey household state income tax uses filing-threshold zero-out.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 9_611.82
+        short_term_capital_gains: 42.93
+        long_term_capital_gains: 314.91
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_income_tax: 0
+    household_state_income_tax: 0

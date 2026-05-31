@@ -23,7 +23,7 @@ class msp_benefit_value(Variable):
         part_b_premium = person("base_part_b_premium", period)
 
         # Benefit depends on category:
-        # QMB: Part A + Part B premiums (plus deductibles/copays, not modeled)
+        # QMB: Part A + Part B premiums. Cost-sharing is tracked separately.
         # SLMB: Part B premium only
         # QI: Part B premium only
         is_qmb = category == MSPCategory.QMB

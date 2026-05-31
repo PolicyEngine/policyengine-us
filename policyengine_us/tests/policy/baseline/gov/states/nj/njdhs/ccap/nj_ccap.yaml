@@ -205,7 +205,22 @@
   output:
     # Negative income -> copay = 0
     # max weekly = 291.57; annual = 15_161.64
-    # uncapped = max(15_000 - 0, 0) = 15_000
-    # annual = min(15_000, 15_161.64) = 15_000
+    # capped = min(15_000, 15_161.64) = 15_000
+    # benefit = max(15_000 - 0, 0) = 15_000
     # monthly = 15_000 / 12 = 1_250
     nj_ccap: 1_250
+
+- name: Case 7, copay deducted from capped expense when expense exceeds max rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    nj_ccap_eligible: true
+    nj_ccap_copay: 100
+    nj_ccap_maximum_weekly_benefit: 200
+    spm_unit_pre_subsidy_childcare_expenses: 20_000
+    state_code: NJ
+  output:
+    # Max monthly = 200 * 52 / 12 = 866.67
+    # Monthly expense 20_000 / 12 = 1_666.67 > monthly max -> capped = 866.67
+    # Benefit = max(866.67 - 100, 0) = 766.67
+    nj_ccap: 766.67
