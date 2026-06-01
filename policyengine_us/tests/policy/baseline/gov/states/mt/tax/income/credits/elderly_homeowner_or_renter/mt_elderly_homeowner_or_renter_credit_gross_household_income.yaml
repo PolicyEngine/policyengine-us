@@ -1,3 +1,24 @@
+- name: Statutory nontaxable income sources are counted
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        veterans_benefits: 5_000
+        child_support_received: 3_000
+        strike_benefits: 2_000
+        general_assistance: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a)(i), (iv), (v), (vi). Sum: 5,000 + 3,000 + 2,000 + 1,000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 11_000
+
 - name: Untaxed Social Security is fully counted in gross household income
   period: 2025
   input:

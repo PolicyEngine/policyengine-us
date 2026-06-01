@@ -3,7 +3,7 @@ metadata:
   unit: list
   period: year
   label: Montana elderly homeowner or renter credit gross income sources
-  reference: 
+  reference:
   - title: Montana 2022 Form2 Individual Income Tax Instructions, Page47, Gross Household Income
     href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=47
   - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (9)
@@ -14,11 +14,17 @@ metadata:
 values:
   2009-01-01:
     - adjusted_gross_income_person # Line 1: Federal adjusted gross income
-    - tax_exempt_interest_income # Line 2: Exempt interest
+    - tax_exempt_interest_income # Line 2: Exempt interest; § 15-30-2337(9)(a)(vii)
     - taxable_ira_distributions # Line 3: IRA distribution reported
     # Requests 4a from 1040, which includes Roth IRA distributions.
     - tax_exempt_ira_distributions
-    - pension_income # Line 4: Pensions and annuities
+    - pension_income # Line 4: Pensions and annuities; § 15-30-2337(9)(a)(i)
+    - veterans_benefits # § 15-30-2337(9)(a)(i) – veterans' disability benefits
+    - child_support_received # § 15-30-2337(9)(a)(iv) – support money
+    - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
+    - general_assistance # § 15-30-2337(9)(a)(vi) – cash public assistance
     - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
-# exclude the renter credit from the gross income computation 
-# due to a potential circular reference
+# Social Security under § 15-30-2337(9)(a)(viii) is added separately in
+# mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
+# untaxed portion is computed as social_security - taxable_social_security.
+# The renter credit itself is excluded to avoid a circular reference.
