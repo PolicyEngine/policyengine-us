@@ -1,3 +1,12 @@
+## [1.719.0] - 2026-06-01
+
+### Added
+
+- Added the South Carolina Homestead Exemption property tax reduction.
+- Added the Texas school district residence homestead exemptions.
+- Added the Mississippi age or disability Homestead Exemption property tax reduction.
+
+
 ## [1.718.0] - 2026-06-01
 
 ### Added
