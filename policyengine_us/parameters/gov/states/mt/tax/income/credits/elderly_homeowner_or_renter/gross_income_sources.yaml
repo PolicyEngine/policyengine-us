@@ -13,12 +13,16 @@ metadata:
 
 values:
   2009-01-01:
-    - adjusted_gross_income_person # Line 1: Federal adjusted gross income
-    - tax_exempt_interest_income # Line 2: Exempt interest; § 15-30-2337(9)(a)(vii)
-    - taxable_ira_distributions # Line 3: IRA distribution reported
-    # Requests 4a from 1040, which includes Roth IRA distributions.
+    - adjusted_gross_income_person # Federal AGI baseline; covers taxable
+      # pensions, IRA, wages, interest, dividends, etc.
+    - tax_exempt_interest_income # § 15-30-2337(9)(a)(vii)
+    # AGI already includes taxable IRA distributions via
+    # taxable_retirement_distributions; only the tax-exempt portion
+    # (Roth distributions) is added back here.
     - tax_exempt_ira_distributions
-    - pension_income # Line 4: Pensions and annuities; § 15-30-2337(9)(a)(i)
+    # AGI already includes taxable pension income; only the tax-exempt
+    # portion is added back here per § 15-30-2337(9)(a)(i).
+    - tax_exempt_pension_income
     - veterans_benefits # § 15-30-2337(9)(a)(i) – veterans' disability benefits
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
     - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
