@@ -9,5 +9,5 @@ class az_ccap_quality_enhanced_provider(Variable):
     defined_for = StateCode.AZ
     reference = (
         "https://des.az.gov/services/child-and-family/child-care/des-contracted-child-care-provider-resources",
-        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf#page=1",
+        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf",
     )

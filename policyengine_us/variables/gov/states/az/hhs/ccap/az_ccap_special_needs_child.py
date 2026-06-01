@@ -8,8 +8,8 @@ class az_ccap_special_needs_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.AZ
     reference = (
-        "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=5",
-        "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=13",
+        "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=6",
+        "https://des.az.gov/sites/default/files/dl/CCA-1210B.pdf#page=14",
     )
 
     def formula(person, period, parameters):

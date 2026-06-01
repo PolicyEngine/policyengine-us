@@ -12,7 +12,7 @@ class az_ccap_daily_rate(Variable):
     definition_period = MONTH
     defined_for = "az_ccap_eligible_child"
     reference = (
-        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf#page=1",
+        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf",
         "https://des.az.gov/services/child-and-family/child-care/des-contracted-child-care-provider-resources",
     )
 
@@ -43,4 +43,11 @@ class az_ccap_daily_rate(Variable):
             base_rate * p.quality_multiplier,
         )
         regular_rate = where(quality, quality_rate, base_rate)
+        # CCA-1210B item 14: a disabled child (documented via IFSP/IEP/ISP/504 plan —
+        # we use is_disabled as a proxy) at a provider with a 3-5 star Quality First
+        # rating or national accreditation (the `quality` gate) receives the flat
+        # Special Needs Enhanced Rate, which replaces the base/age/provider rate.
+        # We don't model the separate +35% CDA tier for CDA-credentialed certified
+        # family / in-home providers at the moment (the +40% quality tier dominates
+        # it wherever a provider holds both credentials).
         return where(special_needs & quality, p.special_needs, regular_rate)

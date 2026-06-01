@@ -14,10 +14,7 @@ class az_ccap_copay_exempt(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        tanf_enrolled = spm_unit("is_tanf_enrolled", period)
-        protective_services = spm_unit.any(
-            person("receives_or_needs_protective_services", period.this_year)
-        )
-        foster_care = spm_unit.any(person("is_in_foster_care", period))
-        return tanf_enrolled | protective_services | foster_care
+        # R6-5-4915: the same families served without regard to income under
+        # R6-5-4914(A) (DCS/DDD/foster referrals, Cash Assistance/Jobs families)
+        # also have no fee or copayment.
+        return spm_unit("az_ccap_categorically_eligible", period)

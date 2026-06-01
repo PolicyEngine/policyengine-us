@@ -17,7 +17,7 @@ class az_ccap_age_group(Variable):
     definition_period = MONTH
     label = "Arizona Child Care Assistance Program age group"
     defined_for = StateCode.AZ
-    reference = "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf#page=1"
+    reference = "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.az.hhs.ccap

@@ -1,0 +1,78 @@
+- name: Case 1, infant under age 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: INFANT
+
+- name: Case 2, toddler at age 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: TODDLER
+
+- name: Case 3, toddler at age 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: TODDLER
+
+- name: Case 4, preschool at age 3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: PRESCHOOL
+
+- name: Case 5, preschool at age 4.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: PRESCHOOL
+
+- name: Case 6, school-age child in January uses the school-year group.
+  # January (month 1) is outside the May-July summer window.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: SCHOOL_AGE_SCHOOL_YEAR

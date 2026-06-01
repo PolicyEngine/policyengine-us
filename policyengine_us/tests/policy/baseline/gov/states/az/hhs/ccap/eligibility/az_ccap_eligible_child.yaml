@@ -1,0 +1,56 @@
+- name: Case 1, citizen child under 13 attending care is an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_eligible_child: true
+
+- name: Case 2, child aged 13 is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_eligible_child: false
+
+- name: Case 3, child not attending care is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_eligible_child: false
+
+- name: Case 4, immigration-ineligible child is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_eligible_child: false

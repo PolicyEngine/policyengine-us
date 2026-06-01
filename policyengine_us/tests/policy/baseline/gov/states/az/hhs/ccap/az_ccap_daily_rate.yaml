@@ -65,3 +65,184 @@
         state_code: AZ
   output:
     az_ccap_daily_rate: 15
+
+- name: Case 5, center toddler base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 48.70
+
+- name: Case 6, center school-year rate for a school-age child in January.
+  # January (month 1) is outside the May-July summer window, so a 6-12 year-old
+  # gets the school-year rate. The summer rate (months 5-7) cannot be unit-tested
+  # because the test period must be January or a whole year.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 25
+
+- name: Case 7, group home infant base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 40
+
+- name: Case 8, group home toddler base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 36
+
+- name: Case 9, group home preschool base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 35
+
+- name: Case 10, group home school-year rate for a school-age child in January.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 21
+
+- name: Case 11, group home infant quality enhanced rate applies the multiplier to a non-center base.
+  # $40 base x 1.4 quality multiplier = $56.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+        az_ccap_quality_enhanced_provider: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 56
+
+- name: Case 12, certified family infant base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 40
+
+- name: Case 13, certified family toddler base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 30
+
+- name: Case 14, certified family preschool base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 30
+
+- name: Case 15, certified family school-year rate for a school-age child in January.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 20

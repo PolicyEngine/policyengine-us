@@ -9,8 +9,8 @@ class az_ccap_max_reimbursement(Variable):
     definition_period = MONTH
     defined_for = "az_ccap_eligible_child"
     reference = (
-        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf#page=1",
-        "https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=39",
+        "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf",
+        "https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=40",
     )
 
     def formula(person, period, parameters):

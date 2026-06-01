@@ -130,3 +130,63 @@
     az_ccap_special_needs_child: [false, true]
     # min($24,000 / 12, $89.81 * 20) - ($0.50 * 20) = $1,786.20.
     az_ccap: 1_786.20
+
+- name: Case 6, foster family above the income limit is eligible via categorical bypass.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40
+        employment_income: 60_000
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $60,000/year = $5,000/month countable, above the family-size-2 level 6
+    # limit ($2,909), so the family is income-ineligible. The foster child makes
+    # the family categorically eligible without regard to income, and copay exempt.
+    az_ccap_income_eligible: false
+    az_ccap_categorically_eligible: true
+    az_ccap_copay_exempt: true
+    az_ccap_eligible: true
+    # min($20,000 / 12, $64.15 * 20) - $0 = $1,283.
+    az_ccap: 1_283
+
+- name: Case 7, monthly benefit rolls up to the annual federal child care subsidy total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Monthly benefit min($20,000/12, $64.15 * 20) - ($0.50 * 20) = $1,273,
+    # summed over 12 months = $15,276.
+    az_ccap: 15_276
+    az_child_care_subsidies: 15_276
+    child_care_subsidies: 15_276

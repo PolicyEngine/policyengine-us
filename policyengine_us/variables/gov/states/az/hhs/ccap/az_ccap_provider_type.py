@@ -16,4 +16,4 @@ class az_ccap_provider_type(Variable):
     definition_period = MONTH
     label = "Arizona Child Care Assistance Program provider type"
     defined_for = StateCode.AZ
-    reference = "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf#page=1"
+    reference = "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf"

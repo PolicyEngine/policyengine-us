@@ -1,0 +1,33 @@
+- name: Case 1, center infant maximum reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # $64.15 daily rate x 20 attending days = $1,283.
+    az_ccap_max_reimbursement: 1_283
+
+- name: Case 2, center preschool maximum reimbursement with fewer days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 15
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    # $42 daily rate x 15 attending days = $630.
+    az_ccap_max_reimbursement: 630

@@ -19,6 +19,9 @@ class az_ccap_copay(Variable):
         fee_level = spm_unit("az_ccap_fee_level", period)
         eligible_child = person("az_ccap_eligible_child", period)
         attending_days = person("childcare_attending_days_per_month", period.this_year)
+        # We don't model the Transitional Child Care (TCC) rule that waives the
+        # copay beyond the third child at the moment, since TCC enrollment is not
+        # separately tracked; the copay applies per eligible child for all families.
         per_child_copay = p.daily[fee_level] * attending_days * eligible_child
         return where(
             spm_unit("az_ccap_copay_exempt", period),

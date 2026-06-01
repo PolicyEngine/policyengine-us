@@ -1,0 +1,106 @@
+- name: Case 1, single working parent is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: true
+
+- name: Case 2, single non-working parent is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: false
+
+- name: Case 3, full-time student parent is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: true
+
+- name: Case 4, disabled parent unable to provide care is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_disabled: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: true
+
+- name: Case 5, two-parent family with one non-active parent is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # person2 is a head/spouse with no qualifying activity, so the
+    # head_or_spouse & ~eligible_person sum is nonzero and the unit fails.
+    az_ccap_activity_eligible: false
