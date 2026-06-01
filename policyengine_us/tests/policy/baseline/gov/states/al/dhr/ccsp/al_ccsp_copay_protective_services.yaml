@@ -25,6 +25,26 @@
   output:
     al_ccsp_copay_protective_services: true
 
+- name: Child receiving protective services triggers the §3.3.1(vi) copay category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_protective_services: true
+
 - name: Homeless-only household does NOT trigger the §3.3.1(vi) copay category.
   period: 2024-01
   input:
