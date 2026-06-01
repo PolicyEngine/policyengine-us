@@ -54,7 +54,7 @@ class md_ccs_weekly_copay(Variable):
         )
         scaled_weekly = total_weekly * scale
 
-        # Federal cap: copay cannot exceed 7% of gross income per 45 CFR 98.45(k)
+        # Federal cap: copay cannot exceed 7% of gross income per 45 CFR 98.45(l)(3)
         countable_income = spm_unit("md_ccs_countable_income", period)
         weekly_income = countable_income * MONTHS_IN_YEAR / WEEKS_IN_YEAR
         federal_cap = weekly_income * p.federal_cap_rate

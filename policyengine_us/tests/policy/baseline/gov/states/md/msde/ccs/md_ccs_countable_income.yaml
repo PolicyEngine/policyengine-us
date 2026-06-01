@@ -72,7 +72,7 @@
     # monthly: 44,000 / 12 = 3,666.67
     md_ccs_countable_income: 3_666.67
 
-- name: Case 4, child support received is excluded from income.
+- name: Case 4, child support received is counted as income.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -92,7 +92,7 @@
         state_code: MD
   output:
     # employment_income: 30,000 (counted)
-    # child_support_received: 6,000 (EXCLUDED per Ch 525/526 of 2022)
-    # total annual: 30,000
-    # monthly: 30,000 / 12 = 2,500
-    md_ccs_countable_income: 2_500
+    # child_support_received: 6,000 (counted per COMAR .02B(28)(b)(x) and .03F(8)(c))
+    # total annual: 36,000
+    # monthly: 36,000 / 12 = 3,000
+    md_ccs_countable_income: 3_000

@@ -10,6 +10,7 @@ values:
     - dividend_income
     - rental_income
     - alimony_income
+    - child_support_received
     - unemployment_compensation
     - workers_compensation
     - veterans_benefits
@@ -17,19 +18,18 @@ values:
     - capital_gains
     - farm_income
     - military_retirement_pay
-    # NOT included:
-    # - child_support_received (excluded per Chapter 525 of 2022 / HB 995)
     # COMAR-listed sources we don't model at the moment: commissions, tips,
     # bonuses, annuities, estate income, military entitlements.
+    # COMAR .02B(28)(c) exclusions we don't model at the moment: child support
+    # paid for a child outside the household, and $2,500 of child support tax
+    # intercepts and arrearages.
 
 metadata:
   unit: list
   period: year
   label: Maryland CCS countable income sources
   reference:
-    - title: COMAR 13A.14.06.02B(28) - Definition of "Gross income"
+    - title: COMAR 13A.14.06.02B(28)(b)(x) - Gross income includes alimony and child support
       href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02
-    - title: Chapter 525 of 2022 (HB 995) - child support excluded
-      href: https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_525_hb0995E.pdf#page=1
-    - title: Chapter 526 of 2022 (SB 920)
-      href: https://mgaleg.maryland.gov/2022RS/Chapters_noln/CH_526_sb0920E.pdf#page=1
+    - title: COMAR 13A.14.06.03F(8)(c) - Child support received counted as gross income
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.03
