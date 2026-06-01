@@ -1,0 +1,19 @@
+- name: VT renter credit flows into the state property tax credits aggregate
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    vt_renter_credit: 1_729
+    taxsim_state_property_tax_credit: 1_729
