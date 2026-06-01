@@ -1,0 +1,559 @@
+- name: signature_5 (35 reqs, +4 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: &id002
+        - head
+        - spouse
+      mu_child1:
+        members: &id003
+        - child1
+      mu_child2:
+        members: &id004
+        - child2
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3769.5
+        wa_working_families_tax_credit: 0.0
+    people:
+      head:
+        is_disabled: false
+        ssi: 0.0
+      spouse:
+        is_disabled: false
+        ssi: 0.0
+      child1:
+        is_disabled: false
+        ssi: 0.0
+      child2:
+        is_disabled: false
+        ssi: 0.0
+    spm_units:
+      spm_unit:
+        lifeline: 228.0
+        snap: 11994.84
+- name: signature_9 (25 reqs, +8 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3769.5
+        wa_working_families_tax_credit: 0.0
+    spm_units:
+      spm_unit:
+        lifeline: 228.0
+        snap: 11994.84
+    people:
+      head:
+        ssi: 0.0
+      spouse:
+        ssi: 0.0
+      child1:
+        ssi: 0.0
+      child2:
+        ssi: 0.0
+- name: signature_52 (5 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3769.5
+        wa_working_families_tax_credit: 0.0
+    spm_units:
+      spm_unit:
+        lifeline: 228.0
+        snap: 11994.84
+    people:
+      head:
+        ssi: 0.0
+      spouse:
+        ssi: 0.0
+      child1:
+        ssi: 0.0
+      child2:
+        ssi: 0.0
+- name: signature_95 (3 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3769.5
+        wa_working_families_tax_credit: 0.0
+    spm_units:
+      spm_unit:
+        lifeline: 228.0
+    people:
+      head:
+        ssi: 0.0
+      spouse:
+        ssi: 0.0
+      child1:
+        ssi: 0.0
+      child2:
+        ssi: 0.0

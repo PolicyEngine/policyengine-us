@@ -7,3 +7,4 @@ class taxable_sep_distributions(Variable):
     label = "taxable SEP distributions"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

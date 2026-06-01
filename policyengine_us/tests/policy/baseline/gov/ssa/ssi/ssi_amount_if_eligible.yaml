@@ -5,6 +5,7 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -24,6 +25,7 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 22
     spm_units:
@@ -42,10 +44,12 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
       person2:
         age: 22
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_spouse: true
     spm_units:
       spm_unit:
@@ -63,12 +67,14 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
       person2:
         age: 22
       person3:
         age: 5
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -86,14 +92,17 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
       person2:
         age: 22
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_spouse: true
       person3:
         age: 5
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_dependent: true
     spm_units:
       spm_unit:
@@ -112,6 +121,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: true
         ssi_others_pay_all_meals: true
@@ -130,6 +140,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
     households:
@@ -145,12 +156,14 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
       person2:
         age: 38
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_spouse: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
@@ -168,6 +181,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: false
         ssi_others_pay_all_meals: true
@@ -185,6 +199,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
     households:
       household:
         members: [person1]

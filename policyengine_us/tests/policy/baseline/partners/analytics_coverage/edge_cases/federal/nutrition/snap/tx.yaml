@@ -1,0 +1,568 @@
+- name: snap_income_just_below_binding_gross_limit_45078 (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 44978
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 0.0
+        is_snap_eligible: true
+- name: snap_income_at_binding_gross_limit_45078 (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 45078
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 0.0
+        is_snap_eligible: true
+- name: snap_income_just_above_binding_gross_limit_45078 (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 45178
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_head_age_59_assets_4000_not_elderly (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 59
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        snap_assets: 4000
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 5796.29
+        is_snap_eligible: true
+- name: snap_head_age_60_assets_4000_elderly (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        snap_assets: 4000
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 5796.29
+        is_snap_eligible: true
+- name: snap_head_disabled_assets_4000 (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        is_usda_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        snap_assets: 4000
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 5796.29
+        is_snap_eligible: true
+- name: snap_head_immigration_lpr (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 5796.29
+        is_snap_eligible: true
+- name: snap_head_immigration_refugee (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: REFUGEE
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id008
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 2912.22
+        is_snap_eligible: true
+- name: snap_head_immigration_undocumented (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income: 20000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+    households:
+      household:
+        members: &id009
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 2912.22
+        is_snap_eligible: true

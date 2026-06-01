@@ -1,0 +1,84 @@
+- name: Taxable UC allocated to spouse when only spouse received UC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        unemployment_compensation: 0
+      spouse:
+        age: 40
+        unemployment_compensation: 19_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    taxable_unemployment_compensation: [0, 19_000]
+
+- name: Taxable UC split in proportion to person-level UC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        unemployment_compensation: 5_000
+      spouse:
+        age: 48
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CA
+  output:
+    taxable_unemployment_compensation: [5_000, 15_000]
+
+- name: Zero UC produces zero allocation
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+        unemployment_compensation: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+    marital_units:
+      marital_unit:
+        members: [head]
+    families:
+      family:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    taxable_unemployment_compensation: [0]

@@ -1,0 +1,92 @@
+- name: ma_liheap_low_income (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 30000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code_str: MA
+        zip_code: 02118
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        ma_liheap: 0.0
+- name: ma_liheap_above_60pct_smi (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_female: false
+        immigration_status_str: CITIZEN
+        employment_income: 70000
+        has_bcc_qualifying_coverage: false
+        is_full_time_student: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        ca_riv_general_relief_meets_work_requirements: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code_str: MA
+        zip_code: 02118
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        ma_liheap: 0.0

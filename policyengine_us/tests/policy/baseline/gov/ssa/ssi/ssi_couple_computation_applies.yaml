@@ -90,12 +90,14 @@
       person1:
         age: 67
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: false
       person2:
         age: 65
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_spouse: true
     marital_units:
       marital_unit:
@@ -118,6 +120,7 @@
       person1:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         is_tax_unit_head: true
       person2:
         age: 38

@@ -16,7 +16,7 @@ def create_medicare_and_investment_tax_increase() -> Reform:
             amc = parameters(period).gov.irs.payroll.medicare.additional
             # Wage and self-employment income are taxed the same.
             ELEMENTS = [
-                "irs_employment_income",
+                "payroll_tax_gross_wages",
                 "taxable_self_employment_income",
             ]
             wages_plus_se = add(tax_unit, period, ELEMENTS)
