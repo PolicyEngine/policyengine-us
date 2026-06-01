@@ -750,6 +750,12 @@ programs:
         full_name: Minnesota Supplemental Aid
         variable: mn_msa
         parameter_prefix: gov.states.mn.dhs.msa
+      - state: NE
+        status: complete
+        name: Nebraska AABD
+        full_name: Nebraska Aid to the Aged, Blind, or Disabled
+        variable: ne_aabd
+        parameter_prefix: gov.states.ne.dhhs.aabd
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -1133,6 +1139,17 @@ programs:
     coverage: Chicago
     variable: il_cta_benefit
     parameter_prefix: gov.states.il.rta.cta
+
+  - id: ne_aabd
+    name: Nebraska AABD
+    full_name: Nebraska Aid to the Aged, Blind, or Disabled
+    category: Benefits
+    agency: DHHS
+    status: complete
+    coverage: NE
+    variable: ne_aabd
+    parameter_prefix: gov.states.ne.dhhs.aabd
+    verified_years: "2015-2025"
 
   - id: ne_childcare
     name: Nebraska child care subsidy
