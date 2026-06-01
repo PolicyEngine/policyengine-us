@@ -1,0 +1,29 @@
+- name: Countable earned income applies the twenty percent deduction.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_gross_earned_income: 1_000
+    ca_oc_general_relief_countable_earned_income: 800
+    ca_oc_general_relief_countable_income_person: 800
+
+- name: Health premiums and court-ordered child support reduce countable income once.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    rental_income: 200 * 12
+    health_insurance_premiums: 100 * 12
+    child_support_expense: 50 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_countable_income_person: 850
+
+- name: Income from a person receiving SSI is excluded.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    ssi: 100
+    in_oc: true
+  output:
+    ca_oc_general_relief_countable_income_person: 0

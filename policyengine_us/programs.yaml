@@ -1285,6 +1285,17 @@ programs:
     variable: la_general_relief
     parameter_prefix: gov.local.ca.la.general_relief
 
+  - id: ca_oc_general_relief
+    name: Orange County General Relief
+    full_name: Orange County General Relief
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: Orange County
+    variable: ca_oc_general_relief_eligible
+    parameter_prefix: gov.local.ca.oc.general_relief
+    notes: Eligibility, income, and resource screens only; monthly payment schedule and administrative-history rules are not modeled
+
   - id: ca_riv_general_relief
     name: Riverside County General Relief
     full_name: Riverside County General Relief

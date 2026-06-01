@@ -1,0 +1,142 @@
+- name: A single adult citizen with resources below the limits passes the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_aided_person_count: 1
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief_eligible: true
+
+- name: An undocumented adult does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_aided_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: A unit with a minor child does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        ssi: 0
+      child:
+        age: 10
+        ssi: 0
+    households:
+      household:
+        members: [adult, child]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_demographic_eligible: false
+    ca_oc_general_relief_eligible: false
+
+- name: A person receiving SSI does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 100
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_aided_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: A CalWORKs unit does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 100 * 12
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_aided_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: Property above the limit does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 0
+        personal_property: 1_001
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_resources_eligible: false
+    ca_oc_general_relief_eligible: false
+
+- name: Income is exposed without changing the partial screen because the MAP schedule is unavailable.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 1_000 * 12
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_countable_income: 800
+    ca_oc_general_relief_eligible: true

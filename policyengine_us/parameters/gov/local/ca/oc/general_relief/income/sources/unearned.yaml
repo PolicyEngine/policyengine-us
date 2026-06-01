@@ -1,0 +1,28 @@
+description: Orange County General Relief counts these available unearned income sources.
+values:
+  2024-11-01:
+    - rental_income
+    - interest_income
+    - dividend_income
+    - social_security
+    - unemployment_compensation
+    - ca_state_disability_insurance
+    - veterans_benefits
+    - pension_income
+    - retirement_distributions
+    - financial_assistance
+    - educational_assistance
+    - life_insurance_benefits
+    - disability_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Orange County General Relief unearned income sources
+  reference:
+    - title: Orange County General Relief regulations, section 70.2
+      href: https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=01
+    - title: Orange County General Relief regulations, section 70.2.c
+      href: https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=02
+    - title: Orange County General Relief regulations, sections 70.2.f through 70.2.l
+      href: https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=03
