@@ -45,6 +45,8 @@ class spm_unit_benefits(Variable):
             "sc_ssi_state_supplement",
             # Texas programs.
             "tx_ssi_state_supplement",
+            # West Virginia programs.
+            "wv_child_care_subsidies",
             "snap",
             "wic",
             "free_school_meals",
