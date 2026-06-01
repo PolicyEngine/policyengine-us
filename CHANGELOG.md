@@ -1,3 +1,10 @@
+## [1.719.1] - 2026-06-01
+
+### Fixed
+
+- Correct the refundable credit conversion per-other-dependent credit to count all non-CTC tax-unit dependents.
+
+
 ## [1.719.0] - 2026-06-01
 
 ### Added
