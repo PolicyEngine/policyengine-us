@@ -89,17 +89,10 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
-            # refundable_credit_conversion's override of
-            # income_tax_refundable_credits pulls every federal
-            # refundable credit (eitc / refundable_ctc / aotc /
-            # recovery rebate / refundable payroll tax credit /
-            # cdcc-in-2021) into the subprocess's variable graph when
-            # integration.yaml asserts on it. Bundled with the catch-all
-            # this pushes peak memory past the runner cap, surfacing as
-            # "shutdown signal" mid-batch. Its own batch keeps the
-            # light batch under the cap.
-            "refundable_credit_conversion",
         }
+        # Some folders contain individual YAMLs that are each expensive
+        # enough to need their own subprocess.
+        PER_FILE = {"refundable_credit_conversion"}
 
         subdirs = sorted(
             item
@@ -108,14 +101,23 @@ def split_into_batches(
         )
         root_files = sorted(base_path.glob("*.yaml"))
 
-        # One batch per heavy subdir (if present).
-        batches = [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
+        # One batch per file for per-file folders, then one batch per
+        # heavy subdir (if present).
+        batches = [
+            [str(file)]
+            for subdir in subdirs
+            if subdir.name in PER_FILE
+            for file in sorted(subdir.rglob("*.yaml"))
+        ]
+        batches += [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
         # Catch-all batch for everything else — light subdirs and root
         # yaml files. Auto-collects any newly added folders/files so
         # they're exercised without extra config.
         light_paths = [
-            str(subdir) for subdir in subdirs if subdir.name not in HEAVY
+            str(subdir)
+            for subdir in subdirs
+            if subdir.name not in HEAVY and subdir.name not in PER_FILE
         ] + [str(f) for f in root_files]
         if light_paths:
             batches.append(light_paths)
