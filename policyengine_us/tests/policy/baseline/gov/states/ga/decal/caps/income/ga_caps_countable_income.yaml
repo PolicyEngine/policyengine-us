@@ -135,7 +135,7 @@
   output:
     ga_caps_countable_income: 2_000
 
-- name: Case 8, Social Security dependents benefits counted under §8.4.1.
+- name: Case 8, Social Security dependents benefits excluded under §8.4.2.
   period: 2026-01
   input:
     people:
@@ -150,7 +150,7 @@
         members: [person1]
         state_code: GA
   output:
-    ga_caps_countable_income: 1_000
+    ga_caps_countable_income: 0
 
 - name: Case 9, Social Security disability excluded under §8.4.2.
   period: 2026-01

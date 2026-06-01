@@ -11,7 +11,7 @@ class ga_caps_zone(Variable):
     value_type = Enum
     entity = Household
     possible_values = GACAPSZone
-    default_value = GACAPSZone.ZONE_1
+    default_value = GACAPSZone.ZONE_3
     definition_period = MONTH
     defined_for = StateCode.GA
     label = "Georgia CAPS geographic zone"
@@ -26,5 +26,5 @@ class ga_caps_zone(Variable):
         return select(
             [is_zone_1, is_zone_2, is_zone_3],
             [GACAPSZone.ZONE_1, GACAPSZone.ZONE_2, GACAPSZone.ZONE_3],
-            default=GACAPSZone.ZONE_1,
+            default=GACAPSZone.ZONE_3,
         )

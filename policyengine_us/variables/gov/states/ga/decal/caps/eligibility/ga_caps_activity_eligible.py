@@ -7,7 +7,7 @@ class ga_caps_activity_eligible(Variable):
     label = "Eligible for Georgia CAPS based on activity requirements"
     definition_period = MONTH
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=33"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=34"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.activity_requirements

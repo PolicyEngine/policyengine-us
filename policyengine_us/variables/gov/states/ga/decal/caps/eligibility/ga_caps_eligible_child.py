@@ -8,7 +8,7 @@ class ga_caps_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.GA
     reference = (
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=29",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=30",
         "https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=16",
     )
 

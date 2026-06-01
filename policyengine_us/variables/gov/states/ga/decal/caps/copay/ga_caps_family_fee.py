@@ -10,7 +10,7 @@ class ga_caps_family_fee(Variable):
     defined_for = StateCode.GA
     reference = (
         "https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixD-Family%20Fee%20Assessment%20Chart.pdf",
-        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=54",
+        "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=55",
         "https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=49",
     )
 
