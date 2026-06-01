@@ -11,6 +11,8 @@ import gc
 import time
 import argparse
 import re
+import queue
+import threading
 from pathlib import Path
 from typing import List, Dict
 
@@ -108,7 +110,17 @@ def split_into_batches(
         root_files = sorted(base_path.glob("*.yaml"))
 
         # One batch per heavy subdir (if present).
-        batches = [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
+        batches = []
+        for subdir in subdirs:
+            if subdir.name not in HEAVY:
+                continue
+            if subdir.name == "refundable_credit_conversion":
+                # This folder contains a Python autoloader test alongside
+                # the YAML policy tests. The structural YAML runner should
+                # not collect that pytest module via the directory path.
+                batches.append([str(file) for file in sorted(subdir.rglob("*.yaml"))])
+            else:
+                batches.append([str(subdir)])
 
         # Catch-all batch for everything else — light subdirs and root
         # yaml files. Auto-collects any newly added folders/files so
@@ -315,23 +327,58 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         test_completed = False
         test_passed = False
         output_lines = []
+        output_queue = queue.Queue()
+
+        def read_output():
+            for output_line in iter(process.stdout.readline, ""):
+                output_queue.put(output_line)
+            process.stdout.close()
+
+        threading.Thread(target=read_output, daemon=True).start()
+        last_output_time = time.time()
+        last_heartbeat_time = last_output_time
 
         # Monitor output line by line
         while True:
-            line = process.stdout.readline()
-            if not line:
-                # No more output, check if process is done
-                poll_result = process.poll()
-                if poll_result is not None:
-                    # Process terminated
+            try:
+                line = output_queue.get(timeout=1)
+            except queue.Empty:
+                elapsed = time.time() - start_time
+                if elapsed >= 1800:
+                    print(f"\n    ⏱️ Timeout - terminating process...")
+                    process.terminate()
+                    try:
+                        process.wait(timeout=5)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        process.wait()
+
+                    return {
+                        "elapsed": elapsed,
+                        "status": "timeout",
+                    }
+
+                if (
+                    time.time() - last_output_time >= 60
+                    and time.time() - last_heartbeat_time >= 60
+                ):
+                    print(
+                        "    Still running "
+                        f"({elapsed:.0f}s elapsed, "
+                        f"{time.time() - last_output_time:.0f}s without output)...",
+                        flush=True,
+                    )
+                    last_heartbeat_time = time.time()
+
+                if process.poll() is not None and output_queue.empty():
                     break
-                # Process still running but no output
-                time.sleep(0.1)
                 continue
 
             # Print line in real-time
             print(line, end="")
             output_lines.append(line)
+            last_output_time = time.time()
+            last_heartbeat_time = last_output_time
 
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
