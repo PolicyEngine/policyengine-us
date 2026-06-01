@@ -7,5 +7,6 @@ class household_rental_property_equity(Variable):
     label = "Rental property equity"
     documentation = "Net equity in household rental property assets."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

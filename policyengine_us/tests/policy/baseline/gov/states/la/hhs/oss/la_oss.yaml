@@ -1,13 +1,13 @@
 # Unit tests for Louisiana Optional State Supplement (OSS) benefit amount.
 # Formula (monthly): la_oss = min(max(PNA - ssi - ssi_countable_income, 0), max_payment)
-# Both ssi and ssi_countable_income are YEAR-period; reading at MONTH yields annual / 12.
+# ssi is monthly. ssi_countable_income is annual; reading at MONTH yields annual / 12.
 #
 # Pre-July-2025: PNA = $38, max payment = $8. Federal SSI institutional FBR = $30.
 # From July 1, 2025: PNA = $45, max payment = $15.
 #
-# Test inputs pass annual ssi and ssi_countable_income directly so that the
-# SSI formula chain doesn't recompute them. SSI institutional rate is $30/mo
-# = $360/yr; SSI = max(FBR - countable, 0) when SSI is being received.
+# Test inputs pass ssi and ssi_countable_income directly so that the SSI formula
+# chain doesn't recompute them. SSI institutional rate is $30/mo; SSI =
+# max(FBR - countable, 0) when SSI is being received.
 #
 # Reference: LDH J-300, Z-700; SSA 2011 State Assistance Programs - Louisiana, Table 1.
 
@@ -17,7 +17,7 @@
     people:
       person1:
         la_oss_eligible: true
-        ssi: 360  # full institutional FBR ($30/month)
+        ssi: 30  # full institutional FBR
         ssi_countable_income: 0
     households:
       household:
@@ -46,7 +46,7 @@
     people:
       person1:
         la_oss_eligible: true
-        ssi: 360  # full institutional FBR ($30/month)
+        ssi: 30  # full institutional FBR
         ssi_countable_income: 0
     households:
       household:
@@ -64,7 +64,7 @@
     people:
       person1:
         la_oss_eligible: true
-        ssi: 300  # 25/month (reduced by countable income)
+        ssi: 25  # reduced institutional SSI
         ssi_countable_income: 60
     households:
       household:
@@ -165,7 +165,7 @@
     people:
       person1:
         la_oss_eligible: true
-        ssi: 360
+        ssi: 30
         ssi_countable_income: 0
     households:
       household:

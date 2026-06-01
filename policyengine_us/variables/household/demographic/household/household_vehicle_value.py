@@ -6,3 +6,4 @@ class household_vehicles_value(Variable):
     entity = Household
     label = "Value of vehicles owned"
     definition_period = YEAR
+    quantity_type = STOCK

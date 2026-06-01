@@ -75,9 +75,13 @@ test-yaml-no-structural-other-ssa:
 test-yaml-no-structural-other-rest:
 	# All remaining gov/ subdirs + any new ones auto-route here.
 	$(BATCH) $(TESTS)/policy/baseline/gov --exclude states,irs,ssa --mode per-subdir
-	# All top-level baseline/ subdirs except gov/household/contrib
+	# All top-level baseline/ subdirs except gov/household/contrib/partners
 	# (calcfunctions, income, parameters + any new folder) auto-route here.
-	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib --mode per-subdir
+	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib,partners --mode per-subdir
+test-yaml-no-structural-other-partners:
+	# Customer/API partner fixtures mirrored from policyengine-household-api.
+	# One subprocess per partner; new partners auto-route.
+	$(BATCH) $(TESTS)/policy/baseline/partners --mode per-subdir
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:
