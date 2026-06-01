@@ -1,3 +1,10 @@
+from policyengine_us.model_api import USD
+
+
+DEFAULT_DOLLAR_INPUT_UPRATING = (
+    "calibration.gov.cbo.income_by_source.adjusted_gross_income"
+)
+
 INPUT_VARIABLES = [
     "veterans_benefits",
     "other_credits",
@@ -5,8 +12,9 @@ INPUT_VARIABLES = [
     "ssi_reported",
     "tax_exempt_403b_distributions",
     "taxable_ira_distributions",
+    "taxable_roth_conversions",
     "w2_wages_from_qualified_business",
-    "roth_ira_contributions",
+    "roth_ira_contributions_desired",
     "social_security_retirement",
     "domestic_production_ald",
     "social_security_disability",
@@ -17,7 +25,7 @@ INPUT_VARIABLES = [
     "interest_deduction",
     "energy_efficient_home_improvement_credit",
     "spm_unit_net_income_reported",
-    "roth_401k_contributions",
+    "roth_401k_contributions_desired",
     "spm_unit_pre_subsidy_childcare_expenses",
     "taxable_pension_income",
     "keogh_distributions",
@@ -35,11 +43,10 @@ INPUT_VARIABLES = [
     "spm_unit_total_income_reported",
     "alimony_income",
     "prior_year_minimum_tax_credit",
-    "self_employed_pension_contributions",
+    "self_employed_pension_contributions_desired",
     "taxable_unemployment_compensation",
     "employment_income_last_year",
     "taxable_sep_distributions",
-    "spm_unit_capped_housing_subsidy_data",
     "miscellaneous_income",
     "short_term_capital_gains",
     "qualified_dividend_income",
@@ -62,7 +69,7 @@ INPUT_VARIABLES = [
     "taxable_401k_distributions",
     "farm_rent_income",
     "unreported_payroll_tax",
-    "traditional_ira_contributions",
+    "traditional_ira_contributions_desired",
     "tax_exempt_401k_distributions",
     "alimony_expense",
     "taxable_private_pension_income",
@@ -70,7 +77,6 @@ INPUT_VARIABLES = [
     "non_qualified_dividend_income",
     "excess_withheld_payroll_tax",
     "health_insurance_premiums",
-    "spm_unit_energy_subsidy_data",
     "real_estate_taxes",
     "estate_income",
     "misc_deduction",
@@ -89,7 +95,7 @@ INPUT_VARIABLES = [
     "savers_credit",
     "educator_expense",
     "long_term_capital_gains",
-    "traditional_401k_contributions",
+    "traditional_401k_contributions_desired",
     "strike_benefits",
     "other_medical_expenses",
     "over_the_counter_health_expenses",
@@ -98,10 +104,19 @@ INPUT_VARIABLES = [
 ]
 
 
+def _is_float_dollar_input(variable) -> bool:
+    return (
+        variable.is_input_variable()
+        and variable.value_type is float
+        and variable.unit == USD
+    )
+
+
 def add_default_uprating(system):
     for variable in system.variables.values():
-        if (variable.name in INPUT_VARIABLES) and (variable.uprating is None):
-            variable.uprating = (
-                "calibration.gov.cbo.income_by_source.adjusted_gross_income"
-            )
+        should_default = variable.is_input_variable() and (
+            variable.name in INPUT_VARIABLES or _is_float_dollar_input(variable)
+        )
+        if should_default and variable.uprating is None:
+            variable.uprating = DEFAULT_DOLLAR_INPUT_UPRATING
         system.variables[variable.name] = variable

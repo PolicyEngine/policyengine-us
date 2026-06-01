@@ -57,3 +57,29 @@
     state_code: DE
   output:
     de_pension_exclusion: 12_500
+
+- name: 60+ filer with net capital loss does not get a negative exclusion
+  period: 2025
+  input:
+    age: 75
+    is_tax_unit_head_or_spouse: true
+    de_pension_exclusion_income: -1_000_000
+    state_code: DE
+  output:
+    de_pension_exclusion: 0
+
+- name: 60+ filer with net capital loss exceeding interest income gets zero exclusion
+  # PIT-RES 2025 Line 6 defines eligible retirement income as "capital gains
+  # net of capital losses, interest, ..." — losses net against gains within the
+  # basket. Here interest $42,896 + net cap gains -$1,374,932 = -$1,332,036.
+  # The exclusion is min($12,500, max(0, -$1.33M)) = $0, not $12,500.
+  period: 2025
+  input:
+    age: 75
+    is_tax_unit_head_or_spouse: true
+    taxable_interest_income: 42_896
+    short_term_capital_gains: -1_424_129
+    long_term_capital_gains: 49_197
+    state_code: DE
+  output:
+    de_pension_exclusion: 0

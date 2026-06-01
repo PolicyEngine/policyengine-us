@@ -14,3 +14,18 @@
   output:
     la_standard_deduction: 25_000
 
+- name: 2026 single filer uses prior-calendar-year CPI-U adjustment
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: SINGLE
+  output:
+    la_standard_deduction: 12_835
+
+- name: 2026 head of household filer gets twice the single amount
+  period: 2026
+  input:
+    state_code: LA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    la_standard_deduction: 25_670

@@ -36,3 +36,60 @@ def test_package_import_does_not_raise():
     import policyengine_us
 
     importlib.reload(policyengine_us)
+
+
+def test_variables_use_at_most_one_computation_mode():
+    """Variables should choose exactly one computation mode after all
+    system-level mutations, including default uprating assignment.
+    """
+    from policyengine_us.system import CountryTaxBenefitSystem
+
+    system = CountryTaxBenefitSystem()
+    conflicts = []
+    for name, variable in system.variables.items():
+        modes = []
+        if variable.formulas:
+            modes.append("formula")
+        if variable.adds is not None or variable.subtracts is not None:
+            modes.append("adds/subtracts")
+        if variable.uprating is not None:
+            modes.append("uprating")
+        if len(modes) > 1:
+            conflicts.append(f"{name}: {', '.join(modes)}")
+
+    assert conflicts == []
+
+
+def test_computed_default_uprated_variables_have_microdata_overrides():
+    """Default uprating can only be assigned to input variables at runtime.
+    Computed columns that previously received the default uprater keep that
+    behavior through microdata-only overrides.
+    """
+    from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
+    from policyengine_us.system import CountryTaxBenefitSystem
+    from policyengine_us.tools.default_uprating import INPUT_VARIABLES
+
+    system = CountryTaxBenefitSystem()
+    missing_overrides = []
+    for name in INPUT_VARIABLES:
+        variable = system.variables.get(name)
+        if variable is None:
+            continue
+        if (
+            not variable.is_input_variable()
+            and name not in MICRODATA_UPRATING_OVERRIDES
+        ):
+            missing_overrides.append(name)
+
+    assert missing_overrides == []
+
+
+def test_capital_gains_indexation_inputs_have_expected_uprating():
+    from policyengine_us.system import CountryTaxBenefitSystem
+
+    system = CountryTaxBenefitSystem()
+    assert (
+        system.variables["long_term_capital_gains_basis"].uprating
+        == "calibration.gov.irs.soi.long_term_capital_gains"
+    )
+    assert system.variables["long_term_capital_gains_years_held"].uprating is None

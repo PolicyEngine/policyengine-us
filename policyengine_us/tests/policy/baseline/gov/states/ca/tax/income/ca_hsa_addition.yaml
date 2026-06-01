@@ -1,0 +1,36 @@
+- name: Case 1, California adds back payroll and above-the-line HSA contributions.
+  period: 2026
+  input:
+    people:
+      person1:
+        health_savings_account_payroll_contributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+        health_savings_account_ald: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_hsa_addition: 5_000
+    ca_additions: 5_000
+    ca_agi: 45_000
+
+- name: Case 2, HSA contributions do not create a California addition outside California.
+  period: 2026
+  input:
+    people:
+      person1:
+        health_savings_account_payroll_contributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        health_savings_account_ald: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    ca_hsa_addition: 0

@@ -1,0 +1,95 @@
+name: Partner API impact notice
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - "policyengine_us/tests/policy/baseline/partners/**"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify-slack:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find changed partner tests
+        id: partner_files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          files=$(
+            gh api --paginate \
+              "repos/${REPOSITORY}/pulls/${PR_NUMBER}/files" \
+              --jq '.[].filename' \
+              | grep '^policyengine_us/tests/policy/baseline/partners/' \
+              || true
+          )
+
+          {
+            echo "files<<EOF"
+            echo "${files}"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+          if [ -n "${files}" ]; then
+            echo "any_changed=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "any_changed=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Notify Slack
+        if: steps.partner_files.outputs.any_changed == 'true'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_PARTNER_WEBHOOK_URL }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          CHANGED_FILES: ${{ steps.partner_files.outputs.files }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SLACK_WEBHOOK_URL}" ]; then
+            echo "::notice::SLACK_PARTNER_WEBHOOK_URL is not configured; skipping Slack notification."
+            exit 0
+          fi
+
+          file_count=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | wc -l | tr -d ' ')
+          file_list=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | head -20 | sed 's/^/- /')
+
+          if [ "${file_count}" -gt 20 ]; then
+            file_list=$(printf '%s\n- ...and %d more. See the PR file diff for the full list.' "${file_list}" $((file_count - 20)))
+          fi
+
+          payload=$(
+            jq -n \
+              --arg author "${PR_AUTHOR}" \
+              --arg count "${file_count}" \
+              --arg files "${file_list}" \
+              --arg number "${PR_NUMBER}" \
+              --arg title "${PR_TITLE}" \
+              --arg url "${PR_URL}" \
+              '{
+                text: (
+                  ":warning: Partner API contract tests changed\n" +
+                  "PR: <" + $url + "|#" + $number + " " + $title + ">\n" +
+                  "Author: " + $author + "\n" +
+                  "Changed partner files: " + $count + "\n" +
+                  "Showing first 20:\n" + $files + "\n\n" +
+                  "Please review whether this changes partner-facing API behavior before merge."
+                )
+              }'
+          )
+
+          curl --fail --silent --show-error \
+            -X POST \
+            -H "Content-type: application/json" \
+            --data "${payload}" \
+            "${SLACK_WEBHOOK_URL}"
