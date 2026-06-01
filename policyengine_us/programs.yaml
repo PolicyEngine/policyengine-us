@@ -744,6 +744,12 @@ programs:
         variable: mo_ssp
         parameter_prefix: gov.states.mo.dss.ssp
         verified_years: "2023-2026"
+      - state: MN
+        status: complete
+        name: Minnesota MSA
+        full_name: Minnesota Supplemental Aid
+        variable: mn_msa
+        parameter_prefix: gov.states.mn.dhs.msa
       - state: NE
         status: complete
         name: Nebraska AABD

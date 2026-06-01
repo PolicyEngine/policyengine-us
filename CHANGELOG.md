@@ -1,3 +1,10 @@
+## [1.717.0] - 2026-06-01
+
+### Added
+
+- Minnesota Supplemental Aid (MSA) — State Supplementary Payment to SSI.
+
+
 ## [1.716.0] - 2026-06-01
 
 ### Added
