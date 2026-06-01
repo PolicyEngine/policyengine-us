@@ -1,0 +1,158 @@
+- name: Case 1, standard homeowner refund.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        real_estate_taxes: 3_150
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_eligible: true
+    mn_homestead_credit_refund_household_income: 50_000
+    mn_homestead_credit_refund: 1_462
+
+- name: Case 2, nontaxable Social Security is included in household income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        social_security: 17_996
+        taxable_social_security: 10_000
+        real_estate_taxes: 3_150
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 65_636.60
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_household_income: 68_432.60
+    mn_homestead_credit_refund: 1_211
+
+- name: Case 3, age, dependent, and retirement contribution subtractions reduce household income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 60_000
+        traditional_401k_contributions_desired: 10_000
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_household_income: 33_760
+
+- name: Case 4, self-employed pension contributions are added back before the retirement subtraction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 50_000
+        self_employed_pension_contributions_desired: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_household_income: 43_000
+
+- name: Case 5, claimed dependent homeowner is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        real_estate_taxes: 3_150
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_eligible: false
+    mn_homestead_credit_refund: 0
+
+- name: Case 6, income above the homeowner limit is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 142_490
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_homestead_credit_refund_eligible: false
+    mn_homestead_credit_refund: 0
+
+- name: Case 7, over-limit desired IRA contributions use contribution amounts.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        traditional_ira_contributions_desired: 20_000
+        roth_ira_contributions_desired: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    traditional_ira_contributions: 3_500
+    roth_ira_contributions: 3_500
+    mn_homestead_credit_refund_household_income: 46_500

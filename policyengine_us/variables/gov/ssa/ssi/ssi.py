@@ -7,7 +7,7 @@ class ssi(Variable):
     label = "SSI"
     documentation = "Supplemental Security Income"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/1382"
 
     def formula(person, period, parameters):
@@ -25,16 +25,16 @@ class ssi(Variable):
         # - Deeming applies (uses couple FBR)
         # - After exclusions, countable may be low
         # - Benefit could exceed individual FBR without this cap
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
         p = parameters(period).gov.ssa.ssi.amount
-        individual_max = p.individual * MONTHS_IN_YEAR
-        capped_benefit = min_(benefit, individual_max)
+        capped_benefit = min_(benefit, p.individual)
 
-        final_benefit = where(
-            deeming_applies,
-            capped_benefit,
-            benefit,
+        takes_up = person("takes_up_ssi_if_eligible", period.this_year)
+        return (
+            where(
+                deeming_applies,
+                capped_benefit,
+                benefit,
+            )
+            * takes_up
         )
-
-        takes_up = person("takes_up_ssi_if_eligible", period)
-        return final_benefit * takes_up

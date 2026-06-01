@@ -4,21 +4,13 @@ from policyengine_us.model_api import *
 class fsla_overtime_premium(Variable):
     value_type = float
     entity = Person
-    label = "premium income from overtime hours worked"
+    label = "FLSA overtime premium income"
+    documentation = (
+        "Annual premium portion of FLSA-qualified overtime compensation included "
+        "in employment_income. This is the additional pay above straight-time "
+        "compensation, such as the extra 0.5x pay in time-and-a-half overtime. "
+        "Datasets should provide source or imputed values when available."
+    )
     unit = USD
     definition_period = YEAR
-    defined_for = "is_eligible_for_fsla_overtime"
-
-    def formula_2014(person, period, parameters):
-        p = parameters(period).gov.irs.income.exemption.overtime
-        worked_hours = person("hours_worked_last_week", period)
-        regular_rate = person("fsla_regular_rate", period)
-
-        weekly_overtime_hours = max_(worked_hours - p.hours_threshold, 0)
-        # Return only the overtime premium (e.g. the 50 % in time-and-a-half)
-        return (
-            regular_rate
-            * (p.rate_multiplier - 1)
-            * weekly_overtime_hours
-            * WEEKS_IN_YEAR
-        )
+    reference = "https://www.law.cornell.edu/uscode/text/29/207"

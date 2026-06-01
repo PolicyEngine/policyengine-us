@@ -10,18 +10,29 @@ metadata:
   reference:
     - title: Louisiana Revised Statutes, RS 47:294 - Standard deduction
       href: https://www.legis.la.gov/legis/Law.aspx?d=101761
+    - title: Louisiana Register, February 20, 2026, Income Tax Withholding Tables notice
+      href: https://bese.louisiana.gov/docs/default-source/rulemaking-docket/feb-louisiana-register.pdf#page=127
+    - title: Consumer Price Index News Release - 2025 M12 Results
+      href: https://www.bls.gov/news.release/archives/cpi_01132026.htm
     - title: 2025 Louisiana Resident Income Tax Return Instructions, Line 8
       href: https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2025)D11.pdf#page=3
 
 SINGLE:
   2025-01-01: 12_500
+  # 2026 amount applies the December-to-December 2025 CPI-U increase:
+  # 12,500 * (324.054 / 315.605), rounded to the nearest dollar.
+  2026-01-01: 12_835
 SURVIVING_SPOUSE:
   2025-01-01: 25_000
+  2026-01-01: 25_670
 SEPARATE:
   2025-01-01: 12_500
+  2026-01-01: 12_835
 # The legal code defines the HoH and Joint amounts as 200% of the 
 # Single amount.
 HEAD_OF_HOUSEHOLD:
   2025-01-01: 25_000
+  2026-01-01: 25_670
 JOINT:
   2025-01-01: 25_000
+  2026-01-01: 25_670

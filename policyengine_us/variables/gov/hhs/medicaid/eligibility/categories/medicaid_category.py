@@ -14,6 +14,8 @@ class MedicaidCategory(Enum):
     NONE = "None"
     MEDICALLY_NEEDY = "Medically needy"
     WORKING_DISABLED_BUY_IN = "Working disabled Buy-In"
+    SECTION_1115_MEC_ADULT = "Section 1115 MEC adult"
+    HEALTHIER_MISSISSIPPI_WAIVER = "Healthier Mississippi Waiver"
 
 
 class medicaid_category(Variable):
@@ -64,6 +66,9 @@ class medicaid_category(Variable):
             is_medically_needy_for_medicaid=MedicaidCategory.MEDICALLY_NEEDY,
             # 9. Medicaid Buy-In pathways for working disabled people.
             is_working_disabled_buy_in_for_medicaid=MedicaidCategory.WORKING_DISABLED_BUY_IN,
+            # 10. Adult-like section 1115 demonstration coverage that
+            #     provides minimum essential coverage.
+            is_medicaid_1115_mec_adult=MedicaidCategory.SECTION_1115_MEC_ADULT,
         )
 
         # Ensure parametric reforms to the list of categories prevent those
@@ -74,6 +79,9 @@ class medicaid_category(Variable):
             for name, category in variable_to_category.items()
             if name in categories
         }
+        variable_to_category["ms_hmw_eligible"] = (
+            MedicaidCategory.HEALTHIER_MISSISSIPPI_WAIVER
+        )
 
         return select(
             [person(variable, period) for variable in variable_to_category.keys()],

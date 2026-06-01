@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AZ, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
+    coverage: AK, AR, AZ, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -468,6 +468,12 @@ programs:
         full_name: Alaska Child Care Assistance Program
         variable: ak_ccap
         notes: Modeled as PASS II/III; PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled
+      - state: AR
+        status: complete
+        name: Arkansas SRA
+        full_name: Arkansas School Readiness Assistance
+        variable: ar_sra
+        parameter_prefix: gov.states.ar.ade.oec.sra
       - state: AZ
         status: complete
         name: CCAP
@@ -560,10 +566,17 @@ programs:
         name: Vermont CCFAP
         full_name: Vermont Child Care Financial Assistance Program
         variable: vt_ccfap
+      - state: WA
+        status: complete
+        name: Washington WCCC
+        full_name: Washington Working Connections Child Care
+        variable: wa_wccc
       - state: WV
-        status: in_progress
+        status: complete
         name: West Virginia CCAP
         full_name: West Virginia Child Care Assistance Program
+        variable: wv_ccap
+        parameter_prefix: gov.states.wv.dhhr.ccap
 
   - id: head_start
     name: Head Start
@@ -712,6 +725,12 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MD
+        status: complete
+        name: Maryland PAA
+        full_name: Maryland Public Assistance to Adults
+        variable: md_paa
+        parameter_prefix: gov.states.md.dhs.fia.paa
       - state: MI
         status: complete
         name: Michigan SSP
@@ -723,6 +742,25 @@ programs:
         name: Maine SSP
         full_name: Maine State Supplemental Income Program
         variable: me_ssp
+      - state: MO
+        status: complete
+        name: Missouri SSP
+        full_name: Missouri State Supplementary Payment
+        variable: mo_ssp
+        parameter_prefix: gov.states.mo.dss.ssp
+        verified_years: "2023-2026"
+      - state: MN
+        status: complete
+        name: Minnesota MSA
+        full_name: Minnesota Supplemental Aid
+        variable: mn_msa
+        parameter_prefix: gov.states.mn.dhs.msa
+      - state: NE
+        status: complete
+        name: Nebraska AABD
+        full_name: Nebraska Aid to the Aged, Blind, or Disabled
+        variable: ne_aabd
+        parameter_prefix: gov.states.ne.dhhs.aabd
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -1042,6 +1080,17 @@ programs:
     parameter_prefix: gov.states.il.hfs.hbwd
     notes: Medicaid buy-in program for workers with disabilities
 
+  - id: ms_wd
+    name: Mississippi WD
+    full_name: Mississippi Working Disabled
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MS
+    variable: ms_wd_eligible
+    parameter_prefix: gov.states.ms.dom.wd
+    notes: Medicaid buy-in program for workers with disabilities
+
   - id: il_ihwap
     name: Illinois IHWAP
     full_name: Illinois Home Weatherization Assistance Program
@@ -1096,6 +1145,17 @@ programs:
     variable: il_cta_benefit
     parameter_prefix: gov.states.il.rta.cta
 
+  - id: ne_aabd
+    name: Nebraska AABD
+    full_name: Nebraska Aid to the Aged, Blind, or Disabled
+    category: Benefits
+    agency: DHHS
+    status: complete
+    coverage: NE
+    variable: ne_aabd
+    parameter_prefix: gov.states.ne.dhhs.aabd
+    verified_years: "2015-2025"
+
   - id: ne_childcare
     name: Nebraska child care subsidy
     full_name: Nebraska Child Care Subsidy
@@ -1126,6 +1186,17 @@ programs:
     coverage: MA
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
+
+  - id: nj_unemployment_insurance
+    name: New Jersey Unemployment Insurance
+    full_name: New Jersey Unemployment Insurance
+    category: Benefits
+    agency: NJ Department of Labor and Workforce Development
+    status: complete
+    coverage: NJ
+    variable: nj_unemployment_insurance
+    parameter_prefix: gov.states.nj.dol.unemployment_insurance
+    verified_years: "2024-2026"
 
   - id: ny_drive_clean_rebate
     name: NY Drive Clean Rebate

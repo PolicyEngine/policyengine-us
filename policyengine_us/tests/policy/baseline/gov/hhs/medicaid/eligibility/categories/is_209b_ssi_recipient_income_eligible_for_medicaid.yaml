@@ -1,0 +1,26 @@
+- name: Case 1, raw senior or disabled income eligibility qualifies.
+  period: 2026
+  input:
+    is_optional_senior_or_disabled_income_eligible: true
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 2, Illinois SSI recipient qualifies after medical spenddown.
+  period: 2026
+  input:
+    state_code: IL
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 11_000
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 3, Illinois SSI recipient remains above the spenddown income limit.
+  period: 2026
+  input:
+    state_code: IL
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 5_000
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: false

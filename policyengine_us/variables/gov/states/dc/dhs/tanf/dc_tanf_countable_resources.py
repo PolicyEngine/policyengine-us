@@ -7,6 +7,7 @@ class dc_tanf_countable_resources(Variable):
     label = "DC Temporary Assistance for Needy Families (TANF) countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://dhs.dc.gov/service/temporary-cash-assistance-needy-families-tanf",
         "https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/DC%20TANF%20State%20Plan_Oct-2023.pdf#page=40",

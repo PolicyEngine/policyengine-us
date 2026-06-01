@@ -10,6 +10,8 @@ class mi_standard_deduction_tier_three(Variable):
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(e)
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
+        "https://www.michigan.gov/treasury/reference/taxpayer-notices/2025/11/17/social-security-taxation-changes-in-public-act-24-of-2025",
+        "https://www.michigan.gov/taxes/rep-legal/rab/2026-revenue-administrative-bulletins/revenue-administrative-bulletin-2026-1",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
     defined_for = "mi_standard_deduction_tier_three_eligible"
@@ -33,7 +35,10 @@ class mi_standard_deduction_tier_three(Variable):
         # Line 3: enter military service income or taxable social security
         taxable_ss = person("taxable_social_security", period)
         military_service_income = person("military_service_income", period)
-        larger_ss_or_military_pay = max_(taxable_ss, military_service_income)
+        taxable_ss_offset = (
+            taxable_ss * p.standard.tier_three.taxable_social_security_offset_applies
+        )
+        larger_ss_or_military_pay = max_(taxable_ss_offset, military_service_income)
         # Line 4 are personal (and stillborn) exemptions
         mi_personal_exemptions = tax_unit("mi_personal_exemptions", period)
         # Line 5: add lines 2 through 4
