@@ -14,6 +14,10 @@ class ca_oc_general_relief_countable_income_person(Variable):
     )
 
     def formula(person, period, parameters):
+        # NOTE: Section 70.2.p also allows mandatory federal/state income tax
+        # withheld from unearned income as a deduction; we don't track that at
+        # the moment (negligible for the very-low-income General Relief
+        # population).
         countable_income = add(
             person,
             period,

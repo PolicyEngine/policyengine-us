@@ -1,0 +1,35 @@
+- name: A unit of only adults meets the demographic requirement.
+  period: 2026-01
+  input:
+    people:
+      adult1:
+        age: 30
+      adult2:
+        age: 45
+    households:
+      household:
+        members: [adult1, adult2]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2]
+  output:
+    ca_oc_general_relief_demographic_eligible: true
+
+- name: A unit containing a minor child does not meet the demographic requirement.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 10
+    households:
+      household:
+        members: [adult, child]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+  output:
+    ca_oc_general_relief_demographic_eligible: false

@@ -21,3 +21,27 @@
     in_oc: true
   output:
     ca_oc_general_relief_immigration_status_eligible: false
+
+- name: A permanent legal resident meets the modeled immigration-status rule.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: true
+
+- name: A person granted an indefinite stay from deportation meets the modeled rule.
+  period: 2026-01
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: true
+
+- name: A refugee is not in the regulation's enumerated eligible list.
+  period: 2026-01
+  input:
+    immigration_status: REFUGEE
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: false
