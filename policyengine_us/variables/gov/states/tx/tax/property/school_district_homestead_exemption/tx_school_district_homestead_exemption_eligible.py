@@ -7,7 +7,10 @@ class tx_school_district_homestead_exemption_eligible(Variable):
     label = "Eligible for the Texas school district residence homestead exemption"
     documentation = "Approximates residence homestead eligibility with positive assessed property value because PolicyEngine does not currently distinguish principal-residence homestead property from other assessed property."
     definition_period = YEAR
-    reference = "https://comptroller.texas.gov/taxes/property-tax/exemptions/"
+    reference = (
+        "https://statutes.capitol.texas.gov/Docs/TX/htm/TX.11.htm#11.13",
+        "https://comptroller.texas.gov/taxes/property-tax/exemptions/",
+    )
     defined_for = StateCode.TX
 
     def formula(tax_unit, period, parameters):

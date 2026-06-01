@@ -7,7 +7,10 @@ class tx_over_65_or_disabled_school_district_homestead_exemption_eligible(Variab
     label = "Eligible for the Texas age 65 or older or disabled school district residence homestead exemption"
     documentation = "Models age, disability, and surviving-spouse eligibility with available person-level inputs; it does not verify the deceased spouse's prior qualification or continued residence occupancy beyond the assessed-property proxy."
     definition_period = YEAR
-    reference = "https://comptroller.texas.gov/taxes/property-tax/exemptions/"
+    reference = (
+        "https://statutes.capitol.texas.gov/Docs/TX/htm/TX.11.htm#11.13",
+        "https://comptroller.texas.gov/taxes/property-tax/exemptions/",
+    )
     defined_for = StateCode.TX
 
     def formula(tax_unit, period, parameters):

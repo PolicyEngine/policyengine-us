@@ -7,7 +7,10 @@ class tx_over_65_or_disabled_school_district_homestead_exemption(Variable):
     label = "Texas age 65 or older or disabled school district residence homestead exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://comptroller.texas.gov/taxes/property-tax/exemptions/"
+    reference = (
+        "https://statutes.capitol.texas.gov/Docs/TX/htm/TX.11.htm#11.13",
+        "https://comptroller.texas.gov/taxes/property-tax/exemptions/",
+    )
     defined_for = "tx_over_65_or_disabled_school_district_homestead_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
