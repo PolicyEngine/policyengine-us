@@ -92,6 +92,29 @@
   # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
     mt_elderly_homeowner_or_renter_credit: [83, 0, 0]
 
+- name: MT EHRC denied when household income exceeds $45,000 due to SS
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 20_000
+        taxable_interest_income: 5_280
+        social_security_retirement: 51_792
+        rent: 17_139
+      spouse:
+        age: 75
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit: 0
+
 - name: Integration test
   period: 2022
   absolute_error_margin: 0.01
