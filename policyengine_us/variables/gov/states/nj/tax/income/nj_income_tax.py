@@ -8,6 +8,10 @@ class nj_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
+    reference = (
+        "https://law.justia.com/codes/new-jersey/title-54a/section-54a-2-4/",
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=5",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nj.tax.income
