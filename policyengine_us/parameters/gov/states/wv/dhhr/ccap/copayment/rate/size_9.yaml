@@ -1,0 +1,76 @@
+description: West Virginia charges this daily co-payment per child for a nine-person family under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  threshold_period: year
+  label: West Virginia CCAP daily co-payment for nine-person family
+  reference:
+    - title: WV Child Care Subsidy Appendix A — Nine Person Family Sliding Fee Scale
+      href: https://bfa.wv.gov/media/6826/download?inline#page=5
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 0.4001
+    amount:
+      2024-10-01: 2.75
+  - threshold:
+      2024-10-01: 0.5001
+    amount:
+      2024-10-01: 3.5
+  - threshold:
+      2024-10-01: 0.6001
+    amount:
+      2024-10-01: 4.25
+  - threshold:
+      2024-10-01: 0.7001
+    amount:
+      2024-10-01: 5
+  - threshold:
+      2024-10-01: 0.8001
+    amount:
+      2024-10-01: 5.5
+  - threshold:
+      2024-10-01: 0.9001
+    amount:
+      2024-10-01: 6.25
+  - threshold:
+      2024-10-01: 1.0001
+    amount:
+      2024-10-01: 7
+  - threshold:
+      2024-10-01: 1.1001
+    amount:
+      2024-10-01: 7.75
+  - threshold:
+      2024-10-01: 1.2001
+    amount:
+      2024-10-01: 8.5
+  - threshold:
+      2024-10-01: 1.3001
+    amount:
+      2024-10-01: 9
+  - threshold:
+      2024-10-01: 1.4001
+    amount:
+      2024-10-01: 9.75
+  - threshold:
+      2024-10-01: 1.5001
+    amount:
+      2024-10-01: 10.5
+  - threshold:
+      2024-10-01: 1.6001
+    amount:
+      2024-10-01: 11.25
+  - threshold:
+      2024-10-01: 1.7001
+    amount:
+      2024-10-01: 12
+  - threshold:
+      2024-10-01: 1.8001
+    amount:
+      2024-10-01: 12.5

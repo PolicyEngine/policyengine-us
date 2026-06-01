@@ -21,7 +21,7 @@ class dc_ossp_eligible(Variable):
         # payment level. They receive $0 federal SSI but still
         # qualify for a reduced state supplement. Eligibility is
         # therefore categorical (is_ssi_eligible), not ssi > 0.
-        categorically_eligible = person("is_ssi_eligible", period.this_year)
+        categorically_eligible = person("is_ssi_eligible", period)
         living_arrangement = person("dc_ossp_living_arrangement", period)
         in_qualifying_facility = living_arrangement != DCOSSPLivingArrangement.NONE
         return categorically_eligible & in_qualifying_facility

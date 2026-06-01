@@ -1,5 +1,7 @@
 """Test unified uprating extensions through 2100."""
 
+import pytest
+
 from policyengine_us.system import system
 from policyengine_us.parameters.uprating_extensions import (
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
@@ -70,6 +72,50 @@ def test_cbo_income_by_source_anchors_extend_to_2100():
             assert value > 0, f"{parameter_name} should stay positive"
         for previous, current in zip(values, values[1:]):
             assert current != previous, f"{parameter_name} should extend after 2036"
+
+
+def test_gross_social_security_benefits_extend_to_2100():
+    """Gross Social Security benefits should not flatten after the budget window."""
+    social_security = PARAMETERS.calibration.gov.cbo.social_security
+
+    assert social_security("2037-01-01") > social_security("2036-01-01")
+    assert social_security("2100-01-01") > social_security("2036-01-01")
+
+
+def test_soi_social_security_uses_gross_benefit_uprater():
+    """Social Security benefit inputs should age with gross benefits."""
+    soi_social_security = PARAMETERS.calibration.gov.irs.soi.social_security
+    gross_social_security = PARAMETERS.calibration.gov.cbo.social_security
+
+    assert (
+        soi_social_security.metadata["uprating"]
+        == "calibration.gov.cbo.social_security"
+    )
+
+    for year in [2037, 2050, 2075, 2100]:
+        previous_year = year - 1
+        soi_growth = soi_social_security(f"{year}-01-01") / soi_social_security(
+            f"{previous_year}-01-01"
+        )
+        gross_growth = gross_social_security(f"{year}-01-01") / gross_social_security(
+            f"{previous_year}-01-01"
+        )
+
+        assert soi_growth == pytest.approx(gross_growth)
+
+
+def test_social_security_benefit_inputs_use_gross_benefit_uprater():
+    """Reported Social Security benefit inputs should share the gross-benefit path."""
+    for variable_name in [
+        "social_security_retirement",
+        "social_security_disability",
+        "social_security_survivors",
+        "social_security_dependents",
+    ]:
+        assert (
+            system.variables[variable_name].uprating
+            == "calibration.gov.irs.soi.social_security"
+        )
 
 
 def test_cms_moop_per_capita_extends_to_2100():

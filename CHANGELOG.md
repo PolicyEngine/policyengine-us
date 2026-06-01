@@ -1,3 +1,450 @@
+## [1.717.0] - 2026-06-01
+
+### Added
+
+- Minnesota Supplemental Aid (MSA) — State Supplementary Payment to SSI.
+
+
+## [1.716.0] - 2026-06-01
+
+### Added
+
+- Implement West Virginia Child Care Assistance Program (CCAP).
+
+
+## [1.715.3] - 2026-05-29
+
+### Fixed
+
+- Allocate taxable unemployment compensation by actual recipient instead of all to head.
+
+
+## [1.715.2] - 2026-05-29
+
+### Changed
+
+- Moved Medicaid conditional cost allocation into PolicyEngine US using an SLCSP age, family-composition, and location cost index.
+
+
+## [1.715.1] - 2026-05-28
+
+### Fixed
+
+- Fixed two code-health regressions on main: precompute per-person arrays in `ar_sra_countable_income` (replaces `sum()` over an entity-variable generator), and switch `wa_wccc_provider_type.defined_for` from `"wa_wccc_eligible_child"` to `StateCode.WA` so an input variable no longer carries a non-geographic gate.
+
+
+## [1.715.0] - 2026-05-28
+
+### Added
+
+- Add Arkansas School Readiness Assistance (SRA) child care subsidy program. The 4% per-family copay ceiling is computed against countable (adult) income — children's SSI and Social Security are excluded per FSU §4.3.3 — and the per-child copay used in that ceiling is clamped to the child's actual provider charge. The ESS Year-1 alt path (FSU §4.1.5.1) is gated on earned income alone exceeding the TEA limit, consistent with the regulation's "earnings alone" wording.
+
+
+## [1.714.0] - 2026-05-28
+
+### Added
+
+- Add New Jersey unemployment insurance rules. Phase-1 compute-only program: callers provide pre-aggregated base-period wages, qualifying base weeks, and qualifying dependents; the modeled benefit is not yet wired into the `unemployment_compensation` aggregate (mirrors the existing PA UC precedent).
+
+
+## [1.713.0] - 2026-05-28
+
+### Added
+
+- Implement Washington State Working Connections Child Care (WCCC), the state's child care subsidy program (CCAP-equivalent).
+
+
+## [1.712.1] - 2026-05-28
+
+### Fixed
+
+- Fixed YAML syntax error in partner API impact notice workflow.
+
+
+## [1.712.0] - 2026-05-27
+
+### Added
+
+- Added Slack notices for partner API contract test changes.
+
+
+## [1.711.0] - 2026-05-27
+
+### Added
+
+- Added coding-agent guidance for partner API contract tests and removed stale working references.
+
+
+## [1.710.7] - 2026-05-27
+
+### Fixed
+
+- Validate changed changelog fragment paths in pull request CI.
+
+
+## [1.710.6] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.5] - 2026-05-27
+
+### Fixed
+
+- Apply rate cap before deducting copay in DC, NJ, SC, RI, PA, ME, MA, VA, and DE child care subsidy formulas, so the family copay is properly deducted from the state's max reimbursement when expenses exceed the cap.
+
+
+## [1.710.4] - 2026-05-27
+
+### Fixed
+
+- Model the recent incarceration exception for Medicaid community engagement requirements.
+
+
+## [1.710.3] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.2] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.1] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.0] - 2026-05-27
+
+### Added
+
+- Add an annual approximation of the 2018-2019 Arkansas Works Medicaid work requirement.
+
+
+## [1.709.1] - 2026-05-26
+
+### Fixed
+
+- Deduct the Parent Share of Cost from Texas Child Care Services when childcare expense exceeds the Board's maximum reimbursement rate.
+
+
+## [1.709.0] - 2026-05-26
+
+### Added
+
+- Added Alabama senior homestead property tax relief.
+
+
+## [1.708.0] - 2026-05-26
+
+### Added
+
+- Add Arizona MCTCP subtraction (Executive Order 2025-15) propagating the OBBBA federal enhanced senior, tip, overtime, and auto loan interest deductions to AZ subtractions starting 2025.
+
+
+## [1.707.1] - 2026-05-25
+
+No significant changes.
+
+
+## [1.707.0] - 2026-05-25
+
+### Added
+
+- Added the Medicaid long-term care home equity limit from H.R. 1.
+
+
+## [1.706.17] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.16] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.15] - 2026-05-25
+
+### Changed
+
+- - Made Medicaid cost if enrolled data-backed and used Medicaid enrollment, rather than the Medicaid dollar value, for categorical eligibility checks.
+
+### Fixed
+
+- Prevent a net capital loss in the Delaware pension exclusion basket from producing a negative subtraction that wipes out other DE subtractions.
+
+
+## [1.706.14] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.11] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.10] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.9] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.8] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.7] - 2026-05-24
+
+### Fixed
+
+- Fixed `RuntimeWarning: invalid value encountered in divide` in `qbid_amount` when the QBI phaseout length parameter is zero. The unguarded `(taxinc_less_qbid - po_start) / po_length` is now `np.divide(..., where=po_length > 0)` with a fully-phased-out fallback. Resolves the QBI source of the divide warnings tracked in #8216.
+
+
+## [1.706.6] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.5] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.4] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.3] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.2] - 2026-05-24
+
+### Fixed
+
+- Add regression tests asserting Roth 401(k) and 403(b) contributions do not reduce taxable wages, and document the exclusion in the pre-tax contributions parameter.
+
+
+## [1.706.1] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.0] - 2026-05-24
+
+### Added
+
+- Cap traditional and Roth 401(k) and 403(b) contributions at the IRC Section 402(g) elective deferral limit, including age-based catch-ups.
+
+
+## [1.705.23] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.22] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.21] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.20] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.19] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.18] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.17] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.16] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.15] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.14] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.11] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.10] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.9] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.8] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.7] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.6] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.5] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.4] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.3] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.2] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.1] - 2026-05-22
+
+### Fixed
+
+- Traditional 401(k) and 403(b) elective deferrals no longer incorrectly reduce the FICA (Social Security and Medicare) wage base. Under IRC §3121(a), only Section 125 cafeteria plan items (employer-sponsored health premiums and HSA payroll contributions) reduce FICA wages. This fixes understated Social Security and Medicare tax in any simulation with retirement deferrals.
+
+
+## [1.705.0] - 2026-05-22
+
+### Added
+
+- Implement Missouri State Supplementary Payment (SAB and SNC components) under DSS Family Support Division.
+
+
+## [1.704.0] - 2026-05-22
+
+### Added
+
+- Add Maryland Public Assistance to Adults (state SSP).
+
+
+## [1.703.2] - 2026-05-22
+
+No significant changes.
+
+
+## [1.703.1] - 2026-05-21
+
+### Changed
+
+- Update Medicaid work requirement eligibility to reflect CMS community engagement guidance.
+
+
+## [1.703.0] - 2026-05-21
+
+### Added
+
+- Added the Indiana Over 65 Property Tax Credit.
+
+
+## [1.702.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.702.0] - 2026-05-21
+
+### Added
+
+- Added the North Dakota Renter's Refund.
+- Added the Pennsylvania Property Tax/Rent Rebate standard rebate.
+
+
+## [1.701.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.701.0] - 2026-05-21
+
+### Added
+
+- Added a data-overridable SSI disability criteria variable for calibrated SSI simulations.
+
+
+## [1.700.2] - 2026-05-20
+
+### Changed
+
+- Apply Georgia HB463 (2025-2026): cut the flat individual income tax rate to 4.99%, raise the standard deduction to $30,000 joint / $15,000 single, raise the dependent exemption to $5,000, increase the age-65+ retirement income exclusion to $70,000 in 2027, and add qualified-overtime and cash-tip exclusions for tax years 2026-2028.
+
+
+## [1.700.1] - 2026-05-20
+
+No significant changes.
+
+
 ## [1.700.0] - 2026-05-19
 
 ### Added

@@ -1,0 +1,44 @@
+- name: New York two adults split the family-tier amount across the unit.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # Two-adults NY multiplier (2.0) x base 1,000, split over 2.
+    medicaid_slcsp_family_tier_person_share: 1_000
+
+- name: Vermont adult with a child splits the family-tier amount across the unit.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # One-adult-with-children VT multiplier (1.93) x base 1,000, split over 2.
+    medicaid_slcsp_family_tier_person_share: 965

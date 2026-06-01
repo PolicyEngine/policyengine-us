@@ -25,12 +25,8 @@ class mt_capital_gains_tax_joint(Variable):
             capital_gains = max_(min_(ltcg, net_cg), 0)
             # Line 3
             lesser_of_cg_and_taxable_income = min_(capital_gains, taxable_income)
-            # Line 4
-            excess_over_taxable_income = max_(
-                taxable_income - lesser_of_cg_and_taxable_income, 0
-            )
             filing_status = tax_unit("filing_status", period)
-            # Line 5
+            # Line 6
             applicable_threshold = tax_unit(
                 "mt_capital_gains_tax_applicable_threshold_joint", period
             )
@@ -68,19 +64,15 @@ class mt_capital_gains_tax_joint(Variable):
                     p.rates.head_of_household.amounts[-1],
                 ],
             )
-            # Line 6
-            excess_over_threshold = max_(
-                applicable_threshold - excess_over_taxable_income, 0
-            )
             # Line 7
             capital_gains_below_threshold = min_(
-                excess_over_threshold, lesser_of_cg_and_taxable_income
+                applicable_threshold, lesser_of_cg_and_taxable_income
             )
             # Line 8
             lower_capital_gains_tax = capital_gains_below_threshold * lower_rate
             # Line 9
             income_above_threshold = max_(
-                lesser_of_cg_and_taxable_income - excess_over_threshold, 0
+                lesser_of_cg_and_taxable_income - applicable_threshold, 0
             )
             # Line 10
             higher_capital_gains_tax = income_above_threshold * higher_rate

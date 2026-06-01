@@ -1,0 +1,43 @@
+- name: State average is weighted, excludes missing premiums, and is per state.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        person_weight: 1
+      person2:
+        age: 40
+        person_weight: 3
+      # Missing premium -> zero index, excluded from the average despite weight.
+      person3:
+        age: 40
+        person_weight: 5
+      person4:
+        age: 40
+        person_weight: 1
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 1_000
+      household2:
+        members: [person2]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 2_000
+      household3:
+        members: [person3]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 0
+      household4:
+        members: [person4]
+        state_code: NY
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # TX average of the two positive indices, weighted 1 and 3, broadcast to all
+    # TX residents (including the missing-premium person); NY is separate.
+    medicaid_slcsp_state_average_cost_index: [2_923.55, 2_923.55, 2_923.55, 1_000]

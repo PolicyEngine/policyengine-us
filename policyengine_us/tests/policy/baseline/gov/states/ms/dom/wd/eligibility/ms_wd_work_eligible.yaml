@@ -1,0 +1,15 @@
+- name: Case 1, forty monthly hours meets the work test.
+  period: 2026-01
+  input:
+    state_code: MS
+    monthly_hours_worked: 40
+  output:
+    ms_wd_work_eligible: true
+
+- name: Case 2, thirty-nine monthly hours fails the work test.
+  period: 2026-01
+  input:
+    state_code: MS
+    monthly_hours_worked: 39
+  output:
+    ms_wd_work_eligible: false
