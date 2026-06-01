@@ -5,10 +5,16 @@ metadata:
   reference:
     - title: 26 U.S. Code § 36B(b)(3)(A) - Refundable credit for coverage under a qualified health plan
       href: https://www.law.cornell.edu/uscode/text/26/36B#b_3_A
+    - title: IRS Revenue Procedure 2017-36 - Applicable percentage table for 2018
+      href: https://www.irs.gov/pub/irs-drop/rp-17-36.pdf#page=2
+    - title: IRS Revenue Procedure 2018-34 - Applicable percentage table for 2019
+      href: https://www.irs.gov/pub/irs-drop/rp-18-34.pdf#page=2
+    - title: IRS Revenue Procedure 2019-29 - Applicable percentage table for 2020
+      href: https://www.irs.gov/pub/irs-drop/rp-19-29.pdf#page=3
     - title: IRS Revenue Procedure 2025-25 - Applicable percentage table for 2026
       href: https://www.irs.gov/pub/irs-drop/rp-25-25.pdf
 values:
-  # Original ACA (2015-2020): 6 brackets
+  # Original ACA: 6 brackets
   2015-01-01:
     - 0.02    # 0-133%: flat 2%
     - 0.03    # 133-150%
@@ -16,6 +22,27 @@ values:
     - 0.063   # 200-250%
     - 0.0805  # 250-300%
     - 0.095   # 300-400%: flat 9.5%
+  2018-01-01:
+    - 0.0201
+    - 0.0302
+    - 0.0403
+    - 0.0634
+    - 0.081
+    - 0.0956
+  2019-01-01:
+    - 0.0208
+    - 0.0311
+    - 0.0415
+    - 0.0654
+    - 0.0836
+    - 0.0986
+  2020-01-01:
+    - 0.0206
+    - 0.0309
+    - 0.0412
+    - 0.0649
+    - 0.0829
+    - 0.0978
   # ARPA/IRA (2021-2025): 5 brackets, no 133% threshold
   2021-01-01:
     - 0       # 0-150%: flat 0%
