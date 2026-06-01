@@ -1,0 +1,18 @@
+- name: Untaxed Social Security is fully counted in gross household income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a)(viii) requires all SS to be counted, even the
+    # portion excluded from federal AGI.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
