@@ -11,6 +11,7 @@ import gc
 import time
 import argparse
 import re
+import select
 from pathlib import Path
 from typing import List, Dict
 
@@ -285,6 +286,9 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     python_exe = sys.executable
 
     start_time = time.time()
+    last_output_time = start_time
+    last_heartbeat_time = start_time
+    heartbeat_interval = 30
 
     # Build command - direct policyengine-core with timeout protection
     cmd = (
@@ -307,39 +311,62 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,  # Line buffered
+        bufsize=0,
     )
 
     try:
         test_completed = False
         test_passed = False
         output_lines = []
+        output_text = ""
 
         # Monitor output line by line
         while True:
-            line = process.stdout.readline()
-            if not line:
-                # No more output, check if process is done
+            ready, _, _ = select.select([process.stdout], [], [], 0.1)
+            if not ready:
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
                     break
+                now = time.time()
+                if now - last_heartbeat_time >= heartbeat_interval:
+                    elapsed = now - start_time
+                    quiet_for = now - last_output_time
+                    print(
+                        f"    Still running {batch_name} after "
+                        f"{elapsed:.0f}s ({quiet_for:.0f}s since last output)...",
+                        flush=True,
+                    )
+                    last_heartbeat_time = now
                 # Process still running but no output
                 time.sleep(0.1)
                 continue
 
-            # Print line in real-time
-            print(line, end="")
+            chunk = os.read(process.stdout.fileno(), 4096)
+            if not chunk:
+                if process.poll() is not None:
+                    break
+                continue
+
+            # Print output in real-time, including partial pytest progress
+            # lines such as dots that do not end with newlines.
+            line = chunk.decode(errors="replace")
+            print(line, end="", flush=True)
+            last_output_time = time.time()
+            last_heartbeat_time = last_output_time
             output_lines.append(line)
+            output_text += line
 
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+", line):
+            if re.search(
+                r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
+                output_text,
+            ):
                 test_completed = True
                 # Check if tests passed by parsing actual failure count
-                failed_match = re.search(r"(\d+) failed", line)
+                failed_match = re.search(r"(\d+) failed", output_text)
                 if failed_match:
                     failed_count = int(failed_match.group(1))
                     test_passed = failed_count == 0
