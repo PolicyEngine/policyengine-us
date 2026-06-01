@@ -92,7 +92,7 @@
 
 - name: Illinois EITC childless filer age 18 qualifies for the state EITC
   period: 2024
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -118,7 +118,7 @@
 
 - name: Illinois EITC childless filer age 17 does not qualify
   period: 2024
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:

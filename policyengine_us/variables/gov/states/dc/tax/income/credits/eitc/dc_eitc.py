@@ -15,7 +15,7 @@ class dc_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         # D.C. Law 23-149 extends EITC eligibility to filers and qualifying
-        # children with ITINs; dc_base_eitc holds the SSN-only baseline.
+        # children with ITINs.
         person = tax_unit.members
         dc_qualifying_child = person("is_qualifying_child_dependent", period) & person(
             "has_tin", period

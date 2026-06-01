@@ -19,7 +19,12 @@ class filing_status(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_separated = tax_unit.any(person("is_separated", period))
+        # Separation can make the taxpayer file separately only when it applies
+        # to the tax unit head or spouse, not a dependent or other member.
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        is_separated = tax_unit.any(
+            is_head_or_spouse & person("is_separated", period)
+        )
         return select(
             [
                 tax_unit("tax_unit_married", period),

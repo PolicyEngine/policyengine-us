@@ -49,7 +49,7 @@
 
 - name: Case 4, at EITC AGI limit credit phases to $50 minimum.
   period: 2024
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -78,11 +78,11 @@
         state_code: WA
   output:
     # Per RCW 82.08.0206(3)(f), minimum credit is $50
-    wa_working_families_tax_credit: 50
+    wa_working_families_tax_credit: 50.05
 
 - name: Case 5, mid-phaseout gives correctly reduced credit.
   period: 2024
-  absolute_error_margin: 0.2
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -154,7 +154,7 @@
 
 - name: Case 7, age 18+ without EITC gets WFTC under 2029 age expansion.
   period: 2029
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     state_code: WA
     age_head: 20
@@ -164,12 +164,12 @@
     eitc_child_count: 0
   output:
     # Eligible via age expansion: age 18+, has earned income
-    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
-    wa_working_families_tax_credit: 367
+    # Amount is inflation-adjusted from $300 (2022) to $366.70 (2029)
+    wa_working_families_tax_credit: 366.70
 
 - name: Case 7b, age 18 boundary is eligible under 2029 age expansion.
   period: 2029
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     state_code: WA
     age_head: 18
@@ -179,7 +179,7 @@
     eitc_child_count: 0
   output:
     # Exact age-18 boundary: eligible via age expansion
-    wa_working_families_tax_credit: 367
+    wa_working_families_tax_credit: 366.70
 
 - name: Case 8, age 17 without EITC gets no WFTC in 2029.
   period: 2029
@@ -249,7 +249,7 @@
 
 - name: Case 11, traditional EITC-eligible filer still works in 2029.
   period: 2029
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -273,8 +273,8 @@
         state_code: WA
   output:
     # Standard EITC pathway still works
-    # Amount is inflation-adjusted from $300 (2022) to ~$367 (2029)
-    wa_working_families_tax_credit: 367
+    # Amount is inflation-adjusted from $300 (2022) to $366.70 (2029)
+    wa_working_families_tax_credit: 366.70
 
 - name: Case 12, age expansion preserves EITC investment income eligibility.
   period: 2029
@@ -291,7 +291,7 @@
 
 - name: Case 13, joint filer with an under-18 head and an 18+ spouse qualifies via age expansion.
   period: 2029
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     state_code: WA
     age_head: 16
@@ -303,11 +303,11 @@
     eitc_child_count: 0
   output:
     # Either head or spouse meeting age 18 is sufficient.
-    wa_working_families_tax_credit: 367
+    wa_working_families_tax_credit: 366.70
 
 - name: Case 14, ITIN filer with qualifying child can receive WFTC without a federal EITC amount.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -337,7 +337,7 @@
 
 - name: Case 15, standard SSN filer still gets WFTC under frozen 2022 federal law when current federal EITC is overridden to zero.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -370,7 +370,7 @@
 
 - name: WA WFTC - married filing separately filer with one child can qualify via state-only path
   period: 2024
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -400,7 +400,7 @@
 
 - name: WA WFTC - SSN filer with one SSN child and one ITIN child uses state-only path
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -439,7 +439,6 @@
 
 - name: WA WFTC age expansion - age 18 filer qualifies in tax year 2029
   period: 2029
-  absolute_error_margin: 1
   input:
     people:
       head:
@@ -466,7 +465,6 @@
 
 - name: WA WFTC age expansion - age 17 filer does not qualify in 2029 (below min age 18)
   period: 2029
-  absolute_error_margin: 1
   input:
     people:
       head:
@@ -491,7 +489,6 @@
 
 - name: WA WFTC age expansion - age 18 filer in 2028 (before in_effect) does not qualify via expansion
   period: 2028
-  absolute_error_margin: 1
   input:
     people:
       head:

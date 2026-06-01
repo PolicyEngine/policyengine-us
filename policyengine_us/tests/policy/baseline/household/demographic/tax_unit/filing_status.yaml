@@ -120,3 +120,27 @@
         members: [parent, adult_child]
   output:
     filing_status: SEPARATE
+
+- name: Separated non-qualifying dependent does not make the filer separate.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_related_to_head_or_spouse: false
+        is_separated: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    filing_status: SINGLE

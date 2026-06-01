@@ -52,7 +52,10 @@ class hi_modified_agi(Variable):
 
     def formula(tax_unit, period, parameters):
         # Federal AGI plus Hawaii additions minus subtractions, excluding the
-        # student loan interest add/subtract pair to break the circular reference.
+        # Hawaii student loan interest add/subtract pair to break the circular
+        # reference. Federal AGI already subtracts the federal student loan
+        # interest deduction, but the Hawaii worksheet uses Hawaii AGI before
+        # any student loan interest deduction, so add the federal deduction back.
         p = parameters(period).gov.states.hi.tax.income
         other_additions = [
             v for v in p.additions.additions if v != "hi_student_loan_interest_addition"
@@ -68,10 +71,14 @@ class hi_modified_agi(Variable):
         other_subtractions_amount = (
             add(tax_unit, period, other_subtractions) if other_subtractions else 0
         )
+        federal_student_loan_interest_deduction = add(
+            tax_unit, period, ["student_loan_interest_ald"]
+        )
         return (
             tax_unit("adjusted_gross_income", period)
             + other_additions_amount
             - other_subtractions_amount
+            + federal_student_loan_interest_deduction
         )
 
 

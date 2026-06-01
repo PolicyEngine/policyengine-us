@@ -1,6 +1,6 @@
 - name: Hawaii adds back part of the federal student loan deduction when Hawaii's deduction is smaller
   period: 2025
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -20,12 +20,15 @@
         members: [head]
         state_code: HI
   output:
-    hi_student_loan_interest_adjustment: -1250
-    hi_agi: 58_750
+    # Hawaii MAGI is $60,000 before any student loan interest deduction.
+    # Hawaii deduction = $2,500 * (1 - (($60K - $50K) / $15K)) = $833.33.
+    # Federal deduction is $2,500, so Hawaii adds back the $1,666.67 difference.
+    hi_student_loan_interest_adjustment: -1_666.67
+    hi_agi: 59_166.67
 
 - name: Hawaii subtracts more than federal when Hawaii AGI excludes pension income
   period: 2025
-  absolute_error_margin: 0.2
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -153,7 +156,7 @@
 
 - name: Joint filer at $115K Hawaii MAGI receives a partial Hawaii student loan interest deduction
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -177,9 +180,9 @@
         members: [head, spouse]
         state_code: HI
   output:
-    # Federal AGI is $112,500 (= $115K wages - $2,500 federal student loan
-    # interest deduction). hi_modified_agi equals federal AGI plus 0 net
-    # Hawaii additions/subtractions = $112,500. Joint phase-out: start $100K,
-    # divisor $30K -> reduction share = (112,500-100,000)/30,000 = 0.4167.
-    # Deduction = $2,500 * (1 - 0.4167) = $1,458.33.
-    hi_student_loan_interest_deduction: 1_458.33
+    # Federal AGI is $112,500 after the federal SLI deduction, but Hawaii
+    # MAGI adds that deduction back because the worksheet uses Hawaii AGI
+    # before any student loan interest deduction. Joint phase-out:
+    # ($115,000 - $100,000) / $30,000 = 0.5.
+    # Deduction = $2,500 * (1 - 0.5) = $1,250.
+    hi_student_loan_interest_deduction: 1_250
