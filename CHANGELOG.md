@@ -1,3 +1,10 @@
+## [1.719.2] - 2026-06-01
+
+### Fixed
+
+- Wire the Vermont renter credit into the state property tax credits aggregate.
+
+
 ## [1.719.1] - 2026-06-01
 
 ### Fixed
