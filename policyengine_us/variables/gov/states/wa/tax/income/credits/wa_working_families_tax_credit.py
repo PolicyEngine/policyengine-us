@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
     calculate_eitc_demographic_eligibility,
-    calculate_eitc_max_agi_limit,
     eitc_filing_requirement_met,
     eitc_filing_status_eligible,
 )
@@ -61,13 +60,13 @@ class wa_working_families_tax_credit(Variable):
         earnings = tax_unit("filer_adjusted_earnings", period)
         agi = tax_unit("adjusted_gross_income", period)
         higher_income = max_(earnings, agi)
+        maximum_qualifying_income = tax_unit(
+            "wa_working_families_tax_credit_maximum_qualifying_income", period
+        )
         is_filer = eitc_filing_requirement_met(tax_unit, period)
         takes_up_eitc = tax_unit("takes_up_eitc", period)
         baseline_income_eligible = (earnings > 0) & (
-            higher_income
-            <= calculate_eitc_max_agi_limit(
-                tax_unit, period, frozen_eitc, federal_child_count
-            )
+            higher_income <= maximum_qualifying_income
         )
 
         # Baseline eligibility: filers who qualify under the frozen 2022 IRC.
@@ -91,8 +90,7 @@ class wa_working_families_tax_credit(Variable):
             | (child_count > federal_child_count)
         )
         state_only_income_eligible = (earnings > 0) & (
-            higher_income
-            <= calculate_eitc_max_agi_limit(tax_unit, period, frozen_eitc, child_count)
+            higher_income <= maximum_qualifying_income
         )
         state_only_eitc_eligible = needs_state_only_path & (
             state_only_income_eligible
@@ -115,18 +113,15 @@ class wa_working_families_tax_credit(Variable):
         # (SSN-eligible) and Washington-counted children (TIN-eligible).
         wftc_child_count = max_(federal_child_count, child_count)
         max_amount = p.amount.calc(wftc_child_count)
-        # WFTC phases out at a certain amount below the EITC maximum AGI.
-        # NB: The Revised Code of Washington is ambiguous:
-        # "below the federal phase-out income"
-        # The legislative analysis clarifies that this refers to "federal maximum AGI"
-        # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
-        eitc_agi_limit = calculate_eitc_max_agi_limit(
-            tax_unit, period, frozen_eitc, wftc_child_count
-        )
+        # WFTC phases out at a certain amount below maximum qualifying income.
+        # Before ESSB 6346, this is the frozen federal EITC maximum AGI.
+        # From 2029 onward, it is the greater of that amount and the cash
+        # assistance need standard for the tax household size.
         phase_out_start_reduction = p.phase_out.start_below_eitc.calc(wftc_child_count)
-        phase_out_start = eitc_agi_limit - phase_out_start_reduction
-        # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
-        # instructs DOR to revise it to get to the minimum amount by the EITC AGI limit.
+        phase_out_start = maximum_qualifying_income - phase_out_start_reduction
+        # The phase-out rates are hard-coded in the legal code, but HB 1888
+        # (2021-22) and ESSB 6346 instruct DOR to revise them so the minimum
+        # amount is reached at the applicable maximum qualifying income.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
         phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
         excess = max_(0, earnings - phase_out_start)

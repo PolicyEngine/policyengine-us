@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
-    calculate_eitc_amount_from_parameters,
+    eitc_filing_requirement_met,
 )
 
 
@@ -48,14 +48,23 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
             tax_unit("eitc_relevant_investment_income", period)
             <= frozen_eitc.phase_out.max_investment_income
         )
-        eitc_amount_before_take_up = calculate_eitc_amount_from_parameters(
-            tax_unit, period, frozen_eitc, child_count
+        earnings = tax_unit("filer_adjusted_earnings", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        income_eligible = (earnings > 0) & (
+            max_(earnings, agi)
+            <= tax_unit(
+                "wa_working_families_tax_credit_maximum_qualifying_income", period
+            )
         )
+        is_filer = eitc_filing_requirement_met(tax_unit, period)
+        takes_up_eitc = tax_unit("takes_up_eitc", period)
 
         return (
             expansion_in_effect
             & filer_meets_min_age
+            & income_eligible
             & frozen_investment_income_eligible
             & filers_have_tin
-            & (eitc_amount_before_take_up > 0)
+            & is_filer
+            & takes_up_eitc
         )

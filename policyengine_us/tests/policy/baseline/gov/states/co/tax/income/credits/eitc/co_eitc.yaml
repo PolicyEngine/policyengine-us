@@ -203,7 +203,7 @@
 
 - name: Colorado EITC under-25 path - age 24 qualifies via eligible_at_max_age
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -228,7 +228,7 @@
 
 - name: Colorado EITC under-25 path - age 25 above max for under-25 expansion but qualifies via federal EITC
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -254,7 +254,7 @@
 
 - name: Colorado EITC under-25 path - age 18 homeless filer qualifies
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -281,7 +281,7 @@
 
 - name: Colorado EITC under-25 path - age 18 foster youth qualifies
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
