@@ -36,7 +36,7 @@
   output:
     az_ccap_activity_eligible: false
 
-- name: Case 3, full-time student parent is activity eligible.
+- name: Case 3, adult full-time student with no work is not activity eligible.
   period: 2026-01
   input:
     people:
@@ -54,7 +54,9 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_ccap_activity_eligible: true
+    # R6-5-4912(A)(3): adult education requires an average of >=20 hours/week of
+    # work; education alone does not qualify an adult.
+    az_ccap_activity_eligible: false
 
 - name: Case 4, disabled parent unable to provide care is activity eligible.
   period: 2026-01
@@ -104,3 +106,24 @@
     # person2 is a head/spouse with no qualifying activity, so the
     # head_or_spouse & ~eligible_person sum is nonzero and the unit fails.
     az_ccap_activity_eligible: false
+
+- name: Case 6, teen parent under 20 in school without work is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(4): teen parents under age 20 qualify via education without work.
+    az_ccap_activity_eligible: true

@@ -31,9 +31,13 @@ class az_ccap_countable_income(Variable):
         minor_earnings = (
             person("employment_income", period)
             + person("self_employment_income", period)
+            + person("sstb_self_employment_income", period)
+            + person("farm_operations_income", period)
         ) * is_excluded_minor
         excluded_minor_earnings = spm_unit.sum(minor_earnings)
         # R6-5-4914(H): deduct legally mandated child support paid for dependents
         # residing outside the household.
         child_support_paid = add(spm_unit, period, ["child_support_expense"])
-        return max_(countable - excluded_minor_earnings - child_support_paid, 0)
+        net = max_(countable - excluded_minor_earnings - child_support_paid, 0)
+        # R6-5-4914(I): use the whole-dollar amount only, rounded down.
+        return np.floor(net)

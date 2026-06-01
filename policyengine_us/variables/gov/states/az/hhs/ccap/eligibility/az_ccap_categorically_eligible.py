@@ -16,16 +16,19 @@ class az_ccap_categorically_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        # R6-5-4914(A): Cash Assistance / Jobs participants needing child care for
-        # an activity, and families referred by DCS/DDD or in foster care, receive
-        # Child Care Assistance without regard to income (and without a copay under
-        # R6-5-4915). The "needing child care for an activity" condition is enforced
-        # separately by az_ccap_activity_eligible, so we do not re-test employment
-        # here. We don't separately track Jobs-program participation at the moment,
-        # so it is folded into Cash Assistance (TANF) enrollment.
-        tanf_enrolled = spm_unit("is_tanf_enrolled", period)
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        employed = person("weekly_hours_worked", period.this_year) > 0
+        # R6-5-4914(A)(1)-(A)(2): Cash Assistance / Jobs participants qualify without
+        # regard to income only when they need child care to maintain employment, so
+        # we require an employed head/spouse. (Jobs-program participation is folded
+        # into Cash Assistance / TANF enrollment, as it is not separately tracked.)
+        cash_assistance_for_work = spm_unit("is_tanf_enrolled", period) & spm_unit.any(
+            head_or_spouse & employed
+        )
+        # R6-5-4914(A)(3): DCS/DDD referrals and foster-care families qualify
+        # regardless of income or employment.
         protective_services = spm_unit.any(
             person("receives_or_needs_protective_services", period.this_year)
         )
         foster_care = spm_unit.any(person("is_in_foster_care", period))
-        return tanf_enrolled | protective_services | foster_care
+        return cash_assistance_for_work | protective_services | foster_care
