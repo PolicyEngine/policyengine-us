@@ -567,9 +567,11 @@ programs:
         full_name: Washington Working Connections Child Care
         variable: wa_wccc
       - state: WV
-        status: in_progress
+        status: complete
         name: West Virginia CCAP
         full_name: West Virginia Child Care Assistance Program
+        variable: wv_ccap
+        parameter_prefix: gov.states.wv.dhhr.ccap
 
   - id: head_start
     name: Head Start
