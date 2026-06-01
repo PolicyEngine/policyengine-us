@@ -17,3 +17,45 @@
   output:
     vt_renter_credit: 1_729
     taxsim_state_property_tax_credit: 1_729
+
+- name: Non-VT household does not pick up the VT renter credit via the aggregate
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
+  output:
+    vt_renter_credit: 0
+    taxsim_state_property_tax_credit: 0
+
+- name: Pre-2021 VT household excludes vt_renter_credit from the aggregate
+  period: 2020
+  # The 2020 snapshot inherits the 2016 list, which does not yet
+  # include vt_renter_credit. The underlying variable can still
+  # compute a non-zero value via parameter extrapolation, so this
+  # test specifically guards the year-keyed gating in the aggregate.
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    taxsim_state_property_tax_credit: 0
