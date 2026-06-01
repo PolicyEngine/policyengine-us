@@ -1,0 +1,39 @@
+description: West Virginia provides these daily reimbursement rates for child care centers under the Child Care Assistance Program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: West Virginia CCAP child care center daily rates
+  breakdown:
+    - wv_ccap_quality_tier
+    - wv_ccap_child_age_category
+  reference:
+    - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
+      href: https://bfa.wv.gov/media/6831/download?inline#page=1
+
+TIER_I:
+  INFANT:
+    2024-10-01: 39
+  TODDLER:
+    2024-10-01: 37
+  PRESCHOOL:
+    2024-10-01: 35
+  SCHOOL_AGE:
+    2024-10-01: 32
+TIER_II:
+  INFANT:
+    2024-10-01: 42
+  TODDLER:
+    2024-10-01: 40
+  PRESCHOOL:
+    2024-10-01: 38
+  SCHOOL_AGE:
+    2024-10-01: 35
+TIER_III:
+  INFANT:
+    2024-10-01: 45
+  TODDLER:
+    2024-10-01: 43
+  PRESCHOOL:
+    2024-10-01: 41
+  SCHOOL_AGE:
+    2024-10-01: 39

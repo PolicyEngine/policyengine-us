@@ -1,3 +1,10 @@
+## [1.716.0] - 2026-06-01
+
+### Added
+
+- Implement West Virginia Child Care Assistance Program (CCAP).
+
+
 ## [1.715.3] - 2026-05-29
 
 ### Fixed
