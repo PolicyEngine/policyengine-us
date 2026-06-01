@@ -1,0 +1,21 @@
+description: Washington uses these counties as Region 2 under the Working Connections Child Care program.
+values:
+  2023-07-01:
+    - BENTON_COUNTY_WA
+    - COLUMBIA_COUNTY_WA
+    - FRANKLIN_COUNTY_WA
+    - KITTITAS_COUNTY_WA
+    - WALLA_WALLA_COUNTY_WA
+    - YAKIMA_COUNTY_WA
+
+metadata:
+  unit: list
+  period: year
+  label: Washington WCCC Region 2 counties
+  reference:
+    - title: WAC 110-15-0200(1)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200
+    - title: WAC 110-15-0205(2)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0205
+    - title: DCYF Child Care Subsidy Rates Regional Map (EPS_0004)
+      href: https://www.dcyf.wa.gov/sites/default/files/pubs/EPS_0004.pdf#page=1

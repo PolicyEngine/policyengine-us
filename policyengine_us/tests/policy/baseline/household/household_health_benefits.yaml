@@ -19,3 +19,15 @@
   output:
     household_health_benefits: 1_500
     household_benefits: 1_500
+
+- name: flag on includes MSP limited-benefit cost
+  period: 2026
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    premium_tax_credit: 1_000
+    medicaid: 500
+    msp_cost: 2_434.8
+    snap: 0
+  output:
+    household_health_benefits: 3_934.8
+    household_benefits: 3_934.8

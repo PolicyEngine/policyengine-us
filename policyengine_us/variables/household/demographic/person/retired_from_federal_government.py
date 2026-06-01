@@ -6,5 +6,4 @@ class retired_from_federal_government(Variable):
     entity = Person
     label = "Retired from Federal Government"
     definition_period = YEAR
-    defined_for = "is_retired"
     default_value = False

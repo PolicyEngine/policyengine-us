@@ -311,10 +311,10 @@
     # annual copay = 30_000 * 0.05 = 1_500
     # Exempt 3QT Step 3 School Age = $44.97/wk
     # max annual = 44.97 * 52 = 2_338.44
-    # uncapped = max(5_000 - 1_500, 0) = 3_500
-    # annual benefit = min(3_500, 2_338.44) = 2_338.44
-    # monthly = 2_338.44 / 12 = 194.87
-    ri_ccap: 194.87
+    # capped = min(5_000, 2_338.44) = 2_338.44
+    # annual benefit = max(2_338.44 - 1_500, 0) = 838.44
+    # monthly = 838.44 / 12 = 69.87
+    ri_ccap: 69.87
 
 - name: Case 9, negative countable income does not inflate benefit.
   period: 2025-01

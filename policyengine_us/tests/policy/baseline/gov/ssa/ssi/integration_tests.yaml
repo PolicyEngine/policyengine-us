@@ -8,10 +8,12 @@
       adult1:
         age: 35
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 1_000 * 12  # $1,000/month
       adult2:
         age: 33
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
       child:
         age: 10
@@ -46,6 +48,7 @@
       adult1:
         age: 35
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
       adult2:
         age: 33
@@ -54,6 +57,7 @@
       child:
         age: 10
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -90,6 +94,7 @@
       child:
         age: 10
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -118,6 +123,7 @@
       adult1:
         age: 35
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 500 * 12  # $500/month
       adult2:
         age: 33
@@ -160,14 +166,17 @@
       adult1:
         age: 35
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 800 * 12  # $800/month
       adult2:
         age: 33
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 400 * 12  # $400/month
       child:
         age: 10
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -197,6 +206,7 @@
       adult1:
         age: 35
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
       adult2:
         age: 33
@@ -206,6 +216,7 @@
       child:
         age: 10
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -236,6 +247,7 @@
       parent:
         age: 35
         is_disabled: true  # Assuming parent is disabled to be SSI-eligible
+        meets_ssi_disability_criteria: true
         employment_income: 9_600  # $800/month
       child:
         age: 10
@@ -271,6 +283,7 @@
       adult2:
         age: 60
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -315,6 +328,7 @@
       adult2:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
     tax_units:
       tax_unit:
@@ -360,6 +374,7 @@
       adult2:
         age: 40
         is_disabled: true
+        meets_ssi_disability_criteria: true
         employment_income: 0
       child:
         age: 12

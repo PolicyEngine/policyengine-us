@@ -24,3 +24,10 @@
         members: [p1, p2]
   output:
     school_meal_countable_income: 30_500
+
+- name: Includes SSTB self-employment income.
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+  output:
+    school_meal_countable_income: 100_000

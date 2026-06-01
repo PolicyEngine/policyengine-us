@@ -16,5 +16,5 @@ class ct_ssp_unearned_income_disregard(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ct.dss.ssp.disregard
-        arrangement = person("ct_ssp_living_arrangement", period.this_year)
+        arrangement = person("ct_ssp_living_arrangement", period)
         return p.unearned[arrangement]

@@ -1,0 +1,1 @@
+- Removed non-geographic guards from input variables so they remain pure data inputs, aligned CHIP take-up with other take-up input flags, removed the obsolete CHIP take-up seed/rate controls, and added checks preventing input variables from using formulas, adds, subtracts, or non-geographic `defined_for` gates.
