@@ -21,9 +21,9 @@ class md_ccs_payment_rate(Variable):
         region = person.household("md_ccs_region", period)
 
         # Rate tables store UNIT_3 base rates (three units of service per day).
-        # COMAR 13A.14.06.11.B(3), .11.C(2), .11.D direct: multiply by
-        # unit_count / 3 to derive UNIT_2 (2/3) and UNIT_1 (1/3) rates.
-        unit_share = p.unit_count[service_unit] / 3
+        # COMAR 13A.14.06.11.B(3), .11.C(2), .11.D direct: scale by
+        # unit_count / UNIT_3 to derive UNIT_2 (2/3) and UNIT_1 (1/3) rates.
+        unit_share = p.unit_count[service_unit] / p.unit_count["UNIT_3"]
         center_rate = p.formal.licensed_center[region][age_group] * unit_share
         family_rate = p.formal.licensed_family[region][age_group] * unit_share
 

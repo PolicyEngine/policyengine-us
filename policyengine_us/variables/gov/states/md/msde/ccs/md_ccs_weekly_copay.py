@@ -29,6 +29,12 @@ class md_ccs_weekly_copay(Variable):
         # avoid the cycle through snap_dependent_care_deduction → childcare_expenses → md_ccs.
         is_snap = spm_unit("receives_snap", period)
         is_wic = add(spm_unit, period, ["receives_wic"]) > 0
+        # Chapter 525 of 2022 § 9.5-113(C)(D)(1)(III) also waives copays for
+        # Housing Choice Voucher (Section 8) recipients. We don't model that
+        # waiver at the moment: reading the computed housing_assistance would
+        # create a cycle (housing_assistance → hud_adjusted_income →
+        # childcare_expenses → md_ccs), and we have no cycle-safe HCV-receipt
+        # input yet.
         exempt = is_tca | receives_ssi | is_snap | is_wic
 
         # Weekly copay per child based on service unit (enum-keyed lookup)
