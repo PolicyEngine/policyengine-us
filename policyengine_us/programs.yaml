@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -474,6 +474,12 @@ programs:
         full_name: Arkansas School Readiness Assistance
         variable: ar_sra
         parameter_prefix: gov.states.ar.ade.oec.sra
+      - state: AL
+        status: partial
+        name: Alabama CCSP
+        full_name: Alabama Child Care Subsidy Program
+        variable: al_ccsp
+        parameter_prefix: gov.states.al.dhr.ccsp
       - state: CA
         status: complete
         name: CalWORKs childcare
@@ -751,6 +757,12 @@ programs:
         full_name: Minnesota Supplemental Aid
         variable: mn_msa
         parameter_prefix: gov.states.mn.dhs.msa
+      - state: NE
+        status: complete
+        name: Nebraska AABD
+        full_name: Nebraska Aid to the Aged, Blind, or Disabled
+        variable: ne_aabd
+        parameter_prefix: gov.states.ne.dhhs.aabd
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -1134,6 +1146,17 @@ programs:
     coverage: Chicago
     variable: il_cta_benefit
     parameter_prefix: gov.states.il.rta.cta
+
+  - id: ne_aabd
+    name: Nebraska AABD
+    full_name: Nebraska Aid to the Aged, Blind, or Disabled
+    category: Benefits
+    agency: DHHS
+    status: complete
+    coverage: NE
+    variable: ne_aabd
+    parameter_prefix: gov.states.ne.dhhs.aabd
+    verified_years: "2015-2025"
 
   - id: ne_childcare
     name: Nebraska child care subsidy

@@ -1,0 +1,60 @@
+description: Nebraska provides this amount as the monthly standard of need for households living independently, by household size, under the Aid to the Aged, Blind, or Disabled program.
+
+1:
+  2015-01-01: 491
+  2017-01-01: 505
+  2021-01-01: 564
+2:
+  2015-01-01: 778
+  2017-01-01: 799
+  2021-01-01: 887
+3:
+  2015-01-01: 964
+  2017-01-01: 989
+  2021-01-01: 1_109
+4:
+  2015-01-01: 1_155
+  2017-01-01: 1_186
+  2021-01-01: 1_336
+5:
+  2015-01-01: 1_346
+  2017-01-01: 1_383
+  2021-01-01: 1_563
+6:
+  2015-01-01: 1_537
+  2017-01-01: 1_580
+  2021-01-01: 1_790
+7:
+  2015-01-01: 1_728
+  2017-01-01: 1_777
+  2021-01-01: 2_017
+8:
+  2015-01-01: 1_919
+  2017-01-01: 1_974
+  2021-01-01: 2_244
+9:
+  2015-01-01: 2_110
+  2017-01-01: 2_171
+  2021-01-01: 2_471
+10:
+  2015-01-01: 2_301
+  2017-01-01: 2_368
+  2021-01-01: 2_698
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Nebraska AABD independent standard of need
+  breakdown:
+    - range(1, 11)
+  breakdown_label:
+    - Household size
+  reference:
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2021-01-01)
+      href: https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2017-01-01, Manual Letter #01-2017)
+      href: https://web.archive.org/web/20161221055507/https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: 469 NAC 469-000-211 AABD or SDP Standard of Need (effective 2015-01-01, Manual Letter #74-2014)
+      href: https://web.archive.org/web/20150907223322/https://dhhs.ne.gov/Documents/469-000-211.pdf
+    - title: SSA State Assistance Programs for SSI Recipients, January 2011 - Nebraska
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ne.pdf#page=2
