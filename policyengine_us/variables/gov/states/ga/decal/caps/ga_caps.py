@@ -46,9 +46,10 @@ class ga_caps(Variable):
         )
         bonus_rate = p.quality_rated.bonus_rate.calc(star_count)
         weighted_bonus = spm_unit.sum(max_weekly * bonus_rate)
-        effective_bonus_rate = where(
-            sum_max_weekly > 0,
-            weighted_bonus / sum_max_weekly,
-            0,
+        effective_bonus_rate = np.divide(
+            weighted_bonus,
+            sum_max_weekly,
+            out=np.zeros_like(weighted_bonus),
+            where=sum_max_weekly > 0,
         )
         return net_base * (1 + effective_bonus_rate)

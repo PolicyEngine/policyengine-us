@@ -7,13 +7,15 @@ class ga_caps_activity_eligible(Variable):
     label = "Eligible for Georgia CAPS based on activity requirements"
     definition_period = MONTH
     defined_for = StateCode.GA
-    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=34"
+    reference = "https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=33"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ga.decal.caps.activity_requirements
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        hours_worked = person("weekly_hours_worked", period.this_year)
+        # Use pre-labor-supply-response hours to avoid a CAPS → net income →
+        # labor supply response → hours → CAPS circularity (mirrors SNAP).
+        hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         meets_work_requirement = hours_worked >= p.weekly_hours
         # Per Policy Manual §6.8.1.1, the student exemption applies to parents
         # age 20 or younger; parents 21+ get a 2x credit-hour conversion but
