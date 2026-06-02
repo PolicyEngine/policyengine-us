@@ -20,6 +20,8 @@ class va_medicaid_lifc_locality_group(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
         p = parameters(period).gov.states.va.dmas.medicaid.lifc.localities
+        # City tokens absent from County cannot match these lists and use the
+        # Group I default.
         return select(
             [
                 np.isin(county, p.group1),
