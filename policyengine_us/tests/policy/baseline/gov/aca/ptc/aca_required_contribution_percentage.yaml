@@ -102,6 +102,14 @@
   output:
     aca_required_contribution_percentage: 0.0996
 
+- name: 2026 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0
+
 - name: 2018 ACA contribution percentage at 100 percent FPL.
   period: 2018
   absolute_error_margin: 0.0001
