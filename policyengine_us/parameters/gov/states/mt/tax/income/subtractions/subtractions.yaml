@@ -21,6 +21,8 @@ values:
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     - mt_disability_income_exclusion_person
+    # TODO: Remove this subtraction starting in 2029 because the federal
+    # Schedule 1-A deductions expire after 2028.
     - mt_federal_obbba_subtraction
 metadata:
   unit: list
