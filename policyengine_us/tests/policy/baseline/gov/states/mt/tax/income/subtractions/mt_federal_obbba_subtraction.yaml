@@ -69,3 +69,92 @@
   output:
     additional_senior_deduction: 0
     mt_federal_obbba_subtraction: 0
+
+- name: MFJ with both spouses 65+ — head receives the full $12K projection, spouse zero
+  # Both spouses qualify so the federal additional_senior_deduction
+  # doubles to $12_000; the head-only projection keeps mt_subtractions'
+  # Person-level sum from double-counting.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      spouse:
+        age: 68
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    additional_senior_deduction: 12_000
+    mt_federal_obbba_subtraction: [12_000, 0]
+
+- name: Senior phaseout — at $75K MAGI single, deduction is unphased
+  # OBBBA SEC. 70103 starts the 6% phaseout at $75K MAGI (single).
+  # At exactly $75K the deduction is still the full $6K.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 75_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    additional_senior_deduction: 6_000
+    mt_federal_obbba_subtraction: 6_000
+
+- name: Senior phaseout — fully phased out at $300K MAGI single
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    additional_senior_deduction: 0
+    mt_federal_obbba_subtraction: 0
+
+- name: Tipped worker (non-senior) — tip_income_deduction flows through to MT subtractions
+  # Exercises the tip_income_deduction branch of the Schedule 1-A sum,
+  # which the senior-only scenarios above never touch.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        tip_income: 8_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        tip_income_deduction_ssn_requirement_met: true
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    additional_senior_deduction: 0
+    tip_income_deduction: 8_000
+    mt_federal_obbba_subtraction: 8_000
