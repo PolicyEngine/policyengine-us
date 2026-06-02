@@ -1,3 +1,10 @@
+## [1.720.0] - 2026-06-02
+
+### Added
+
+- Added Alabama Child Care Subsidy Program (CCSP).
+
+
 ## [1.719.2] - 2026-06-01
 
 ### Fixed
