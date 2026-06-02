@@ -11,7 +11,19 @@ class ky_homestead_exemption(Variable):
     defined_for = "ky_homestead_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        p = parameters(period).gov.states.ky.tax.property.homestead_exemption
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        age = person("age", period.this_year)
+        is_disabled = person("is_disabled", period)
+        assessed_property_value = person("assessed_property_value", period)
+        qualifying_owner = (
+            ((age >= p.age_threshold) | is_disabled)
+            & head_or_spouse
+            & (assessed_property_value > 0)
+        )
+
         return min_(
-            add(tax_unit, period, ["assessed_property_value"]),
-            parameters(period).gov.states.ky.tax.property.homestead_exemption.amount,
+            tax_unit.sum(where(qualifying_owner, assessed_property_value, 0)),
+            p.amount,
         )

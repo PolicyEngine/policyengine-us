@@ -65,3 +65,28 @@
         state_code: KY
   output:
     ky_homestead_exemption_eligible: false
+
+- name: Case 5, senior head is ineligible when only a dependent owns property.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        assessed_property_value: 0
+      person2:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        assessed_property_value: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_homestead_exemption_eligible: false

@@ -14,10 +14,13 @@ class ky_homestead_exemption_eligible(Variable):
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         age = person("age", period.this_year)
+        # Kentucky requires total disability and disability payments; this is the
+        # closest available person-level proxy.
         is_disabled = person("is_disabled", period)
-        owns_assessed_property = add(tax_unit, period, ["assessed_property_value"]) > 0
+        assessed_property_value = person("assessed_property_value", period)
 
-        return (
-            tax_unit.any(((age >= p.age_threshold) | is_disabled) & head_or_spouse)
-            & owns_assessed_property
+        return tax_unit.any(
+            ((age >= p.age_threshold) | is_disabled)
+            & head_or_spouse
+            & (assessed_property_value > 0)
         )
