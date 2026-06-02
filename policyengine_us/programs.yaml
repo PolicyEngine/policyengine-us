@@ -1290,11 +1290,11 @@ programs:
     full_name: Orange County General Relief
     category: Benefits
     agency: Local
-    status: partial
+    status: complete
     coverage: Orange County
-    variable: ca_oc_general_relief_eligible
+    variable: ca_oc_general_relief
     parameter_prefix: gov.local.ca.oc.general_relief
-    notes: Eligibility, income, and resource screens only; monthly payment schedule and administrative-history rules are not modeled
+    notes: Monthly maximum aid payment by economic unit size and shared-housing situation (April 2015 / October 2016 schedule) net of countable income; component-value deductions for in-kind aid and administrative-history rules are not modeled
 
   - id: ca_riv_general_relief
     name: Riverside County General Relief

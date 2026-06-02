@@ -1,0 +1,87 @@
+- name: Single eligible adult with no income receives the full maximum aid payment.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+  output:
+    # MAP 355, no countable income: grant = 355.
+    ca_oc_general_relief: 355
+
+- name: Earnings below the maximum aid payment reduce the grant.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 300 * 12
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+  output:
+    # Gross earned 300/month; countable earned = 300 x (1 - 0.2) = 240.
+    # Grant = max(355 - 240, 0) = 115.
+    ca_oc_general_relief: 115
+
+- name: Earnings above the maximum aid payment yield a zero grant.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 600 * 12
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+  output:
+    # Gross earned 600/month; countable earned = 480 > MAP 355.
+    # Grant = max(355 - 480, 0) = 0.
+    ca_oc_general_relief: 0
+
+- name: Two-person economic unit with no income receives the size-2 maximum aid payment.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+  output:
+    # MAP size 2 = 569, no countable income.
+    ca_oc_general_relief: 569

@@ -1,4 +1,4 @@
-- name: A single adult citizen with resources below the limits passes the partial screen.
+- name: A single adult citizen with resources below the limits receives the maximum aid payment.
   period: 2026-01
   input:
     people:
@@ -18,6 +18,9 @@
     ca_oc_general_relief_aided_person_count: 1
     ca_oc_general_relief_resources_eligible: true
     ca_oc_general_relief_eligible: true
+    # EU size 1, no shared housing, no countable income.
+    ca_oc_general_relief_max_aid_payment: 355
+    ca_oc_general_relief: 355
 
 - name: An undocumented adult does not pass the partial screen.
   period: 2026-01
@@ -119,7 +122,7 @@
     ca_oc_general_relief_resources_eligible: false
     ca_oc_general_relief_eligible: false
 
-- name: Income is exposed without changing the partial screen because the MAP schedule is unavailable.
+- name: Income above the maximum aid payment yields a zero grant.
   period: 2026-01
   input:
     people:
@@ -136,8 +139,11 @@
         members: [person]
         ca_tanf: 0
   output:
+    # Countable income 800 exceeds the size-1 MAP (355), so the grant is 0,
+    # though the unit still passes the categorical screen.
     ca_oc_general_relief_countable_income: 800
     ca_oc_general_relief_eligible: true
+    ca_oc_general_relief: 0
 
 # Mapping the eligible population from real family inputs: only able-bodied,
 # childless, qualified-immigration adults with low assets pass the screen.
@@ -193,3 +199,31 @@
     # excluded "other type of public assistance" under Sec 20.4.b.
     ca_oc_general_relief_receives_other_cash_assistance: true
     ca_oc_general_relief_eligible: false
+
+- name: A single adult sharing a home with one roommate has the grant reduced for shared housing.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_oc: true
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        ca_tanf: 0
+      spm_unit2:
+        members: [person2]
+        ca_tanf: 0
+  output:
+    # Each one-person economic unit shares with 1 other person, so the size-1
+    # MAP (355) is reduced 15%: 355 x 0.85 = 301.75.
+    ca_oc_general_relief: [301.75, 301.75]

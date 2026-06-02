@@ -4,16 +4,17 @@ from policyengine_us.model_api import *
 class ca_oc_general_relief_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Partial eligibility screen for Orange County General Relief"
+    label = "Eligible for Orange County General Relief"
     definition_period = MONTH
     defined_for = "in_oc"
     reference = "https://www.ssa.ocgov.com/page/general-relief-regulations"
 
     def formula(spm_unit, period, parameters):
-        # Partial screen: models demographic (adults without minor children),
-        # immigration, public-assistance, and resource rules. The income limit
-        # and MAP payment amount are not modeled because Orange County does not
-        # publish the MAP schedule.
+        # Categorical screen: demographic (adults without minor children),
+        # immigration, public-assistance, and resource rules. Financial
+        # eligibility (income below the maximum aid payment) is applied in the
+        # benefit variable ca_oc_general_relief, which nets countable income
+        # against the MAP.
         demographic_eligible = spm_unit(
             "ca_oc_general_relief_demographic_eligible",
             period,
