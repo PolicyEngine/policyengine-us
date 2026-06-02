@@ -167,7 +167,7 @@
 
 # Post-2025 initial eligibility (IC 12-14-1-1.7; FSSA 3010.15.00).
 # Initial applicants must have countable net income below the maximum grant
-# and gross income at or below 35% FPG (50% from 2027-07-01). For Indiana the
+# and gross income below 35% FPG (50% from 2027-07-01). For Indiana the
 # net (maximum grant) standard binds before the looser 35% FPG gross screen.
 
 - name: Applicant family of 3 just below the maximum grant net standard in 2026
@@ -192,7 +192,7 @@
   output:
     in_tanf_countable_income_for_eligibility: 512
     in_tanf_countable_income_eligible: true
-    # Net ($512) < maximum grant ($513); gross ($512) <= 35% FPG ($777) -> eligible
+    # Net ($512) < maximum grant ($513); gross ($512) < gross standard ($778) -> eligible
 
 - name: Applicant family of 3 at the maximum grant net standard in 2026
   period: 2026-01
@@ -239,7 +239,7 @@
         state_code: IN
   output:
     in_tanf_countable_income_eligible: true
-    # Net ($500) < maximum grant ($513); gross ($500) <= 50% FPG ($1,165) -> eligible
+    # Net ($500) < maximum grant ($513); gross ($500) < 50% FPG -> eligible
 
 - name: Applicant family of 3 high earner fails both 2026 screens
   period: 2026-01
@@ -309,3 +309,73 @@
   output:
     in_tanf_countable_income_eligible: false
     # Enrolled: countable ($2,300) >= 100% FPG for 3 ($2,220.83) -> not eligible
+
+- name: Applicant family of 3 passes the published March 2026 gross standard
+  period: 2026-03
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        tanf_gross_earned_income:
+          2026-03: 260
+      person2:
+        age:
+          2026: 28
+        tanf_gross_earned_income:
+          2026-03: 260
+      person3:
+        age:
+          2026: 26
+        tanf_gross_earned_income:
+          2026-03: 260
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled:
+          2026-03: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code:
+          2026: IN
+  output:
+    in_tanf_gross_income: 780
+    in_tanf_countable_income_for_eligibility: 510
+    in_tanf_initial_gross_income_standard: 797
+    in_tanf_countable_income_eligible: true
+    # Gross ($780) < published standard ($797); net ($510) < maximum grant ($513).
+
+- name: Applicant family of 3 at the March 2026 gross standard is not eligible
+  period: 2026-03
+  input:
+    in_tanf_countable_income_for_eligibility:
+      2026-03: 510
+    in_tanf_gross_income:
+      2026-03: 797
+    spm_unit_size:
+      2026: 3
+    is_tanf_enrolled:
+      2026-03: false
+    state_code:
+      2026: IN
+  output:
+    in_tanf_initial_gross_income_standard: 797
+    in_tanf_countable_income_eligible: false
+    # Gross income must be strictly below the standard.
+
+- name: Enrolled family of 3 at the March 2026 FPG standard is not eligible
+  period: 2026-03
+  input:
+    in_tanf_countable_income_for_eligibility:
+      2026-03: 2_277
+    spm_unit_size:
+      2026: 3
+    is_tanf_enrolled:
+      2026-03: true
+    state_code:
+      2026: IN
+  output:
+    in_tanf_fpg: 2_277
+    in_tanf_countable_income_eligible: false
+    # Continuing net income must be strictly below the published standard.

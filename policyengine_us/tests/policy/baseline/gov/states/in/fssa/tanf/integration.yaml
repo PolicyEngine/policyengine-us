@@ -367,7 +367,7 @@
     in_tanf: 145
     # $320 - $175 = $145
 
-- name: Case 11, family of 3 no income receives 2024-07-01 maximum benefit in 2026.
+- name: Case 11, family of 3 no income receives 2025-07-01 maximum benefit in 2026.
   period: 2026-01
   input:
     people:
@@ -391,7 +391,7 @@
     in_tanf_payment_standard: 320
     # Standard of need (eligibility table) is unchanged
     in_tanf_maximum_benefit: 513
-    # Family of 3 maximum benefit (IC 12-14-2-5, effective 2024-07-01)
+    # Family of 3 maximum benefit (IC 12-14-2-5, effective 2025-07-01)
     in_tanf_countable_income_for_payment: 0
     in_tanf_countable_income_eligible: true
     in_tanf_payment_eligible: true
@@ -425,7 +425,7 @@
     in_tanf_countable_income_for_payment: 400
     in_tanf_countable_income_for_eligibility: 400
     in_tanf_countable_income_eligible: true
-    # Net ($400) < maximum grant ($513); gross ($400) <= 35% FPG -> eligible
+    # Net ($400) < maximum grant ($513); gross ($400) < 35% FPG -> eligible
     in_tanf_payment_eligible: true
     # $400 < maximum benefit ($513); above the old standard of need ($320)
     in_tanf_eligible: true

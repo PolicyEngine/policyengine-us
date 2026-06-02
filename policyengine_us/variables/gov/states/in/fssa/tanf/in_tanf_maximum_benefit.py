@@ -9,7 +9,6 @@ class in_tanf_maximum_benefit(Variable):
     definition_period = MONTH
     reference = (
         "https://iga.in.gov/laws/2025/ic/titles/12/#12-14-2-5",
-        "https://www.in.gov/fssa/dfr/files/SNAP-TANF-Transmittal2024.pdf",
         "https://www.in.gov/fssa/dfr/files/3000.pdf#page=7",
     )
     defined_for = StateCode.IN
