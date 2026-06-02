@@ -222,3 +222,25 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 25, medically frail adult is excluded from Medicaid community engagement.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_disabled: false
+    is_medically_frail_or_has_special_medical_needs_for_medicaid_ce: true
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 26, adult remains ineligible without the medically frail exclusion.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_disabled: false
+    is_medically_frail_or_has_special_medical_needs_for_medicaid_ce: false
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
