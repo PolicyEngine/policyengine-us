@@ -39,12 +39,13 @@
 
 - name: IA CDCC inherits the federal Schedule 1-A senior deduction (HoH age 75)
   # Scenario from issue #8563 / PolicyEngine/policyengine-taxsim#953.
-  # Federal taxable income $7,166 falls in the < $10K bracket (75% rate);
-  # legacy IA taxable income $13,166 would fall in the $10K–$20K bracket
+  # Federal taxable income (~$7,166) falls in the < $10K bracket (75% rate);
+  # legacy IA taxable income (~$13,166) would fall in the $10K–$20K bracket
   # (65% rate). The fix routes the post-2023 CDCC through the consolidated
-  # taxable income so OBBBA Schedule 1-A flows through.
+  # taxable income so OBBBA Schedule 1-A flows through. Pinning the legacy
+  # ia_taxable_income guards that the two measures land in different brackets.
   period: 2025
-  absolute_error_margin: 1
+  absolute_error_margin: 0.4
   input:
     people:
       head:
@@ -65,5 +66,6 @@
   output:
     taxable_income: 7_166
     ia_taxable_income_consolidated: 7_166
+    ia_taxable_income: 13_166
     cdcc_potential: 690
     ia_cdcc: 517.5
