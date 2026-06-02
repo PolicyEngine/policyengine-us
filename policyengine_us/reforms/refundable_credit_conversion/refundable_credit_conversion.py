@@ -10,9 +10,8 @@ def create_refundable_credit_conversion() -> Reform:
 
       * per-taxpayer (each head of tax unit and spouse if MFJ)
       * per-CTC-qualifying dependent
-      * per-other-dependent (EITC-qualifying child who does NOT meet
-        the CTC definition — e.g., children aged 17-18 or full-time
-        students 19-23)
+      * per-other-dependent (any tax-unit dependent who does NOT meet
+        the CTC definition)
       * per-tax-unit (household)
       * per-earner earnings subsidy (rate times capped earnings per
         worker, where earnings follow the EITC convention of wages
@@ -65,15 +64,13 @@ def create_refundable_credit_conversion() -> Reform:
             else:
                 ctc_dependent_amount = 0
 
-            # Per-other-dependent credit (EITC-qualifying children who
-            # are not CTC-qualifying — e.g., children aged 17-18 or
-            # full-time students aged 19-23). Computed as a population-
-            # aggregate count difference; the max_ guard handles the
-            # rare case where a CTC kid lacks the EITC identification
-            # requirements (ctc_count > eitc_count).
+            # Per-other-dependent credit (all tax-unit dependents who
+            # are not CTC-qualifying). Computed as a population-
+            # aggregate count difference; the max_ guard keeps the
+            # amount non-negative in edge cases.
             if p.credit.use_other_dependent_credit:
-                eitc_count = tax_unit("eitc_child_count", period)
-                other_count = max_(eitc_count - ctc_count, 0)
+                dependent_count = tax_unit("tax_unit_dependents", period)
+                other_count = max_(dependent_count - ctc_count, 0)
                 other_dependent_amount = other_count * p.credit.per_other_dependent
             else:
                 other_dependent_amount = 0
