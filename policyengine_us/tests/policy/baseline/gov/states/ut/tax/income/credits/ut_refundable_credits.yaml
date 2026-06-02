@@ -1,0 +1,24 @@
+- name: UT has no refundable credits on Form TC-40 — the Homeowner/Renter Relief is administered on Form TC-90CB
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+        social_security_retirement: 12_123.58
+        rent: 18_363.48
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: UT
+  output:
+    # vt_renter_credit-style structural pattern: the credit is non-zero
+    # but it does not appear on the income tax return — it flows through
+    # the household-level state_property_tax_credits aggregate instead.
+    ut_homeowner_renter_relief: 429
+    ut_refundable_credits: 0
+    ut_income_tax: 0
+    taxsim_state_property_tax_credit: 429
