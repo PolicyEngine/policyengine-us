@@ -1,1 +1,0 @@
-Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
