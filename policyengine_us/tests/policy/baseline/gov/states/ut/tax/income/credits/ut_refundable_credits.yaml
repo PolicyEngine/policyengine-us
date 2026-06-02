@@ -1,4 +1,7 @@
 - name: UT has no refundable credits on Form TC-40 — the Homeowner/Renter Relief is administered on Form TC-90CB
+  # Scenario from issue #8561 / PolicyEngine/policyengine-taxsim#947.
+  # TAXSIM-35 and TaxAct (Form TC-40) both return $0 siitax for this
+  # household; PE-US previously returned -$429.
   period: 2025
   input:
     people:
@@ -22,3 +25,66 @@
     ut_refundable_credits: 0
     ut_income_tax: 0
     taxsim_state_property_tax_credit: 429
+
+- name: Non-UT household does not pick up Utah refundable credits via the aggregate
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+        social_security_retirement: 12_123.58
+        rent: 18_363.48
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: NH
+  output:
+    ut_homeowner_renter_relief: 0
+    ut_refundable_credits: 0
+
+- name: Pre-2025 UT household excludes ut_homeowner_renter_relief from ut_refundable_credits
+  # The aggregate parameter only starts 2025-01-01; pre-2025 the list
+  # is unset, so the relief never appeared in TC-40 refundable credits.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+        social_security_retirement: 12_123.58
+        rent: 18_363.48
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: UT
+  output:
+    ut_refundable_credits: 0
+
+- name: Non-zero UT income tax — rewiring leaves typical filers' liability unchanged
+  # Higher-wage UT household with no rent: ut_homeowner_renter_relief is
+  # zero, ut_income_tax is positive, and ut_refundable_credits stays 0.
+  # Guards against silently changing TC-40 outcomes for non-relief filers.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: UT
+  output:
+    ut_homeowner_renter_relief: 0
+    ut_refundable_credits: 0
+    ut_income_tax: 4_500
