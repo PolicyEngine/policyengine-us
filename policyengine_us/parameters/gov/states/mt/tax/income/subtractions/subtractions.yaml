@@ -12,6 +12,16 @@ values:
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
     - mt_disability_income_exclusion_person
+  2025-01-01:
+    # Section 15-30-2120 starts from federal taxable income, so federal
+    # OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified
+    # tip and overtime exclusions, and passenger-vehicle loan interest)
+    # flow through into MT taxable income via mt_federal_obbba_subtraction.
+    - mt_interest_exemption_person
+    - mt_tuition_subtraction_person
+    - mt_old_age_subtraction
+    - mt_disability_income_exclusion_person
+    - mt_federal_obbba_subtraction
 metadata:
   unit: list
   period: year

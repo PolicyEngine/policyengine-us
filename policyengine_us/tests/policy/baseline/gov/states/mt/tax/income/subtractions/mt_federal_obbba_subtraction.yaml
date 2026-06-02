@@ -1,0 +1,71 @@
+- name: MT subtracts the federal OBBBA $6K senior deduction from taxable income (HoH age 75)
+  # Scenario from issue #8562 / PolicyEngine/policyengine-taxsim#948.
+  # Per Mont. Code Ann. § 15-30-2120, MT taxable income starts from
+  # federal taxable income (Form 1040 Line 15), which already nets the
+  # Schedule 1-A senior deduction.
+  period: 2025
+  absolute_error_margin: 5
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+        taxable_interest_income: 17_510.73
+        taxable_pension_income: 12_218.48
+        social_security_retirement: 16_731.73
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 3_500
+    households:
+      household:
+        members: [head, child]
+        state_name: MT
+  output:
+    additional_senior_deduction: 6_000
+    # Per-person; head receives the projection, dependent child sees 0.
+    mt_federal_obbba_subtraction: [6_000, 0]
+    mt_taxable_income_joint: [31_666, 0]
+    mt_income_tax: 1_488
+
+- name: Pre-2025 MT household does not see the OBBBA Schedule 1-A subtraction
+  # The mt_federal_obbba_subtraction entry only appears in the subtractions
+  # parameter list from 2025-01-01 onward, matching the OBBBA effective date.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    # The variable computes the projected federal value (which is zero
+    # pre-2025) but the parameter list does not include it.
+    mt_federal_obbba_subtraction: 0
+
+- name: Non-senior MT household sees zero subtraction from this variable
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_name: MT
+  output:
+    additional_senior_deduction: 0
+    mt_federal_obbba_subtraction: 0
