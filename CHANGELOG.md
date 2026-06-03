@@ -1,3 +1,11 @@
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
 ## [1.720.4] - 2026-06-02
 
 ### Fixed
