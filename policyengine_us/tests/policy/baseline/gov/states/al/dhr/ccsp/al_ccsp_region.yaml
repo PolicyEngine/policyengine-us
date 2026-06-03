@@ -1,0 +1,128 @@
+# AL CCSP region tests (Household, YEAR, Enum)
+# Maps county -> region using counties.yaml lists.
+
+- name: Madison County is HUNTSVILLE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: MADISON_COUNTY_AL
+  output:
+    al_ccsp_region: HUNTSVILLE
+
+- name: Tuscaloosa County is TUSCALOOSA.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: TUSCALOOSA_COUNTY_AL
+  output:
+    al_ccsp_region: TUSCALOOSA
+
+- name: Mobile County is MOBILE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: MOBILE_COUNTY_AL
+  output:
+    al_ccsp_region: MOBILE
+
+- name: DeKalb County is FT_PAYNE.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: DEKALB_COUNTY_AL
+  output:
+    al_ccsp_region: FT_PAYNE
+
+- name: Jefferson County is BIRMINGHAM.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_ccsp_region: BIRMINGHAM
+
+- name: Talladega County is TALLADEGA.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: TALLADEGA_COUNTY_AL
+  output:
+    al_ccsp_region: TALLADEGA
+
+- name: Montgomery County is MONTGOMERY.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: MONTGOMERY_COUNTY_AL
+  output:
+    al_ccsp_region: MONTGOMERY
+
+- name: Houston County is DOTHAN.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: HOUSTON_COUNTY_AL
+  output:
+    al_ccsp_region: DOTHAN
+
+- name: Lee County is OPELIKA.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        county_str: LEE_COUNTY_AL
+  output:
+    al_ccsp_region: OPELIKA

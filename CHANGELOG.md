@@ -1,3 +1,48 @@
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
+## [1.720.4] - 2026-06-02
+
+### Fixed
+
+- Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
+
+
+## [1.720.3] - 2026-06-02
+
+### Fixed
+
+- Flow the federal OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) through into Montana taxable income, since Mont. Code Ann. § 15-30-2120 starts from federal taxable income.
+
+
+## [1.720.2] - 2026-06-02
+
+### Fixed
+
+- Remove the Utah Homeowner's/Renter's Relief from Utah income tax refundable credits, since it is administered on Form TC-90CB rather than Form TC-40. The credit remains in the household-level state property tax credits aggregate.
+- Apply ACA premium tax credit formulas to years with historical SLCSP premiums.
+
+
+## [1.720.1] - 2026-06-02
+
+### Fixed
+
+- Relocate the Rhode Island contrib reform tests to the lighter states shard so the two states-shard CI runners are balanced.
+- Isolate refundable credit conversion contrib tests per-file so the other-shard-1 batch no longer exceeds the CI runner memory cap.
+
+
+## [1.720.0] - 2026-06-02
+
+### Added
+
+- Added Alabama Child Care Subsidy Program (CCSP).
+
+
 ## [1.719.2] - 2026-06-01
 
 ### Fixed

@@ -1,0 +1,26 @@
+- name: All toggles on with all amounts at zero — sanity case, returns zero
+  # Guards against NaN, sign flips, or divide-by-zero anomalies if all
+  # five component toggles are simultaneously enabled but every amount
+  # / rate / cap is zero. A future formula change that introduces a
+  # division should fail this case before it ships.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    people:
+      filer:
+        age: 35
+        employment_income: 10_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    flat_refundable_credit: 0
