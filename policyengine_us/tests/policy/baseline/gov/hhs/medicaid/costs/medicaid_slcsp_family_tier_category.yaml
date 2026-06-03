@@ -5,6 +5,7 @@
       person1:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -22,6 +23,7 @@
       person1:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1]
@@ -38,9 +40,11 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -57,9 +61,11 @@
     people:
       person1:
         age: 50
+        medicaid_enrolled: true
       person2:
         age: 29
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -69,3 +75,25 @@
         state_code: NY
   output:
     medicaid_slcsp_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+
+- name: Case 5, New York child with non-Medicaid parents uses child-only tier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+      person2:
+        age: 40
+      person3:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_category: CHILD_ONLY

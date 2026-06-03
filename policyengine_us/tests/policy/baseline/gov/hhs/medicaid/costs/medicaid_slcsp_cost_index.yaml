@@ -5,14 +5,18 @@
     people:
       adult1:
         age: 40
+        medicaid_enrolled: true
       adult2:
         age: 38
+        medicaid_enrolled: true
       child1:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
       child2:
         age: 8
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [adult1, adult2, child1, child2]
