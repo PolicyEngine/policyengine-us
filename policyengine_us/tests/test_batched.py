@@ -11,6 +11,7 @@ import gc
 import time
 import argparse
 import re
+import select
 from pathlib import Path
 from typing import List, Dict
 
@@ -88,17 +89,10 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
-            # refundable_credit_conversion's override of
-            # income_tax_refundable_credits pulls every federal
-            # refundable credit (eitc / refundable_ctc / aotc /
-            # recovery rebate / refundable payroll tax credit /
-            # cdcc-in-2021) into the subprocess's variable graph when
-            # integration.yaml asserts on it. Bundled with the catch-all
-            # this pushes peak memory past the runner cap, surfacing as
-            # "shutdown signal" mid-batch. Its own batch keeps the
-            # light batch under the cap.
-            "refundable_credit_conversion",
         }
+        # Some folders contain individual YAMLs that are each expensive
+        # enough to need their own subprocess.
+        PER_FILE = {"refundable_credit_conversion"}
 
         subdirs = sorted(
             item
@@ -107,14 +101,23 @@ def split_into_batches(
         )
         root_files = sorted(base_path.glob("*.yaml"))
 
-        # One batch per heavy subdir (if present).
-        batches = [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
+        # One batch per file for per-file folders, then one batch per
+        # heavy subdir (if present).
+        batches = [
+            [str(file)]
+            for subdir in subdirs
+            if subdir.name in PER_FILE
+            for file in sorted(subdir.rglob("*.yaml"))
+        ]
+        batches += [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
         # Catch-all batch for everything else — light subdirs and root
         # yaml files. Auto-collects any newly added folders/files so
         # they're exercised without extra config.
         light_paths = [
-            str(subdir) for subdir in subdirs if subdir.name not in HEAVY
+            str(subdir)
+            for subdir in subdirs
+            if subdir.name not in HEAVY and subdir.name not in PER_FILE
         ] + [str(f) for f in root_files]
         if light_paths:
             batches.append(light_paths)
@@ -285,6 +288,9 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     python_exe = sys.executable
 
     start_time = time.time()
+    last_output_time = start_time
+    last_heartbeat_time = start_time
+    heartbeat_interval = 30
 
     # Build command - direct policyengine-core with timeout protection
     cmd = (
@@ -307,39 +313,62 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,  # Line buffered
+        bufsize=0,
     )
 
     try:
         test_completed = False
         test_passed = False
         output_lines = []
+        output_text = ""
 
         # Monitor output line by line
         while True:
-            line = process.stdout.readline()
-            if not line:
-                # No more output, check if process is done
+            ready, _, _ = select.select([process.stdout], [], [], 0.1)
+            if not ready:
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
                     break
+                now = time.time()
+                if now - last_heartbeat_time >= heartbeat_interval:
+                    elapsed = now - start_time
+                    quiet_for = now - last_output_time
+                    print(
+                        f"    Still running {batch_name} after "
+                        f"{elapsed:.0f}s ({quiet_for:.0f}s since last output)...",
+                        flush=True,
+                    )
+                    last_heartbeat_time = now
                 # Process still running but no output
                 time.sleep(0.1)
                 continue
 
-            # Print line in real-time
-            print(line, end="")
+            chunk = os.read(process.stdout.fileno(), 4096)
+            if not chunk:
+                if process.poll() is not None:
+                    break
+                continue
+
+            # Print output in real-time, including partial pytest progress
+            # lines such as dots that do not end with newlines.
+            line = chunk.decode(errors="replace")
+            print(line, end="", flush=True)
+            last_output_time = time.time()
+            last_heartbeat_time = last_output_time
             output_lines.append(line)
+            output_text += line
 
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+", line):
+            if re.search(
+                r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
+                output_text,
+            ):
                 test_completed = True
                 # Check if tests passed by parsing actual failure count
-                failed_match = re.search(r"(\d+) failed", line)
+                failed_match = re.search(r"(\d+) failed", output_text)
                 if failed_match:
                     failed_count = int(failed_match.group(1))
                     test_passed = failed_count == 0
@@ -497,7 +526,23 @@ def main():
     # position rather than requiring manual re-assignment per runner.
     if shard_count is not None:
         all_batch_count = len(batches)
+        ri_batch = (
+            [b for b in batches if Path(b[0]).name == "ri"]
+            if str(test_path).endswith("contrib/states")
+            else []
+        )
         batches = batches[shard_idx - 1 :: shard_count]
+        if ri_batch:
+            # RI's CTC reform sweeps ~11 parameter combinations, each cloning
+            # the full tax-benefit system (~10 min total) — far heavier than
+            # any other state. In the plain alphabetical stride it lands on
+            # shard 1 with the other heavy states (ny, ct, ut), making shard 1
+            # ~2x shard 2 and gating the contrib stage. Relocate just RI to the
+            # last shard; every other state keeps its positional assignment.
+            # (Same spirit as the explicit NY split in the Makefile.)
+            batches = [b for b in batches if Path(b[0]).name != "ri"]
+            if shard_idx == shard_count:
+                batches = batches + ri_batch
         print(
             f"Sharding: running shard {shard_idx}/{shard_count} "
             f"({len(batches)} of {all_batch_count} batches)"

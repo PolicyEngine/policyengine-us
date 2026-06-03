@@ -13,6 +13,14 @@
   output:
     is_parent_for_medicaid: true
 
+- name: 1 dependent, at FPL limit, eligible in CA
+  period: 2022
+  input:
+    tax_unit_count_dependents: 1
+    medicaid_income_level: 1.14
+  output:
+    is_parent_for_medicaid: true
+
 - name: 1 dependent, over FPL limit, ineligible in CA
   period: 2022
   input:
