@@ -169,3 +169,39 @@
         state_code: TX
   output:
     commodity_supplemental_food_program_eligible: true
+
+- name: Kansas senior in a CSFP covered county is eligible
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person]
+        state_code: KS
+        county_str: JOHNSON_COUNTY_KS
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Kansas senior outside CSFP covered counties is not eligible
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+        school_meal_fpg_ratio: 1.0
+    households:
+      household:
+        members: [person]
+        state_code: KS
+        county_str: ALLEN_COUNTY_KS
+  output:
+    commodity_supplemental_food_program_eligible: false

@@ -1,0 +1,50 @@
+- name: Kansas household in a FAQ-listed CSFP county
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: KS
+        county_str: JOHNSON_COUNTY_KS
+  output:
+    ks_dcf_csfp_county_eligible: true
+
+- name: Kansas household in a spreadsheet-listed CSFP county
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: KS
+        county_str: GRANT_COUNTY_KS
+  output:
+    ks_dcf_csfp_county_eligible: true
+
+- name: Kansas household outside CSFP covered counties
+  period: 2025
+  input:
+    people:
+      person:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: KS
+        county_str: ALLEN_COUNTY_KS
+  output:
+    ks_dcf_csfp_county_eligible: false
