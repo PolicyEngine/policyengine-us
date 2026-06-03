@@ -20,7 +20,7 @@ class az_ccap_age_group(Variable):
     reference = "https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.az.hhs.ccap
+        p = parameters(period).gov.states.az.hhs.ccap.reimbursement
         age = person("age", period.this_year)
         month = period.start.month
         is_summer = (month >= p.school_age_summer.start_month) & (

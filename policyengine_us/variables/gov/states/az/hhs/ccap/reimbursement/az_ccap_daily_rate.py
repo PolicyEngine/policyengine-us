@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.az.hhs.ccap.az_ccap_provider_type import (
+from policyengine_us.variables.gov.states.az.hhs.ccap.reimbursement.az_ccap_provider_type import (
     AZCCAPProviderType,
 )
 
@@ -17,7 +17,7 @@ class az_ccap_daily_rate(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.az.hhs.ccap.rates
+        p = parameters(period).gov.states.az.hhs.ccap.reimbursement.rates
         provider_type = person("az_ccap_provider_type", period)
         age_group = person("az_ccap_age_group", period)
         quality = person("az_ccap_quality_enhanced_provider", period)
