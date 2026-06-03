@@ -618,3 +618,35 @@
     ca_marin_general_relief_personal_property_eligible: false
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
+
+- name: Case 20, rental income above the grant limit is income-ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        rental_income: 6_000  # 500/month
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Rental income counts toward gross income. Net = 6,000/yr = 500/month,
+    # which exceeds the $387 single grant limit.
+    ca_marin_general_relief_gross_income: 500
+    ca_marin_general_relief_income_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0

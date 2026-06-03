@@ -5,14 +5,35 @@ values:
     - irs_employment_income
     - self_employment_income
     - sstb_self_employment_income
+    # Income from rental property.
+    - rental_income
+    # Interest, dividends, capital gains, estates, and trusts.
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - estate_income
+    # Retirement and pension income.
+    - pension_income
+    - retirement_distributions
+    - railroad_benefits
     # Unemployment Insurance Benefits.
     - unemployment_compensation
     # State Disability Insurance.
     - ca_state_disability_insurance
+    # Disability and workers' compensation benefits.
+    - disability_benefits
+    - workers_compensation
     # Veterans benefits.
     - veterans_benefits
+    # Support payments and other cash assistance.
+    - alimony_income
+    - child_support_received
+    - gi_cash_assistance
+    - strike_benefits
     # Social Security retirement, survivors, and disability benefits.
     - social_security
+    - survivor_benefits
+    - life_insurance_benefits
     # SSI/SSP is excluded: recipients are categorically ineligible for General
     # Relief, so SSI is not counted as income for the grant computation.
 metadata:
