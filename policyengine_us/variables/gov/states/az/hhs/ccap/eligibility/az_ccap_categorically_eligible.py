@@ -17,7 +17,9 @@ class az_ccap_categorically_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        employed = person("weekly_hours_worked", period.this_year) > 0
+        # Pre-labor-supply-response hours so a reform's behavioral change in hours
+        # worked cannot feed back into this eligibility gate.
+        employed = person("weekly_hours_worked_before_lsr", period.this_year) > 0
         # R6-5-4914(A)(1)-(A)(2): Cash Assistance / Jobs participants qualify without
         # regard to income only when they need child care to maintain employment, so
         # we require an employed head/spouse. (Jobs-program participation is folded

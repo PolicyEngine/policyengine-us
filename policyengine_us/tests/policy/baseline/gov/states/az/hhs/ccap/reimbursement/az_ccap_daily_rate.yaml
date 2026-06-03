@@ -246,3 +246,60 @@
         state_code: AZ
   output:
     az_ccap_daily_rate: 20
+
+- name: Case 16, special needs child without a quality provider falls back to the base rate.
+  # The flat Special Needs Rate ($89.81) applies only at a quality-enhanced provider;
+  # without quality the child gets the regular center preschool base rate ($42.00).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+    az_ccap_daily_rate: 42.00
+
+- name: Case 17, relative provider with the quality flag still gets the flat relative rate.
+  # Relatives are excluded from the quality multiplier, so a quality flag does not
+  # raise the $15 relative rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: RELATIVE
+        az_ccap_quality_enhanced_provider: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 15
+
+- name: Case 18, certified family quality enhanced rate applies the multiplier.
+  # $30 preschool base x 1.4 quality multiplier = $42.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+        az_ccap_quality_enhanced_provider: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_daily_rate: 42.00

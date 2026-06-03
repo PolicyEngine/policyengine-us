@@ -31,3 +31,24 @@
   output:
     # $42 daily rate x 15 attending days = $630.
     az_ccap_max_reimbursement: 630
+
+- name: Case 3, whole-year reimbursement applies the summer rate May through July.
+  # A school-age (age 7) child at a center attending 10 days/month all year.
+  # School-year months (Aug-Apr, 9 months) reimburse at $25/day; summer months
+  # (May-Jul, 3 months) at $35/day. The whole-year period exercises the seasonal
+  # split through the monthly rollup:
+  #   9 x $25 x 10 + 3 x $35 x 10 = $2,250 + $1,050 = $3,300.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_attending_days_per_month: 10
+        az_ccap_provider_type: CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_max_reimbursement: 3_300

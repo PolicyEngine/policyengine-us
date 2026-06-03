@@ -1,0 +1,46 @@
+- name: Case 1, disabled eligible child is a special needs child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+
+- name: Case 2, disabled child who is not an eligible child is not a special needs child.
+  # A 13-year-old is not an eligible child, so disability alone is insufficient
+  # (pins the AND with az_ccap_eligible_child).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        childcare_attending_days_per_month: 20
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: false
+
+- name: Case 3, eligible child who is not disabled is not a special needs child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        is_disabled: false
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: false

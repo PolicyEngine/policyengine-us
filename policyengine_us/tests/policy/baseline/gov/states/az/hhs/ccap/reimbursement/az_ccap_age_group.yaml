@@ -76,3 +76,30 @@
         state_code: AZ
   output:
     az_ccap_age_group: SCHOOL_AGE_SCHOOL_YEAR
+
+- name: Case 7, age 5 is the top of the preschool group.
+  # Pins the preschool/school-age boundary (age < 6) against an off-by-one flip.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: PRESCHOOL
+
+- name: Case 8, age 6 is the bottom of the school-age group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_age_group: SCHOOL_AGE_SCHOOL_YEAR

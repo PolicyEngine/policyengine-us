@@ -23,7 +23,9 @@ class az_ccap_activity_eligible(Variable):
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         # R6-5-4912(A)(1): employment, full or part-time, is a qualifying activity.
-        working = person("weekly_hours_worked", period.this_year) > 0
+        # Use pre-labor-supply-response hours so a reform's behavioral change in
+        # hours worked cannot feed back into this eligibility gate.
+        working = person("weekly_hours_worked_before_lsr", period.this_year) > 0
         # R6-5-4912(A)(3) requires adults using education as their activity to also
         # work an average of >=20 hours/week (already captured by `working`), so
         # education on its own only qualifies teen parents (A)(4): a parent under
@@ -36,4 +38,12 @@ class az_ccap_activity_eligible(Variable):
         )
         unable_to_care = person("is_disabled", period.this_year)
         eligible_person = working | teen_parent_in_school | unable_to_care
-        return spm_unit.sum(head_or_spouse & ~eligible_person) == 0
+        all_parents_active = spm_unit.sum(head_or_spouse & ~eligible_person) == 0
+        # R6-5-4912(A)(9): a CPS-referred or CPS/DDD foster case plan is itself an
+        # eligible NEED, satisfying the activity-or-need test for the family
+        # without an employment requirement. (R6-5-4914(A)(3) likewise serves
+        # these families without regard to income.)
+        protective_or_foster_need = spm_unit.any(
+            person("receives_or_needs_protective_services", period.this_year)
+        ) | spm_unit.any(person("is_in_foster_care", period))
+        return all_parents_active | protective_or_foster_need

@@ -160,3 +160,45 @@
   output:
     # $63,600/year = $5,300/month, above the family-size-2 level 7 threshold ($5,202).
     az_ccap_fee_level: 0
+
+- name: Case 9, income exactly at the level 1 threshold is fee level 1.
+  # The fee level uses `income <= threshold`, so a family-size-2 income of exactly
+  # $1,499/month falls in level 1 (pins the inclusive boundary).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 17_988
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $17,988/year = $1,499/month = the family-size-2 level 1 threshold exactly.
+    az_ccap_fee_level: 1
+
+- name: Case 10, income one dollar above the level 1 threshold is fee level 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $18,000/year = $1,500/month, just above level 1 ($1,499) and at/below level 2 ($1,763).
+    az_ccap_fee_level: 2

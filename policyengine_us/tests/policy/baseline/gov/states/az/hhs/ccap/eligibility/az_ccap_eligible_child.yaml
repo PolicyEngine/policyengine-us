@@ -54,3 +54,19 @@
         state_code: AZ
   output:
     az_ccap_eligible_child: false
+
+- name: Case 5, child aged 12 is the highest eligible age.
+  # R6-5-4901(27): an eligible child is birth through 12 years of age, so age 12
+  # must still qualify (pins the < 13 boundary against an off-by-one flip).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_eligible_child: true
