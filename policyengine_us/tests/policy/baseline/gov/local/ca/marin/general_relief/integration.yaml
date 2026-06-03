@@ -520,3 +520,101 @@
     ca_marin_general_relief_max_grant: 387
     ca_marin_general_relief_eligible: true
     ca_marin_general_relief: 387
+
+- name: Case 17, otherwise-eligible single adult outside Marin County is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: SHASTA_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Same person who would qualify in Marin (citizen, 30, no income/assets) but
+    # located in Shasta County. `defined_for = in_marin` zeroes the benefit and
+    # eligibility end-to-end for any non-Marin county.
+    in_marin: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 18, married couple with liquid assets over the couple limit is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+        bank_account_assets: 900  # > 800 couple limit
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Cash assets 900 > 800 married limit -> resource-ineligible. Exercises the
+    # married -> couple-limit path end-to-end.
+    ca_marin_general_relief_liquid_asset_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 19, single adult with personal property over the limit is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        personal_property: 700  # > 600 single limit
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Personal property 700 > 600 single limit -> personal-property-ineligible.
+    ca_marin_general_relief_personal_property_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0

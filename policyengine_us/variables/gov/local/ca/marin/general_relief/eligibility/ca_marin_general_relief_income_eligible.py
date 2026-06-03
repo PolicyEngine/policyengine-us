@@ -19,5 +19,8 @@ class ca_marin_general_relief_income_eligible(Variable):
         )
         monthly_net_income = net_income / MONTHS_IN_YEAR
         # The Standards require income at or below the maximum cash aid amount.
+        # Standards Sec II.I applies gross income to applicants and net income
+        # to recipients; we apply net income to everyone (matches LA County GR).
+        # We don't track GR applicant-vs-recipient status at the moment.
         grant = spm_unit("ca_marin_general_relief_max_grant", period)
         return monthly_net_income <= grant
