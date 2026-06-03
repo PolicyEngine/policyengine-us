@@ -1,0 +1,39 @@
+# Liquid asset limit: $400 single, $800 married couple (effective 2025-07-01).
+- name: Single filer limit is 400
+  period: 2026
+  input:
+    people:
+      person1: {}
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 400
+
+- name: Married couple limit is 800
+  period: 2026
+  input:
+    people:
+      person1: {}
+      person2: {}
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 800

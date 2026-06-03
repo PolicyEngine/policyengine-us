@@ -1,0 +1,24 @@
+description: Marin County counts these income sources as gross income under the General Relief program.
+values:
+  2025-07-01:
+    # Income from a job of any type.
+    - irs_employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    # Unemployment Insurance Benefits.
+    - unemployment_compensation
+    # State Disability Insurance.
+    - ca_state_disability_insurance
+    # Veterans benefits.
+    - veterans_benefits
+    # Social Security retirement, survivors, and disability benefits.
+    - social_security
+    # SSI/SSP is excluded: recipients are categorically ineligible for General
+    # Relief, so SSI is not counted as income for the grant computation.
+metadata:
+  unit: list
+  period: year
+  label: Marin County General Relief income sources
+  reference:
+    - title: Marin County General Relief Program Policies and Standards, Section II.I Income
+      href: https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11

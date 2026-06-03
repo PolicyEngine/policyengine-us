@@ -1,0 +1,91 @@
+# Personal property eligibility: value at or below the limit qualifies
+# (Standards phrase the limit as "not more than" the threshold).
+- name: Property below the limit is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        personal_property: 599
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_personal_property_limit: 600
+  output:
+    ca_marin_general_relief_personal_property_eligible: true
+
+- name: Property at the limit is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        personal_property: 600
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_personal_property_limit: 600
+  output:
+    ca_marin_general_relief_personal_property_eligible: true
+
+- name: Property above the limit is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        personal_property: 601
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_personal_property_limit: 600
+  output:
+    ca_marin_general_relief_personal_property_eligible: false
+
+# Couple limit is $1,200; the inclusive boundary holds at the couple threshold.
+- name: Couple property at the couple limit is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        personal_property: 1_200
+      person2:
+        personal_property: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_personal_property_limit: 1_200
+  output:
+    ca_marin_general_relief_personal_property_eligible: true
+
+- name: Couple property above the couple limit is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        personal_property: 1_201
+      person2:
+        personal_property: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_personal_property_limit: 1_200
+  output:
+    ca_marin_general_relief_personal_property_eligible: false

@@ -1,0 +1,57 @@
+# Qualified immigration statuses: citizens, LPRs, and humanitarian statuses
+# approximating PRUCOL are eligible; UNDOCUMENTED, DACA, and TPS are not.
+- name: Citizens are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: CITIZEN
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: true
+
+- name: Legal permanent residents are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: true
+
+- name: Refugees are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: REFUGEE
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: true
+
+- name: Asylees are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: ASYLEE
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: true
+
+- name: Undocumented immigrants are ineligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: false
+
+- name: DACA recipients are ineligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: DACA
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: false
+
+- name: TPS holders are ineligible
+  period: 2026-01
+  input:
+    in_marin: true
+    immigration_status: TPS
+  output:
+    ca_marin_general_relief_immigration_status_eligible_person: false

@@ -1,0 +1,54 @@
+# Unit-level immigration eligibility: at least one applicant must qualify.
+- name: One eligible person makes the unit eligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_immigration_status_eligible: true
+
+- name: All eligible persons make the unit eligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_immigration_status_eligible: true
+
+- name: No eligible person makes the unit ineligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: false
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_immigration_status_eligible: false

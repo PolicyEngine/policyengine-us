@@ -1,0 +1,23 @@
+from policyengine_us.model_api import *
+
+
+class ca_marin_general_relief_income_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    label = (
+        "Eligible for the Marin County General Relief based on the income requirements"
+    )
+    definition_period = MONTH
+    defined_for = "in_marin"
+    reference = "https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11"
+
+    def formula(spm_unit, period, parameters):
+        # Net income is YEAR-defined; divide to a monthly figure to compare
+        # against the monthly grant.
+        net_income = add(
+            spm_unit, period.this_year, ["ca_marin_general_relief_net_income"]
+        )
+        monthly_net_income = net_income / MONTHS_IN_YEAR
+        # The Standards require income at or below the maximum cash aid amount.
+        grant = spm_unit("ca_marin_general_relief_max_grant", period)
+        return monthly_net_income <= grant

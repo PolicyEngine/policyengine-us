@@ -1,0 +1,522 @@
+# End-to-end Marin County General Relief scenarios (post-2025-07-01 rules).
+# Veterans benefits are used for income because they are non-taxable and not
+# subject to payroll tax, so net income equals gross income (no mandatory
+# withholdings) and the net-income math is exact.
+
+- name: Case 1, single eligible adult with low income receives a partial grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        veterans_benefits: 1_200  # 100/month
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Gross = 1,200/yr; no withholdings -> net = 1,200/yr = 100/month.
+    # Single grant 387 - 100 = 287.
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief_max_grant: 387
+    ca_marin_general_relief_base_amount: 287
+    ca_marin_general_relief: 287
+
+- name: Case 2, married eligible couple with no income receives the couple grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Couple grant is 636 (NOT 2 x 387 = 774); no income -> full grant.
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief_max_grant: 636
+    ca_marin_general_relief: 636
+
+- name: Case 3, income exactly at the grant boundary is eligible but pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        veterans_benefits: 4_644  # 387/month
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Net = 4,644/yr = 387/month == grant 387 -> income-eligible (inclusive).
+    # Benefit floors at 0: max(387 - 387, 0) = 0.
+    ca_marin_general_relief_income_eligible: true
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 0
+
+- name: Case 4, income above the grant is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        immigration_status: CITIZEN
+        veterans_benefits: 6_000  # 500/month
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Net = 6,000/yr = 500/month > grant 387 -> income-ineligible.
+    ca_marin_general_relief_income_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 5, liquid assets over the limit make the unit resource-ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        ssi: 0
+        bank_account_assets: 1_000  # > 400 single limit
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Cash assets 1,000 > 400 single limit -> resource-ineligible.
+    ca_marin_general_relief_liquid_asset_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 6, SSI recipient is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+        immigration_status: CITIZEN
+        ssi: 500
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # SSI/SSP recipients are categorically barred from General Relief.
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 7, undocumented immigration status is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # No qualifying immigration status -> immigration-ineligible.
+    ca_marin_general_relief_immigration_status_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 8, single with very negative self-employment income caps at the single grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        self_employment_income: -60_000_000  # -$5M/month
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Net income floors at 0 (max(gross - withholdings, 0)), so the benefit
+    # caps at the single grant rather than inflating to 387 - (-5M) = 5M+.
+    ca_marin_general_relief_net_income: 0
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 387
+
+- name: Case 9, married couple with very negative self-employment income caps at the couple grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        self_employment_income: -60_000_000  # -$5M/month
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Net income floors at 0, so the benefit caps at the couple grant (636),
+    # not 636 - (-5M) = 5M+.
+    ca_marin_general_relief_net_income: 0
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 636
+
+- name: Case 10, single with zero income receives the full single grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # No income -> full single grant.
+    ca_marin_general_relief_max_grant: 387
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 387
+
+- name: Case 11, married couple income one dollar below the couple grant pays one dollar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        veterans_benefits: 7_620  # 635/month
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Net = 7,620/yr = 635/month < couple grant 636 -> eligible.
+    # Benefit: 636 - 635 = 1.
+    ca_marin_general_relief_income_eligible: true
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 1
+
+- name: Case 12, married couple income exactly at the couple grant is eligible but pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        veterans_benefits: 7_632  # 636/month
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Net = 7,632/yr = 636/month == couple grant 636 -> eligible (inclusive).
+    # Benefit floors at 0: max(636 - 636, 0) = 0.
+    ca_marin_general_relief_income_eligible: true
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 0
+
+- name: Case 13, married couple income one dollar above the couple grant is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        veterans_benefits: 7_644  # 637/month
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Net = 7,644/yr = 637/month > couple grant 636 -> income-ineligible.
+    ca_marin_general_relief_income_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 14, head exactly at age 18 is eligible end-to-end.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Age 18 meets the >= 18 threshold; no income -> full single grant.
+    ca_marin_general_relief_age_eligible: true
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 387
+
+- name: Case 15, head under age 18 is ineligible end-to-end.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Age 17 fails the >= 18 threshold -> ineligible.
+    ca_marin_general_relief_age_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 16, married couple with one immigration-ineligible spouse uses the single grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 43
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Only one spouse is immigration-eligible, so the couple grant does not
+    # apply; the unit gets the single rate. At least one eligible member keeps
+    # the unit immigration-eligible. No income -> full single grant.
+    ca_marin_general_relief_immigration_status_eligible: true
+    ca_marin_general_relief_max_grant: 387
+    ca_marin_general_relief_eligible: true
+    ca_marin_general_relief: 387
