@@ -1,0 +1,29 @@
+- name: Case 1, Medicaid long-term care applicant above the home equity limit is ineligible for long-term care.
+  period: 2028
+  input:
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_eligible: true
+    is_medicaid_long_term_care_eligible: false
+
+- name: Case 2, Medicaid long-term care applicant at the home equity limit is eligible for long-term care.
+  period: 2028
+  input:
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_000
+  output:
+    is_medicaid_eligible: true
+    is_medicaid_long_term_care_eligible: true
+
+- name: Case 3, person not otherwise Medicaid eligible is not eligible for long-term care services.
+  period: 2028
+  input:
+    medicaid_category: NONE
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_000
+  output:
+    is_medicaid_eligible: false
+    is_medicaid_long_term_care_eligible: false

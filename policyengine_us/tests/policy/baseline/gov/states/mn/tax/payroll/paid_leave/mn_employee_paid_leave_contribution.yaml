@@ -1,0 +1,29 @@
+- name: Minnesota Paid Leave employee contribution is included in employee payroll tax.
+  period: 2026
+  input:
+    employment_income: 8_000
+    state_code: MN
+  output:
+    mn_paid_leave_taxable_wages: 8_000
+    mn_employee_paid_leave_contribution: 35.20
+    mn_employee_state_payroll_tax: 35.20
+    employee_state_payroll_tax: 35.20
+    employee_payroll_tax: 647.20
+
+- name: Minnesota Paid Leave employee contribution is not in effect before 2026.
+  period: 2025
+  input:
+    employment_income: 8_000
+    state_code: MN
+  output:
+    mn_employee_paid_leave_contribution: 0
+    mn_employee_state_payroll_tax: 0
+
+- name: Minnesota Paid Leave taxable wages use the rounded Social Security wage base.
+  period: 2026
+  input:
+    employment_income: 200_000
+    state_code: MN
+  output:
+    mn_paid_leave_taxable_wages: 185_000
+    mn_employee_paid_leave_contribution: 814

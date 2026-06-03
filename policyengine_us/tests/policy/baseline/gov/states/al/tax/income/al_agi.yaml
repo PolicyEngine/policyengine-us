@@ -1,0 +1,7 @@
+- name: SSTB self-employment income is included in Alabama AGI
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+    state_code: AL
+  output:
+    al_agi: 100_000

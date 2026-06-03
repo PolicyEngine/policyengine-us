@@ -1,0 +1,85 @@
+# AL CCSP §3.3.1(vi) copay-waiver protective-service category (SPMUnit, MONTH, bool).
+# Narrower than al_ccsp_protective_services (the §2.2.2(f) ELIGIBILITY
+# definition, which includes homelessness). The §3.3.1(vi) COPAY waiver
+# covers Protective Service / Foster Care / EHS / TANF-Other Relative /
+# Special Needs only; foster care is the modeled member. Homelessness is
+# excluded (§3.3.1(iii) box unchecked).
+
+- name: Foster child triggers the §3.3.1(vi) copay-waiver category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_protective_services: true
+
+- name: Child receiving protective services triggers the §3.3.1(vi) copay category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_protective_services: true
+
+- name: Homeless-only household does NOT trigger the §3.3.1(vi) copay category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        is_homeless: true
+  output:
+    al_ccsp_copay_protective_services: false
+
+- name: Family with neither foster nor homeless does not trigger the category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_copay_protective_services: false

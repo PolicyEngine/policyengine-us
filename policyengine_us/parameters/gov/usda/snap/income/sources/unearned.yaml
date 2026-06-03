@@ -22,7 +22,10 @@ values:
     # (iii)
     - child_support_received
     - alimony_income
-    # (iv) is scholarships, which we don't model
+    - financial_assistance
+    - survivor_benefits
+    # (iv) educational assistance is countable only after educational
+    # exclusions. Keep it out until the excluded share is modeled.
     # (v)
     - dividend_income
     - interest_income

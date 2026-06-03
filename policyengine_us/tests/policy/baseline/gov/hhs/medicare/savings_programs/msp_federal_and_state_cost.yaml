@@ -1,0 +1,45 @@
+- name: Case 1, QMB cost uses the regular federal Medicaid share.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    # CA regular FMAP is 50%; total MSP cost is $5,334.80.
+    msp_federal_cost: 2_667.4
+    msp_state_cost: 2_667.4
+
+- name: Case 2, QI cost is federally financed within allocation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QI
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    msp_federal_cost: 2_434.8
+    msp_state_cost: 0
+
+- name: Case 3, full Medicaid enrollee has no separate MSP federal or state cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: true
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    msp_federal_cost: 0
+    msp_state_cost: 0

@@ -11,7 +11,7 @@ class ss_covered_earnings_this_year(Variable):
 
     def formula(person, period, parameters):
         employment_income = person("employment_income", period)
-        self_employment_income = person("self_employment_income", period)
+        self_employment_income = person("total_self_employment_income", period)
 
         total_earnings = employment_income + self_employment_income
 

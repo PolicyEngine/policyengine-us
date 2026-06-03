@@ -20,6 +20,14 @@ class net_capital_gain(Variable):
     def formula(tax_unit, period, parameters):
         lt_capital_gain = max_(0, add(tax_unit, period, ["long_term_capital_gains"]))
         st_capital_loss = max_(0, -add(tax_unit, period, ["short_term_capital_gains"]))
-        net_cap_gain = max_(0, lt_capital_gain - st_capital_loss)
+        investment_income_election = add(
+            tax_unit,
+            period,
+            ["investment_income_elected_form_4952"],
+        )
+        net_cap_gain = max_(
+            0,
+            lt_capital_gain - st_capital_loss - investment_income_election,
+        )
         qual_div_income = add(tax_unit, period, ["qualified_dividend_income"])
         return net_cap_gain + qual_div_income

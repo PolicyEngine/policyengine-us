@@ -1,0 +1,762 @@
+# Arkansas SRA integration tests
+#
+# Reference parameters (Nov 1, 2025 rate sheet):
+#   AR SMI (FFY 2026, uprated to 2026-01-01, 4-person): $95,201.95/year
+#   SMI(2)=95,201.95*0.68=$64,737.33; SMI(3)=95,201.95*0.84=$79,969.64
+#   85% income limit: SMI*0.85
+#   Tier percentages in test comments are computed against the uprated SMI.
+#
+# Income tier brackets (% SMI): LE_40 (<=40), GT_40_LE_60 (40<x<=60), GT_60 (>60)
+# Daily base rates (Statewide REGULAR): Infant FT $36, Toddler FT $35,
+#   Preschool FT $33, School-Aged FT $28; PT half (Infant $18, Toddler $17.50,
+#   Preschool $16.50, School-Aged $14).
+# Daily base rates (Benton/Washington REGULAR): Infant FT $38, Toddler FT $37,
+#   Preschool FT $33, School-Aged FT $28; PT (Infant $19, Toddler $18.50, etc.).
+# State share % by (age_category, time, tier):
+#   Toddler/Preschool/Infant FT: 1.00 / 0.80 / 0.70 (Preschool FT mid-tier 0.70)
+#   School-Aged FT: 0.80 / 0.50 / 0.30 (always copay)
+#
+# All scenarios use childcare_attending_days_per_month = 22 (typical weekday count).
+# Pre-subsidy expenses are set high enough that the state-payment cap binds.
+#
+# 4% copay cap (CCDF State Plan §3.1.1): family copay sum is capped at 4% of
+# monthly countable income. When the rate-sheet copays exceed the cap, the
+# state covers the gap (cap_savings added to subsidy).
+
+- name: Case 1, LI single mother, 1 toddler, full-time, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # 90,280 * 0.68 * 0.50 = $30,695 (50% SMI -> GT_40_LE_60 tier)
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler FT GT_40_LE_60, Statewide:
+    #   daily_state_payment = $28, monthly = $616 (uncapped subsidy at cap)
+    #   monthly_copay = $7 * 22 = $154
+    #   monthly countable income = $30,695 / 12 = $2,557.92
+    #   4% cap = $102.32 -> cap_savings = $154 - $102.32 = $51.68
+    #   ar_sra = $616 + $51.68 = $667.68
+    ar_sra: 667.68
+
+- name: Case 2, LI two-parent, 1 infant, full-time, Benton/Washington zone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 30
+        # 90,280 * 0.84 * 0.80 = $60,668 (80% SMI of 3-person SMI -> GT_60 tier)
+        employment_income: 60_668
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        weekly_hours_worked: 30
+        immigration_status: CITIZEN
+      person3:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+        county_str: BENTON_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Infant FT GT_60, Benton/Washington:
+    #   daily_state_payment = $26.60, monthly = $585.20 (uncapped at cap)
+    #   monthly_copay = $11.40 * 22 = $250.80
+    #   monthly countable income = $60,668 / 12 = $5,055.67
+    #   4% cap = $202.23 -> cap_savings = $250.80 - $202.23 = $48.57
+    #   ar_sra = $585.20 + $48.57 = $633.77
+    ar_sra: 633.77
+
+- name: Case 3, LI single parent, 1 preschooler, FT, Statewide, no-copay floor at LE_40.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # 90,280 * 0.68 * 0.35 = $21,486.66 (35% SMI -> LE_40 tier)
+        employment_income: 21_487
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Preschool, Statewide, FT, LE_40 (no-copay tier):
+    #   base = $33, share = 1.00, daily state payment = $33.00
+    #   monthly state payment = 33 * 22 = $726
+    ar_sra: 726
+
+- name: Case 4, ESS Year 1 (post-TEA 6 months, 22 hr/wk), 1 toddler, FT, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 26
+        weekly_hours_worked: 22
+        # 90,280 * 0.68 * 0.30 = $18,417 (30% SMI -> LE_40 tier)
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 6
+        ar_tea: 0
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler, Statewide, FT, LE_40 (no-copay tier):
+    #   base = $35, share = 1.00, daily state payment = $35.00
+    #   monthly state payment = 35 * 22 = $770
+    ar_sra: 770
+
+- name: Case 5, ESS Year 2 (post-TEA 18 months, 26 hr/wk), 1 toddler, FT, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 27
+        weekly_hours_worked: 26
+        # 90,280 * 0.68 * 0.45 = $27,625.69 (45% SMI -> GT_40_LE_60 tier)
+        employment_income: 27_626
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ar_was_tea_recipient: true
+        ar_months_since_tea_exit: 18
+        ar_tea: 0
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler FT GT_40_LE_60, Statewide (same rate-sheet cell as Case 1):
+    #   monthly countable income = $27,626 / 12 = $2,302.17
+    #   4% cap = $92.09 -> cap_savings = $154 - $92.09 = $61.91
+    #   ar_sra = $616 + $61.91 = $677.91
+    ar_sra: 677.91
+
+- name: Case 6, family income above 85 percent SMI gets zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        # Well above 85% SMI annual cap
+        employment_income: 100_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+    ar_sra: 0
+
+- name: Case 7, AR resident in pre-SRA period gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: false
+    ar_sra: 0
+
+- name: Case 8, non-AR household (state_code CA) gets zero benefit despite otherwise meeting criteria.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    is_ar_sra_eligible: false
+    ar_sra: 0
+
+- name: Case 9, LI single parent with toddler in SN2 special-needs care, Statewide FT.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+        ar_sra_care_type: SN2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Statewide / Toddler / SN2 / FT base = $49, share LE_40 = 1.00
+    # daily state payment = $49.00, monthly = $49 * 22 = $1078
+    ar_sra: 1078
+
+- name: Case 10, low pre-subsidy expense binds before state payment cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Annual $3,600 = $300/month, well below the $770 monthly cap
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler Statewide FT LE_40: cap = $770/mo, copay = $0
+    # subsidy = min(max(300 - 0, 0), 770) = $300 (expense binds)
+    ar_sra: 300
+
+- name: Case 11, mixed-eligibility household with one eligible child and one over-age child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+      person3:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Only the 4-year-old is age-eligible; 13-year-old contributes $0
+    # Preschool Statewide FT LE_40: base $33, share 1.00
+    # monthly state payment = $33 * 22 = $726
+    ar_sra: 726
+
+- name: Case 12, eligible child with zero attending days produces zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # attending_days = 0 -> monthly_max_state_payment = 0
+    # subsidy = min(max(expense - 0, 0), 0) = 0
+    ar_sra: 0
+
+- name: Case 13, school-aged child at LE_40 SMI confirms 80 percent state share through to benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # School-Aged FT LE_40, Statewide (school-aged always has copay):
+    #   daily_state_payment = $28 * 0.80 = $22.40, monthly = $492.80 (uncapped)
+    #   monthly_copay = $5.60 * 22 = $123.20
+    #   monthly countable income = $18,417 / 12 = $1,534.75
+    #   4% cap = $61.39 -> cap_savings = $123.20 - $61.39 = $61.81
+    #   ar_sra = $492.80 + $61.81 = $554.61
+    ar_sra: 554.61
+
+- name: Case 14, part-time infant care, LI parent, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        # PT (below 30 hr full-time threshold)
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Statewide Infant PT REGULAR base = $18, share LE_40 = 1.00
+    # daily state payment = $18.00, monthly = $18 * 22 = $396
+    ar_sra: 396
+
+- name: Case 15, NIGHT_WEEKEND care, toddler at LE_40 SMI, FT, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+        ar_sra_care_type: NIGHT_WEEKEND
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler NIGHT_WEEKEND FT, Statewide, LE_40:
+    #   base = $38.50, share = 1.00 -> copay = $0
+    #   monthly state payment = $38.50 * 22 = $847
+    ar_sra: 847
+
+- name: Case 16, SN1 care, toddler at LE_40 SMI, FT, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+        ar_sra_care_type: SN1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler SN1 FT, Statewide, LE_40 (SN1 rates match REGULAR for toddler):
+    #   base = $35, share = 1.00 -> copay = $0
+    #   monthly state payment = $35 * 22 = $770
+    ar_sra: 770
+
+- name: Case 17, SN3 care, toddler at LE_40 SMI, FT, Statewide.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+        ar_sra_care_type: SN3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Toddler SN3 FT, Statewide, LE_40 (SN3 base = $49, premium tier):
+    #   base = $49, share = 1.00 -> copay = $0
+    #   monthly state payment = $49 * 22 = $1078
+    ar_sra: 1078
+
+- name: Case 18, two-child cap-binding case demonstrates 4% copay ceiling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # 3-person SMI = $75,835.20; 50% = $37,918 (GT_40_LE_60 tier)
+        employment_income: 37_918
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Two toddlers, FT GT_40_LE_60, Statewide:
+    #   per-child daily_state_payment = $28, monthly = $616 each (uncapped)
+    #   per-child monthly_copay = $154, total uncapped copay = $308
+    #   monthly countable income = $37,918 / 12 = $3,159.83
+    #   4% cap = $126.39 -> cap_savings = $308 - $126.39 = $181.61
+    #   total uncapped subsidy = $1,232
+    #   ar_sra = $1,232 + $181.61 = $1,413.61
+    ar_sra: 1413.61
+
+- name: Case 19, eligible family with zero pre-subsidy expenses gets zero subsidy (clamp guard).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # GT_40_LE_60 tier
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # total_expense = 0; the min_(uncapped_subsidy + cap_savings, total_expense)
+    # clamp keeps the subsidy from inflating beyond actual cost.
+    ar_sra: 0
+
+- name: Case 20, negative self-employment income clamps countable income at 0 (regression guard).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        # Self-employment loss; total countable income would be negative.
+        self_employment_income: -20_000
+        employment_income: 5_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    is_ar_sra_eligible: true
+    # Negative income -> LE_40 tier (share=1.00, copay=0) -> cap_savings=0.
+    # Toddler Statewide FT LE_40: monthly state payment = $35 * 22 = $770.
+    ar_sra: 770

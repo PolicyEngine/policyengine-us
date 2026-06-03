@@ -88,6 +88,16 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
+            # refundable_credit_conversion's override of
+            # income_tax_refundable_credits pulls every federal
+            # refundable credit (eitc / refundable_ctc / aotc /
+            # recovery rebate / refundable payroll tax credit /
+            # cdcc-in-2021) into the subprocess's variable graph when
+            # integration.yaml asserts on it. Bundled with the catch-all
+            # this pushes peak memory past the runner cap, surfacing as
+            # "shutdown signal" mid-batch. Its own batch keeps the
+            # light batch under the cap.
+            "refundable_credit_conversion",
         }
 
         subdirs = sorted(
@@ -487,7 +497,23 @@ def main():
     # position rather than requiring manual re-assignment per runner.
     if shard_count is not None:
         all_batch_count = len(batches)
+        ri_batch = (
+            [b for b in batches if Path(b[0]).name == "ri"]
+            if str(test_path).endswith("contrib/states")
+            else []
+        )
         batches = batches[shard_idx - 1 :: shard_count]
+        if ri_batch:
+            # RI's CTC reform sweeps ~11 parameter combinations, each cloning
+            # the full tax-benefit system (~10 min total) — far heavier than
+            # any other state. In the plain alphabetical stride it lands on
+            # shard 1 with the other heavy states (ny, ct, ut), making shard 1
+            # ~2x shard 2 and gating the contrib stage. Relocate just RI to the
+            # last shard; every other state keeps its positional assignment.
+            # (Same spirit as the explicit NY split in the Makefile.)
+            batches = [b for b in batches if Path(b[0]).name != "ri"]
+            if shard_idx == shard_count:
+                batches = batches + ri_batch
         print(
             f"Sharding: running shard {shard_idx}/{shard_count} "
             f"({len(batches)} of {all_batch_count} batches)"

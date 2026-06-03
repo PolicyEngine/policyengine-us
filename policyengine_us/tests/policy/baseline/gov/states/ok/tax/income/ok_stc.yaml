@@ -146,3 +146,36 @@
     # Exactly at $20,000 limit = eligible
     # 1 exemption * $40 = $40
     ok_stc: 40
+
+- name: OK STC - 2024 - capital losses offset capital gains
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        short_term_capital_gains: -6_155.5
+        long_term_capital_gains: 9_356.39
+        dividend_income: 3_048.11
+        interest_income: 775.49
+        social_security: 12_258.43
+        is_tax_unit_head: true
+      person2:
+        age: 58
+        short_term_capital_gains: -6_155.5
+        long_term_capital_gains: 9_356.39
+        dividend_income: 3_048.11
+        interest_income: 775.49
+        social_security: 12_258.43
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Net capital gains are $6,401.78, putting gross income below the
+    # elderly $50,000 limit and restoring the $40-per-person credit.
+    ok_gross_income: 38_565.84
+    ok_stc: 80

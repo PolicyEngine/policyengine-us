@@ -14,7 +14,7 @@ Verifies that:
 import numpy as np
 import pytest
 from policyengine_us import Simulation
-from policyengine_us.variables.household.income.spm_unit.spm_unit_spm_threshold import (
+from policyengine_us.variables.household.income.spm_unit.spm_unit_reference_spm_threshold import (
     LATEST_PUBLISHED_SPM_THRESHOLD_YEAR,
     _reference_threshold_array,
 )
@@ -23,7 +23,7 @@ from policyengine_us.variables.household.income.spm_unit.spm_unit_tenure_type im
 )
 from spm_calculator.equivalence_scale import spm_equivalence_scale
 from spm_calculator.forecast import HISTORICAL_THRESHOLDS
-from spm_calculator.geoadj import get_cd_geoadj
+from spm_calculator.geoadj import get_cd_geoadj, get_housing_share
 
 
 def _cpi_u():
@@ -108,7 +108,11 @@ def test_formula_respects_composition_change_between_years():
 
     sim = Simulation(situation=situation)
     expected = current_base * current_equiv
+    got_reference = float(sim.calculate("spm_unit_reference_spm_threshold", YEAR)[0])
+    got_unadjusted = float(sim.calculate("spm_unit_unadjusted_spm_threshold", YEAR)[0])
     got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
+    assert got_reference == pytest.approx(current_base, rel=1e-4)
+    assert got_unadjusted == pytest.approx(expected, rel=1e-4)
     assert got == pytest.approx(expected, rel=1e-4)
 
 
@@ -158,7 +162,19 @@ def test_formula_uses_congressional_district_geographic_adjustment():
 
     sim = Simulation(situation=situation)
     got = float(sim.calculate("spm_unit_spm_threshold", YEAR)[0])
-    expected = base * equiv * geoadj
+    got_unadjusted = float(sim.calculate("spm_unit_unadjusted_spm_threshold", YEAR)[0])
+    got_housing_portion = float(
+        sim.calculate("spm_unit_spm_threshold_housing_portion", YEAR)[0]
+    )
+    unadjusted = base * equiv
+    housing_share = get_housing_share("owner_with_mortgage")
+    expected_housing_portion = unadjusted * (geoadj + housing_share - 1)
+    expected = unadjusted * geoadj
+    assert got_unadjusted == pytest.approx(unadjusted, rel=1e-5)
+    assert got_housing_portion == pytest.approx(
+        expected_housing_portion,
+        rel=1e-5,
+    )
     assert got == pytest.approx(expected, rel=1e-5)
 
 

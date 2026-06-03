@@ -1,0 +1,44 @@
+- name: New York family applies the family-tier share to the cost index.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      adult1:
+        age: 40
+      adult2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child1, child2]
+    households:
+      household:
+        members: [adult1, adult2, child1, child2]
+        state_code: NY
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # Two-adults-with-children NY multiplier (2.85) x base 1,000, split over 4.
+    medicaid_slcsp_cost_index: 712.5
+
+- name: Texas individual uses the age-rated index.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # Base 1,000 x default age-40 curve multiplier (1.6706).
+    medicaid_slcsp_cost_index: 1_670.6

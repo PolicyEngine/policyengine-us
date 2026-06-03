@@ -1,0 +1,141 @@
+# WV CCAP overall eligibility tests
+# Combines: eligible child + income eligible + activity eligible
+
+- name: Case 1, eligible child and income and activity.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Child age 5 is under the 13-year limit.
+    # Income $24,000 is below 185% FPL for a family of 2 ($39,127.50).
+    # Parent works 30 hours per week, meeting the 20-hour activity test.
+    wv_ccap_eligible: true
+
+- name: Case 2, no eligible child means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 30
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Child age 15 >= 13, not disabled -> no eligible child
+    wv_ccap_eligible: false
+
+- name: Case 3, income too high means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Income above 185% FPL for family of 2 (185% × $21,150 = $39,127.50/yr).
+        employment_income: 60_000
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $60,000/yr is above 185% FPL for a family of 2 ($39,127.50) → not income eligible.
+    wv_ccap_eligible: false
+
+- name: Case 4, parent not meeting activity hours means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 10
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Parent works 10 hrs < 20 minimum, not student -> not activity eligible
+    wv_ccap_eligible: false
+
+- name: Case 5, two-parent family both meeting activity requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        weekly_hours_worked: 25
+      person2:
+        age: 28
+        employment_income: 12_000
+        weekly_hours_worked: 20
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # Both parents work 20 hours per week, meeting the activity test.
+    # Combined income $30,000 is below 185% FPL for a family of 3.
+    # Child age 3 is under the 13-year child age limit.
+    wv_ccap_eligible: true
