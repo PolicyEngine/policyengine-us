@@ -107,16 +107,39 @@
     # head_or_spouse & ~eligible_person sum is nonzero and the unit fails.
     az_ccap_activity_eligible: false
 
-- name: Case 6, teen parent under 20 in school without work is activity eligible.
+- name: Case 6, teen parent under 20 in secondary school without work is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 18
+        weekly_hours_worked: 0
+        is_in_secondary_school: true
+        own_children_in_household: 1
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(4): teen parents under age 20 in secondary school qualify via
+    # education without a work requirement.
+    az_ccap_activity_eligible: true
+
+- name: Case 7, adult college student without work is not activity eligible.
   period: 2026-01
   input:
     people:
       person1:
-        age: 18
+        age: 22
         weekly_hours_worked: 0
         is_full_time_student: true
       person2:
-        age: 1
+        age: 2
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -125,5 +148,6 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    # R6-5-4912(A)(4): teen parents under age 20 qualify via education without work.
-    az_ccap_activity_eligible: true
+    # College is not secondary school, and the adult does not work, so the
+    # education exception does not apply (R6-5-4912(A)(3)-(4)).
+    az_ccap_activity_eligible: false
