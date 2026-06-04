@@ -1,31 +1,31 @@
-- name: Kansas household receives the monthly KUSF Lifeline supplement
+- name: Case 1, Kansas household receives the monthly KUSF Lifeline supplement.
   period: 2025-01
   input:
     people:
-      person:
+      person1:
         age: 35
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: KS
   output:
     ks_lifeline_supplement: 7.77
 
-- name: Non-Kansas household does not receive the Kansas supplement
+- name: Case 2, non-Kansas household does not receive the Kansas supplement.
   period: 2025-01
   input:
     people:
-      person:
+      person1:
         age: 35
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1]
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: MO
   output:
     ks_lifeline_supplement: 0
