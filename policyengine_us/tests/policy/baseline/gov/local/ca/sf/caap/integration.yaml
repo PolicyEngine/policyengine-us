@@ -334,3 +334,33 @@
     ca_sf_caap_income_eligible: false
     ca_sf_caap_eligible: false
     ca_sf_caap: 0
+
+- name: Case 13, in-kind never inflates the benefit when cash already leaves under $59.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+        social_security: 6_480  # 540/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_food_provided_in_kind: true
+  output:
+    # End-to-end over-pay guard (SEC. 20.7-24): cash income of $540/month already
+    # leaves grant_after_income = 578 - 540 = 38, below the $59 floor. In-kind
+    # food (231) drops cash_grant to 0, but the floor is capped at the cash
+    # entitlement (min(38, 59) = 38). The benefit equals $38 (the no-in-kind
+    # amount), NOT $59 -- proving in-kind does not increase the benefit.
+    ca_sf_caap_income_in_kind: 231
+    ca_sf_caap_countable_income: 540
+    ca_sf_caap_eligible: true
+    ca_sf_caap: 38

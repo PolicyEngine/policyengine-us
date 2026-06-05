@@ -193,3 +193,115 @@
     # 581, 0) = 0 < $59, so the $59 floor pays.
     ca_sf_caap_income_in_kind: 581
     ca_sf_caap: 59
+
+- name: Case 9, in-kind cannot inflate the grant when cash already leaves under $59.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+        social_security: 6_480  # 540/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_food_provided_in_kind: true
+  output:
+    # Cash already reduces the grant below $59: grant_after_income = 578 - 540 =
+    # 38. In-kind food (231) drops cash_grant to max(38 - 231, 0) = 0. The $59
+    # floor is CAPPED at grant_after_income (min(38, 59) = 38), so in-kind cannot
+    # raise the payment above the $38 cash entitlement (SEC. 20.7-24).
+    ca_sf_caap_income_in_kind: 231
+    ca_sf_caap_countable_income: 540
+    ca_sf_caap: 38
+
+- name: Case 10, zero cash income with in-kind at or above the grant pays the full $59 floor.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # Genuine floor population: no cash income, so grant_after_income = 578.
+    # In-kind = 812 >= the $578 grant, so cash_grant = 0. floor = min(578, 59) =
+    # 59, which is fully payable (SEC. 20.7-24 branch 1).
+    ca_sf_caap_income_in_kind: 812
+    ca_sf_caap: 59
+
+- name: Case 11, cash_grant exactly at $59 pays $59 (no top-up needed).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+        social_security: 96  # 8/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+  output:
+    # Boundary at cash_grant == $59: grant_after_income = 578 - 8 = 570; in-kind
+    # = 422 + 89 = 511; cash_grant = 570 - 511 = 59. Exactly at the floor, so the
+    # cash grant is paid as-is (not < $59).
+    ca_sf_caap_income_in_kind: 511
+    ca_sf_caap_countable_income: 8
+    ca_sf_caap: 59
+
+- name: Case 12, cash_grant just below $59 is topped up to the $59 floor.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+        social_security: 144  # 12/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+  output:
+    # Boundary just below $59: grant_after_income = 578 - 12 = 566; in-kind =
+    # 511; cash_grant = 566 - 511 = 55 < 59. floor = min(566, 59) = 59, fully
+    # payable since 59 <= grant_after_income, so the recipient is topped to $59.
+    ca_sf_caap_income_in_kind: 511
+    ca_sf_caap_countable_income: 12
+    ca_sf_caap: 59

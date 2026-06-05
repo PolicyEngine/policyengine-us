@@ -41,11 +41,19 @@ class ca_sf_caap(Variable):
         # (SEC. 20.7-22(c)), not the income test.
         in_kind = spm_unit("ca_sf_caap_income_in_kind", period)
         cash_grant = max_(grant_after_income - in_kind, 0)
-        # Special allowance: when the in-kind value exceeds the grant, or leaves
-        # less than $59 cash, an otherwise-eligible recipient is still topped up
-        # to $59/month cash (SEC. 20.7-24). The floor applies only when in-kind
-        # value reduced the cash grant below $59.
-        floor = p.special_allowance.floor
+        # Special allowance (SEC. 20.7-24): "A special allowance of up to $59 per
+        # month shall be made available to any Recipient when the income-in-kind
+        # value ... exceeds the maximum monthly grant ... If such income-in-kind
+        # value does not exceed the maximum monthly grant ... but allows for less
+        # than $59 cash per month, that Recipient shall receive an amount that,
+        # when added to [the grant], equals $59 cash per month." Both branches
+        # reduce to: when in-kind is present and leaves less than $59 cash, top
+        # the recipient up to $59. We cap the floor at the cash entitlement net
+        # of CASH income (grant_after_income) so the allowance can never raise
+        # the payment above what the recipient would receive with no in-kind at
+        # all -- otherwise in-kind would paradoxically increase the benefit when
+        # cash income alone already reduced the grant below $59.
+        floor = min_(grant_after_income, p.special_allowance.floor)
         return where(
             (in_kind > 0) & (cash_grant < floor),
             floor,
