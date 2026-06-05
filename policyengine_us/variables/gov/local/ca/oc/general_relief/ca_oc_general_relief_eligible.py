@@ -10,21 +10,20 @@ class ca_oc_general_relief_eligible(Variable):
     reference = "https://www.ssa.ocgov.com/page/general-relief-regulations"
 
     def formula(spm_unit, period, parameters):
-        # Categorical screen: demographic (adults without minor children),
-        # immigration, public-assistance, and resource rules. Financial
-        # eligibility (income below the maximum aid payment) is applied in the
-        # benefit variable ca_oc_general_relief, which nets countable income
-        # against the MAP.
-        demographic_eligible = spm_unit(
-            "ca_oc_general_relief_demographic_eligible",
+        # Categorical eligibility: at least one eligible person -- an adult who is
+        # a qualified noncitizen and not receiving other cash assistance such as
+        # SSI/SSP, CalWORKs, or CAPI (Sec 40, Sec 20.4).
+        categorical_eligible = (
+            spm_unit("ca_oc_general_relief_eligible_person_count", period) > 0
+        )
+        # Financial eligibility: net income below the maximum aid payment
+        # (Sec 80.2.d) and resources within the limits (Sec 50, Sec 60).
+        income_eligible = spm_unit(
+            "ca_oc_general_relief_income_eligible",
             period,
         )
         resources_eligible = spm_unit(
             "ca_oc_general_relief_resources_eligible",
             period,
         )
-        aided_person_count = spm_unit(
-            "ca_oc_general_relief_aided_person_count",
-            period,
-        )
-        return demographic_eligible & resources_eligible & (aided_person_count > 0)
+        return categorical_eligible & income_eligible & resources_eligible

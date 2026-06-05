@@ -94,7 +94,28 @@
     # EU size 4, no shared housing.
     ca_oc_general_relief_max_aid_payment: 840
 
-- name: Two single-person economic units sharing one home (one other person each).
+- name: Single economic unit in shared living has the MAP reduced 15%.
+  period: 2017-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+        is_shared_living: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+  output:
+    # EU size 1 in shared living: 355 x (1 - 0.15) = 301.75.
+    ca_oc_general_relief_max_aid_payment: 301.75
+
+- name: Two-person economic unit in shared living has the MAP reduced 15%.
   period: 2017-01
   input:
     people:
@@ -103,25 +124,23 @@
         immigration_status: CITIZEN
         ssi: 0
       person2:
-        age: 40
+        age: 35
         immigration_status: CITIZEN
         ssi: 0
     households:
       household:
         members: [person1, person2]
         in_oc: true
+        is_shared_living: true
     spm_units:
-      spm_unit1:
-        members: [person1]
-        ca_tanf: 0
-      spm_unit2:
-        members: [person2]
+      spm_unit:
+        members: [person1, person2]
         ca_tanf: 0
   output:
-    # Each EU shares with 1 other person: 355 x (1 - 0.15) = 301.75.
-    ca_oc_general_relief_max_aid_payment: [301.75, 301.75]
+    # EU size 2 in shared living: 569 x (1 - 0.15) = 483.65.
+    ca_oc_general_relief_max_aid_payment: 483.65
 
-- name: Single economic unit sharing a home with three other people.
+- name: Shared living does not reduce the MAP for a unit receiving housing assistance.
   period: 2017-01
   input:
     people:
@@ -129,30 +148,18 @@
         age: 30
         immigration_status: CITIZEN
         ssi: 0
-      person2:
-        age: 40
-        immigration_status: CITIZEN
-        ssi: 0
-      person3:
-        age: 41
-        immigration_status: CITIZEN
-        ssi: 0
-      person4:
-        age: 42
-        immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
-        members: [person1, person2, person3, person4]
+        members: [person1]
         in_oc: true
+        is_shared_living: true
     spm_units:
-      spm_unit1:
+      spm_unit:
         members: [person1]
         ca_tanf: 0
-      spm_unit2:
-        members: [person2, person3, person4]
-        ca_tanf: 0
+        receives_housing_assistance: true
   output:
-    # spm_unit1: EU size 1 sharing with 3 others: 355 x (1 - 0.25) = 266.25.
-    # spm_unit2: EU size 3 sharing with 1 other: 704 x (1 - 0.15) = 598.4.
-    ca_oc_general_relief_max_aid_payment: [266.25, 598.4]
+    # Sec 80.3.a(3): the shared-housing reduction is waived for individuals in
+    # Housing Support Programs (proxied by housing assistance receipt), so the
+    # full size-1 MAP applies.
+    ca_oc_general_relief_max_aid_payment: 355

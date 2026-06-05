@@ -16,18 +16,19 @@ class ca_oc_general_relief_max_aid_payment(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.oc.general_relief.payment
         # The MAP is based on the size of the GR Economic Unit and its housing
-        # arrangement (Sec 80.2.d). It covers only the aided persons: children
+        # arrangement (Sec 80.2.d). It covers only the eligible persons: children
         # and members excluded for SSI/other cash assistance or immigration
         # status are not included in the MAP.
-        size = spm_unit("ca_oc_general_relief_aided_person_count", period)
+        size = spm_unit("ca_oc_general_relief_eligible_person_count", period)
         capped_size = clip(size, 1, 10)
         base = p.max_aid_payment[capped_size]
         # The MAP is reduced when the Economic Unit shares housing with one or
-        # more people who are not part of the unit (Sec 80.3.a(3)). We proxy the
-        # number of other people sharing the home as the household members
-        # outside the Economic Unit (the SPM unit).
-        household_size = spm_unit.household("household_size", period.this_year)
-        unit_size = spm_unit("spm_unit_size", period.this_year)
-        other_people = max_(household_size - unit_size, 0)
-        reduction = p.shared_housing_reduction.calc(other_people)
+        # more people who are not part of the unit (Sec 80.3.a(3)). The reduction
+        # does not apply to individuals placed in Housing Support Programs who may
+        # receive a shelter subsidy; we proxy that exemption with receipt of
+        # housing assistance, since we don't track Housing Support Program
+        # placement at the moment.
+        is_shared_living = spm_unit.household("is_shared_living", period)
+        exempt = spm_unit("receives_housing_assistance", period.this_year)
+        reduction = where(is_shared_living & ~exempt, p.shared_housing_reduction, 0)
         return base * (1 - reduction)

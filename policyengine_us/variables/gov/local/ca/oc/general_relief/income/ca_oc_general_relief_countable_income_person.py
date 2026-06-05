@@ -32,6 +32,7 @@ class ca_oc_general_relief_countable_income_person(Variable):
             [
                 "health_insurance_premiums",
                 "child_support_expense",
+                "alimony_expense",
             ],
         )
         receives_other_cash_assistance = person(
