@@ -4,8 +4,10 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 35
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -22,9 +24,11 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -41,10 +45,13 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 35
+        medicaid_enrolled: true
       person3:
         age: 35
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -61,11 +68,14 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 35
+        medicaid_enrolled: true
       person3:
         age: 29
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -83,11 +93,14 @@
     people:
       person1:
         age: 35
+        medicaid_enrolled: true
       person2:
         age: 35
+        medicaid_enrolled: true
       person3:
         age: 10
         is_tax_unit_dependent: true
+        medicaid_enrolled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -98,3 +111,27 @@
   output:
     # Two adults + one young child: 2.85 with no loading.
     medicaid_slcsp_family_tier_multiplier: 2.85
+
+- name: New York ignores non-Medicaid adults when applying the child-only multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 0.412

@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -474,6 +474,12 @@ programs:
         full_name: Arkansas School Readiness Assistance
         variable: ar_sra
         parameter_prefix: gov.states.ar.ade.oec.sra
+      - state: AL
+        status: partial
+        name: Alabama CCSP
+        full_name: Alabama Child Care Subsidy Program
+        variable: al_ccsp
+        parameter_prefix: gov.states.al.dhr.ccsp
       - state: CA
         status: complete
         name: CalWORKs childcare

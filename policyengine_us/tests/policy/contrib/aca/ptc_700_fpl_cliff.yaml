@@ -127,10 +127,10 @@
   output:
     aca_required_contribution_percentage: 0.0996
 
-- name: Baseline comparison at 500% FPL - shows new eligibility
+- name: Baseline comparison at 500% FPL - above post-ARPA cliff
   period: 2026
   absolute_error_margin: 0.00001
   input:
     aca_magi_fraction: 5.0
   output:
-    aca_required_contribution_percentage: 0.0996
+    aca_required_contribution_percentage: 0
