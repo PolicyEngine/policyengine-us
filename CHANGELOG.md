@@ -1,3 +1,10 @@
+## [1.720.7] - 2026-06-05
+
+### Fixed
+
+- Restricted Missouri Commodity Supplemental Food Program eligibility to counties with DHSS distribution sites.
+
+
 ## [1.720.6] - 2026-06-03
 
 ### Changed
