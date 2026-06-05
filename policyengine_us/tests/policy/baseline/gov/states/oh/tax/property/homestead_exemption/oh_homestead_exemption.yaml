@@ -5,10 +5,11 @@
       person1:
         age: 65
         assessed_property_value: 200_000
+        real_estate_taxes: 2_000
     tax_units:
       tax_unit:
         members: [person1]
-        oh_modified_agi: 30_000
+        oh_homestead_exemption_total_income: 30_000
     households:
       household:
         members: [person1]
@@ -23,10 +24,11 @@
       person1:
         age: 65
         assessed_property_value: 20_000
+        real_estate_taxes: 400
     tax_units:
       tax_unit:
         members: [person1]
-        oh_modified_agi: 30_000
+        oh_homestead_exemption_total_income: 30_000
     households:
       household:
         members: [person1]
@@ -41,10 +43,11 @@
       person1:
         age: 65
         assessed_property_value: 200_000
+        real_estate_taxes: 2_000
     tax_units:
       tax_unit:
         members: [person1]
-        oh_modified_agi: 30_000
+        oh_homestead_exemption_total_income: 30_000
     households:
       household:
         members: [person1]
