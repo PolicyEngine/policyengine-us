@@ -1,0 +1,41 @@
+# Whitelist (SEC. 20.7-6): CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, ASYLEE,
+# CUBAN_HAITIAN_ENTRANT, DEPORTATION_WITHHELD, CONDITIONAL_ENTRANT,
+# PAROLED_ONE_YEAR. Everything else (e.g. UNDOCUMENTED, DACA, TPS) is excluded.
+- name: Case 1, citizen is immigration-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_sf_caap_immigration_status_eligible: true
+
+- name: Case 2, refugee (humanitarian category) is immigration-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_sf_caap_immigration_status_eligible: true
+
+- name: Case 3, undocumented person is not immigration-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_sf_caap_immigration_status_eligible: false

@@ -1,0 +1,18 @@
+description: San Francisco County values provided clothing at this monthly amount by family size under the County Adult Assistance Programs.
+metadata:
+  unit: currency-USD
+  period: month
+  label: San Francisco County CAAP in-kind clothing value by family size
+  breakdown:
+    - range(1, 3)
+  breakdown_labels:
+    - Family size
+  reference:
+    - title: CAAP Eligibility Manual, Div 99-1 Income-In-Kind Values (Revised 11/1/25)
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=467
+    - title: California Code of Regulations Title 22 Section 50511 Income-in-Kind Chart
+      href: https://govt.westlaw.com/calregs/Document/I3344C880D4C011DE8879F88E8B0DAAAE
+1:
+  2025-11-01: 70
+2:
+  2025-11-01: 137

@@ -1,0 +1,18 @@
+description: San Francisco County considers these immigration statuses as lawfully residing under the County Adult Assistance Programs.
+values:
+  2017-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+metadata:
+  unit: list
+  period: year
+  label: San Francisco County CAAP qualified immigration statuses
+  reference:
+    - title: SF Administrative Code SEC. 20.7-6 Eligibility for Aid
+      href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352

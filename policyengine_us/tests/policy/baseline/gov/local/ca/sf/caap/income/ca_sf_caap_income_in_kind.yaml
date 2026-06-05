@@ -1,0 +1,145 @@
+# In-kind value (Title 22 Section 50511 chart) sums only the components flagged
+# as provided in-kind, keyed by budget unit size (chart sizes 1-2). Defaults to
+# zero when nothing is flagged.
+- name: Case 1, nothing provided in-kind defaults to zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_income_in_kind: 0
+
+- name: Case 2, only housing provided in-kind, size 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sf_caap_housing_provided_in_kind: true
+  output:
+    # Size-1 housing chart value.
+    ca_sf_caap_income_in_kind: 422
+
+- name: Case 3, all four components provided in-kind, size 1.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # Size 1: 422 + 89 + 231 + 70 = 812.
+    ca_sf_caap_income_in_kind: 812
+
+- name: Case 4, all four components provided in-kind, size 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+      person2:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # Size 2: 560 + 102 + 493 + 137 = 1,292.
+    ca_sf_caap_income_in_kind: 1_292
+
+- name: Case 5, three-person unit falls back to the size-2 chart value.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+      person2:
+        ssi: 0
+        immigration_status: CITIZEN
+      person3:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # The chart only prints sizes 1-2, so size 3 clips to the size-2 row:
+    # 560 + 102 + 493 + 137 = 1,292 (same as the size-2 case).
+    ca_sf_caap_income_in_kind: 1_292
+
+- name: Case 6, three-person unit with only housing flagged uses the size-2 value.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+      person2:
+        ssi: 0
+        immigration_status: CITIZEN
+      person3:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ca_sf_caap_housing_provided_in_kind: true
+  output:
+    # Size 3 clips to size 2; only housing is flagged -> $560.
+    ca_sf_caap_income_in_kind: 560

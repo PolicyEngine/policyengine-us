@@ -1,0 +1,21 @@
+description: San Francisco County counts these unearned income sources under the County Adult Assistance Programs.
+values:
+  2017-01-01:
+    - social_security
+    - social_security_disability
+    - social_security_retirement
+    - unemployment_compensation
+    - veterans_benefits
+    - pension_income
+    - strike_benefits
+    - child_support_received
+    - alimony_income
+metadata:
+  unit: list
+  period: year
+  label: San Francisco County CAAP counted unearned income sources
+  reference:
+    - title: SF Administrative Code SEC. 20.7-14 Exempt Income or Resources
+      href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352
+    - title: CAAP Eligibility Manual, Div 94 Income
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=316
