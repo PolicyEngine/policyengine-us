@@ -143,3 +143,86 @@
   output:
     # Size 3 clips to size 2; only housing is flagged -> $560.
     ca_sf_caap_income_in_kind: 560
+
+- name: Case 7, eleven-person unit adds $35/person beyond ten to food and clothing only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        ssi: 0
+        immigration_status: CITIZEN
+      person2:
+        ssi: 0
+        immigration_status: CITIZEN
+      person3:
+        ssi: 0
+        immigration_status: CITIZEN
+      person4:
+        ssi: 0
+        immigration_status: CITIZEN
+      person5:
+        ssi: 0
+        immigration_status: CITIZEN
+      person6:
+        ssi: 0
+        immigration_status: CITIZEN
+      person7:
+        ssi: 0
+        immigration_status: CITIZEN
+      person8:
+        ssi: 0
+        immigration_status: CITIZEN
+      person9:
+        ssi: 0
+        immigration_status: CITIZEN
+      person10:
+        ssi: 0
+        immigration_status: CITIZEN
+      person11:
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # Size 11: chart clips to size 2 for housing and utilities (no published
+    # extra-person increment), while food and clothing add $35 per person
+    # beyond 10 (1 extra person = +$35 each).
+    # Housing: 560; utilities: 102; food: 493 + 35 = 528; clothing: 137 + 35 = 172.
+    # Total: 560 + 102 + 528 + 172 = 1,362.
+    ca_sf_caap_income_in_kind: 1_362
