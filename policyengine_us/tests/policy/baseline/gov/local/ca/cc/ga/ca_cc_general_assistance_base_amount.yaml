@@ -1,0 +1,67 @@
+# Grant standard (MAP): single (1 eligible person) = $336/month;
+# couple (2 eligible persons) = $454/month (unit total).
+- name: One eligible adult receives the single grant standard of $336.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_base_amount: 336
+
+- name: Two eligible adults receive the couple grant standard of $454.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        ssi: 0
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_cc_general_assistance_base_amount: 454
+
+- name: No eligible persons yields a base amount of zero.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        ssi: 100  # receiving SSI makes the person ineligible
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_base_amount: 0

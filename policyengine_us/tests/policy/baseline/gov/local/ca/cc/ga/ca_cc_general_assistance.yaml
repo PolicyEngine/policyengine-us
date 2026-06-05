@@ -1,0 +1,320 @@
+# Contra Costa County General Assistance (GA) — top-level fill-the-gap benefit.
+# Benefit = max_(grant standard - max_(countable income, 0), 0).
+# Single MAP = $336/month, couple MAP = $454/month.
+# Zero-benefit cases assert both the amount and the eligibility boolean; positive
+# cases assert eligibility == true.
+
+- name: Single eligible adult with low income receives a positive fill-the-gap grant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 300 * 12  # $300/month countable
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 336 single MAP - 300 countable = 36
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 36
+
+- name: Couple of two eligible adults receives a positive fill-the-gap grant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12  # $100/month countable
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+    households:
+      household:
+        members: [person1, person2]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # 454 couple MAP - 100 countable = 354
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 354
+
+- name: Negative self-employment income caps the grant at the MAP, not above it.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        self_employment_income: -6_000 * 12  # -$6,000/month business loss, no other income
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Countable income = -6,000. The explicit formula floors income at zero:
+    # max_(336 - max_(-6000, 0), 0) = 336. An adds/subtracts framework would
+    # instead give 336 - (-6000) = 6,336 (inflated) -- this is the regression guard.
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 336
+
+- name: Asset limit boundary - $499 personal property is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 499
+        employment_income: 300 * 12  # $300/month countable
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 336 single MAP - 300 countable = 36
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 36
+
+- name: Asset limit boundary - $501 personal property is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 501  # exceeds the $500 limit
+        employment_income: 300 * 12
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Categorical exclusion - receiving SSI makes the unit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12
+        ssi: 100
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Categorical exclusion - receiving SSDI makes the unit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12
+        social_security_disability: 1_200
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Categorical exclusion - receiving unemployment compensation makes the unit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12
+        unemployment_compensation: 1_200
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Categorical exclusion - receiving CA state disability insurance makes the unit ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12
+        ca_state_disability_insurance: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: No-children gate - adult with a dependent child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12  # income below MAP, but the no-children gate fails
+      child1:
+        age: 5
+        is_tax_unit_head_or_spouse: false
+    households:
+      household:
+        members: [person1, child1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+  output:
+    spm_unit_count_children: 1
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Immigration - a qualified refugee adult is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: REFUGEE
+        personal_property: 0
+        employment_income: 300 * 12  # $300/month countable
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 336 single MAP - 300 countable = 36
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 36
+
+- name: Immigration - a non-qualified (undocumented) adult is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        personal_property: 0
+        employment_income: 300 * 12
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Age - an applicant under 18 is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Out of jurisdiction - an otherwise-eligible unit in another county gets nothing (defined_for gate).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 300 * 12  # would yield $36 in Contra Costa
+    households:
+      household:
+        members: [person1]
+        county: ALAMEDA_COUNTY_CA  # not Contra Costa -> in_cc is false
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
