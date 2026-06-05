@@ -1,5 +1,5 @@
 - name: Case 1, Missouri household in a DHSS CSFP site county.
-  period: 2025
+  period: 2026
   input:
     people:
       person1:
@@ -16,7 +16,7 @@
     mo_dhss_csfp_county_eligible: true
 
 - name: Case 2, Missouri household in St. Louis city.
-  period: 2025
+  period: 2026
   input:
     people:
       person1:
@@ -33,7 +33,7 @@
     mo_dhss_csfp_county_eligible: true
 
 - name: Case 3, Missouri household outside DHSS CSFP site counties.
-  period: 2025
+  period: 2026
   input:
     people:
       person1:
@@ -48,3 +48,20 @@
         county_str: ANDREW_COUNTY_MO
   output:
     mo_dhss_csfp_county_eligible: false
+
+- name: Case 4, Missouri household before the sourced county filter year.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county_str: ANDREW_COUNTY_MO
+  output:
+    mo_dhss_csfp_county_eligible: true

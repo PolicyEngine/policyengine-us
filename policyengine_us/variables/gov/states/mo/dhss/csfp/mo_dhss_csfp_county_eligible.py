@@ -17,4 +17,6 @@ class mo_dhss_csfp_county_eligible(Variable):
     def formula(household, period, parameters):
         county = household("county_str", period)
         p = parameters(period).gov.states.mo.dhss.csfp
+        if len(p.counties) == 0:
+            return np.ones_like(county, dtype=bool)
         return np.isin(county, p.counties)
