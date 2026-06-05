@@ -16,4 +16,7 @@ class is_medically_frail_or_has_special_medical_needs_for_medicaid_ce(Variable):
     )
     definition_period = YEAR
     default_value = False
-    reference = "https://public-inspection.federalregister.gov/2026-11094.pdf"
+    reference = (
+        "https://www.govinfo.gov/content/pkg/FR-2026-06-03/pdf/2026-11094.pdf#page=125",
+        "https://www.govinfo.gov/content/pkg/FR-2026-06-03/pdf/2026-11094.pdf#page=59",
+    )
