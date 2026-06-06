@@ -9,4 +9,4 @@ class in_ala(Variable):
 
     def formula(household, period, parameters):
         county = household("county_str", period)
-        return county == "Alameda_COUNTY_CA"
+        return county == "ALAMEDA_COUNTY_CA"
