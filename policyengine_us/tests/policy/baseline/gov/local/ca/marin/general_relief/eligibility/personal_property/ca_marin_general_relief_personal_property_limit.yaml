@@ -22,16 +22,17 @@
   period: 2026
   input:
     people:
-      person1: {}
-      person2: {}
-    families:
-      family:
-        members: [person1, person2]
-        is_married: true
+      person1:
+        age: 40
+      person2:
+        age: 38
     households:
       household:
         members: [person1, person2]
         in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     spm_units:
       spm_unit:
         members: [person1, person2]

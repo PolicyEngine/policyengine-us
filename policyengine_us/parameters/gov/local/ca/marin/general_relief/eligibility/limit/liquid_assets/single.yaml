@@ -1,6 +1,8 @@
 description: Marin County limits liquid assets to this amount for single filers under the General Relief program.
 values:
+  # The Standards of Aid regulation (Section II.H) shows the pre-reform $200 limit.
   2025-01-01: 200
+  # Raised to $400 effective July 1, 2025 per the county news release and HHS page.
   2025-07-01: 400
 
 metadata:
@@ -12,3 +14,5 @@ metadata:
       href: https://www.marincounty.gov/news-releases/county-general-relief-transitions-board-approved-standards-aid-regulations
     - title: Marin County HHS, General Relief Cash Assistance
       href: https://hhs.marincounty.gov/services/get-cash-assistance-myself-general-relief/general-relief-cash-assistance
+    - title: Marin County General Relief Program Policies and Standards, Section II.H Liquid Assets
+      href: https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11

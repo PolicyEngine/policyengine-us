@@ -15,7 +15,7 @@ class ca_marin_general_relief_personal_property_limit(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        married = add(spm_unit, period, ["is_married"]) > 0
+        married = spm_unit("spm_unit_is_married", period)
         p = parameters(
             period
         ).gov.local.ca.marin.general_relief.eligibility.limit.personal_property

@@ -55,3 +55,31 @@
     immigration_status: TPS
   output:
     ca_marin_general_relief_immigration_status_eligible_person: false
+
+# Section II.E ties the citizenship requirement to the Applicant/Recipient, so a
+# qualifying status only counts for the head or spouse. A citizen dependent
+# child does not satisfy the requirement on behalf of an undocumented applicant.
+- name: Citizen dependent child does not satisfy the applicant requirement
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # person1 (undocumented applicant) -> false; person2 (citizen child, not
+    # head or spouse) -> false.
+    ca_marin_general_relief_immigration_status_eligible_person: [false, false]

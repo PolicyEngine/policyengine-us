@@ -17,4 +17,10 @@ class ca_marin_general_relief_immigration_status_eligible_person(Variable):
         # permanently residing in the United States under color of law (PRUCOL).
         # We do not track a PRUCOL flag at the moment, so PRUCOL is approximated
         # with the available humanitarian statuses in the qualified list.
-        return np.isin(immigration_status_str, p.qualified_immigration_status)
+        qualified = np.isin(immigration_status_str, p.qualified_immigration_status)
+        # Section II.E ties the citizenship requirement to the General Relief
+        # Applicant/Recipient, so only the head or spouse of the tax unit must
+        # hold a qualifying status; a dependent's status does not make the unit
+        # eligible.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
+        return qualified & head_or_spouse

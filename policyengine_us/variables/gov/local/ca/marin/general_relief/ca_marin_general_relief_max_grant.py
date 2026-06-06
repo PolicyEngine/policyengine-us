@@ -12,8 +12,9 @@ class ca_marin_general_relief_max_grant(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.marin.general_relief
-        # `> 0` collapses the per-person flag to a unit-level boolean for where.
-        married = add(spm_unit, period, ["is_married"]) > 0
+        # spm_unit_is_married is a YEAR-defined boolean, so read it with
+        # period.this_year from this MONTH formula to avoid period conversion.
+        married = spm_unit("spm_unit_is_married", period.this_year)
         # The couple grant applies only when both members are immigration
         # eligible; otherwise the unit receives the single grant. Mirrors LA
         # County GR. This assumes the SPM unit is a married couple (both members
