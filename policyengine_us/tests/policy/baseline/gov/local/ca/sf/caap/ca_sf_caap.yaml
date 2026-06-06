@@ -22,7 +22,7 @@
     ca_sf_caap: 578
 
 - name: Case 2, in-kind value at or above the grant pays the $59 floor.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -144,7 +144,7 @@
     ca_sf_caap: 0
 
 - name: Case 7, in-kind below the floor trigger leaves cash above $59 (no floor).
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -169,7 +169,7 @@
     ca_sf_caap: 67
 
 - name: Case 8, in-kind just past the grant triggers the $59 floor.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -195,7 +195,7 @@
     ca_sf_caap: 59
 
 - name: Case 9, in-kind cannot inflate the grant when cash already leaves under $59.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -223,7 +223,7 @@
     ca_sf_caap: 38
 
 - name: Case 10, zero cash income with in-kind at or above the grant pays the full $59 floor.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -251,7 +251,7 @@
     ca_sf_caap: 59
 
 - name: Case 11, cash_grant exactly at $59 pays $59 (no top-up needed).
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -279,7 +279,7 @@
     ca_sf_caap: 59
 
 - name: Case 12, cash_grant just below $59 is topped up to the $59 floor.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

@@ -114,7 +114,7 @@
     ca_sf_caap: 1_036
 
 - name: Case 5, in-kind plus cash leaves under $59 cash, so the floor pays.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -142,7 +142,7 @@
     ca_sf_caap: 59
 
 - name: Case 6, in-kind value exceeds the grant so the $59 floor pays.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -241,7 +241,7 @@
     ca_sf_caap: 0
 
 - name: Case 10, three-adult unit with in-kind food falls back to the size-2 value.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -336,7 +336,7 @@
     ca_sf_caap: 0
 
 - name: Case 13, in-kind never inflates the benefit when cash already leaves under $59.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

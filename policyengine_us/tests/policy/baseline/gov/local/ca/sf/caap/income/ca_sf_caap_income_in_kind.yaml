@@ -2,7 +2,7 @@
 # as provided in-kind, keyed by budget unit size (chart sizes 1-2). Defaults to
 # zero when nothing is flagged.
 - name: Case 1, nothing provided in-kind defaults to zero.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -20,7 +20,7 @@
     ca_sf_caap_income_in_kind: 0
 
 - name: Case 2, only housing provided in-kind, size 1.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -40,7 +40,7 @@
     ca_sf_caap_income_in_kind: 422
 
 - name: Case 3, all four components provided in-kind, size 1.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -63,7 +63,7 @@
     ca_sf_caap_income_in_kind: 812
 
 - name: Case 4, all four components provided in-kind, size 2.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -89,7 +89,7 @@
     ca_sf_caap_income_in_kind: 1_292
 
 - name: Case 5, three-person unit falls back to the size-2 chart value.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -119,7 +119,7 @@
     ca_sf_caap_income_in_kind: 1_292
 
 - name: Case 6, three-person unit with only housing flagged uses the size-2 value.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -145,7 +145,7 @@
     ca_sf_caap_income_in_kind: 560
 
 - name: Case 7, eleven-person unit adds $35/person beyond ten to food and clothing only.
-  period: 2025-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
