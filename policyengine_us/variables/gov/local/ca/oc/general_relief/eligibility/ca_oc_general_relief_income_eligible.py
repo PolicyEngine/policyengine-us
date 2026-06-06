@@ -11,9 +11,9 @@ class ca_oc_general_relief_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Financial eligibility exists when net countable income is below the
-        # maximum aid payment: Sec 80.2.d determines financial eligibility by
-        # subtracting net income from the GR MAP, and Sec 70.4.c continues aid
-        # while the EU's net income is less than the GR MAP for the EU size.
+        # maximum aid payment. Sec 80.2.d determines financial eligibility by
+        # subtracting net income -- computed per Sec 70.2 (income and deductions)
+        # and Sec 70.3 (deemed and pooled income) -- from the GR MAP.
         countable_income = spm_unit("ca_oc_general_relief_countable_income", period)
         max_aid_payment = spm_unit("ca_oc_general_relief_max_aid_payment", period)
         return countable_income < max_aid_payment

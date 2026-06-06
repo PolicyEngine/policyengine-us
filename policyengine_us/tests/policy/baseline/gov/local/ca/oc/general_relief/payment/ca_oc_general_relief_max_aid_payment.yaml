@@ -59,8 +59,8 @@
         members: [person1, person2]
         ca_tanf: 0
   output:
-    # EU size 2, no shared housing (both members in one economic unit).
-    ca_oc_general_relief_max_aid_payment: 569
+    # EU size 2 (October 2016 schedule), no shared housing: 569 + 5 = 574.
+    ca_oc_general_relief_max_aid_payment: 574
 
 - name: Four-person economic unit, no shared housing.
   period: 2017-01
@@ -91,8 +91,8 @@
         members: [person1, person2, person3, person4]
         ca_tanf: 0
   output:
-    # EU size 4, no shared housing.
-    ca_oc_general_relief_max_aid_payment: 840
+    # EU size 4 (October 2016 schedule), no shared housing: 840 + 5 = 845.
+    ca_oc_general_relief_max_aid_payment: 845
 
 - name: Single economic unit in shared living has the MAP reduced 15%.
   period: 2017-01
@@ -137,8 +137,8 @@
         members: [person1, person2]
         ca_tanf: 0
   output:
-    # EU size 2 in shared living: 569 x (1 - 0.15) = 483.65.
-    ca_oc_general_relief_max_aid_payment: 483.65
+    # EU size 2 in shared living (October 2016 schedule): 574 x (1 - 0.15) = 487.9.
+    ca_oc_general_relief_max_aid_payment: 487.9
 
 - name: Shared living does not reduce the MAP for a unit receiving housing assistance.
   period: 2017-01

@@ -1,15 +1,16 @@
-- name: Vehicle equity below the exclusion has no countable value.
+- name: Vehicle value below the exclusion has no countable value.
   period: 2026
   input:
-    household_vehicles_equity: 4_650
+    household_vehicles_value: 4_650
     in_oc: true
   output:
     ca_oc_general_relief_countable_vehicle_value: 0
 
-- name: Vehicle equity above the exclusion has countable value.
+- name: Vehicle value above the exclusion counts the excess.
   period: 2026
   input:
-    household_vehicles_equity: 4_800
+    household_vehicles_value: 4_800
     in_oc: true
   output:
-    ca_oc_general_relief_countable_vehicle_value: 4_800
+    # 4,800 - 4,650 exclusion = 150.
+    ca_oc_general_relief_countable_vehicle_value: 150

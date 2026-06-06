@@ -1,26 +1,34 @@
-- name: Resources at both limits meet the resource screen.
+# Resource check (Sec 60.2.a): countable personal property -- cash plus vehicle
+# value above the $4,650 exclusion (Sec 60.4.c) -- must not exceed $1,000.
+- name: Cash at the limit with a fully excluded vehicle passes.
   period: 2026-01
   input:
-    home_equity: 5_000
-    personal_property: 1_000
+    spm_unit_cash_assets: 1_000
+    household_vehicles_value: 4_650  # 4,650 - 4,650 = 0 countable
     in_oc: true
   output:
     ca_oc_general_relief_resources_eligible: true
 
-- name: Home equity above the primary-residence limit fails the resource screen.
+- name: Cash above the limit fails.
   period: 2026-01
   input:
-    home_equity: 5_001
+    spm_unit_cash_assets: 1_001
     in_oc: true
   output:
     ca_oc_general_relief_resources_eligible: false
 
-- name: Combined countable property above the property limit fails the resource screen.
+- name: A vehicle a little over the exclusion still passes.
   period: 2026-01
   input:
-    personal_property: 500
-    household_other_real_estate_equity: 501
+    household_vehicles_value: 5_000  # 5,000 - 4,650 = 350 countable <= 1,000
     in_oc: true
   output:
-    ca_oc_general_relief_countable_property: 1_001
+    ca_oc_general_relief_resources_eligible: true
+
+- name: A vehicle whose value over the exclusion exceeds the limit fails.
+  period: 2026-01
+  input:
+    household_vehicles_value: 6_000  # 6,000 - 4,650 = 1,350 countable > 1,000
+    in_oc: true
+  output:
     ca_oc_general_relief_resources_eligible: false

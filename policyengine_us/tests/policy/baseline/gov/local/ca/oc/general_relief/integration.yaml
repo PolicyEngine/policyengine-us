@@ -102,14 +102,13 @@
     ca_oc_general_relief_eligible_person_count: 0
     ca_oc_general_relief_eligible: false
 
-- name: Property above the limit does not pass the partial screen.
+- name: Cash above the resource limit does not pass the partial screen.
   period: 2026-01
   input:
     people:
       person:
         age: 30
         ssi: 0
-        personal_property: 1_001
     households:
       household:
         members: [person]
@@ -118,7 +117,9 @@
       spm_unit:
         members: [person]
         ca_tanf: 0
+        spm_unit_cash_assets: 1_001
   output:
+    # Cash exceeds the $1,000 personal property limit (Sec 60.2.a).
     ca_oc_general_relief_resources_eligible: false
     ca_oc_general_relief_eligible: false
 
@@ -222,7 +223,7 @@
     # Shared living reduces the size-1 MAP (355) by 15%: 355 x 0.85 = 301.75.
     ca_oc_general_relief: 301.75
 
-- name: Liquid resources above the disregard count as income and reduce the grant.
+- name: Cash within the resource limit passes with the full grant.
   period: 2026-01
   input:
     people:
@@ -240,35 +241,7 @@
         ca_tanf: 0
         spm_unit_cash_assets: 250
   output:
-    # Liquid resources 250 - 50 disregard = 200 counted as income (Sec 70.2.g).
-    # Cash is handled through income, not the property limit, so the resource
-    # screen still passes. Grant = max(355 - 200, 0) = 155.
-    ca_oc_general_relief_countable_income: 200
+    # Cash 250 <= $1,000 limit and is no longer counted as income, so the unit
+    # passes and receives the full size-1 grant.
     ca_oc_general_relief_resources_eligible: true
-    ca_oc_general_relief_income_eligible: true
-    ca_oc_general_relief: 155
-
-- name: Liquid resources above the maximum aid payment make the unit financially ineligible.
-  period: 2026-01
-  input:
-    people:
-      person:
-        age: 30
-        immigration_status: CITIZEN
-        ssi: 0
-    households:
-      household:
-        members: [person]
-        in_oc: true
-    spm_units:
-      spm_unit:
-        members: [person]
-        ca_tanf: 0
-        spm_unit_cash_assets: 1_050
-  output:
-    # Liquid resources 1,050 - 50 = 1,000 counted as income (Sec 70.2.g),
-    # exceeding the size-1 MAP (355): financially ineligible, grant 0.
-    ca_oc_general_relief_countable_income: 1_000
-    ca_oc_general_relief_income_eligible: false
-    ca_oc_general_relief_eligible: false
-    ca_oc_general_relief: 0
+    ca_oc_general_relief: 355
