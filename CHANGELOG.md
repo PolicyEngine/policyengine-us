@@ -1,3 +1,10 @@
+## [1.721.1] - 2026-06-06
+
+### Fixed
+
+- Restricted Kansas Commodity Supplemental Food Program eligibility to covered counties.
+
+
 ## [1.721.0] - 2026-06-06
 
 ### Added
