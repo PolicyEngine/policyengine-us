@@ -85,3 +85,22 @@
   output:
     # MAP size 2 (October 2016 schedule) = 574, no countable income.
     ca_oc_general_relief: 574
+
+- name: Negative income does not inflate the grant above the maximum aid payment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Negative earnings floor at 0, so the grant is capped at the size-1 MAP,
+    # not MAP + 5M.
+    ca_oc_general_relief: 355

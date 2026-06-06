@@ -163,3 +163,105 @@
     # Housing Support Programs (proxied by housing assistance receipt), so the
     # full size-1 MAP applies.
     ca_oc_general_relief_max_aid_payment: 355
+
+- name: Six-person economic unit, April 2015 schedule.
+  period: 2016-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 31
+      person3:
+        age: 32
+      person4:
+        age: 33
+      person5:
+        age: 34
+      person6:
+        age: 35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+  output:
+    # EU size 6, April 2015 schedule.
+    ca_oc_general_relief_max_aid_payment: 1_072
+
+- name: An economic unit larger than ten is capped at the size-ten payment.
+  period: 2016-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 31
+      person3:
+        age: 32
+      person4:
+        age: 33
+      person5:
+        age: 34
+      person6:
+        age: 35
+      person7:
+        age: 36
+      person8:
+        age: 37
+      person9:
+        age: 38
+      person10:
+        age: 39
+      person11:
+        age: 40
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+  output:
+    # 11 eligible persons clip to the size-10 maximum aid payment.
+    ca_oc_general_relief_max_aid_payment: 1_490
+
+- name: A unit with no eligible person uses the size-one payment.
+  period: 2016-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Eligible person count 0 clips to size 1.
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_max_aid_payment: 350
+
+- name: Two-person economic unit, April 2015 schedule.
+  period: 2016-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+    households:
+      household:
+        members: [person1, person2]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # EU size 2 before the October 2016 schedule.
+    ca_oc_general_relief_max_aid_payment: 569

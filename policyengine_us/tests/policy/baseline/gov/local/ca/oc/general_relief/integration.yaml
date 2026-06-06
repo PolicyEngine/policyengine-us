@@ -245,3 +245,20 @@
     # passes and receives the full size-1 grant.
     ca_oc_general_relief_resources_eligible: true
     ca_oc_general_relief: 355
+
+- name: A fully eligible adult outside Orange County does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+    households:
+      household:
+        members: [person]
+        county_str: LOS_ANGELES_COUNTY_CA
+        state_code: CA
+  output:
+    # Same person who qualifies in Orange County; the in_oc gate denies aid
+    # everywhere else.
+    ca_oc_general_relief_eligible: false
+    ca_oc_general_relief: 0
