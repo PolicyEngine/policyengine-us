@@ -15,4 +15,12 @@ class ca_sf_caap_age_eligible(Variable):
         # CalWORKs-track instead (SEC. 20.7-6). We don't track the
         # CalWORKs-ineligibility-of-parents split at the moment, so we model the
         # adult-only requirement directly.
+        #
+        # The CAAP Manual (Div 91-4.5 Age, p.144) also admits some applicants
+        # under 18 who are emancipated minors -- legally married, divorced,
+        # widowed, registered domestic partners, or court-emancipated. We don't
+        # track emancipation status at the moment (PolicyEngine has no
+        # emancipated-minor input, and the constituent statuses for minors are
+        # not separately modeled), so this rare exception pathway is not modeled;
+        # the age gate applies the general 18-and-over rule.
         return spm_unit.all(age >= p.age_threshold)
