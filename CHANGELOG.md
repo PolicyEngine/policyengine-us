@@ -1,3 +1,10 @@
+## [1.721.0] - 2026-06-06
+
+### Added
+
+- Added the Kansas Lifeline phone service supplement from the Kansas Universal Service Fund.
+
+
 ## [1.720.7] - 2026-06-05
 
 ### Fixed
