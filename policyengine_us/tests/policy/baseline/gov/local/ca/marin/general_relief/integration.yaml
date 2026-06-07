@@ -656,7 +656,7 @@
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
 
-- name: Case 22, family receiving CalWORKs is income-ineligible.
+- name: Case 22, single parent with a dependent child is ineligible (no-dependents gate).
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -665,13 +665,14 @@
         age: 40
         immigration_status: CITIZEN
       person2:
-        age: 8
+        age: 5
         immigration_status: CITIZEN
     households:
       household:
         members: [person1, person2]
         county_str: MARIN_COUNTY_CA
         state_code_str: CA
+        household_vehicles_value: 33_000  # over the CalWORKs vehicle limit
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -682,15 +683,10 @@
       spm_unit:
         members: [person1, person2]
   output:
-    # The family of 2 (parent + child, no other income) qualifies for CalWORKs;
-    # the model computes ca_tanf = 11,160/yr ($930/month), which counts as
-    # available income (Standards §II.B / §II.Q) and exceeds the $387 single
-    # grant -> income-ineligible. This is the mechanism by which families with
-    # children, who receive CalWORKs, are excluded from General Relief -- without
-    # a hard demographic gate, so a family not receiving CalWORKs cash could
-    # still qualify (matches §II.L).
-    ca_tanf: 930  # 11,160/yr CalWORKs shown monthly
-    ca_marin_general_relief_net_income: 930
-    ca_marin_general_relief_income_eligible: false
+    # Marin GR excludes adults with dependent children. CalWORKs does NOT catch
+    # this family -- the $33,000 vehicle exceeds the CalWORKs vehicle limit, so
+    # ca_tanf = 0 -- but the explicit dependent-child gate makes the unit
+    # ineligible regardless of CalWORKs receipt.
+    ca_tanf: 0
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0

@@ -36,9 +36,6 @@ values:
     - life_insurance_benefits
     # SSI/SSP is excluded: recipients are categorically ineligible for General
     # Relief, so SSI is not counted as income for the grant computation.
-    # CalWORKs (California TANF) cash aid is also countable available income, but
-    # it is a unit-level benefit (ca_tanf) added directly in
-    # ca_marin_general_relief_net_income rather than in this person-level list.
 metadata:
   unit: list
   period: year

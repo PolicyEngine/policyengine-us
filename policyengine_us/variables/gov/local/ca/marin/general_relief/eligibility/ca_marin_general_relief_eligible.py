@@ -13,9 +13,6 @@ class ca_marin_general_relief_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # GR is limited to adults with no dependents (or <50% custody) per Marin
-        # HHS; we don't model the dependent-status gate at the moment (matches
-        # LA County GR).
         age_eligible = spm_unit("ca_marin_general_relief_age_eligible", period)
         # At least one applicant (head/spouse) must hold a qualifying immigration
         # status. The person-level check is its own variable because it also
@@ -32,14 +29,24 @@ class ca_marin_general_relief_eligible(Variable):
             "ca_marin_general_relief_personal_property_eligible", period
         )
         income_eligible = spm_unit("ca_marin_general_relief_income_eligible", period)
+        # Marin GR is limited to adults with no dependent children (or <50%
+        # custody) per Marin HHS, so any unit containing a dependent child is
+        # excluded. A dependent child is a tax-unit dependent under 18;
+        # tax-dependency approximates the >=50% custody rule -- a child claimed
+        # here is the applicant's responsibility, while a <50%-custody child
+        # claimed elsewhere does not trigger the gate. This explicit gate also
+        # excludes dependent families that CalWORKs misses for non-income
+        # reasons (e.g. a vehicle over the CalWORKs limit).
+        person = spm_unit.members
+        is_dependent_child = person("is_tax_unit_dependent", period.this_year) & person(
+            "is_child", period.this_year
+        )
+        has_dependent_child = spm_unit.any(is_dependent_child)
         # SSI/SSP recipients are categorically ineligible for General Relief.
-        # `ssi > 0` already implies SSI receipt; the unit is barred if any
-        # member receives SSI.
-        # CAPI (California's SSI-equivalent cash for immigrants) needs no
-        # separate bar: CAPI recipients are non-qualified noncitizens, who fail
-        # the immigration eligibility check above, so they can never reach a
-        # General Relief grant. (CalWORKs overlap is likewise prevented, by
-        # counting CalWORKs cash as income in net_income.)
+        # `ssi > 0` already implies SSI receipt; the unit is barred if any member
+        # receives SSI. CAPI (California's SSI-equivalent cash for immigrants)
+        # needs no separate bar: CAPI recipients are non-qualified noncitizens
+        # who fail the immigration check above.
         receives_ssi = spm_unit.any(spm_unit.members("ssi", period) > 0)
         return (
             age_eligible
@@ -47,5 +54,6 @@ class ca_marin_general_relief_eligible(Variable):
             & liquid_asset_eligible
             & personal_property_eligible
             & income_eligible
+            & ~has_dependent_child
             & ~receives_ssi
         )
