@@ -12,8 +12,8 @@ class ca_sf_caap(Variable):
         # SF Administrative Code Chapter 20, Article VII (County Adult
         # Assistance Programs), SEC. 20.7-21 / 20.7-24.
         "https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352",
-        # CAAP Eligibility Manual (effective 2026-05-14).
-        "https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf",
+        # CAAP Eligibility Manual (effective 2026-05-14), SEC. 20.7-24.
+        "https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=47",
     )
     # This models the General Assistance (GA) tier only. We don't track the
     # following at the moment:
@@ -28,6 +28,12 @@ class ca_sf_caap(Variable):
     #   - The Mandatory Direct Rent Payment routing (SEC. 20.7-33); we treat the
     #     full grant as received by the household.
     #   - The episodic housing supplement and +$50 cash payments (Div 94-14.1).
+    #   - California State Disability Insurance (DIB) benefits, which the manual
+    #     counts as income but which have no PolicyEngine variable (we do not
+    #     substitute social_security_disability, which is the federal SSDI
+    #     program, not state DIB).
+    #   - Mid-month grant proration (Manual pp.495-497); we compute a full
+    #     monthly grant.
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.sf.caap

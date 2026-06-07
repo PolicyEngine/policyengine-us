@@ -364,3 +364,29 @@
     ca_sf_caap_countable_income: 540
     ca_sf_caap_eligible: true
     ca_sf_caap: 38
+
+- name: Case 14, CalWORKs recipient is barred end-to-end by the other-aid bar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_tanf: 6_000  # CalWORKs recipient ($6,000/year > 0)
+  output:
+    # Age/property/income all pass (same as Case 1), but receiving CalWORKs
+    # trips the other-aid bar (SEC. 20.7-6): ca_sf_caap_other_aid_eligible
+    # = false -> ca_sf_caap_eligible = false -> benefit $0.
+    ca_sf_caap_other_aid_eligible: false
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0

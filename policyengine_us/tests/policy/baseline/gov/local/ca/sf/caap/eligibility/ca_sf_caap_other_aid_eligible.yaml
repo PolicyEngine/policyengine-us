@@ -1,0 +1,57 @@
+# Other-aid bar (SEC. 20.7-6): a unit is barred from CAAP if it receives another
+# cash-aid program (CalWORKs/ca_tanf or CAPI/ca_capi). ca_tanf and ca_capi are
+# YEAR-defined SPMUnit variables; the formula reads them with period.this_year,
+# so the annual input passes through un-divided ($6,000 > 0 -> recipient -> barred).
+- name: Case 1, no other cash aid, other-aid eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        ca_capi: 0
+  output:
+    ca_sf_caap_other_aid_eligible: true
+
+- name: Case 2, CalWORKs (ca_tanf) recipient is barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 6_000
+        ca_capi: 0
+  output:
+    ca_sf_caap_other_aid_eligible: false
+
+- name: Case 3, CAPI (ca_capi) recipient is barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        ca_capi: 6_000
+  output:
+    ca_sf_caap_other_aid_eligible: false
