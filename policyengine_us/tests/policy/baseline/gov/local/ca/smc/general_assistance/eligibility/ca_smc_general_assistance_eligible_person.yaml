@@ -1,10 +1,9 @@
-- name: Case 1, adult citizen meeting the work requirement is eligible.
+- name: Case 1, adult citizen is eligible.
   period: 2026-01
   input:
     age: 18
     immigration_status: CITIZEN
     in_smc: true
-    is_in_work_program: true
   output:
     ca_smc_general_assistance_eligible_person: true
 

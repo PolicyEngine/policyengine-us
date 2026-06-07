@@ -18,6 +18,9 @@ class ca_smc_general_assistance_eligible_person(Variable):
         # income at the moment. SSI and CAPI recipients are excluded because
         # GA is interim aid pending those categorical benefits (Board File
         # 26-290; SSP-14 IAR framing).
+        # The work requirement does not gate eligibility: an initial applicant
+        # only needs to be employable or willing to seek and accept work, which
+        # we don't track at the moment, so it is assumed met.
         p = parameters(period).gov.local.ca.smc.general_assistance
         adult = person("age", period.this_year) >= p.minimum_age
         immigration_eligible = person(
@@ -26,13 +29,4 @@ class ca_smc_general_assistance_eligible_person(Variable):
         )
         not_on_ssi = person("ssi", period) == 0
         not_capi_eligible = ~person("ca_capi_eligible_person", period.this_year)
-        meets_work_requirements = person(
-            "ca_smc_general_assistance_meets_work_requirements", period
-        )
-        return (
-            adult
-            & immigration_eligible
-            & not_on_ssi
-            & not_capi_eligible
-            & meets_work_requirements
-        )
+        return adult & immigration_eligible & not_on_ssi & not_capi_eligible
