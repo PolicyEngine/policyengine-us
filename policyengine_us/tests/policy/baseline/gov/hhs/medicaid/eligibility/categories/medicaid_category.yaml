@@ -44,3 +44,19 @@
     is_optional_senior_or_disabled_asset_eligible: true
   output:
     medicaid_category: SSI_RECIPIENT
+
+- name: Case 6, section 1115 MEC adult category.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+
+- name: Case 7, adult group takes priority over section 1115 MEC adult.
+  period: 2027
+  input:
+    is_adult_for_medicaid: true
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: ADULT

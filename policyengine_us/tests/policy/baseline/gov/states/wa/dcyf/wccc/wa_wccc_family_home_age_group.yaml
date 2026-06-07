@@ -1,0 +1,76 @@
+- name: Case 1, infant 6 months old.
+  period: 2025-01
+  input:
+    age: 0.5
+    state_code: WA
+  output:
+    # 6 months < 12 -> INFANT.
+    wa_wccc_family_home_age_group: INFANT
+
+- name: Case 2, enhanced toddler at exactly 12 months.
+  period: 2025-01
+  input:
+    age: 1
+    state_code: WA
+  output:
+    # 12 months not < 12, but < 18 -> ENHANCED_TODDLER.
+    wa_wccc_family_home_age_group: ENHANCED_TODDLER
+
+- name: Case 3, enhanced toddler at 17 months.
+  period: 2025-01
+  input:
+    age: 1.4
+    state_code: WA
+  output:
+    # 16.8 months < 18 -> ENHANCED_TODDLER.
+    wa_wccc_family_home_age_group: ENHANCED_TODDLER
+
+- name: Case 4, toddler at exactly 18 months (boundary).
+  period: 2025-01
+  input:
+    age: 1.5
+    state_code: WA
+  output:
+    # 18 months not < 18, but < 30 -> TODDLER.
+    wa_wccc_family_home_age_group: TODDLER
+
+- name: Case 5, toddler at 24 months.
+  period: 2025-01
+  input:
+    age: 2
+    state_code: WA
+  output:
+    wa_wccc_family_home_age_group: TODDLER
+
+- name: Case 6, preschool at 30 months boundary.
+  period: 2025-01
+  input:
+    age: 2.5
+    state_code: WA
+  output:
+    # 30 months not < 30 -> PRESCHOOL.
+    wa_wccc_family_home_age_group: PRESCHOOL
+
+- name: Case 7, preschool at 4 years.
+  period: 2025-01
+  input:
+    age: 4
+    state_code: WA
+  output:
+    wa_wccc_family_home_age_group: PRESCHOOL
+
+- name: Case 8, school age at 6 years.
+  period: 2025-01
+  input:
+    age: 6
+    state_code: WA
+  output:
+    wa_wccc_family_home_age_group: SCHOOL_AGE
+
+- name: Case 9, school age at 10 years.
+  period: 2025-01
+  input:
+    age: 10
+    state_code: WA
+  output:
+    wa_wccc_family_home_age_group: SCHOOL_AGE

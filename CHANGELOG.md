@@ -1,3 +1,259 @@
+## [1.721.2] - 2026-06-06
+
+### Fixed
+
+- Fix Alameda County name string in `in_ala` so it matches the all-caps county enum name (`ALAMEDA_COUNTY_CA`).
+
+
+## [1.721.1] - 2026-06-06
+
+### Fixed
+
+- Restricted Kansas Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.721.0] - 2026-06-06
+
+### Added
+
+- Added the Kansas Lifeline phone service supplement from the Kansas Universal Service Fund.
+
+
+## [1.720.7] - 2026-06-05
+
+### Fixed
+
+- Restricted Missouri Commodity Supplemental Food Program eligibility to counties with DHSS distribution sites.
+
+
+## [1.720.6] - 2026-06-03
+
+### Changed
+
+- Removed injected medicaid_cost_if_enrolled inputs from partner contract tests and re-derived expected outputs from the restored SLCSP-index Medicaid cost formula.
+
+
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
+## [1.720.4] - 2026-06-02
+
+### Fixed
+
+- Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
+
+
+## [1.720.3] - 2026-06-02
+
+### Fixed
+
+- Flow the federal OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) through into Montana taxable income, since Mont. Code Ann. § 15-30-2120 starts from federal taxable income.
+
+
+## [1.720.2] - 2026-06-02
+
+### Fixed
+
+- Remove the Utah Homeowner's/Renter's Relief from Utah income tax refundable credits, since it is administered on Form TC-90CB rather than Form TC-40. The credit remains in the household-level state property tax credits aggregate.
+- Apply ACA premium tax credit formulas to years with historical SLCSP premiums.
+
+
+## [1.720.1] - 2026-06-02
+
+### Fixed
+
+- Relocate the Rhode Island contrib reform tests to the lighter states shard so the two states-shard CI runners are balanced.
+- Isolate refundable credit conversion contrib tests per-file so the other-shard-1 batch no longer exceeds the CI runner memory cap.
+
+
+## [1.720.0] - 2026-06-02
+
+### Added
+
+- Added Alabama Child Care Subsidy Program (CCSP).
+
+
+## [1.719.2] - 2026-06-01
+
+### Fixed
+
+- Wire the Vermont renter credit into the state property tax credits aggregate.
+
+
+## [1.719.1] - 2026-06-01
+
+### Fixed
+
+- Correct the refundable credit conversion per-other-dependent credit to count all non-CTC tax-unit dependents.
+
+
+## [1.719.0] - 2026-06-01
+
+### Added
+
+- Added the South Carolina Homestead Exemption property tax reduction.
+- Added the Texas school district residence homestead exemptions.
+- Added the Mississippi age or disability Homestead Exemption property tax reduction.
+
+
+## [1.718.0] - 2026-06-01
+
+### Added
+
+- Added Nebraska Aid to the Aged, Blind, or Disabled - Payment Maintenance (AABD-PMT) program, the state's SSI supplement, including standard-of-need and shelter allowance parameters, eligibility rules, and living arrangement logic.
+
+
+## [1.717.0] - 2026-06-01
+
+### Added
+
+- Minnesota Supplemental Aid (MSA) — State Supplementary Payment to SSI.
+
+
+## [1.716.0] - 2026-06-01
+
+### Added
+
+- Implement West Virginia Child Care Assistance Program (CCAP).
+
+
+## [1.715.3] - 2026-05-29
+
+### Fixed
+
+- Allocate taxable unemployment compensation by actual recipient instead of all to head.
+
+
+## [1.715.2] - 2026-05-29
+
+### Changed
+
+- Moved Medicaid conditional cost allocation into PolicyEngine US using an SLCSP age, family-composition, and location cost index.
+
+
+## [1.715.1] - 2026-05-28
+
+### Fixed
+
+- Fixed two code-health regressions on main: precompute per-person arrays in `ar_sra_countable_income` (replaces `sum()` over an entity-variable generator), and switch `wa_wccc_provider_type.defined_for` from `"wa_wccc_eligible_child"` to `StateCode.WA` so an input variable no longer carries a non-geographic gate.
+
+
+## [1.715.0] - 2026-05-28
+
+### Added
+
+- Add Arkansas School Readiness Assistance (SRA) child care subsidy program. The 4% per-family copay ceiling is computed against countable (adult) income — children's SSI and Social Security are excluded per FSU §4.3.3 — and the per-child copay used in that ceiling is clamped to the child's actual provider charge. The ESS Year-1 alt path (FSU §4.1.5.1) is gated on earned income alone exceeding the TEA limit, consistent with the regulation's "earnings alone" wording.
+
+
+## [1.714.0] - 2026-05-28
+
+### Added
+
+- Add New Jersey unemployment insurance rules. Phase-1 compute-only program: callers provide pre-aggregated base-period wages, qualifying base weeks, and qualifying dependents; the modeled benefit is not yet wired into the `unemployment_compensation` aggregate (mirrors the existing PA UC precedent).
+
+
+## [1.713.0] - 2026-05-28
+
+### Added
+
+- Implement Washington State Working Connections Child Care (WCCC), the state's child care subsidy program (CCAP-equivalent).
+
+
+## [1.712.1] - 2026-05-28
+
+### Fixed
+
+- Fixed YAML syntax error in partner API impact notice workflow.
+
+
+## [1.712.0] - 2026-05-27
+
+### Added
+
+- Added Slack notices for partner API contract test changes.
+
+
+## [1.711.0] - 2026-05-27
+
+### Added
+
+- Added coding-agent guidance for partner API contract tests and removed stale working references.
+
+
+## [1.710.7] - 2026-05-27
+
+### Fixed
+
+- Validate changed changelog fragment paths in pull request CI.
+
+
+## [1.710.6] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.5] - 2026-05-27
+
+### Fixed
+
+- Apply rate cap before deducting copay in DC, NJ, SC, RI, PA, ME, MA, VA, and DE child care subsidy formulas, so the family copay is properly deducted from the state's max reimbursement when expenses exceed the cap.
+
+
+## [1.710.4] - 2026-05-27
+
+### Fixed
+
+- Model the recent incarceration exception for Medicaid community engagement requirements.
+
+
+## [1.710.3] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.2] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.1] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.0] - 2026-05-27
+
+### Added
+
+- Add an annual approximation of the 2018-2019 Arkansas Works Medicaid work requirement.
+
+
+## [1.709.1] - 2026-05-26
+
+### Fixed
+
+- Deduct the Parent Share of Cost from Texas Child Care Services when childcare expense exceeds the Board's maximum reimbursement rate.
+
+
+## [1.709.0] - 2026-05-26
+
+### Added
+
+- Added Alabama senior homestead property tax relief.
+
+
+## [1.708.0] - 2026-05-26
+
+### Added
+
+- Add Arizona MCTCP subtraction (Executive Order 2025-15) propagating the OBBBA federal enhanced senior, tip, overtime, and auto loan interest deductions to AZ subtractions starting 2025.
+
+
 ## [1.707.1] - 2026-05-25
 
 No significant changes.

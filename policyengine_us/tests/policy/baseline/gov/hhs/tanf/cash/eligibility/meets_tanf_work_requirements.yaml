@@ -1,0 +1,68 @@
+- name: Case 1, DC TANF work compliance is reused.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+      person2:
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    meets_tanf_work_requirements: true
+
+- name: Case 2, Montana TANF work compliance is reused.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    meets_tanf_work_requirements: true
+
+- name: Case 3, no modeled state TANF work compliance defaults false.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    meets_tanf_work_requirements: false

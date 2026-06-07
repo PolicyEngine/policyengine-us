@@ -1,0 +1,20 @@
+- name: All use_* toggles default to false — flat credit stays zero
+  # Force-applies the reform but leaves every use_* toggle at its default
+  # false. Confirms the formula returns zero with no components
+  # contributing. The `in_effect: false` here does NOT gate the reform
+  # (the YAML `reforms:` directive bypasses the autoloader); the
+  # autoloader's None return is exercised in test_refundable_credit_conversion_autoloader.py.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: false
+    people:
+      filer:
+        age: 35
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0

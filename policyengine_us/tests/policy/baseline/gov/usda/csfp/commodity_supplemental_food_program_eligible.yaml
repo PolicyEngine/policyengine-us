@@ -169,3 +169,93 @@
         state_code: TX
   output:
     commodity_supplemental_food_program_eligible: true
+
+- name: Case 6, Kansas senior in a CSFP covered county is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county_str: JOHNSON_COUNTY_KS
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Case 7, Kansas senior outside CSFP covered counties is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county_str: ALLEN_COUNTY_KS
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Case 8, Missouri senior in a DHSS CSFP site county is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county_str: JACKSON_COUNTY_MO
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Case 9, Missouri senior outside DHSS CSFP site counties is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county_str: ANDREW_COUNTY_MO
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Case 10, Missouri senior before the sourced county filter year is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county_str: ANDREW_COUNTY_MO
+  output:
+    commodity_supplemental_food_program_eligible: true

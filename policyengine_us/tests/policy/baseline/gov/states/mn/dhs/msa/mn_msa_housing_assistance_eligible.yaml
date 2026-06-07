@@ -1,0 +1,26 @@
+- name: Case 1, default value is false.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_housing_assistance_eligible: false
+
+- name: Case 2, user-provided true passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mn_msa_housing_assistance_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_housing_assistance_eligible: true

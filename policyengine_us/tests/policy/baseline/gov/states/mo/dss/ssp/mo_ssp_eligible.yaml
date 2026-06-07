@@ -177,6 +177,7 @@
       person1:
         age: 21
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi: 500
         mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
         mo_snc_facility_base_charge: 1_000
@@ -212,6 +213,7 @@
       person1:
         age: 21
         is_disabled: true
+        meets_ssi_disability_criteria: true
         ssi: 500
         mo_ssp_living_arrangement: RCF_LEVEL_I
         mo_snc_facility_base_charge: 1_000

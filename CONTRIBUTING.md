@@ -29,6 +29,7 @@ Four types of files usually change together:
 
 Conventions:
 
+- Changelog fragments must be top-level files like `changelog.d/my-change.fixed.md`; do not use `changelog.d/fixed/my-change.md` or omit the type suffix.
 - Write YAML tests **first** (TDD). They fail until the variable formula is in place.
 - Use `where(...)`, `max_(...)`, `min_(...)` inside formulas — never Python `if` / `max` / `min`. Vectorisation requires numpy.
 - Match the variable file name to the class name (e.g. `my_tax_credit.py` defines `class my_tax_credit(Variable)`).

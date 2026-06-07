@@ -1,0 +1,346 @@
+# Daily base rates from rates/base_rate.yaml lookup
+# Keyed by (zone, age_category, care_type, time_category).
+# Care type defaults to REGULAR; verified by parameter breakdown.
+#
+# Selected verified values for testing (Nov 1, 2025 rate sheet):
+#   STATEWIDE / INFANT / REGULAR / FT   = $36.00
+#   STATEWIDE / TODDLER / REGULAR / FT  = $35.00
+#   STATEWIDE / PRESCHOOL / REGULAR / FT = $33.00
+#   STATEWIDE / SCHOOL_AGED / REGULAR / FT = $28.00
+#   BENTON_WASHINGTON / INFANT / REGULAR / FT = $38.00
+#   BENTON_WASHINGTON / TODDLER / REGULAR / FT = $37.00
+#   STATEWIDE / INFANT / REGULAR / PT = $18.00
+#   BENTON_WASHINGTON / INFANT / REGULAR / PT = $19.00
+
+- name: Case 1, Statewide infant full time base rate is 36.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 36.00
+
+- name: Case 2, Statewide toddler full time base rate is 35.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 35.00
+
+- name: Case 3, Statewide preschool full time base rate is 33.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 33.00
+
+- name: Case 4, Statewide school-aged full time base rate is 28.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 28.00
+
+- name: Case 5, Benton/Washington infant full time base rate is 38.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 38.00
+
+- name: Case 6, Benton/Washington toddler full time base rate is 37.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 37.00
+
+- name: Case 7, Statewide infant part time base rate is 18.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 18.00
+
+- name: Case 8, Benton/Washington infant part time base rate is 19.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 19.00
+
+- name: Case 9, Statewide infant Night/Weekend full time base rate is 39.60.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 39.60
+
+- name: Case 10, Statewide infant SN1 full time base rate is 36.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN1
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 36.00
+
+- name: Case 11, Statewide infant SN2 full time base rate is 50.40.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN2
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 50.40
+
+- name: Case 12, Statewide infant SN3 full time base rate is 50.40.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN3
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 50.40
+
+- name: Case 13, Statewide preschool Night/Weekend full time base rate is 36.30.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 8
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 36.30
+
+- name: Case 14, Statewide infant Night/Weekend with part-time hours uses the PT Night/Weekend rate (19.80 = PT REGULAR 18 x 1.10).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 4
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: PULASKI_COUNTY_AR
+        state_code: AR
+  output:
+    # Per OEC Oct 7 2025 Provider Call ("Weekend and night time rates are set
+    # at a standard 10% increase of typical rates"), PT Night/Weekend
+    # = PT REGULAR x 1.10 = 18 x 1.10 = 19.80.
+    ar_sra_daily_base_rate: 19.80
+
+- name: Case 15, Benton/Washington infant SN2 full time base rate is 53.20.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN2
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 53.20
+
+- name: Case 16, Benton/Washington toddler Night/Weekend full time base rate is 40.70.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_day: 8
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 40.70
+
+- name: Case 17, Benton/Washington preschool REGULAR full time base rate is 33.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    # B/W preschool rate matches Statewide ($33) at the regular tier.
+    ar_sra_daily_base_rate: 33.00
+
+- name: Case 18, Benton/Washington school-aged REGULAR full time base rate is 28.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    # B/W school-aged rate matches Statewide ($28) at the regular tier.
+    ar_sra_daily_base_rate: 28.00
+
+- name: Case 19, Benton/Washington preschool REGULAR part time base rate is 16.50.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: BENTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 16.50
+
+- name: Case 20, Benton/Washington school-aged REGULAR part time base rate is 14.00.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        county_str: WASHINGTON_COUNTY_AR
+        state_code: AR
+  output:
+    ar_sra_daily_base_rate: 14.00
