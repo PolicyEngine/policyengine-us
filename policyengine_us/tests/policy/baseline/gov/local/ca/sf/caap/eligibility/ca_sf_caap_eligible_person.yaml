@@ -1,6 +1,7 @@
-# A person is ineligible if they receive SSI OR lack a qualified immigration
-# status (SEC. 20.7-14). ssi is MONTH-defined, so input is the monthly amount.
-- name: Case 1, ineligible because the person receives SSI.
+# A person counts toward the CAAP budget unit if they do NOT receive SSI AND
+# have a qualified immigration status (SEC. 20.7-6, 20.7-14). ssi is
+# MONTH-defined, so input is the monthly amount.
+- name: Case 1, not counted because the person receives SSI.
   period: 2025-01
   input:
     people:
@@ -12,9 +13,9 @@
         members: [person1]
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
-    ca_sf_caap_ineligible_person: true
+    ca_sf_caap_eligible_person: false
 
-- name: Case 2, ineligible because of immigration status.
+- name: Case 2, not counted because of immigration status.
   period: 2025-01
   input:
     people:
@@ -26,9 +27,9 @@
         members: [person1]
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
-    ca_sf_caap_ineligible_person: true
+    ca_sf_caap_eligible_person: false
 
-- name: Case 3, ineligible on both grounds (SSI and immigration status).
+- name: Case 3, not counted on both grounds (SSI and immigration status).
   period: 2025-01
   input:
     people:
@@ -40,9 +41,9 @@
         members: [person1]
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
-    ca_sf_caap_ineligible_person: true
+    ca_sf_caap_eligible_person: false
 
-- name: Case 4, not ineligible (no SSI and qualified immigration status).
+- name: Case 4, counted (no SSI and qualified immigration status).
   period: 2025-01
   input:
     people:
@@ -54,4 +55,4 @@
         members: [person1]
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
-    ca_sf_caap_ineligible_person: false
+    ca_sf_caap_eligible_person: true

@@ -8,8 +8,6 @@ class ca_sf_caap_budget_unit_size(Variable):
     definition_period = MONTH
     defined_for = "in_san_francisco"
 
-    # Ineligible persons (e.g., SSI recipients or persons without a qualified
-    # immigration status) cannot receive CAAP and are removed from the budget
-    # unit. The number of ineligible persons never exceeds the SPM unit size.
-    adds = ["spm_unit_size"]
-    subtracts = ["ca_sf_caap_ineligible_person"]
+    # Count the persons who can receive CAAP: those who are not SSI recipients
+    # and have a qualified immigration status.
+    adds = ["ca_sf_caap_eligible_person"]

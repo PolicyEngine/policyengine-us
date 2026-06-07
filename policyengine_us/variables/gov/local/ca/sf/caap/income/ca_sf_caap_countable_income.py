@@ -14,7 +14,8 @@ class ca_sf_caap_countable_income(Variable):
         # benefit formula (SEC. 20.7-22(c)), not the net-income eligibility test
         # (SEC. 20.7-10), and is protected by the $59 floor (SEC. 20.7-24).
         income = spm_unit.members("ca_sf_caap_countable_income_person", period)
-        # SSI recipients (and other ineligible persons) are excluded from CAAP,
-        # so their income is also excluded from the budget (SEC. 20.7-14).
-        ineligible = spm_unit.members("ca_sf_caap_ineligible_person", period)
-        return spm_unit.sum(where(ineligible, 0, income))
+        # Only count the income of persons in the budget unit. SSI recipients
+        # (and persons without a qualified immigration status) are excluded from
+        # CAAP, so their income is also excluded (SEC. 20.7-14).
+        eligible = spm_unit.members("ca_sf_caap_eligible_person", period)
+        return spm_unit.sum(where(eligible, income, 0))

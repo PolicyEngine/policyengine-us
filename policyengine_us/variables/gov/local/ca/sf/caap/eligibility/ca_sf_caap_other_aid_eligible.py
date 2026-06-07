@@ -19,7 +19,7 @@ class ca_sf_caap_other_aid_eligible(Variable):
     def formula(spm_unit, period, parameters):
         # The CAAP Manual bars applicants who are recipients of other cash-aid
         # programs (SSI/SSP, CalWORKs, CAPI). SSI receipt is handled per-person
-        # in ca_sf_caap_ineligible_person. Here we bar CalWORKs and CAPI, the
+        # in ca_sf_caap_eligible_person. Here we bar CalWORKs and CAPI, the
         # two remaining programs with a PolicyEngine variable. The manual also
         # lists RCA (Refugee Cash Assistance) and ECA (Entrant Cash Assistance),
         # but we don't have a PolicyEngine variable for either at the moment, so
