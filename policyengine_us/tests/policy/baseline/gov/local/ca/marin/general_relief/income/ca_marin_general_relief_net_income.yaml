@@ -40,3 +40,15 @@
     # max(-60M - 0, 0) = 0; this floor prevents the grant from inflating to
     # grant - (negative) downstream in the base amount.
     ca_marin_general_relief_net_income: 0
+
+- name: CalWORKs cash counts as available income on top of net earned income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    ca_marin_general_relief_gross_income: 0
+    spm_unit_paycheck_withholdings: 0
+    ca_tanf: 9_000  # CalWORKs cash aid
+  output:
+    # max(0 - 0, 0) + 9,000 CalWORKs = 9,000.
+    ca_marin_general_relief_net_income: 9_000

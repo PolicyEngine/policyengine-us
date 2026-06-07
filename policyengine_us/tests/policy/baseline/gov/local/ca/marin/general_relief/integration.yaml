@@ -685,3 +685,42 @@
     ca_marin_general_relief_immigration_status_eligible: false
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
+
+- name: Case 22, family receiving CalWORKs is income-ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 12_000  # CalWORKs cash aid, $1,000/month
+  output:
+    # CalWORKs cash ($1,000/month) is counted as available income (Standards
+    # §II.B / §II.Q), exceeding the $387 single grant -> income-ineligible. This
+    # is the mechanism by which families with children, who receive CalWORKs,
+    # are excluded from General Relief -- without a hard demographic gate, so a
+    # family not receiving CalWORKs cash could still qualify (matches §II.L).
+    ca_marin_general_relief_net_income: 1_000  # 12,000/yr shown monthly
+    ca_marin_general_relief_income_eligible: false
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
