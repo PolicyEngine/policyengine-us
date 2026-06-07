@@ -1,0 +1,210 @@
+- name: Case 1, countable income below SMI limit, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 30_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2, applicant 60% SMI: 89,116.72 * 0.60 / 12 = $4,455.84/mo limit.
+    # Income $30,000/yr = $2,500/mo, well below limit.
+    wa_wccc_income_eligible: true
+
+- name: Case 2, countable income above SMI limit, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 200_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2, applicant 60% SMI: $4,455.84/mo limit.
+    # Income $200,000/yr = $16,667/mo, above limit, no SNAP, not homeless.
+    wa_wccc_income_eligible: false
+
+- name: Case 3, homeless household above standard income tier, not income eligible (HGP path is in wa_wccc_eligible).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 80_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: true
+  output:
+    # Homeless override is enforced in wa_wccc_eligible (HGP path bypasses
+    # this variable). wa_wccc_income_eligible only checks the standard tier.
+    # Income $80,000/yr = $6,667/mo > 85% SMI ($6,312/mo size 2).
+    wa_wccc_income_eligible: false
+
+- name: Case 4, applicant income just under 60% SMI limit, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 53_470
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2 monthly limit at 60% SMI = 131,054 * 0.68 * 0.60 / 12 = $4,455.836.
+    # Income $53,470/yr = $4,455.833/mo, $0.003 below limit -> eligible (<=).
+    wa_wccc_income_eligible: true
+
+- name: Case 5, applicant income just above 60% SMI limit, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 53_500
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2 monthly limit at 60% SMI = $4,455.836.
+    # Income $53,500/yr = $4,458.333/mo, above limit -> ineligible.
+    wa_wccc_income_eligible: false
+
+- name: Case 6, recipient income just under 65% SMI limit, eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: true
+        employment_income: 57_925
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2 monthly limit at 65% SMI = 131,054 * 0.68 * 0.65 / 12 = $4,827.156.
+    # Income $57,925/yr = $4,827.083/mo, just under limit -> eligible.
+    wa_wccc_income_eligible: true
+
+- name: Case 7, recipient income just above 65% SMI limit, ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: true
+        employment_income: 58_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # Size 2 monthly limit at 65% SMI = $4,827.156.
+    # Income $58,000/yr = $4,833.333/mo, above limit -> ineligible.
+    wa_wccc_income_eligible: false

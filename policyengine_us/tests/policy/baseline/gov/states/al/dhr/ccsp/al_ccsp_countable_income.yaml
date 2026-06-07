@@ -1,0 +1,128 @@
+# AL CCSP countable income tests (SPMUnit, MONTH, USD)
+# Uses adds = "gov.states.al.dhr.ccsp.income.countable_income.sources" — annual
+# sources auto-divided to monthly by PolicyEngine.
+
+- name: Employment income only.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly = 24,000 / 12 = 2,000
+    al_ccsp_countable_income: 2_000
+
+- name: Self employment and interest income.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 18_000
+        interest_income: 2_400
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly = (18,000 + 2,400) / 12 = 1,700
+    al_ccsp_countable_income: 1_700
+
+- name: Social security counted.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 12_000
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Monthly = 12,000 / 12 = 1,000
+    al_ccsp_countable_income: 1_000
+
+- name: Child support excluded.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        child_support_received: 6_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Child support excluded -> monthly = 24,000 / 12 = 2,000
+    al_ccsp_countable_income: 2_000
+
+- name: Zero income family.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_countable_income: 0

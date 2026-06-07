@@ -27,7 +27,13 @@ test-yaml-structural-heavy-shard-1:
 test-yaml-structural-heavy-shard-2:
 	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/2
 test-yaml-structural-other:
-	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress
+	# refundable_credit_conversion force-applies a reform per case; each
+	# distinct gov.contrib.* combination clones the full tax-benefit system
+	# (~5 GB peak/file). Auto-batching grouped all its files into one
+	# subprocess, stacking the peaks past the runner cap → OOM. Isolate
+	# per-file so each peak is freed between files (same as ctc/crfb below).
+	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion
+	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file
 test-yaml-structural-other-shard-2:
 	# ctc + crfb are microsim-heavy: per-file isolation keeps RAM under the cap.
 	$(BATCH) $(TESTS)/policy/contrib/ctc --mode per-file

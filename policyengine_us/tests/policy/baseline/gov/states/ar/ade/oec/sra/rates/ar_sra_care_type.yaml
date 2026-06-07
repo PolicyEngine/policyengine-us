@@ -1,0 +1,71 @@
+# ar_sra_care_type is a bare-input enum variable; default is REGULAR.
+# Verify each enum value round-trips correctly.
+
+- name: Case 1, default ar_sra_care_type is REGULAR.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_care_type: REGULAR
+
+- name: Case 2, NIGHT_WEEKEND care type round-trips.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        ar_sra_care_type: NIGHT_WEEKEND
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_care_type: NIGHT_WEEKEND
+
+- name: Case 3, SN1 care type round-trips.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        ar_sra_care_type: SN1
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_care_type: SN1
+
+- name: Case 4, SN2 care type round-trips.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        ar_sra_care_type: SN2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_care_type: SN2
+
+- name: Case 5, SN3 care type round-trips.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        ar_sra_care_type: SN3
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_sra_care_type: SN3
