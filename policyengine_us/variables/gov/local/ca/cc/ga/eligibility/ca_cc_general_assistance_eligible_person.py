@@ -20,6 +20,10 @@ class ca_cc_general_assistance_eligible_person(Variable):
         # Ineligible if receiving SSI, SSDI, unemployment (UIB), or California
         # State Disability Insurance (SDI). SSDI, UIB, and SDI are YEAR-defined;
         # we read the full annual value with period.this_year and test receipt (> 0).
+        # Only SSDI bars eligibility here; Social Security retirement/survivors
+        # benefits (the broader `social_security` aggregate) are not a categorical
+        # bar -- they instead count toward the gap via the
+        # general_assistance.countable_income.sources list.
         receives_categorical = (
             (person("ssi", period) > 0)
             | (person("social_security_disability", period.this_year) > 0)

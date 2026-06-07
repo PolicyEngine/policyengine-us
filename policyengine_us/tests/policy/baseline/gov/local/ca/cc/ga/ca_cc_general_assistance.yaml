@@ -318,3 +318,45 @@
   output:
     ca_cc_general_assistance_income_eligible: false
     ca_cc_general_assistance: 0
+
+- name: Single eligible adult with no income receives the full $336 grant.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 336 single MAP - 0 countable = 336 (full fill-the-gap grant)
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance: 336
+
+- name: Boundary - income exactly at the $336 single MAP yields no grant (strict gate).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 336 * 12  # $336/month countable == MAP
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0

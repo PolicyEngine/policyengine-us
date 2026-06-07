@@ -10,6 +10,11 @@ class ca_cc_general_assistance_immigration_status_eligible(Variable):
     reference = "https://ehsd.org/aging-and-adult-services/general-assistance/"
 
     def formula(person, period, parameters):
+        # The EHSD criterion is being "legally in the country with no limitation
+        # on your stay," so time-limited statuses do not qualify. PAROLED_ONE_YEAR
+        # is excluded because parole is granted for a fixed period and confers no
+        # indefinite right to remain -- matching the Santa Clara (SCC) and San
+        # Mateo (SMC) County GA implementations, which also exclude it.
         p = parameters(period).gov.local.ca.cc.general_assistance
         immigration_status = person("immigration_status", period.this_year)
         immigration_status_str = immigration_status.decode_to_str()

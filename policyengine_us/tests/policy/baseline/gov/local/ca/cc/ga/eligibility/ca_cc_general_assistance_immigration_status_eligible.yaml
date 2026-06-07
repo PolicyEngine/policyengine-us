@@ -29,3 +29,11 @@
     county: CONTRA_COSTA_COUNTY_CA
   output:
     ca_cc_general_assistance_immigration_status_eligible: false
+
+- name: Paroled for one year is not a qualified status (time-limited parole).
+  period: 2024-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: false

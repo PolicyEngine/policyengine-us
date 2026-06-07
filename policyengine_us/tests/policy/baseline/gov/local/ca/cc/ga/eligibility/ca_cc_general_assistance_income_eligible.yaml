@@ -63,3 +63,23 @@
   output:
     spm_unit_count_children: 1
     ca_cc_general_assistance_income_eligible: false
+
+- name: Boundary - income exactly at the $336 single MAP is ineligible (strict < gate).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 336 * 12  # $336/month countable == MAP, not strictly below
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_income_eligible: false

@@ -7,12 +7,9 @@ class ca_cc_general_assistance_income_eligible(Variable):
     label = "Eligible for Contra Costa County General Assistance based on income requirements"
     definition_period = MONTH
     defined_for = "in_cc"
-    reference = (
-        "https://ehsd.org/aging-and-adult-services/general-assistance/",
-        # Adults with dependent children apply for CalWORKs instead, so the unit
-        # must have no children (GA-80 brochure, "adult without dependent children").
-        "https://ehsd.org/wp-content/uploads/2024/08/GA-Brochure_ENGLISH_July2024_FA_Digital.pdf#page=2",
-    )
+    # The EHSD program page states GA serves "an adult without dependent
+    # children"; families with children are directed to CalWORKs.
+    reference = "https://ehsd.org/aging-and-adult-services/general-assistance/"
 
     def formula(spm_unit, period, parameters):
         income = spm_unit("ca_cc_general_assistance_countable_income", period)

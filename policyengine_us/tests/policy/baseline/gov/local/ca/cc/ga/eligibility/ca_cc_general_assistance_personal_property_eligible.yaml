@@ -47,3 +47,23 @@
         members: [person1]
   output:
     ca_cc_general_assistance_personal_property_eligible: false
+
+# Personal property is summed across all SPM-unit members, so two members each
+# holding $300 ($600 total) exceed the $500 limit.
+- name: Two members with $300 each ($600 total) exceed the $500 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 300
+      person2:
+        personal_property: 300
+    households:
+      household:
+        members: [person1, person2]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: false
