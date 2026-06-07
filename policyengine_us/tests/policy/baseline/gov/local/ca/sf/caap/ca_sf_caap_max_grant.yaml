@@ -2,6 +2,7 @@
 # Size 1 = $578, size 2 = $1,036.
 - name: Case 1, single eligible adult uses the size-1 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -18,6 +19,7 @@
 
 - name: Case 2, two eligible adults use the size-2 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -36,6 +38,7 @@
 
 - name: Case 3, two-person unit with one SSI recipient drops to the size-1 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -59,6 +62,7 @@
 
 - name: Case 4, three eligible adults use the size-3 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1: {immigration_status: CITIZEN}
@@ -76,6 +80,7 @@
 
 - name: Case 5, ten eligible adults use the largest charted grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1: {immigration_status: CITIZEN}
@@ -100,6 +105,7 @@
 
 - name: Case 6, eleven eligible adults add $35 per person beyond ten.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1: {immigration_status: CITIZEN}
@@ -127,6 +133,7 @@
 # PAES tier (SEC. 20.7-21(b)) — triggered by is_in_work_program. Single = $714.
 - name: Case 7, single PAES adult uses the higher PAES size-1 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -144,6 +151,7 @@
 
 - name: Case 8, two-adult unit with one in a work program uses the PAES size-2 grant.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -163,6 +171,7 @@
 
 - name: Case 9, eleven PAES adults add $35 per person beyond ten to the PAES table.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1: {immigration_status: CITIZEN, is_in_work_program: true}
@@ -189,6 +198,7 @@
 
 - name: Case 10, work program on an ineligible member does not trigger PAES.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:

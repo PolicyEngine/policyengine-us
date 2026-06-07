@@ -320,3 +320,25 @@
     ca_sf_caap_budget_unit_size: 0
     ca_sf_caap_eligible: false
     ca_sf_caap: 0
+
+- name: Case 14, PAES tier flows through to the paid benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_in_work_program: true
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    # is_in_work_program selects the PAES table; with zero income the full PAES
+    # size-1 grant ($714) is paid through the top-level benefit, not the GA $578.
+    ca_sf_caap: 714

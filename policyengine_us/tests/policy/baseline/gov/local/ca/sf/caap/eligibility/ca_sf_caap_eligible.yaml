@@ -95,3 +95,31 @@
         spm_unit_cash_assets: 0
   output:
     ca_sf_caap_eligible: false
+
+- name: Case 6, all-adult unit barred solely by the unit-level CalWORKs bar.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        # CalWORKs (ca_tanf) normally requires a child, which would also fail the
+        # adult-only age gate and confound this test. Set ca_tanf directly to
+        # isolate the unit-level CalWORKs bar (SEC. 20.7-6; Manual 91-2): the
+        # adult passes age, property, income, and budget-unit, so the only
+        # failing branch is not_on_calworks.
+        ca_tanf: 6_000
+  output:
+    ca_sf_caap_age_eligible: true
+    ca_sf_caap_personal_property_eligible: true
+    ca_sf_caap_income_eligible: true
+    ca_sf_caap_budget_unit_size: 1
+    ca_sf_caap_eligible: false

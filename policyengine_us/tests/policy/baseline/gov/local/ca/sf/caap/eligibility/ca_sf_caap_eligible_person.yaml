@@ -78,3 +78,30 @@
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
     ca_sf_caap_eligible_person: false
+
+- name: Case 6, mixed unit drops the CAPI member per person and excludes their income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # Aged DACA adult is CAPI-eligible (aged non-qualified-noncitizen), so is
+        # barred from the CAAP budget unit per person; their unearned income must
+        # not count toward the unit.
+        age: 70
+        immigration_status: DACA
+        social_security: 6_000  # $500/month, excluded because person1 is dropped
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Only person2 (citizen) counts; person1 (CAPI) is dropped per person, and
+    # person1's $500/month Social Security is excluded from countable income.
+    ca_sf_caap_budget_unit_size: 1
+    ca_sf_caap_countable_income: 0

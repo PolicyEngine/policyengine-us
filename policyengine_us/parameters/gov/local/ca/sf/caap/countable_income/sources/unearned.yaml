@@ -8,12 +8,16 @@ values:
     - child_support_received
     - workers_compensation
     - railroad_benefits
+    - interest_income
+    - rental_income
 metadata:
   unit: list
   period: year
   label: San Francisco County CAAP counted unearned income sources
   reference:
-    - title: SF Administrative Code SEC. 20.7-14 Exempt Income or Resources
+    - title: SF Administrative Code SEC. 20.7-14 Exempt Income or Resources (income not exempted under this section is counted)
       href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352
     - title: CAAP Eligibility Manual, 92-40 Introduction to Unearned Income
       href: https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=229
+    - title: CAAP Eligibility Manual, Unearned Income examples (interest income; net income from rental of rooms or room and board)
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=190
