@@ -5,7 +5,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -22,10 +21,8 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
       person2:
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -42,10 +39,11 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
       person2:
-        ssi: 600
+        # Age 70 with no income -> the system computes ssi > 0, so person2 is an
+        # SSI recipient and is excluded from the CAAP budget unit.
+        age: 70
         immigration_status: CITIZEN
     households:
       household:
@@ -63,9 +61,9 @@
   period: 2025-01
   input:
     people:
-      person1: {ssi: 0, immigration_status: CITIZEN}
-      person2: {ssi: 0, immigration_status: CITIZEN}
-      person3: {ssi: 0, immigration_status: CITIZEN}
+      person1: {immigration_status: CITIZEN}
+      person2: {immigration_status: CITIZEN}
+      person3: {immigration_status: CITIZEN}
     households:
       household:
         members: [person1, person2, person3]
@@ -80,16 +78,16 @@
   period: 2025-01
   input:
     people:
-      person1: {ssi: 0, immigration_status: CITIZEN}
-      person2: {ssi: 0, immigration_status: CITIZEN}
-      person3: {ssi: 0, immigration_status: CITIZEN}
-      person4: {ssi: 0, immigration_status: CITIZEN}
-      person5: {ssi: 0, immigration_status: CITIZEN}
-      person6: {ssi: 0, immigration_status: CITIZEN}
-      person7: {ssi: 0, immigration_status: CITIZEN}
-      person8: {ssi: 0, immigration_status: CITIZEN}
-      person9: {ssi: 0, immigration_status: CITIZEN}
-      person10: {ssi: 0, immigration_status: CITIZEN}
+      person1: {immigration_status: CITIZEN}
+      person2: {immigration_status: CITIZEN}
+      person3: {immigration_status: CITIZEN}
+      person4: {immigration_status: CITIZEN}
+      person5: {immigration_status: CITIZEN}
+      person6: {immigration_status: CITIZEN}
+      person7: {immigration_status: CITIZEN}
+      person8: {immigration_status: CITIZEN}
+      person9: {immigration_status: CITIZEN}
+      person10: {immigration_status: CITIZEN}
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
@@ -104,17 +102,17 @@
   period: 2025-01
   input:
     people:
-      person1: {ssi: 0, immigration_status: CITIZEN}
-      person2: {ssi: 0, immigration_status: CITIZEN}
-      person3: {ssi: 0, immigration_status: CITIZEN}
-      person4: {ssi: 0, immigration_status: CITIZEN}
-      person5: {ssi: 0, immigration_status: CITIZEN}
-      person6: {ssi: 0, immigration_status: CITIZEN}
-      person7: {ssi: 0, immigration_status: CITIZEN}
-      person8: {ssi: 0, immigration_status: CITIZEN}
-      person9: {ssi: 0, immigration_status: CITIZEN}
-      person10: {ssi: 0, immigration_status: CITIZEN}
-      person11: {ssi: 0, immigration_status: CITIZEN}
+      person1: {immigration_status: CITIZEN}
+      person2: {immigration_status: CITIZEN}
+      person3: {immigration_status: CITIZEN}
+      person4: {immigration_status: CITIZEN}
+      person5: {immigration_status: CITIZEN}
+      person6: {immigration_status: CITIZEN}
+      person7: {immigration_status: CITIZEN}
+      person8: {immigration_status: CITIZEN}
+      person9: {immigration_status: CITIZEN}
+      person10: {immigration_status: CITIZEN}
+      person11: {immigration_status: CITIZEN}
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
@@ -125,3 +123,66 @@
   output:
     # Size-10 grant ($2,465) + $35 for the 11th person = $2,500.
     ca_sf_caap_max_grant: 2_500
+
+# PAES tier (SEC. 20.7-21(b)) — triggered by is_in_work_program. Single = $714.
+- name: Case 7, single PAES adult uses the higher PAES size-1 grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+        is_in_work_program: true
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_max_grant: 714
+
+- name: Case 8, two-adult unit with one in a work program uses the PAES size-2 grant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+        is_in_work_program: true
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_sf_caap_max_grant: 1_172
+
+- name: Case 9, eleven PAES adults add $35 per person beyond ten to the PAES table.
+  period: 2025-01
+  input:
+    people:
+      person1: {immigration_status: CITIZEN, is_in_work_program: true}
+      person2: {immigration_status: CITIZEN}
+      person3: {immigration_status: CITIZEN}
+      person4: {immigration_status: CITIZEN}
+      person5: {immigration_status: CITIZEN}
+      person6: {immigration_status: CITIZEN}
+      person7: {immigration_status: CITIZEN}
+      person8: {immigration_status: CITIZEN}
+      person9: {immigration_status: CITIZEN}
+      person10: {immigration_status: CITIZEN}
+      person11: {immigration_status: CITIZEN}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+  output:
+    # PAES size-10 grant ($3,107) + $35 for the 11th person = $3,142.
+    ca_sf_caap_max_grant: 3_142

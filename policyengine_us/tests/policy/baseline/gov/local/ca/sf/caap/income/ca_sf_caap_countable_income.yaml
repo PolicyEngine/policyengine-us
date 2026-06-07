@@ -8,7 +8,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         employment_income: 9_600  # 800/month earned
         social_security: 1_200  # 100/month unearned
@@ -30,11 +29,12 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 1_200  # 100/month unearned
       person2:
-        ssi: 600
+        # Age 70 + $500/month social security -> the system computes ssi > 0,
+        # so person2 is an SSI recipient and their income is excluded entirely.
+        age: 70
         immigration_status: CITIZEN
         social_security: 6_000  # 500/month, but excluded (SSI recipient)
     households:
@@ -55,7 +55,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -77,7 +76,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         self_employment_income: -12_000  # -1,000/month net loss
     households:
@@ -99,7 +97,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -117,7 +114,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 120_000  # 10,000/month unearned
     households:
@@ -137,7 +133,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         workers_compensation: 2_400  # 200/month unearned
         railroad_benefits: 1_200  # 100/month unearned

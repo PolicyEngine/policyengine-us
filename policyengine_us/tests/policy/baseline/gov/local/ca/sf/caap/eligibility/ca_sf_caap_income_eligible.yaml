@@ -7,7 +7,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_924  # 577/month
     households:
@@ -27,7 +26,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_936  # 578/month
     households:
@@ -47,7 +45,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 12_000  # 1,000/month
     households:
@@ -67,7 +64,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_935.88  # 577.99/month, $0.01 below the $578 grant
     households:
@@ -86,7 +82,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_936.12  # 578.01/month, $0.01 above the $578 grant
     households:

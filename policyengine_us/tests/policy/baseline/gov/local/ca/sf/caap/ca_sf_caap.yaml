@@ -7,7 +7,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -28,7 +27,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -56,7 +54,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         self_employment_income: -120_000  # -$10,000/month net loss
     households:
@@ -80,7 +77,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_840  # 570/month unearned
     households:
@@ -103,7 +99,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_936  # 578/month unearned
     households:
@@ -127,7 +122,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 120_000  # 10,000/month unearned
     households:
@@ -150,7 +144,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -175,7 +168,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -201,7 +193,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_480  # 540/month unearned
     households:
@@ -229,7 +220,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -257,7 +247,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 96  # 8/month unearned
     households:
@@ -285,7 +274,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 144  # 12/month unearned
     households:
@@ -305,3 +293,30 @@
     ca_sf_caap_income_in_kind: 511
     ca_sf_caap_countable_income: 12
     ca_sf_caap: 59
+
+- name: Case 13, no eligible person in the unit yields no benefit.
+  period: 2025-01
+  input:
+    people:
+      # Two undocumented adults: neither has a qualified immigration status, so
+      # both are excluded from the budget unit (size 0) and the unit is
+      # ineligible. max_grant clips to the size-1 value, but the benefit is
+      # gated to $0 by defined_for = ca_sf_caap_eligible.
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 38
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    ca_sf_caap_budget_unit_size: 0
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0

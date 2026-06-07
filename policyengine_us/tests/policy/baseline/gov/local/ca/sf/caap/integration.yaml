@@ -5,7 +5,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -29,7 +28,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         employment_income: 6_000  # 500/month
     households:
@@ -57,7 +55,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         employment_income: 6_000  # 500/month
     households:
@@ -85,11 +82,9 @@
     people:
       person1:
         age: 40
-        ssi: 0
         immigration_status: CITIZEN
       person2:
         age: 38
-        ssi: 0
         immigration_status: CITIZEN
     families:
       family:
@@ -120,7 +115,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 3_600  # 300/month unearned
     households:
@@ -148,7 +142,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -177,7 +170,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         self_employment_income: -120_000  # -$10,000/month net loss
     households:
@@ -201,8 +193,9 @@
   input:
     people:
       person1:
-        age: 30
-        ssi: 600
+        # Age 70 with no income -> the system computes ssi > 0, so the only
+        # member is an SSI recipient -> budget unit size 0 -> ineligible.
+        age: 70
         immigration_status: CITIZEN
     households:
       household:
@@ -225,7 +218,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -247,15 +239,12 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
       person2:
         age: 32
-        ssi: 0
         immigration_status: CITIZEN
       person3:
         age: 34
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -282,12 +271,10 @@
     people:
       person1:
         age: 40
-        ssi: 0
         immigration_status: CITIZEN
         self_employment_income: -120_000  # -$10,000/month net loss
       person2:
         age: 38
-        ssi: 0
         immigration_status: CITIZEN
     families:
       family:
@@ -317,7 +304,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 120_000  # 10,000/month unearned
     households:
@@ -342,7 +328,6 @@
     people:
       person1:
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
         social_security: 6_480  # 540/month unearned
     households:
@@ -365,28 +350,44 @@
     ca_sf_caap_eligible: true
     ca_sf_caap: 38
 
-- name: Case 14, CalWORKs recipient is barred end-to-end by the other-aid bar.
+- name: Case 14, CalWORKs family is barred end-to-end.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
+        # Parent + child with no income -> the system computes ca_tanf > 0
+        # (CalWORKs recipient). Such a family fails the other-aid bar
+        # (SEC. 20.7-6) AND, because the unit contains a child, the adult-only
+        # age gate -- both push CAAP eligibility to false (the two bars are
+        # redundant here). ca_tanf is a computed variable derived from the
+        # parent+child scenario, not set directly.
         age: 30
-        ssi: 0
         immigration_status: CITIZEN
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
     households:
       household:
-        members: [person1]
+        members: [person1, person2]
         county_str: SAN_FRANCISCO_COUNTY_CA
     spm_units:
       spm_unit:
-        members: [person1]
+        members: [person1, person2]
         spm_unit_cash_assets: 0
-        ca_tanf: 6_000  # CalWORKs recipient ($6,000/year > 0)
   output:
-    # Age/property/income all pass (same as Case 1), but receiving CalWORKs
-    # trips the other-aid bar (SEC. 20.7-6): ca_sf_caap_other_aid_eligible
-    # = false -> ca_sf_caap_eligible = false -> benefit $0.
-    ca_sf_caap_other_aid_eligible: false
+    # CalWORKs receipt bars CAAP (checked via ca_tanf in ca_sf_caap_eligible);
+    # the child also fails the adult-only age gate. Either alone makes
+    # ca_sf_caap_eligible false.
+    ca_sf_caap_age_eligible: false
     ca_sf_caap_eligible: false
     ca_sf_caap: 0

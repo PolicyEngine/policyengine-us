@@ -1,12 +1,15 @@
-# A person counts toward the CAAP budget unit if they do NOT receive SSI AND
-# have a qualified immigration status (SEC. 20.7-6, 20.7-14). ssi is
-# MONTH-defined, so input is the monthly amount.
+# A person counts toward the CAAP budget unit if they are not on SSI or CAPI AND
+# have a qualified immigration status (SEC. 20.7-6, 20.7-14). ssi and CAPI
+# eligibility are computed, so we drive them from underlying inputs (age 70 ->
+# ssi > 0; aged non-qualified-noncitizen -> CAPI-eligible) rather than setting
+# them directly.
 - name: Case 1, not counted because the person receives SSI.
   period: 2025-01
   input:
     people:
       person1:
-        ssi: 600
+        # Age 70 with no income -> the system computes ssi > 0.
+        age: 70
         immigration_status: CITIZEN
     households:
       household:
@@ -20,7 +23,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: UNDOCUMENTED
     households:
       household:
@@ -29,12 +31,15 @@
   output:
     ca_sf_caap_eligible_person: false
 
-- name: Case 3, not counted on both grounds (SSI and immigration status).
+- name: Case 3, aged undocumented adult is not counted (immigration ground).
   period: 2025-01
   input:
     people:
       person1:
-        ssi: 600
+        # Age 70 + undocumented: undocumented immigrants are not SSI-eligible
+        # (ssi stays 0), so the failing branch here is the immigration-status
+        # gate. Such applicants are served by CAPI, not CAAP.
+        age: 70
         immigration_status: UNDOCUMENTED
     households:
       household:
@@ -48,7 +53,6 @@
   input:
     people:
       person1:
-        ssi: 0
         immigration_status: CITIZEN
     households:
       household:
@@ -56,3 +60,21 @@
         county_str: SAN_FRANCISCO_COUNTY_CA
   output:
     ca_sf_caap_eligible_person: true
+
+- name: Case 5, aged DACA adult is not counted (CAPI ground).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # Age 70 + DACA: passes the CAAP immigration whitelist and is not
+        # SSI-eligible (ssi stays 0), but is categorically eligible for CAPI
+        # (aged non-qualified-noncitizen), so the per-person CAPI bar excludes
+        # the person. This isolates the CAPI ground from SSI and immigration.
+        age: 70
+        immigration_status: DACA
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_sf_caap_eligible_person: false
