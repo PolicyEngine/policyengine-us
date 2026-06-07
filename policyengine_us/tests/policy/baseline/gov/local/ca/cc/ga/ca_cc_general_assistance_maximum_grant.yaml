@@ -18,7 +18,7 @@
       spm_unit:
         members: [person1]
   output:
-    ca_cc_general_assistance_base_amount: 336
+    ca_cc_general_assistance_maximum_grant: 336
 
 - name: Two eligible adults receive the couple grant standard of $454.
   period: 2024-01
@@ -44,9 +44,9 @@
       spm_unit:
         members: [person1, person2]
   output:
-    ca_cc_general_assistance_base_amount: 454
+    ca_cc_general_assistance_maximum_grant: 454
 
-- name: No eligible persons yields a base amount of zero.
+- name: No eligible persons yields a maximum grant of zero.
   period: 2024-01
   input:
     people:
@@ -64,7 +64,7 @@
       spm_unit:
         members: [person1]
   output:
-    ca_cc_general_assistance_base_amount: 0
+    ca_cc_general_assistance_maximum_grant: 0
 
 - name: Three eligible adults fall through to the single grant standard of $336.
   period: 2024-01
@@ -97,4 +97,4 @@
         members: [person1, person2, person3]
   output:
     # num_eligible == 3 -> where(num_eligible == 2, ...) is false -> single $336
-    ca_cc_general_assistance_base_amount: 336
+    ca_cc_general_assistance_maximum_grant: 336

@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class ca_cc_general_assistance_base_amount(Variable):
+class ca_cc_general_assistance_maximum_grant(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = "Contra Costa County General Assistance base amount"
+    label = "Contra Costa County General Assistance maximum grant"
     definition_period = MONTH
     defined_for = "ca_cc_general_assistance_eligible_person"
     reference = "https://ehsd.org/aging-and-adult-services/general-assistance/"

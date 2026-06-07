@@ -1,5 +1,6 @@
-# Income eligible when countable income < grant standard (MAP) AND the unit has no
-# dependent children (strict no-children gate). Single MAP = $336/month.
+# Income eligible when countable income < the grant standard (MAP). Single MAP =
+# $336/month. The no-dependent-children and eligible-person gates live in
+# ca_cc_general_assistance_eligible, not here.
 - name: Eligible single adult with income below the $336 single MAP and no children.
   period: 2024-01
   input:
@@ -38,30 +39,6 @@
       spm_unit:
         members: [person1]
   output:
-    ca_cc_general_assistance_income_eligible: false
-
-- name: Ineligible adult with income below MAP but a dependent child (strict gate).
-  period: 2024-01
-  input:
-    people:
-      person1:
-        age: 30
-        is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN
-        personal_property: 0
-        employment_income: 300 * 12  # below MAP, but the no-children gate fails
-      child1:
-        age: 5
-        is_tax_unit_head_or_spouse: false
-    households:
-      household:
-        members: [person1, child1]
-        county: CONTRA_COSTA_COUNTY_CA
-    spm_units:
-      spm_unit:
-        members: [person1, child1]
-  output:
-    spm_unit_count_children: 1
     ca_cc_general_assistance_income_eligible: false
 
 - name: Boundary - income exactly at the $336 single MAP is ineligible (strict < gate).

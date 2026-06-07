@@ -230,8 +230,10 @@
       spm_unit:
         members: [person1, child1]
   output:
-    spm_unit_count_children: 1
-    ca_cc_general_assistance_income_eligible: false
+    # Income alone passes ($100 < $336 MAP), but the dependent child fails the
+    # composite eligibility gate (ca_cc_general_assistance_eligible), so no benefit.
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance_eligible: false
     ca_cc_general_assistance: 0
 
 - name: Immigration - a qualified refugee adult is eligible.
@@ -359,4 +361,30 @@
         members: [person1]
   output:
     ca_cc_general_assistance_income_eligible: false
+    ca_cc_general_assistance: 0
+
+- name: Endogenous SSI - an aged adult who qualifies for SSI (computed, not input) is excluded.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 67  # aged -> categorically SSI-eligible
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0  # under the SSI resource limit
+        # No earned income and no ssi input: the model computes ssi > 0 (takeup
+        # defaults to True), which bars GA via the categorical exclusion.
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Absent SSI this adult would be income-eligible ($0 < $336), but a computed
+    # ssi > 0 makes them categorically ineligible -> no eligible person -> $0.
+    ca_cc_general_assistance_eligible_person: false
+    ca_cc_general_assistance_eligible: false
     ca_cc_general_assistance: 0
