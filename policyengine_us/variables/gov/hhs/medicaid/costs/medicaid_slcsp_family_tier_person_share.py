@@ -11,11 +11,11 @@ class medicaid_slcsp_family_tier_person_share(Variable):
     def formula(tax_unit, period, parameters):
         base_cost = tax_unit.household("slcsp_age_0", period.first_month)
         multiplier = tax_unit("medicaid_slcsp_family_tier_multiplier", period)
-        tax_unit_size = tax_unit("tax_unit_size", period)
+        medicaid_member_count = add(tax_unit, period, ["medicaid_enrolled"])
 
         return np.divide(
             base_cost * multiplier,
-            tax_unit_size,
+            medicaid_member_count,
             out=np.zeros_like(base_cost),
-            where=tax_unit_size > 0,
+            where=medicaid_member_count > 0,
         )

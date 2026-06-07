@@ -31,6 +31,8 @@ class spm_unit_benefits(Variable):
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
             "mo_ssp",  # Missouri benefits
+            "mn_msa",  # Minnesota benefits
+            "ne_aabd",  # Nebraska benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # Colorado programs.
@@ -45,6 +47,8 @@ class spm_unit_benefits(Variable):
             "sc_ssi_state_supplement",
             # Texas programs.
             "tx_ssi_state_supplement",
+            # West Virginia programs.
+            "wv_child_care_subsidies",
             "snap",
             "wic",
             "free_school_meals",

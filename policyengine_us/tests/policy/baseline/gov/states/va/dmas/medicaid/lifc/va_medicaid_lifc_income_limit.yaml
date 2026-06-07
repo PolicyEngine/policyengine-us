@@ -1,0 +1,71 @@
+- name: Case 1, Group I household of three.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ACCOMACK_COUNTY_VA
+  output:
+    # $7,584 / 2026 FPG for 3 ($27,320).
+    va_medicaid_lifc_income_limit: 0.277599
+  absolute_error_margin: 0.0001
+
+- name: Case 2, Group II household of three.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: HENRICO_COUNTY_VA
+  output:
+    # $9,204 / 2026 FPG for 3 ($27,320).
+    va_medicaid_lifc_income_limit: 0.336896
+  absolute_error_margin: 0.0001
+
+- name: Case 3, Group III household of three.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ARLINGTON_COUNTY_VA
+  output:
+    # $12,576 / 2026 FPG for 3 ($27,320).
+    va_medicaid_lifc_income_limit: 0.460322
+  absolute_error_margin: 0.0001
+
+- name: Case 4, Group III household above the listed table size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 9
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ARLINGTON_COUNTY_VA
+  output:
+    # ($23,796 + $2,256) / 2026 FPG for 9 ($61,400).
+    va_medicaid_lifc_income_limit: 0.4243
+  absolute_error_margin: 0.0001

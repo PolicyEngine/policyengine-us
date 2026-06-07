@@ -15,11 +15,12 @@ class medicaid_slcsp_family_tier_category(Variable):
     def formula(tax_unit, period, parameters):
         state = tax_unit.household("state_code_str", period)
         family_tier_applies = tax_unit("slcsp_family_tier_applies", period.first_month)
+        person = tax_unit.members
+        medicaid_enrolled = person("medicaid_enrolled", period)
+        medicaid_dependent_child = person("is_medicaid_slcsp_dependent_child", period)
 
-        child_count = tax_unit.sum(
-            tax_unit.members("is_medicaid_slcsp_dependent_child", period)
-        )
-        adult_count = tax_unit("tax_unit_size", period) - child_count
+        child_count = tax_unit.sum(medicaid_enrolled & medicaid_dependent_child)
+        adult_count = tax_unit.sum(medicaid_enrolled & ~medicaid_dependent_child)
 
         one_adult_no_children = (adult_count == 1) & (child_count == 0)
         two_plus_adults_no_children = (adult_count >= 2) & (child_count == 0)

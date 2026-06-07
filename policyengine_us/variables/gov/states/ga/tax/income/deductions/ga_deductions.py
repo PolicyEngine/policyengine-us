@@ -27,4 +27,5 @@ class ga_deductions(Variable):
         sd = tax_unit("ga_standard_deduction", period)
         itemized = tax_unit("itemized_taxable_income_deductions", period)
         itemized -= tax_unit("ga_itemized_deductions_adjustment", period)
+        itemized = max_(itemized, 0)
         return where(itemizes, itemized, sd)

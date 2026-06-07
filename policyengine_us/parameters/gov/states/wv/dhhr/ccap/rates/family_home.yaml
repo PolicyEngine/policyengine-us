@@ -1,0 +1,39 @@
+description: West Virginia provides these daily reimbursement rates for family child care homes under the Child Care Assistance Program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: West Virginia CCAP family child care home daily rates
+  breakdown:
+    - wv_ccap_quality_tier
+    - wv_ccap_child_age_category
+  reference:
+    - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
+      href: https://bfa.wv.gov/media/6831/download?inline#page=1
+
+TIER_I:
+  INFANT:
+    2024-10-01: 30
+  TODDLER:
+    2024-10-01: 30
+  PRESCHOOL:
+    2024-10-01: 29
+  SCHOOL_AGE:
+    2024-10-01: 26
+TIER_II:
+  INFANT:
+    2024-10-01: 33
+  TODDLER:
+    2024-10-01: 33
+  PRESCHOOL:
+    2024-10-01: 32
+  SCHOOL_AGE:
+    2024-10-01: 29
+TIER_III:
+  INFANT:
+    2024-10-01: 36
+  TODDLER:
+    2024-10-01: 36
+  PRESCHOOL:
+    2024-10-01: 35
+  SCHOOL_AGE:
+    2024-10-01: 32

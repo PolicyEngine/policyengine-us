@@ -30,12 +30,24 @@ class co_eitc(Variable):
             person("is_qualifying_child_dependent", period) & has_tin
         )
         child_count_with_tin = tax_unit.sum(qualifying_child_with_tin)
+        federal_eitc_parameters = parameters(period).gov.irs.credits.eitc
+        student = person("is_full_time_student", period)
+        federal_childless_age_floor = where(
+            student,
+            federal_eitc_parameters.eligibility.age.min_student,
+            federal_eitc_parameters.eligibility.age.min,
+        )
+        childless_filer_age_eligible = tax_unit.any(
+            is_head_or_spouse
+            & (age >= federal_childless_age_floor)
+            & (age <= federal_eitc_parameters.eligibility.age.max)
+        )
         itin_eitc = calculate_eitc_like_amount(
             tax_unit,
             period,
             parameters,
             child_count_with_tin,
-            child_count_with_tin > 0,
+            (child_count_with_tin > 0) | childless_filer_age_eligible,
             filer_has_tin,
         )
 

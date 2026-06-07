@@ -1,0 +1,83 @@
+- name: Case 1, Group I county.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ACCOMACK_COUNTY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_I
+
+- name: Case 2, Group II county.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: HENRICO_COUNTY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_II
+
+- name: Case 3, Group III county.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ARLINGTON_COUNTY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_III
+
+- name: Case 4, Group III city.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: ALEXANDRIA_CITY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_III
+
+- name: Case 5, Fairfax City defaults to Group I.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: FAIRFAX_CITY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_I
+
+- name: Case 6, Group II city.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        county: NORFOLK_CITY_VA
+  output:
+    va_medicaid_lifc_locality_group: GROUP_II

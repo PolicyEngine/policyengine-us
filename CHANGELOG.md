@@ -1,3 +1,134 @@
+## [1.721.2] - 2026-06-06
+
+### Fixed
+
+- Fix Alameda County name string in `in_ala` so it matches the all-caps county enum name (`ALAMEDA_COUNTY_CA`).
+
+
+## [1.721.1] - 2026-06-06
+
+### Fixed
+
+- Restricted Kansas Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.721.0] - 2026-06-06
+
+### Added
+
+- Added the Kansas Lifeline phone service supplement from the Kansas Universal Service Fund.
+
+
+## [1.720.7] - 2026-06-05
+
+### Fixed
+
+- Restricted Missouri Commodity Supplemental Food Program eligibility to counties with DHSS distribution sites.
+
+
+## [1.720.6] - 2026-06-03
+
+### Changed
+
+- Removed injected medicaid_cost_if_enrolled inputs from partner contract tests and re-derived expected outputs from the restored SLCSP-index Medicaid cost formula.
+
+
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
+## [1.720.4] - 2026-06-02
+
+### Fixed
+
+- Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
+
+
+## [1.720.3] - 2026-06-02
+
+### Fixed
+
+- Flow the federal OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) through into Montana taxable income, since Mont. Code Ann. § 15-30-2120 starts from federal taxable income.
+
+
+## [1.720.2] - 2026-06-02
+
+### Fixed
+
+- Remove the Utah Homeowner's/Renter's Relief from Utah income tax refundable credits, since it is administered on Form TC-90CB rather than Form TC-40. The credit remains in the household-level state property tax credits aggregate.
+- Apply ACA premium tax credit formulas to years with historical SLCSP premiums.
+
+
+## [1.720.1] - 2026-06-02
+
+### Fixed
+
+- Relocate the Rhode Island contrib reform tests to the lighter states shard so the two states-shard CI runners are balanced.
+- Isolate refundable credit conversion contrib tests per-file so the other-shard-1 batch no longer exceeds the CI runner memory cap.
+
+
+## [1.720.0] - 2026-06-02
+
+### Added
+
+- Added Alabama Child Care Subsidy Program (CCSP).
+
+
+## [1.719.2] - 2026-06-01
+
+### Fixed
+
+- Wire the Vermont renter credit into the state property tax credits aggregate.
+
+
+## [1.719.1] - 2026-06-01
+
+### Fixed
+
+- Correct the refundable credit conversion per-other-dependent credit to count all non-CTC tax-unit dependents.
+
+
+## [1.719.0] - 2026-06-01
+
+### Added
+
+- Added the South Carolina Homestead Exemption property tax reduction.
+- Added the Texas school district residence homestead exemptions.
+- Added the Mississippi age or disability Homestead Exemption property tax reduction.
+
+
+## [1.718.0] - 2026-06-01
+
+### Added
+
+- Added Nebraska Aid to the Aged, Blind, or Disabled - Payment Maintenance (AABD-PMT) program, the state's SSI supplement, including standard-of-need and shelter allowance parameters, eligibility rules, and living arrangement logic.
+
+
+## [1.717.0] - 2026-06-01
+
+### Added
+
+- Minnesota Supplemental Aid (MSA) — State Supplementary Payment to SSI.
+
+
+## [1.716.0] - 2026-06-01
+
+### Added
+
+- Implement West Virginia Child Care Assistance Program (CCAP).
+
+
+## [1.715.3] - 2026-05-29
+
+### Fixed
+
+- Allocate taxable unemployment compensation by actual recipient instead of all to head.
+
+
 ## [1.715.2] - 2026-05-29
 
 ### Changed

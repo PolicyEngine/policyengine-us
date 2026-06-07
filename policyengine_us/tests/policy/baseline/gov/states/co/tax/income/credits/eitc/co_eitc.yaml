@@ -302,3 +302,28 @@
         members: [head]
   output:
     co_eitc: 324.5
+
+- name: Colorado EITC includes childless ITIN filers age 25 or older
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_eitc: 324.5
