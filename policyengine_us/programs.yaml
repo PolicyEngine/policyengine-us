@@ -1341,7 +1341,7 @@ programs:
     coverage: San Francisco County
     variable: ca_sf_caap
     parameter_prefix: gov.local.ca.sf.caap
-    notes: General Assistance tier modeled; PAES/CALM/SSIP tiers not yet modeled
+    notes: General Assistance and PAES grant tiers modeled; CALM/SSIP tiers and activity-qualification gates not yet modeled
 
   - id: nyc_income_tax
     name: NYC income tax
