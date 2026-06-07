@@ -1,3 +1,10 @@
+## [1.721.2] - 2026-06-06
+
+### Fixed
+
+- Fix Alameda County name string in `in_ala` so it matches the all-caps county enum name (`ALAMEDA_COUNTY_CA`).
+
+
 ## [1.721.1] - 2026-06-06
 
 ### Fixed
