@@ -17,8 +17,13 @@ class ca_marin_general_relief_eligible(Variable):
         # HHS; we don't model the dependent-status gate at the moment (matches
         # LA County GR).
         age_eligible = spm_unit("ca_marin_general_relief_age_eligible", period)
-        immigration_eligible = spm_unit(
-            "ca_marin_general_relief_immigration_status_eligible", period
+        # At least one applicant (head/spouse) must hold a qualifying immigration
+        # status. The person-level check is its own variable because it also
+        # feeds the couple-grant count in max_grant; here we just aggregate it.
+        immigration_eligible = spm_unit.any(
+            spm_unit.members(
+                "ca_marin_general_relief_immigration_status_eligible_person", period
+            )
         )
         liquid_asset_eligible = spm_unit(
             "ca_marin_general_relief_liquid_asset_eligible", period
@@ -30,6 +35,11 @@ class ca_marin_general_relief_eligible(Variable):
         # SSI/SSP recipients are categorically ineligible for General Relief.
         # `ssi > 0` already implies SSI receipt; the unit is barred if any
         # member receives SSI.
+        # CAPI (California's SSI-equivalent cash for immigrants) needs no
+        # separate bar: CAPI recipients are non-qualified noncitizens, who fail
+        # the immigration eligibility check above, so they can never reach a
+        # General Relief grant. (CalWORKs overlap is likewise prevented, by
+        # counting CalWORKs cash as income in net_income.)
         receives_ssi = spm_unit.any(spm_unit.members("ssi", period) > 0)
         return (
             age_eligible

@@ -13,4 +13,9 @@ class ca_marin_general_relief(Variable):
         "https://hhs.marincounty.gov/services/get-cash-assistance-myself-general-relief/general-relief-cash-assistance",
     )
 
-    adds = ["ca_marin_general_relief_base_amount"]
+    def formula(spm_unit, period, parameters):
+        grant = spm_unit("ca_marin_general_relief_max_grant", period)
+        # Net income is YEAR-defined; reading it at the monthly period
+        # auto-divides the annual figure to a monthly amount.
+        net_income = spm_unit("ca_marin_general_relief_net_income", period)
+        return max_(grant - net_income, 0)

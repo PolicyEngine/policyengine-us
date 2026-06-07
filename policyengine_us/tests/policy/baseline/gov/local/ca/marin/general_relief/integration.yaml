@@ -1,7 +1,8 @@
 # End-to-end Marin County General Relief scenarios (post-2025-07-01 rules).
 # Veterans benefits are used for income because they are non-taxable and not
 # subject to payroll tax, so net income equals gross income (no mandatory
-# withholdings) and the net-income math is exact.
+# withholdings) and the net-income math is exact. SSI and CalWORKs (ca_tanf) are
+# left for the model to compute and are checked as outputs, never stubbed.
 
 - name: Case 1, single eligible adult with low income receives a partial grant.
   period: 2026-01
@@ -12,7 +13,6 @@
         age: 40
         immigration_status: CITIZEN
         veterans_benefits: 1_200  # 100/month
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -32,7 +32,6 @@
     # Single grant 387 - 100 = 287.
     ca_marin_general_relief_eligible: true
     ca_marin_general_relief_max_grant: 387
-    ca_marin_general_relief_base_amount: 287
     ca_marin_general_relief: 287
 
 - name: Case 2, married eligible couple with no income receives the couple grant.
@@ -43,11 +42,9 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        ssi: 0
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -79,7 +76,6 @@
         age: 50
         immigration_status: CITIZEN
         veterans_benefits: 4_644  # 387/month
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -110,7 +106,6 @@
         age: 50
         immigration_status: CITIZEN
         veterans_benefits: 6_000  # 500/month
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -139,7 +134,6 @@
       person1:
         age: 35
         immigration_status: CITIZEN
-        ssi: 0
         bank_account_assets: 1_000  # > 400 single limit
     households:
       household:
@@ -169,7 +163,6 @@
       person1:
         age: 67
         immigration_status: CITIZEN
-        ssi: 500
     households:
       household:
         members: [person1]
@@ -185,7 +178,9 @@
       spm_unit:
         members: [person1]
   output:
-    # SSI/SSP recipients are categorically barred from General Relief.
+    # Aged 67 with no other income, so the model computes SSI ($994/month). SSI
+    # recipients are categorically barred from General Relief (ssi > 0).
+    ssi: 994
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
 
@@ -197,7 +192,6 @@
       person1:
         age: 30
         immigration_status: UNDOCUMENTED
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -213,8 +207,7 @@
       spm_unit:
         members: [person1]
   output:
-    # No qualifying immigration status -> immigration-ineligible.
-    ca_marin_general_relief_immigration_status_eligible: false
+    # No qualifying immigration status -> ineligible.
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
 
@@ -227,7 +220,6 @@
         age: 40
         immigration_status: CITIZEN
         self_employment_income: -60_000_000  # -$5M/month
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -258,11 +250,9 @@
         age: 45
         immigration_status: CITIZEN
         self_employment_income: -60_000_000  # -$5M/month
-        ssi: 0
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -294,7 +284,6 @@
       person1:
         age: 30
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -324,11 +313,9 @@
         age: 45
         immigration_status: CITIZEN
         veterans_benefits: 7_620  # 635/month
-        ssi: 0
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -361,11 +348,9 @@
         age: 45
         immigration_status: CITIZEN
         veterans_benefits: 7_632  # 636/month
-        ssi: 0
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -398,11 +383,9 @@
         age: 45
         immigration_status: CITIZEN
         veterans_benefits: 7_644  # 637/month
-        ssi: 0
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -433,7 +416,6 @@
       person1:
         age: 18
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -462,7 +444,6 @@
       person1:
         age: 17
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -491,11 +472,9 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        ssi: 0
       person2:
         age: 43
         immigration_status: UNDOCUMENTED
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -515,8 +494,7 @@
   output:
     # Only one spouse is immigration-eligible, so the couple grant does not
     # apply; the unit gets the single rate. At least one eligible member keeps
-    # the unit immigration-eligible. No income -> full single grant.
-    ca_marin_general_relief_immigration_status_eligible: true
+    # the unit eligible. No income -> full single grant.
     ca_marin_general_relief_max_grant: 387
     ca_marin_general_relief_eligible: true
     ca_marin_general_relief: 387
@@ -529,7 +507,6 @@
       person1:
         age: 30
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -560,12 +537,10 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        ssi: 0
         bank_account_assets: 900  # > 800 couple limit
       person2:
         age: 43
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -597,7 +572,6 @@
       person1:
         age: 35
         immigration_status: CITIZEN
-        ssi: 0
         personal_property: 700  # > 600 single limit
     households:
       household:
@@ -628,7 +602,6 @@
         age: 50
         immigration_status: CITIZEN
         rental_income: 6_000  # 500/month
-        ssi: 0
     households:
       household:
         members: [person1]
@@ -659,11 +632,9 @@
       person1:
         age: 40
         immigration_status: UNDOCUMENTED
-        ssi: 0
       person2:
         age: 8
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -681,8 +652,7 @@
   output:
     # Section II.E ties citizenship to the Applicant/Recipient (head or spouse).
     # The citizen child does not confer eligibility on the undocumented
-    # applicant, so the unit is immigration-ineligible end-to-end.
-    ca_marin_general_relief_immigration_status_eligible: false
+    # applicant, so the unit is ineligible end-to-end.
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
 
@@ -694,11 +664,9 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        ssi: 0
       person2:
         age: 8
         immigration_status: CITIZEN
-        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -713,14 +681,16 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        ca_tanf: 12_000  # CalWORKs cash aid, $1,000/month
   output:
-    # CalWORKs cash ($1,000/month) is counted as available income (Standards
-    # §II.B / §II.Q), exceeding the $387 single grant -> income-ineligible. This
-    # is the mechanism by which families with children, who receive CalWORKs,
-    # are excluded from General Relief -- without a hard demographic gate, so a
-    # family not receiving CalWORKs cash could still qualify (matches §II.L).
-    ca_marin_general_relief_net_income: 1_000  # 12,000/yr shown monthly
+    # The family of 2 (parent + child, no other income) qualifies for CalWORKs;
+    # the model computes ca_tanf = 11,160/yr ($930/month), which counts as
+    # available income (Standards §II.B / §II.Q) and exceeds the $387 single
+    # grant -> income-ineligible. This is the mechanism by which families with
+    # children, who receive CalWORKs, are excluded from General Relief -- without
+    # a hard demographic gate, so a family not receiving CalWORKs cash could
+    # still qualify (matches §II.L).
+    ca_tanf: 930  # 11,160/yr CalWORKs shown monthly
+    ca_marin_general_relief_net_income: 930
     ca_marin_general_relief_income_eligible: false
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0

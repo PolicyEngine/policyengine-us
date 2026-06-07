@@ -1,10 +1,13 @@
 # Top-level eligibility ANDs all sub-tests and excludes SSI recipients.
+# Immigration eligibility is the per-person check (head/spouse), aggregated with
+# any() inside the top-level formula, so it is provided on the person.
 - name: All requirements met is eligible
   period: 2026-01
   input:
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -13,7 +16,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: true
@@ -26,6 +28,7 @@
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -34,7 +37,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: false
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: true
@@ -47,6 +49,7 @@
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: false
     households:
       household:
         members: [person1]
@@ -55,7 +58,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: false
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: true
@@ -68,6 +70,7 @@
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -76,7 +79,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: false
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: true
@@ -89,6 +91,7 @@
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -97,7 +100,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: false
         ca_marin_general_relief_income_eligible: true
@@ -110,6 +112,7 @@
     people:
       person1:
         ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -118,7 +121,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: false
@@ -131,6 +133,7 @@
     people:
       person1:
         ssi: 500
+        ca_marin_general_relief_immigration_status_eligible_person: true
     households:
       household:
         members: [person1]
@@ -139,7 +142,6 @@
       spm_unit:
         members: [person1]
         ca_marin_general_relief_age_eligible: true
-        ca_marin_general_relief_immigration_status_eligible: true
         ca_marin_general_relief_liquid_asset_eligible: true
         ca_marin_general_relief_personal_property_eligible: true
         ca_marin_general_relief_income_eligible: true
