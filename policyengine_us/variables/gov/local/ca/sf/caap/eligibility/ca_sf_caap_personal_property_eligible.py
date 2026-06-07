@@ -16,5 +16,8 @@ class ca_sf_caap_personal_property_eligible(Variable):
         # the moment, but spm_unit_cash_assets already excludes them.
         cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
         budget_unit_size = spm_unit("ca_sf_caap_budget_unit_size", period)
-        limit = where(budget_unit_size >= 2, p.married, p.single)
+        # The Manual quotes only the 1-person ($2,000) and 2-person ($3,000)
+        # reserves; units of 3+ apply the 2-person limit. Title 22 Section 50420
+        # scales further for larger units, but we don't track that at the moment.
+        limit = where(budget_unit_size >= 2, p.couple, p.single)
         return cash_assets <= limit
