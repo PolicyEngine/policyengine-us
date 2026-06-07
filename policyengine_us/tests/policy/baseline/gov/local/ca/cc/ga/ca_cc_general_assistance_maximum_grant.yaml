@@ -66,7 +66,7 @@
   output:
     ca_cc_general_assistance_maximum_grant: 0
 
-- name: Three eligible adults fall through to the single grant standard of $336.
+- name: Three eligible adults (should not happen) fall through to the single $336 standard.
   period: 2024-01
   input:
     people:
@@ -96,5 +96,6 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    # num_eligible == 3 -> where(num_eligible == 2, ...) is false -> single $336
+    # 3+ eligible adults should not occur in practice (each adult/couple is a
+    # separate GA case); num_eligible != 2 -> single $336 as a safe default.
     ca_cc_general_assistance_maximum_grant: 336

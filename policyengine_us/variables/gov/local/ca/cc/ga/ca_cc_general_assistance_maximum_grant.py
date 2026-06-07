@@ -16,7 +16,10 @@ class ca_cc_general_assistance_maximum_grant(Variable):
             "ca_cc_general_assistance_eligible_person", period
         )
         num_eligible = spm_unit.sum(eligible_persons)
-        # When two adults in the unit are eligible we apply the couple grant. We
-        # do not verify that the two eligible adults are married to each other;
-        # we don't track marital pairing within the SPM unit at the moment.
+        # GA aids a single adult ($336) or an eligible couple ($454). Exactly two
+        # eligible adults get the couple grant; we do not verify they are married
+        # to each other (marital pairing is not tracked within the SPM unit).
+        # NOTE: 3+ eligible adults in one SPM unit should not happen in practice
+        # -- each adult or couple is a separate GA case -- so any count other than
+        # two falls through to the single standard as a safe default.
         return where(num_eligible == 2, p.married, p.single)
