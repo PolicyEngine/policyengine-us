@@ -186,3 +186,27 @@
   output:
     # PAES size-10 grant ($3,107) + $35 for the 11th person = $3,142.
     ca_sf_caap_max_grant: 3_142
+
+- name: Case 10, work program on an ineligible member does not trigger PAES.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        # Undocumented (ineligible, excluded from the budget unit) but flagged
+        # in a work program. The PAES table must NOT apply to the eligible
+        # one-person unit; the work-program check is masked to eligible members.
+        immigration_status: UNDOCUMENTED
+        is_in_work_program: true
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_sf_caap_budget_unit_size: 1
+    # GA size-1 grant ($578), NOT the PAES size-1 grant ($714).
+    ca_sf_caap_max_grant: 578

@@ -19,7 +19,8 @@ class ca_sf_caap_income_in_kind(Variable):
         # $35/person on top of the size-2 value; housing and utilities have no
         # published extra-person increment and stay at the size-2 value.
         charted_size = clip(size, 1, 2)
-        extra_people = max_(size - 10, 0)
+        max_size = parameters(period).gov.local.ca.sf.caap.amount.max_family_size
+        extra_people = max_(size - max_size, 0)
         extra_per_person = p.extra_person * extra_people
 
         housing = where(
