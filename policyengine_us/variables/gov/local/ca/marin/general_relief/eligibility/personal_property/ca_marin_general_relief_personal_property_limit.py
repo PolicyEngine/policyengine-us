@@ -5,7 +5,7 @@ class ca_marin_general_relief_personal_property_limit(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     quantity_type = STOCK
     label = "Limit for the Marin County General Relief personal property requirements"
     defined_for = "in_marin"
@@ -15,7 +15,10 @@ class ca_marin_general_relief_personal_property_limit(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        married = spm_unit("spm_unit_is_married", period)
+        # Month-defined to match the rest of the GR eligibility chain (the limit
+        # is a single era with no mid-year change). spm_unit_is_married is
+        # year-defined, so read it with period.this_year.
+        married = spm_unit("spm_unit_is_married", period.this_year)
         p = parameters(
             period
         ).gov.local.ca.marin.general_relief.eligibility.limit.personal_property

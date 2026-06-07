@@ -12,15 +12,12 @@ class ca_marin_general_relief_income_eligible(Variable):
     reference = "https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11"
 
     def formula(spm_unit, period, parameters):
-        # Net income is YEAR-defined; divide to a monthly figure to compare
-        # against the monthly grant.
-        net_income = add(
-            spm_unit, period.this_year, ["ca_marin_general_relief_net_income"]
-        )
-        monthly_net_income = net_income / MONTHS_IN_YEAR
+        # Net income is YEAR-defined; reading it at the monthly period
+        # auto-divides the annual figure to a monthly amount.
+        net_income = spm_unit("ca_marin_general_relief_net_income", period)
         # The Standards require income at or below the maximum cash aid amount.
-        # Standards Sec II.I applies gross income to applicants and net income
-        # to recipients; we apply net income to everyone (matches LA County GR).
-        # We don't track GR applicant-vs-recipient status at the moment.
+        # Standards Sec II.I applies "all income received" to applicants and net
+        # income to recipients; we apply net income to everyone (matches LA
+        # County GR). We don't track GR applicant-vs-recipient status at the moment.
         grant = spm_unit("ca_marin_general_relief_max_grant", period)
-        return monthly_net_income <= grant
+        return net_income <= grant
