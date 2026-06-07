@@ -215,3 +215,51 @@
   output:
     # combined countable = (1_200 + 1_200) / 12 = 200; benefit = 460 - 200 = 260
     ca_scc_general_assistance: 260
+
+- name: Case 10, self-employed adult with no income receives full single MAP (self-employment is not a categorical bar).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_self_employed: true
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 343
+
+- name: Case 11, self-employed adult with high self-employment income is income-ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_self_employed: true
+        self_employment_income: 100_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Countable self-employment income far exceeds the $343 MAP -> no benefit.
+    ca_scc_general_assistance: 0

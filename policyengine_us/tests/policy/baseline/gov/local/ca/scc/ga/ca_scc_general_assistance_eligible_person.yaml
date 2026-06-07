@@ -110,7 +110,7 @@
     # disqualifies them from GA.
     ca_scc_general_assistance_eligible_person: false
 
-- name: Case 10, ineligible while actively self-employed.
+- name: Case 10, self-employment is not a person-level bar; income is tested separately.
   period: 2024-01
   input:
     age: 30
@@ -121,4 +121,4 @@
     is_self_employed: true
     in_scc: true
   output:
-    ca_scc_general_assistance_eligible_person: false
+    ca_scc_general_assistance_eligible_person: true
