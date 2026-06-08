@@ -350,3 +350,60 @@
         state_code: NY
   output:
     is_basic_health_program_eligible: [false]
+
+- name: New York expanded 250 percent FPL ceiling remains effective in 2026 annual simulation
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+
+- name: New York at 230 percent FPL in 2027 is above the standard 200 percent BHP limit
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [false]
+
+- name: New York at 190 percent FPL in 2027 remains within the standard BHP limit
+  period: 2027
+  input:
+    people:
+      person:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.9
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]

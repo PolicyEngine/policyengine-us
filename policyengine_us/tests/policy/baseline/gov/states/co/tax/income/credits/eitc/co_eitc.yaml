@@ -74,3 +74,256 @@
     # Federal EITC for 1 child at $20k income (head of household) is approximately $4,328
     # CO EITC = 50% * federal EITC = $2,164
     co_eitc: 2_164
+
+- name: Colorado EITC includes ITIN qualifying children
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: CO
+  output:
+    co_eitc: 1_700
+
+- name: Colorado EITC includes certain childless filers under 25
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 19
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 17 is below all minimums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Age 17 is below all under_25_expansion minimums (default 19, homeless/foster 18).
+    # Federal EITC childless minimum age (25) also not met.
+    co_eitc: 0
+
+- name: Colorado EITC under-25 path - age 18 without homeless/foster status.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Age 18 only qualifies under the homeless/foster minimum (18); default
+    # minimum is 19 for non-students. Federal EITC also not eligible.
+    co_eitc: 0
+
+- name: Colorado EITC under-25 path - age 20 full-time college student is excluded.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        is_full_time_college_student: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Specified students are excluded from the default age 19-23 under-25 path.
+    co_eitc: 0
+
+- name: Colorado EITC under-25 path - age 24 qualifies via eligible_at_max_age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 24
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # Age 24 qualifies under the eligible_at_max_age branch (24 alone qualifies).
+    # Same income as the existing age-19 test yields the same credit.
+    co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 25 above max for under-25 expansion but qualifies via federal EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    # At age 25, the under-25 expansion no longer applies, but the federal
+    # EITC childless minimum age is also 25, so the filer qualifies for the
+    # standard 50% Colorado match of the federal EITC.
+    co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 18 homeless filer qualifies
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: CO
+        is_homeless: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+  output:
+    # CO under-25 expansion homeless_or_foster_min_age path (CRS 39-22-123.5):
+    # age 18 + homeless qualifies for the same credit as the age-19 default
+    # path at this income level.
+    co_eitc: 324.5
+
+- name: Colorado EITC under-25 path - age 18 foster youth qualifies
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 10_000
+        is_tax_unit_head: true
+        was_in_foster_care: true
+    households:
+      household:
+        members: [head]
+        state_code: CO
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+  output:
+    co_eitc: 324.5
+
+- name: Colorado EITC includes childless ITIN filers age 25 or older
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_eitc: 324.5
