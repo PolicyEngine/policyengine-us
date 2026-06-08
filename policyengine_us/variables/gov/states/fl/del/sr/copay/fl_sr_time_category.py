@@ -17,6 +17,9 @@ class fl_sr_time_category(Variable):
     reference = "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500"
 
     def formula(person, period, parameters):
+        # Per 6M-4.500(1)(b),(1)(j) the full-time vs part-time "unit of care" is
+        # defined by each coalition's rate schedule, not a statewide hours cutoff;
+        # the threshold parameter is a modeling stand-in (see its YAML comment).
         p = parameters(period).gov.states.fl["del"].sr.copay
         hours = person("childcare_hours_per_week", period.this_year)
         return where(
