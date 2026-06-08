@@ -1,3 +1,10 @@
+## [1.722.3] - 2026-06-08
+
+### Fixed
+
+- Fixed California itemized deductions double-counting investment interest expense.
+
+
 ## [1.722.2] - 2026-06-08
 
 ### Fixed
