@@ -1,9 +1,21 @@
 # Florida School Readiness Program provider reimbursement rates (daily, by county).
-# Source: "School Readiness Reimbursement Rates, Fiscal Year 2025-2026" (SPB 2502,
-# Florida Senate Committee on Appropriations, April 3, 2025), incorporated by
-# reference under Fla. Stat. s. 1002.895 / Fla. Admin. Code 6M-4.500. One table
-# per county (all 67); each table is keyed by unit of care (full-time/part-time),
+# Sources (the two published fiscal years carry IDENTICAL rates -- see "Effective
+# window"), both incorporated by reference under Fla. Admin. Code 6M-4.500:
+#  - FY2025-26: "School Readiness Reimbursement Rates, Fiscal Year 2025-2026"
+#    (SPB 2502, Florida Senate Committee on Appropriations, April 3, 2025).
+#  - FY2026-27: "School Readiness Reimbursement Rates, Fiscal Year 2026-2027"
+#    (Conference Report for HB 5001E, Florida House Budget Committee, May 26, 2026).
+# One table per county (all 67); each is keyed by unit of care (full-time/part-time),
 # care level (infant ... school age), and provider type.
+#
+# Effective window: Florida's fiscal year runs July 1 - June 30. These rates apply
+# to BOTH FY2025-26 (2025-07-01 - 2026-06-30) and FY2026-27 (2026-07-01 - 2027-06-30):
+# the FY2026-27 schedule carries the FY2025-26 amounts forward unchanged -- verified
+# byte-identical (0 of 2,814 cells differ) -- so a single CSV (fy2025_26.csv) covers
+# both years. The program is modeled from 2025-10-01 (the SMI copay-scale effective
+# date), which falls inside this window. If a future fiscal year ever publishes
+# DIFFERENT rates, add it as fy<YYYY>.csv and select by the July 1 fiscal-year
+# boundary (fy = year + (1 if month >= 7 else 0)) in get_reimbursement_rates.
 #
 # Stored as a CSV (long form) rather than nested YAML because the table is large
 # (67 counties x 2 units x 7 care levels x 3 provider types = 2,814 daily rates).
