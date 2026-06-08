@@ -69,3 +69,53 @@
         state_code: FL
   output:
     fl_sr_countable_income: 0
+
+- name: Case 4, a minor's earned and unearned income is excluded (1002.81(7), 18+ only).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # adult: 2_500 / month, counted
+      person2:
+        age: 16
+        employment_income: 12_000  # minor wages: excluded
+        social_security_survivors: 6_000  # minor unearned: excluded
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Only the 35-year-old's income counts: 30_000 / 12 = 2_500. The
+    # 16-year-old's wages and survivor benefits are excluded.
+    fl_sr_countable_income: 2_500
+
+- name: Case 5, an 18-year-old's income IS counted (family income is members 18 or older).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # 2_000 / month
+      person2:
+        age: 18
+        employment_income: 12_000  # 18+ -> counted: 1_000 / month
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Both adults (40 and 18) count: (24_000 + 12_000) / 12 = 3_000.
+    fl_sr_countable_income: 3_000

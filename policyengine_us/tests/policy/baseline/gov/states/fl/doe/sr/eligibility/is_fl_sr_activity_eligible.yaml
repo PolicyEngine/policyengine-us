@@ -129,7 +129,7 @@
   output:
     is_fl_sr_activity_eligible: true
 
-- name: Case 6, disabled single parent is exempt and meets the requirement.
+- name: Case 6, single disabled parent who is not working is NOT a working family.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -151,7 +151,10 @@
         members: [person1, person2]
         state_code: FL
   output:
-    is_fl_sr_activity_eligible: true
+    # Fla. Stat. 1002.81(14)(a) has no disability exemption for a single parent;
+    # the parent must still work >= 20 hr/wk. (The disability exemption in (c)
+    # applies only to two-parent families -- see Cases 11/12.)
+    is_fl_sr_activity_eligible: false
 
 - name: Case 7, one disabled parent leaves a single non-exempt parent who must work 20 hours.
   period: 2026-01
@@ -178,6 +181,63 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 11, two-parent family with one disabled parent qualifies when the other works 20 hours.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_disabled: true  # exempt under 1002.81(14)(c)
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20  # non-exempt parent meets the 20-hour bar
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 12, two-parent family with both parents disabled is NOT a working family.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # 1002.81(14)(c) excuses one exempt parent only if the OTHER works >= 20;
+    # with both exempt there is no working parent, so the family does not qualify.
     is_fl_sr_activity_eligible: false
 
 # Fallback: Fla. Stat. 1002.81(14) counts "eligible work OR education
@@ -210,8 +270,8 @@
     is_fl_sr_activity_eligible: true
 
 # Edge cases: activity-hour boundaries (single-parent 20 hr/wk; two-parent 40
-# combined hr/wk). The just-at cases (20, 40) and disabled-exempt 0-hour case
-# are covered above; these add the just-below boundary (19; 39 combined).
+# combined hr/wk). The just-at cases (20, 40) and the two-parent disability-
+# exemption cases are covered above; these add the just-below boundary (19; 39).
 
 - name: Case 8, single parent working 19 hours just misses the requirement.
   period: 2026-01
