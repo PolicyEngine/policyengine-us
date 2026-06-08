@@ -13,6 +13,6 @@ class is_fl_sr_age_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.fl["del"].sr.eligibility
+        p = parameters(period).gov.states.fl.doe.sr.eligibility
         age = person("age", period.this_year)
         return age < p.child_age_limit

@@ -10,7 +10,7 @@ class is_fl_sr_activity_eligible(Variable):
     reference = "https://www.flsenate.gov/laws/statutes/2024/1002.81"
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.fl["del"].sr.eligibility
+        p = parameters(period).gov.states.fl.doe.sr.eligibility
         person = spm_unit.members
         is_parent = person("is_tax_unit_head_or_spouse", period.this_year)
         # A disabled parent is exempt from the activity requirement

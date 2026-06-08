@@ -14,7 +14,7 @@ class fl_sr_copay(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.fl["del"].sr.copay
+        p = parameters(period).gov.states.fl.doe.sr.copay
         # Floor income at zero so a self-employment loss cannot produce a
         # negative copay (which would otherwise inflate the benefit above
         # actual childcare expenses).

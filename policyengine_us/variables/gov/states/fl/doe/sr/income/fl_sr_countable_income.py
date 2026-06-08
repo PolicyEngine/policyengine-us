@@ -15,4 +15,4 @@ class fl_sr_countable_income(Variable):
 
     # 6M-4.400 FAQ Q6: eligibility and copay use gross family income (no School
     # Readiness disregards).
-    adds = "gov.states.fl.del.sr.income.sources"
+    adds = "gov.states.fl.doe.sr.income.sources"

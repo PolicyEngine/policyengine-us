@@ -13,7 +13,7 @@ class is_fl_sr_income_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.fl["del"].sr.eligibility.income
+        p = parameters(period).gov.states.fl.doe.sr.eligibility.income
         countable_income = spm_unit("fl_sr_countable_income", period)
         monthly_smi = spm_unit("fl_sr_smi", period)
         enrolled = spm_unit("fl_sr_enrolled", period)

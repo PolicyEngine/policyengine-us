@@ -20,7 +20,7 @@ class fl_sr_time_category(Variable):
         # Per 6M-4.500(1)(b),(1)(j) the full-time vs part-time "unit of care" is
         # defined by each coalition's rate schedule, not a statewide hours cutoff;
         # the threshold parameter is a modeling stand-in (see its YAML comment).
-        p = parameters(period).gov.states.fl["del"].sr.copay
+        p = parameters(period).gov.states.fl.doe.sr.copay
         hours = person("childcare_hours_per_week", period.this_year)
         return where(
             hours >= p.full_time_hours_threshold,

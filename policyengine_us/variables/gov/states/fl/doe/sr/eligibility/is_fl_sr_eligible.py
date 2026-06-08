@@ -13,7 +13,7 @@ class is_fl_sr_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.fl["del"].sr
+        p = parameters(period).gov.states.fl.doe.sr
         if not p.in_effect:
             return False
         has_eligible_child = add(spm_unit, period, ["is_fl_sr_child_eligible"]) > 0
