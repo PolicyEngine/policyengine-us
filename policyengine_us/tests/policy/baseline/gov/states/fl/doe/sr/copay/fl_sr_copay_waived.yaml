@@ -1,0 +1,144 @@
+# Florida School Readiness parent copay waiver (FFY2025-27 CCDF State Plan
+# s. 3.3.1). Florida waives the copay for families that are (i)-(ii) at or below
+# 150% FPG, (iii) homeless, (iv) have a child with a disability, (v) enrolled in
+# Head Start / Early Head Start, or (vi) have a child in foster care.
+#
+# Family of 3, 2026: monthly FPG = 2_277.50, so 150% FPG = 3_416.25 / month.
+# The non-income cases below use income above 150% FPG (4_000 / month, ratio
+# 1.76) so the specific condition -- not income -- is what triggers the waiver.
+
+- name: Case 1, income at or below 150% FPG waives the copay.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month, ratio 1.32 <= 1.5 (family of 3)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_sr_copay_waived: true
+
+- name: Case 2, income above 150% FPG with no other condition is not waived.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month, ratio 1.76 > 1.5
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_sr_copay_waived: false
+
+- name: Case 3, a homeless family is waived (income above 150% FPG).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month (> 150% FPG)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        is_homeless: true
+  output:
+    fl_sr_copay_waived: true
+
+- name: Case 4, a family with a child with a disability is waived (income above 150% FPG).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month (> 150% FPG)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_sr_copay_waived: true
+
+- name: Case 5, a family enrolled in Head Start is waived (income above 150% FPG).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month (> 150% FPG)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_enrolled_in_head_start: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_sr_copay_waived: true
+
+- name: Case 6, a family with a child in foster care is waived (income above 150% FPG).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month (> 150% FPG)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    fl_sr_copay_waived: true

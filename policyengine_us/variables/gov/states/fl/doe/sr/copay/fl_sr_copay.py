@@ -38,4 +38,8 @@ class fl_sr_copay(Variable):
         )
         copay = countable_income * copay_rate
         # The copay may not exceed 7% of family income (45 CFR 98.45(l)(3)).
-        return min_(copay, countable_income * p.max_share_of_income)
+        capped_copay = min_(copay, countable_income * p.max_share_of_income)
+        # Waive the copay for the families listed in State Plan s. 3.3.1
+        # (<=150% FPL, homeless, child with a disability, Head Start, foster care).
+        waived = spm_unit("fl_sr_copay_waived", period)
+        return where(waived, 0, capped_copay)
