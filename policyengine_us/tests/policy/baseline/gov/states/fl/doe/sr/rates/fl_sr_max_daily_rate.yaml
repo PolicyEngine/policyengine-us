@@ -2,8 +2,8 @@
 # FY2025-26 statewide schedule (6M-4.500; SPB 2502) by
 # county x provider type x care level (derived from age) x time category
 # (FULL_TIME if childcare_hours_per_week >= the full-time threshold, else
-# PART_TIME). A county with no published FL rate (empty/non-FL county_str)
-# returns 0; the benefit formula treats a zero cap as uncapped.
+# PART_TIME). A county with no published FL rate (an unknown / non-Florida
+# county_str) returns 0; the benefit caps at this rate, so a zero rate gives $0.
 # Currency output -> absolute_error_margin 0.01.
 
 - name: Case 1, Miami-Dade Licensed/Exempt infant full-time.
@@ -148,7 +148,7 @@
     # center toddler rate (41.39).
     fl_sr_max_daily_rate: 40.80
 
-- name: Case 9, an unmatched (empty) county has no published rate and returns zero.
+- name: Case 9, a non-Florida county has no published FL rate and returns zero.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -161,6 +161,25 @@
       household:
         members: [person1]
         state_code: FL
-        county_str: ""  # no FL rate row -> rate 0 (benefit treats as uncapped)
+        county_str: ORANGE_COUNTY_CA  # not a FL county -> no rate row -> 0
   output:
     fl_sr_max_daily_rate: 0
+
+- name: Case 10, FY2026-27 period reads the same CSV (rates carried forward unchanged).
+  period: 2027-01  # January 2027 falls in FY2026-27; served by fy2025_26.csv
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4  # PRESCHOOL_4
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # Same as Case 2 (2026-01): FY2026-27 (HB 5001E) carries the rates forward
+    # unchanged, so the loader returns the Miami-Dade Preschool 4 LE FT rate.
+    fl_sr_max_daily_rate: 28.00

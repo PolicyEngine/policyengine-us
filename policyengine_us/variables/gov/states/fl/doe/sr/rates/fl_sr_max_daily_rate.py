@@ -39,7 +39,7 @@ class fl_sr_max_daily_rate(Variable):
             how="left",
             on=["county", "provider_type", "care_level", "unit"],
         ).sort_values("_idx")
-        # A county with no published rate (e.g. an unset county_str) yields 0
-        # here; the benefit formula treats a zero cap as "uncapped" so a missing
-        # county does not zero out the subsidy.
+        # A county with no published rate (an unknown / non-Florida county_str)
+        # yields 0 here; the benefit formula caps the subsidy at this rate, so a
+        # zero rate produces a zero subsidy.
         return merged["rate"].fillna(0.0).values

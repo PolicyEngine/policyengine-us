@@ -5,9 +5,10 @@
 #   fl_sr_max_daily_rate * childcare_attending_days_per_month
 # (6M-4.500; SPB 2502 FY2025-26). The benefit is
 #   fl_sr = max(min(monthly childcare expense, monthly cap) - copay, 0)
-# A zero cap (unset/non-FL county) is treated as uncapped. The MONTH benefit
-# aggregates to the YEAR fl_child_care_subsidies (sum of 12 months) and flows
-# into the federal child_care_subsidies total.
+# A county with no published FL rate (an unknown / non-Florida county) gives a
+# zero cap and therefore a $0 benefit even when otherwise eligible (Case 14).
+# The MONTH benefit aggregates to the YEAR fl_child_care_subsidies (sum of 12
+# months) and flows into the federal child_care_subsidies total.
 #
 # All Florida cases are Miami-Dade, Licensed/Exempt providers. FY2025-26 daily
 # rates used below (Licensed/Exempt): Preschool 4 FT = 28.00, School Age FT =
@@ -554,3 +555,43 @@
     # cap = 28 * 20 = 560 < 1_000 -> capped expense = 560
     # benefit = max(min(1_000, 560) - 0, 0) = 560 (the cap, NOT 1_280 from a negative copay)
     fl_sr: 560
+
+- name: Case 14, otherwise-eligible family in a non-Florida county gets $0 (no published rate).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: ORANGE_COUNTY_CA  # not a Florida county -> no published rate
+  output:
+    # Eligibility does not depend on county, so the unit is still eligible...
+    is_fl_sr_eligible: true
+    # ...but ORANGE_COUNTY_CA has no published FL rate -> rate 0 -> cap 0 ->
+    # min(1_000, 0) = 0 -> benefit 0 (NOT a fall-back to expenses).
+    fl_sr_max_daily_rate: 0
+    fl_sr: 0
+    fl_child_care_subsidies: 0
+    child_care_subsidies: 0
