@@ -1,0 +1,108 @@
+# Florida School Readiness benefit: fl_sr = max(monthly childcare expense - copay, 0).
+# The monthly childcare expense is spm_unit_pre_subsidy_childcare_expenses (YEAR)
+# auto-divided to a monthly value; the copay is fl_sr_copay. There is no provider
+# rate cap. fl_sr is defined_for is_fl_sr_eligible, so each case is a fully
+# eligible Florida family; these cases exercise the formula's own arithmetic and
+# the zero floor (not the eligibility gate, which integration.yaml covers).
+#
+# Family of 3, FFY2026: monthly SMI = 7_214.41 (55% marker = 3_967.93).
+
+- name: Case 1, expense above copay yields expense minus copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35  # full time
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # copay = 3_000 * 0.04 = 120 (ratio 0.4158 <= 0.55, full time)
+    fl_sr_copay: 120
+    # benefit = max(1_000 - 120, 0) = 880
+    fl_sr: 880
+
+- name: Case 2, copay above expense floors the benefit at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000 / month
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35  # full time
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: true  # 5_000/mo <= 85% SMI exit limit -> still eligible
+        spm_unit_pre_subsidy_childcare_expenses: 1_200  # 100 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # copay = 5_000 * 0.06 = 300 (ratio 0.6931 > 0.55, full time)
+    fl_sr_copay: 300
+    # benefit = max(100 - 300, 0) = 0 (floor engaged)
+    fl_sr: 0
+
+- name: Case 3, zero childcare expense yields a zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0  # no expense
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # benefit = max(0 - 120, 0) = 0
+    fl_sr: 0

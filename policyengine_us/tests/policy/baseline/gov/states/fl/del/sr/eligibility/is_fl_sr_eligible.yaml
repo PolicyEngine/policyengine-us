@@ -1,0 +1,166 @@
+# Florida School Readiness top-level eligibility. The program is in effect from
+# 2025-10-01; before that it returns false. When in effect, eligibility requires
+# an eligible child AND income eligibility AND activity eligibility AND asset
+# eligibility. Exercises the AND truth table by failing one condition at a time.
+# Family of 2 (one parent, one child) unless noted.
+#   FFY2026 size-2 SMI monthly = 5_840.24; entry limit (55%) = 3_212.13.
+
+- name: Case 1, all conditions met is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month <= 3_212.13 entry limit
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_eligible: true
+
+- name: Case 2, no eligible child is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 40
+      person2:
+        age: 14  # too old, no eligible child
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_eligible: false
+
+- name: Case 3, income above 55% SMI entry limit is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4_000 / month > 3_212.13 entry limit
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: false
+    is_fl_sr_eligible: false
+
+- name: Case 4, activity test failure is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 10  # < 20 single-parent threshold
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+    is_fl_sr_eligible: false
+
+- name: Case 5, assets above the CCDF limit is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+        spm_unit_assets: 2_000_000  # > 1,000,000 CCDF asset limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_ccdf_asset_eligible: false
+    is_fl_sr_eligible: false
+
+- name: Case 6, before 2025-10-01 the program is not in effect.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_eligible: false

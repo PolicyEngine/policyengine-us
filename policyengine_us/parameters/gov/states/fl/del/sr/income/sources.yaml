@@ -1,0 +1,37 @@
+description: Florida counts these gross family income sources under the School Readiness program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_income
+    - tip_income
+    - social_security_retirement
+    - social_security_disability
+    - social_security_survivors
+    - ssi
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    - pension_income
+    - interest_income
+    - dividend_income
+    - rental_income
+    - military_retirement_pay
+    - veterans_benefits
+    # Eligibility and copay use gross family income with no School Readiness
+    # disregards (6M-4.400 FAQ Q6: criteria are household income, household size,
+    # and authorized hours). Additional gross-income types named in policy but
+    # without a matching PolicyEngine variable (e.g., annuities, royalties,
+    # in-kind support) are not modeled at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Florida School Readiness countable income sources
+  reference:
+    - title: Fla. Admin. Code 6M-4.400, Required Parent Copayment FAQ Q6 (gross family income)
+      href: https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=2
+    - title: Fla. Admin. Code 6M-4.200 School Readiness Eligibility Provisions
+      href: https://flrules.elaws.us/fac/6m-4.200

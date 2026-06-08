@@ -1,0 +1,17 @@
+description: Florida treats child care of at least this many hours per week as full-time for the School Readiness copay scale.
+# The statewide sliding fee schedule has separate full-time and part-time copay
+# percentage columns but does not publish the weekly-hours boundary between them
+# (the operational rule 6M-4.500 defining care levels returns a 403 to automated
+# access). We use the standard 30 hours/week full-time convention shared by other
+# state child care subsidy programs (e.g., NJ and RI CCAP); this boundary is
+# unverified against a Florida-specific source.
+values:
+  2025-10-01: 30
+
+metadata:
+  unit: hour
+  period: year
+  label: Florida School Readiness full-time care hours threshold
+  reference:
+    - title: Fla. Admin. Code 6M-4.400, Required Parent Copayment FAQ Q6 (authorized hours of care)
+      href: https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=2

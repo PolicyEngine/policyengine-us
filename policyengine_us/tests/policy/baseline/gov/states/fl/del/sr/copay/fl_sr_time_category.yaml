@@ -1,0 +1,71 @@
+# Florida School Readiness authorized-care time category.
+# fl_sr_time_category reads childcare_hours_per_week (YEAR) via period.this_year
+# and compares to the full-time hours threshold (30 hr/wk). At or above 30 hours
+# is full time; below 30 hours is part time. The default is PART_TIME.
+
+- name: Case 1, 35 hours per week is full time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_time_category: FULL_TIME
+
+- name: Case 2, exactly 30 hours per week is full time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_time_category: FULL_TIME
+
+- name: Case 3, 29 hours per week is part time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 29
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_time_category: PART_TIME
+
+- name: Case 4, zero hours per week is part time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_time_category: PART_TIME
+
+# Edge case: 31 hours per week (just above the 30-hour threshold) is full time,
+# completing the 29 / 30 / 31 boundary coverage.
+- name: Case 5, 31 hours per week is full time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 31
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_time_category: FULL_TIME

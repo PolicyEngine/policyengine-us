@@ -1,0 +1,18 @@
+description: Florida limits new applicants to the School Readiness program to families with gross income at or below this share of the state median income.
+# The October 1, 2025 statewide sliding fee schedule footnote sets 55% SMI as the
+# School Readiness program entry threshold for new applicants. This is the
+# operational value; the statute (Fla. Stat. 1002.81(6), 2025) frames entry as the
+# greater of 50% SMI or 150% FPL, but the schedule's 55% SMI marker governs the SMI
+# scale we model.
+values:
+  2025-10-01: 0.55
+
+metadata:
+  unit: /1
+  period: year
+  label: Florida School Readiness entry income SMI rate
+  reference:
+    - title: Florida Division of Early Learning, Sliding Fee Schedule for School Readiness Program (effective October 1, 2025), entry threshold footnote
+      href: https://www.elclc.org/wp-content/uploads/2025/10/2025-2026-Sliding-Fee-Schedule-for-10012025-4-and-6-Percent.pdf#page=2
+    - title: Fla. Stat. 1002.81(6)
+      href: https://www.flsenate.gov/laws/statutes/2024/1002.81
