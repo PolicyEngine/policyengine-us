@@ -53,3 +53,32 @@
   output:
     id_iccp_eligible_child: [false, true]
     id_iccp_maximum_monthly_benefit: [0, 593]
+
+- name: Child with zero childcare hours is not in care and gets no benefit.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 0  # not in care
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: FULL_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_3
+  output:
+    id_iccp_eligible_child: [false, true]
+    # in_care is false -> maximum monthly benefit floors to 0
+    id_iccp_maximum_monthly_benefit: [0, 0]

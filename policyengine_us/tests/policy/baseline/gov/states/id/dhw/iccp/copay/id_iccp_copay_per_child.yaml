@@ -300,3 +300,60 @@
     id_iccp_eligible_child: [false, true]
     # countable income floors at 0 -> size-4 first band = 20
     id_iccp_copay_per_child: [0, 20]
+
+- name: Guardians of foster children have no ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # would otherwise owe a 75 copay
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # IDAPA 16.06.12.503 exempts guardians of foster children from the copay
+    id_iccp_copay_per_child: [0, 0]
+
+- name: Child with zero childcare hours is not in care and owes no copay.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 0  # not in care
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # would otherwise owe a 75 copay
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # in_care is false -> copay floors to 0
+    id_iccp_copay_per_child: [0, 0]
