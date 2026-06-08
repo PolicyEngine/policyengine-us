@@ -102,3 +102,75 @@
   output:
     # 500 + 1,000 + 100 = 1,600
     hi_ccap_countable_income: 1_600
+
+# HAR 17-798.2-11(8): exclude the earnings of minor household members who are
+# at least half-time students. is_full_time_student is the available proxy.
+
+- name: Case 6, minor full-time student's earnings are excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # parent, 2,000/month (counted)
+      person2:
+        age: 16  # minor (< 18)
+        employment_income: 12_000  # 1,000/month, excluded as minor student
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 2,000 parent counted; 1,000 minor-student earnings excluded -> 2,000
+    hi_ccap_countable_income: 2_000
+
+- name: Case 7, minor's earnings are counted when not a full-time student.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # parent, 2,000/month
+      person2:
+        age: 16  # minor but not a student -> earnings counted
+        employment_income: 12_000  # 1,000/month
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 2,000 + 1,000 = 3,000 (no exclusion)
+    hi_ccap_countable_income: 3_000
+
+- name: Case 8, adult full-time student's earnings are counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # parent, 2,000/month
+      person2:
+        age: 20  # adult (>= 18); exclusion is minors only
+        employment_income: 12_000  # 1,000/month, counted
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 2,000 + 1,000 = 3,000 (adult student not excluded)
+    hi_ccap_countable_income: 3_000

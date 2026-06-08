@@ -363,3 +363,41 @@
     hi_ccap_maximum_monthly_rate: [0, 334]
     # subsidy = min(1,500 expenses, 334 rate) - 0 copay = 334
     hi_ccap: 334
+
+- name: Case 12, activity cap drops a before/after-school child to part-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # low income -> 0% copay
+        weekly_hours_worked_before_lsr: 10  # 10 x 52/12 = 43.33 monthly
+        immigration_status: CITIZEN
+      person2:
+        age: 8  # school-age, OLDER age group
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 12  # 12 x 52/12 = 52 monthly care hours
+        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Effective hours = min(52 care, 43.33 activity) = 43.33 monthly. On the
+    # before/after-school band (FULL_TIME 45+, PART_TIME 1-44), 43.33 < 45 ->
+    # PART_TIME (would be FULL_TIME at 45+). Before/after OLDER rate:
+    # PART_TIME = 86 (vs FULL_TIME 155). Proves the activity cap works on the
+    # before/after-school band path.
+    hi_ccap_monthly_care_hours: [0, 43.333332]
+    hi_ccap_hours_tier: [PART_TIME, PART_TIME]
+    hi_ccap_maximum_monthly_rate: [0, 86]
+    # subsidy = min(1,000 expenses, 86 rate) - 0 copay = 86
+    hi_ccap: 86

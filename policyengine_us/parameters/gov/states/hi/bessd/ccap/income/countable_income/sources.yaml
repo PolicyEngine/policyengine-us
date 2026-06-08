@@ -31,9 +31,17 @@ values:
     # - free rent converted to cost compensation (item (19));
     #   we don't track in-kind rent-for-activity at the moment
     # - strike benefits (item (3)(B); captured via unemployment_compensation)
-    # Excluded per HAR 17-798.2-11 (omitted from the list above):
-    # capital gains, SNAP, WIC, USDA donated foods, EITC, Title IV HEA
-    # aid, half-time+ student minor earnings, lump sums, and others.
+    # HAR 17-798.2-10(b)(11) counts Hawaii public assistance (TANF), but we do
+    # NOT add `tanf` here to avoid the CCAP<->TANF circular dependency (CCAP
+    # income -> tanf -> TANF dependent-care deduction -> childcare_expenses ->
+    # child_care_subsidies -> CCAP). TANF families fall well below the lowest
+    # copay band, so the omission does not change their subsidy in practice.
+    # Items (10) out-of-state public assistance and (12) adoption assistance
+    # have no clean PolicyEngine income input.
+    # Excluded per HAR 17-798.2-11 (omitted from the list above): capital
+    # gains, SNAP, WIC, USDA donated foods, EITC, Title IV HEA aid, lump sums,
+    # and others. The half-time+ student-minor earnings exclusion (item (8)) is
+    # applied as a formula filter in hi_ccap_countable_income.
 
 metadata:
   unit: list
