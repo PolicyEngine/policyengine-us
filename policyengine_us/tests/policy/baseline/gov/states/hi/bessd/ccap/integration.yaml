@@ -23,10 +23,10 @@
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
-        age: 1
+        age: 1  # < 36 months -> INFANT_TODDLER rate
         immigration_status: CITIZEN
         childcare_hours_per_week: 30  # ~130 monthly -> FULL_TIME
-        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -201,10 +201,10 @@
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
-        age: 2
+        age: 2  # < 36 months -> INFANT_TODDLER rate
         immigration_status: CITIZEN
         childcare_hours_per_week: 30  # FULL_TIME standard
-        hi_ccap_provider_category: EXEMPT_INFANT_TODDLER
+        hi_ccap_provider_category: LEGALLY_EXEMPT
       person3:
         age: 7
         is_in_k12_school: true

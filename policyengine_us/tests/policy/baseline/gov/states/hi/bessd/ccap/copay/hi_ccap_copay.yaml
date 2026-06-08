@@ -35,7 +35,7 @@
     # copay = 795 x 0.09 = 71.55
     hi_ccap_copay: 71.55
 
-- name: Case 2, infant toddler rate 1490 times 5 percent.
+- name: Case 2, infant/toddler rate 1733 times 5 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -45,10 +45,10 @@
         employment_income: 40_800  # 3,400/mo, FPG ratio 1.68 -> 5%
         immigration_status: CITIZEN
       person2:
-        age: 1
+        age: 1  # < 36 months -> INFANT_TODDLER rate
         immigration_status: CITIZEN
         childcare_hours_per_week: 30
-        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     tax_units:
       tax_unit:
         members: [person1, person2]
