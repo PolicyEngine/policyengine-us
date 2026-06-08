@@ -152,3 +152,55 @@
         state_code: HI
   output:
     hi_ccap_activity_eligible: false
+
+- name: Case 7, single caretaker receiving protective services is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: false
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Active via the protective-services branch, not employment/school.
+    hi_ccap_activity_eligible: true
+
+- name: Case 8, single caretaker with employment income but zero hours is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 24_000
+        is_full_time_student: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Active via the income-only sub-branch of is_employed
+    # (employment_income > 0) even with zero weekly hours worked.
+    hi_ccap_activity_eligible: true

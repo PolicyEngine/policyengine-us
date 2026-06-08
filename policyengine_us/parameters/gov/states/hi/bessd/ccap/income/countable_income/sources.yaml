@@ -7,12 +7,16 @@ values:
     - social_security_retirement
     - social_security_disability
     - social_security_survivors
+    # Recurring SSI is countable; HAR 17-798.2-11(5)(B) excludes only
+    # retroactive lump-sum SSI, not recurring monthly SSI payments.
     - ssi
     - dividend_income
     - interest_income
     - rental_income
     - pension_income
     - veterans_benefits
+    # Military retirement pay maps to HAR 17-798.2-10(b) item (5)
+    # (pensions and annuities), not item (7) (allotments).
     - military_retirement_pay
     - unemployment_compensation
     - workers_compensation

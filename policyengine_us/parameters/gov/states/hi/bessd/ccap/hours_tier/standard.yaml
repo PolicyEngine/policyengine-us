@@ -7,7 +7,9 @@ metadata:
   period: year
   label: Hawaii CCAP standard-care hours tier
   reference:
-    - title: HAR 17-798.2-12, Exhibit I, Child Care Rate Table, effective 2017-08-01
+    # Hour bands come from the standalone Child Care Rate Table effective
+    # 2017-08-01, NOT the older 2009 Exhibit I attached to HAR 17-798.2-12.
+    - title: Hawaii DHS Child Care Rate Table (under HAR 17-798.2-12), effective 2017-08-01
       href: https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf
 
 # Amount = index into the hi_ccap_hours_tier enum:

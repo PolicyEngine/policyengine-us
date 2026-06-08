@@ -139,3 +139,37 @@
   output:
     # Zero eligible children -> the has-eligible-child gate fails gracefully
     hi_ccap_eligible: false
+
+# === Edge case: assets above the CCDF limit ===
+
+- name: Case 6, otherwise-eligible family with assets above the CCDF limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000  # Above the $1,000,000 CCDF asset limit.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+    hi_ccap_income_eligible: true
+    is_ccdf_asset_eligible: false
+    hi_ccap_activity_eligible: true
+    hi_ccap_eligible: false
+    hi_ccap: 0

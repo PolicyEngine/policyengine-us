@@ -9,11 +9,16 @@ metadata:
   reference:
     # HAR 17-798.2-14(b)(4): co-payment = (percentage of the department's
     # maximum rate allowable) based on the family's monthly gross income.
+    # The rule's attached scale is "Exhibit III (dated Oct 1, 2009)", which has
+    # been superseded by the 2020 sliding-fee scale below; the implemented
+    # 0-9% percentages come from that 2020 scale, the operative source.
     - title: HAR 17-798.2-14(b)(4)
       href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=29
     # Operative sliding fee scale (single-page scanned chart, eff 2020-01-02)
-    # mapping each FPG band to its co-payment percentage.
-    - title: Hawaii DHS Child Care Gross Income Eligibility Limits and Sliding Fee Scale, effective 2020-01-02
+    # mapping each FPG band to its co-payment percentage. The standalone PDF
+    # labels itself "Exhibit II" in its own footer, which is its internal
+    # numbering and differs from the HAR's exhibit numbering (Exhibit III).
+    - title: Hawaii DHS Child Care Gross Income Eligibility Limits and Sliding Fee Scale (PDF "Exhibit II"), effective 2020-01-02
       href: https://childcaresubsidyapplication.dhs.hawaii.gov/Child-Care-Gross-Income-Eligibility-Limits-and-Sliding-Fee-Scale
 
 # Bands are "above X%" boundaries (e.g., 101-115% means above 100% up to
