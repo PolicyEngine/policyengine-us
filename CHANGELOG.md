@@ -1,3 +1,10 @@
+## [1.722.2] - 2026-06-08
+
+### Fixed
+
+- Use the number of current pregnancies when increasing WIC family size for pregnant applicants.
+
+
 ## [1.722.1] - 2026-06-08
 
 No significant changes.
