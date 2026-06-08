@@ -1,0 +1,55 @@
+- name: Center full-time infant in a cluster 3 county uses the cluster 3 center infant rate.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: FULL_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_3
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_maximum_monthly_benefit: [0, 1_245]
+
+- name: Family part-time infant in a cluster 2 county uses the cluster 2 family infant rate.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 12
+        id_iccp_provider_type: FAMILY
+        id_iccp_time_category: PART_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_2
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_maximum_monthly_benefit: [0, 593]

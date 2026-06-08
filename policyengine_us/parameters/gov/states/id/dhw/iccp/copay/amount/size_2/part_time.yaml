@@ -1,0 +1,27 @@
+description: Idaho provides this copayment amount for a family of two in part-time care under the Idaho Child Care Program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: Idaho Child Care Program part-time copay for family size two
+  reference:
+    - title: Idaho Child Care Copay Chart, effective October 1, 2025
+      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=4671&repo=PUBLIC-DOCUMENTS#page=1
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 1_764
+    amount:
+      2025-10-01: 10
+  - threshold:
+      2025-10-01: 1_940
+    amount:
+      2025-10-01: 25
+  - threshold:
+      2025-10-01: 2_116
+    amount:
+      2025-10-01: 35

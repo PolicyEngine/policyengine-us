@@ -1,0 +1,134 @@
+- name: Family size four full-time copay is 20 dollars in the first tier.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 2_680
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 20]
+
+- name: Family size four full-time copay rises to 75 dollars at the top published tier.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Family size four full-time copay stays capped above the highest published tier.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 4_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Family size four part-time copay uses the part-time scale.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 12
+        id_iccp_time_category: PART_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 2_949
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Families enrolled in TANF have no ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 0]

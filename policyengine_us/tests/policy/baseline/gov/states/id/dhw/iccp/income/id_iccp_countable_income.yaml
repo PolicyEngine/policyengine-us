@@ -1,0 +1,43 @@
+- name: Dependent child earnings below age 18 are excluded.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 17
+        employment_income: 6_000
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_countable_income: 1_000
+
+- name: Dependent earnings are counted at age 18.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 18
+        employment_income: 6_000
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_countable_income: 1_500

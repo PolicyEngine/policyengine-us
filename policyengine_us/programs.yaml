@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, ID, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -501,6 +501,12 @@ programs:
         full_name: Child Care Assistance Program (Illinois)
         variable: il_ccap_eligible
         notes: Only includes eligibility rules
+      - state: ID
+        status: complete
+        name: ICCP
+        full_name: Idaho Child Care Program
+        variable: id_iccp
+        parameter_prefix: gov.states.id.dhw.iccp
       - state: MA
         status: complete
         name: Massachusetts CCFA

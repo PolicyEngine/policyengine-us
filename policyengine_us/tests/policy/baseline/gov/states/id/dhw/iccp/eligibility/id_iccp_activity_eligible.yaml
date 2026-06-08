@@ -1,0 +1,33 @@
+- name: Idaho ICCP activity eligibility uses the CCDF activity-test fallback.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Idaho ICCP activity eligibility fails when the CCDF fallback is false.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false

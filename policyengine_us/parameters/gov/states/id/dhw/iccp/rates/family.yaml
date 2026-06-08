@@ -1,0 +1,72 @@
+description: Idaho provides these monthly local market rates for group or family care under the Idaho Child Care Program.
+metadata:
+  period: month
+  unit: currency-USD
+  label: Idaho Child Care Program group or family care monthly local market rates
+  breakdown:
+    - id_iccp_county_cluster
+    - id_iccp_time_category
+    - id_iccp_age_group
+  reference:
+    - title: Idaho Child Care Program Local Market Rates, effective July 1, 2025
+      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1
+
+CLUSTER_1:
+  FULL_TIME:
+    INFANT:
+      2025-07-01: 600
+    TODDLER:
+      2025-07-01: 580
+    PRESCHOOL:
+      2025-07-01: 552
+    SCHOOL_AGE:
+      2025-07-01: 530
+  PART_TIME:
+    INFANT:
+      2025-07-01: 433
+    TODDLER:
+      2025-07-01: 439
+    PRESCHOOL:
+      2025-07-01: 425
+    SCHOOL_AGE:
+      2025-07-01: 409
+
+CLUSTER_2:
+  FULL_TIME:
+    INFANT:
+      2025-07-01: 677
+    TODDLER:
+      2025-07-01: 650
+    PRESCHOOL:
+      2025-07-01: 642
+    SCHOOL_AGE:
+      2025-07-01: 600
+  PART_TIME:
+    INFANT:
+      2025-07-01: 593
+    TODDLER:
+      2025-07-01: 550
+    PRESCHOOL:
+      2025-07-01: 535
+    SCHOOL_AGE:
+      2025-07-01: 535
+
+CLUSTER_3:
+  FULL_TIME:
+    INFANT:
+      2025-07-01: 750
+    TODDLER:
+      2025-07-01: 749
+    PRESCHOOL:
+      2025-07-01: 728
+    SCHOOL_AGE:
+      2025-07-01: 697
+  PART_TIME:
+    INFANT:
+      2025-07-01: 621
+    TODDLER:
+      2025-07-01: 612
+    PRESCHOOL:
+      2025-07-01: 600
+    SCHOOL_AGE:
+      2025-07-01: 549

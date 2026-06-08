@@ -1,0 +1,25 @@
+- name: Weekly CCDF care maps to full-time ICCP care.
+  period: 2026-01
+  input:
+    people:
+      child:
+        ccdf_duration_of_care: WEEKLY
+    households:
+      household:
+        members: [child]
+        state_code: ID
+  output:
+    id_iccp_time_category: FULL_TIME
+
+- name: Non-weekly CCDF care maps to part-time ICCP care.
+  period: 2026-01
+  input:
+    people:
+      child:
+        ccdf_duration_of_care: DAILY
+    households:
+      household:
+        members: [child]
+        state_code: ID
+  output:
+    id_iccp_time_category: PART_TIME

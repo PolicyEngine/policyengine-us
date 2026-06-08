@@ -1,0 +1,39 @@
+- name: ICCP pays the lesser of expenses and maximum monthly benefit, less copay.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 3
+        id_iccp_maximum_monthly_benefit: 1_245
+    households:
+      household:
+        members: [child]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [child]
+        id_iccp_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        id_iccp_copay: 20
+  output:
+    id_iccp: 1_225
+
+- name: ICCP payment is capped by actual monthly child care expenses.
+  period: 2026-01
+  input:
+    people:
+      child:
+        age: 3
+        id_iccp_maximum_monthly_benefit: 1_245
+    households:
+      household:
+        members: [child]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [child]
+        id_iccp_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        id_iccp_copay: 20
+  output:
+    id_iccp: 980
