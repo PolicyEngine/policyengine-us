@@ -1,1 +1,1 @@
-Add Florida School Readiness Program child care subsidy.
+- Added the Florida School Readiness Program (child care subsidy).
