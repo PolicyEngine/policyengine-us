@@ -1,3 +1,10 @@
+## [1.722.4] - 2026-06-08
+
+### Changed
+
+- Update Washington WCCC and Connecticut Care 4 Kids child care payment parameters.
+
+
 ## [1.722.3] - 2026-06-08
 
 ### Fixed
