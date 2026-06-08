@@ -1,3 +1,17 @@
+## [1.722.0] - 2026-06-08
+
+### Added
+
+- - Add an Illinois SB3567 (104th General Assembly) contributed reform, opt-in via `gov.contrib.states.il.sb3567.in_effect`, that boosts the child tax credit for low-AGI filers.
+- Added the Kentucky Homestead Exemption property tax reduction.
+
+### Fixed
+
+- Apply the Montana Elderly Homeowner/Renter Credit multiplier to household-level gross income and include the full Social Security amount.
+- Zero the New Jersey pre-credit liability before refundable credits flow through when AGI is at or below the filing threshold.
+- Correct Indiana TANF benefit payments to use the IC 12-14-2-5 maximum benefit and add the post-2025 gross/net income eligibility screens.
+
+
 ## [1.721.4] - 2026-06-08
 
 ### Fixed
