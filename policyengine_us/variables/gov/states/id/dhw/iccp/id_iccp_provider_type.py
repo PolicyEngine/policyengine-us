@@ -14,4 +14,4 @@ class id_iccp_provider_type(Variable):
     definition_period = MONTH
     label = "Idaho Child Care Program provider type"
     defined_for = StateCode.ID
-    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1"
+    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS"

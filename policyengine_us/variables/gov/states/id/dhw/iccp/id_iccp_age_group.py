@@ -16,7 +16,7 @@ class id_iccp_age_group(Variable):
     definition_period = MONTH
     label = "Idaho Child Care Program age group"
     defined_for = StateCode.ID
-    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1"
+    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS"
 
     def formula(person, period, parameters):
         age_months = person("age", period.this_year) * MONTHS_IN_YEAR

@@ -14,6 +14,13 @@ class id_iccp_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
+        # Intentional limitations: we don't track these ICCP pathways at the
+        # moment - court-ordered disability child eligibility (IDAPA
+        # 16.06.12.105.03.b), the incapacitated-parent activity exemption
+        # (106), the 3-month continuation after a qualifying activity ceases
+        # (202), the child immunization requirement (105.01), and the
+        # graduated phase-out for income between 175% FPG and the State Plan
+        # limit at redetermination (070.03 / 602.02).
         has_eligible_child = add(spm_unit, period, ["id_iccp_eligible_child"]) > 0
         return (
             has_eligible_child

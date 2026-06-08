@@ -37,3 +37,31 @@
         id_iccp_copay: 20
   output:
     id_iccp: 980
+
+- name: Negative income does not inflate the ICCP benefit; it floors at zero.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        self_employment_income: -60_000_000
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        is_tax_unit_head_or_spouse: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 120  # 10/month
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: true
+    # countable income floors at 0 -> copay lands in lowest band (20)
+    # capped expenses min(10, max benefit) = 10; 10 - 20 < 0 -> floored to 0
+    id_iccp: 0

@@ -15,7 +15,7 @@ class id_iccp_county_cluster(Variable):
     definition_period = YEAR
     label = "Idaho Child Care Program county cluster"
     defined_for = StateCode.ID
-    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1"
+    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS"
 
     def formula(household, period, parameters):
         county = household("county_str", period)

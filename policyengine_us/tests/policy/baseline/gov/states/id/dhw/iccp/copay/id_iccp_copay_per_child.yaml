@@ -106,7 +106,7 @@
     id_iccp_eligible_child: [false, true]
     id_iccp_copay_per_child: [0, 25]
 
-- name: Families enrolled in TANF have no ICCP copay.
+- name: TANF families below 100 percent FPG have no ICCP copay.
   period: 2026-01
   input:
     people:
@@ -123,7 +123,8 @@
       spm_unit:
         members: [parent, child]
         spm_unit_size: 4
-        id_iccp_countable_income: 3_216
+        id_iccp_countable_income: 1_000  # below 100% FPG
+        spm_unit_fpg: 24_000  # 2,000/month
         is_tanf_enrolled: true
     households:
       household:
@@ -132,3 +133,170 @@
   output:
     id_iccp_eligible_child: [false, true]
     id_iccp_copay_per_child: [0, 0]
+
+- name: TANF families at or above 100 percent FPG still pay the ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # above 100% FPG
+        spm_unit_fpg: 24_000  # 2,000/month
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Family size two full-time copay uses the minimum-size scale.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 2
+        id_iccp_countable_income: 1_900  # 1,764-1,940 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Family size eight full-time copay uses the maximum-listed scale.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 8
+        id_iccp_countable_income: 4_600  # 4,513-4,965 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Family size one clips up to the minimum-size copay scale.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 1  # clipped to size 2 scale
+        id_iccp_countable_income: 1_900  # size-2 1,764-1,940 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Family size nine shifts the income band down by the additional-member step.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 9  # one member above the listed max of 8
+        id_iccp_countable_income: 5_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # adjusted income 5,000 - 596 = 4,404 < 4,513 -> size-8 first band = 20
+    id_iccp_copay_per_child: [0, 20]
+
+- name: Negative self-employment income floors the copay in the lowest band.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        self_employment_income: -60_000_000
+      child:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 4
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # countable income floors at 0 -> size-4 first band = 20
+    id_iccp_copay_per_child: [0, 20]

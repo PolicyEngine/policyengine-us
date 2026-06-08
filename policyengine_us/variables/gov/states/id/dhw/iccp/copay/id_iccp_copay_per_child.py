@@ -13,7 +13,7 @@ class id_iccp_copay_per_child(Variable):
     defined_for = "id_iccp_eligible_child"
     reference = (
         "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=15",
-        "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=4671&repo=PUBLIC-DOCUMENTS#page=1",
+        "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=4671&repo=PUBLIC-DOCUMENTS",
     )
 
     def formula(person, period, parameters):
@@ -70,7 +70,19 @@ class id_iccp_copay_per_child(Variable):
         )
 
         in_care = person("childcare_hours_per_week", period.this_year) > 0
-        tanf = person.spm_unit("is_tanf_enrolled", period)
-        return where(
-            in_care & ~tanf, where(full_time, full_time_amount, part_time_amount), 0
-        )
+        income_amount = where(full_time, full_time_amount, part_time_amount)
+
+        # IDAPA 16.06.12.503 exempts TAFI (Idaho TANF) families and guardians of
+        # foster children from the copay. The chart scopes the TAFI exemption to
+        # families below 100% FPG; the 503 sub-condition limiting it to TAFI
+        # families in non-employment activities is not tracked at the moment.
+        tafi = person.spm_unit("is_tanf_enrolled", period)
+        fpg = person.spm_unit("spm_unit_fpg", period)
+        below_tafi_fpl = income < fpg * p.tafi_exemption_fpl_rate
+        tafi_exempt = tafi & below_tafi_fpl
+        foster_exempt = person("is_in_foster_care", period)
+        # IDAPA 16.06.12.504.01.a sets a flat student copay for post-secondary
+        # students working less than 10 hours per week; we don't track weekly
+        # work hours at the moment, so the student copay row is not modeled.
+        copay = where(tafi_exempt | foster_exempt, 0, income_amount)
+        return where(in_care, copay, 0)

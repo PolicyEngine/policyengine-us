@@ -17,7 +17,7 @@ class id_iccp_time_category(Variable):
     definition_period = MONTH
     label = "Idaho Child Care Program time category"
     defined_for = StateCode.ID
-    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1"
+    reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS"
 
     def formula(person, period, parameters):
         duration = person("ccdf_duration_of_care", period.this_year)

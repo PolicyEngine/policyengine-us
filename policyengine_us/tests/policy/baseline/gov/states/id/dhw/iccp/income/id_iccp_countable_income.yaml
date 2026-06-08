@@ -41,3 +41,58 @@
         state_code: ID
   output:
     id_iccp_countable_income: 1_500
+
+- name: Counted unearned income flows into countable income.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        social_security: 12_000  # 1,000/month, an unearned source
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: ID
+  output:
+    id_iccp_countable_income: 1_000
+
+- name: Child support expense is deducted from countable income.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000  # 1,000/month
+        child_support_expense: 3_600  # 300/month deduction
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: ID
+  output:
+    id_iccp_countable_income: 700  # 1,000 - 300
+
+- name: Self-employment income gets a 50 percent standard expense deduction.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        self_employment_income: 24_000  # 2,000/month gross
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: ID
+  output:
+    id_iccp_countable_income: 1_000  # 2,000 - 50% x 2,000 = 1,000

@@ -31,3 +31,134 @@
         meets_ccdf_activity_test: false
   output:
     id_iccp_activity_eligible: false
+
+- name: Idaho ICCP activity eligibility via employment income only.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Idaho ICCP activity eligibility via self-employment income only.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+        self_employment_income: 12_000
+        is_full_time_student: false
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Idaho ICCP activity eligibility via full-time student status only.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Idaho ICCP activity eligibility fails with no activity and no fallback.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false
+
+- name: Idaho ICCP activity eligibility via CCDF fallback with no activity signals.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person]
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Idaho ICCP activity eligibility fails when one of two parents has no activity.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 12_000
+        self_employment_income: 0
+        is_full_time_student: false
+      parent2:
+        age: 33
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [parent1, parent2]
+        state_code: ID
+    marital_units:
+      marital_unit:
+        members: [parent1, parent2]
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false

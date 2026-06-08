@@ -2,14 +2,12 @@ description: Idaho uses this age group by age in months under the Idaho Child Ca
 metadata:
   type: single_amount
   threshold_unit: month
-  amount_unit: int
-  period: month
+  amount_unit: /1
+  period: year
   label: Idaho Child Care Program age group by age in months
-  breakdown:
-    - id_iccp_age_group
   reference:
     - title: Idaho Child Care Program Local Market Rates, effective July 1, 2025
-      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1
+      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS
 
 brackets:
   - threshold:

@@ -13,7 +13,7 @@ class id_iccp_maximum_monthly_benefit(Variable):
     defined_for = "id_iccp_eligible_child"
     reference = (
         "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=15",
-        "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS#page=1",
+        "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS",
     )
 
     def formula(person, period, parameters):
