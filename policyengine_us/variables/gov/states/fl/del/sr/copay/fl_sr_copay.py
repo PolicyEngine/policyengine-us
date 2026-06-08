@@ -15,7 +15,10 @@ class fl_sr_copay(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.fl["del"].sr.copay
-        countable_income = spm_unit("fl_sr_countable_income", period)
+        # Floor income at zero so a self-employment loss cannot produce a
+        # negative copay (which would otherwise inflate the benefit above
+        # actual childcare expenses).
+        countable_income = max_(spm_unit("fl_sr_countable_income", period), 0)
         monthly_smi = spm_unit("fl_sr_smi", period)
         smi_ratio = where(monthly_smi > 0, countable_income / monthly_smi, 0)
 

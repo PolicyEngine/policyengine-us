@@ -460,3 +460,51 @@
     fl_sr_copay: 120
     # benefit = max(1_000 - 120, 0) = 880 / month
     fl_sr: 880
+
+- name: Case 13, a self-employment loss floors the copay at zero and does not inflate the benefit.
+  # person1 has a -10_000/month business loss, so gross countable income is
+  # 3_000 - 10_000 = -7_000/month (well under the 55% SMI entry limit, so the
+  # family is still income eligible). The copay is income * rate, so a negative
+  # income would yield a negative copay and, via max(expense - copay, 0), a
+  # benefit ABOVE the actual expense. Income is floored at 0 in the copay:
+  #   copay = max(countable_income, 0) * rate = max(-7_000, 0) * 0.04 = 0
+  # so the benefit is exactly the monthly expense, never inflated.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        self_employment_income: -120_000  # -10_000 / month business loss
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35  # full time
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # gross countable income = 3_000 - 10_000 = -7_000 / month
+    fl_sr_countable_income: -7_000
+    # -7_000 <= 55% SMI entry limit (3_967.93) -> income eligible
+    is_fl_sr_income_eligible: true
+    is_fl_sr_eligible: true
+    # income floored at 0 -> copay = max(-7_000, 0) * 0.04 = 0 (NOT a negative copay)
+    fl_sr_copay: 0
+    # benefit = max(1_000 - 0, 0) = 1_000 / month: the full expense, NOT inflated
+    # above it (the un-floored copay of -280 would have paid 1_280).
+    fl_sr: 1_000

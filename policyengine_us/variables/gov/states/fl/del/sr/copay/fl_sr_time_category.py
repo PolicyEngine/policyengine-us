@@ -14,7 +14,7 @@ class fl_sr_time_category(Variable):
     definition_period = MONTH
     label = "Florida School Readiness authorized care time category"
     defined_for = StateCode.FL
-    reference = "https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=2"
+    reference = "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.fl["del"].sr.copay

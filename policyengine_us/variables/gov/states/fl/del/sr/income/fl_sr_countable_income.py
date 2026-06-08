@@ -9,7 +9,7 @@ class fl_sr_countable_income(Variable):
     definition_period = MONTH
     defined_for = StateCode.FL
     reference = (
-        "https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=2",
+        "https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=1",
         "https://flrules.elaws.us/fac/6m-4.200",
     )
 
