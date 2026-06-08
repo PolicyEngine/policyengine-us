@@ -11,7 +11,7 @@
       person1:
         age: 30
         employment_income: 12_000  # low income -> 0% copay
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -43,7 +43,7 @@
       person1:
         age: 30
         employment_income: 12_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 1
@@ -74,7 +74,7 @@
       person1:
         age: 30
         employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -106,7 +106,7 @@
       person1:
         age: 30
         employment_income: 12_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 1
@@ -143,7 +143,7 @@
       person1:
         age: 30
         self_employment_income: -600_000  # large monthly loss
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -174,7 +174,7 @@
       person1:
         age: 30
         employment_income: 0
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
         is_disabled: false
         immigration_status: CITIZEN
@@ -209,7 +209,7 @@
       person1:
         age: 30
         employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -242,7 +242,7 @@
       person1:
         age: 30
         employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -274,7 +274,7 @@
       person1:
         age: 30
         employment_income: 12_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
     spm_units:
       spm_unit:
@@ -288,3 +288,76 @@
     # No eligible child -> not eligible -> no subsidy, no error
     hi_ccap_eligible: false
     hi_ccap: 0
+
+# === Zero-care-hours gate and activity-hours cap ===
+
+- name: Case 10, otherwise-eligible child with zero care hours receives no subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # low income -> 0% copay
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 0  # no care need
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Family is eligible, but the child's 0 care hours gate the rate to 0,
+    # so the subsidy is 0 (FIX A: effective monthly care hours < 1).
+    hi_ccap_eligible: true
+    hi_ccap_maximum_monthly_rate: [0, 0]
+    hi_ccap: 0
+
+- name: Case 11, low caretaker activity hours cap the rate tier below full-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # low income -> 0% copay
+        weekly_hours_worked_before_lsr: 10  # 10 x 52/12 = 43.33 monthly
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 40  # 40 x 52/12 = 173.33 monthly care hours
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # FIX B (HAR 17-798.2-14(b)(1)): effective hours = min(173.33 care,
+    # 43.33 activity) = 43.33 monthly -> standard ONE_THIRD band (25-60),
+    # not FULL_TIME. Licensed center ONE_THIRD rate = 412 (vs FT 740).
+    hi_ccap_monthly_care_hours: [0, 43.333332]
+    hi_ccap_hours_tier: [CASUAL, ONE_THIRD]
+    hi_ccap_maximum_monthly_rate: [0, 412]
+    # subsidy = min(1,500 expenses, 412 rate) - 0 copay = 412
+    hi_ccap: 412

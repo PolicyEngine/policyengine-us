@@ -10,7 +10,7 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
     tax_units:
       tax_unit:
@@ -32,7 +32,7 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 0
         is_full_time_student: false
         is_disabled: false
@@ -56,7 +56,7 @@
       person1:
         age: 25
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 0
         is_full_time_student: true
         is_disabled: false
@@ -73,14 +73,14 @@
   output:
     hi_ccap_activity_eligible: true
 
-- name: Case 4, single disabled caretaker is eligible.
+- name: Case 4, single idle disabled caretaker is ineligible.
   period: 2025-01
   input:
     people:
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 0
         is_full_time_student: false
         is_disabled: true
@@ -95,7 +95,10 @@
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_activity_eligible: true
+    # HAR 17-798.2-9(b)(2)(H)/(I): disability is not a standalone activity. A
+    # single idle disabled caretaker qualifies only via an activity link to
+    # another head/spouse in an approved activity, which is absent here.
+    hi_ccap_activity_eligible: false
 
 - name: Case 5, two-parent family with both employed is eligible.
   period: 2025-01
@@ -104,12 +107,12 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 33
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
     tax_units:
       tax_unit:
@@ -131,12 +134,12 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 33
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 0
         is_full_time_student: false
         is_disabled: false
@@ -160,7 +163,7 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 0
         is_full_time_student: false
         is_disabled: false
@@ -186,7 +189,7 @@
       person1:
         age: 35
         is_tax_unit_head_or_spouse: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         employment_income: 24_000
         is_full_time_student: false
         is_disabled: false
@@ -204,3 +207,67 @@
     # Active via the income-only sub-branch of is_employed
     # (employment_income > 0) even with zero weekly hours worked.
     hi_ccap_activity_eligible: true
+
+- name: Case 9, one employed parent plus an idle disabled parent is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # HAR 17-798.2-9(b)(2)(H): the idle disabled parent is covered via the
+    # activity link because the other head/spouse is in a real activity (work).
+    hi_ccap_activity_eligible: true
+
+- name: Case 10, two idle disabled parents are ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: true
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # No head/spouse is in a real activity, so neither disabled parent has an
+    # activity link. Disability alone does not qualify the family.
+    hi_ccap_activity_eligible: false

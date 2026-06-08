@@ -12,22 +12,36 @@ class hi_ccap_activity_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        # Approved activities (HAR 17-798.2-9(b)(2)). We model the core
-        # work, education/training, and disability/protective-services
-        # pathways. Activity pathways for short-term job offers, employment
-        # breaks, job search, first-to-work, and protective-order day care
-        # rely on timing windows we don't track at the moment.
-        is_employed = (person("weekly_hours_worked", period.this_year) > 0) | (
-            person("employment_income", period.this_year) > 0
-        )
+        # Approved activities (HAR 17-798.2-9(b)(2)). We model the core work,
+        # education/training, and protective-services pathways. Activity
+        # pathways for short-term job offers, employment breaks, job search,
+        # first-to-work, and protective-order day care rely on timing windows
+        # we don't track at the moment. Use the pre-labor-supply-response work
+        # hours to avoid a circular dependency with behavioral responses.
+        is_employed = (
+            person("weekly_hours_worked_before_lsr", period.this_year) > 0
+        ) | (person("employment_income", period.this_year) > 0)
         is_student = person("is_full_time_student", period.this_year)
-        is_disabled = person("is_disabled", period.this_year)
         protective_services = person(
             "receives_or_needs_protective_services", period.this_year
         )
-        individually_eligible = (
-            is_employed | is_student | is_disabled | protective_services
+        real_activity = is_employed | is_student | protective_services
+        # Disability is NOT a standalone activity: under HAR 17-798.2-9(b)(2)(H)
+        # and (I), an incapacitated caretaker qualifies the family only via an
+        # activity link -- when the OTHER head/spouse is in an approved
+        # activity. A single idle disabled caretaker, or two idle disabled
+        # parents, do not qualify.
+        is_disabled = person("is_disabled", period.this_year)
+        is_caretaker = is_head_or_spouse
+        # A caretaker who is neither in a real activity nor disabled disqualifies
+        # the unit outright.
+        n_inactive_nondisabled = spm_unit.sum(
+            is_caretaker & ~real_activity & ~is_disabled
         )
-        # In a two-parent family, BOTH caretakers must be in an approved
-        # activity (HAR 17-798.2-9(b)(2)).
-        return spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
+        # A disabled, non-active caretaker is covered only if another caretaker
+        # is in a real activity.
+        n_disabled_inactive = spm_unit.sum(is_caretaker & ~real_activity & is_disabled)
+        n_real_active = spm_unit.sum(is_caretaker & real_activity)
+        return (n_inactive_nondisabled == 0) & (
+            (n_disabled_inactive == 0) | (n_real_active >= 1)
+        )

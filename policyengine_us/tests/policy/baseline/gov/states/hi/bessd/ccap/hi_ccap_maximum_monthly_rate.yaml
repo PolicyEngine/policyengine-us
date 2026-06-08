@@ -648,3 +648,26 @@
         state_code: HI
   output:
     hi_ccap_maximum_monthly_rate: 28
+
+# === Zero-care-hours gate (FIX A) ===
+# A child with no authorized care hours has < 1 effective monthly care hour,
+# below Exhibit I's casual band floor, so the rate is gated to 0 even though
+# the provider/tier lookup would otherwise return a casual rate.
+
+- name: Case 37, eligible child with zero care hours receives a zero rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # monthly_care_hours = 0 < 1 -> gated to 0 (no care need, no payment)
+    hi_ccap_maximum_monthly_rate: 0

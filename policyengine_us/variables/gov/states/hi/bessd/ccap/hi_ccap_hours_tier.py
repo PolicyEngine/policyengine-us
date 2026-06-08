@@ -23,10 +23,10 @@ class hi_ccap_hours_tier(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.hi.bessd.ccap.hours_tier
-        # Exhibit I bands are in monthly hours of care; convert from the
-        # weekly hours-in-care input.
-        weekly_hours = person("childcare_hours_per_week", period.this_year)
-        monthly_hours = weekly_hours * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
+        # Exhibit I bands are in monthly hours of care. Use the effective
+        # authorized hours = lesser of the child's care hours and the
+        # caretaker's activity hours (HAR 17-798.2-14(b)(1)).
+        monthly_hours = person("hi_ccap_monthly_care_hours", period)
         # Before/after-school rows use a separate, lower-hour band scheme.
         provider_category = person("hi_ccap_provider_category", period)
         is_before_after = (

@@ -14,4 +14,8 @@ class hi_ccap_maximum_monthly_rate(Variable):
         p = parameters(period).gov.states.hi.bessd.ccap.rates
         provider_category = person("hi_ccap_provider_category", period)
         hours_tier = person("hi_ccap_hours_tier", period)
-        return p.rates[provider_category][hours_tier]
+        rate = p.rates[provider_category][hours_tier]
+        # Exhibit I's casual band starts at 1 monthly hour, so a child with no
+        # authorized care hours (no care need) receives no payment.
+        monthly_care_hours = person("hi_ccap_monthly_care_hours", period)
+        return where(monthly_care_hours >= 1, rate, 0)

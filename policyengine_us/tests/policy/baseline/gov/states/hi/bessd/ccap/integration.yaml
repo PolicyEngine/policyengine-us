@@ -19,7 +19,7 @@
       person1:
         age: 30
         employment_income: 18_000  # 1,500/mo
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -67,7 +67,7 @@
       person1:
         age: 32
         employment_income: 60_000  # 5,000/mo
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -109,7 +109,7 @@
       person1:
         age: 35
         employment_income: 200_000  # far above income limit
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -152,7 +152,7 @@
       person1:
         age: 45
         employment_income: 30_000  # 2,500/mo
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -197,7 +197,7 @@
       person1:
         age: 33
         employment_income: 36_000  # 3,000/mo
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -248,13 +248,13 @@
       person1:
         age: 35
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
         age: 33
         employment_income: 0
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
         is_disabled: false
         is_tax_unit_head_or_spouse: true
@@ -290,7 +290,7 @@
       person1:
         age: 35
         employment_income: 78_000  # 6,500/mo > 6,218.70 limit
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head_or_spouse: true
         immigration_status: CITIZEN
       person2:
@@ -323,7 +323,7 @@
       person1:
         age: 30
         employment_income: 18_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         age: 4
