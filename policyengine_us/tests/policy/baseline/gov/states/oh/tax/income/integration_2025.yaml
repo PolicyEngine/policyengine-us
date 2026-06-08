@@ -242,3 +242,33 @@
     # Taxable income: $550,000 - $0 = $550,000
     oh_personal_exemptions: 0
     oh_taxable_income: 550_000
+
+- name: 2026 - Retired couple receives Ohio retirement income credit.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_pension_income: 40_000
+        social_security: 30_000
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        social_security: 20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_taxable_income: 35_038.3
+    oh_income_tax_before_non_refundable_credits: 579.18
+    oh_retirement_credit_potential: 200
+    oh_retirement_credit: 200
+    oh_non_refundable_credits: 250
+    state_income_tax: 329.18
