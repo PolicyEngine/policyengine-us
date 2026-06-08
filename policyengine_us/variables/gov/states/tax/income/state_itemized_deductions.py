@@ -9,15 +9,9 @@ class state_itemized_deductions(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # States that adopt the federal itemized deductions
-        # Based on comments in state_itemized_deductions.yaml
-        FEDERAL_ITEMIZED_DEDUCTION_STATES = [
-            "CT",  # Connecticut
-            "GA",  # Georgia
-            "ND",  # North Dakota
-            "SC",  # South Carolina
-            "UT",  # Utah
-        ]
+        federal_itemized_states = parameters(
+            period
+        ).gov.states.household.states_using_federal_itemized_deductions
 
         # Get the current state
         state_code = tax_unit.household("state_code_str", period)
@@ -58,13 +52,22 @@ class state_itemized_deductions(Variable):
             state_specific_base = where(is_state, max_deductions, state_specific_base)
 
         # Check if the state adopts federal itemized deductions
-        uses_federal = np.isin(state_code, FEDERAL_ITEMIZED_DEDUCTION_STATES)
+        uses_federal = np.isin(state_code, federal_itemized_states)
 
-        # Get federal itemized deductions (sum of all federal itemized deduction components)
-        federal_itemized = add(
+        federal_itemized_claimed = tax_unit(
+            "itemized_taxable_income_deductions", period
+        )
+        federal_itemized_components = add(
             tax_unit,
             period,
             parameters(period).gov.irs.deductions.itemized_deductions,
+        )
+        # Prefer the claimed federal amount, but fall back to direct components
+        # in tests and branches that only set the underlying Schedule A pieces.
+        federal_itemized = where(
+            federal_itemized_claimed > 0,
+            federal_itemized_claimed,
+            federal_itemized_components,
         )
 
         # Return federal itemized deductions for states that adopt them, otherwise state-specific
