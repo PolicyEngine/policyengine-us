@@ -8,7 +8,7 @@ class hi_ccap_maximum_monthly_rate(Variable):
     label = "Hawaii CCAP maximum monthly payment rate per child"
     definition_period = MONTH
     defined_for = "hi_ccap_eligible_child"
-    reference = "https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf"
+    reference = "https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=71"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.hi.bessd.ccap.rates
