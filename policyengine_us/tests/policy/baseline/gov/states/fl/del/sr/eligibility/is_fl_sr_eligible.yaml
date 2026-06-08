@@ -13,7 +13,7 @@
       person1:
         age: 30
         employment_income: 36_000  # 3_000 / month <= 3_212.13 entry limit
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -39,7 +39,7 @@
       person1:
         age: 30
         employment_income: 36_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 14  # too old, no eligible child
         immigration_status: CITIZEN
@@ -65,7 +65,7 @@
       person1:
         age: 30
         employment_income: 48_000  # 4_000 / month > 3_212.13 entry limit
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -92,7 +92,7 @@
       person1:
         age: 30
         employment_income: 36_000
-        weekly_hours_worked: 10  # < 20 single-parent threshold
+        weekly_hours_worked_before_lsr: 10  # < 20 single-parent threshold
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -119,7 +119,7 @@
       person1:
         age: 30
         employment_income: 36_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -147,7 +147,7 @@
       person1:
         age: 30
         employment_income: 36_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN

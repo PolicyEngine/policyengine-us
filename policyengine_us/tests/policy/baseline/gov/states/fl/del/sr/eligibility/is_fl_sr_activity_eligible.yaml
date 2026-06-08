@@ -2,8 +2,8 @@
 # Parents are tax-unit heads or spouses. A disabled parent is exempt from the
 # activity requirement. A single non-exempt parent must work >= 20 hr/wk; two
 # non-exempt parents must work >= 40 hr/wk combined. If every parent is exempt,
-# the activity test is met. weekly_hours_worked is set explicitly because it
-# defaults to 40.
+# the activity test is met. weekly_hours_worked_before_lsr is set explicitly
+# because it defaults to 40.
 
 - name: Case 1, single parent working 20 hours meets the requirement.
   period: 2026-01
@@ -12,7 +12,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
       person2:
         age: 4
     tax_units:
@@ -35,7 +35,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 15
+        weekly_hours_worked_before_lsr: 15
       person2:
         age: 4
     tax_units:
@@ -58,10 +58,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
       person2:
         age: 30
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
       person3:
         age: 4
     tax_units:
@@ -84,10 +84,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 30
+        weekly_hours_worked_before_lsr: 30
       person2:
         age: 30
-        weekly_hours_worked: 5
+        weekly_hours_worked_before_lsr: 5
       person3:
         age: 4
     tax_units:
@@ -110,10 +110,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 30
+        weekly_hours_worked_before_lsr: 30
       person2:
         age: 30
-        weekly_hours_worked: 15
+        weekly_hours_worked_before_lsr: 15
       person3:
         age: 4
     tax_units:
@@ -137,7 +137,7 @@
       person1:
         age: 30
         is_disabled: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
       person2:
         age: 4
     tax_units:
@@ -161,10 +161,10 @@
       person1:
         age: 32
         is_disabled: true
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
       person2:
         age: 30
-        weekly_hours_worked: 15  # only non-exempt parent, < 20 single threshold
+        weekly_hours_worked_before_lsr: 15  # only non-exempt parent, < 20 single threshold
       person3:
         age: 4
     tax_units:
@@ -180,6 +180,35 @@
   output:
     is_fl_sr_activity_eligible: false
 
+# Fallback: Fla. Stat. 1002.81(14) counts "eligible work OR education
+# activities" toward the 20/40 hours, which PolicyEngine cannot derive from
+# employment hours alone. meets_ccdf_activity_test (default false) lets a
+# family qualify through education/training/transition/grace activities.
+
+- name: Case 10, single parent under 20 work hours qualifies via meets_ccdf_activity_test (education/training).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 10  # below the 20-hour work threshold
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
 # Edge cases: activity-hour boundaries (single-parent 20 hr/wk; two-parent 40
 # combined hr/wk). The just-at cases (20, 40) and disabled-exempt 0-hour case
 # are covered above; these add the just-below boundary (19; 39 combined).
@@ -191,7 +220,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 19  # just below the 20-hour single threshold
+        weekly_hours_worked_before_lsr: 19  # just below the 20-hour single threshold
       person2:
         age: 4
     tax_units:
@@ -214,10 +243,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
       person2:
         age: 30
-        weekly_hours_worked: 19  # 20 + 19 = 39 < 40 combined threshold
+        weekly_hours_worked_before_lsr: 19  # 20 + 19 = 39 < 40 combined threshold
       person3:
         age: 4
     tax_units:
