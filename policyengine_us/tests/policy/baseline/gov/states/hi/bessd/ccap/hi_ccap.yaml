@@ -1,0 +1,290 @@
+# HI CCAP monthly subsidy (HAR 17-798.2-13(a), 17-798.2-14(b)).
+# subsidy = max(min(max_rate, pre_subsidy_expenses) - copay, 0).
+# Family of 2, HI 2025 unless noted. Parents are employed (activity
+# eligible) and income keeps families income-eligible.
+
+- name: Case 1, rate caps the subsidy below actual expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # low income -> 0% copay
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30  # ~130 monthly hours -> full-time
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # max rate 740 < 1,500 expenses -> capped at 740; copay 0
+    # subsidy = 740 - 0 = 740
+    hi_ccap: 740
+
+- name: Case 2, actual expenses cap the subsidy below the rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # expenses 500 < rate 1,490 -> capped at 500; copay 0
+    # subsidy = 500 - 0 = 500
+    hi_ccap: 500
+
+- name: Case 3, copay reduces the subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # capped = min(1,000, 740) = 740; copay = 740 x 0.09 = 66.60
+    # subsidy = 740 - 66.60 = 673.40
+    hi_ccap: 673.40
+
+- name: Case 4, two children sum their rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_FAMILY
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000  # 2,500/mo
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # rates 1,490 + 600 = 2,090; expenses 2,500 -> capped at 2,090; copay 0
+    # subsidy = 2,090 - 0 = 2,090
+    hi_ccap: 2_090
+
+- name: Case 5, negative countable income does not inflate the subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -600_000  # large monthly loss
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Negative income -> 0% copay band; subsidy capped at rate 740, not inflated
+    hi_ccap: 740
+
+- name: Case 6, ineligible family receives no subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # No approved caretaker activity -> not eligible -> no subsidy
+    hi_ccap_eligible: false
+    hi_ccap: 0
+
+# === Edge cases: lesser-of cap and copay floor ===
+
+- name: Case 7, provider charge below the rate caps the subsidy at the charge with a copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/mo charge
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # capped = min(500 charge, 740 rate) = 500
+    # copay = 740 x 0.09 = 66.60 (always on the dept max rate)
+    # subsidy = max(500 - 66.60, 0) = 433.40 (lesser is the charge, not rate)
+    hi_ccap: 433.40
+
+- name: Case 8, copay larger than the lesser-of amount floors the subsidy at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12  # 1/mo charge
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # capped = min(1 charge, 740 rate) = 1; copay = 740 x 0.09 = 66.60
+    # subsidy = max(1 - 66.60, 0) = 0 (no negative benefit)
+    hi_ccap: 0
+
+- name: Case 9, household with no children produces a graceful zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # No eligible child -> not eligible -> no subsidy, no error
+    hi_ccap_eligible: false
+    hi_ccap: 0

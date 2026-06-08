@@ -1,0 +1,104 @@
+# HI CCAP countable monthly income (HAR 17-798.2-10 counted, -11 excluded).
+# Counted: employment, self-employment, Social Security (retirement,
+# disability, survivors), SSI, pensions, veterans benefits, unemployment,
+# workers compensation, interest, dividends, rent, alimony, child support.
+# Excluded: capital gains, SNAP, WIC, EITC, lump sums, and others.
+#
+# hi_ccap_countable_income is MONTH-defined. YEAR-defined sources are entered
+# annually (auto-divided to monthly); SSI is MONTH-defined and entered monthly.
+
+- name: Case 1, employment income is counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_countable_income: 2_000
+
+- name: Case 2, SSI is counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 500  # monthly (SSI is month-defined)
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_countable_income: 500
+
+- name: Case 3, capital gains are excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        long_term_capital_gains: 12_000  # excluded per HAR 17-798.2-11
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_countable_income: 0
+
+- name: Case 4, multiple counted sources sum across the unit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # 2,000/month
+        ssi: 500  # 500/month
+        social_security_retirement: 12_000  # 1,000/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 2,000 + 500 + 1,000 = 3,500
+    hi_ccap_countable_income: 3_500
+
+- name: Case 5, unearned sources are counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        unemployment_compensation: 6_000  # 500/month
+        pension_income: 12_000  # 1,000/month
+        child_support_received: 1_200  # 100/month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 500 + 1,000 + 100 = 1,600
+    hi_ccap_countable_income: 1_600

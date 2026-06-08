@@ -1,0 +1,106 @@
+description: Hawaii provides these monthly maximum payment rates under the Child Care Subsidy program, by provider category and hours tier.
+metadata:
+  period: month
+  unit: currency-USD
+  label: Hawaii CCAP monthly maximum payment rates
+  breakdown:
+    - hi_ccap_provider_category
+    - hi_ccap_hours_tier
+  reference:
+    - title: HAR 17-798.2-12, Exhibit I, Child Care Rate Table, effective 2017-08-01
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf
+
+# Rates are statewide (no island/county variation). Columns in Exhibit I are
+# Full-Time / Two-Thirds / One-Third / Casual. The standard-care rows use the
+# 97+/61-96/25-60/1-24 monthly-hour bands; the before/after-school rows use
+# the 45+/30-44/15-29/1-14 bands (see hours_tier parameters).
+
+CENTER_INFANT_TODDLER:
+  FULL_TIME:
+    2017-08-01: 1_490
+  TWO_THIRDS:
+    2017-08-01: 1_328
+  ONE_THIRD:
+    2017-08-01: 830
+  CASUAL:
+    2017-08-01: 332
+
+ACCREDITED_CENTER:
+  FULL_TIME:
+    2017-08-01: 919
+  TWO_THIRDS:
+    2017-08-01: 818
+  ONE_THIRD:
+    2017-08-01: 511
+  CASUAL:
+    2017-08-01: 205
+
+LICENSED_CENTER_OR_GROUP_HOME:
+  FULL_TIME:
+    2017-08-01: 740
+  TWO_THIRDS:
+    2017-08-01: 659
+  ONE_THIRD:
+    2017-08-01: 412
+  CASUAL:
+    2017-08-01: 164
+
+LICENSED_FAMILY_INFANT_TODDLER:
+  FULL_TIME:
+    2017-08-01: 650
+  TWO_THIRDS:
+    2017-08-01: 579
+  ONE_THIRD:
+    2017-08-01: 362
+  CASUAL:
+    2017-08-01: 145
+
+LICENSED_FAMILY:
+  FULL_TIME:
+    2017-08-01: 600
+  TWO_THIRDS:
+    2017-08-01: 534
+  ONE_THIRD:
+    2017-08-01: 334
+  CASUAL:
+    2017-08-01: 134
+
+EXEMPT_INFANT_TODDLER:
+  FULL_TIME:
+    2017-08-01: 400
+  TWO_THIRDS:
+    2017-08-01: 356
+  ONE_THIRD:
+    2017-08-01: 223
+  CASUAL:
+    2017-08-01: 89
+
+EXEMPT:
+  FULL_TIME:
+    2017-08-01: 350
+  TWO_THIRDS:
+    2017-08-01: 312
+  ONE_THIRD:
+    2017-08-01: 195
+  CASUAL:
+    2017-08-01: 78
+
+LICENSED_BEFORE_AFTER_SCHOOL:
+  FULL_TIME:
+    2017-08-01: 155
+  TWO_THIRDS:
+    2017-08-01: 136
+  ONE_THIRD:
+    2017-08-01: 90
+  CASUAL:
+    2017-08-01: 43
+
+EXEMPT_BEFORE_AFTER_SCHOOL:
+  FULL_TIME:
+    2017-08-01: 100
+  TWO_THIRDS:
+    2017-08-01: 88
+  ONE_THIRD:
+    2017-08-01: 58
+  CASUAL:
+    2017-08-01: 28

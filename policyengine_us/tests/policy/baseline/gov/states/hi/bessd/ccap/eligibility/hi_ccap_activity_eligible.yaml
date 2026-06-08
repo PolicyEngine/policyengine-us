@@ -1,0 +1,154 @@
+# HI CCAP caretaker-activity tests (HAR 17-798.2-9(b)(2)).
+# Each head/spouse must be employed (hours > 0 or income > 0), a full-time
+# student, disabled, or receiving protective services. In a two-parent
+# family, BOTH caretakers must be in an approved activity.
+
+- name: Case 1, single employed caretaker is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: true
+
+- name: Case 2, single caretaker with no activity is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: false
+
+- name: Case 3, single full-time student is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 0
+        is_full_time_student: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: true
+
+- name: Case 4, single disabled caretaker is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: true
+
+- name: Case 5, two-parent family with both employed is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: true
+
+- name: Case 6, two-parent family with one idle parent is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+        employment_income: 0
+        is_full_time_student: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: false

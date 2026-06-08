@@ -1,0 +1,35 @@
+description: Hawaii assigns this standard-care hours tier under the Child Care Subsidy program, based on monthly hours of care.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Hawaii CCAP standard-care hours tier
+  reference:
+    - title: HAR 17-798.2-12, Exhibit I, Child Care Rate Table, effective 2017-08-01
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf
+
+# Amount = index into the hi_ccap_hours_tier enum:
+#   0 = FULL_TIME, 1 = TWO_THIRDS, 2 = ONE_THIRD, 3 = CASUAL.
+# Standard-care monthly-hour bands (Exhibit I):
+#   Full-Time = 97+, Two-Thirds = 61-96, One-Third = 25-60, Casual = 1-24.
+# Band lower bounds are inclusive, so exact thresholds keep each value in
+# the correct band (e.g., exactly 25 hours = One-Third, 24 = Casual).
+brackets:
+  - threshold:
+      2017-08-01: 0
+    amount:
+      2017-08-01: 3  # CASUAL (1-24 hours)
+  - threshold:
+      2017-08-01: 25
+    amount:
+      2017-08-01: 2  # ONE_THIRD (25-60 hours)
+  - threshold:
+      2017-08-01: 61
+    amount:
+      2017-08-01: 1  # TWO_THIRDS (61-96 hours)
+  - threshold:
+      2017-08-01: 97
+    amount:
+      2017-08-01: 0  # FULL_TIME (97+ hours)

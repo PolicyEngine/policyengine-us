@@ -1,0 +1,93 @@
+# HI CCAP family co-payment (HAR 17-798.2-14(b)(4)).
+# Co-payment = (department's maximum rate allowable) x (co-pay percentage).
+# The percentage multiplies the PROVIDER MAX RATE, not gross income. This is
+# the HI-specific difference from income-times-percent designs.
+#
+# Family of 2, HI 2025 (FPG family of 2 = 24,320/year = 2,026.67/month).
+# Children are full-time (childcare_hours_per_week 30 -> ~130 monthly hours).
+
+- name: Case 1, worked example 740 rate times 9 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, FPG ratio 2.30+ -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Max rate (licensed center, full-time) = 740; copay rate 9%
+    # copay = 740 x 0.09 = 66.60
+    hi_ccap_copay: 66.60
+
+- name: Case 2, infant toddler rate 1490 times 5 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800  # 3,400/mo, FPG ratio 1.68 -> 5%
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Max rate (center infant/toddler, full-time) = 1,490; copay rate 5%
+    # copay = 1,490 x 0.05 = 74.50
+    hi_ccap_copay: 74.50
+
+- name: Case 3, zero copay percent gives zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, FPG ratio 0.49 -> 0%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 740 x 0.00 = 0
+    hi_ccap_copay: 0

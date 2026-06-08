@@ -1,0 +1,141 @@
+# HI CCAP overall eligibility tests (HAR 17-798.2-9).
+# Requires an eligible child, income eligibility (<= 85% SMI or CPS waiver),
+# CCDF asset eligibility, and caretaker activity eligibility.
+
+- name: Case 1, family meeting all requirements is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+    hi_ccap_income_eligible: true
+    is_ccdf_asset_eligible: true
+    hi_ccap_activity_eligible: true
+    hi_ccap_eligible: true
+
+- name: Case 2, no eligible child means ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 14
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, false]
+    hi_ccap_eligible: false
+
+- name: Case 3, caretaker with no approved activity is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_activity_eligible: false
+    hi_ccap_eligible: false
+
+- name: Case 4, non-Hawaii family is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    hi_ccap_eligible: false
+
+# === Edge case: degenerate unit with no children ===
+
+- name: Case 5, single adult with no children is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # Zero eligible children -> the has-eligible-child gate fails gracefully
+    hi_ccap_eligible: false
