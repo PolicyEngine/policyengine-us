@@ -1,26 +1,28 @@
-# HI CCAP hours-tier classification (Exhibit I, HAR 17-798.2-12).
-# The formula converts the weekly hours-in-care input to monthly hours
-# (weekly x 52/12 = weekly x 4.3333), then classifies into a tier.
+# HI CCAP hours-tier classification (Exhibit I, HAR 17-798.3, eff.
+# 2020-01-02). The formula converts the weekly hours-in-care input to monthly
+# hours (weekly x 52/12 = weekly x 4.3333), then classifies into a tier.
 #
 # Standard care bands (all rows except before/after-school):
-#   FULL_TIME 97+, TWO_THIRDS 61-96, ONE_THIRD 25-60, CASUAL 1-24 monthly.
-# Before/after-school bands:
-#   FULL_TIME 45+, TWO_THIRDS 30-44, ONE_THIRD 15-29, CASUAL 1-14 monthly.
+#   FULL_TIME 87+ monthly, PART_TIME 1-86 monthly.
+# Before/after-school bands (LICENSED/EXEMPT before-after only):
+#   FULL_TIME 45+ monthly, PART_TIME 1-44 monthly.
 # weekly = target_monthly x 12/52. Boundaries are inclusive lower bounds.
-# At an inclusive lower bound (e.g., 97 monthly hours -> FULL_TIME), the
+# At an inclusive lower bound (e.g., 87 monthly hours -> FULL_TIME), the
 # weekly input is nudged ~0.2 monthly hours into the band so the float
 # conversion does not drift just below the threshold.
+# A single child with no caretaker has unbounded activity hours, so the
+# child's own care hours set the tier.
 
 # === Standard care scheme (provider category not before/after-school) ===
 
-- name: Case 1, standard full-time at 97 monthly hours.
+- name: Case 1, standard full-time just above 87 monthly hours.
   period: 2025-01
   input:
     people:
       person1:
         age: 4
-        # 97.2 monthly / 4.3333 = 22.4308 weekly (just inside FULL_TIME)
-        childcare_hours_per_week: 22.4308
+        # 87.2 monthly / 4.3333 = 20.1231 weekly (just inside FULL_TIME)
+        childcare_hours_per_week: 20.1231
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
@@ -29,104 +31,75 @@
   output:
     hi_ccap_hours_tier: FULL_TIME
 
-- name: Case 2, standard two-thirds at 96 monthly hours.
+- name: Case 2, standard full-time at the 87-monthly-hour inclusive lower bound.
   period: 2025-01
   input:
     people:
       person1:
         age: 4
-        # 96 monthly / 4.3333 = 22.1538 weekly
-        childcare_hours_per_week: 22.1538
+        # Inclusive lower bound 87 monthly. Nudged ~0.02 monthly into the band
+        # (20.0808 weekly -> 87.02 monthly) so the float32 conversion does not
+        # drift just below 87 and fall into PART_TIME.
+        childcare_hours_per_week: 20.0808
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: TWO_THIRDS
+    hi_ccap_hours_tier: FULL_TIME
 
-- name: Case 3, standard two-thirds at 61 monthly hours.
+- name: Case 3, standard part-time just below 87 monthly hours (86).
   period: 2025-01
   input:
     people:
       person1:
         age: 4
-        # 61.2 monthly / 4.3333 = 14.1231 weekly (just inside TWO_THIRDS)
-        childcare_hours_per_week: 14.1231
+        # 86.0 monthly / 4.3333 = 19.8462 weekly (top of PART_TIME band)
+        childcare_hours_per_week: 19.8462
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: TWO_THIRDS
+    hi_ccap_hours_tier: PART_TIME
 
-- name: Case 4, standard one-third at 60 monthly hours.
+- name: Case 4, standard part-time at low hours.
   period: 2025-01
   input:
     people:
       person1:
         age: 4
-        # 60 monthly / 4.3333 = 13.8462 weekly
-        childcare_hours_per_week: 13.8462
+        # 10 weekly -> 43.33 monthly (1-86) -> PART_TIME
+        childcare_hours_per_week: 10
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: ONE_THIRD
+    hi_ccap_hours_tier: PART_TIME
 
-- name: Case 5, standard one-third at 25 monthly hours.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 4
-        # 25.2 monthly / 4.3333 = 5.8154 weekly (just inside ONE_THIRD)
-        childcare_hours_per_week: 5.8154
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: ONE_THIRD
-
-- name: Case 6, standard casual at 24 monthly hours.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 4
-        # 24 monthly / 4.3333 = 5.5385 weekly
-        childcare_hours_per_week: 5.5385
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: CASUAL
-
-- name: Case 7, standard casual at zero hours.
+- name: Case 5, standard part-time at zero hours.
   period: 2025-01
   input:
     people:
       person1:
         age: 4
         childcare_hours_per_week: 0
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: CASUAL
+    # 0 monthly hours falls in the 1-86 PART_TIME band (index 1)
+    hi_ccap_hours_tier: PART_TIME
 
-# === Before/after-school scheme ===
+# === Before/after-school scheme (LICENSED/EXEMPT before-after only) ===
 
-- name: Case 8, before-after full-time at 45 monthly hours.
+- name: Case 6, before-after full-time just above 45 monthly hours.
   period: 2025-01
   input:
     people:
@@ -143,157 +116,95 @@
   output:
     hi_ccap_hours_tier: FULL_TIME
 
-- name: Case 9, before-after two-thirds at 44 monthly hours.
+- name: Case 7, before-after full-time at the 45-monthly-hour inclusive lower bound.
   period: 2025-01
   input:
     people:
       person1:
         age: 8
         is_in_k12_school: true
-        # 44 monthly / 4.3333 = 10.1538 weekly
+        # Inclusive lower bound 45 monthly. Nudged ~0.03 monthly into the band
+        # (10.392 weekly -> 45.03 monthly) so the float32 conversion does not
+        # drift just below 45 and fall into PART_TIME.
+        childcare_hours_per_week: 10.392
+        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_hours_tier: FULL_TIME
+
+- name: Case 8, before-after part-time just below 45 monthly hours (44).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        # 44.0 monthly / 4.3333 = 10.1538 weekly (top of PART_TIME band)
         childcare_hours_per_week: 10.1538
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: TWO_THIRDS
-
-- name: Case 10, before-after two-thirds at 30 monthly hours.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        # 30.2 monthly / 4.3333 = 6.9692 weekly (just inside TWO_THIRDS)
-        childcare_hours_per_week: 6.9692
         hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: TWO_THIRDS
+    hi_ccap_hours_tier: PART_TIME
 
-- name: Case 11, before-after one-third at 29 monthly hours.
+- name: Case 9, before-after part-time at low hours.
   period: 2025-01
   input:
     people:
       person1:
         age: 8
         is_in_k12_school: true
-        # 29 monthly / 4.3333 = 6.6923 weekly
-        childcare_hours_per_week: 6.6923
+        # 8 weekly -> 34.67 monthly (1-44) -> PART_TIME
+        childcare_hours_per_week: 8
         hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: ONE_THIRD
+    hi_ccap_hours_tier: PART_TIME
 
-- name: Case 12, before-after one-third at 15 monthly hours.
+# === School-age intersession/summer uses STANDARD bands, not before/after ===
+
+- name: Case 10, school-age intersession at 44 monthly hours is part-time (standard band).
   period: 2025-01
   input:
     people:
       person1:
         age: 8
         is_in_k12_school: true
-        # 15.2 monthly / 4.3333 = 3.5077 weekly (just inside ONE_THIRD)
-        childcare_hours_per_week: 3.5077
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+        # 44 monthly hours: PART_TIME under STANDARD bands (would be PART_TIME
+        # under before/after bands too, but verifies standard-band routing).
+        # 50 weekly -> 216.67 monthly is FULL_TIME; use a mid value instead.
+        childcare_hours_per_week: 10  # 43.33 monthly -> PART_TIME (standard)
+        hi_ccap_provider_category: LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: ONE_THIRD
+    hi_ccap_hours_tier: PART_TIME
 
-- name: Case 13, before-after casual at 14 monthly hours.
+- name: Case 11, school-age intersession at 50 monthly hours is part-time (standard band, not before/after).
   period: 2025-01
   input:
     people:
       person1:
         age: 8
         is_in_k12_school: true
-        # 14 monthly / 4.3333 = 3.2308 weekly
-        childcare_hours_per_week: 3.2308
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+        # 50 monthly / 4.3333 = 11.5385 weekly. Under STANDARD bands 50 < 87
+        # -> PART_TIME. Under before/after bands 50 >= 45 would be FULL_TIME,
+        # so this case confirms intersession/summer uses the STANDARD scheme.
+        childcare_hours_per_week: 11.5385
+        hi_ccap_provider_category: LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_hours_tier: CASUAL
-
-# === Edge cases: exact band-top boundaries (one hour below the next tier) ===
-# These verify the inclusive lower bound holds at the TOP of each band: a
-# value just under the next tier's threshold stays in the lower tier. Same
-# nudge convention as above (~0.2 monthly hours inside the band).
-
-- name: Case 14, standard two-thirds just below the full-time band top.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 4
-        # 96.8 monthly / 4.3333 = 22.3385 weekly (just under FULL_TIME 97)
-        childcare_hours_per_week: 22.3385
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: TWO_THIRDS
-
-- name: Case 15, standard one-third just below the two-thirds band top.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 4
-        # 60.8 monthly / 4.3333 = 14.0308 weekly (just under TWO_THIRDS 61)
-        childcare_hours_per_week: 14.0308
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: ONE_THIRD
-
-- name: Case 16, standard casual just below the one-third band top.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 4
-        # 24.8 monthly / 4.3333 = 5.7231 weekly (just under ONE_THIRD 25)
-        childcare_hours_per_week: 5.7231
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: CASUAL
-
-- name: Case 17, before-after one-third just below the two-thirds band top.
-  period: 2025-01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        # 29.8 monthly / 4.3333 = 6.8769 weekly (just under TWO_THIRDS 30)
-        childcare_hours_per_week: 6.8769
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_hours_tier: ONE_THIRD
+    hi_ccap_hours_tier: PART_TIME

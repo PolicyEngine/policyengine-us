@@ -7,31 +7,19 @@ metadata:
   period: year
   label: Hawaii CCAP standard-care hours tier
   reference:
-    # Hour bands come from the standalone Child Care Rate Table effective
-    # 2017-08-01, NOT the older 2009 Exhibit I attached to HAR 17-798.2-12.
-    - title: Hawaii DHS Child Care Rate Table (under HAR 17-798.2-12), effective 2017-08-01
-      href: https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf
+    - title: Hawaii Administrative Rules 17-798.3 Child Care Payments, Exhibit I (effective 2020-01-02)
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=71
 
-# Amount = index into the hi_ccap_hours_tier enum:
-#   0 = FULL_TIME, 1 = TWO_THIRDS, 2 = ONE_THIRD, 3 = CASUAL.
-# Standard-care monthly-hour bands (Exhibit I):
-#   Full-Time = 97+, Two-Thirds = 61-96, One-Third = 25-60, Casual = 1-24.
-# Band lower bounds are inclusive, so exact thresholds keep each value in
-# the correct band (e.g., exactly 25 hours = One-Third, 24 = Casual).
+# Amount = index into the hi_ccap_hours_tier enum: 0 = FULL_TIME, 1 = PART_TIME.
+# Standard-care monthly-hour bands (Exhibit I, eff 2020-01-02):
+#   Full-Time = 87+, Part-Time = 1-86.
+# Band lower bounds are inclusive (exactly 87 hours = Full-Time, 86 = Part-Time).
 brackets:
   - threshold:
-      2017-08-01: 0
+      2020-01-02: 0
     amount:
-      2017-08-01: 3  # CASUAL (1-24 hours)
+      2020-01-02: 1  # PART_TIME (1-86 hours)
   - threshold:
-      2017-08-01: 25
+      2020-01-02: 87
     amount:
-      2017-08-01: 2  # ONE_THIRD (25-60 hours)
-  - threshold:
-      2017-08-01: 61
-    amount:
-      2017-08-01: 1  # TWO_THIRDS (61-96 hours)
-  - threshold:
-      2017-08-01: 97
-    amount:
-      2017-08-01: 0  # FULL_TIME (97+ hours)
+      2020-01-02: 0  # FULL_TIME (87+ hours)

@@ -1,7 +1,7 @@
 # HI CCAP caretaker-activity tests (HAR 17-798.2-9(b)(2)).
 # Each head/spouse must be employed (hours > 0 or income > 0), a full-time
-# student, disabled, or receiving protective services. In a two-parent
-# family, BOTH caretakers must be in an approved activity.
+# student, or receiving protective services. Disabled inactive caretakers
+# qualify only through another caretaker's approved activity link.
 
 - name: Case 1, single employed caretaker is eligible.
   period: 2025-01

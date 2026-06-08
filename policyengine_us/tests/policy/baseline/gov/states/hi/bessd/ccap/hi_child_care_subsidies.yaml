@@ -29,10 +29,10 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # hi_ccap 740/month x 12 = 8,880/year
-    hi_child_care_subsidies: 8_880
+    # hi_ccap 795/month x 12 = 9,540/year
+    hi_child_care_subsidies: 9_540
     # Federal aggregator includes the registered HI program
-    child_care_subsidies: 8_880
+    child_care_subsidies: 9_540
 
 - name: Case 2, non-Hawaii household contributes nothing.
   period: 2025

@@ -31,9 +31,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # max rate 740 < 1,500 expenses -> capped at 740; copay 0
-    # subsidy = 740 - 0 = 740
-    hi_ccap: 740
+    # max rate 795 < 1,500 expenses -> capped at 795; copay 0
+    # subsidy = 795 - 0 = 795
+    hi_ccap: 795
 
 - name: Case 2, actual expenses cap the subsidy below the rate.
   period: 2025-01
@@ -49,7 +49,7 @@
         age: 1
         immigration_status: CITIZEN
         childcare_hours_per_week: 30
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -62,7 +62,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # expenses 500 < rate 1,490 -> capped at 500; copay 0
+    # expenses 500 < rate 1,733 -> capped at 500; copay 0
     # subsidy = 500 - 0 = 500
     hi_ccap: 500
 
@@ -94,9 +94,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1,000, 740) = 740; copay = 740 x 0.09 = 66.60
-    # subsidy = 740 - 66.60 = 673.40
-    hi_ccap: 673.40
+    # capped = min(1,000, 795) = 795; copay = 795 x 0.09 = 71.55
+    # subsidy = 795 - 71.55 = 723.45
+    hi_ccap: 723.45
 
 - name: Case 4, two children sum their rates.
   period: 2025-01
@@ -112,13 +112,13 @@
         age: 1
         immigration_status: CITIZEN
         childcare_hours_per_week: 30
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
       person3:
         age: 4
         immigration_status: CITIZEN
         is_in_k12_school: false
         childcare_hours_per_week: 30
-        hi_ccap_provider_category: LICENSED_FAMILY
+        hi_ccap_provider_category: REGISTERED_FAMILY
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
@@ -131,9 +131,9 @@
         members: [person1, person2, person3]
         state_code: HI
   output:
-    # rates 1,490 + 600 = 2,090; expenses 2,500 -> capped at 2,090; copay 0
-    # subsidy = 2,090 - 0 = 2,090
-    hi_ccap: 2_090
+    # rates 1,733 + 600 = 2,333; expenses 2,500 -> capped at 2,333; copay 0
+    # subsidy = 2,333 - 0 = 2,333
+    hi_ccap: 2_333
 
 - name: Case 5, negative countable income does not inflate the subsidy.
   period: 2025-01
@@ -163,8 +163,8 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Negative income -> 0% copay band; subsidy capped at rate 740, not inflated
-    hi_ccap: 740
+    # Negative income -> 0% copay band; subsidy capped at rate 795, not inflated
+    hi_ccap: 795
 
 - name: Case 6, ineligible family receives no subsidy.
   period: 2025-01
@@ -229,10 +229,10 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(500 charge, 740 rate) = 500
-    # copay = 740 x 0.09 = 66.60 (always on the dept max rate)
-    # subsidy = max(500 - 66.60, 0) = 433.40 (lesser is the charge, not rate)
-    hi_ccap: 433.40
+    # capped = min(500 charge, 795 rate) = 500
+    # copay = 795 x 0.09 = 71.55 (always on the dept max rate)
+    # subsidy = max(500 - 71.55, 0) = 428.45 (lesser is the charge, not rate)
+    hi_ccap: 428.45
 
 - name: Case 8, copay larger than the lesser-of amount floors the subsidy at zero.
   period: 2025-01
@@ -262,8 +262,8 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1 charge, 740 rate) = 1; copay = 740 x 0.09 = 66.60
-    # subsidy = max(1 - 66.60, 0) = 0 (no negative benefit)
+    # capped = min(1 charge, 795 rate) = 1; copay = 795 x 0.09 = 71.55
+    # subsidy = max(1 - 71.55, 0) = 0 (no negative benefit)
     hi_ccap: 0
 
 - name: Case 9, household with no children produces a graceful zero.
@@ -340,7 +340,9 @@
         immigration_status: CITIZEN
         is_in_k12_school: false
         childcare_hours_per_week: 40  # 40 x 52/12 = 173.33 monthly care hours
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+        # Registered family rate differs by tier (FT 600 / PT 334), so the
+        # activity-hours cap visibly drops the rate.
+        hi_ccap_provider_category: REGISTERED_FAMILY
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -354,10 +356,10 @@
         state_code: HI
   output:
     # FIX B (HAR 17-798.2-14(b)(1)): effective hours = min(173.33 care,
-    # 43.33 activity) = 43.33 monthly -> standard ONE_THIRD band (25-60),
-    # not FULL_TIME. Licensed center ONE_THIRD rate = 412 (vs FT 740).
+    # 43.33 activity) = 43.33 monthly -> standard PART_TIME band (1-86),
+    # not FULL_TIME. Registered family PART_TIME rate = 334 (vs FT 600).
     hi_ccap_monthly_care_hours: [0, 43.333332]
-    hi_ccap_hours_tier: [CASUAL, ONE_THIRD]
-    hi_ccap_maximum_monthly_rate: [0, 412]
-    # subsidy = min(1,500 expenses, 412 rate) - 0 copay = 412
-    hi_ccap: 412
+    hi_ccap_hours_tier: [PART_TIME, PART_TIME]
+    hi_ccap_maximum_monthly_rate: [0, 334]
+    # subsidy = min(1,500 expenses, 334 rate) - 0 copay = 334
+    hi_ccap: 334

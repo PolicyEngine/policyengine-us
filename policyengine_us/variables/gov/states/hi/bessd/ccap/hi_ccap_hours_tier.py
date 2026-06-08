@@ -6,9 +6,7 @@ from policyengine_us.variables.gov.states.hi.bessd.ccap.hi_ccap_provider_categor
 
 class HICCAPHoursTier(Enum):
     FULL_TIME = "Full-time"
-    TWO_THIRDS = "Two-thirds"
-    ONE_THIRD = "One-third"
-    CASUAL = "Casual"
+    PART_TIME = "Part-time"
 
 
 class hi_ccap_hours_tier(Variable):
@@ -19,7 +17,7 @@ class hi_ccap_hours_tier(Variable):
     definition_period = MONTH
     label = "Hawaii CCAP hours tier"
     defined_for = StateCode.HI
-    reference = "https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf"
+    reference = "https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=71"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.hi.bessd.ccap.hours_tier
@@ -33,7 +31,7 @@ class hi_ccap_hours_tier(Variable):
             provider_category == HICCAPProviderCategory.LICENSED_BEFORE_AFTER_SCHOOL
         ) | (provider_category == HICCAPProviderCategory.EXEMPT_BEFORE_AFTER_SCHOOL)
         # The bracket parameters return the integer index of the hours tier
-        # enum (0=FULL_TIME, 1=TWO_THIRDS, 2=ONE_THIRD, 3=CASUAL).
+        # enum (0 = FULL_TIME, 1 = PART_TIME).
         return where(
             is_before_after,
             p.before_after.calc(monthly_hours),

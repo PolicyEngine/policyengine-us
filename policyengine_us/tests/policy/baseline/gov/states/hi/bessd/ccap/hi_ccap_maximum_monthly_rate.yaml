@@ -1,18 +1,24 @@
-# HI CCAP maximum monthly rate lookup (Exhibit I Table A, eff. 2017-08-01).
-# Rate = lesser-of input is handled downstream; this variable is the raw
-# Exhibit I rate by provider category x hours tier. Every one of the 9
-# provider categories and all 4 hours tiers is covered below.
+# HI CCAP maximum monthly rate lookup (Exhibit I, HAR 17-798.3, eff.
+# 2020-01-02). Rate = raw Exhibit I rate by provider category x hours tier.
+# The lesser-of cap against actual expenses is handled downstream; this
+# variable is the per-child Exhibit I rate. All 12 provider categories x
+# both hours tiers (FULL_TIME / PART_TIME) are covered below (24 cells).
 #
 # Weekly hours map to monthly via x 52/12 = x 4.3333.
-# Standard tier anchors: FULL_TIME 120mo (27.6923 wk), TWO_THIRDS 80mo
-#   (18.4615 wk), ONE_THIRD 40mo (9.2308 wk), CASUAL 20mo (4.6154 wk).
-# Before/after tier anchors: FULL_TIME 50mo (11.5385 wk), TWO_THIRDS 35mo
-#   (8.0769 wk), ONE_THIRD 20mo (4.6154 wk), CASUAL 10mo (2.3077 wk).
-# All children are citizens under 13 so hi_ccap_eligible_child is true.
+# Standard tier bands: FULL_TIME 87+ monthly, PART_TIME 1-86 monthly.
+#   FULL_TIME: 40 weekly -> 173.33 monthly (>= 87).
+#   PART_TIME: 10 weekly -> 43.33 monthly (1-86).
+# Before/after-school bands (LICENSED/EXEMPT before-after only):
+#   FULL_TIME 45+ monthly, PART_TIME 1-44 monthly.
+#   FULL_TIME: 11 weekly -> 47.67 monthly (>= 45).
+#   PART_TIME: 8 weekly -> 34.67 monthly (1-44).
+# A single child with no caretaker has unbounded activity hours, so the
+# child's own care hours set the tier. All children are citizens under 13
+# (or disabled school-age) so hi_ccap_eligible_child is true.
 
-# === Center-based infant/toddler (1,490 / 1,328 / 830 / 332) ===
+# === Licensed center infant/toddler (1,733 / 1,733) ===
 
-- name: Case 1, center infant toddler full-time.
+- name: Case 1, licensed center infant toddler full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -20,16 +26,16 @@
       person1:
         age: 1
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 1_490
+    hi_ccap_maximum_monthly_rate: 1_733
 
-- name: Case 2, center infant toddler two-thirds.
+- name: Case 2, licensed center infant toddler part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -37,52 +43,18 @@
       person1:
         age: 1
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 1_328
+    hi_ccap_maximum_monthly_rate: 1_733
 
-- name: Case 3, center infant toddler one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 1
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 830
+# === Accredited center (980 / 980) ===
 
-- name: Case 4, center infant toddler casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 1
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 332
-
-# === Accredited center (919 / 818 / 511 / 205) ===
-
-- name: Case 5, accredited center full-time.
+- name: Case 3, accredited center full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -90,16 +62,16 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
+        childcare_hours_per_week: 40
         hi_ccap_provider_category: ACCREDITED_CENTER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 919
+    hi_ccap_maximum_monthly_rate: 980
 
-- name: Case 6, accredited center two-thirds.
+- name: Case 4, accredited center part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -107,16 +79,18 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
+        childcare_hours_per_week: 10
         hi_ccap_provider_category: ACCREDITED_CENTER
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 818
+    hi_ccap_maximum_monthly_rate: 980
 
-- name: Case 7, accredited center one-third.
+# === Licensed center or group home (795 / 795) ===
+
+- name: Case 5, licensed center or group home full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -124,52 +98,16 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
-        hi_ccap_provider_category: ACCREDITED_CENTER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 511
-
-- name: Case 8, accredited center casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: ACCREDITED_CENTER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 205
-
-# === Licensed center or group home (740 / 659 / 412 / 164) ===
-
-- name: Case 9, licensed center or group home full-time.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
+        childcare_hours_per_week: 40
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 740
+    hi_ccap_maximum_monthly_rate: 795
 
-- name: Case 10, licensed center or group home two-thirds.
+- name: Case 6, licensed center or group home part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -177,52 +115,18 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
+        childcare_hours_per_week: 10
         hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 659
+    hi_ccap_maximum_monthly_rate: 795
 
-- name: Case 11, licensed center or group home one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 412
+# === NAFCC accredited family infant/toddler (750 / 750) ===
 
-- name: Case 12, licensed center or group home casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 164
-
-# === Licensed family infant/toddler (650 / 579 / 362 / 145) ===
-
-- name: Case 13, licensed family infant toddler full-time.
+- name: Case 7, NAFCC accredited family infant toddler full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -230,8 +134,80 @@
       person1:
         age: 2
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
-        hi_ccap_provider_category: LICENSED_FAMILY_INFANT_TODDLER
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: NAFCC_ACCREDITED_FAMILY_INFANT_TODDLER
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 750
+
+- name: Case 8, NAFCC accredited family infant toddler part-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: NAFCC_ACCREDITED_FAMILY_INFANT_TODDLER
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 750
+
+# === NAFCC accredited family (700 / 700) ===
+
+- name: Case 9, NAFCC accredited family full-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: NAFCC_ACCREDITED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 700
+
+- name: Case 10, NAFCC accredited family part-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: NAFCC_ACCREDITED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 700
+
+# === Registered family infant/toddler (650 / 362) ===
+
+- name: Case 11, registered family infant toddler full-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: REGISTERED_FAMILY_INFANT_TODDLER
     households:
       household:
         members: [person1]
@@ -239,7 +215,7 @@
   output:
     hi_ccap_maximum_monthly_rate: 650
 
-- name: Case 14, licensed family infant toddler two-thirds.
+- name: Case 12, registered family infant toddler part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -247,25 +223,8 @@
       person1:
         age: 2
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
-        hi_ccap_provider_category: LICENSED_FAMILY_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 579
-
-- name: Case 15, licensed family infant toddler one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 2
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
-        hi_ccap_provider_category: LICENSED_FAMILY_INFANT_TODDLER
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: REGISTERED_FAMILY_INFANT_TODDLER
     households:
       household:
         members: [person1]
@@ -273,26 +232,9 @@
   output:
     hi_ccap_maximum_monthly_rate: 362
 
-- name: Case 16, licensed family infant toddler casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 2
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: LICENSED_FAMILY_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 145
+# === Registered family (600 / 334) ===
 
-# === Licensed family (600 / 534 / 334 / 134) ===
-
-- name: Case 17, licensed family full-time.
+- name: Case 13, registered family full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -300,8 +242,8 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
-        hi_ccap_provider_category: LICENSED_FAMILY
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: REGISTERED_FAMILY
     households:
       household:
         members: [person1]
@@ -309,7 +251,7 @@
   output:
     hi_ccap_maximum_monthly_rate: 600
 
-- name: Case 18, licensed family two-thirds.
+- name: Case 14, registered family part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -317,25 +259,8 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
-        hi_ccap_provider_category: LICENSED_FAMILY
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 534
-
-- name: Case 19, licensed family one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
-        hi_ccap_provider_category: LICENSED_FAMILY
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: REGISTERED_FAMILY
     households:
       household:
         members: [person1]
@@ -343,26 +268,9 @@
   output:
     hi_ccap_maximum_monthly_rate: 334
 
-- name: Case 20, licensed family casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: LICENSED_FAMILY
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 134
+# === Legally exempt infant/toddler (400 / 223) ===
 
-# === License-exempt infant/toddler (400 / 356 / 223 / 89) ===
-
-- name: Case 21, exempt infant toddler full-time.
+- name: Case 15, exempt infant toddler full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -370,7 +278,7 @@
       person1:
         age: 2
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
+        childcare_hours_per_week: 40
         hi_ccap_provider_category: EXEMPT_INFANT_TODDLER
     households:
       household:
@@ -379,7 +287,7 @@
   output:
     hi_ccap_maximum_monthly_rate: 400
 
-- name: Case 22, exempt infant toddler two-thirds.
+- name: Case 16, exempt infant toddler part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -387,24 +295,7 @@
       person1:
         age: 2
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
-        hi_ccap_provider_category: EXEMPT_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 356
-
-- name: Case 23, exempt infant toddler one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 2
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
+        childcare_hours_per_week: 10
         hi_ccap_provider_category: EXEMPT_INFANT_TODDLER
     households:
       household:
@@ -413,26 +304,9 @@
   output:
     hi_ccap_maximum_monthly_rate: 223
 
-- name: Case 24, exempt infant toddler casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 2
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: EXEMPT_INFANT_TODDLER
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 89
+# === Legally exempt (350 / 195) ===
 
-# === License-exempt (350 / 312 / 195 / 78) ===
-
-- name: Case 25, exempt full-time.
+- name: Case 17, exempt full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -440,7 +314,7 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 27.6923
+        childcare_hours_per_week: 40
         hi_ccap_provider_category: EXEMPT
     households:
       household:
@@ -449,7 +323,7 @@
   output:
     hi_ccap_maximum_monthly_rate: 350
 
-- name: Case 26, exempt two-thirds.
+- name: Case 18, exempt part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -457,24 +331,7 @@
       person1:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 18.4615
-        hi_ccap_provider_category: EXEMPT
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 312
-
-- name: Case 27, exempt one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 9.2308
+        childcare_hours_per_week: 10
         hi_ccap_provider_category: EXEMPT
     households:
       household:
@@ -483,27 +340,10 @@
   output:
     hi_ccap_maximum_monthly_rate: 195
 
-- name: Case 28, exempt casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 4
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: EXEMPT
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 78
+# === Licensed school-age intersession/summer (450 / 350) ===
+# School-age intersession/summer uses the STANDARD hour bands (87+ / 1-86).
 
-# === Licensed before/after school (155 / 136 / 90 / 43) ===
-# Before/after-school scheme bands: FT 45+, 2/3 30-44, 1/3 15-29, casual 1-14.
-
-- name: Case 29, licensed before-after school full-time.
+- name: Case 19, licensed school-age intersession summer full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -512,7 +352,46 @@
         age: 8
         is_in_k12_school: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 11.5385
+        childcare_hours_per_week: 40
+        hi_ccap_provider_category: LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 450
+
+- name: Case 20, licensed school-age intersession summer part-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 10
+        hi_ccap_provider_category: LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_maximum_monthly_rate: 350
+
+# === Licensed before/after school (155 / 86) ===
+# Before/after-school uses the 45+/1-44 monthly hour bands.
+
+- name: Case 21, licensed before-after school full-time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 11  # 47.67 monthly >= 45 -> FULL_TIME
         hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
     households:
       household:
@@ -521,7 +400,7 @@
   output:
     hi_ccap_maximum_monthly_rate: 155
 
-- name: Case 30, licensed before-after school two-thirds.
+- name: Case 22, licensed before-after school part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -530,16 +409,18 @@
         age: 8
         is_in_k12_school: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 8.0769
+        childcare_hours_per_week: 8  # 34.67 monthly (1-44) -> PART_TIME
         hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 136
+    hi_ccap_maximum_monthly_rate: 86
 
-- name: Case 31, licensed before-after school one-third.
+# === Legally exempt before/after school (120 / 61) ===
+
+- name: Case 23, exempt before-after school full-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -548,54 +429,16 @@
         age: 8
         is_in_k12_school: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 90
-
-- name: Case 32, licensed before-after school casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 2.3077
-        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 43
-
-# === License-exempt before/after school (100 / 88 / 58 / 28) ===
-
-- name: Case 33, exempt before-after school full-time.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 11.5385
+        childcare_hours_per_week: 11  # 47.67 monthly >= 45 -> FULL_TIME
         hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 100
+    hi_ccap_maximum_monthly_rate: 120
 
-- name: Case 34, exempt before-after school two-thirds.
+- name: Case 24, exempt before-after school part-time.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -604,57 +447,21 @@
         age: 8
         is_in_k12_school: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 8.0769
+        childcare_hours_per_week: 8  # 34.67 monthly (1-44) -> PART_TIME
         hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
     households:
       household:
         members: [person1]
         state_code: HI
   output:
-    hi_ccap_maximum_monthly_rate: 88
-
-- name: Case 35, exempt before-after school one-third.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 4.6154
-        hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 58
-
-- name: Case 36, exempt before-after school casual.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 8
-        is_in_k12_school: true
-        immigration_status: CITIZEN
-        childcare_hours_per_week: 2.3077
-        hi_ccap_provider_category: EXEMPT_BEFORE_AFTER_SCHOOL
-    households:
-      household:
-        members: [person1]
-        state_code: HI
-  output:
-    hi_ccap_maximum_monthly_rate: 28
+    hi_ccap_maximum_monthly_rate: 61
 
 # === Zero-care-hours gate (FIX A) ===
 # A child with no authorized care hours has < 1 effective monthly care hour,
 # below Exhibit I's casual band floor, so the rate is gated to 0 even though
-# the provider/tier lookup would otherwise return a casual rate.
+# the provider/tier lookup would otherwise return a part-time rate.
 
-- name: Case 37, eligible child with zero care hours receives a zero rate.
+- name: Case 25, eligible child with zero care hours receives a zero rate.
   period: 2025-01
   absolute_error_margin: 0.01
   input:

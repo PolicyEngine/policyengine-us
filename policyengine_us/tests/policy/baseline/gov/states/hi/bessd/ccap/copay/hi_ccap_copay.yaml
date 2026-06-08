@@ -31,9 +31,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (licensed center, full-time) = 740; copay rate 9%
-    # copay = 740 x 0.09 = 66.60
-    hi_ccap_copay: 66.60
+    # Max rate (licensed center or group home, full-time) = 795; copay rate 9%
+    # copay = 795 x 0.09 = 71.55
+    hi_ccap_copay: 71.55
 
 - name: Case 2, infant toddler rate 1490 times 5 percent.
   period: 2025-01
@@ -48,7 +48,7 @@
         age: 1
         immigration_status: CITIZEN
         childcare_hours_per_week: 30
-        hi_ccap_provider_category: CENTER_INFANT_TODDLER
+        hi_ccap_provider_category: LICENSED_CENTER_INFANT_TODDLER
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -60,9 +60,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (center infant/toddler, full-time) = 1,490; copay rate 5%
-    # copay = 1,490 x 0.05 = 74.50
-    hi_ccap_copay: 74.50
+    # Max rate (licensed center infant/toddler, full-time) = 1,733; copay rate 5%
+    # copay = 1,733 x 0.05 = 86.65
+    hi_ccap_copay: 86.65
 
 - name: Case 3, zero copay percent gives zero copay.
   period: 2025-01
@@ -89,5 +89,5 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # 740 x 0.00 = 0
+    # 795 x 0.00 = 0
     hi_ccap_copay: 0

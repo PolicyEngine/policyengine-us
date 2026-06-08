@@ -7,102 +7,81 @@ metadata:
     - hi_ccap_provider_category
     - hi_ccap_hours_tier
   reference:
-    # Values come from the standalone Child Care Rate Table effective
-    # 2017-08-01, NOT the older 2009 Exhibit I attached to HAR 17-798.2-12.
-    - title: Hawaii DHS Child Care Rate Table (under HAR 17-798.2-12), effective 2017-08-01
-      href: https://humanservices.hawaii.gov/wp-content/uploads/2018/04/Child-Care-Rate-Table-2017-08-01.pdf
+    - title: Hawaii Administrative Rules 17-798.3 Child Care Payments, Exhibit I (effective 2020-01-02)
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=71
 
-# Rates are statewide (no island/county variation). Columns in Exhibit I are
-# Full-Time / Two-Thirds / One-Third / Casual. The standard-care rows use the
-# 97+/61-96/25-60/1-24 monthly-hour bands; the before/after-school rows use
-# the 45+/30-44/15-29/1-14 bands (see hours_tier parameters).
+# Rates are statewide (no island/county variation). Exhibit I (eff 2020-01-02)
+# uses two tiers: Full-Time (87+ monthly hours) and Part-Time (1-86). The
+# before/after-school rows use a 45+/1-44 band scheme (see hours_tier params).
 
-CENTER_INFANT_TODDLER:
+LICENSED_CENTER_INFANT_TODDLER:
   FULL_TIME:
-    2017-08-01: 1_490
-  TWO_THIRDS:
-    2017-08-01: 1_328
-  ONE_THIRD:
-    2017-08-01: 830
-  CASUAL:
-    2017-08-01: 332
+    2020-01-02: 1_733
+  PART_TIME:
+    2020-01-02: 1_733
 
 ACCREDITED_CENTER:
   FULL_TIME:
-    2017-08-01: 919
-  TWO_THIRDS:
-    2017-08-01: 818
-  ONE_THIRD:
-    2017-08-01: 511
-  CASUAL:
-    2017-08-01: 205
+    2020-01-02: 980
+  PART_TIME:
+    2020-01-02: 980
 
 LICENSED_CENTER_OR_GROUP_HOME:
   FULL_TIME:
-    2017-08-01: 740
-  TWO_THIRDS:
-    2017-08-01: 659
-  ONE_THIRD:
-    2017-08-01: 412
-  CASUAL:
-    2017-08-01: 164
+    2020-01-02: 795
+  PART_TIME:
+    2020-01-02: 795
 
-LICENSED_FAMILY_INFANT_TODDLER:
+NAFCC_ACCREDITED_FAMILY_INFANT_TODDLER:
   FULL_TIME:
-    2017-08-01: 650
-  TWO_THIRDS:
-    2017-08-01: 579
-  ONE_THIRD:
-    2017-08-01: 362
-  CASUAL:
-    2017-08-01: 145
+    2020-01-02: 750
+  PART_TIME:
+    2020-01-02: 750
 
-LICENSED_FAMILY:
+NAFCC_ACCREDITED_FAMILY:
   FULL_TIME:
-    2017-08-01: 600
-  TWO_THIRDS:
-    2017-08-01: 534
-  ONE_THIRD:
-    2017-08-01: 334
-  CASUAL:
-    2017-08-01: 134
+    2020-01-02: 700
+  PART_TIME:
+    2020-01-02: 700
+
+REGISTERED_FAMILY_INFANT_TODDLER:
+  FULL_TIME:
+    2020-01-02: 650
+  PART_TIME:
+    2020-01-02: 362
+
+REGISTERED_FAMILY:
+  FULL_TIME:
+    2020-01-02: 600
+  PART_TIME:
+    2020-01-02: 334
 
 EXEMPT_INFANT_TODDLER:
   FULL_TIME:
-    2017-08-01: 400
-  TWO_THIRDS:
-    2017-08-01: 356
-  ONE_THIRD:
-    2017-08-01: 223
-  CASUAL:
-    2017-08-01: 89
+    2020-01-02: 400
+  PART_TIME:
+    2020-01-02: 223
 
 EXEMPT:
   FULL_TIME:
-    2017-08-01: 350
-  TWO_THIRDS:
-    2017-08-01: 312
-  ONE_THIRD:
-    2017-08-01: 195
-  CASUAL:
-    2017-08-01: 78
+    2020-01-02: 350
+  PART_TIME:
+    2020-01-02: 195
+
+LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER:
+  FULL_TIME:
+    2020-01-02: 450
+  PART_TIME:
+    2020-01-02: 350
 
 LICENSED_BEFORE_AFTER_SCHOOL:
   FULL_TIME:
-    2017-08-01: 155
-  TWO_THIRDS:
-    2017-08-01: 136
-  ONE_THIRD:
-    2017-08-01: 90
-  CASUAL:
-    2017-08-01: 43
+    2020-01-02: 155
+  PART_TIME:
+    2020-01-02: 86
 
 EXEMPT_BEFORE_AFTER_SCHOOL:
   FULL_TIME:
-    2017-08-01: 100
-  TWO_THIRDS:
-    2017-08-01: 88
-  ONE_THIRD:
-    2017-08-01: 58
-  CASUAL:
-    2017-08-01: 28
+    2020-01-02: 120
+  PART_TIME:
+    2020-01-02: 61
