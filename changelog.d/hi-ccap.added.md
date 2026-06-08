@@ -1,1 +1,1 @@
-Add Hawaii Child Care Assistance Program (CCAP).
+Add Hawaii Child Care Assistance Program (CCAP / Child Care Subsidy).
