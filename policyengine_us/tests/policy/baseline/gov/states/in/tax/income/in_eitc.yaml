@@ -32,3 +32,48 @@
     employment_income: 19_500
   output:
     in_eitc: 0.09 * 5_980
+
+- name: in_eitc unit test 4
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: IN
+    eitc: 0
+    in_eitc_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    filer_adjusted_earnings: 10_000
+    adjusted_gross_income: 10_000
+  output:
+    in_eitc: 340
+
+- name: Indiana EITC TY 2026 uses the SEA 243 advanced January 1, 2026 IRC snapshot
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 15_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: IN
+  output:
+    # TY 2026 onwards Indiana SEA 243 (2025) advances the IRC reference to
+    # January 1, 2026. The static_conformity_in_effect parameter is true;
+    # the year-conditional snapshot logic picks "2026-01-01" instead of
+    # "2023-01-01". A positive credit confirms the post-SEA 243 frozen-IRC
+    # code path is exercised.
+    in_eitc: 442.70
