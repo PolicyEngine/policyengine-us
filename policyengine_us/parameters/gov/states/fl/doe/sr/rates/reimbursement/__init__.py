@@ -3,8 +3,10 @@
 # window"), both incorporated by reference under Fla. Admin. Code 6M-4.500:
 #  - FY2025-26: "School Readiness Reimbursement Rates, Fiscal Year 2025-2026"
 #    (SPB 2502, Florida Senate Committee on Appropriations, April 3, 2025).
+#    https://www.flsenate.gov/PublishedContent/Session/2025/Conference/9/RelatedDocument/School%20Readiness%20Reimbursement%20Rates_1411.pdf
 #  - FY2026-27: "School Readiness Reimbursement Rates, Fiscal Year 2026-2027"
 #    (Conference Report for HB 5001E, Florida House Budget Committee, May 26, 2026).
+#    https://www.flsenate.gov/PublishedContent/Session/2026E/Conference/11/RelatedDocument/School%20Readiness%20Reimbursement%20Rates%205-26-26_1750.pdf
 # One table per county (all 67); each is keyed by unit of care (full-time/part-time),
 # care level (infant ... school age), and provider type.
 #
@@ -40,8 +42,10 @@ _MERGE_KEYS = ["county", "provider_type", "care_level", "unit"]
 def get_reimbursement_rates(fiscal_year=2026):
     """Return the long-form daily reimbursement-rate table for a fiscal year.
 
-    Only FY2025-26 is currently published; later years can be added as
-    fy<YYYY>.csv files and selected here. Returns a DataFrame with columns
+    FY2025-26 and FY2026-27 are both published and carry identical rates (see the
+    module header), so the single fy2025_26.csv covers both fiscal years. If a
+    future fiscal year publishes different rates, add it as fy<YYYY>.csv and
+    select by the July 1 boundary here. Returns a DataFrame with columns
     county, provider_type, care_level, unit, rate.
     """
     return pd.read_csv(

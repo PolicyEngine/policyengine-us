@@ -13,7 +13,15 @@ class fl_sr_max_daily_rate(Variable):
     unit = USD
     label = "Florida School Readiness maximum daily reimbursement rate"
     defined_for = StateCode.FL
-    reference = "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500"
+    reference = (
+        # Statewide per-county reimbursement-rate schedules (all 67 counties),
+        # the source of fy2025_26.csv. FY2026-27 (HB 5001E) carries the FY2025-26
+        # amounts forward byte-identical (0 of 2,814 cells differ), so the one
+        # CSV covers both fiscal years:
+        "https://www.flsenate.gov/PublishedContent/Session/2025/Conference/9/RelatedDocument/School%20Readiness%20Reimbursement%20Rates_1411.pdf#page=1",
+        "https://www.flsenate.gov/PublishedContent/Session/2026E/Conference/11/RelatedDocument/School%20Readiness%20Reimbursement%20Rates%205-26-26_1750.pdf#page=1",
+        "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500",
+    )
 
     def formula(person, period, parameters):
         # Daily provider reimbursement rate looked up from the statewide
