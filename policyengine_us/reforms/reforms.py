@@ -238,6 +238,9 @@ from .states.id.eitc import (
 from .states.id.s1450 import (
     create_id_s1450_reform,
 )
+from .states.il.sb3567 import (
+    create_il_sb3567_reform,
+)
 from .states.ky.eitc import (
     create_ky_eitc_reform,
 )
@@ -439,6 +442,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ga_eitc = create_ga_eitc_reform(parameters, period)
     id_eitc = create_id_eitc_reform(parameters, period)
     id_s1450 = create_id_s1450_reform(parameters, period)
+    il_sb3567 = create_il_sb3567_reform(parameters, period)
     ky_eitc = create_ky_eitc_reform(parameters, period)
     ms_eitc = create_ms_eitc_reform(parameters, period)
     nd_eitc = create_nd_eitc_reform(parameters, period)
@@ -554,6 +558,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ga_eitc,
         id_eitc,
         id_s1450,
+        il_sb3567,
         ky_eitc,
         ms_eitc,
         nd_eitc,
