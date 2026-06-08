@@ -20,9 +20,10 @@ class is_fl_sr_activity_eligible(Variable):
         # The age/disability exemption is two-parent-only (c). A single parent
         # who cannot work due to age/disability, a both-exempt couple, or any
         # other approved non-work activity (job search/education/training, the
-        # 90-day post-unemployment grace per s. 1002.87(3), or a protective-
-        # services determination) is not derivable from employment hours and is
-        # captured via meets_ccdf_activity_test below.
+        # 90-day post-unemployment grace per s. 1002.87(5)) is not derivable from
+        # employment hours and is captured via meets_ccdf_activity_test below. A
+        # child receiving/needing protective services waives the activity
+        # requirement directly (State Plan s. 2.2.2.h) via fl_sr_protective_services.
         p = parameters(period).gov.states.fl.doe.sr.eligibility
         person = spm_unit.members
         is_parent = person("is_tax_unit_head_or_spouse", period.this_year)
@@ -56,4 +57,7 @@ class is_fl_sr_activity_eligible(Variable):
         #     >= 20. A both-exempt couple does not qualify (no working parent).
         exemption_ok = (n_parents >= 2) & (n_exempt >= 1) & (n_nonexempt_meeting >= 1)
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
-        return single_ok | two_parent_ok | exemption_ok | fallback
+        # State Plan s. 2.2.2.h waives the activity requirement for a child who
+        # receives or needs protective services.
+        protective_services = spm_unit("fl_sr_protective_services", period)
+        return single_ok | two_parent_ok | exemption_ok | fallback | protective_services

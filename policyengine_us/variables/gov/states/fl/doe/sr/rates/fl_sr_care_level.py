@@ -19,7 +19,7 @@ class fl_sr_care_level(Variable):
     definition_period = MONTH
     label = "Florida School Readiness care level"
     defined_for = StateCode.FL
-    reference = "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500"
+    reference = "https://flrules.elaws.us/fac/6m-4.500"
 
     def formula(person, period, parameters):
         # The reimbursement schedule's care levels are single-year age bands

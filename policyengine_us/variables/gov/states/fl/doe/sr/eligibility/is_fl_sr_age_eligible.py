@@ -8,7 +8,7 @@ class is_fl_sr_age_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.FL
     reference = (
-        "https://www.flsenate.gov/laws/statutes/2024/1002.87",
+        "https://www.flsenate.gov/laws/statutes/2025/1002.87",
         "https://flrules.elaws.us/fac/6m-4.200",
     )
 

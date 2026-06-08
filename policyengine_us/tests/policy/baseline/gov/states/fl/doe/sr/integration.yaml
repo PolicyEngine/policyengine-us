@@ -18,7 +18,7 @@
 # 22.14, Preschool 4 PT = 26.25.
 #
 # FFY2026 SMI (instant 2025-10-01) by family size (with monthly FPG / 150% FPG):
-#   size 3: monthly SMI 7_214.41 (55% = 3_967.93, 85% = 6_132.25); FPG 2_277.50 (150% = 3_416.25)
+#   size 3: monthly SMI 7_214.41 (55% = 3_967.93, 85% = 6_132.25); FPG 2_276.67 (150% = 3_415.00)
 #   size 4: monthly SMI 8_588.58 (55% = 4_723.72, 85% = 7_300.30); FPG 2_750.00 (150% = 4_125.00)
 
 - name: Case 1, full-time family above 150% FPG below the rate cap (cap does not bind).
@@ -36,7 +36,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
     tax_units:
       tax_unit:
@@ -79,7 +79,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20  # part time (< 30) -> 26.25 daily rate
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day) -> 26.25 daily rate
         childcare_attending_days_per_month: 45  # cap = 26.25 * 45 = 1_181.25 > 1_000
     tax_units:
       tax_unit:
@@ -119,7 +119,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560 < 1_000
     tax_units:
       tax_unit:
@@ -160,12 +160,12 @@
       person3:
         age: 6
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 22.14 daily rate (school age)
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate (school age)
         childcare_attending_days_per_month: 40
       person4:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 40
     tax_units:
       tax_unit:
@@ -207,12 +207,12 @@
       person3:
         age: 6
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 22.14 daily rate (school age)
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate (school age)
         childcare_attending_days_per_month: 20
       person4:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -252,7 +252,7 @@
       person2:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -288,7 +288,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 45
     tax_units:
       tax_unit:
@@ -323,7 +323,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
     tax_units:
       tax_unit:
@@ -367,7 +367,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         childcare_attending_days_per_month: 45
     tax_units:
       tax_unit:
@@ -403,7 +403,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
     tax_units:
       tax_unit:
@@ -443,7 +443,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         childcare_attending_days_per_month: 45
     tax_units:
       tax_unit:
@@ -481,12 +481,12 @@
       person3:
         age: 12
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 22.14 daily rate, eligible child
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate, eligible child
         childcare_attending_days_per_month: 20
       person4:
         age: 13
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time, but age-ineligible (excluded from cap)
+        childcare_hours_per_day: 8  # full time, but age-ineligible (excluded from cap)
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -536,7 +536,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560 < 1_000
     tax_units:
       tax_unit:
@@ -579,7 +579,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 22
     tax_units:
       tax_unit:
@@ -603,3 +603,46 @@
     fl_sr: 0
     fl_child_care_subsidies: 0
     child_care_subsidies: 0
+
+- name: Case 15, a protective-services child is eligible despite income above 85% SMI and no work.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7_000 / month > 85% SMI exit limit (6_132.25)
+        weekly_hours_worked_before_lsr: 0  # not working
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1_500 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # State Plan s. 2.2.2.f-h: a protective-services child qualifies with the
+    # income AND activity tests waived (income 7_000/mo > 85% SMI; parent not working).
+    is_fl_sr_income_eligible: false
+    is_fl_sr_activity_eligible: true
+    is_fl_sr_eligible: true
+    # Copay is NOT waived (the s. 3.3.1 copay waiver keys on foster care, not the
+    # protective-services pathway): copay = 7_000 * 0.06 = 420 (ratio 0.97 > 0.55).
+    fl_sr_copay: 420
+    # cap = 28 * 45 = 1_260 < 1_500 expense -> cap binds; benefit = 1_260 - 420 = 840
+    fl_sr: 840

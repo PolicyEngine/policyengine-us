@@ -22,7 +22,7 @@ class fl_sr_copay(Variable):
         monthly_smi = spm_unit("fl_sr_smi", period)
         smi_ratio = where(monthly_smi > 0, countable_income / monthly_smi, 0)
 
-        # One copay per household (6M-4.400 FAQ Q7/Q13). Full-time copay
+        # One copay per household (6M-4.400 FAQ Q7/Q8). Full-time copay
         # percentages apply when any eligible child has full-time authorized
         # care; otherwise the part-time percentages apply.
         person = spm_unit.members

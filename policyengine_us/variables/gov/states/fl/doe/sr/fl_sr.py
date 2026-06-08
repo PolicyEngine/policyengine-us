@@ -10,8 +10,8 @@ class fl_sr(Variable):
     defined_for = "is_fl_sr_eligible"
     reference = (
         "https://flrules.elaws.us/fac/6m-4.400",
-        "https://www.flsenate.gov/laws/statutes/2024/1002.84",
-        "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500",
+        "https://www.flsenate.gov/laws/statutes/2025/1002.84",
+        "https://flrules.elaws.us/fac/6m-4.500",
     )
 
     def formula(spm_unit, period, parameters):

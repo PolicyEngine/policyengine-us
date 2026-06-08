@@ -9,7 +9,7 @@ class is_fl_sr_eligible(Variable):
     defined_for = StateCode.FL
     reference = (
         "https://flrules.elaws.us/fac/6m-4.200",
-        "https://www.flsenate.gov/laws/statutes/2024/1002.81",
+        "https://www.flsenate.gov/laws/statutes/2025/1002.81",
     )
 
     def formula(spm_unit, period, parameters):
@@ -22,4 +22,14 @@ class is_fl_sr_eligible(Variable):
         # Florida's $1,000,000 self-certified asset limit matches the federal
         # CCDF asset ceiling, so reuse the federal check.
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
-        return has_eligible_child & income_eligible & activity_eligible & asset_eligible
+        # State Plan s. 2.2.2.g waives the income test for a child who receives or
+        # needs protective services (the activity test is waived in
+        # is_fl_sr_activity_eligible). Age, asset, residency, and the program
+        # effective date still apply.
+        protective_services = spm_unit("fl_sr_protective_services", period)
+        return (
+            has_eligible_child
+            & (income_eligible | protective_services)
+            & activity_eligible
+            & asset_eligible
+        )

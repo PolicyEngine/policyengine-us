@@ -373,3 +373,29 @@
         state_code: FL
   output:
     is_fl_sr_activity_eligible: true
+
+- name: Case 15, a protective-services child waives the activity requirement directly.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # parent not working
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # State Plan s. 2.2.2.h waives the activity requirement for a child who
+    # receives or needs protective services (the parent need not work).
+    is_fl_sr_activity_eligible: true

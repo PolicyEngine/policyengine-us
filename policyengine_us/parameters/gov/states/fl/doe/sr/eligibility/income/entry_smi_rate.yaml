@@ -3,6 +3,9 @@ description: Florida limits new applicants to the School Readiness program to fa
 # disadvantaged family as one with income at or below 55 percent of the state
 # median income, and the October 1, 2025 statewide sliding fee schedule footnote
 # marks 55% SMI as the School Readiness program entry threshold for new applicants.
+# This flat 55% SMI entry standard supersedes the pre-2025 State Plan p.27
+# family-size 59-64% initial-eligibility table; in_effect = 2025-10-01 covers only
+# the new regime, so the superseded 59-64% table is intentionally not modeled.
 values:
   2025-10-01: 0.55
 

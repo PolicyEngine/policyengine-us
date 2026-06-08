@@ -1,7 +1,7 @@
 # fl_sr_max_daily_rate looks up the daily provider reimbursement rate from the
 # FY2025-26 statewide schedule (6M-4.500; SPB 2502) by
 # county x provider type x care level (derived from age) x time category
-# (FULL_TIME if childcare_hours_per_week >= the full-time threshold, else
+# (FULL_TIME if childcare_hours_per_day >= the full-time threshold, else
 # PART_TIME). A county with no published FL rate (an unknown / non-Florida
 # county_str) returns 0; the benefit caps at this rate, so a zero rate gives $0.
 # Currency output -> absolute_error_margin 0.01.
@@ -13,7 +13,7 @@
     people:
       person1:
         age: 0  # INFANT
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -30,7 +30,7 @@
     people:
       person1:
         age: 4  # PRESCHOOL_4
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -47,7 +47,7 @@
     people:
       person1:
         age: 6  # SCHOOL_AGE
-        childcare_hours_per_week: 20  # part time (< full-time threshold)
+        childcare_hours_per_day: 4  # part time (< full-time threshold)
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -65,7 +65,7 @@
     people:
       person1:
         age: 6  # SCHOOL_AGE
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -82,7 +82,7 @@
     people:
       person1:
         age: 0  # INFANT
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -100,7 +100,7 @@
     people:
       person1:
         age: 0  # INFANT
-        childcare_hours_per_week: 20  # part time
+        childcare_hours_per_day: 4  # part time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -117,7 +117,7 @@
     people:
       person1:
         age: 6  # SCHOOL_AGE
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: REGISTERED_FAMILY_CHILD_CARE_HOME
     households:
       household:
@@ -136,7 +136,7 @@
     people:
       person1:
         age: 1  # TODDLER
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_FAMILY_CHILD_CARE_HOME
     households:
       household:
@@ -155,7 +155,7 @@
     people:
       person1:
         age: 0
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:
@@ -172,7 +172,7 @@
     people:
       person1:
         age: 4  # PRESCHOOL_4
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         fl_sr_provider_type: LICENSED_EXEMPT
     households:
       household:

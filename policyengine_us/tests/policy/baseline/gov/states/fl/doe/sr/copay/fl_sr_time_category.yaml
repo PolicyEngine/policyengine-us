@@ -1,14 +1,15 @@
 # Florida School Readiness authorized-care time category.
-# fl_sr_time_category reads childcare_hours_per_week (YEAR) via period.this_year
-# and compares to the full-time hours threshold (30 hr/wk). At or above 30 hours
-# is full time; below 30 hours is part time. The default is PART_TIME.
+# fl_sr_time_category reads childcare_hours_per_day (YEAR) via period.this_year
+# and compares to the full-time daily-hours threshold. Per Fla. Stat. 1002.81(9)
+# full-time care is "at least 6 hours ... within a 24-hour period"; 1002.81(11)
+# makes less than 6 hours part-time. The default is PART_TIME.
 
-- name: Case 1, 35 hours per week is full time.
+- name: Case 1, 8 hours per day is full time.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
     households:
       household:
         members: [person1]
@@ -16,12 +17,12 @@
   output:
     fl_sr_time_category: FULL_TIME
 
-- name: Case 2, exactly 30 hours per week is full time.
+- name: Case 2, exactly 6 hours per day is full time.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6  # "at least 6 hours" -> full time
     households:
       household:
         members: [person1]
@@ -29,12 +30,12 @@
   output:
     fl_sr_time_category: FULL_TIME
 
-- name: Case 3, 29 hours per week is part time.
+- name: Case 3, 5 hours per day is part time.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 29
+        childcare_hours_per_day: 5  # < 6 hours -> part time
     households:
       household:
         members: [person1]
@@ -42,12 +43,12 @@
   output:
     fl_sr_time_category: PART_TIME
 
-- name: Case 4, zero hours per week is part time.
+- name: Case 4, zero hours per day is part time.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
     households:
       household:
         members: [person1]
@@ -55,14 +56,16 @@
   output:
     fl_sr_time_category: PART_TIME
 
-# Edge case: 31 hours per week (just above the 30-hour threshold) is full time,
-# completing the 29 / 30 / 31 boundary coverage.
-- name: Case 5, 31 hours per week is full time.
+# The classification is daily, not weekly: 6 hours/day over only 4 days is
+# 24 hours/week, which the old 30-hr/week proxy called part-time, but
+# 1002.81(9) makes it full-time (>= 6 hours within a 24-hour period).
+- name: Case 5, 6 hours per day over 4 days per week is full time.
   period: 2026-01
   input:
     people:
       person1:
-        childcare_hours_per_week: 31
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 4  # 6 x 4 = 24 hours/week, but full-time per day
     households:
       household:
         members: [person1]

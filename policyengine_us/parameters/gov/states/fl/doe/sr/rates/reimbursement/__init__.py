@@ -42,13 +42,20 @@ _MERGE_KEYS = ["county", "provider_type", "care_level", "unit"]
 def get_reimbursement_rates(fiscal_year=2026):
     """Return the long-form daily reimbursement-rate table for a fiscal year.
 
-    FY2025-26 and FY2026-27 are both published and carry identical rates (see the
-    module header), so the single fy2025_26.csv covers both fiscal years. If a
-    future fiscal year publishes different rates, add it as fy<YYYY>.csv and
-    select by the July 1 boundary here. Returns a DataFrame with columns
-    county, provider_type, care_level, unit, rate.
+    fiscal_year is the Florida fiscal year that ENDS in that calendar year
+    (FY2025-26 -> 2026, FY2026-27 -> 2027; FL fiscal year runs July 1 - June 30).
+    FY2025-26 (SPB 2502) and FY2026-27 (HB 5001E) carry identical rates (see the
+    module header), so both map to the single fy2025_26.csv. When a future fiscal
+    year publishes different rates, add it as fy<YYYY>.csv and a new entry below.
+    Returns a DataFrame with columns county, provider_type, care_level, unit, rate.
     """
+    csv_by_fiscal_year = {
+        2026: "fy2025_26.csv",  # FY2025-26 (SPB 2502)
+        2027: "fy2025_26.csv",  # FY2026-27 (HB 5001E) -- byte-identical to FY2025-26
+    }
+    # Carry the latest published schedule forward for years outside the table.
+    filename = csv_by_fiscal_year.get(fiscal_year, "fy2025_26.csv")
     return pd.read_csv(
-        FOLDER / "fy2025_26.csv",
+        FOLDER / filename,
         dtype={k: str for k in _MERGE_KEYS},
     )

@@ -1,4 +1,9 @@
 description: Florida counts these gross family income sources under the School Readiness program.
+# TANF cash assistance is intentionally NOT counted: State Plan s. 2.2.4.c lists
+# "Public assistance" but leaves it unchecked, and Fla. Stat. 1002.81(7) excludes
+# only food-stamp and federal housing assistance. Counting `tanf` (an SPMUnit
+# YEAR variable) would also reintroduce the CCAP<->TANF circular dependency. SSI,
+# a person-level income source, is counted. Matches the ME/WV CCAP convention.
 values:
   2025-10-01:
     - employment_income

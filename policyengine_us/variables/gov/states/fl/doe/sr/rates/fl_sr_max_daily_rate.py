@@ -18,17 +18,20 @@ class fl_sr_max_daily_rate(Variable):
         # the source of fy2025_26.csv. FY2026-27 (HB 5001E) carries the FY2025-26
         # amounts forward byte-identical (0 of 2,814 cells differ), so the one
         # CSV covers both fiscal years:
-        "https://www.flsenate.gov/PublishedContent/Session/2025/Conference/9/RelatedDocument/School%20Readiness%20Reimbursement%20Rates_1411.pdf#page=1",
-        "https://www.flsenate.gov/PublishedContent/Session/2026E/Conference/11/RelatedDocument/School%20Readiness%20Reimbursement%20Rates%205-26-26_1750.pdf#page=1",
-        "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500",
+        "https://www.flsenate.gov/PublishedContent/Session/2025/Conference/9/RelatedDocument/School%20Readiness%20Reimbursement%20Rates_1411.pdf#page=4",
+        "https://www.flsenate.gov/PublishedContent/Session/2026E/Conference/11/RelatedDocument/School%20Readiness%20Reimbursement%20Rates%205-26-26_1750.pdf#page=4",
+        "https://flrules.elaws.us/fac/6m-4.500",
     )
 
     def formula(person, period, parameters):
         # Daily provider reimbursement rate looked up from the statewide
-        # FY2025-26 schedule by county x provider type x care level x unit of
-        # care (6M-4.500; SPB 2502). Vectorized via a left merge on the
-        # enum member-name strings, mirroring the Texas CCS CSV-rate pattern.
-        rates = get_reimbursement_rates(period.start.year)
+        # schedule by county x provider type x care level x unit of care
+        # (6M-4.500; SPB 2502). The schedule is selected by FL fiscal year
+        # (July 1 - June 30): the fiscal year ending in this calendar year is
+        # year + 1 once the month is July or later. Vectorized via a left merge
+        # on the enum member-name strings, mirroring the Texas CCS CSV-rate pattern.
+        fiscal_year = period.start.year + (1 if period.start.month >= 7 else 0)
+        rates = get_reimbursement_rates(fiscal_year)
         county = person.household("county_str", period.this_year)
         provider_type = person("fl_sr_provider_type", period)
         care_level = person("fl_sr_care_level", period)

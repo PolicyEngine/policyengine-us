@@ -1,8 +1,8 @@
 # Florida School Readiness family copay = monthly countable income x bracket
 # rate, capped at 7% of income (45 CFR 98.45(l)(3); the cap is slack because the
 # scale maxes at 6% full time). One copay per household. The full-time rate
-# applies when any eligible child has full-time authorized care (>= 30 hr/wk);
-# otherwise the part-time rate applies. The copay is WAIVED for families at or
+# applies when any eligible child has full-time authorized care (>= 6 hrs/day,
+# Fla. Stat. 1002.81(9)); otherwise the part-time rate applies. The copay is WAIVED for families at or
 # below 150% FPG (fl_sr_copay_waived; State Plan s. 3.3.1), so the scale-test
 # cases below use income above 150% FPG to exercise the bracket rate (Case 10
 # covers the waiver).
@@ -10,7 +10,7 @@
 # Family of 3, FFY2026 (instant 2025-10-01):
 #   annual SMI = 86_572.92  ->  monthly SMI = 7_214.41
 #   55% SMI marker (monthly) = 3_967.93
-#   monthly FPG = 2_277.50  ->  150% FPG (waiver line) = 3_416.25
+#   monthly FPG = 2_276.67  ->  150% FPG (waiver line) = 3_415.00
 # Rate brackets keyed to the SMI ratio (income / SMI):
 #   <= 55% SMI -> 4.0% full time / 2.0% part time
 #   >  55% SMI -> 6.0% full time / 3.0% part time
@@ -28,7 +28,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -55,7 +55,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20  # part time (< 30)
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -81,7 +81,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -107,7 +107,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20  # part time (< 30)
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -132,7 +132,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -162,7 +162,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -187,7 +187,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -212,7 +212,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20  # part time (< 30)
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -237,7 +237,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 20  # part time (< 30)
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -262,7 +262,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -271,7 +271,7 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    # 3_000 / month = 1.32x monthly FPG (2_277.50) <= 1.5 -> copay waived
+    # 3_000 / month = 1.32x monthly FPG (2_276.67) <= 1.5 -> copay waived
     # (State Plan s. 3.3.1(i)-(ii)). Without the waiver it would be
     # 3_000 * 0.04 = 120.
     fl_sr_copay: 0

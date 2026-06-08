@@ -14,5 +14,7 @@ class fl_sr_provider_type(Variable):
     entity = Person
     definition_period = MONTH
     label = "Florida School Readiness child care provider type"
-    documentation = "Provider type of the child's School Readiness child care provider, used to select the maximum reimbursement rate. Defaults to the licensed/exempt (center) rate column."
-    reference = "https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500"
+    reference = "https://flrules.elaws.us/fac/6m-4.500"
+    # Provider type of the child's School Readiness child care provider, used to
+    # select the maximum reimbursement rate; defaults to the licensed/exempt
+    # (center) rate column.

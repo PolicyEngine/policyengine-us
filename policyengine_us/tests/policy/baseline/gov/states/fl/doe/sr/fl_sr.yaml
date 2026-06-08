@@ -5,13 +5,13 @@
 # the statewide provider reimbursement rate (6M-4.500; SPB 2502 FY2025-26):
 # each eligible child's fl_sr_max_daily_rate x childcare_attending_days_per_month,
 # summed across the unit. A zero cap (e.g. an unset/non-FL county_str with no
-# published rate) is treated as no cap, so the benefit falls back to expenses.
+# published rate) yields a benefit of 0 (min(expense, 0) = 0; no published rate to pay against).
 # fl_sr is defined_for is_fl_sr_eligible, so each case is a fully eligible Florida
 # family; these cases exercise the formula's own arithmetic (the cap, the copay,
 # and the zero floor), not the eligibility gate (integration.yaml covers that).
 #
 # Family of 3, FFY2026: monthly SMI = 7_214.41 (55% marker = 3_967.93);
-# monthly FPG = 2_277.50 (150% FPG waiver line = 3_416.25). Cases 1-3 use income
+# monthly FPG = 2_276.67 (150% FPG waiver line = 3_415.00). Cases 1-3 use income
 # above 150% FPG so the copay is not waived; Case 5 shows the waiver flowing
 # through to a higher benefit.
 # All cases are Miami-Dade; the child is age 4 (PRESCHOOL_4), Licensed/Exempt,
@@ -32,7 +32,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
     tax_units:
       tax_unit:
@@ -69,7 +69,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560 < 1_000
     tax_units:
       tax_unit:
@@ -105,7 +105,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time
+        childcare_hours_per_day: 8  # full time
         childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560
     tax_units:
       tax_unit:
@@ -141,7 +141,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -176,7 +176,7 @@
       person3:
         age: 4
         immigration_status: CITIZEN
-        childcare_hours_per_week: 35  # full time -> 28.00 daily rate
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
         childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
     tax_units:
       tax_unit:
