@@ -1,0 +1,166 @@
+# fl_sr_max_daily_rate looks up the daily provider reimbursement rate from the
+# FY2025-26 statewide schedule (6M-4.500; SPB 2502) by
+# county x provider type x care level (derived from age) x time category
+# (FULL_TIME if childcare_hours_per_week >= the full-time threshold, else
+# PART_TIME). A county with no published FL rate (empty/non-FL county_str)
+# returns 0; the benefit formula treats a zero cap as uncapped.
+# Currency output -> absolute_error_margin 0.01.
+
+- name: Case 1, Miami-Dade Licensed/Exempt infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0  # INFANT
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr_max_daily_rate: 55.20
+
+- name: Case 2, Miami-Dade Licensed/Exempt preschool 4 full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4  # PRESCHOOL_4
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr_max_daily_rate: 28.00
+
+- name: Case 3, Miami-Dade Licensed/Exempt school age part-time differs from full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6  # SCHOOL_AGE
+        childcare_hours_per_week: 20  # part time (< full-time threshold)
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # School Age PART_TIME = 16.75 (full-time would be 22.14, Case 4 below)
+    fl_sr_max_daily_rate: 16.75
+
+- name: Case 4, Miami-Dade Licensed/Exempt school age full-time (pairs with Case 3).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6  # SCHOOL_AGE
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr_max_daily_rate: 22.14
+
+- name: Case 5, Alachua County (non-Miami-Dade) Licensed/Exempt infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0  # INFANT
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: ALACHUA_COUNTY_FL
+  output:
+    # Distinct from Miami-Dade's 55.20: rates vary by county.
+    fl_sr_max_daily_rate: 50.00
+
+- name: Case 6, Alachua County infant part-time (pairs with Case 5 full-time).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0  # INFANT
+        childcare_hours_per_week: 20  # part time
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: ALACHUA_COUNTY_FL
+  output:
+    fl_sr_max_daily_rate: 39.00
+
+- name: Case 7, Miami-Dade registered family child care home school age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6  # SCHOOL_AGE
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: REGISTERED_FAMILY_CHILD_CARE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # Non-default provider type: registered family home rate (21.13) differs
+    # from the licensed/exempt center rate (22.14, Case 4).
+    fl_sr_max_daily_rate: 21.13
+
+- name: Case 8, Miami-Dade licensed family child care home toddler full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1  # TODDLER
+        childcare_hours_per_week: 35  # full time
+        fl_sr_provider_type: LICENSED_FAMILY_CHILD_CARE_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # Licensed family home toddler rate (40.80) differs from the licensed/exempt
+    # center toddler rate (41.39).
+    fl_sr_max_daily_rate: 40.80
+
+- name: Case 9, an unmatched (empty) county has no published rate and returns zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 35
+        fl_sr_provider_type: LICENSED_EXEMPT
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        county_str: ""  # no FL rate row -> rate 0 (benefit treats as uncapped)
+  output:
+    fl_sr_max_daily_rate: 0

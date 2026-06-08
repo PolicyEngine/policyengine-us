@@ -1,0 +1,45 @@
+description: Florida assigns this School Readiness care level (as an index into the fl_sr_care_level enum, 0=Infant through 6=School Age) by the child's age in years.
+# The reimbursement schedule's care levels are single-year age bands: it lists
+# distinct "2 Year Old" and "Preschool 3/4/5" levels, so Toddler is the one-year-old
+# band (not the 18-36 month licensing definition). Children aged 5 map to Preschool 5
+# and ages 6 and older to School Age; we classify by age rather than kindergarten
+# enrollment at the moment.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: "/1"
+  period: year
+  label: Florida School Readiness care level index by age
+  reference:
+    - title: School Readiness Reimbursement Rates, Fiscal Year 2025-2026 (SPB 2502, Fla. Senate Committee on Appropriations) — care level categories
+      href: https://www.flrules.org/gateway/RuleNo.asp?id=6M-4.500
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 1
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 6
