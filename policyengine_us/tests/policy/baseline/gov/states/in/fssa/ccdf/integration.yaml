@@ -1,0 +1,217 @@
+# Integration tests for Indiana CCDF (Child Care and Development Fund) Voucher.
+# End-to-end scenarios verifying the eligibility chain, rate lookup, copay, and
+# the final subsidy that flows into the federal child_care_subsidies total.
+# All monetary rates are Marion County FY2023 weekly rates * (52 / 12); the
+# copay fee factor is the new-enrollee (Year 1-3) tier of the 2026 schedule.
+# 2-person FPG 2026 = 21,640/yr; 4-person = 33,000/yr. At 2026-01 the get-on
+# rate is 1.5 (150% FPL).
+
+- name: Case 1, single working parent, infant in PTQ-4 licensed center, high expenses.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_720  # ~105% FPL
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: PTQ_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000  # 2,500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_eligible: true
+    # countable income 1,893.33/mo; rate 468 * 52/12 = 2,028; expenses 2,500
+    # capped at 2,028. copay 1,893.33 * 0.0116 = 21.96/wk -> 95.17/mo.
+    # benefit = 2,028 - 95.17 = 1,932.83/mo
+    in_ccdf: 1_932.83
+
+- name: Case 2, two working parents, two children in PTQ-3 licensed home, copay zero.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 20_000
+      person2:
+        age: 32
+        employment_income: 8_000
+      person3:
+        age: 2
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_HOME
+        in_ccdf_ptq_level: PTQ_3
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_HOME
+        in_ccdf_ptq_level: PTQ_3
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      mu3:
+        members: [person3]
+      mu4:
+        members: [person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IN
+  output:
+    in_ccdf_eligible: true
+    # 4-person income 2,333.33/mo < 100% FPL (2,750) -> copay 0.
+    # toddler 196 + three-to-five 157 = 353/wk * 52/12 = 1,529.67/mo.
+    # expenses 2,000 capped at 1,529.67; benefit = 1,529.67 - 0 = 1,529.67/mo
+    in_ccdf: 1_529.67
+
+- name: Case 3, enrolled family above 150% FPL but below 85% SMI (stay-on tier).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 45_000  # 3,750/mo, fails applicant test
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000  # 2,500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_eligible: true
+    # income 3,750/mo, ratio ~2.08 FPL -> factor 0.0372.
+    # rate 416 * 52/12 = 1,802.67; copay 3,750 * 0.0372 = 139.50/wk -> 604.50/mo.
+    # benefit = 1,802.67 - 604.50 = 1,198.17/mo
+    in_ccdf: 1_198.17
+
+- name: Case 4, special-needs school-age child age 15 (age-19 extension), copay zero.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_640  # 100% FPL -> copay 0
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_eligible: true
+    in_ccdf_eligible_child: [false, true]
+    # School Age Before/After 110/wk * 52/12 * 1.10 (special needs) = 524.33/mo.
+    # expenses 1,500 capped at 524.33; copay 0; benefit = 524.33/mo
+    in_ccdf: 524.33
+
+- name: Case 5, otherwise-eligible family outside Indiana receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_720
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # defined_for = StateCode.IN zeroes the benefit and eligibility outside IN.
+    in_ccdf_eligible: false
+    in_ccdf: 0
+
+- name: Case 6, over-asset family is ineligible despite passing income and activity.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_720
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 2_000_000  # above $1,000,000 limit
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+    in_ccdf_asset_eligible: false
+    in_ccdf_eligible: false
+    in_ccdf: 0
+
+- name: Case 7, single non-working parent fails the activity test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # not employed
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+    in_ccdf_activity_eligible: false
+    in_ccdf_eligible: false
+    in_ccdf: 0

@@ -1,0 +1,106 @@
+# Tests for in_ccdf_eligible_child (Person, MONTH, bool).
+# Eligible = age < limit (13, or 19 if disabled) AND tax-unit dependent
+# AND US citizen / qualified non-citizen (federal is_ccdf_immigration_eligible_child).
+# Policy Manual Section 1.6 Child Eligibility.
+
+- name: Case 1, age 12 citizen dependent, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: true
+
+- name: Case 2, age 13 not disabled, ineligible (turned 13).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: false
+
+- name: Case 3, age 13 with special needs, eligible (age extension).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: true
+
+- name: Case 4, age 18 with special needs, eligible (under 19 extension).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: true
+
+- name: Case 5, age 19 with special needs, ineligible (reached 19).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: false
+
+- name: Case 6, age 5 not a dependent, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: false
+
+- name: Case 7, age 5 undocumented child, ineligible (immigration status).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_eligible_child: false

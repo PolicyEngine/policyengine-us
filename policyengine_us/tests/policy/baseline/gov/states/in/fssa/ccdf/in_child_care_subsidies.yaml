@@ -1,0 +1,53 @@
+# Tests for in_child_care_subsidies (SPMUnit, YEAR, USD).
+# Annual aggregate of the monthly in_ccdf subsidy. Also confirms the subsidy
+# flows into the federal child_care_subsidies total.
+
+- name: Case 1, annual subsidy aggregates the monthly benefit and flows to the federal total.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 22_720  # ~105% FPL
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Monthly benefit 1,707.50 * 12 = 20,489.94/year.
+    in_child_care_subsidies: 20_489.94
+    child_care_subsidies: 20_489.94
+
+- name: Case 2, non-Indiana household receives no Indiana subsidy.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 22_720
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    in_child_care_subsidies: 0

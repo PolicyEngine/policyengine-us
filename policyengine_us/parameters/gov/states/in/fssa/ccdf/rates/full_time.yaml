@@ -1,0 +1,426 @@
+description: Indiana provides these full-time weekly reimbursement rates by provider type, Paths to QUALITY level, and age group under the Child Care and Development Fund program.
+
+# Marion County Fiscal Year 2023 rates (effective July 30, 2023), used as a
+# statewide proxy ceiling. Only full-time (weekly) rates are modeled. Provider
+# families that publish no separate Paths to QUALITY Level 1 row (every family
+# except Registered Ministry) carry their base row's value at PTQ_1; families that
+# publish only a base row (Exempt Center, Accredited Exempt Center, Exempt Home)
+# carry their base value across all Paths to QUALITY levels.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Indiana CCDF full-time weekly reimbursement rates
+  breakdown:
+    - in_ccdf_provider_type
+    - in_ccdf_ptq_level
+    - in_ccdf_age_group
+  reference:
+    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Licensed Center
+      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=1
+    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Licensed Home and Registered Ministry
+      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=2
+    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Registered Ministry and Exempt providers
+      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=3
+
+LICENSED_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 416
+    TODDLER:
+      2023-07-30: 327
+    THREE_TO_FIVE:
+      2023-07-30: 231
+    KINDERGARTEN:
+      2023-07-30: 220
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 218
+  PTQ_1:
+    INFANT:
+      2023-07-30: 416
+    TODDLER:
+      2023-07-30: 327
+    THREE_TO_FIVE:
+      2023-07-30: 231
+    KINDERGARTEN:
+      2023-07-30: 220
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 218
+  PTQ_2:
+    INFANT:
+      2023-07-30: 429
+    TODDLER:
+      2023-07-30: 337
+    THREE_TO_FIVE:
+      2023-07-30: 253
+    KINDERGARTEN:
+      2023-07-30: 227
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 132
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_3:
+    INFANT:
+      2023-07-30: 449
+    TODDLER:
+      2023-07-30: 352
+    THREE_TO_FIVE:
+      2023-07-30: 275
+    KINDERGARTEN:
+      2023-07-30: 245
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 144
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 259
+  PTQ_4:
+    INFANT:
+      2023-07-30: 468
+    TODDLER:
+      2023-07-30: 374
+    THREE_TO_FIVE:
+      2023-07-30: 295
+    KINDERGARTEN:
+      2023-07-30: 264
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 155
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 278
+
+LICENSED_HOME:
+  BASE:
+    INFANT:
+      2023-07-30: 156
+    TODDLER:
+      2023-07-30: 150
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_1:
+    INFANT:
+      2023-07-30: 156
+    TODDLER:
+      2023-07-30: 150
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_2:
+    INFANT:
+      2023-07-30: 187
+    TODDLER:
+      2023-07-30: 180
+    THREE_TO_FIVE:
+      2023-07-30: 153
+    KINDERGARTEN:
+      2023-07-30: 153
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 153
+  PTQ_3:
+    INFANT:
+      2023-07-30: 203
+    TODDLER:
+      2023-07-30: 196
+    THREE_TO_FIVE:
+      2023-07-30: 157
+    KINDERGARTEN:
+      2023-07-30: 157
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 120
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 157
+  PTQ_4:
+    INFANT:
+      2023-07-30: 218
+    TODDLER:
+      2023-07-30: 210
+    THREE_TO_FIVE:
+      2023-07-30: 168
+    KINDERGARTEN:
+      2023-07-30: 165
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 130
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 168
+
+REGISTERED_MINISTRY:
+  BASE:
+    INFANT:
+      2023-07-30: 351
+    TODDLER:
+      2023-07-30: 277
+    THREE_TO_FIVE:
+      2023-07-30: 185
+    KINDERGARTEN:
+      2023-07-30: 178
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 73
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 173
+  PTQ_1:
+    INFANT:
+      2023-07-30: 351
+    TODDLER:
+      2023-07-30: 277
+    THREE_TO_FIVE:
+      2023-07-30: 185
+    KINDERGARTEN:
+      2023-07-30: 178
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 173
+  PTQ_2:
+    INFANT:
+      2023-07-30: 381
+    TODDLER:
+      2023-07-30: 322
+    THREE_TO_FIVE:
+      2023-07-30: 253
+    KINDERGARTEN:
+      2023-07-30: 226
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 132
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_3:
+    INFANT:
+      2023-07-30: 411
+    TODDLER:
+      2023-07-30: 348
+    THREE_TO_FIVE:
+      2023-07-30: 275
+    KINDERGARTEN:
+      2023-07-30: 245
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 144
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 259
+  PTQ_4:
+    INFANT:
+      2023-07-30: 435
+    TODDLER:
+      2023-07-30: 374
+    THREE_TO_FIVE:
+      2023-07-30: 295
+    KINDERGARTEN:
+      2023-07-30: 264
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 155
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 278
+
+EXEMPT_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_1:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_2:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_3:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_4:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+
+ACCREDITED_EXEMPT_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_1:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_2:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_3:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+  PTQ_4:
+    INFANT:
+      2023-07-30: 532
+    TODDLER:
+      2023-07-30: 418
+    THREE_TO_FIVE:
+      2023-07-30: 274
+    KINDERGARTEN:
+      2023-07-30: 254
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+
+EXEMPT_HOME:
+  BASE:
+    INFANT:
+      2023-07-30: 143
+    TODDLER:
+      2023-07-30: 143
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_1:
+    INFANT:
+      2023-07-30: 143
+    TODDLER:
+      2023-07-30: 143
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_2:
+    INFANT:
+      2023-07-30: 143
+    TODDLER:
+      2023-07-30: 143
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_3:
+    INFANT:
+      2023-07-30: 143
+    TODDLER:
+      2023-07-30: 143
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+  PTQ_4:
+    INFANT:
+      2023-07-30: 143
+    TODDLER:
+      2023-07-30: 143
+    THREE_TO_FIVE:
+      2023-07-30: 143
+    KINDERGARTEN:
+      2023-07-30: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143

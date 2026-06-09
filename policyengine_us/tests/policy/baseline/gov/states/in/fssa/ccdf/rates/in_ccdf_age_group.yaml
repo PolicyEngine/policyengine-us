@@ -1,0 +1,232 @@
+# Tests for in_ccdf_age_group (Person, MONTH, Enum).
+# Age groups derived from age in months (age * 12), per the CCDF Provider
+# Manual "Reimbursement Rate Categories":
+#   INFANT: 0-11 months (< 12)
+#   TODDLER: 12-35 months (< 36)
+#   THREE_TO_FIVE: 36-71 months (< 72)
+#   KINDERGARTEN: 72-83 months / age 6 (< 84)
+#   SCHOOL_AGE_BEFORE_AFTER: age 7+ (>= 84 months)
+# SCHOOL_AGE_OTHER is care-schedule-driven and never derived from age alone.
+
+- name: Case 1, age 0, infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: INFANT
+
+- name: Case 2, age 0.9 (about 11 months), infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0.9
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: INFANT
+
+- name: Case 3, age 1.5 (18 months), toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: TODDLER
+
+- name: Case 4, age 2.9 (about 35 months), toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.9
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: TODDLER
+
+- name: Case 5, age 3.5, three to five years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3.5
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: THREE_TO_FIVE
+
+- name: Case 6, age 5.9 (about 71 months), three to five years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5.9
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: THREE_TO_FIVE
+
+- name: Case 7, age 6.5, kindergarten.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6.5
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: KINDERGARTEN
+
+- name: Case 8, age 7.5, school age before and after.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 7.5
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: SCHOOL_AGE_BEFORE_AFTER
+
+- name: Case 9, age 12.5, school age before and after.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12.5
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: SCHOOL_AGE_BEFORE_AFTER
+
+# --- Exact month-boundary edge cases (infant/toddler/preschool/kindergarten) ---
+
+- name: Case 10, exactly 11 months (0.9166), still infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0.9166  # 11 months, < 12 infant cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: INFANT
+
+- name: Case 11, exactly 12 months (1.0), toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.0  # 12 months, infant cutoff is < 12 so this is toddler
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: TODDLER
+
+- name: Case 12, exactly 35 months (2.9166), still toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.9166  # 35 months, < 36 toddler cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: TODDLER
+
+- name: Case 13, exactly 36 months (3.0), three to five years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3.0  # 36 months, toddler cutoff is < 36 so this is three to five
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: THREE_TO_FIVE
+
+- name: Case 14, exactly 71 months (5.9166), still three to five years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5.9166  # 71 months, < 72 preschool cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: THREE_TO_FIVE
+
+- name: Case 15, exactly 72 months / age 6, kindergarten.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6.0  # 72 months, preschool cutoff is < 72 so this is kindergarten
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: KINDERGARTEN
+
+- name: Case 16, exactly 83 months (6.9166), still kindergarten.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6.9166  # 83 months, < 84 kindergarten cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: KINDERGARTEN
+
+- name: Case 17, exactly 84 months / age 7, school age before and after.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 7.0  # 84 months, kindergarten cutoff is < 84 so this is school age
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_age_group: SCHOOL_AGE_BEFORE_AFTER

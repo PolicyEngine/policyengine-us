@@ -1,0 +1,379 @@
+# Tests for in_ccdf_income_eligible (SPMUnit, MONTH, bool).
+# Initial applicants (is_in_ccdf_enrolled = false) are tested at the get-on
+# FPG rate; enrolled recipients (true) are tested at 85% of the state median
+# income. Policy Manual Section 1.1; get-on / stay-on schedules.
+# At 2026-01 the get-on rate parameter is 1.5 (150% FPL); the 1.35 (135%)
+# value takes effect 2026-04-05, so it is exercised with a 2027-01 period.
+
+# --- Applicant (get-on), 1.5 FPL era at 2026-01 ---
+# 2-person FPG 2026 = 21,640/yr; limit = 1.5 * 21,640 = 32,460/yr.
+
+- name: Case 1, applicant income below get-on limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 2, applicant income exactly at get-on limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 32_460  # 1.5 * 21,640 FPG
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # At-or-below the limit is eligible (<=).
+    in_ccdf_income_eligible: true
+
+- name: Case 3, applicant income above get-on limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 33_000  # above 32,460 limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# --- Applicant (get-on), 1.35 FPL era at 2027-01 ---
+
+- name: Case 4, applicant income well below 135% FPL, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 5, applicant income well above 135% FPL, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# --- Enrolled (stay-on), 85% SMI ---
+# Income between 135% FPL and 85% SMI: fails as applicant, passes as enrolled.
+
+- name: Case 6, mid income fails as applicant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 45_000  # 3,750/mo > 150% FPL limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+- name: Case 7, same mid income passes as enrolled (85% SMI).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 45_000  # below 85% SMI
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 8, enrolled income above 85% SMI, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 90_000  # above 85% SMI
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# --- 135% FPL applicant boundary at 2027-01 (1.35 era) ---
+# 2-person 2027 FPG = 22,147.39/yr; 135% = 29,898.98/yr (the income test
+# compares monthly countable income against monthly FPG * 1.35).
+
+- name: Case 9, applicant income just below 135% FPL, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 29_880  # just below 29,898.98 limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 10, applicant income essentially at 135% FPL, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 29_898  # at the 29,898.98 limit (<=)
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 11, applicant income just above 135% FPL, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 29_920  # above the 29,898.98 limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# --- 85% SMI enrolled boundary at 2026-01 ---
+# 2-person IN SMI = 6,427.06/mo; 85% = 5,462.99/mo -> 65,555.88/yr.
+
+- name: Case 12, enrolled income just below 85% SMI, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 65_400  # just below 65,555.88 limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 13, enrolled income essentially at 85% SMI, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 65_555  # at the 65,555.88 limit (<=)
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 14, enrolled income just above 85% SMI, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 65_600  # above the 65,555.88 limit
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: false
+
+# --- Degenerate income and family-size scaling ---
+
+- name: Case 15, applicant with zero income, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_ccdf_income_eligible: true
+
+- name: Case 16, larger family, get-on limit scales with household size.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000  # 3,333/mo
+      person2:
+        age: 33
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+      person5:
+        age: 5
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      mu3:
+        members: [person3]
+      mu4:
+        members: [person4]
+      mu5:
+        members: [person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_in_ccdf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: IN
+  output:
+    # 5-person FPG 2026 = 38,680/yr; 150% limit = 58,020/yr (4,835/mo).
+    # 3,333/mo < 4,835/mo -> eligible. A 2-person unit at this income fails.
+    in_ccdf_income_eligible: true

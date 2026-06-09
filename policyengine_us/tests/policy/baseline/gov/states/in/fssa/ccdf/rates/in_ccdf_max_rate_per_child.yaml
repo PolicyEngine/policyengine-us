@@ -1,0 +1,300 @@
+# Tests for in_ccdf_max_rate_per_child (Person, MONTH, USD).
+# Monthly rate = weekly Marion County FY2023 rate * (52 / 12), with a 10%
+# add-on for children with documented special needs.
+# Weekly rates verified against the rate addendum (Marion FY2023, eff 2023-07-30).
+# defined_for = in_ccdf_eligible_child, so each child is a citizen tax-unit
+# dependent within the age limit.
+
+- name: Case 1, Licensed Center base infant.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 416/week * 52/12 = 1,802.67/month
+    in_ccdf_max_rate_per_child: 1_802.67
+
+- name: Case 2, Licensed Center PTQ 4 infant.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: PTQ_4
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 468/week * 52/12 = 2,028.00/month
+    in_ccdf_max_rate_per_child: 2_028.00
+
+- name: Case 3, Licensed Home PTQ 3 toddler.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 2.0
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_HOME
+        in_ccdf_ptq_level: PTQ_3
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 196/week * 52/12 = 849.33/month
+    in_ccdf_max_rate_per_child: 849.33
+
+- name: Case 4, Exempt Center base three to five years.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 4.0
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: EXEMPT_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 274/week * 52/12 = 1,187.33/month
+    in_ccdf_max_rate_per_child: 1_187.33
+
+- name: Case 5, Registered Ministry base school age before and after.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8.0
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: REGISTERED_MINISTRY
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 73/week * 52/12 = 316.33/month (base School Age Before/After)
+    in_ccdf_max_rate_per_child: 316.33
+
+- name: Case 6, Registered Ministry PTQ 1 school age before and after.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8.0
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: REGISTERED_MINISTRY
+        in_ccdf_ptq_level: PTQ_1
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 92/week * 52/12 = 398.67/month (PTQ 1 differs from base only here)
+    in_ccdf_max_rate_per_child: 398.67
+
+- name: Case 7, special-needs infant gets 10% add-on.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_tax_unit_dependent: true
+        is_disabled: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 416/week * 52/12 * 1.10 = 1,982.93/month
+    in_ccdf_max_rate_per_child: 1_982.93
+
+- name: Case 8, special-needs child age 16 still rated (age-19 extension).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # School Age Before/After 110/week * 52/12 * 1.10 = 524.33/month
+    in_ccdf_max_rate_per_child: 524.33
+
+- name: Case 9, Accredited Exempt Center base school age before and after.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8.0
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: ACCREDITED_EXEMPT_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 115/week * 52/12 = 498.33/month (differs from Exempt Center's 95 here)
+    in_ccdf_max_rate_per_child: 498.33
+
+- name: Case 10, Exempt Home base infant.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: EXEMPT_HOME
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 143/week * 52/12 = 619.67/month
+    in_ccdf_max_rate_per_child: 619.67
+
+- name: Case 11, Licensed Center PTQ 2 infant.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: PTQ_2
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # 429/week * 52/12 = 1,859.00/month
+    in_ccdf_max_rate_per_child: 1_859.00
+
+# --- Age-group month-boundary rate switches (Licensed Center base) ---
+# Verifies the per-child rate changes exactly at the age cutoff, where the
+# adjacent age groups carry different base weekly rates.
+
+- name: Case 12, exactly 11 months still infant rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.9166  # 11 months, infant
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Infant 416/week * 52/12 = 1,802.67/month
+    in_ccdf_max_rate_per_child: 1_802.67
+
+- name: Case 13, exactly 12 months switches to toddler rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 1.0  # 12 months, toddler
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Toddler 327/week * 52/12 = 1,417.00/month
+    in_ccdf_max_rate_per_child: 1_417.00
+
+- name: Case 14, exactly 71 months still three to five rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 5.9166  # 71 months, three to five
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Three to five 231/week * 52/12 = 1,001.00/month
+    in_ccdf_max_rate_per_child: 1_001.00
+
+- name: Case 15, exactly 72 months switches to kindergarten rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 6.0  # 72 months, kindergarten
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # Kindergarten 220/week * 52/12 = 953.33/month
+    in_ccdf_max_rate_per_child: 953.33
+
+- name: Case 16, exactly 84 months switches to school age rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 7.0  # 84 months, school age before and after
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # School Age Before/After 110/week * 52/12 = 476.67/month
+    in_ccdf_max_rate_per_child: 476.67
