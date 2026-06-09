@@ -13,6 +13,11 @@ class ia_cca_smi(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.hhs.cca.income
+        # IAC 441-170.2(1)"a"(1)"3" caps income at 85% of Iowa's "median
+        # family income (MFI)." Iowa publishes no standalone MFI figure, so we
+        # use the federal CCDF State Median Income (SMI) table as a proxy for
+        # the statutory MFI standard. The 0.85 share is taken directly from
+        # the regulation.
         year = period.start.year
         month = period.start.month
         # The federal SMI table is published on a fiscal-year basis

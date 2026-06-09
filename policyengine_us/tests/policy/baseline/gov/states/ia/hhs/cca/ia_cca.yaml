@@ -1,0 +1,144 @@
+# ia_cca: SPMUnit, USD, MONTH.
+# Isolates the benefit formula's three moving parts:
+#   per child: child_capped = min(pre_subsidy_childcare_expenses, max_rate * units)
+#   total = sum over in-care eligible children of child_capped
+#   benefit = max(total - ia_cca_copay, 0)
+# monthly_units(hpw) = hpw * (52 / 12) / 5; monthly_units(40) = 34.6667, (30) = 26.0.
+# 2025 FPG: family of 2 = 21_150; family of 3 = 26_650.
+# pre_subsidy_childcare_expenses is YEAR-defined; 12_000/yr -> 1_000/mo in the
+# MONTH benefit formula.
+
+- name: Positive benefit, charge capped at the rate ceiling with no copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, infant, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: IA
+  output:
+    # Income 2_000/mo <= Level A (2_044, family 3) -> copay 0.
+    ia_cca_copay: 0
+    # Ceilings: infant 25.66 * 34.6667 = 889.55; preschool 19.50 * 34.6667 = 676.00.
+    # Each 1_000/mo expense exceeds its ceiling -> capped to the ceiling.
+    # Benefit = (889.55 + 676.00) - 0 = 1_565.55
+    ia_cca: 1_565.55
+
+- name: Copay exceeds the rate ceiling so the benefit floors at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 62_400
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      coparent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 24_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, preschooler]
+        ia_cca_enrolled: true
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, coparent, preschooler]
+        state_code: IA
+  output:
+    # Family of 3 enrolled; income 5_200/mo > 225% FPL (4_996.88) -> CCA Exit tier,
+    # Exit basic Level C -> 60% percentage-of-cost copay.
+    ia_cca_in_exit_tier: true
+    # Expense 24_000/yr -> 2_000/mo. Exit copay = 60% * 2_000 = 1_200.
+    ia_cca_copay: 1_200.00
+    # Preschool ceiling = 19.50 * 34.6667 = 676.00; child_capped = min(2_000, 676) = 676.
+    # Benefit = max(676.00 - 1_200.00, 0) = 0 (copay exceeds ceiling -> floored at 0)
+    ia_cca: 0
+
+- name: Negative countable income does not inflate the benefit beyond the ceiling.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -60_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, preschooler]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, preschooler]
+        state_code: IA
+  output:
+    # Negative self-employment income -> zero/negative countable income, well under
+    # the 160% FPL limit -> income eligible; parent works 40 hrs -> activity eligible.
+    ia_cca_eligible: true
+    # Countable income <= sliding-fee Level A -> maximum subsidy, copay 0.
+    ia_cca_copay: 0
+    # Preschool ceiling = 19.50 * 34.6667 = 676.00; expense 1_000/mo capped to 676.00.
+    # Benefit stays at the rate ceiling (max subsidy) and is not inflated by the
+    # negative income. Benefit = max(676.00 - 0, 0) = 676.00
+    ia_cca: 676.00

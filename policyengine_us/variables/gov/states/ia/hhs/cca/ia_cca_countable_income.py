@@ -8,7 +8,7 @@ class ia_cca_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.IA
-    reference = "https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=3"
+    reference = "https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=4"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ia.hhs.cca.income

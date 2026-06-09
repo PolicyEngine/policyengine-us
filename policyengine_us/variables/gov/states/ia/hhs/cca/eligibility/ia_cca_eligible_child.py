@@ -20,11 +20,16 @@ class ia_cca_eligible_child(Variable):
             age < p.special_needs_age_limit,
             age < p.child_age_limit,
         )
-        is_dependent = person("is_tax_unit_dependent", period.this_year)
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )
-        standard_eligible = age_eligible & is_dependent & immigration_eligible
+        # Child status is age-based, not tax-dependency-based. Iowa's
+        # family-size definition (IAC 441-170.2(1)"e"(3)) explicitly includes
+        # "a child or children who live with a person or persons not legally
+        # responsible for the child's support," so a non-dependent minor
+        # living with a non-parent caretaker is still an eligible child;
+        # gating on is_tax_unit_dependent would wrongly exclude them.
+        standard_eligible = age_eligible & immigration_eligible
         # A child in protective or foster care qualifies through the
         # income-exception path regardless of dependency or immigration
         # status (IAC 441-170.2(1)"b").

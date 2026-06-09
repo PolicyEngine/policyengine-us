@@ -1,8 +1,10 @@
-# ia_cca_eligible_child: Person, bool, MONTH (REQ-001 / REQ-002 / REQ-004).
+# ia_cca_eligible_child: Person, bool, MONTH.
 # IAC 441-170.2(2): child up to age 13 (basic), up to age 19 for a child with
-# special needs; must be a dependent in the family; must be a U.S. citizen or
-# qualified alien (is_ccdf_immigration_eligible_child). Protective-services and
-# foster children are categorically eligible regardless of dependency/immigration.
+# special needs; child status is age-based (not tax-dependency-based, since
+# 170.2(1)"e"(3) includes children living with a non-legally-responsible
+# caretaker); must be a U.S. citizen or qualified alien
+# (is_ccdf_immigration_eligible_child). Protective-services and foster children
+# are categorically eligible regardless of immigration status.
 
 - name: Infant dependent citizen is an eligible child.
   period: 2025-01
@@ -124,7 +126,7 @@
     # 19 is not < 19 -> ineligible even with special needs
     ia_cca_eligible_child: false
 
-- name: Non-dependent child within the age limit is not a standard eligible child.
+- name: Non-dependent child within the age limit is still an eligible child.
   period: 2025-01
   input:
     people:
@@ -140,8 +142,11 @@
         members: [child]
         state_code: IA
   output:
-    # Age-eligible but not a dependent and no categorical path -> ineligible
-    ia_cca_eligible_child: false
+    # Child status is age-based, not dependency-based. Iowa's family-size
+    # definition (170.2(1)"e"(3)) includes a child living with a person not
+    # legally responsible for support, so an age-eligible citizen child who is
+    # not a tax dependent is still eligible.
+    ia_cca_eligible_child: true
 
 - name: Child without immigration eligibility is not a standard eligible child.
   period: 2025-01

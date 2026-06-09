@@ -1,4 +1,4 @@
-# ia_cca_copay: SPMUnit, USD, MONTH (REQ-028 / REQ-029 / REQ-030).
+# ia_cca_copay: SPMUnit, USD, MONTH.
 # Two mechanisms dispatched by ia_cca_in_exit_tier (enrolled & income > 225% FPL):
 #   A. CCA / CCA Plus sliding unit fee = unit_fee[level][children_col] * focal_units,
 #      where focal_units = the most monthly units of any in-care eligible child

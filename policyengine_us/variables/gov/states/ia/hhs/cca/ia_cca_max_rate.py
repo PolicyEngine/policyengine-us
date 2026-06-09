@@ -26,7 +26,7 @@ class ia_cca_max_rate(Variable):
 
         # Iowa pays the in-home (Table 5) minimum-wage rate only when at
         # least three children in the family require care
-        # (IAC 441-170.4(8)"d").
+        # (IAC 441-170.4(7)"d").
         children_in_care = person.spm_unit("ia_cca_children_in_care", period)
         in_home_allowed = children_in_care >= p.in_home_min_children
         in_home_rate = where(in_home_allowed, p.in_home_rate, 0)
@@ -46,5 +46,8 @@ class ia_cca_max_rate(Variable):
                 not_registered_rate,
                 in_home_rate,
             ],
-            default=licensed_center_rate,
+            # Every IACCAProviderType value is matched explicitly above, so a
+            # future unmapped provider type surfaces as a zero rate (a visible
+            # gap) rather than silently inheriting the licensed-center rate.
+            default=0,
         )
