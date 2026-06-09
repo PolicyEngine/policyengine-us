@@ -27,6 +27,7 @@ MICRODATA_UPRATING_OVERRIDES = {
     "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",
     "misc_deduction": DEFAULT_MICRODATA_UPRATING,
     "partnership_income": "calibration.gov.irs.soi.partnership_s_corp_income",
+    "partnership_s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
     "partnership_self_employment_net_earnings": "calibration.gov.irs.soi.self_employment_income",
     "person_weight": "calibration.gov.census.populations.total",
     "pre_tax_contributions": DEFAULT_MICRODATA_UPRATING,
