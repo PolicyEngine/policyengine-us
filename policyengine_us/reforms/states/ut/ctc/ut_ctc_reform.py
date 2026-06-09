@@ -1,6 +1,9 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import instant
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    state_non_refundable_credit_limit,
+)
 
 
 def create_ut_ctc() -> Reform:
@@ -54,7 +57,18 @@ def create_ut_ctc() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.ut.ctc
             potential = tax_unit("ut_ctc_potential", period)
-            non_refundable = tax_unit("ut_ctc", period)
+            ordered_credits = parameters(
+                period
+            ).gov.states.ut.tax.income.credits.non_refundable
+            credit_name = ut_ctc_potential.__name__.removesuffix("_potential")
+            credit_limit = state_non_refundable_credit_limit(
+                tax_unit,
+                period,
+                ordered_credits,
+                "ut_income_tax_before_non_refundable_credits",
+                credit_name,
+            )
+            non_refundable = min_(potential, credit_limit)
             eligible_children = tax_unit("ut_ctc_eligible_children", period)
             unused_credit = max_(potential - non_refundable, 0)
             refund_limit = p.refundable.amount * eligible_children
