@@ -1,8 +1,11 @@
 # ia_cca_in_exit_tier: SPMUnit, bool, MONTH (dispatch).
 # True when the family is enrolled AND monthly income exceeds the ongoing CCA Plus
-# limit (225% FPL). These families pay the percentage-of-cost CCA Exit fee rather
-# than the sliding unit fee. 2025 family-of-3 225% FPL monthly = 4_996.88
-# (annual 59_962.50).
+# ceiling — the lesser of 225% FPL and 85% of Iowa median family income
+# (IAC 441-170.2(1)"a"(2)). These families pay the percentage-of-cost CCA Exit fee
+# rather than the sliding unit fee. The 85% MFI cap binds below 225% FPL only at
+# very large family sizes (10+ with current parameters). 2025 family-of-3 225% FPL
+# monthly = 4_996.88 (annual 59_962.50); 2025 family-of-10 figures: 85% SMI
+# monthly = 11_582.00, 225% FPL monthly = 12_215.62.
 
 - name: Enrolled family above 225 percent FPL is in the exit tier.
   period: 2025-01
@@ -128,3 +131,67 @@
   output:
     # 59_975 (+$12.50/yr over 59_962.50) and enrolled -> exit tier
     ia_cca_in_exit_tier: true
+
+- name: Large enrolled family between the 85 percent MFI cap and 225 percent FPL is in the exit tier.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 141_600
+      coparent:
+        age: 35
+      c1: {age: 6}
+      c2: {age: 6}
+      c3: {age: 6}
+      c4: {age: 6}
+      c5: {age: 6}
+      c6: {age: 6}
+      c7: {age: 6}
+      c8: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, c1, c2, c3, c4, c5, c6, c7, c8]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent, coparent, c1, c2, c3, c4, c5, c6, c7, c8]
+        state_code: IA
+  output:
+    # Family of 10; income 11_800/mo. The CCA Plus ceiling is
+    # min(225% FPL 12_215.62, 85% MFI 11_582.00) = 11_582.00, so income
+    # above the MFI cap moves the family into the exit tier even though it
+    # is below 225% FPL.
+    ia_cca_in_exit_tier: true
+
+- name: Large enrolled family below the 85 percent MFI cap stays on the sliding fee.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 138_000
+      coparent:
+        age: 35
+      c1: {age: 6}
+      c2: {age: 6}
+      c3: {age: 6}
+      c4: {age: 6}
+      c5: {age: 6}
+      c6: {age: 6}
+      c7: {age: 6}
+      c8: {age: 6}
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, c1, c2, c3, c4, c5, c6, c7, c8]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent, coparent, c1, c2, c3, c4, c5, c6, c7, c8]
+        state_code: IA
+  output:
+    # Family of 10; income 11_500/mo <= min(12_215.62, 11_582.00)
+    # -> CCA Plus sliding fee, not exit tier
+    ia_cca_in_exit_tier: false

@@ -37,14 +37,11 @@ class ia_cca_income_eligible(Variable):
         # IAC 441-170.2(1)"a" sets three income tiers: initial (a(1),
         # min of 160%/200% FPL and 85% MFI), ongoing CCA Plus (a(2),
         # min of 225% FPL and 85% MFI), and ongoing CCA Exit (a(3),
-        # 250%/275% FPL with no MFI cap). We collapse the two ongoing tiers
-        # into the higher CCA Exit ceiling for enrolled families, so the a(2)
-        # 225%-FPL-with-85%-MFI-cap intermediate ceiling is not represented.
-        # The 85% MFI cap is correctly absent from a(3). The omitted a(2) cap
-        # only binds below the 225% FPL standard at very large family sizes
-        # (where 85% MFI falls below 225% FPL), and the model uses the 225%
-        # FPL standard solely as the copay-mechanism dispatch boundary
-        # (CCA/CCA Plus sliding fee vs. CCA Exit percentage), never as an
-        # income-eligibility ceiling, so this simplification is immaterial.
+        # 250%/275% FPL with no MFI cap). For ELIGIBILITY, enrolled families
+        # are covered up to the higher a(3) CCA Exit ceiling (the 85% MFI cap
+        # is correctly absent from a(3)); a family over the a(2) CCA Plus
+        # ceiling is not ineligible — it moves to the CCA Exit tier. The a(2)
+        # ceiling, including its 85% MFI cap, is applied where it has effect:
+        # as the copay-mechanism dispatch boundary in ia_cca_in_exit_tier.
         income_limit = where(enrolled, exit_limit, initial_limit)
         return countable_income <= income_limit

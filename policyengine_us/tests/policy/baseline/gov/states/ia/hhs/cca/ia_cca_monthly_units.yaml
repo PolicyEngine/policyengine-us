@@ -1,9 +1,11 @@
 # ia_cca_monthly_units: Person, float, MONTH.
-# A unit of service is a half day of up to 5 hours of care (IAC 441-170.1). With
-# no authorized-units input, the monthly units are inferred from the child's
-# scheduled weekly childcare hours, annualized to monthly and divided by the
-# 5-hour unit: monthly_units = childcare_hours_per_week * (52 / 12) / 5.
-# Defined only for an eligible child.
+# A unit of service is a half day of up to 5 hours of care per 24-hour period,
+# and a full day bills as two half-day units (IAC 441-170.1; 170.4(7)"a").
+# When the care schedule is known (childcare_days_per_week > 0), units are
+# counted per day: one unit for a day of up to 5 hours, two for a longer day,
+# times days per week, annualized monthly (x 52 / 12). When only weekly hours
+# are reported, units fall back to total-hours proration:
+# childcare_hours_per_week * (52 / 12) / 5. Defined only for an eligible child.
 
 - name: Full-time hours convert to monthly half-day units.
   period: 2025-01
@@ -57,6 +59,118 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    ia_cca_monthly_units: 0
+
+- name: A four-hour day bills one unit per day, not a prorated fraction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 4 hours <= 5 -> 1 unit per day; 5 days * 1 * (52 / 12) = 21.6667.
+    # Hours proration would give 20 * (52 / 12) / 5 = 17.3333, understating
+    # the units for a part-day schedule.
+    ia_cca_monthly_units: 21.6667
+
+- name: An eight-hour day bills two units as a full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 8 hours > 5 -> full day = 2 units; 5 days * 2 * (52 / 12) = 43.3333
+    ia_cca_monthly_units: 43.3333
+
+- name: A five-hour day is exactly one unit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 5
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # A unit is up to 5 hours, so a 5-hour day stays at 1 unit:
+    # 5 days * 1 * (52 / 12) = 21.6667
+    ia_cca_monthly_units: 21.6667
+
+- name: A ten-hour day still bills two units.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_days_per_week: 3
+        childcare_hours_per_day: 10
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 10 hours > 5 -> full day = 2 units; 3 days * 2 * (52 / 12) = 26
+    ia_cca_monthly_units: 26
+
+- name: Days scheduled with zero hours give zero units.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 0
     tax_units:
       tax_unit:
         members: [child]
