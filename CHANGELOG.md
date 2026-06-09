@@ -1,3 +1,10 @@
+## [1.722.5] - 2026-06-09
+
+### Fixed
+
+- Exclude state use tax from state income tax variables and aggregates.
+
+
 ## [1.722.4] - 2026-06-08
 
 ### Changed
