@@ -18,7 +18,7 @@ class eitc_earned_income(Variable):
             "self_employment_income",
             "sstb_self_employment_income",
             "farm_operations_income",
-            "partnership_se_income",
+            "partnership_self_employment_net_earnings",
         ]
         gross_earned_income = sum(
             tax_unit_non_dep_sum(source, tax_unit, period)
