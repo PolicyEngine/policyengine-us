@@ -1,3 +1,123 @@
+## [1.722.5] - 2026-06-09
+
+### Fixed
+
+- Exclude state use tax from state income tax variables and aggregates.
+
+
+## [1.722.4] - 2026-06-08
+
+### Changed
+
+- Update Washington WCCC and Connecticut Care 4 Kids child care payment parameters.
+
+
+## [1.722.3] - 2026-06-08
+
+### Fixed
+
+- Fixed California itemized deductions double-counting investment interest expense.
+
+
+## [1.722.2] - 2026-06-08
+
+### Fixed
+
+- Use the number of current pregnancies when increasing WIC family size for pregnant applicants.
+
+
+## [1.722.1] - 2026-06-08
+
+No significant changes.
+
+
+## [1.722.0] - 2026-06-08
+
+### Added
+
+- - Add an Illinois SB3567 (104th General Assembly) contributed reform, opt-in via `gov.contrib.states.il.sb3567.in_effect`, that boosts the child tax credit for low-AGI filers.
+- Added the Kentucky Homestead Exemption property tax reduction.
+
+### Fixed
+
+- Apply the Montana Elderly Homeowner/Renter Credit multiplier to household-level gross income and include the full Social Security amount.
+- Zero the New Jersey pre-credit liability before refundable credits flow through when AGI is at or below the filing threshold.
+- Correct Indiana TANF benefit payments to use the IC 12-14-2-5 maximum benefit and add the post-2025 gross/net income eligibility screens.
+
+
+## [1.721.4] - 2026-06-08
+
+### Fixed
+
+- - Fixed federal alimony above-the-line deductions, Pennsylvania retirement income exclusions, and Ohio retirement credit regression coverage.
+- Updated Colorado Temporary Assistance for Needy Families grant standards for the July 2025 current-law amounts.
+
+
+## [1.721.3] - 2026-06-08
+
+### Fixed
+
+- Fixed federal/state conformity across EITC, deduction, ALD, HoH, and CDCC linkages.
+
+  - Federal HoH: tighten IRC 7703(b) "considered unmarried" to MFS/HoH/single filers only; a JOINT filer with `is_separated=true` no longer qualifies.
+  - IN EITC: advance the TY 2026+ static-conformity IRC snapshot to January 1, 2026 per Indiana SEA 243 (2025); the IN snapshot date and the WA WFTC 2022-06-09 snapshot remain Python literals because policyengine-core does not support string-valued parameters. Replace the IN 2021-only branch with a `gov.states.in.tax.income.credits.earned_income.childless.in_effect` gate.
+  - CT dropped from `states_using_federal_itemized_deductions` and `states_using_federal_standard_deduction` (CT-1040 uses neither — only a personal exemption); SC drops out effective TY 2026 per H. 4216 / Act 110 of 2026.
+  - DC: `dc_eitc` continues to model Law 23-149 ITIN inclusivity; the previously-added `dc_base_eitc` diagnostic variable is removed (unreferenced in this PR's scope).
+  - OH educator expense: the federal `educator_expense` is no longer in OH's deductions list. ORC § 5747.01(A)(31) only allows the *excess* above the federal $300 cap, modeled via the new `oh_educator_expense_deduction_person` input variable. Filers without explicit input receive 0 for the OH-only excess; downstream microdata should populate it. The federal-cap interaction is no longer auto-applied to the OH deduction list — an under-implementation, documented as a known limitation.
+  - GA: `ga_itemized_deductions_adjustment` ships as an explicit-input stub for now (other-state taxes and exempt-investment interest are not separately observed in the baseline microdata).
+  - HI: new student loan interest deduction subtree (`gov.states.hi.tax.income.subtractions.student_loan_interest/*`) and supporting `hi_modified_agi`, `hi_student_loan_interest_*` variables modelling pre-current IRC § 221, effective TY 2025+. The pre-2025 HI subtractions list retains `student_loan_interest_ald` so years 2021-2024 continue to receive the federal-equivalent SLI deduction.
+
+
+## [1.721.2] - 2026-06-06
+
+### Fixed
+
+- Fix Alameda County name string in `in_ala` so it matches the all-caps county enum name (`ALAMEDA_COUNTY_CA`).
+
+
+## [1.721.1] - 2026-06-06
+
+### Fixed
+
+- Restricted Kansas Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.721.0] - 2026-06-06
+
+### Added
+
+- Added the Kansas Lifeline phone service supplement from the Kansas Universal Service Fund.
+
+
+## [1.720.7] - 2026-06-05
+
+### Fixed
+
+- Restricted Missouri Commodity Supplemental Food Program eligibility to counties with DHSS distribution sites.
+
+
+## [1.720.6] - 2026-06-03
+
+### Changed
+
+- Removed injected medicaid_cost_if_enrolled inputs from partner contract tests and re-derived expected outputs from the restored SLCSP-index Medicaid cost formula.
+
+
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
+## [1.720.4] - 2026-06-02
+
+### Fixed
+
+- Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
+
+
 ## [1.720.3] - 2026-06-02
 
 ### Fixed

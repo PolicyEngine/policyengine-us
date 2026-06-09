@@ -25,9 +25,7 @@ class ga_deductions(Variable):
     def formula(tax_unit, period, parameters):
         itemizes = tax_unit("tax_unit_itemizes", period)
         sd = tax_unit("ga_standard_deduction", period)
-        # 48-7-27(a)(1) states:
-        # "Either the sum of all itemized nonbusiness deductions used in computing
-        #  such taxpayer’s federal taxable income or..."
-        p = parameters(period).gov.irs.deductions
-        itemized = add(tax_unit, period, p.itemized_deductions)
+        itemized = tax_unit("itemized_taxable_income_deductions", period)
+        itemized -= tax_unit("ga_itemized_deductions_adjustment", period)
+        itemized = max_(itemized, 0)
         return where(itemizes, itemized, sd)

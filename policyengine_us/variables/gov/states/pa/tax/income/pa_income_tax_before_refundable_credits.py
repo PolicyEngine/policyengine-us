@@ -9,4 +9,4 @@ class pa_income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.PA
 
-    adds = ["pa_income_tax_after_forgiveness", "pa_use_tax"]
+    adds = ["pa_income_tax_after_forgiveness"]

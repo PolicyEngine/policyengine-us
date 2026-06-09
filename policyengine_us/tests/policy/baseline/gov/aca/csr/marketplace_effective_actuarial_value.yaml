@@ -1,0 +1,15 @@
+- name: Case 1, CSR changes effective actuarial value but not Marketplace net premium.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+    aca_magi_fraction: 1.25
+    selected_marketplace_plan_category: SILVER
+    selected_marketplace_plan_premium_proxy: 5_000
+    used_aca_ptc: 3_000
+  output:
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_csr_category: AV_94
+    marketplace_effective_actuarial_value: 0.94
+    marketplace_net_premium: 2_000
