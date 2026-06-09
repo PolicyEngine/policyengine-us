@@ -1,0 +1,33 @@
+description: Iowa counts these unearned income sources under the Child Care Assistance program.
+values:
+  2024-07-01:
+    - social_security  # includes retirement, survivors, and disability
+    - pension_income  # pensions and annuities
+    - dividend_income
+    - interest_income
+    - tax_exempt_interest_income
+    - estate_income  # estate and trust income
+    - rental_income  # net rental and royalty income
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    - veterans_benefits  # veterans pensions
+    - gambling_winnings  # casino profits
+    - railroad_benefits  # railroad retirement
+    - strike_benefits  # strike pay
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa CCA countable unearned income sources
+  # Iowa counts public assistance generally, but the model omits TANF/FIP cash
+  # dollars here to avoid the CCAP-to-TANF circular dependency (FIP recipients
+  # qualify through the income-exception path instead). Iowa excludes SSI except
+  # in specified FIP-linked cases; we don't track that linkage at the moment, so
+  # SSI is conservatively left out of countable income. AmeriCorps living
+  # allowance, permanent disability insurance, and royalty income have no
+  # separate PolicyEngine variable at the moment and are therefore not counted.
+  reference:
+    - title: IAC 441-170.2(1)"c" — Income counted (Census median-income sources)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=3

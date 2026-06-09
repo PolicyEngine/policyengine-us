@@ -1,0 +1,139 @@
+# ia_cca_countable_income: SPMUnit, USD, MONTH (REQ-032 / REQ-033 / REQ-034).
+# Sums countable earned and unearned income, excluding the earnings of a child
+# age 14 or younger and the earnings of a full-time student age 18 or younger
+# (IAC 441-170.2(1)"d"). Definition period is MONTH, so annual income sources are
+# auto-divided to monthly figures.
+
+- name: Parent earnings count in monthly countable income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 36_000 / 12 = 3_000 per month
+    ia_cca_countable_income: 3_000
+
+- name: Earnings of a child age 14 or younger are excluded.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      working_child:
+        age: 14
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent, working_child]
+    households:
+      household:
+        members: [parent, working_child]
+        state_code: IA
+  output:
+    # Child age 14 (<= 14) -> earnings excluded; only parent counts: 36_000/12 = 3_000
+    ia_cca_countable_income: 3_000
+
+- name: Earnings of a full-time student age 18 or younger are excluded.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      student_child:
+        age: 17
+        employment_income: 9_000
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent, student_child]
+    households:
+      household:
+        members: [parent, student_child]
+        state_code: IA
+  output:
+    # Child age 17 and full-time student -> earnings excluded; only parent: 3_000
+    ia_cca_countable_income: 3_000
+
+- name: Earnings of a non-student older minor are counted.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      teen:
+        age: 17
+        employment_income: 12_000
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: IA
+  output:
+    # Age 17, not a student, and over 14 -> earnings counted:
+    # (36_000 + 12_000) / 12 = 4_000
+    ia_cca_countable_income: 4_000
+
+- name: Unearned income is counted in addition to earnings.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+        social_security: 6_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # (36_000 earned + 6_000 social security) / 12 = 3_500 per month
+    ia_cca_countable_income: 3_500
+
+# === Edge cases ===
+
+- name: No income sources gives zero countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # No earned or unearned income for anyone -> 0 (degenerate low boundary)
+    ia_cca_countable_income: 0

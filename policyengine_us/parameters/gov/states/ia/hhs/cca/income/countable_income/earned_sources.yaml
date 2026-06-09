@@ -1,0 +1,17 @@
+description: Iowa counts these earned income sources under the Child Care Assistance program. Iowa excludes the earnings of a child age 14 or younger and the earnings of a child 18 or younger who is a full-time student, so these sources are summed only for persons who are not excluded minors.
+values:
+  2024-07-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa CCA countable earned income sources
+  reference:
+    - title: IAC 441-170.2(1)"c" — Income counted (wages, self-employment net profit)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=3
+    - title: IAC 441-170.2(1)"d" — Income excluded (child age 14 or under; student 18 or under)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=3

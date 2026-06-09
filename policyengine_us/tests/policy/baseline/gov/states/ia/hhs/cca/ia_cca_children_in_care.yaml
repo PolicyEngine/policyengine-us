@@ -1,0 +1,90 @@
+# ia_cca_children_in_care: SPMUnit, int, MONTH (REQ-027 gating helper).
+# Counts eligible children with scheduled childcare hours (childcare_hours_per_week
+# > 0). Used to set the sliding-fee children column and to gate the in-home rate.
+
+- name: Counts only eligible children who have childcare hours.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child_in_care_1:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+      child_in_care_2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+      child_no_hours:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+      child_over_age:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+    tax_units:
+      tax_unit:
+        members: [parent, child_in_care_1, child_in_care_2, child_no_hours, child_over_age]
+    spm_units:
+      spm_unit:
+        members: [parent, child_in_care_1, child_in_care_2, child_no_hours, child_over_age]
+    households:
+      household:
+        members: [parent, child_in_care_1, child_in_care_2, child_no_hours, child_over_age]
+        state_code: IA
+  output:
+    # Two eligible children have hours; the no-hours child and the age-14 (over the
+    # age-13 basic limit) child are not counted -> 2
+    ia_cca_children_in_care: 2
+
+- name: No children in care returns zero.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_cca_children_in_care: 0
+
+# === Edge cases ===
+
+- name: Adult-only unit with no children returns zero.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Degenerate unit (no children at all) -> count 0, no crash
+    ia_cca_children_in_care: 0

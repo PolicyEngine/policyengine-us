@@ -1,0 +1,220 @@
+# ia_cca_eligible: SPMUnit, bool, MONTH (REQ-016).
+# Eligible = has an eligible child AND asset-eligible AND
+#   ((income-eligible AND activity-eligible) OR income-exception).
+# Families eligible without regard to income (FIP/protective/foster) bypass both
+# the income and activity tests but still need an eligible child and assets below
+# the limit.
+
+- name: Standard household meeting all tests is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Eligible child, income (2_500/mo) below 160% FPL (family 2 -> 2_820/mo),
+    # parent works 40 hrs, assets below $1M -> eligible
+    ia_cca_eligible: true
+
+- name: Household failing the income test is not eligible on the standard path.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Family of 2; income 5_000/mo > 160% FPL (2_820/mo) and not enrolled -> ineligible
+    ia_cca_eligible: false
+
+- name: FIP household over the income limit and not working is still eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 90_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Income exception (FIP) bypasses the income and activity tests; eligible child
+    # and assets below $1M -> eligible despite high income and zero work hours
+    ia_cca_eligible: true
+
+- name: Household with no eligible child is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      teen:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, teen]
+        state_code: IA
+  output:
+    # Only child is age 15 (> 13, not disabled) -> no eligible child -> ineligible
+    ia_cca_eligible: false
+
+- name: Household over the resource limit is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # FIP income exception, but resources $2M > $1M limit -> ineligible
+    # (the asset test is not bypassed by the income exception)
+    ia_cca_eligible: false
+
+# === Edge cases ===
+
+- name: SPM unit with only an adult and no children is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+    tax_units:
+      tax_unit:
+        members: [parent]
+    spm_units:
+      spm_unit:
+        members: [parent]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # No children at all -> no eligible child -> ineligible (degenerate unit; the
+    # has_eligible_child gate must short-circuit without error)
+    ia_cca_eligible: false
+
+- name: Eligible child with zero care hours leaves the family eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Eligibility does not depend on care hours (only the benefit does); the child
+    # is age/dependency/immigration eligible -> family remains eligible. The zero
+    # care hours zero out the benefit, tested in the benefit file.
+    ia_cca_eligible: true

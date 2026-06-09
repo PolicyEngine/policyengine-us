@@ -1,0 +1,186 @@
+# ia_cca_sliding_fee_level: SPMUnit, int index 0-27, MONTH (REQ-028).
+# The family is at the first level whose monthly-income threshold (for its family
+# size) is at or above its income; equivalently the index is the number of level
+# thresholds the monthly income exceeds, capped at 27 (Level BB).
+# Income is monthly ia_cca_countable_income = employment_income / 12.
+# Family-of-3 monthly thresholds: A 2_044, B 2_152, C 2_212; AA 4_254, BB 6_000.
+
+- name: Income below the Level A threshold is Level A index 0.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_000/mo <= A (2_044) -> index 0
+    ia_cca_sliding_fee_level: 0
+
+- name: Income between Level A and B thresholds is Level B index 1.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Income 2_100/mo: > A (2_044), <= B (2_152) -> index 1
+    ia_cca_sliding_fee_level: 1
+
+- name: Income between Level B and C thresholds is Level C index 2.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 26_400
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Income 2_200/mo: > B (2_152), <= C (2_212) -> index 2
+    ia_cca_sliding_fee_level: 2
+
+- name: Very high income within the CCA Plus range tops out at Level BB index 27.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 57_600
+      coparent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Income 4_800/mo: > AA (4_254), <= BB (6_000) -> top index 27 (Level BB)
+    ia_cca_sliding_fee_level: 27
+
+# === Edge cases ===
+# The income-threshold table runs by family size 1-13 (13 means "13 or more"). The
+# formula clips family size to that range, so a unit of 14+ must use the size-13
+# column. These three cases test the minimum (size 1) and the size-13 clip ceiling.
+
+- name: Family of one uses the size-1 thresholds at Level A index 0.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Family of 1; income 1_000/mo <= A (1_192 for size 1) -> index 0 (minimum size)
+    ia_cca_sliding_fee_level: 0
+
+- name: Family of thirteen uses the size-13 thresholds.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 76_800
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+      c12: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
+        state_code: IA
+  output:
+    # Family of 13; income 6_400/mo: > A (6_303), <= B (6_635 size 13) -> index 1
+    ia_cca_sliding_fee_level: 1
+
+- name: Family of fourteen uses the size-13 column at the same level.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 76_800
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+      c12: {age: 4}
+      c13: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13]
+        state_code: IA
+  output:
+    # Family of 14 clips to size 13 -> same thresholds, same income -> index 1
+    # (confirms the clip(size, 1, 13) ceiling on the lookup table)
+    ia_cca_sliding_fee_level: 1

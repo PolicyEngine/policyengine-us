@@ -1,0 +1,354 @@
+# ia_cca_copay: SPMUnit, USD, MONTH (REQ-028 / REQ-029 / REQ-030).
+# Two mechanisms dispatched by ia_cca_in_exit_tier (enrolled & income > 225% FPL):
+#   A. CCA / CCA Plus sliding unit fee = unit_fee[level][children_col] * focal_units,
+#      where focal_units = the most monthly units of any in-care eligible child
+#      and children_col = clip(children in care, 1, 3).
+#   B. CCA Exit = exit_pct[level] * sum of childcare expenses for children in care.
+# Families eligible without regard to income (FIP/protective/foster) pay no fee.
+# monthly_units(hpw) = hpw * (52 / 12) / 5; monthly_units(40 hrs/wk) = 34.6667.
+# 2025 FPG: family of 3 = 26_650 (225% monthly = 4_996.88); family of 4 = 32_150.
+# Sliding-fee monthly income thresholds (family 3): A 2_044, B 2_152, C 2_212.
+# Sliding-fee monthly income thresholds (family 4): B 2_600, C 2_673.
+# pre_subsidy_childcare_expenses is YEAR-defined, so an annual value is divided to
+# a monthly figure inside the MONTH copay formula (e.g. 12_000/yr -> 1_000/mo).
+
+# ===== Mechanism A: CCA / CCA Plus sliding unit fee =====
+
+- name: Sliding fee is zero at Level A.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 18_000
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Family of 2; income 1_500/mo <= Level A threshold (1_619 for size 2) -> fee 0
+    ia_cca_copay: 0
+
+- name: Sliding fee at Level B with one child in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+      coparent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 2_100/mo: > A (2_044), <= B (2_152) -> Level B (index 1).
+    # 1 child in care -> column 1 -> unit fee 0.20.
+    # focal_units = monthly_units(40) = 34.6667; copay = 0.20 * 34.6667 = 6.9333
+    ia_cca_copay: 6.93
+
+- name: Sliding fee at Level B with two children in care uses the two-child column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Family of 3; income 2_100/mo -> Level B. 2 children in care -> column 2 -> 0.45.
+    # focal_units = monthly_units(40) = 34.6667; copay = 0.45 * 34.6667 = 15.60.
+    # Fee is still assessed on only one child (the most units), via focal_units.
+    ia_cca_copay: 15.60
+
+- name: Sliding fee at Level C with three children in care uses the three-or-more column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 31_800
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: IA
+  output:
+    # Family of 4; income 2_650/mo: > B (2_600), <= C (2_673) -> Level C (index 2).
+    # 3 children in care -> column 3 (three or more) -> 0.95.
+    # focal_units = monthly_units(40) = 34.6667; copay = 0.95 * 34.6667 = 32.9333
+    ia_cca_copay: 32.93
+
+# ===== Mechanism B: CCA Exit percentage of cost of care =====
+# Note: CCA Exit Level A (33%) is unreachable in practice — entering the exit tier
+# requires income above 225% FPL, which always exceeds the exit Level A income
+# threshold, so the lowest reachable exit level is B (45%).
+
+- name: CCA Exit fee at Level B is 45 percent of the cost of care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 60_000
+      coparent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3; income 5_000/mo > 225% FPL (4_996.88) -> exit tier.
+    # Exit basic: > A (4_842), <= B (5_057) -> Level B -> 45%.
+    # Expense 12_000/yr -> 1_000/mo; copay = 0.45 * 1_000 = 450
+    ia_cca_copay: 450.00
+
+- name: CCA Exit fee at Level C is 60 percent across all children in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 61_200
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_600
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Family of 3; income 5_100/mo > 225% FPL (4_996.88) -> exit tier.
+    # Exit basic: > A (4_842), > B (5_057), <= C (5_272) -> Level C -> 60%.
+    # The exit fee applies to EACH child in care, summed. Expenses 12_000/yr and
+    # 9_600/yr -> 1_000/mo and 800/mo; copay = 0.60 * (1_000 + 800) = 1_080
+    ia_cca_copay: 1_080.00
+
+- name: CCA Exit special-needs fee uses the special-needs income thresholds.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 64_800
+      coparent:
+        age: 30
+      child:
+        age: 4
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent, coparent, child]
+        state_code: IA
+  output:
+    # Family of 3 special-needs; income 5_400/mo > 225% FPL (4_996.88) -> exit tier.
+    # Exit special-needs thresholds (family 3): A 4_842, B 5_272, C 5_703.
+    # 5_400: > A, > B (5_272), <= C (5_703) -> Level C -> 60%.
+    # Expense 12_000/yr -> 1_000/mo; copay = 0.60 * 1_000 = 600
+    ia_cca_copay: 600.00
+
+# ===== Copay exemption for the no-income-test population =====
+
+- name: Foster family pays no copay despite income in the fee range.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+      child:
+        age: 4
+        is_in_foster_care: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Foster child -> income exception -> copay forced to 0 regardless of level
+    ia_cca_copay: 0
+
+- name: FIP-enrolled family pays no copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # FIP/TANF recipient -> income exception -> copay 0
+    ia_cca_copay: 0
+
+# ===== Edge cases =====
+
+- name: No children in care produces a zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_200
+        is_tax_unit_head_or_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Income lands at a non-zero sliding-fee level, but with no child in care the
+    # focal_units max is 0, so the per-unit fee multiplies to 0 (degenerate; the
+    # copay must not crash or produce a stray fee with nobody in care)
+    ia_cca_copay: 0

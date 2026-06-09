@@ -1,0 +1,68 @@
+# ia_cca_monthly_units: Person, float, MONTH (REQ-017).
+# A unit of service is a half day of up to 5 hours of care (IAC 441-170.1). With
+# no authorized-units input, the monthly units are inferred from the child's
+# scheduled weekly childcare hours, annualized to monthly and divided by the
+# 5-hour unit: monthly_units = childcare_hours_per_week * (52 / 12) / 5.
+# Defined only for an eligible child.
+
+- name: Full-time hours convert to monthly half-day units.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 40 * (52 / 12) / 5 = 34.6667
+    ia_cca_monthly_units: 34.6667
+
+- name: Part-time hours convert to fewer monthly units.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 20
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 20 * (52 / 12) / 5 = 17.3333
+    ia_cca_monthly_units: 17.3333
+
+- name: No scheduled hours gives zero units.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    ia_cca_monthly_units: 0

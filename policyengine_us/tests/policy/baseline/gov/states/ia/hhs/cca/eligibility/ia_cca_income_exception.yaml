@@ -1,0 +1,85 @@
+# ia_cca_income_exception: SPMUnit, bool, MONTH (REQ-011).
+# Iowa serves certain families without regard to income (IAC 441-170.2(1)"b"):
+# FIP/TANF recipients (via is_tanf_enrolled), families with a child in protective
+# child care, and licensed foster parents needing care for a foster child.
+
+- name: FIP-enrolled family qualifies through the income exception.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_cca_income_exception: true
+
+- name: Family with a protective-services child qualifies.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_cca_income_exception: true
+
+- name: Foster-care family qualifies.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_cca_income_exception: true
+
+- name: Family without any exception path does not qualify.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # No FIP, no protective, no foster -> standard income-tested path applies
+    ia_cca_income_exception: false
