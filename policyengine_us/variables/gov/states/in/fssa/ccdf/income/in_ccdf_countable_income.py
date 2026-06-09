@@ -19,7 +19,7 @@ class in_ccdf_countable_income(Variable):
         # (advance pay timing, insurance, reimbursements, housing/food
         # allowances, employer retirement contributions) at the moment, so
         # those exclusions are not separately modeled (PM Section 1.8
-        # #page=26, #page=29).
+        # #page=26, #page=27, #page=29).
         # Earned income of household members under 18 is excluded, except for
         # emancipated minors and minor parents, which we don't track at the
         # moment.

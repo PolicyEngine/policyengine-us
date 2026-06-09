@@ -13,8 +13,10 @@ class in_ccdf_income_eligible(Variable):
         p = parameters(period).gov.states["in"].fssa.ccdf.income
         countable_income = spm_unit("in_ccdf_countable_income", period)
         enrolled = spm_unit("is_in_ccdf_enrolled", period)
-        # Initial applicants are tested at 135% of the federal poverty guideline;
-        # enrolled recipients are tested at 85% of the state median income.
+        # Initial applicants are tested against the get-on share of the
+        # federal poverty guideline (127% through Jul 2023, 150% from Aug
+        # 2023, 135% from Apr 2026); enrolled recipients are tested at 85%
+        # of the state median income.
         initial_limit = spm_unit("spm_unit_fpg", period) * p.get_on_fpg_rate
         continuing_limit = spm_unit("hhs_smi", period) * p.stay_on_smi_rate
         income_limit = where(enrolled, continuing_limit, initial_limit)

@@ -6,6 +6,10 @@ description: Indiana provides these full-time weekly reimbursement rates by prov
 # except Registered Ministry) carry their base row's value at PTQ_1; families that
 # publish only a base row (Exempt Center, Accredited Exempt Center, Exempt Home)
 # carry their base value across all Paths to QUALITY levels.
+# FSSA cut reimbursement rates effective October 5, 2025 (infant/toddler -10%,
+# preschool -15%, school age -35% per FSSA budget reporting); post-cut county
+# rate sheets were not available when this was implemented, so the FY2023 rates
+# carry forward past that date.
 
 metadata:
   period: week
@@ -16,12 +20,8 @@ metadata:
     - in_ccdf_ptq_level
     - in_ccdf_age_group
   reference:
-    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Licensed Center
+    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023 (Licensed Center p. 1, Licensed Home and Registered Ministry p. 2, Exempt providers p. 3)
       href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=1
-    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Licensed Home and Registered Ministry
-      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=2
-    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023, Registered Ministry and Exempt providers
-      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=3
 
 LICENSED_CENTER:
   BASE:

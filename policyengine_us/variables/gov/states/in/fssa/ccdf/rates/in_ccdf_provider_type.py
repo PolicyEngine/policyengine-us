@@ -19,5 +19,6 @@ class in_ccdf_provider_type(Variable):
     defined_for = StateCode.IN
     label = "Indiana CCDF provider type"
     reference = (
-        "https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=37"
+        "https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=37",
+        "https://www.in.gov/fssa/carefinder/files/CCDF-Provider-Manual.pdf#page=11",
     )

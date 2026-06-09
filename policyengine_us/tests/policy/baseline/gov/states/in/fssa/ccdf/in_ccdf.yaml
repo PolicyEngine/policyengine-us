@@ -1,8 +1,8 @@
 # Tests for in_ccdf (SPMUnit, MONTH, USD) — the monthly subsidy.
 # Subsidy = max(min(pre-subsidy childcare expenses, sum of per-child max rates)
 #               - monthly copay, 0).
-# The weekly copay is converted to monthly (* 52 / 12). The family pays
-# directly for any provider charge above the reimbursement rate.
+# The copay variable converts Indiana's weekly copay to monthly (* 52 / 12).
+# The family pays directly for any provider charge above the reimbursement rate.
 # Policy Manual Section 2.6.
 
 - name: Case 1, expenses above rate, capped at rate then copay deducted.
@@ -80,8 +80,8 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # expenses 50/mo capped (rate 316.33); monthly copay = 36.74 * 52/12 = 159.21
-    # 50 - 159.21 < 0 -> floored to 0
+    # expenses 50/mo capped (rate 316.33); monthly copay = 36.74 * 52/12 = 159.22
+    # 50 - 159.22 < 0 -> floored to 0
     in_ccdf: 0
 
 - name: Case 4, ineligible family receives no subsidy.
@@ -106,6 +106,7 @@
         members: [person1, person2]
         state_code: IN
   output:
+    in_ccdf_eligible: false
     in_ccdf: 0
 
 - name: Case 5, zero childcare expenses, no subsidy.
@@ -175,7 +176,7 @@
     people:
       person1:
         age: 35
-        employment_income: 22_720  # ~105% FPL (3-person) -> copay factor 0.0116
+        employment_income: 22_720  # ~83% FPL (3-person) -> zero copay
       person2:
         age: 0.5  # infant
         is_tax_unit_dependent: true

@@ -183,16 +183,20 @@
     in_ccdf_income_eligible: false
 
 # --- 135% FPL applicant boundary at 2027-01 (1.35 era) ---
-# 2-person 2027 FPG = 22,147.39/yr; 135% = 29,898.98/yr (the income test
-# compares monthly countable income against monthly FPG * 1.35).
+# 2-person 2027 FPG = 22,147.39/yr; 135% = 29,898.98/yr. The 2027 FPG is a
+# CBO-CPI-forecast-uprated value that shifts when the actual 2027 guideline is
+# published, so these cases keep a comfortable margin on each side of the
+# limit rather than pinning the exact boundary (the inclusive <= boundary is
+# exercised at 2026 with the published FPG in Case 2). The ineligible income
+# stays below the 1.5-era limit (33,221), proving the 1.35 rate applies.
 
-- name: Case 9, applicant income just below 135% FPL, eligible.
+- name: Case 9, applicant income below 135% FPL, eligible.
   period: 2027-01
   input:
     people:
       person1:
         age: 35
-        employment_income: 29_880  # just below 29,898.98 limit
+        employment_income: 29_000  # comfortably below the ~29,899 limit
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -207,34 +211,13 @@
   output:
     in_ccdf_income_eligible: true
 
-- name: Case 10, applicant income essentially at 135% FPL, eligible.
+- name: Case 10, applicant income above 135% FPL but below the 1.5-era limit, ineligible.
   period: 2027-01
   input:
     people:
       person1:
         age: 35
-        employment_income: 29_898  # at the 29,898.98 limit (<=)
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        is_in_ccdf_enrolled: false
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IN
-  output:
-    in_ccdf_income_eligible: true
-
-- name: Case 11, applicant income just above 135% FPL, ineligible.
-  period: 2027-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 29_920  # above the 29,898.98 limit
+        employment_income: 30_800  # above the ~29,899 limit, below 1.5 * FPG
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -250,15 +233,19 @@
     in_ccdf_income_eligible: false
 
 # --- 85% SMI enrolled boundary at 2026-01 ---
-# 2-person IN SMI = 6,427.06/mo; 85% = 5,462.99/mo -> 65,555.88/yr.
+# 2-person IN SMI = 6,427.06/mo; 85% = 5,462.99/mo -> 65,555.88/yr. The 2026
+# SMI is uprated from the 2025-10-01 actual (107,555/yr) by the CBO AGI
+# forecast, and reverts to the un-uprated base (85% = 62,166.79/yr) once an
+# actual 2026-10-01 value is added, so these cases keep a comfortable margin
+# below the un-uprated limit and above the uprated one.
 
-- name: Case 12, enrolled income just below 85% SMI, eligible.
+- name: Case 11, enrolled income below 85% SMI, eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 35
-        employment_income: 65_400  # just below 65,555.88 limit
+        employment_income: 60_000  # below 85% SMI under either basis
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -273,34 +260,13 @@
   output:
     in_ccdf_income_eligible: true
 
-- name: Case 13, enrolled income essentially at 85% SMI, eligible.
+- name: Case 12, enrolled income above 85% SMI, ineligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 35
-        employment_income: 65_555  # at the 65,555.88 limit (<=)
-      person2:
-        age: 5
-        is_tax_unit_dependent: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        is_in_ccdf_enrolled: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IN
-  output:
-    in_ccdf_income_eligible: true
-
-- name: Case 14, enrolled income just above 85% SMI, ineligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 35
-        employment_income: 65_600  # above the 65,555.88 limit
+        employment_income: 70_000  # above 85% SMI (65,556) but below 100% SMI
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -317,7 +283,7 @@
 
 # --- Degenerate income and family-size scaling ---
 
-- name: Case 15, applicant with zero income, eligible.
+- name: Case 13, applicant with zero income, eligible.
   period: 2026-01
   input:
     people:
@@ -338,7 +304,7 @@
   output:
     in_ccdf_income_eligible: true
 
-- name: Case 16, larger family, get-on limit scales with household size.
+- name: Case 14, larger family, get-on limit scales with household size.
   period: 2026-01
   input:
     people:

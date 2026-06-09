@@ -1,5 +1,10 @@
 description: Indiana limits initial eligibility to families with income at or below this percentage of the federal poverty guideline under the Child Care and Development Fund program.
+
+# The OECOSL bulletin documents a 127% limit in effect through July 31, 2023;
+# the start date of the 127% era is unverified, so its entry is placed at
+# PolicyEngine's 2015 backdating floor.
 values:
+  2015-01-01: 1.27
   2023-08-01: 1.5
   2026-04-05: 1.35
 

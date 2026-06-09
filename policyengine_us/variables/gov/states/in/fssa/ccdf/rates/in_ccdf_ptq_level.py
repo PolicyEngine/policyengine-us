@@ -18,5 +18,6 @@ class in_ccdf_ptq_level(Variable):
     defined_for = StateCode.IN
     label = "Indiana CCDF Paths to QUALITY level"
     reference = (
-        "https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=37"
+        "https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=37",
+        "https://www.in.gov/fssa/carefinder/files/CCDF-Provider-Manual.pdf#page=11",
     )

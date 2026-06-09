@@ -1,7 +1,8 @@
-# Tests for in_ccdf_copay (SPMUnit, MONTH, USD).
+# Tests for in_ccdf_copay (SPMUnit, MONTH, USD) — the monthly copay.
 # Weekly copay = monthly countable income (floored at 0) * fee factor, where
 # the fee factor is the new-enrollee (Year 1-3) tier keyed on income as a
-# ratio of the federal poverty guideline. $0 at or below 100% FPL.
+# ratio of the federal poverty guideline; the variable converts the weekly
+# copay to monthly (* 52 / 12). $0 at or below 100% FPL.
 # Policy Manual Section 2.6; 2026 Sliding Fee Schedule.
 # defined_for = in_ccdf_eligible, so each unit is a fully eligible family
 # (working parent, dependent citizen child). 2-person FPG 2026 = 21,640/yr.
@@ -48,8 +49,8 @@
         state_code: IN
   output:
     # income 1,893.33/mo, ratio ~1.05 -> factor 0.0116
-    # 1,893.33 * 0.0116 = 21.96/week
-    in_ccdf_copay: 21.96
+    # 1,893.33 * 0.0116 = 21.96/week -> 21.96 * 52/12 = 95.17/month
+    in_ccdf_copay: 95.17
 
 - name: Case 3, income about 115% FPL, 0.0140 factor.
   period: 2026-01
@@ -71,8 +72,8 @@
         state_code: IN
   output:
     # income 2,073.67/mo, ratio ~1.15 -> factor 0.0140
-    # 2,073.67 * 0.0140 = 29.03/week
-    in_ccdf_copay: 29.03
+    # 2,073.67 * 0.0140 = 29.03/week -> 29.03 * 52/12 = 125.80/month
+    in_ccdf_copay: 125.80
 
 - name: Case 4, income about 125% FPL, 0.0163 factor.
   period: 2026-01
@@ -94,8 +95,8 @@
         state_code: IN
   output:
     # income 2,254.17/mo, ratio ~1.25 -> factor 0.0163
-    # 2,254.17 * 0.0163 = 36.74/week
-    in_ccdf_copay: 36.74
+    # 2,254.17 * 0.0163 = 36.74/week -> 36.74 * 52/12 = 159.22/month
+    in_ccdf_copay: 159.22
 
 - name: Case 5, negative self-employment income does not produce a negative copay.
   period: 2026-01
@@ -172,14 +173,16 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # ratio > 1.0001 -> factor 0.0116; 1,825 * 0.0116 = 21.17/week
-    in_ccdf_copay: 21.17
+    # ratio > 1.0001 -> factor 0.0116
+    # 1,825 * 0.0116 = 21.17/week -> 21.17 * 52/12 = 91.74/month
+    in_ccdf_copay: 91.74
 
 # --- Operative fee-schedule era (effective 2026-04-05) ---
 # The fee_factor parameter starts 2026-04-05, so the 2026-01 cases above back-
 # extrapolate it. This case runs at 2027-01 to exercise the schedule as the
-# live (forward) value. The 2-person FPG back-extrapolates from 2026 (= 21,640),
-# so the same income lands in the same bracket and the expected copay is unchanged.
+# live (forward) value. The 2027 2-person FPG is uprated to 22,147.39, so the
+# ratio falls from ~1.05 to ~1.026 — still inside the 101-109% bracket (0.0116) —
+# and since the copay multiplies income (not FPG), the expected value is unchanged.
 
 - name: Case 8, operative era at 2027-01, about 105% FPL, 0.0116 factor.
   period: 2027-01
@@ -200,6 +203,6 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # income 1,893.33/mo, ratio ~1.05 -> factor 0.0116
-    # 1,893.33 * 0.0116 = 21.96/week
-    in_ccdf_copay: 21.96
+    # income 1,893.33/mo, ratio ~1.026 -> factor 0.0116
+    # 1,893.33 * 0.0116 = 21.96/week -> 21.96 * 52/12 = 95.17/month
+    in_ccdf_copay: 95.17
