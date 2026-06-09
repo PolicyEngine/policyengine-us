@@ -167,3 +167,36 @@
     # capped at the reimbursement rate (416 * 52/12 = 1,802.67), NOT inflated by
     # the negative income.
     in_ccdf: 1_802.67
+
+- name: Case 7, two children of different ages, per-child rates summed.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 22_720  # ~105% FPL (3-person) -> copay factor 0.0116
+      person2:
+        age: 0.5  # infant
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+      person3:
+        age: 8  # school age, before/after care
+        is_tax_unit_dependent: true
+        in_ccdf_provider_type: LICENSED_CENTER
+        in_ccdf_ptq_level: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 60_000  # 5,000/mo > combined rate
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    # Infant rate 416 * 52/12 = 1,802.67; school-age before/after 110 * 52/12 =
+    # 476.67; combined rate = 2,279.33. Expenses 5,000/mo capped to 2,279.33.
+    # Copay: 3-person FPG 2026 = 27,320/yr; income 22,720 -> ratio ~0.83 < 100%
+    # FPL -> zero copay. Benefit = 2,279.33 - 0 = 2,279.33.
+    in_ccdf: 2_279.33

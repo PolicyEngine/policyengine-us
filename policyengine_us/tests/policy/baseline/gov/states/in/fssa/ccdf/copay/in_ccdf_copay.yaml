@@ -174,3 +174,32 @@
   output:
     # ratio > 1.0001 -> factor 0.0116; 1,825 * 0.0116 = 21.17/week
     in_ccdf_copay: 21.17
+
+# --- Operative fee-schedule era (effective 2026-04-05) ---
+# The fee_factor parameter starts 2026-04-05, so the 2026-01 cases above back-
+# extrapolate it. This case runs at 2027-01 to exercise the schedule as the
+# live (forward) value. The 2-person FPG back-extrapolates from 2026 (= 21,640),
+# so the same income lands in the same bracket and the expected copay is unchanged.
+
+- name: Case 8, operative era at 2027-01, about 105% FPL, 0.0116 factor.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 22_720
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # income 1,893.33/mo, ratio ~1.05 -> factor 0.0116
+    # 1,893.33 * 0.0116 = 21.96/week
+    in_ccdf_copay: 21.96

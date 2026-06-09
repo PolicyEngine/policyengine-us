@@ -1,0 +1,113 @@
+# Tests for in_ccdf_parent_in_eligible_activity (Person, MONTH, bool).
+# A parent is in a qualifying activity if ANY of the following is true:
+# employment/self-employment earnings, any hours worked, full-time student,
+# disability (incapacitation), or TANF enrollment.
+# Policy Manual Section 1.7 Service Need (no minimum number of working hours).
+# Note: weekly_hours_worked_before_lsr defaults to 40, which by itself satisfies
+# the hours pathway; non-employment pathways set it to 0 to isolate the branch.
+
+- name: Case 1, employment income only, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        employment_income: 24_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 2, self-employment income only, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        self_employment_income: 18_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 3, hours worked with no earnings, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 4, full-time student with no earnings or hours, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 5, disabled parent with no earnings or hours, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 6, TANF-enrolled parent with no earnings or hours, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: true
+
+- name: Case 7, no qualifying activity, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_parent_in_eligible_activity: false
