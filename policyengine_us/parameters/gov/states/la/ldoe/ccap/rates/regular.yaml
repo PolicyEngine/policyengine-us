@@ -1,0 +1,54 @@
+description: Louisiana pays these state maximum daily child care rates under the Child Care Assistance Program, by provider type and child age group.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Louisiana CCAP state maximum daily rates
+  breakdown:
+    - la_ccap_provider_type
+    - la_ccap_age_group
+  reference:
+    - title: Louisiana Register Vol. 48 No. 5, LR 48:1269-1270 (May 20, 2022), LAC 28:CLXV.515.A
+      href: https://www.doa.la.gov/media/ny1gpl0g/2205.pdf#page=8
+    - title: Louisiana Register Vol. 51 No. 4, LR 51:524-529 (April 20, 2025), LAC 28:CLXV.515.A re-codified
+      href: https://www.doa.la.gov/media/aqifjzos/2504.pdf#page=50
+    - title: LDOE 2022 CCAP Rate Increase notice (rates paid from February 2022)
+      href: https://www.louisianabelieves.com/docs/default-source/child-care-providers/ccap-rate-changes.pdf?sfvrsn=2f5d8d1f_10
+
+TYPE_III_EARLY_LEARNING_CENTER:
+  INFANT:
+    2022-02-01: 68
+  TODDLER:
+    2022-02-01: 42
+  REGULAR:
+    2022-02-01: 31.5
+SCHOOL_CHILD_CARE_CENTER:
+  INFANT:
+    2022-02-01: 24
+  TODDLER:
+    2022-02-01: 24
+  REGULAR:
+    2022-02-01: 24
+FAMILY_CHILD_CARE:
+  INFANT:
+    2022-02-01: 61
+  TODDLER:
+    2022-02-01: 42
+  REGULAR:
+    2022-02-01: 29
+IN_HOME:
+  INFANT:
+    2022-02-01: 26.65
+  TODDLER:
+    2022-02-01: 25.25
+  REGULAR:
+    2022-02-01: 25
+MILITARY_CHILD_CARE_CENTER:
+  INFANT:
+    2022-02-01: 35.65
+    2022-05-20: 68
+  TODDLER:
+    2022-02-01: 31.05
+    2022-05-20: 42
+  REGULAR:
+    2022-02-01: 30
+    2022-05-20: 31.5

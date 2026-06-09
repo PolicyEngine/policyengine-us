@@ -1,0 +1,164 @@
+# January 2026 uses the 2025 sliding fee scale (effective February 3, 2025).
+# Two-person bands: $0 to $3,474; $2 to $3,746; $3 to $4,017; $8 to $4,289;
+# $10 to $4,614.
+- name: Case 1, income below 65% SMI has no co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800  # $3,400/month, in the $0 band.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 0
+
+- name: Case 2, income in the second band pays $2 per day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 2
+
+- name: Case 3, income in the third band pays $3 per day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_800  # $3,900/month.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 3
+
+- name: Case 4, income in the fourth band pays $8 per day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 49_200  # $4,100/month.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 8
+
+- name: Case 5, income in the top band pays $10 per day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_800  # $4,400/month.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 10
+
+- name: Case 6, TANF-enrolled household pays no co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_800
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 0
+
+- name: Case 7, homeless household pays no co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_800
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+        is_homeless: true
+  output:
+    la_ccap_daily_copay: 0
+
+- name: Case 8, the same income falls in the $3 band of the 2024 scale.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800  # $3,400/month, 2024-scale $3 band starts at $3,400.
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 3

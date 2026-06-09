@@ -1,0 +1,17 @@
+description: Louisiana counts these gross earned income sources of the head of household and spouse under the Child Care Assistance Program.
+values:
+  2022-02-01:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+  # LAC 28:CLXV.509.A.3.a excludes earnings from the Corporation for National and
+  # Community Service, college work study, and disaster-related employment; we do
+  # not track these income subtypes at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Louisiana CCAP earned income sources
+  reference:
+    - title: LAC 28:CLXV.509.A.3.a (Bulletin 139), gross earnings
+      href: https://www.doa.la.gov/media/043btqeh/28v165.docx

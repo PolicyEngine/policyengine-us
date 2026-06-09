@@ -1,0 +1,33 @@
+description: Louisiana counts these recurring unearned income sources of all household members under the Child Care Assistance Program.
+values:
+  2022-02-01:
+    - social_security
+    - ssi
+    - veterans_benefits
+    - pension_income
+    - disability_benefits
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+  # LR 51:529 (April 20, 2025) repealed child support or alimony and adoption
+  # subsidy payments from the countable list; adoption subsidies are not tracked
+  # as a separate input at the moment, so only the first repeal affects the model.
+  2025-04-20:
+    - social_security
+    - ssi
+    - veterans_benefits
+    - pension_income
+    - disability_benefits
+    - unemployment_compensation
+    - workers_compensation
+
+metadata:
+  unit: list
+  period: year
+  label: Louisiana CCAP unearned income sources
+  reference:
+    - title: LAC 28:CLXV.509.A.3.b (Bulletin 139), recurring unearned income
+      href: https://www.doa.la.gov/media/043btqeh/28v165.docx
+    - title: Louisiana Register Vol. 51 No. 4, LR 51:524-529 (April 20, 2025), repeal of items vi and viii
+      href: https://www.doa.la.gov/media/aqifjzos/2504.pdf#page=50

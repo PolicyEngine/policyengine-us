@@ -1,0 +1,36 @@
+description: Louisiana charges this daily co-payment per child under the Child Care Assistance Program, by sliding fee scale income band index.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: day
+  label: Louisiana CCAP daily co-payment by income band
+  reference:
+    - title: LDOE 2026 Sliding Fee Scale, daily co-payment rows (effective February 1, 2026)
+      href: https://www.louisianabelieves.com/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf
+    - title: Louisiana CCDF State Plan FFY 2025-2027, Sections 3.1.2 and 3.2.1.a (per-child monthly copays of $44 to $220 at 22 days)
+      href: https://doe.louisiana.gov/docs/default-source/early-childhood/approved-2025-2027-ccdf-state-plan.pdf#page=42
+    - title: Louisiana CCDF State Plan FFY 2022-2024, Section 3.1.3.g (copay as a daily rate)
+      href: https://www.louisianabelieves.com/docs/default-source/early-childhood/2022-2024-ccdf-approved-state-plan.pdf#page=69
+
+brackets:
+  - threshold:
+      2022-02-01: 0
+    amount:
+      2022-02-01: 0
+  - threshold:
+      2022-02-01: 1
+    amount:
+      2022-02-01: 2
+  - threshold:
+      2022-02-01: 2
+    amount:
+      2022-02-01: 3
+  - threshold:
+      2022-02-01: 3
+    amount:
+      2022-02-01: 8
+  - threshold:
+      2022-02-01: 4
+    amount:
+      2022-02-01: 10
