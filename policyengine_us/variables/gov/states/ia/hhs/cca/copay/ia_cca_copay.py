@@ -43,13 +43,15 @@ class ia_cca_copay(Variable):
 
         # --- Mechanism B: CCA Exit percentage of cost of care ---
         # A percentage of the cost of care for each child in care, summed
-        # across children.
-        exit_level = spm_unit("ia_cca_exit_fee_level", period)
+        # across children. The fee chart picks the Basic or Special Needs
+        # threshold table for each child separately, so the percentage is
+        # resolved per child before summing.
+        exit_level = person("ia_cca_exit_fee_level", period)
         exit_pct = 0
         for i, level in enumerate(EXIT_FEE_LEVELS):
             exit_pct = exit_pct + where(exit_level == i, p.exit.fee_pct[level], 0)
         child_expense = person("pre_subsidy_childcare_expenses", period)
-        exit_copay = exit_pct * spm_unit.sum(child_expense * is_in_care_child)
+        exit_copay = spm_unit.sum(exit_pct * child_expense * is_in_care_child)
 
         in_exit_tier = spm_unit("ia_cca_in_exit_tier", period)
         copay = where(in_exit_tier, exit_copay, sliding_copay)

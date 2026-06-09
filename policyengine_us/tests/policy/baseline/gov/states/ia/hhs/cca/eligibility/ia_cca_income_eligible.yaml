@@ -357,8 +357,9 @@
 # (auto-divided) * rate. At EXACTLY the boundary the float32 round-trip
 # (annual -> /12 income vs annual FPG -> /12 limit) drifts by a few thousandths,
 # and the drift direction is value-dependent, so we never assert at the exact
-# boundary; we bracket it +-12/yr (= +-$1/mo) instead. The existing +-100/yr cases
-# above are loose; these tighten the band to the smallest reliable offset.
+# boundary; we bracket it +-12 to +-13/yr (about +-$1/mo) instead. The existing
+# +-100/yr cases above are loose; these tighten the band to the smallest reliable
+# offset.
 
 - name: Applicant family of three 12 dollars below 160 percent FPL is eligible (tight boundary).
   period: 2025-01
@@ -509,8 +510,8 @@
     # 53_312 (+$1/mo over 53_300) -> ineligible
     ia_cca_income_eligible: false
 
-# Enrolled basic 250% FPL boundary (family of 3; 250% annual = 66_625), tight +-12/yr.
-- name: Enrolled basic family 12 dollars below 250 percent FPL is eligible.
+# Enrolled basic 250% FPL boundary (family of 3; 250% annual = 66_625), tight +-13/yr.
+- name: Enrolled basic family 13 dollars below 250 percent FPL is eligible.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -531,10 +532,10 @@
         members: [parent1, parent2, child]
         state_code: IA
   output:
-    # 250% FPL annual = 66_625; 66_612 (-$1/mo) -> eligible
+    # 250% FPL annual = 66_625; 66_612 (-$13/yr) -> just below -> eligible
     ia_cca_income_eligible: true
 
-- name: Enrolled basic family 12 dollars above 250 percent FPL is not eligible.
+- name: Enrolled basic family 13 dollars above 250 percent FPL is not eligible.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -555,11 +556,11 @@
         members: [parent1, parent2, child]
         state_code: IA
   output:
-    # 66_638 (+$1/mo over 66_625) -> ineligible even when enrolled
+    # 66_638 (+$13/yr over 66_625) -> just above -> ineligible even when enrolled
     ia_cca_income_eligible: false
 
 # Enrolled special-needs 275% FPL boundary (family of 3; 275% annual = 73_287.50).
-- name: Enrolled special-needs family 12 dollars below 275 percent FPL is eligible.
+- name: Enrolled special-needs family 12.50 dollars below 275 percent FPL is eligible.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -581,7 +582,7 @@
         members: [parent1, parent2, child]
         state_code: IA
   output:
-    # 275% FPL annual = 73_287.50; 73_275 -> just below -> eligible
+    # 275% FPL annual = 73_287.50; 73_275 (-$12.50/yr) -> just below -> eligible
     ia_cca_income_eligible: true
 
 - name: Enrolled special-needs family above 275 percent FPL is not eligible.

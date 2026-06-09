@@ -1,10 +1,16 @@
 # ia_cca_sliding_fee_level: SPMUnit, int index 0-27, MONTH.
-# Per the fee chart's lookup rule, each printed threshold is the inclusive floor of
-# its own level: the family is at the highest level whose floor is at or below its
-# monthly income. The index is max(number of thresholds met or exceeded - 1, 0),
-# capped at 27 (Level BB).
+# Per the fee chart's lookup rule, the formula moves down the family-size column to
+# the first row with an amount greater than the family's monthly income and uses the
+# row above (each printed threshold is the inclusive floor of its own level). Income
+# below the Level A floor stays at Level A index 0; income that no row exceeds (at
+# or above every floor) takes Level BB index 27. The literal scan matters because
+# the chart's BB row is BELOW the AA row for family sizes 9-13 (e.g., size 10:
+# BB 9_500 < AA 10_457): in the band between those two floors the first row greater
+# than income is still Y/Z/AA, so the family lands one level lower than a
+# count-of-floors-met shortcut would place it.
 # Income is monthly ia_cca_countable_income = employment_income / 12.
 # Family-of-3 monthly thresholds: A 2_044, B 2_152, C 2_212; AA 4_254, BB 6_000.
+# Family-of-10 top floors: Y 9_903, Z 10_172, AA 10_457, BB 9_500.
 
 - name: Income below the Level A threshold is Level A index 0.
   period: 2025-01
@@ -98,6 +104,28 @@
     # Income 4_800/mo: >= AA floor (4_254), < BB floor (6_000) -> Level AA index 26
     ia_cca_sliding_fee_level: 26
 
+- name: Income at or above every floor lands at Level BB index 27 for a family of two.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 61_200
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Family of 2 (monotonic column); income 5_100/mo >= BB floor (5_000, the
+    # highest size-2 floor), so no row exceeds it -> last level, BB index 27
+    ia_cca_sliding_fee_level: 27
+
 # === Edge cases ===
 # The income-threshold table runs by family size 1-13 (13 means "13 or more"). The
 # formula clips family size to that range, so a unit of 14+ must use the size-13
@@ -186,3 +214,100 @@
     # Family of 14 clips to size 13 -> same thresholds, same income -> Level A index 0
     # (confirms the clip(size, 1, 13) ceiling on the lookup table)
     ia_cca_sliding_fee_level: 0
+
+# === Non-monotonic BB row (family sizes 9-13) ===
+# For sizes 9-13 the chart's BB floor sits BELOW the AA floor (size 10: BB 9_500 <
+# AA 10_457). In the band between those floors the first row greater than income is
+# still Z or AA, so the literal scan keeps the family at Y or Z; a count-of-floors-met
+# shortcut would also count the out-of-order BB floor and land one level too high.
+# Size-10 floors: Y 9_903, Z 10_172, AA 10_457, BB 9_500.
+
+- name: Family of ten between the BB and Z floors lands at Level Y index 24.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 120_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+        state_code: IA
+  output:
+    # Family of 10; income 10_000/mo: >= Y floor (9_903) and >= BB floor (9_500),
+    # < Z floor (10_172) -> first row greater is Z, row above is Y index 24.
+    # The old count-of-floors lookup also counted the BB floor and gave Z index 25.
+    ia_cca_sliding_fee_level: 24
+
+- name: Family of ten just below the AA floor lands at Level Z index 25.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 125_472
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+        state_code: IA
+  output:
+    # Family of 10; income 10_456/mo: >= Z floor (10_172) and >= BB floor (9_500),
+    # < AA floor (10_457) -> first row greater is AA, row above is Z index 25.
+    # The old count-of-floors lookup also counted the BB floor and gave AA index 26.
+    ia_cca_sliding_fee_level: 25
+
+- name: Family of ten at or above every floor lands at Level BB index 27.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 126_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+        state_code: IA
+  output:
+    # Family of 10; income 10_500/mo: >= AA floor (10_457, the highest size-10
+    # floor) and >= BB floor (9_500), so no row exceeds it -> last level, BB
+    # index 27
+    ia_cca_sliding_fee_level: 27

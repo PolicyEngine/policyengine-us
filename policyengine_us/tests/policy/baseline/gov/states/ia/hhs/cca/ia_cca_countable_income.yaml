@@ -1,8 +1,12 @@
 # ia_cca_countable_income: SPMUnit, USD, MONTH.
-# Sums countable earned and unearned income, excluding the earnings of a child
-# age 14 or younger and the earnings of a full-time student age 18 or younger
-# (IAC 441-170.2(1)"d"). Definition period is MONTH, so annual income sources are
-# auto-divided to monthly figures.
+# Sums countable earned and unearned income. Each person's net self-employment
+# subtotal is floored at zero — a net self-employment loss cannot offset wages
+# or unearned income (IAC 441-170.2(1)"c"(1)). The earnings of a child age 14
+# or younger and of a full-time student age 18 or younger are excluded, but
+# only for persons who are not the tax-unit head or spouse, since both
+# exclusions cover a child's earnings — a teen parent's own wages stay counted
+# (IAC 441-170.2(1)"d"(13) and (35)). Definition period is MONTH, so annual
+# income sources are auto-divided to monthly figures.
 
 - name: Parent earnings count in monthly countable income.
   period: 2025-01
@@ -116,6 +120,98 @@
     # (36_000 earned + 6_000 social security) / 12 = 3_500 per month
     ia_cca_countable_income: 3_500
 
+- name: SSI is counted in unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+      child:
+        age: 4
+        ssi: 500  # ssi is MONTH-defined, so this is the January amount
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 36_000 / 12 = 3_000 earned + 500 monthly SSI = 3_500 per month
+    ia_cca_countable_income: 3_500
+
+- name: Tax-exempt interest is counted exactly once via the interest income umbrella.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        taxable_interest_income: 1_200
+        tax_exempt_interest_income: 1_200
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # interest_income = 1_200 taxable + 1_200 tax-exempt = 2_400 per year
+    # -> 2_400 / 12 = 200 per month; double-counting tax-exempt interest
+    # through a separate unearned source would give (2_400 + 1_200) / 12 = 300
+    ia_cca_countable_income: 200
+
+- name: A net self-employment loss does not offset wages.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 36_000
+        self_employment_income: -12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Self-employment subtotal floored at zero: max(-12_000, 0) = 0, so
+    # countable income is the wages alone: 36_000 / 12 = 3_000 per month
+    # (offsetting the loss would give (36_000 - 12_000) / 12 = 2_000)
+    ia_cca_countable_income: 3_000
+
+- name: A family with only a self-employment loss has zero countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        self_employment_income: -12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Self-employment subtotal floored at zero: max(-12_000, 0) = 0; no other
+    # income -> 0 per month, not -12_000 / 12 = -1_000
+    ia_cca_countable_income: 0
+
 # === Edge cases ===
 
 - name: No income sources gives zero countable income.
@@ -137,3 +233,28 @@
   output:
     # No earned or unearned income for anyone -> 0 (degenerate low boundary)
     ia_cca_countable_income: 0
+
+- name: An 18-year-old full-time-student single parent's own wages are counted.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 18
+        employment_income: 24_000
+        is_full_time_student: true
+      baby:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, baby]
+    households:
+      household:
+        members: [parent, baby]
+        state_code: IA
+  output:
+    # The student exclusion covers a child's earnings only: as the tax-unit
+    # head, the 18-year-old parent is not an excluded minor even though they
+    # are a full-time student age 18 (contrast with the dependent 17-year-old
+    # full-time-student case above) -> 24_000 / 12 = 2_000 per month
+    ia_cca_countable_income: 2_000

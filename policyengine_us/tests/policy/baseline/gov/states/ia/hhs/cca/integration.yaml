@@ -222,10 +222,10 @@
     # Exit basic level: >= B floor (5_057), < C floor (5_272) -> Level B -> 45%.
     # Expense 12_000/yr -> 1_000/mo. Exit copay = 45% of the child's monthly cost
     # of care = 0.45 * 1_000 = 450.
-    ia_cca_copay: 450.00
+    ia_cca_copay: 450
     # Preschool ceiling = 19.50 * 34.6667 = 676.00; monthly expense 1_000 capped to
     # 676.00. Benefit = max(676.00 - 450.00, 0) = 226.00
-    ia_cca: 226.00
+    ia_cca: 226
 
 # === Case 5: Special-needs branch (applicant, 200% FPL, SN rate) ===
 - name: Case 5, single parent disabled preschooler, special-needs rate and limit.

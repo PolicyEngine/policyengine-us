@@ -7,7 +7,7 @@ class ia_cca_has_special_needs_child(Variable):
     label = "Iowa CCA family includes a child with special needs"
     definition_period = MONTH
     defined_for = StateCode.IA
-    reference = "https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=3"
+    reference = "https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

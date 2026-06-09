@@ -15,8 +15,15 @@ class ia_cca_eligible(Variable):
         income_eligible = spm_unit("ia_cca_income_eligible", period)
         activity_eligible = spm_unit("ia_cca_activity_eligible", period)
         # Families eligible without regard to income (FIP, protective,
-        # foster) bypass both the income test and the activity need-for-
-        # service test (IAC 441-170.2(1)"b").
+        # foster) skip the income test (IAC 441-170.2(1)"b") and satisfy
+        # the need-for-service requirement through their qualifying
+        # condition: protective child care and licensed foster care are
+        # themselves needs for service (IAC 441-170.2(2)"b"(3) and (9)),
+        # and a FIP family qualifies through employment with no
+        # minimum-hours requirement, education, or PROMISE JOBS
+        # participation (IAC 441-170.2(2)"b"(6)-(7)) — we don't track
+        # PROMISE JOBS participation at the moment, so FIP enrollment
+        # serves as the proxy for need.
         income_exception = spm_unit("ia_cca_income_exception", period)
         standard_path = income_eligible & activity_eligible
         return has_eligible_child & asset_eligible & (standard_path | income_exception)

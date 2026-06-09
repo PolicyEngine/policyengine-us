@@ -1,9 +1,11 @@
 # ia_cca_eligible: SPMUnit, bool, MONTH.
 # Eligible = has an eligible child AND asset-eligible AND
 #   ((income-eligible AND activity-eligible) OR income-exception).
-# Families eligible without regard to income (FIP/protective/foster) bypass both
-# the income and activity tests but still need an eligible child and assets below
-# the limit.
+# Families eligible without regard to income (FIP/protective/foster) skip the
+# income test and satisfy the need-for-service requirement through their
+# qualifying condition (protective and foster care are themselves needs for
+# service; FIP enrollment proxies PROMISE JOBS participation), but still need an
+# eligible child and assets below the limit.
 
 - name: Standard household meeting all tests is eligible.
   period: 2025-01
@@ -93,7 +95,8 @@
         members: [parent, child]
         state_code: IA
   output:
-    # Income exception (FIP) bypasses the income and activity tests; eligible child
+    # Income exception (FIP) skips the income test and satisfies the need for
+    # service through FIP enrollment (the PROMISE JOBS proxy); eligible child
     # and assets below $1M -> eligible despite high income and zero work hours
     ia_cca_eligible: true
 

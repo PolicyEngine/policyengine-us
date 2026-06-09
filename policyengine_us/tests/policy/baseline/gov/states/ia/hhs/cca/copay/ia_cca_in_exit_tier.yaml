@@ -78,10 +78,10 @@
 
 # === Edge cases ===
 # The exit-tier dispatch turns on at exactly 225% FPL (family of 3; 225% annual =
-# 59_962.50). We bracket the boundary +-12/yr; the exact round-trip is float-fragile
-# so we do not assert at it.
+# 59_962.50). We bracket the boundary +-12.50/yr; the exact round-trip is
+# float-fragile so we do not assert at it.
 
-- name: Enrolled family 12 dollars below 225 percent FPL is not in the exit tier.
+- name: Enrolled family 12.50 dollars below 225 percent FPL is not in the exit tier.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -102,10 +102,10 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # 59_950 (-$1/mo under 59_962.50) -> not over 225% FPL -> CCA Plus, not exit
+    # 59_950 (-$12.50/yr under 59_962.50) -> not over 225% FPL -> CCA Plus, not exit
     ia_cca_in_exit_tier: false
 
-- name: Enrolled family 12 dollars above 225 percent FPL is in the exit tier.
+- name: Enrolled family 12.50 dollars above 225 percent FPL is in the exit tier.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -126,5 +126,5 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # 59_975 (+$1/mo over 59_962.50) and enrolled -> exit tier
+    # 59_975 (+$12.50/yr over 59_962.50) and enrolled -> exit tier
     ia_cca_in_exit_tier: true

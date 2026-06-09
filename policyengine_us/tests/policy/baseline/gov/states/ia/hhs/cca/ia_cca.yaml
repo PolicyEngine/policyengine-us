@@ -96,12 +96,12 @@
     # Exit basic Level B -> 45% percentage-of-cost copay.
     ia_cca_in_exit_tier: true
     # Expense 24_000/yr -> 2_000/mo. Exit copay = 45% * 2_000 = 900.
-    ia_cca_copay: 900.00
+    ia_cca_copay: 900
     # Preschool ceiling = 19.50 * 34.6667 = 676.00; child_capped = min(2_000, 676) = 676.
     # Benefit = max(676.00 - 900.00, 0) = 0 (copay exceeds ceiling -> floored at 0)
     ia_cca: 0
 
-- name: Negative countable income does not inflate the benefit beyond the ceiling.
+- name: Net self-employment loss floors countable income at zero without inflating the benefit.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -133,12 +133,14 @@
         members: [parent, preschooler]
         state_code: IA
   output:
-    # Negative self-employment income -> zero/negative countable income, well under
-    # the 160% FPL limit -> income eligible; parent works 40 hrs -> activity eligible.
+    # The per-person net self-employment loss is floored at zero (a loss cannot
+    # offset other income), so countable income is exactly 0 -> well under the
+    # 160% FPL limit -> income eligible; parent works 40 hrs -> activity eligible.
+    ia_cca_countable_income: 0
     ia_cca_eligible: true
-    # Countable income <= sliding-fee Level A -> maximum subsidy, copay 0.
+    # Countable income 0 <= sliding-fee Level A -> maximum subsidy, copay 0.
     ia_cca_copay: 0
     # Preschool ceiling = 19.50 * 34.6667 = 676.00; expense 1_000/mo capped to 676.00.
     # Benefit stays at the rate ceiling (max subsidy) and is not inflated by the
-    # negative income. Benefit = max(676.00 - 0, 0) = 676.00
-    ia_cca: 676.00
+    # self-employment loss. Benefit = max(676.00 - 0, 0) = 676.00
+    ia_cca: 676
