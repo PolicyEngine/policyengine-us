@@ -14,22 +14,16 @@ class in_ccdf_parent_in_eligible_activity(Variable):
     def formula(person, period, parameters):
         # Qualifying activities include employment, self-employment, on-the-job
         # training, initial-application job search, education or training,
-        # incapacitation, and CPS referral. There is no minimum number of
-        # working hours. We treat any parent with earnings, any hours worked,
-        # full-time student status, TANF enrollment, or a disability as being
-        # in a qualifying activity; job search, education, training, and CPS
-        # referral can additionally be set through this input.
-        has_earnings = (
-            add(person, period, ["employment_income", "self_employment_income"]) > 0
+        # incapacitation, and CPS referral. Employment is documented by proof
+        # of income with no minimum number of working hours, so a parent
+        # qualifies with positive wages, nonzero self-employment income (a
+        # business loss still evidences active self-employment), full-time
+        # student status, TANF enrollment, or a disability. We don't capture
+        # not-yet-paid new employment or active job search at the moment.
+        has_earnings = (person("employment_income", period) > 0) | (
+            person("self_employment_income", period) != 0
         )
-        hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         is_student = person("is_full_time_student", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
         is_tanf_enrolled = person.spm_unit("is_tanf_enrolled", period)
-        return (
-            has_earnings
-            | (hours_worked > 0)
-            | is_student
-            | is_disabled
-            | is_tanf_enrolled
-        )
+        return has_earnings | is_student | is_disabled | is_tanf_enrolled

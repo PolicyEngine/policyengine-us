@@ -27,10 +27,10 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # rate = 416 * 52/12 = 1,802.67; expenses 2,500 capped to 1,802.67
+    # rate = 374.4 * 52/12 = 1,622.40; expenses 2,500 capped to 1,622.40
     # weekly copay = 1,893.33 * 0.0116 = 21.96; monthly = 21.96 * 52/12 = 95.17
-    # benefit = 1,802.67 - 95.17 = 1,707.50
-    in_ccdf: 1_707.50
+    # benefit = 1,622.40 - 95.17 = 1,527.23
+    in_ccdf: 1_527.23
 
 - name: Case 2, expenses below rate, capped at expenses.
   period: 2026-01
@@ -54,7 +54,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # expenses 1,000/mo < rate 1,802.67 -> capped at 1,000
+    # expenses 1,000/mo < rate 1,622.40 -> capped at 1,000
     # monthly copay 95.17 -> benefit = 1,000 - 95.17 = 904.83
     in_ccdf: 904.83
 
@@ -70,7 +70,7 @@
         age: 8
         is_tax_unit_dependent: true
         in_ccdf_provider_type: REGISTERED_MINISTRY
-        in_ccdf_ptq_level: BASE  # School Age Before/After = 73/wk = 316.33/mo
+        in_ccdf_ptq_level: BASE  # School Age Before/After = 47.45/wk = 205.62/mo
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -80,7 +80,7 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # expenses 50/mo capped (rate 316.33); monthly copay = 36.74 * 52/12 = 159.22
+    # expenses 50/mo capped (rate 205.62); monthly copay = 36.74 * 52/12 = 159.22
     # 50 - 159.22 < 0 -> floored to 0
     in_ccdf: 0
 
@@ -165,9 +165,9 @@
         state_code: IN
   output:
     # Countable income is negative -> floored at 0 -> copay 0. The subsidy is
-    # capped at the reimbursement rate (416 * 52/12 = 1,802.67), NOT inflated by
-    # the negative income.
-    in_ccdf: 1_802.67
+    # capped at the reimbursement rate (374.4 * 52/12 = 1,622.40), NOT inflated
+    # by the negative income.
+    in_ccdf: 1_622.40
 
 - name: Case 7, two children of different ages, per-child rates summed.
   period: 2026-01
@@ -196,8 +196,8 @@
         members: [person1, person2, person3]
         state_code: IN
   output:
-    # Infant rate 416 * 52/12 = 1,802.67; school-age before/after 110 * 52/12 =
-    # 476.67; combined rate = 2,279.33. Expenses 5,000/mo capped to 2,279.33.
-    # Copay: 3-person FPG 2026 = 27,320/yr; income 22,720 -> ratio ~0.83 < 100%
-    # FPL -> zero copay. Benefit = 2,279.33 - 0 = 2,279.33.
-    in_ccdf: 2_279.33
+    # Infant rate 374.4 * 52/12 = 1,622.40; school-age before/after 71.5 *
+    # 52/12 = 309.83; combined rate = 1,932.23. Expenses 5,000/mo capped to
+    # 1,932.23. Copay: 3-person FPG 2026 = 27,320/yr; income 22,720 -> ratio
+    # ~0.83 < 100% FPL -> zero copay. Benefit = 1,932.23 - 0 = 1,932.23.
+    in_ccdf: 1_932.23

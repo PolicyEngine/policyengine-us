@@ -24,9 +24,9 @@
         members: [person1, person2]
         state_code: IN
   output:
-    # Monthly benefit 1,707.50 * 12 = 20,489.94/year.
-    in_child_care_subsidies: 20_489.94
-    child_care_subsidies: 20_489.94
+    # Monthly benefit 1,527.23 * 12 = 18,326.74/year.
+    in_child_care_subsidies: 18_326.74
+    child_care_subsidies: 18_326.74
 
 - name: Case 2, non-Indiana household receives no Indiana subsidy.
   period: 2026
