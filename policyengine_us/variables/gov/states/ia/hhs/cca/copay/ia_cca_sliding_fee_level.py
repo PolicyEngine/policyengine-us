@@ -50,13 +50,17 @@ class ia_cca_sliding_fee_level(Variable):
         # 13 or more).
         size = spm_unit("spm_unit_size", period.this_year)
         capped_size = clip(size, 1, 13).astype(int)
-        # A family is at the first level whose monthly-income threshold for
-        # its family size is at or above its income. Equivalently, the level
-        # index is the number of level thresholds the income exceeds.
-        level_index = 0
+        # Per the fee chart's lookup rule (#page=1): move down the family-size
+        # column to the "first row with an amount greater than the monthly
+        # family income" and "use the row above" to set the fee. Each printed
+        # threshold is therefore the inclusive floor of its own level, so the
+        # level index is the highest level whose floor is at-or-below income:
+        # (number of thresholds the income meets or exceeds) - 1.
+        levels_met = 0
         for level in SLIDING_FEE_LEVELS:
             threshold = thresholds[level][capped_size]
-            level_index = level_index + (income > threshold)
+            levels_met = levels_met + (income >= threshold)
+        level_index = max_(levels_met - 1, 0)
         # Cap at the last level (index 27); incomes above the BB threshold
         # exceed the CCA Plus income limit and are screened out upstream.
         return min_(level_index, len(SLIDING_FEE_LEVELS) - 1)

@@ -20,12 +20,17 @@ class ia_cca_exit_fee_level(Variable):
         # CCA Exit uses a separate income threshold table for basic care and
         # special-needs care.
         has_special_needs_child = spm_unit("ia_cca_has_special_needs_child", period)
-        # A family is at the first level whose monthly-income threshold for
-        # its family size is at or above its income.
-        level_index = 0
+        # Per the CCA Exit fee chart's lookup rule (#page=2): move down the
+        # family-size column to the "first row with an amount greater than the
+        # monthly family income" and "use the row above" to set the fee. Each
+        # printed threshold is the inclusive floor of its own level, so the level
+        # index is the highest level whose floor is at-or-below income:
+        # (number of thresholds the income meets or exceeds) - 1.
+        levels_met = 0
         for level in EXIT_FEE_LEVELS:
             basic_threshold = p.income_thresholds_basic[level][capped_size]
             sn_threshold = p.income_thresholds_special_needs[level][capped_size]
             threshold = where(has_special_needs_child, sn_threshold, basic_threshold)
-            level_index = level_index + (income > threshold)
+            levels_met = levels_met + (income >= threshold)
+        level_index = max_(levels_met - 1, 0)
         return min_(level_index, len(EXIT_FEE_LEVELS) - 1)

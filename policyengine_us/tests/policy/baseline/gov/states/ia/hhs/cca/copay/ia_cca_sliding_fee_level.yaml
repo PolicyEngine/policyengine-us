@@ -1,7 +1,8 @@
 # ia_cca_sliding_fee_level: SPMUnit, int index 0-27, MONTH.
-# The family is at the first level whose monthly-income threshold (for its family
-# size) is at or above its income; equivalently the index is the number of level
-# thresholds the monthly income exceeds, capped at 27 (Level BB).
+# Per the fee chart's lookup rule, each printed threshold is the inclusive floor of
+# its own level: the family is at the highest level whose floor is at or below its
+# monthly income. The index is max(number of thresholds met or exceeded - 1, 0),
+# capped at 27 (Level BB).
 # Income is monthly ia_cca_countable_income = employment_income / 12.
 # Family-of-3 monthly thresholds: A 2_044, B 2_152, C 2_212; AA 4_254, BB 6_000.
 
@@ -28,7 +29,7 @@
     # Family of 3; income 2_000/mo <= A (2_044) -> index 0
     ia_cca_sliding_fee_level: 0
 
-- name: Income between Level A and B thresholds is Level B index 1.
+- name: Income between Level A and B thresholds stays at Level A index 0.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -48,10 +49,10 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # Income 2_100/mo: > A (2_044), <= B (2_152) -> index 1
-    ia_cca_sliding_fee_level: 1
+    # Income 2_100/mo: >= A floor (2_044), < B floor (2_152) -> Level A index 0
+    ia_cca_sliding_fee_level: 0
 
-- name: Income between Level B and C thresholds is Level C index 2.
+- name: Income between Level B and C thresholds is Level B index 1.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -71,10 +72,10 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # Income 2_200/mo: > B (2_152), <= C (2_212) -> index 2
-    ia_cca_sliding_fee_level: 2
+    # Income 2_200/mo: >= B floor (2_152), < C floor (2_212) -> Level B index 1
+    ia_cca_sliding_fee_level: 1
 
-- name: Very high income within the CCA Plus range tops out at Level BB index 27.
+- name: High income within the CCA Plus range lands at Level AA index 26.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -94,8 +95,8 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # Income 4_800/mo: > AA (4_254), <= BB (6_000) -> top index 27 (Level BB)
-    ia_cca_sliding_fee_level: 27
+    # Income 4_800/mo: >= AA floor (4_254), < BB floor (6_000) -> Level AA index 26
+    ia_cca_sliding_fee_level: 26
 
 # === Edge cases ===
 # The income-threshold table runs by family size 1-13 (13 means "13 or more"). The
@@ -149,8 +150,9 @@
         members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
         state_code: IA
   output:
-    # Family of 13; income 6_400/mo: > A (6_303), <= B (6_635 size 13) -> index 1
-    ia_cca_sliding_fee_level: 1
+    # Family of 13; income 6_400/mo: >= A floor (6_303), < B floor (6_635 size 13)
+    # -> Level A index 0
+    ia_cca_sliding_fee_level: 0
 
 - name: Family of fourteen uses the size-13 column at the same level.
   period: 2025-01
@@ -181,6 +183,6 @@
         members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13]
         state_code: IA
   output:
-    # Family of 14 clips to size 13 -> same thresholds, same income -> index 1
+    # Family of 14 clips to size 13 -> same thresholds, same income -> Level A index 0
     # (confirms the clip(size, 1, 13) ceiling on the lookup table)
-    ia_cca_sliding_fee_level: 1
+    ia_cca_sliding_fee_level: 0

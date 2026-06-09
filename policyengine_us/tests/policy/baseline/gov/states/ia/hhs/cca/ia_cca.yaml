@@ -93,12 +93,12 @@
         state_code: IA
   output:
     # Family of 3 enrolled; income 5_200/mo > 225% FPL (4_996.88) -> CCA Exit tier,
-    # Exit basic Level C -> 60% percentage-of-cost copay.
+    # Exit basic Level B -> 45% percentage-of-cost copay.
     ia_cca_in_exit_tier: true
-    # Expense 24_000/yr -> 2_000/mo. Exit copay = 60% * 2_000 = 1_200.
-    ia_cca_copay: 1_200.00
+    # Expense 24_000/yr -> 2_000/mo. Exit copay = 45% * 2_000 = 900.
+    ia_cca_copay: 900.00
     # Preschool ceiling = 19.50 * 34.6667 = 676.00; child_capped = min(2_000, 676) = 676.
-    # Benefit = max(676.00 - 1_200.00, 0) = 0 (copay exceeds ceiling -> floored at 0)
+    # Benefit = max(676.00 - 900.00, 0) = 0 (copay exceeds ceiling -> floored at 0)
     ia_cca: 0
 
 - name: Negative countable income does not inflate the benefit beyond the ceiling.

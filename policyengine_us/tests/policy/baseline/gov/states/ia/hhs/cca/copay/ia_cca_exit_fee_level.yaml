@@ -1,7 +1,9 @@
 # ia_cca_exit_fee_level: SPMUnit, int index 0-3, MONTH.
 # Selects the CCA Exit fee level (A=0 .. D=3) from monthly income and family size,
 # using the basic thresholds for a basic-care family and the special-needs
-# thresholds when the family includes a special-needs child.
+# thresholds when the family includes a special-needs child. Each printed threshold
+# is the inclusive floor of its level: the index is the highest level whose floor is
+# at or below income, i.e. max(thresholds met or exceeded - 1, 0).
 # Family-of-3 exit basic thresholds: A 4_842, B 5_057, C 5_272, D 5_380.
 # Family-of-3 exit special-needs thresholds: A 4_842, B 5_272, C 5_703, D 5_918.
 
@@ -29,7 +31,7 @@
     # (This income alone is not in the exit tier; the index is still defined.)
     ia_cca_exit_fee_level: 0
 
-- name: Exit income between A and B is Level B index 1.
+- name: Exit income between A and B is Level A index 0.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -49,10 +51,10 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # Income 5_000/mo: > A (4_842), <= B (5_057) -> index 1
-    ia_cca_exit_fee_level: 1
+    # Income 5_000/mo: >= A floor (4_842), < B floor (5_057) -> Level A index 0
+    ia_cca_exit_fee_level: 0
 
-- name: Exit income between C and D is Level D index 3.
+- name: Exit income between C and D is Level C index 2.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -72,8 +74,8 @@
         members: [parent, coparent, child]
         state_code: IA
   output:
-    # Income 5_350/mo: > A, > B, > C (5_272), <= D (5_380) -> index 3
-    ia_cca_exit_fee_level: 3
+    # Income 5_350/mo: >= C floor (5_272), < D floor (5_380) -> Level C index 2
+    ia_cca_exit_fee_level: 2
 
 - name: Special-needs family uses the higher special-needs thresholds.
   period: 2025-01
@@ -97,10 +99,11 @@
         state_code: IA
   output:
     # Income 5_300/mo with a special-needs child uses SN thresholds:
-    # > A (4_842), <= B (5_272)? 5_300 > 5_272 -> > B, <= C (5_703) -> index 2.
-    # Under the basic thresholds the same income would be index 3 (> D 5_380? no,
-    # > C 5_272 -> index 3). The SN table keeps it at index 2 -> proves SN routing.
-    ia_cca_exit_fee_level: 2
+    # >= B floor (5_272), < C floor (5_703) -> Level B index 1.
+    # Under the basic thresholds the same income would be Level C index 2
+    # (>= C floor 5_272, < D floor 5_380). The SN table holds it at index 1
+    # -> proves SN routing.
+    ia_cca_exit_fee_level: 1
 
 # === Edge cases ===
 # The exit-threshold tables also run by family size 1-13 with the formula clipping
@@ -135,8 +138,9 @@
         members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12]
         state_code: IA
   output:
-    # Family of 13 basic; income 12_000/mo: > A (11_329), <= B (15_592) -> index 1
-    ia_cca_exit_fee_level: 1
+    # Family of 13 basic; income 12_000/mo: >= A floor (11_329), < B floor (15_592)
+    # -> Level A index 0
+    ia_cca_exit_fee_level: 0
 
 - name: Exit fee family of fourteen uses the size-13 column at the same level.
   period: 2025-01
@@ -167,5 +171,5 @@
         members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13]
         state_code: IA
   output:
-    # Family of 14 clips to size 13 -> same thresholds, same income -> index 1
-    ia_cca_exit_fee_level: 1
+    # Family of 14 clips to size 13 -> same thresholds, same income -> Level A index 0
+    ia_cca_exit_fee_level: 0

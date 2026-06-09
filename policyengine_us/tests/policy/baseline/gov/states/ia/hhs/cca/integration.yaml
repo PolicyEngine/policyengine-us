@@ -75,8 +75,8 @@
     # Benefit = (889.55 + 676.00) - 0 = 1_565.55
     ia_cca: 1_565.55
 
-# === Case 2: CCA tier (applicant), sliding unit fee at Level B, two children ===
-- name: Case 2, single parent two children licensed center, CCA Level B copay.
+# === Case 2: CCA tier (applicant), income between Level A and B floors -> Level A ===
+- name: Case 2, single parent two children licensed center, CCA Level A no copay.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -117,13 +117,12 @@
         state_code: IA
   output:
     ia_cca_eligible: true
-    # Income 2_100/mo: > Level A (2_044), <= Level B (2_152) -> Level B.
-    # 2 children in care -> column 2 -> unit fee 0.45.
-    # focal_units = monthly_units(40) = 34.6667; copay = 0.45 * 34.6667 = 15.60.
-    ia_cca_copay: 15.60
+    # Income 2_100/mo: >= Level A floor (2_044), < Level B floor (2_152) -> Level A.
+    # 2 children in care -> column 2 -> Level A unit fee 0.00 -> copay 0.
+    ia_cca_copay: 0
     # Same ceilings as Case 1: total capped 889.55 + 676.00 = 1_565.55.
-    # Benefit = 1_565.55 - 15.60 = 1_549.95
-    ia_cca: 1_549.95
+    # Benefit = 1_565.55 - 0 = 1_565.55
+    ia_cca: 1_565.55
 
 # === Case 3: CCA Plus tier (enrolled, 160-225% FPL), sliding fee Level BB ===
 - name: Case 3, enrolled family one preschooler licensed center, CCA Plus.
@@ -168,17 +167,17 @@
     ia_cca_income_eligible: true
     # 4_800/mo <= 225% FPL (4_996.88) -> NOT exit tier -> sliding unit fee.
     ia_cca_in_exit_tier: false
-    # Sliding level: 4_800/mo > AA (4_254), <= BB (6_000) -> Level BB.
-    # 1 child in care -> column 1 -> unit fee 6.70.
-    # focal_units = monthly_units(30) = 26.0; copay = 6.70 * 26.0 = 174.20.
-    ia_cca_copay: 174.20
+    # Sliding level: 4_800/mo >= AA floor (4_254), < BB floor (6_000) -> Level AA.
+    # 1 child in care -> column 1 -> unit fee 6.45.
+    # focal_units = monthly_units(30) = 26.0; copay = 6.45 * 26.0 = 167.70.
+    ia_cca_copay: 167.70
     # Preschool ceiling = 19.50 * 26.0 = 507.00; expense 12_000/yr -> 1_000/mo,
     # capped to the 507.00 ceiling.
-    # Benefit = max(507.00 - 174.20, 0) = 332.80
-    ia_cca: 332.80
+    # Benefit = max(507.00 - 167.70, 0) = 339.30
+    ia_cca: 339.30
 
 # === Case 4: CCA Exit tier (enrolled, >225% FPL), percentage-of-cost copay ===
-- name: Case 4, enrolled family one preschooler licensed center, CCA Exit 60 percent.
+- name: Case 4, enrolled family one preschooler licensed center, CCA Exit 45 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -220,13 +219,13 @@
     ia_cca_income_eligible: true
     # 5_200/mo > 225% FPL (4_996.88) and enrolled -> CCA Exit tier.
     ia_cca_in_exit_tier: true
-    # Exit basic level: > A (4_842), > B (5_057), <= C (5_272) -> Level C -> 60%.
-    # Expense 12_000/yr -> 1_000/mo. Exit copay = 60% of the child's monthly cost
-    # of care = 0.60 * 1_000 = 600.
-    ia_cca_copay: 600.00
+    # Exit basic level: >= B floor (5_057), < C floor (5_272) -> Level B -> 45%.
+    # Expense 12_000/yr -> 1_000/mo. Exit copay = 45% of the child's monthly cost
+    # of care = 0.45 * 1_000 = 450.
+    ia_cca_copay: 450.00
     # Preschool ceiling = 19.50 * 34.6667 = 676.00; monthly expense 1_000 capped to
-    # 676.00. Benefit = max(676.00 - 600.00, 0) = 76.00
-    ia_cca: 76.00
+    # 676.00. Benefit = max(676.00 - 450.00, 0) = 226.00
+    ia_cca: 226.00
 
 # === Case 5: Special-needs branch (applicant, 200% FPL, SN rate) ===
 - name: Case 5, single parent disabled preschooler, special-needs rate and limit.
@@ -272,12 +271,13 @@
     ia_cca_eligible: true
     # Licensed center NO_RATING PRESCHOOL_SN rate = 30.43.
     ia_cca_max_rate: [0, 30.43]
-    # Sliding level (family 2): income 3_000/mo -> Level W; 1 child -> column 1 -> 5.45.
-    # focal_units = monthly_units(40) = 34.6667; copay = 5.45 * 34.6667 = 188.93.
-    ia_cca_copay: 188.93
+    # Sliding level (family 2): income 3_000/mo -> Level V (>= V floor 2_938,
+    # < W floor 3_021); 1 child -> column 1 -> 5.20.
+    # focal_units = monthly_units(40) = 34.6667; copay = 5.20 * 34.6667 = 180.27.
+    ia_cca_copay: 180.27
     # Ceiling = 30.43 * 34.6667 = 1_054.91; expense 12_000/yr -> 1_000/mo < ceiling
-    # -> capped to 1_000. Benefit = max(1_000 - 188.93, 0) = 811.07
-    ia_cca: 811.07
+    # -> capped to 1_000. Benefit = max(1_000 - 180.27, 0) = 819.73
+    ia_cca: 819.73
 
 # === Case 6: In-Home provider, three children in care, minimum-wage rate ===
 - name: Case 6, single parent three children in-home minimum wage rate.

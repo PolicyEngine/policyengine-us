@@ -14,6 +14,10 @@ class ia_cca_in_exit_tier(Variable):
         # CCA Exit applies to enrolled families whose income exceeds the
         # ongoing CCA Plus limit (225% FPL); these families pay the
         # percentage-of-cost CCA Exit fee instead of the sliding unit fee.
+        # This dispatch boundary omits the a(2) "min(225% FPL, 85% MFI)" cap;
+        # the 85% MFI ceiling only binds for very large families and is
+        # immaterial here (see ia_cca_income_eligible for the documented
+        # omission).
         enrolled = spm_unit("ia_cca_enrolled", period)
         income = spm_unit("ia_cca_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
