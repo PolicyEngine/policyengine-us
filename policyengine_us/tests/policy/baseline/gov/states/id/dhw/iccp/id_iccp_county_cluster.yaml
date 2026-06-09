@@ -1,40 +1,40 @@
-- name: Ada County maps to cluster 3.
+- name: Case 1, Ada County maps to cluster 3.
   period: 2026
   input:
     people:
-      person:
+      person1:
         age: 30
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: ID
         county_str: ADA_COUNTY_ID
   output:
     id_iccp_county_cluster: CLUSTER_3
 
-- name: Canyon County maps to cluster 2.
+- name: Case 2, Canyon County maps to cluster 2.
   period: 2026
   input:
     people:
-      person:
+      person1:
         age: 30
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: ID
         county_str: CANYON_COUNTY_ID
   output:
     id_iccp_county_cluster: CLUSTER_2
 
-- name: Adams County defaults to cluster 1.
+- name: Case 3, Adams County defaults to cluster 1.
   period: 2026
   input:
     people:
-      person:
+      person1:
         age: 30
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: ID
         county_str: ADAMS_COUNTY_ID
   output:

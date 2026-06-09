@@ -1,22 +1,22 @@
-- name: An otherwise-eligible family outside Idaho receives no ICCP benefit.
+- name: Case 1, an otherwise-eligible family outside Idaho receives no ICCP benefit.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 24_000  # 2,000/month
-      child:
+      person2:
         age: 3
         childcare_hours_per_day: 8
         childcare_days_per_week: 5  # 40 hours/week -> WEEKLY -> FULL_TIME
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: UT  # not Idaho
         county_str: ADA_COUNTY_ID
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
         spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month
         spm_unit_fpg: 24_000
         meets_ccdf_activity_test: true
@@ -24,25 +24,25 @@
     id_iccp_eligible: false
     id_iccp: 0
 
-- name: Single-child ICCP pipeline from raw inputs through the annual subsidy.
+- name: Case 2, single-child ICCP pipeline from raw inputs through the annual subsidy.
   period: 2026
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 24_000  # 2,000/month, qualifying activity
-      child:
+      person2:
         age: 3  # 36 months -> PRESCHOOL
         childcare_hours_per_day: 8
         childcare_days_per_week: 5  # 40 hours/week -> WEEKLY -> FULL_TIME, in care
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: ID
         county_str: ADA_COUNTY_ID  # CLUSTER_3
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
         spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month
         spm_unit_fpg: 24_000  # initial limit 1.75 x 24,000 / 12 = 3,500/month
   output:
@@ -55,29 +55,29 @@
     id_child_care_subsidies: 12_468
     child_care_subsidies: 12_468  # federal aggregate picks up the Idaho program
 
-- name: Multi-child ICCP pipeline sums per-child copays across the SPM unit.
+- name: Case 3, multi-child ICCP pipeline sums per-child copays across the SPM unit.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 24_000  # 2,000/month, qualifying activity
-      child1:
+      person2:
         age: 1  # 12 months -> INFANT
         childcare_hours_per_day: 8
         childcare_days_per_week: 5  # FULL_TIME, in care
-      child2:
+      person3:
         age: 4  # 48 months -> PRESCHOOL
         childcare_hours_per_day: 8
         childcare_days_per_week: 5  # FULL_TIME, in care
     households:
       household:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
         state_code: ID
         county_str: ADA_COUNTY_ID  # CLUSTER_3
     spm_units:
       spm_unit:
-        members: [parent, child1, child2]
+        members: [person1, person2, person3]
         spm_unit_pre_subsidy_childcare_expenses: 60_000  # 5,000/month
         spm_unit_fpg: 30_000  # initial limit 1.75 x 30,000 / 12 = 4,375/month
   output:

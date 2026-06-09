@@ -1,98 +1,166 @@
-- name: Dependent child earnings below age 18 are excluded.
+- name: Case 1, dependent child earnings below age 18 are excluded.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 12_000
         is_tax_unit_head_or_spouse: true
-      child:
+      person2:
         age: 17
         employment_income: 6_000
         is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: ID
   output:
     id_iccp_countable_income: 1_000
 
-- name: Dependent earnings are counted at age 18.
+- name: Case 2, dependent earnings are counted at age 18.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         employment_income: 12_000
         is_tax_unit_head_or_spouse: true
-      child:
+      person2:
         age: 18
         employment_income: 6_000
         is_tax_unit_head_or_spouse: false
     spm_units:
       spm_unit:
-        members: [parent, child]
+        members: [person1, person2]
     households:
       household:
-        members: [parent, child]
+        members: [person1, person2]
         state_code: ID
   output:
     id_iccp_countable_income: 1_500
 
-- name: Counted unearned income flows into countable income.
+- name: Case 3, counted unearned income flows into countable income.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_tax_unit_head_or_spouse: true
         social_security: 12_000  # 1,000/month, an unearned source
     spm_units:
       spm_unit:
-        members: [parent]
+        members: [person1]
     households:
       household:
-        members: [parent]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_countable_income: 1_000
 
-- name: Child support expense is deducted from countable income.
+- name: Case 4, child support expense is deducted from countable income.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_tax_unit_head_or_spouse: true
         employment_income: 12_000  # 1,000/month
         child_support_expense: 3_600  # 300/month deduction
     spm_units:
       spm_unit:
-        members: [parent]
+        members: [person1]
     households:
       household:
-        members: [parent]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_countable_income: 700  # 1,000 - 300
 
-- name: Self-employment income gets a 50 percent standard expense deduction.
+- name: Case 5, self-employment income gets a 50 percent standard expense deduction.
   period: 2026-01
   input:
     people:
-      parent:
+      person1:
         age: 30
         is_tax_unit_head_or_spouse: true
         self_employment_income: 24_000  # 2,000/month gross
     spm_units:
       spm_unit:
-        members: [parent]
+        members: [person1]
     households:
       household:
-        members: [parent]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_countable_income: 1_000  # 2,000 - 50% x 2,000 = 1,000
+
+- name: Case 6, Social Security disability component is counted exactly once.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        social_security_disability: 12_000  # 1,000/month, flows into the social_security umbrella
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # social_security umbrella (and only it) is in the countable list, so the
+    # disability component is counted once, not twice
+    id_iccp_countable_income: 1_000
+
+- name: Case 7, a self-employment loss neither offsets wages nor flips the deduction.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 24_000  # 2,000/month wages
+        self_employment_income: -12_000  # -1,000/month loss, floored to 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    # loss floored to 0: earned income stays 2,000; self-employment deduction
+    # is 50% x 0 = 0
+    id_iccp_countable_income: 2_000
+
+- name: Case 8, teen parent earnings are counted via the parent carve-out.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000  # 1,000/month
+      person2:
+        age: 17
+        is_tax_unit_head_or_spouse: false
+        employment_income: 6_000  # 500/month, counted because person2 is a parent
+        own_children_in_household: 1
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    # 17-year-old is a parent (own child in household), so earnings count even
+    # under the age-18 threshold: 1,000 + 500 = 1,500
+    id_iccp_countable_income: 1_500

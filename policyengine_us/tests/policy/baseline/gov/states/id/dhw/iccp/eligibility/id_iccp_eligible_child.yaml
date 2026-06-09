@@ -1,57 +1,57 @@
-- name: Children under age 13 qualify when immigration eligible.
+- name: Case 1, children under age 13 qualify when immigration eligible.
   period: 2026-01
   input:
     people:
-      child:
+      person1:
         age: 12
         immigration_status: CITIZEN
     households:
       household:
-        members: [child]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_eligible_child: true
 
-- name: Children age 13 do not qualify unless disabled.
+- name: Case 2, children age 13 do not qualify unless disabled.
   period: 2026-01
   input:
     people:
-      child:
+      person1:
         age: 13
         immigration_status: CITIZEN
     households:
       household:
-        members: [child]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_eligible_child: false
 
-- name: Disabled children qualify through age 18.
+- name: Case 3, disabled children qualify through age 18.
   period: 2026-01
   input:
     people:
-      child:
+      person1:
         age: 18
         is_disabled: true
         immigration_status: CITIZEN
     households:
       household:
-        members: [child]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_eligible_child: true
 
-- name: Disabled children age 19 do not qualify.
+- name: Case 4, disabled children age 19 do not qualify.
   period: 2026-01
   input:
     people:
-      child:
+      person1:
         age: 19
         is_disabled: true
         immigration_status: CITIZEN
     households:
       household:
-        members: [child]
+        members: [person1]
         state_code: ID
   output:
     id_iccp_eligible_child: false

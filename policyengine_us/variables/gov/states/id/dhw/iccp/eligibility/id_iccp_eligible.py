@@ -7,11 +7,7 @@ class id_iccp_eligible(Variable):
     definition_period = MONTH
     label = "Eligible for the Idaho Child Care Program"
     defined_for = StateCode.ID
-    reference = (
-        "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=7",
-        "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=12",
-        "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=13",
-    )
+    reference = "https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=12"
 
     def formula(spm_unit, period, parameters):
         # Intentional limitations: we don't track these ICCP pathways at the

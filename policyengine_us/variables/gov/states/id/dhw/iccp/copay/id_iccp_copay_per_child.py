@@ -80,7 +80,9 @@ class id_iccp_copay_per_child(Variable):
         fpg = person.spm_unit("spm_unit_fpg", period)
         below_tafi_fpl = income < fpg * p.tafi_exemption_fpl_rate
         tafi_exempt = tafi & below_tafi_fpl
-        foster_exempt = person("is_in_foster_care", period)
+        # IDAPA 16.06.12.503 exempts guardians of foster children at the family
+        # level, so any member in foster care exempts all children's copays.
+        foster_exempt = add(person.spm_unit, period, ["is_in_foster_care"]) > 0
         # IDAPA 16.06.12.504.01.a sets a flat student copay for post-secondary
         # students working less than 10 hours per week; we don't track weekly
         # work hours at the moment, so the student copay row is not modeled.

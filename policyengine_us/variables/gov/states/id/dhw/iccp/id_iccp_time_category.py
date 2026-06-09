@@ -20,6 +20,10 @@ class id_iccp_time_category(Variable):
     reference = "https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS"
 
     def formula(person, period, parameters):
+        # IDAPA 16.06.12.201.01 bases full/part-time payment on the parent's
+        # projected monthly activity hours; we don't track parent activity
+        # hours at the moment, so we proxy via the child's care schedule
+        # (ccdf_duration_of_care, weekly/>=30 hrs per week -> full time).
         duration = person("ccdf_duration_of_care", period.this_year)
         return where(
             duration == CCDFDurationOfCare.WEEKLY,
