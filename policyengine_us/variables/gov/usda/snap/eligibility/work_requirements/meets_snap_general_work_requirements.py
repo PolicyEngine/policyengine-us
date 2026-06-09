@@ -12,6 +12,7 @@ class meets_snap_general_work_requirements(Variable):
         p = parameters(period).gov.usda.snap.work_requirements.general
         age = person("monthly_age", period)
         weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        # Exemptions under 7 CFR 273.7(b)(1):
         # Under 16 or 60 years of age or older are exempted
         worked_exempted_age = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
@@ -25,11 +26,15 @@ class meets_snap_general_work_requirements(Variable):
         )
         # Work at least 30 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
-
-        return (
+        exempted = (
             worked_exempted_age
             | is_disabled
             | has_child
             | has_incapacitated_person
             | is_working
         )
+        # Non-exempt registrants comply by participating in (or being
+        # willing to participate in) a work program under 7 CFR 273.7(a)(1)
+        compliant = person("is_snap_work_program_participant", period)
+
+        return exempted | compliant
