@@ -33,8 +33,8 @@ class meets_snap_general_work_requirements(Variable):
             | has_incapacitated_person
             | is_working
         )
-        # Non-exempt registrants comply by participating in (or being
-        # willing to participate in) a work program under 7 CFR 273.7(a)(1)
+        # Non-exempt registrants comply by participating in, or otherwise
+        # complying with, a work program under 7 CFR 273.7(a)(1).
         compliant = person("is_snap_work_program_participant", period)
 
         return exempted | compliant
