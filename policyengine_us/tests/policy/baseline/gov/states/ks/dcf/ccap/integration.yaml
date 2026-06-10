@@ -1,8 +1,10 @@
 # Kansas CCAP integration tests.
-# Tested at 2027-01 so the Appendix F-1 income-limit and family-share schedule
+# Tested at 2026-01 so the Appendix F-1 income-limit and family-share schedule
 # (effective May 1, 2026) and the C-18 provider rates (effective 10-1-2024)
-# both apply. (No KS CCAP formula reads the federal poverty guideline, so the
-# absence of a 2027 FPG entry does not affect these expected values.)
+# both apply. The income limit and family share are derived from the 2026
+# federal poverty guideline and the FFY2026 (2025-10-01) state median income,
+# the figures DCF used to build the published F-1 dollars, so at 2026 the
+# computed values match the published schedule exactly.
 #
 # Monthly hours = weekly hours * 52 / 12. Default childcare_hours_per_week in
 # these cases is 40, giving 40 * 52 / 12 = 173.3333 monthly hours.
@@ -11,7 +13,7 @@
 # capped at total monthly child care expenses.
 
 - name: Case 1, family of 2 with center toddler, rate exceeds expense.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -51,7 +53,7 @@
     ks_ccap: 690
 
 - name: Case 2, low-income family of 2 owes no family share.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -88,7 +90,7 @@
     ks_ccap: 500
 
 - name: Case 3, family of 3 with center preschooler in Group 2.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -128,7 +130,7 @@
     ks_ccap: 626.87
 
 - name: Case 4, family of 4 with two children in center care.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -175,7 +177,7 @@
     ks_ccap: 917
 
 - name: Case 5, out-of-home relative care with rate cap binding.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -212,7 +214,7 @@
     ks_ccap: 320.55
 
 - name: Case 6, TANF-enrolled family eligible despite high income and no work hours.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -254,7 +256,7 @@
     ks_ccap: 911.73
 
 - name: Case 7, disabled child with the enhanced special-care rate.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -293,7 +295,7 @@
     ks_ccap: 1_212.27
 
 - name: Case 8, income-ineligible family gets zero benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -327,7 +329,7 @@
     ks_ccap: 0
 
 - name: Case 9, non-Kansas family gets zero benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -364,7 +366,7 @@
 # reimbursement. Family of 3, $3,000/mo, Johnson County (Group 1), infant in
 # center, $12,000/yr ($1,000/mo) expenses.
 - name: Case 10, non-TANF family of 3 pays the family share.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -404,7 +406,7 @@
     ks_ccap: 911
 
 - name: Case 11, same family TANF-enrolled owes no family share.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -447,7 +449,7 @@
 # the cases above). Flat $2.42/hr statewide; the 215-hour relative cap does not
 # bind at 40 weekly hours (173.33 monthly).
 - name: Case 12, in-home relative provider end-to-end.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -486,7 +488,7 @@
 # benefit. Only the toddler is an eligible child in paid care; the other
 # children have no authorized hours, so they add no reimbursement.
 - name: Case 13, family of 11 with a positive benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -591,7 +593,7 @@
 # income eligible, the family share floors at $0, and the benefit is not
 # inflated by the negative income.
 - name: Case 14, negative income does not inflate the benefit end-to-end.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

@@ -2,10 +2,12 @@
 #   looked up by family size and monthly gross income. Families below 100% FPL
 #   owe $0; the deduction rises across the FPL tiers. Defined_for the eligible
 #   unit, so each case sets up a fully eligible Kansas family.
-# Tested at 2027-01 so the F-1 schedule (effective May 1, 2026) applies.
+# Tested at 2026-01: the family share is derived from the 2026 federal poverty
+# guideline (the figures DCF used to build the published F-1 dollars), so the
+# computed values match the published schedule exactly.
 
 - name: Case 1, family of 2 below 100% FPL owes no deduction.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -32,7 +34,7 @@
     ks_ccap_family_share: 0
 
 - name: Case 2, family of 2 in a middle income tier.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -59,7 +61,7 @@
     ks_ccap_family_share: 60
 
 - name: Case 3, family of 2 in the top tier (85% SMI ceiling).
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -86,7 +88,7 @@
     ks_ccap_family_share: 167
 
 - name: Case 4, family of 3 uses the size-3 schedule.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -119,7 +121,7 @@
 # bound stays in the LOWER family-share band. The size-2 $0 band tops out at
 # $1,803; the $54 band begins at $1,803.01.
 - name: Case 5, family of 2 at exactly the 100% FPL bound stays at zero.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -146,7 +148,7 @@
     ks_ccap_family_share: 0
 
 - name: Case 6, family of 2 just above the bound owes the first deduction.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -175,7 +177,7 @@
 # Edge case: family of 11 (largest size in the F-1 table). $6,100/month lands in
 # the size-11 first deduction tier ($6,063.01 -> $182).
 - name: Case 7, family of 11 uses the size-11 schedule.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -270,7 +272,7 @@
 # Edge case: beyond-max family size. A family of 12 uses the size-11 schedule
 # (the formula's select() default). $6,100/month -> $182, same as size 11.
 - name: Case 8, family of 12 uses the size-11 schedule.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -370,7 +372,7 @@
 
 # Edge case: zero income lands in the $0 band.
 - name: Case 9, zero-income family owes no deduction.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -399,7 +401,7 @@
 # bracket starts at 0, so .calc() on a negative income returns the $0 band; no
 # benefit inflation, handled gracefully.
 - name: Case 10, self-employment loss yields a zero deduction.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -424,3 +426,159 @@
   output:
     # Negative income maps to the first ($0) bracket -> $0.
     ks_ccap_family_share: 0
+
+- name: Case 11, family of 6 with $5,000 monthly income owes the 140% FPL tier deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000  # $5,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: KS
+  output:
+    # Family of 6 monthly FPG = (15,960 + 5 x 5,680) / 12 = $3,696.67.
+    # $5,000 / $3,696.67 = 1.353 -> 140% FPL tier (F-1 band $4,806.01-$5,175).
+    # Tier floor = 1.3; bound = round(1.3 x 3,696.67) = $4,806.
+    # FSD = round(3% x 4,806) = round(144.18) = $144 (matches published F-1).
+    ks_ccap_family_share: 144
+
+- name: Case 12, family of 4 with $5,000 monthly income owes the 185% FPL tier deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000  # $5,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    # Family of 4 monthly FPG = (15,960 + 3 x 5,680) / 12 = $2,750.00.
+    # $5,000 / $2,750 = 1.818 -> 185% FPL tier (F-1 band $4,950.01-$5,088).
+    # Tier floor = 1.8; bound = round(1.8 x 2,750) = $4,950.
+    # FSD = round(3% x 4,950) = round-half-up(148.50) = $149 (matches
+    # published F-1; exercises the half-up convention at an exact .50).
+    ks_ccap_family_share: 149
+
+- name: Case 13, family of 5 with $9,000 monthly income owes the top-tier deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 108_000  # $9,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+      person3:
+        age: 9
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # Family of 5 monthly FPG = (15,960 + 4 x 5,680) / 12 = $3,223.33.
+    # $9,000 / $3,223.33 = 2.792 -> above 185% FPL -> top band at the 5% rate,
+    # and below the size-5 85% SMI ceiling ($9,278), so still eligible.
+    # Tier floor = 1.85; bound = round(1.85 x 3,223.33) = $5,963.
+    # FSD = round(5% x 5,963) = round(298.15) = $298 (matches published F-1
+    # band $5,963.01-$9,278 -> $298).
+    ks_ccap_family_share: 298
+
+- name: Case 14, family of 2 above the 85% SMI ceiling is ineligible and owes no deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000  # $5,500/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Size-2 income ceiling = round(85% x 68% x $112,919 / 12) = $5,439.
+    # $5,500 > $5,439 -> above 85% SMI -> not income eligible (F-1: "Families
+    # with income above 85% of the State Median Income (SMI) are not
+    # eligible"). The family share is defined_for the eligible unit, so no
+    # deduction is assessed and no subsidy is paid.
+    ks_ccap_income_eligible: false
+    ks_ccap_family_share: 0
+    ks_ccap: 0

@@ -4,7 +4,7 @@
 # monthly child care expenses.
 
 - name: Case 1, eligible family receives the rate-vs-expense benefit minus family share.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -37,7 +37,7 @@
     ks_ccap: 690
 
 - name: Case 2, ineligible family receives zero benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -70,7 +70,7 @@
 # Guards against an expense cap that under-pays: when the family share exceeds
 # total reimbursement, the benefit floors at zero rather than going negative.
 - name: Case 3, family share exceeding reimbursement floors the benefit at zero.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -108,7 +108,7 @@
 # benefit is just the per-child reimbursement, capped at expenses — never
 # expense - (negative FSD).
 - name: Case 4, negative income does not inflate the benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -143,7 +143,7 @@
 
 # Edge case: provider charge well below the rate cap -> the expense binds.
 - name: Case 5, provider charge below the rate cap, expense binds.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -177,7 +177,7 @@
 
 # Edge case: zero authorized hours -> zero reimbursement -> zero benefit.
 - name: Case 6, zero child care hours gives zero benefit.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -211,7 +211,7 @@
 # Edge case: standard hours cap binds the reimbursement. Weekly hours convert to
 # above 240, so monthly hours clamp to 240 and expenses exceed the rate cap.
 - name: Case 7, standard hours cap binds with high expenses.
-  period: 2027-01
+  period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:

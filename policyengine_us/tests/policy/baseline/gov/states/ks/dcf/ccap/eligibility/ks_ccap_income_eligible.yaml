@@ -1,13 +1,15 @@
 # Income eligibility (KEESM 7540 / Appendix F-1):
-#   countable monthly gross income must not exceed the F-1 schedule's per-size
-#   dollar upper bound. That published bound already encodes the lesser of
-#   250% FPL and the 85% SMI ceiling, so it is the SOLE income test — there is
-#   no separate dynamic FPG computation. OR the family is TANF-enrolled, which
-#   per KEESM 7540 exempts the family from the financial-need (income) test.
+#   countable monthly gross income must not exceed 85% of the family's monthly
+#   state median income — the F-1 "Income Limit" column, which DCF sets at 85%
+#   SMI. This is the SOLE income test. OR the family is TANF-enrolled, which per
+#   KEESM 7540 exempts the family from the financial-need (income) test.
+# Tested at 2026-01: the limit is derived from the FFY2026 (2025-10-01) state
+# median income DCF used to build the published F-1 column, so the computed
+# limits match the published dollars exactly.
 # F-1 monthly income limits: size 2 = $5,439; size 4 = $7,998.
 
 - name: Case 1, family of 2 income below the limit is eligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -27,7 +29,7 @@
     ks_ccap_income_eligible: true
 
 - name: Case 2, family of 2 income above the limit is ineligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -47,7 +49,7 @@
     ks_ccap_income_eligible: false
 
 - name: Case 3, family of 2 income just below the limit is eligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -67,7 +69,7 @@
     ks_ccap_income_eligible: true
 
 - name: Case 4, family of 4 uses the size-4 limit.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -91,7 +93,7 @@
     ks_ccap_income_eligible: false
 
 - name: Case 5, TANF-enrolled family is categorically eligible despite high income.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -115,7 +117,7 @@
 # formula is countable_income <= income_limit), so a family at exactly $5,439 is
 # eligible.
 - name: Case 6, family of 2 at exactly the income limit is eligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -136,7 +138,7 @@
 
 # Edge case: income one dollar above the limit is ineligible.
 - name: Case 7, family of 2 one dollar above the limit is ineligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -157,7 +159,7 @@
 
 # Edge case: zero income is comfortably within the limit.
 - name: Case 8, zero-income family is eligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -178,7 +180,7 @@
 # Edge case: negative countable income (self-employment loss) stays below the
 # limit and is handled gracefully (no crash, eligible).
 - name: Case 9, self-employment loss yields negative income and stays eligible.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:
@@ -200,7 +202,7 @@
 # Edge case: beyond-max family size. A family of 12 uses the size-11 income
 # limit ($11,758). $6,000/month is well within it.
 - name: Case 10, family of 12 uses the size-11 income limit.
-  period: 2027-01
+  period: 2026-01
   input:
     people:
       person1:

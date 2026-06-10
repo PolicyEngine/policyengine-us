@@ -2,7 +2,7 @@
 # benefit across the year and feeds the federal child_care_subsidies total.
 
 - name: Case 1, annual subsidy is twelve months of the monthly benefit.
-  period: 2027
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -34,7 +34,7 @@
     ks_child_care_subsidies: 8_280
 
 - name: Case 2, non-Kansas family has zero annual subsidy.
-  period: 2027
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
