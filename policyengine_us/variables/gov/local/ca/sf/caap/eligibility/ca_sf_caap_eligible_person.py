@@ -12,12 +12,20 @@ class ca_sf_caap_eligible_person(Variable):
         # A person counts toward the CAAP budget unit only if they are not served
         # by an individual SSI-type cash program and have a qualified immigration
         # status (SEC. 20.7-6, 20.7-14). SSI recipients are served by SSI/SSP, and
-        # aged/blind/disabled immigrants eligible for CAPI are served by CAPI;
-        # both are individual programs, so the bar applies per person (SSIP, a
-        # CAAP sub-program, serves SSI-pending applicants).
+        # aged/blind/disabled immigrants receiving CAPI are served by CAPI; both
+        # are individual programs, so the bar applies per person (SSIP, a CAAP
+        # sub-program, serves SSI-pending applicants). Both bars key on receipt,
+        # not categorical eligibility: a categorically CAPI-eligible person whose
+        # income or resources leave them with no CAPI payment is not served by
+        # CAPI and stays in the CAAP budget unit (with their income counted).
+        # ca_capi is computed at the SPM-unit level, so unit receipt is projected
+        # down and intersected with the person-level categorical flag, which is
+        # what ca_capi's own payment standard and countable income are masked by.
         receives_ssi = person("ssi", period) > 0
-        capi_eligible = person("ca_capi_eligible_person", period.this_year)
+        receives_capi = person("ca_capi_eligible_person", period.this_year) & (
+            person.spm_unit("ca_capi", period.this_year) > 0
+        )
         immigration_status_eligible = person(
             "ca_sf_caap_immigration_status_eligible", period
         )
-        return ~receives_ssi & ~capi_eligible & immigration_status_eligible
+        return ~receives_ssi & ~receives_capi & immigration_status_eligible

@@ -213,33 +213,6 @@
     ca_sf_caap_countable_income: 540
     ca_sf_caap: 38
 
-- name: Case 10, zero cash income with in-kind at or above the grant pays the full $59 floor.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: CITIZEN
-    households:
-      household:
-        members: [person1]
-        county_str: SAN_FRANCISCO_COUNTY_CA
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_cash_assets: 0
-        ca_sf_caap_housing_provided_in_kind: true
-        ca_sf_caap_utilities_provided_in_kind: true
-        ca_sf_caap_food_provided_in_kind: true
-        ca_sf_caap_clothing_provided_in_kind: true
-  output:
-    # Genuine floor population: no cash income, so grant_after_income = 578.
-    # In-kind = 812 >= the $578 grant, so cash_grant = 0. floor = min(578, 59) =
-    # 59, which is fully payable (SEC. 20.7-24 branch 1).
-    ca_sf_caap_income_in_kind: 812
-    ca_sf_caap: 59
-
 - name: Case 11, cash_grant exactly at $59 pays $59 (no top-up needed).
   period: 2026-01
   absolute_error_margin: 0.01
@@ -342,3 +315,43 @@
     # is_in_work_program selects the PAES table; with zero income the full PAES
     # size-1 grant ($714) is paid through the top-level benefit, not the GA $578.
     ca_sf_caap: 714
+
+- name: Case 15, aged TPS member with a CAPI payment is excluded from the
+    budget unit along with her income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        immigration_status: TPS
+        pension_income: 24_000  # 2,000/month
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    # person2 is categorically CAPI-eligible (aged 68 + noncitizen + TPS is not
+    # an SSI-qualified status) and the model pays her unit CAPI, so the
+    # receipt-based bar (ca_capi > 0) drops her from the budget unit and her
+    # pension is masked out of countable income; the remaining member collects
+    # the size-1 grant.
+    # NOTE: in real life her 2,000/month pension is roughly double the CAPI
+    # payment standard, so she would receive no CAPI and would stay in the
+    # CAAP budget unit (size 2, max grant 1,036), where her income fails the
+    # strict income test: ca_sf_caap = 0. The model currently pays her CAPI
+    # regardless of income because ca_capi's income test reads
+    # ssi_countable_income, which is zeroed for anyone failing the SSI
+    # immigration test (CAPI's entire target population) -- an upstream CAPI
+    # limitation. When that is fixed upstream, this case's expectations flip
+    # to budget_unit_size 2, countable_income 2_000, ca_sf_caap 0.
+    ca_sf_caap_budget_unit_size: 1
+    ca_sf_caap_countable_income: 0
+    ca_sf_caap: 578

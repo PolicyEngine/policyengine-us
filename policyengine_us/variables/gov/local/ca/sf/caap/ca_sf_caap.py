@@ -12,13 +12,15 @@ class ca_sf_caap(Variable):
         # SF Administrative Code Chapter 20, Article VII (County Adult
         # Assistance Programs), SEC. 20.7-21 / 20.7-24.
         "https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352",
-        # CAAP Eligibility Manual (effective 2026-05-14), SEC. 20.7-24.
-        "https://www.sfhsa.org/sites/default/files/media/document/2026-05/manual_caap_eligibility_5_14_2026.pdf#page=47",
+        # CAAP Eligibility Manual (effective 2026-06-09), SEC. 20.7-24.
+        "https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=47",
     )
-    # This models the General Assistance (GA) tier only. We don't track the
+    # This models the GA and PAES grant tiers (the PAES table is selected in
+    # ca_sf_caap_max_grant via is_in_work_program). We don't track the
     # following at the moment:
-    #   - PAES / CALM / SSIP sub-program tiers and their activity gates
-    #     (job-readiness, Medi-Cal linkage, disability + pending SSI).
+    #   - The CALM / SSIP grant tiers, and the activity-qualification gates for
+    #     the higher tiers (PAES job-readiness, CALM Medi-Cal linkage, SSIP
+    #     disability + pending SSI).
     #   - The 15/30-day continuous-residency requirement (SEC. 20.7-11).
     #   - The real-property / home-value test (SEC. 20.7-12).
     #   - Asset exemptions beyond liquid cash (burial funds, life insurance,

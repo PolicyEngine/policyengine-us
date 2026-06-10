@@ -70,7 +70,7 @@
     ca_sf_caap_income_in_kind: 422
     ca_sf_caap_countable_income: 0
 
-- name: Case 4, negative net self-employment makes countable income negative.
+- name: Case 4, negative net self-employment floors countable income at zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
