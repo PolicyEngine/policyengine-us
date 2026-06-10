@@ -72,7 +72,7 @@
     # 20 >= 20 weekly-hours floor.
     ks_ccap_activity_eligible: true
 
-- name: Case 4, full-time student parent is eligible without the hours floor.
+- name: Case 4, non-working full-time student parent is not eligible.
   period: 2025-01
   input:
     people:
@@ -93,8 +93,10 @@
         members: [person1, person2]
         state_code: KS
   output:
-    # Student proxy for education-while-employed pathway.
-    ks_ccap_activity_eligible: true
+    # KEESM 2820's post-secondary pathway is "Child Care for Employed Persons
+    # Also Attending Approved Education/Training" - education does not bypass
+    # the 20-hour employment test, so a non-working student does not qualify.
+    ks_ccap_activity_eligible: false
 
 - name: Case 5, one working and one idle caretaker disqualifies the unit.
   period: 2025-01
