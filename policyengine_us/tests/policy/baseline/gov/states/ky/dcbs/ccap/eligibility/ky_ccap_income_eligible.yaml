@@ -255,3 +255,25 @@
         state_code: KY
   output:
     ky_ccap_income_eligible: true
+
+- name: Case 13, child receiving protective services bypasses the income test without a foster placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        # 10_000/month > every SMI limit, but a child receiving or needing
+        # child protective or preventive services is eligible without regard
+        # to income (Section 8(3)), even with no foster-care placement.
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true

@@ -16,8 +16,9 @@ class ky_ccap_activity_eligible(Variable):
         # 5 hours. Section 6: families enrolled in Kentucky Works (K-TAP) are
         # categorically eligible, which also breaks the CCAP <-> TANF cycle.
         # Section 5: a child receiving child protective or preventive services
-        # (Protection and Permanency) is eligible without a work pathway; we proxy
-        # P&P status with a child in foster care.
+        # (Protection and Permanency) is eligible without a work pathway; P&P
+        # status covers a child in foster care or one receiving or needing
+        # child protective or preventive services.
         # We don't track the incapacitated-parent branch (Section 4(1)(c)),
         # teen-parent education status (Section 4(1)(e)), relative-caregiver status
         # (Section 4(1)(d)), the SNAP E&T pathway (Section 6), the education/
@@ -43,5 +44,8 @@ class ky_ccap_activity_eligible(Variable):
             num_caretakers >= 2, couple_eligible, single_parent_eligible
         )
         is_tanf = spm_unit("is_tanf_enrolled", period)
-        is_protection_permanency = add(spm_unit, period, ["is_in_foster_care"]) > 0
+        is_protection_permanency = spm_unit.any(
+            person("is_in_foster_care", period)
+            | person("receives_or_needs_protective_services", period.this_year)
+        )
         return is_tanf | work_eligible | is_protection_permanency

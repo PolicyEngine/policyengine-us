@@ -18,8 +18,8 @@ class ky_ccap_income_eligible(Variable):
         # at or below 85% of the Kentucky state median income by family size.
         # Section 8(3): a child eligible under the Protection and Permanency
         # pathway (Section 5) is eligible without regard to the family's income.
-        # We proxy P&P status with a child in foster care receiving protective
-        # services.
+        # P&P status covers a child in foster care or one receiving or needing
+        # child protective or preventive services.
         p = parameters(period).gov.states.ky.dcbs.ccap.income.smi_limit
         countable_income = spm_unit("ky_ccap_countable_income", period)
         family_size = spm_unit("spm_unit_size", period.this_year)
@@ -32,5 +32,9 @@ class ky_ccap_income_eligible(Variable):
         extra_members = max_(family_size - 8, 0)
         income_limit = base_limit + extra_members * p.additional
         is_tanf = spm_unit("is_tanf_enrolled", period)
-        is_protection_permanency = add(spm_unit, period, ["is_in_foster_care"]) > 0
+        person = spm_unit.members
+        is_protection_permanency = spm_unit.any(
+            person("is_in_foster_care", period)
+            | person("receives_or_needs_protective_services", period.this_year)
+        )
         return is_tanf | is_protection_permanency | (countable_income <= income_limit)

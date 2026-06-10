@@ -231,3 +231,31 @@
         state_code: KY
   output:
     ky_ccap_activity_eligible: true
+
+- name: Case 10, child receiving protective services is eligible without a work pathway or foster placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+        receives_or_needs_protective_services: true
+        # Section 5: a child receiving or needing child protective or
+        # preventive services is eligible even though no caretaker meets the
+        # work-hours floor and the child is not in foster care.
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true
