@@ -178,9 +178,12 @@
       spm_unit:
         members: [person1]
   output:
-    # Aged 67 with no other income, so the model computes SSI ($994/month). SSI
-    # recipients are categorically barred from General Relief (ssi > 0).
+    # Aged 67 with no other income, so the model computes SSI ($994/month).
+    # The SSI recipient is barred at the person level (Section II.I), leaving
+    # the unit with no eligible applicant; the pooled SSI ($994 > $387) also
+    # makes the unit income-ineligible.
     ssi: 994
+    ca_marin_general_relief_eligible_person: false
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0
 
@@ -688,5 +691,48 @@
     # ca_tanf = 0 -- but the explicit dependent-child gate makes the unit
     # ineligible regardless of CalWORKs receipt.
     ca_tanf: 0
+    ca_marin_general_relief_eligible: false
+    ca_marin_general_relief: 0
+
+- name: Case 23, married couple with one SSI spouse is not unit-barred but the pooled SSI exceeds the single grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        age: 67
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: MARIN_COUNTY_CA
+        state_code_str: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Person2 (aged 67, no other income) draws endogenous SSI ($994/month).
+    # The Section II.I bar is person-level: person2 is barred but person1
+    # remains an eligible applicant, so the unit is NOT categorically killed
+    # and is aided at the single rate (387, not the couple 636). Section II.N
+    # still pools the SSI spouse's income: net = 994/month > 387 ->
+    # income-ineligible, so the payment is 0 via the income test, not the
+    # categorical bar.
+    ssi: [0, 994]
+    ca_marin_general_relief_eligible_person: [true, false]
+    ca_marin_general_relief_max_grant: 387
+    ca_marin_general_relief_net_income: 994
+    ca_marin_general_relief_income_eligible: false
     ca_marin_general_relief_eligible: false
     ca_marin_general_relief: 0

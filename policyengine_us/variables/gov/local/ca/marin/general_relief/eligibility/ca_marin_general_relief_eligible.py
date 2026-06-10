@@ -14,13 +14,12 @@ class ca_marin_general_relief_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         age_eligible = spm_unit("ca_marin_general_relief_age_eligible", period)
-        # At least one applicant (head/spouse) must hold a qualifying immigration
-        # status. The person-level check is its own variable because it also
-        # feeds the couple-grant count in max_grant; here we just aggregate it.
-        immigration_eligible = spm_unit.any(
-            spm_unit.members(
-                "ca_marin_general_relief_immigration_status_eligible_person", period
-            )
+        # At least one applicant (head/spouse) must hold a qualifying
+        # immigration status and not receive SSI/SSP. The person-level check is
+        # its own variable because it also feeds the couple-grant count in
+        # max_grant; here we just check that any member passes.
+        has_eligible_applicant = (
+            add(spm_unit, period, ["ca_marin_general_relief_eligible_person"]) > 0
         )
         liquid_asset_eligible = spm_unit(
             "ca_marin_general_relief_liquid_asset_eligible", period
@@ -42,18 +41,11 @@ class ca_marin_general_relief_eligible(Variable):
             "is_child", period.this_year
         )
         has_dependent_child = spm_unit.any(is_dependent_child)
-        # SSI/SSP recipients are categorically ineligible for General Relief.
-        # `ssi > 0` already implies SSI receipt; the unit is barred if any member
-        # receives SSI. CAPI (California's SSI-equivalent cash for immigrants)
-        # needs no separate bar: CAPI recipients are non-qualified noncitizens
-        # who fail the immigration check above.
-        receives_ssi = spm_unit.any(spm_unit.members("ssi", period) > 0)
         return (
             age_eligible
-            & immigration_eligible
+            & has_eligible_applicant
             & liquid_asset_eligible
             & personal_property_eligible
             & income_eligible
             & ~has_dependent_child
-            & ~receives_ssi
         )

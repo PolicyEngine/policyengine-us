@@ -2,7 +2,7 @@ description: Marin County counts these income sources as gross income under the 
 values:
   2025-07-01:
     # Income from a job of any type.
-    - irs_employment_income
+    - employment_income
     - self_employment_income
     - sstb_self_employment_income
     # Income from rental property.
@@ -34,8 +34,10 @@ values:
     - social_security
     - survivor_benefits
     - life_insurance_benefits
-    # SSI/SSP is excluded: recipients are categorically ineligible for General
-    # Relief, so SSI is not counted as income for the grant computation.
+    # SSI recipients are barred at the person level (Section II.I), but a
+    # barred spouse's income must still be considered under Section II.N, so
+    # SSI counts toward the unit's pooled income.
+    - ssi
 metadata:
   unit: list
   period: year
