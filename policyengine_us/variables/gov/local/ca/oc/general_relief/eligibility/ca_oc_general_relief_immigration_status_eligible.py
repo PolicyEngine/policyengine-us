@@ -7,7 +7,7 @@ class ca_oc_general_relief_immigration_status_eligible(Variable):
     label = "Eligible for Orange County General Relief due to immigration status"
     definition_period = MONTH
     defined_for = "in_oc"
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2026-01/GR%20Reg%20SECTION%2040%20-%20Approved%20-%20January%202026.pdf#page=01"
+    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2026-01/GR%20Reg%20SECTION%2040%20-%20Approved%20-%20January%202026.pdf#page=1"
 
     def formula(person, period, parameters):
         # NOTE: Section 40.1 names only permanent legal residents and people

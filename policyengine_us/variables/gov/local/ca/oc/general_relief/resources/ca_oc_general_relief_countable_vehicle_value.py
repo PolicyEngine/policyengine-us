@@ -9,7 +9,7 @@ class ca_oc_general_relief_countable_vehicle_value(Variable):
     quantity_type = STOCK
     definition_period = YEAR
     defined_for = "in_oc"
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2023-04/GR%20Reg%20SECTION%2060%20-%20Approved%20-%20March%202023_0.pdf#page=02"
+    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2023-04/GR%20Reg%20SECTION%2060%20-%20Approved%20-%20March%202023_0.pdf#page=2"
 
     def formula(spm_unit, period, parameters):
         # The exclusion amount comes off the vehicle value; the rest counts

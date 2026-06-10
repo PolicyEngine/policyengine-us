@@ -8,10 +8,8 @@ class ca_oc_general_relief_countable_income_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "in_oc"
-    reference = (
-        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=04",
-        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=05",
-    )
+    # Sections 70.2.o through 70.2.q (pp. 4-5).
+    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=4"
 
     def formula(person, period, parameters):
         # NOTE: Section 70.2.p also allows mandatory federal/state income tax

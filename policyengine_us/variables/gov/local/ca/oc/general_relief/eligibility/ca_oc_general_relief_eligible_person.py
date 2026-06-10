@@ -7,7 +7,7 @@ class ca_oc_general_relief_eligible_person(Variable):
     label = "Eligible person for Orange County General Relief"
     definition_period = MONTH
     defined_for = "in_oc"
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2026-01/GR%20Reg%20SECTION%2020%20-%20Approved%20-%20January%202026.pdf#page=03"
+    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2026-01/GR%20Reg%20SECTION%2020%20-%20Approved%20-%20January%202026.pdf#page=3"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.local.ca.oc.general_relief.eligibility

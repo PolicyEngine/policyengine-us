@@ -8,7 +8,9 @@ class ca_oc_general_relief(Variable):
     label = "Orange County General Relief"
     definition_period = MONTH
     defined_for = "ca_oc_general_relief_eligible"
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=01"
+    reference = (
+        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=1"
+    )
 
     def formula(spm_unit, period, parameters):
         # The GR benefit is the maximum aid payment less all net countable

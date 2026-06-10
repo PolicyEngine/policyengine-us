@@ -10,7 +10,7 @@ class ca_oc_general_relief_max_aid_payment(Variable):
     defined_for = "in_oc"
     reference = (
         "https://www.ochealthinfo.com/sites/hca/files/2021-07/DUI%20Program%20Standards%20%28FINAL%29%207.2021.pdf#page=32",
-        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=04",
+        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=4",
     )
 
     def formula(spm_unit, period, parameters):
@@ -28,7 +28,7 @@ class ca_oc_general_relief_max_aid_payment(Variable):
         # receive a shelter subsidy; we proxy that exemption with receipt of
         # housing assistance, since we don't track Housing Support Program
         # placement at the moment.
-        is_shared_living = spm_unit.household("is_shared_living", period)
+        is_shared_living = spm_unit.household("is_shared_living", period.this_year)
         exempt = spm_unit("receives_housing_assistance", period.this_year)
         reduction = where(is_shared_living & ~exempt, p.shared_housing_reduction, 0)
         return base * (1 - reduction)

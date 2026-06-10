@@ -7,7 +7,9 @@ class ca_oc_general_relief_income_eligible(Variable):
     label = "Meets Orange County General Relief income requirements"
     definition_period = MONTH
     defined_for = "in_oc"
-    reference = "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=04"
+    reference = (
+        "https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Benefits_Services.pdf#page=4"
+    )
 
     def formula(spm_unit, period, parameters):
         # Financial eligibility exists when net countable income is below the
