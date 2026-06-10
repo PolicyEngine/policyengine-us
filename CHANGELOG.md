@@ -1,3 +1,14 @@
+## [1.726.0] - 2026-06-10
+
+### Added
+
+- Added Contra Costa County, CA General Assistance program.
+- Add Marin County, CA General Relief program.
+- Add San Francisco County Adult Assistance Program (CAAP).
+- Add Santa Clara County General Assistance program.
+- Added the Orange County, California General Relief benefit, paying the maximum aid payment for the number of eligible persons in the economic unit and shared-housing situation net of countable income.
+
+
 ## [1.725.0] - 2026-06-10
 
 ### Added
