@@ -1291,6 +1291,15 @@ programs:
     variable: la_general_relief
     parameter_prefix: gov.local.ca.la.general_relief
 
+  - id: ca_marin_general_relief
+    name: Marin County General Relief
+    full_name: Marin County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Marin County
+    variable: ca_marin_general_relief
+    parameter_prefix: gov.local.ca.marin.general_relief
   - id: ca_oc_general_relief
     name: Orange County General Relief
     full_name: Orange County General Relief
