@@ -1,0 +1,41 @@
+- name: Case 1, IRA distributions are excluded after Pennsylvania retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_ira_distributions: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 30_000
+
+- name: Case 2, IRA distributions remain taxable before Pennsylvania retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        taxable_ira_distributions: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 0
+
+- name: Case 3, employer-plan distributions are not broadly excluded by age alone.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_401k_distributions: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 0

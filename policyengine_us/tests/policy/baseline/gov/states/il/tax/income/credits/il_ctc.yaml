@@ -6,7 +6,7 @@
         age: 30
       dependent:
         age: 1
-        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
     households:
       household:
         members: [head, dependent]
@@ -26,7 +26,7 @@
         age: 30
       dependent:
         age: 12
-        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
     households:
       household:
         members: [head, dependent]
@@ -46,13 +46,13 @@
         age: 30
       dependent:
         age: 12
-        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
       dependent2:
         age: 10
-        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
       dependent3:
         age: 9
-        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
     households:
       household:
         members: [head, dependent, dependent2, dependent3]
@@ -63,3 +63,70 @@
         il_eitc: 100
   output:
     il_ctc: 20
+
+- name: Illinois child credit follows dependency and age, not federal CTC child rules
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 11
+        is_tax_unit_dependent: true
+        ctc_qualifying_child: false
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        il_eitc: 100
+  output:
+    il_ctc: 20
+
+- name: Age-11 qualifying child dependent receives the Illinois CTC.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 11
+        is_tax_unit_dependent: true
+        is_qualifying_child_dependent: true
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        il_eitc: 100
+  output:
+    # IL CTC: 100 * 0.20 (20% match) = 20.
+    il_ctc: 20
+
+- name: Age-11 dependent who is not a qualifying child does not receive the Illinois CTC.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 30
+      dependent:
+        age: 11
+        is_tax_unit_dependent: true
+        is_qualifying_child_dependent: false
+    households:
+      household:
+        members: [head, dependent]
+        state_code: IL
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        il_eitc: 100
+  output:
+    # 35 ILCS 5/212.3 ties to IRC 152(c) qualifying-child rules.
+    # A dependent who is not a 152(c) qualifying child (e.g. qualifying relative)
+    # does not generate the IL CTC.
+    il_ctc: 0

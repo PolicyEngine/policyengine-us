@@ -10,13 +10,16 @@ class wic_income_limit(Variable):
     documentation = "Annual income limit for WIC direct income eligibility"
     reference = [
         "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_i",
+        "https://www.law.cornell.edu/cfr/text/7/246.7#d_2_vii",
         "https://www.fns.usda.gov/wic/income-eligibility-guidelines-2025-26",
     ]
 
     def formula(spm_unit, period, parameters):
         spm_unit_size = spm_unit("spm_unit_size", period.this_year)
-        pregnant = spm_unit.any(spm_unit.members("is_pregnant", period))
-        wic_unit_size = spm_unit_size + pregnant
+        current_pregnancies = spm_unit.sum(
+            spm_unit.members("current_pregnancies", period.this_year)
+        )
+        wic_unit_size = spm_unit_size + current_pregnancies
 
         state_group = spm_unit.household("state_group_str", period.this_year)
         wic_state_group = np.where(

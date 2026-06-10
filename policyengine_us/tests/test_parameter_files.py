@@ -5,6 +5,14 @@ import yaml
 
 
 PARAMETERS_DIR = Path(__file__).resolve().parents[1] / "parameters"
+SOI_LONG_TERM_CAPITAL_GAINS_PATH = (
+    PARAMETERS_DIR / "calibration/gov/irs/soi/long_term_capital_gains.yaml"
+)
+SOI_LONG_TERM_CAPITAL_GAINS_ANCHORS = {
+    date(2015, 1, 1): 733_313_255_000,
+    date(2020, 1, 1): 1_063_500_316_000,
+    date(2023, 1, 1): 971_279_947_000,
+}
 PARAMETER_SCHEMA_KEYS = {
     "brackets",
     "description",
@@ -126,3 +134,16 @@ def test_enum_breakdown_parameters_do_not_have_single_member_tables():
         errors.extend(_enum_breakdown_parameter_errors(path, data))
 
     assert errors == []
+
+
+def test_soi_long_term_capital_gains_uses_latest_publication_1304_anchor():
+    parameter = yaml.safe_load(SOI_LONG_TERM_CAPITAL_GAINS_PATH.read_text())
+    values = parameter["values"]
+
+    for period, value in SOI_LONG_TERM_CAPITAL_GAINS_ANCHORS.items():
+        assert values[period] == value
+
+    assert max(values) >= date(2023, 1, 1)
+    assert parameter["metadata"]["reference"][0]["href"].endswith(
+        "publication-1304-basic-tables-part-1"
+    )

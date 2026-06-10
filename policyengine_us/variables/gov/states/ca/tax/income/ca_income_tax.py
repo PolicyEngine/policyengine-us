@@ -10,8 +10,5 @@ class ca_income_tax(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
 
-    adds = [
-        "ca_income_tax_before_refundable_credits",
-        "ca_use_tax",
-    ]
+    adds = ["ca_income_tax_before_refundable_credits"]
     subtracts = ["ca_refundable_credits"]
