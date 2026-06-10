@@ -26,9 +26,9 @@ class commodity_supplemental_food_program_eligible(Variable):
         ks_county_eligible = person.household("ks_dcf_csfp_county_eligible", period)
         mo_county_eligible = person.household("mo_dhss_csfp_county_eligible", period)
         ma_county_eligible = person.household("ma_dese_csfp_county_eligible", period)
-        county_eligible = (
-            where(in_ks, ks_county_eligible, True)
-            & where(in_mo, mo_county_eligible, True)
-            & where(in_ma, ma_county_eligible, True)
+        county_eligible = select(
+            [in_ks, in_mo, in_ma],
+            [ks_county_eligible, mo_county_eligible, ma_county_eligible],
+            default=True,
         )
         return age_eligible & income_eligible & county_eligible
