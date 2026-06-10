@@ -32,7 +32,10 @@ class ks_ccap_income_eligible(Variable):
         # SMI is released each October for the upcoming federal fiscal year and
         # uprated thereafter; pin it to the release in effect at the start of the
         # benefit period (the figures DCF used to build the published schedule)
-        # rather than the uprated current-period value.
+        # rather than the uprated current-period value. Note: DCF refreshes
+        # the published F-1 each May, so from October through April the model
+        # applies the newer SMI vintage a few months before DCF's printed
+        # schedule catches up - a deliberate forward-modeling choice.
         year = period.start.year
         month = period.start.month
         smi_year = year if month >= 10 else year - 1

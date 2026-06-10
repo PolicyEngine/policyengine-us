@@ -34,6 +34,9 @@ class ks_ccap(Variable):
         total_reimbursement = spm_unit.sum(per_child_reimbursement)
         family_share = spm_unit("ks_ccap_family_share", period)
         benefit = max_(total_reimbursement - family_share, 0)
-        # Cap at the family's total actual child care expenses (monthly).
+        # Guard against inconsistent direct inputs: when per-child expenses
+        # are entered exceeding the unit-level total, cap the benefit at the
+        # family's total actual child care expenses (monthly). With
+        # consistent inputs this cap cannot bind.
         actual_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
         return min_(benefit, actual_expenses)

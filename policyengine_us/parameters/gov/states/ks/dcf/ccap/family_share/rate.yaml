@@ -13,7 +13,9 @@ metadata:
 
 brackets:
   - threshold:
-      2026-05-01: 0
+      # Countable income can be negative (self-employment loss), so the first
+      # bracket starts at -inf to make the 0% rate clamp explicit.
+      2026-05-01: -.inf
     amount:
       2026-05-01: 0
   - threshold:
