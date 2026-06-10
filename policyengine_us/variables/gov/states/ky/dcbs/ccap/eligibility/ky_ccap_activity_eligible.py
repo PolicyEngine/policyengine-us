@@ -19,11 +19,13 @@ class ky_ccap_activity_eligible(Variable):
         # (Protection and Permanency) is eligible without a work pathway; P&P
         # status covers a child in foster care or one receiving or needing
         # child protective or preventive services.
-        # We don't track the incapacitated-parent branch (Section 4(1)(c)),
-        # teen-parent education status (Section 4(1)(e)), relative-caregiver status
-        # (Section 4(1)(d)), the SNAP E&T pathway (Section 6), the education/
-        # job-training pathway (Section 7), or the transitional job-search,
-        # homeless, and medical-leave pathways (Section 4(2)) at the moment.
+        # We don't model the remaining pathways individually — the
+        # incapacitated-parent branch (Section 4(1)(c)), teen-parent education
+        # status (Section 4(1)(e)), relative-caregiver status (Section 4(1)(d)),
+        # the SNAP E&T pathway (Section 6), the education/job-training pathway
+        # (Section 7), and the transitional job-search, homeless, and
+        # medical-leave pathways (Section 4(2)) — set the
+        # meets_ccdf_activity_test input to represent them.
         p = parameters(period).gov.states.ky.dcbs.ccap.eligibility
         person = spm_unit.members
         is_caretaker = person("is_tax_unit_head_or_spouse", period.this_year)
@@ -48,4 +50,5 @@ class ky_ccap_activity_eligible(Variable):
             person("is_in_foster_care", period)
             | person("receives_or_needs_protective_services", period.this_year)
         )
-        return is_tanf | work_eligible | is_protection_permanency
+        fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
+        return is_tanf | work_eligible | is_protection_permanency | fallback
