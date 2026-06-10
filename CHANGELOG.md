@@ -1,3 +1,10 @@
+## [1.724.0] - 2026-06-10
+
+### Added
+
+- SNAP work program participant input variable, satisfying the general work requirements under 7 CFR 273.7.
+
+
 ## [1.723.0] - 2026-06-10
 
 ### Added
