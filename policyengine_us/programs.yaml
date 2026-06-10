@@ -1353,6 +1353,16 @@ programs:
     variable: ca_scc_general_assistance
     parameter_prefix: gov.local.ca.scc.general_assistance
 
+  - id: ca_cc_general_assistance
+    name: Contra Costa County General Assistance
+    full_name: Contra Costa County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Contra Costa County
+    variable: ca_cc_general_assistance
+    parameter_prefix: gov.local.ca.cc.general_assistance
+
   - id: nyc_income_tax
     name: NYC income tax
     full_name: New York City Income Tax
