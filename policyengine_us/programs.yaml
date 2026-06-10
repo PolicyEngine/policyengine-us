@@ -1374,6 +1374,17 @@ programs:
     variable: ca_cc_general_assistance
     parameter_prefix: gov.local.ca.cc.general_assistance
 
+  - id: ca_sf_caap
+    name: San Francisco County Adult Assistance Programs
+    full_name: San Francisco County Adult Assistance Programs (CAAP)
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: San Francisco County
+    variable: ca_sf_caap
+    parameter_prefix: gov.local.ca.sf.caap
+    notes: General Assistance and PAES grant tiers modeled; CALM/SSIP tiers and activity-qualification gates not yet modeled
+
   - id: nyc_income_tax
     name: NYC income tax
     full_name: New York City Income Tax
