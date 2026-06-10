@@ -78,3 +78,45 @@
   output:
     # TANF not in sources list: 12_000 / 12 = 1_000/month.
     ky_ccap_countable_income: 1_000
+
+- name: Case 5, legally obligated child support paid is deducted from gross income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 24_000
+        # Section 8(5)(a): actual, legally obligated child support paid to a
+        # party not living in the family's residence is deducted.
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 24_000 / 12 = 2_000/month gross; 3_600 / 12 = 300/month deduction.
+    # 2_000 - 300 = 1_700/month.
+    ky_ccap_countable_income: 1_700
+
+- name: Case 6, child support deduction cannot push countable income below zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 1_200 / 12 = 100/month gross; 2_400 / 12 = 200/month deduction.
+    # max(0, 100 - 200) = 0.
+    ky_ccap_countable_income: 0
