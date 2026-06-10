@@ -1,0 +1,16 @@
+description: Indiana limits initial applicants' gross income to this share of the federal poverty guideline under the Temporary Assistance for Needy Families program.
+
+values:
+  1997-10-01: .inf  # No gross income screen before 2025-07-01 (standard of need governs)
+  2025-07-01: 0.35
+  2027-07-01: 0.5
+
+metadata:
+  unit: /1
+  period: month
+  label: Indiana TANF initial eligibility gross income FPG rate
+  reference:
+    - title: IC 12-14-1-1.7(b)-(c) (35% FPL through June 30, 2027; 50% FPL after)
+      href: https://iga.in.gov/laws/2025/ic/titles/12/#12-14-1-1.7
+    - title: FSSA DFR Chapter 3000, Section 3010.15.00 (gross income standard)
+      href: https://www.in.gov/fssa/dfr/files/3000.pdf#page=4

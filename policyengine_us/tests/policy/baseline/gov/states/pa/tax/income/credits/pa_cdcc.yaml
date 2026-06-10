@@ -21,3 +21,12 @@
     cdcc_potential: 1_000
   output:
     pa_cdcc: 1_000
+
+- name: Pennsylvania uses the federal potential credit even when the claimed credit is limited to zero
+  period: 2023
+  input:
+    state_code: PA
+    cdcc: 0
+    cdcc_potential: 1_000
+  output:
+    pa_cdcc: 1_000

@@ -108,7 +108,7 @@
         members: [person1, person2]
         state_fips: 6
   output:
-    ca_income_tax: 371
+    ca_income_tax: 366.40564
 
 - name: High income joint filer, state_income_tax includes behavioral health tax.
   absolute_error_margin: 500

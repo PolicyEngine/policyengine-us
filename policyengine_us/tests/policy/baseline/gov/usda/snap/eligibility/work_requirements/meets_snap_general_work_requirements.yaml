@@ -79,3 +79,21 @@
         members: [person1, person2]
   output:
     meets_snap_general_work_requirements: [true, true]
+
+- name: Case 8, age 30, not working but a SNAP work program participant.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_snap_work_program_participant: true
+  output:
+    meets_snap_general_work_requirements: true
+
+- name: Case 9, age 30, not working and not a SNAP work program participant.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_snap_work_program_participant: false
+  output:
+    meets_snap_general_work_requirements: false

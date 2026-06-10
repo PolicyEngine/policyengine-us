@@ -1,0 +1,48 @@
+description: Indiana uses these annual federal poverty guideline amounts to calculate monthly income standards under the Temporary Assistance for Needy Families program.
+
+first_person:
+  1992-10-01: 6_810
+  2011-10-01: 10_890
+  2015-10-01: 11_770
+  2016-10-01: 11_880
+  2017-10-01: 12_060
+  2018-10-01: 12_140
+  2019-10-01: 12_490
+  2020-10-01: 12_760
+  2021-10-01: 12_880
+  2022-10-01: 13_590
+  2023-10-01: 14_580
+  2024-10-01: 15_060
+  2025-07-01: 15_650
+  2026-03-01: 15_960
+additional_person:
+  1992-10-01: 2_380
+  2011-10-01: 3_820
+  2015-10-01: 4_160
+  2016-10-01: 4_160
+  2017-10-01: 4_180
+  2018-10-01: 4_320
+  2019-10-01: 4_420
+  2020-10-01: 4_480
+  2021-10-01: 4_540
+  2022-10-01: 4_720
+  2023-10-01: 5_140
+  2024-10-01: 5_380
+  2025-07-01: 5_500
+  2026-03-01: 5_680
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Indiana TANF federal poverty guideline
+  breakdown:
+    - [first_person, additional_person]
+  reference:
+    - title: FSSA DFR Chapter 3000, Section 3010.15.00 (cash assistance gross income standards effective 3/1/2026)
+      href: https://www.in.gov/fssa/dfr/files/3000.pdf#page=4
+    - title: FSSA DFR Chapter 3000, Section 3010.15.05 (cash assistance 100% FPG standards effective 3/1/2026)
+      href: https://www.in.gov/fssa/dfr/files/3000.pdf#page=5
+    - title: Indiana FSSA TANF cash assistance income guidelines (standards preceding the 3/1/2026 update)
+      href: https://www.in.gov/fssa/dfr/tanf-cash-assistance/about-tanf/
+    - title: HHS poverty guidelines
+      href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines

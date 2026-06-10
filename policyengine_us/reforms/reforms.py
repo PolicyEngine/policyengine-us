@@ -124,6 +124,7 @@ from .states.ut import (
     create_ut_refundable_eitc_reform,
     create_ut_hb210_reform,
     create_ut_hb210_s2_reform,
+    create_ut_ctc_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -237,6 +238,9 @@ from .states.id.eitc import (
 )
 from .states.id.s1450 import (
     create_id_s1450_reform,
+)
+from .states.il.sb3567 import (
+    create_il_sb3567_reform,
 )
 from .states.ky.eitc import (
     create_ky_eitc_reform,
@@ -386,6 +390,8 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
 
+    ut_ctc = create_ut_ctc_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -439,6 +445,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ga_eitc = create_ga_eitc_reform(parameters, period)
     id_eitc = create_id_eitc_reform(parameters, period)
     id_s1450 = create_id_s1450_reform(parameters, period)
+    il_sb3567 = create_il_sb3567_reform(parameters, period)
     ky_eitc = create_ky_eitc_reform(parameters, period)
     ms_eitc = create_ms_eitc_reform(parameters, period)
     nd_eitc = create_nd_eitc_reform(parameters, period)
@@ -514,6 +521,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ut_refundable_eitc,
         ut_hb210,
         ut_hb210_s2,
+        ut_ctc,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -554,6 +562,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ga_eitc,
         id_eitc,
         id_s1450,
+        il_sb3567,
         ky_eitc,
         ms_eitc,
         nd_eitc,
