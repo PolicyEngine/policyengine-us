@@ -1,0 +1,426 @@
+# Family share deduction (KEESM 7541 / Appendix F-1, eff. May 1, 2026):
+#   looked up by family size and monthly gross income. Families below 100% FPL
+#   owe $0; the deduction rises across the FPL tiers. Defined_for the eligible
+#   unit, so each case sets up a fully eligible Kansas family.
+# Tested at 2027-01 so the F-1 schedule (effective May 1, 2026) applies.
+
+- name: Case 1, family of 2 below 100% FPL owes no deduction.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # $1,000/month, below the size-2 $1,803 floor
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $1,000/month < $1,803.01 -> $0 deduction.
+    ks_ccap_family_share: 0
+
+- name: Case 2, family of 2 in a middle income tier.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $2,000/month falls in the $1,984.01-$2,164 tier -> $60.
+    ks_ccap_family_share: 60
+
+- name: Case 3, family of 2 in the top tier (85% SMI ceiling).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $3,500/month is above the $3,336.01 threshold -> $167.
+    ks_ccap_family_share: 167
+
+- name: Case 4, family of 3 uses the size-3 schedule.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # $3,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # $3,000/month falls in the size-3 $2,960.01-$3,187 tier -> $89.
+    ks_ccap_family_share: 89
+
+# The F-1 brackets use .01 thresholds, so a family at exactly a tier's upper
+# bound stays in the LOWER family-share band. The size-2 $0 band tops out at
+# $1,803; the $54 band begins at $1,803.01.
+- name: Case 5, family of 2 at exactly the 100% FPL bound stays at zero.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_636  # $1,803.00/month exactly
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $1,803.00 < $1,803.01 -> stays in the $0 band.
+    ks_ccap_family_share: 0
+
+- name: Case 6, family of 2 just above the bound owes the first deduction.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_648  # $1,804.00/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $1,804.00 >= $1,803.01 -> first deduction band, $54.
+    ks_ccap_family_share: 54
+
+# Edge case: family of 11 (largest size in the F-1 table). $6,100/month lands in
+# the size-11 first deduction tier ($6,063.01 -> $182).
+- name: Case 7, family of 11 uses the size-11 schedule.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 73_200  # $6,100/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 38
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+      person5:
+        age: 7
+        is_tax_unit_dependent: true
+      person6:
+        age: 8
+        is_tax_unit_dependent: true
+      person7:
+        age: 9
+        is_tax_unit_dependent: true
+      person8:
+        age: 10
+        is_tax_unit_dependent: true
+      person9:
+        age: 11
+        is_tax_unit_dependent: true
+      person10:
+        age: 3
+        is_tax_unit_dependent: true
+      person11:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+        state_code: KS
+  output:
+    # $6,100/month >= $6,063.01 size-11 threshold -> $182.
+    ks_ccap_family_share: 182
+
+# Edge case: beyond-max family size. A family of 12 uses the size-11 schedule
+# (the formula's select() default). $6,100/month -> $182, same as size 11.
+- name: Case 8, family of 12 uses the size-11 schedule.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 73_200  # $6,100/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 38
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        is_tax_unit_dependent: true
+      person5:
+        age: 7
+        is_tax_unit_dependent: true
+      person6:
+        age: 8
+        is_tax_unit_dependent: true
+      person7:
+        age: 9
+        is_tax_unit_dependent: true
+      person8:
+        age: 10
+        is_tax_unit_dependent: true
+      person9:
+        age: 11
+        is_tax_unit_dependent: true
+      person10:
+        age: 3
+        is_tax_unit_dependent: true
+      person11:
+        age: 2
+        is_tax_unit_dependent: true
+      person12:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+        state_code: KS
+  output:
+    # Size 12 clamps to the size-11 column; $6,100/month -> $182.
+    ks_ccap_family_share: 182
+
+# Edge case: zero income lands in the $0 band.
+- name: Case 9, zero-income family owes no deduction.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $0 income < $1,803.01 -> $0 band.
+    ks_ccap_family_share: 0
+
+# Edge case: negative income (self-employment loss). The schedule's first
+# bracket starts at 0, so .calc() on a negative income returns the $0 band; no
+# benefit inflation, handled gracefully.
+- name: Case 10, self-employment loss yields a zero deduction.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -24_000  # -$2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Negative income maps to the first ($0) bracket -> $0.
+    ks_ccap_family_share: 0

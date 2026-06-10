@@ -1,0 +1,193 @@
+# Activity eligibility (KEESM 2820):
+#   non-TANF caretakers must work at least 20 hours/week (or be a full-time
+#   student as a proxy for education-while-employed). TANF-enrolled families
+#   have no minimum-hours test. Every tax-unit head/spouse must individually
+#   meet an activity; one idle caretaker disqualifies the unit.
+
+- name: Case 1, single parent working 40 hours is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_ccap_activity_eligible: true
+
+- name: Case 2, single parent working below 20 hours is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 15 < 20 weekly hours and not a student.
+    ks_ccap_activity_eligible: false
+
+- name: Case 3, parent working exactly 20 hours is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 20 >= 20 weekly-hours floor.
+    ks_ccap_activity_eligible: true
+
+- name: Case 4, full-time student parent is eligible without the hours floor.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Student proxy for education-while-employed pathway.
+    ks_ccap_activity_eligible: true
+
+- name: Case 5, one working and one idle caretaker disqualifies the unit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # The non-working spouse is a head/spouse with no qualifying activity.
+    ks_ccap_activity_eligible: false
+
+- name: Case 6, TANF-enrolled family is eligible with no working caretaker.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # TANF participants have no minimum-hours requirement.
+    ks_ccap_activity_eligible: true
+
+# Edge case: work hours one below the 20-hour floor. The boundary is "at or
+# above 20" (hours_worked >= activity_hours), so 19 fails.
+- name: Case 7, parent working 19 hours just under the floor is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 19
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 19 < 20 weekly-hours floor and not a student.
+    ks_ccap_activity_eligible: false
+
+# Edge case: degenerate unit with no head/spouse caretaker. With no caretaker,
+# has_caretaker is false and the non-TANF path returns false.
+- name: Case 8, unit with no head or spouse is not activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # No tax-unit head or spouse -> has_caretaker is false -> ineligible.
+    ks_ccap_activity_eligible: false

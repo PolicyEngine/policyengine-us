@@ -1,0 +1,40 @@
+description: Kansas counts these unearned income sources under the Child Care Assistance Program.
+values:
+  2021-07-01:
+    # Unearned income (KEESM 6200): benefits, pensions, settlements.
+    - social_security
+    - unemployment_compensation
+    - workers_compensation
+    - pension_income
+    # PolicyEngine records military retirement separately from pension_income,
+    # so include it under KEESM 6200 pensions and retirement.
+    - military_retirement_pay
+    - alimony_income
+    - rental_income
+    - veterans_benefits
+    # Interest and dividends are countable (KEESM 6410 exempts them only when
+    # received irregularly, unpredictably, and under $30 per quarter — a nuance
+    # we don't model at the moment, so they are counted in full).
+    - dividend_income
+    - interest_income
+    #
+    # KS-specific exclusions:
+    # - ssi: exempt for child care (KEESM 6410 SSI, "All Programs Except Food
+    #   Assistance"). Contrast WV, which counts SSI.
+    # - child_support_received: exempt when assigned to DCF (KEESM 6410 Child
+    #   Support).
+    # - tanf: countable in principle, but excluded here to avoid a circular
+    #   dependency:
+    #     ks_ccap_countable_income -> tanf -> (TANF child-care deduction)
+    #       -> childcare_expenses -> ks_ccap -> ks_ccap_income_eligible
+    #       -> ks_ccap_countable_income
+    #   The is_tanf_enrolled bypass in ks_ccap_income_eligible already makes
+    #   TANF-active families categorically income-eligible.
+
+metadata:
+  unit: list
+  period: year
+  label: Kansas CCAP countable unearned income sources
+  reference:
+    - title: KEESM 6200 (Unearned Income) and 6410 (Income Exemptions)
+      href: https://content.dcf.ks.gov/ees/keesm/Current/keesm6000.htm

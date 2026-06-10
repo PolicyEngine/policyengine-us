@@ -1,0 +1,64 @@
+# Kansas child care subsidies annual aggregator: sums the monthly ks_ccap
+# benefit across the year and feeds the federal child_care_subsidies total.
+
+- name: Case 1, annual subsidy is twelve months of the monthly benefit.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1  # center Toddler
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000  # $750/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    # Monthly ks_ccap = $690; annual = $690 * 12 = $8,280.
+    ks_child_care_subsidies: 8_280
+
+- name: Case 2, non-Kansas family has zero annual subsidy.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    ks_child_care_subsidies: 0

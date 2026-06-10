@@ -1,0 +1,57 @@
+description: Kansas sets this monthly family share deduction for a family of 10 under the Child Care Assistance Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: month
+  label: Kansas CCAP monthly family share deduction for a family of 10
+  reference:
+    - title: KEESM Appendix F-1 — Monthly Family Income and Family Share Deduction Schedule (Family of 10)
+      href: https://content.dcf.ks.gov/ees/KEESM/Appendix/F-1MonthlyFamilyIncomeandFamilyShareDeductionSchedule.pdf
+
+brackets:
+  - threshold:
+      2026-05-01: 0
+    amount:
+      2026-05-01: 0
+  - threshold:
+      2026-05-01: 5_590.01
+    amount:
+      2026-05-01: 168
+  - threshold:
+      2026-05-01: 6_149.01
+    amount:
+      2026-05-01: 184
+  - threshold:
+      2026-05-01: 6_708.01
+    amount:
+      2026-05-01: 201
+  - threshold:
+      2026-05-01: 7_267.01
+    amount:
+      2026-05-01: 218
+  - threshold:
+      2026-05-01: 7_826.01
+    amount:
+      2026-05-01: 235
+  - threshold:
+      2026-05-01: 8_385.01
+    amount:
+      2026-05-01: 252
+  - threshold:
+      2026-05-01: 8_944.01
+    amount:
+      2026-05-01: 268
+  - threshold:
+      2026-05-01: 9_503.01
+    amount:
+      2026-05-01: 285
+  - threshold:
+      2026-05-01: 10_062.01
+    amount:
+      2026-05-01: 302
+  - threshold:
+      2026-05-01: 10_342.01
+    amount:
+      2026-05-01: 517
