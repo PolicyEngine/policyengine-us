@@ -1,6 +1,7 @@
-# KY CCAP family copayment (Section 11(3)): per-day fee looked up by monthly
-# countable income band x family size (2/3/4/5+) x children-in-care (1 / 2+),
-# multiplied by each child's monthly care days, summed.
+# KY CCAP family copayment (Section 11(3)): a per-family per-day fee looked up by
+# monthly countable income band x family size (2/3/4/5+) x children-in-care (1 / 2+),
+# multiplied by the family's monthly care days. The 1-vs-2+ column already encodes
+# the child count, so the fee is the whole-family daily rate, not a per-child fee.
 # $0 copay for monthly income <= $899 (all sizes).
 
 - name: Case 1, monthly income at or below 899 has zero copay.
@@ -128,8 +129,10 @@
         members: [person1, person2, person3]
         state_code: KY
   output:
-    # size_3_two_or_more daily fee $12 x (20 + 20) child-days = $480/month
-    ky_ccap_copay: 480
+    # size_3_two_or_more per-family daily fee $12 x 20 family care-days = $240/month
+    # (the fee is per-family per-day, not per child-day; both children attend the
+    # same 20 days, so the family has 20 days of care).
+    ky_ccap_copay: 240
 
 - name: Case 5, four-person family with one child in care.
   period: 2025-01
@@ -304,8 +307,9 @@
         members: [person1, person2, person3, person4, person5, person6]
         state_code: KY
   output:
-    # size_5_plus_two_or_more capped daily fee $25 x (20 + 20) child-days = $1,000/month.
-    ky_ccap_copay: 1_000
+    # size_5_plus_two_or_more capped per-family daily fee $25 x 20 family care-days
+    # = $500/month (per-family per-day fee, both children attend the same 20 days).
+    ky_ccap_copay: 500
 
 - name: Case 10, negative countable income stays on the zero-copay line.
   period: 2025-01

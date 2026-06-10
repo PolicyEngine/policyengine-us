@@ -11,9 +11,12 @@ class ky_ccap_copay(Variable):
     reference = "https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=11"
 
     def formula(spm_unit, period, parameters):
-        # 922 KAR 2:160 Section 11(3): the family co-payment is a per-day fee per
-        # child, looked up by monthly countable income, family size (2/3/4/5+),
-        # and the number of children needing care (one child vs two or more).
+        # 922 KAR 2:160 Section 11(3)(a): the "Family Co-Payment Per Day" table
+        # sets a single per-family daily fee, looked up by monthly countable
+        # income, family size (2/3/4/5+), and the number of children needing care
+        # (one child vs two or more). The one-vs-two-or-more column already encodes
+        # the child count, so the fee is the whole-family rate for a day of care --
+        # not a per-child fee.
         # We don't track the 12-month copay freeze (Section 11(3)(c)) at the
         # moment, so the copay is recomputed each period from current income.
         # We don't track the discretionary Protection and Permanency copay waiver
@@ -33,7 +36,7 @@ class ky_ccap_copay(Variable):
         one_child = num_in_care <= 1
 
         # Section 11(3)(a): family size 2 has only a one-child column.
-        scale_fee_per_child = select(
+        scale_family_fee = select(
             [
                 family_size <= 2,
                 (family_size == 3) & one_child,
@@ -52,9 +55,13 @@ class ky_ccap_copay(Variable):
             ],
             default=p.size_5_plus_two_or_more.calc(countable_income),
         )
-        # Section 11(3)(b): the per-day fee per child is capped at the maximum
+        # Section 11(3)(b): the family's per-day copayment is capped at the maximum
         # daily copayment for a family with more than five members.
-        daily_fee_per_child = min_(scale_fee_per_child, p.max_daily)
-        # The per-day fee is assessed for each child in care, for each day of care.
-        total_monthly_days = spm_unit.sum(monthly_care_days * in_care)
-        return daily_fee_per_child * total_monthly_days
+        daily_family_fee = min_(scale_family_fee, p.max_daily)
+        # The fee is a per-family per-day charge, so it is assessed once per day of
+        # care for the family -- not once per child-day. Families generally send
+        # all children the same days; where children differ, the maximum care-day
+        # count across children approximates the family's days with any child in
+        # care without double-charging shared days.
+        family_care_days = spm_unit.max(monthly_care_days * in_care)
+        return daily_family_fee * family_care_days

@@ -247,12 +247,13 @@
     ky_ccap_eligible_child: [false, true, true]
     # Region 4: Preschool Full = $41, School Age Full = $37.
     ky_ccap_daily_rate: [0, 41, 37]
-    # Copay: size_3_two_or_more $12/day x (20 + 20) child-days = $480.
-    ky_ccap_copay: 480
+    # Copay: size_3_two_or_more per-family $12/day x 20 family care-days = $240
+    # (per-family per-day fee; both children attend the same 20 days).
+    ky_ccap_copay: 240
     # Charge per child = (60_000/12)/2 children/20 days = $125/day > rates.
     # reimbursement = 41 x 20 + 37 x 20 = 820 + 740 = $1,560.
-    # benefit = max(1_560 - 480, 0) = $1,080.
-    ky_ccap: 1_080
+    # benefit = max(1_560 - 240, 0) = $1,320.
+    ky_ccap: 1_320
 
 - name: Case 7, Kentucky Works enrollment satisfies the activity test.
   period: 2025-01
