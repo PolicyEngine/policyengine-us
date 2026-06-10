@@ -21,7 +21,7 @@ class ca_scc_general_assistance_eligible_person(Variable):
         # Per GA 202, persons eligible for another federal or state cash aid
         # program (here: CAPI for aged/blind/disabled noncitizens) are not
         # eligible for General Assistance.
-        capi_eligible = person("ca_capi_eligible_person", period)
+        capi_eligible = person("ca_capi_eligible_person", period.this_year)
         # Self-employment is not a categorical bar. Per the GA handbook
         # (02Application/Employment_Termination.htm), a self-employed applicant
         # with income below the GA Maximum Basic Need Rate is eligible if they
