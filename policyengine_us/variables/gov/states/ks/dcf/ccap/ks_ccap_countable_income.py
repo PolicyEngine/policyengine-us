@@ -8,7 +8,11 @@ class ks_ccap_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.KS
-    reference = "https://content.dcf.ks.gov/ees/keesm/Current/keesm6000.htm"
+    reference = (
+        "https://content.dcf.ks.gov/ees/keesm/Current/keesm6200.htm",  # Unearned income
+        "https://content.dcf.ks.gov/ees/keesm/Current/keesm6300.htm",  # Earned income
+        "https://content.dcf.ks.gov/ees/keesm/Current/keesm6410.htm",  # Income exemptions
+    )
 
     def formula(spm_unit, period, parameters):
         # KEESM 6410 (Children's Earnings): "the earnings of any child under age
