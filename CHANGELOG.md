@@ -1,3 +1,14 @@
+## [1.725.0] - 2026-06-10
+
+### Added
+
+- Add San Mateo County General Assistance.
+
+### Fixed
+
+- Restricted Massachusetts Commodity Supplemental Food Program eligibility to covered counties.
+
+
 ## [1.724.0] - 2026-06-10
 
 ### Added
