@@ -1300,6 +1300,16 @@ programs:
     coverage: Marin County
     variable: ca_marin_general_relief
     parameter_prefix: gov.local.ca.marin.general_relief
+  - id: ca_oc_general_relief
+    name: Orange County General Relief
+    full_name: Orange County General Relief
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: Orange County
+    variable: ca_oc_general_relief
+    parameter_prefix: gov.local.ca.oc.general_relief
+    notes: Monthly maximum aid payment for the number of eligible persons in the economic unit and shared-housing situation (April 2015 / October 2016 schedule) net of countable income; component-value deductions for in-kind aid and administrative-history rules are not modeled
 
   - id: ca_riv_general_relief
     name: Riverside County General Relief
@@ -1340,7 +1350,49 @@ programs:
     status: complete
     coverage: Alameda County
     variable: ca_ala_general_assistance
-    parameter_prefix: gov.local.ca.ala.ga
+    parameter_prefix: gov.local.ca.ala.general_assistance
+
+  - id: ca_smc_general_assistance
+    name: San Mateo County General Assistance
+    full_name: San Mateo County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Mateo County
+    variable: ca_smc_general_assistance
+    parameter_prefix: gov.local.ca.smc.general_assistance
+    verified_start_year: 2025
+
+  - id: ca_scc_general_assistance
+    name: Santa Clara County General Assistance
+    full_name: Santa Clara County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Santa Clara County
+    variable: ca_scc_general_assistance
+    parameter_prefix: gov.local.ca.scc.general_assistance
+
+  - id: ca_cc_general_assistance
+    name: Contra Costa County General Assistance
+    full_name: Contra Costa County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Contra Costa County
+    variable: ca_cc_general_assistance
+    parameter_prefix: gov.local.ca.cc.general_assistance
+
+  - id: ca_sf_caap
+    name: San Francisco County Adult Assistance Programs
+    full_name: San Francisco County Adult Assistance Programs (CAAP)
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: San Francisco County
+    variable: ca_sf_caap
+    parameter_prefix: gov.local.ca.sf.caap
+    notes: General Assistance and PAES grant tiers modeled; CALM/SSIP tiers and activity-qualification gates not yet modeled
 
   - id: nyc_income_tax
     name: NYC income tax
