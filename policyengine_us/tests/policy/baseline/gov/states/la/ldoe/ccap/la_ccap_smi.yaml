@@ -1,0 +1,43 @@
+# Monthly SMI = HHS four-person state median income x household size
+# adjustment / 12, taken from the federal fiscal year estimates underlying
+# the sliding fee scale in effect; January falls under the prior February's
+# scale.
+- name: Case 1, two-person household in January 2026 uses the FY 2025 estimates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # $95,801 x 0.68 / 12 = $5,428.72.
+    la_ccap_smi: 5_428.72
+
+- name: Case 2, two-person household in January 2025 uses the FY 2024 estimates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # $86,934 x 0.68 / 12 = $4,926.26.
+    la_ccap_smi: 4_926.26

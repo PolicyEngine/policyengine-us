@@ -12,6 +12,7 @@ class la_ccap_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.la.ldoe.ccap
         income = spm_unit("la_ccap_countable_income", period)
-        size = spm_unit("spm_unit_size", period.this_year)
-        capped_size = clip(size, p.household_size.minimum, p.household_size.maximum)
-        return income <= p.income.limit[capped_size]
+        monthly_smi = spm_unit("la_ccap_smi", period)
+        # LAC 28:CLXV.509.A.3: countable income at or below 85% of the
+        # state median income.
+        return income <= p.income.limit * monthly_smi

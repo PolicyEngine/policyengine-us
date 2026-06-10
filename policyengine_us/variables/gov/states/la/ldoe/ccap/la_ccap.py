@@ -29,14 +29,11 @@ class la_ccap(Variable):
             where(days_per_week > 0, days_from_days, days_from_hours),
             p.max_monthly_days,
         )
-        # The sliding fee scale co-payment is per child per day; children
-        # with disabilities have it waived (scale footnote).
+        # The sliding fee scale co-payment is per child per day; waivers
+        # (homelessness, disability, Head Start, STEP) zero it through
+        # la_ccap_copay_waived.
         unit_copay = spm_unit("la_ccap_daily_copay", period)
-        child_copay = where(
-            person("is_disabled", period.this_year),
-            0,
-            spm_unit.project(unit_copay),
-        )
+        child_copay = spm_unit.project(unit_copay)
         monthly_expense = person("pre_subsidy_childcare_expenses", period)
         capped_charge = min_(monthly_expense, daily_rate * monthly_days)
         per_child = max_(capped_charge - child_copay * monthly_days, 0)

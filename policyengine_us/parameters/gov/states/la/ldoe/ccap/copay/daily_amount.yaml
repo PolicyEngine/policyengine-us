@@ -1,13 +1,21 @@
-description: Louisiana charges this daily co-payment per child under the Child Care Assistance Program, by sliding fee scale income band index.
+description: Louisiana charges this daily co-payment per child under the Child Care Assistance Program, based on household income as a share of the state median income.
 metadata:
   type: single_amount
   threshold_unit: /1
   amount_unit: currency-USD
   period: day
-  label: Louisiana CCAP daily co-payment by income band
+  label: Louisiana CCAP daily co-payment by share of state median income
   reference:
-    - title: LDOE 2026 Sliding Fee Scale, daily co-payment rows (effective February 1, 2026)
+    - title: LDOE 2026 Sliding Fee Scale (effective February 1, 2026; printed band tops equal these shares of the state median income, rounded to whole dollars)
       href: https://www.louisianabelieves.com/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf
+    - title: LDOE 2025 Sliding Fee Scale (effective February 3, 2025, archived)
+      href: https://web.archive.org/web/20250302135951/https://doe.louisiana.gov/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf
+    - title: LDOE 2024 Sliding Fee Scale (effective February 1, 2024, archived)
+      href: https://web.archive.org/web/20240625175822/https://louisianabelieves.com/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf
+    - title: LDOE 2023 Sliding Fee Scale (archived)
+      href: https://web.archive.org/web/20230327170902/https://www.louisianabelieves.com/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf?sfvrsn=a5728c1f_29
+    - title: LDOE 2022 Sliding Fee Scale (archived)
+      href: https://web.archive.org/web/20220209001401/https://www.louisianabelieves.com/docs/default-source/early-childhood/ccap-sliding-fee-scale.pdf?sfvrsn=2
     - title: Louisiana CCDF State Plan FFY 2025-2027, Sections 3.1.2 and 3.2.1.a (per-child monthly copays of $44 to $220 at 22 days)
       href: https://doe.louisiana.gov/docs/default-source/early-childhood/approved-2025-2027-ccdf-state-plan.pdf#page=42
     - title: Louisiana CCDF State Plan FFY 2022-2024, Section 3.1.3.g (copay as a daily rate)
@@ -19,18 +27,22 @@ brackets:
     amount:
       2022-02-01: 0
   - threshold:
-      2022-02-01: 1
+      2022-02-01: 0.6501
+      2023-02-01: 0.6401
     amount:
       2022-02-01: 2
   - threshold:
-      2022-02-01: 2
+      2022-02-01: 0.7001
+      2023-02-01: 0.6901
     amount:
       2022-02-01: 3
   - threshold:
-      2022-02-01: 3
+      2022-02-01: 0.7501
+      2023-02-01: 0.7401
     amount:
       2022-02-01: 8
   - threshold:
-      2022-02-01: 4
+      2022-02-01: 0.8001
+      2023-02-01: 0.7901
     amount:
       2022-02-01: 10

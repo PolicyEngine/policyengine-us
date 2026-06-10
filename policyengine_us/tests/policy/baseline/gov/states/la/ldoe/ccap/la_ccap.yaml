@@ -194,3 +194,29 @@
     # Special needs toddler rate $52.92 x 21.67 = $1,146.60, capped at the
     # $1,000 monthly expense; no copay for a child with disabilities.
     la_ccap: 1_000
+
+- name: Case 9, the 2024 scale copay band applies in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month, $3 band on the 2024 scale.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 3
+    # Toddler rate $42 x 21.67 = $910, below the $1,000 monthly expense;
+    # copay $3 x 21.67 = $65; $910 - $65 = $845.
+    la_ccap: 845
