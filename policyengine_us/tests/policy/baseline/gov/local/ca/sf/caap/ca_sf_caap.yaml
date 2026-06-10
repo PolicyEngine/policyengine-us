@@ -355,3 +355,40 @@
     ca_sf_caap_budget_unit_size: 1
     ca_sf_caap_countable_income: 0
     ca_sf_caap: 578
+
+- name: Case 16, one spouse receiving SSI and only one spouse applying yields
+    the full one-person grant against the applicant's own income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 3_600  # 300/month
+      person2:
+        # Age 70 with no income -> the system computes ssi > 0, so person2 is
+        # an SSI recipient and is excluded from the CAAP budget unit.
+        age: 70
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    # Manual, "One Spouse Receiving SSI Or CAPI, Only One Spouse Applying
+    # For/On Aid" (physical p. 152): the applicant receives the full grant for
+    # one person, factoring in the income the APPLICANT receives. person2 and
+    # her SSI drop out per person; person1's 300/month earned income (applicant,
+    # so no disregard) reduces the size-1 grant: 578 - 300 = 278.
+    ca_sf_caap_budget_unit_size: 1
+    ca_sf_caap_max_grant: 578
+    ca_sf_caap_countable_income: 300
+    ca_sf_caap: 278

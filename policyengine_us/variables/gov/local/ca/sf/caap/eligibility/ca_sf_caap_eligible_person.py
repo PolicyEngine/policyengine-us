@@ -7,6 +7,16 @@ class ca_sf_caap_eligible_person(Variable):
     label = "Counts toward the San Francisco County CAAP budget unit"
     definition_period = MONTH
     defined_for = "in_san_francisco"
+    reference = (
+        # SF Administrative Code SEC. 20.7-6 / 20.7-14 (aid from other
+        # programs bars CAAP).
+        "https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352",
+        # CAAP Eligibility Manual, "One Spouse Receiving SSI Or CAPI, Only One
+        # Spouse Applying For/On Aid": the bar keys on RECEIVING SSI or CAPI,
+        # and the remaining applicant draws the one-person grant against their
+        # own income.
+        "https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=152",
+    )
 
     def formula(person, period, parameters):
         # A person counts toward the CAAP budget unit only if they are not served
