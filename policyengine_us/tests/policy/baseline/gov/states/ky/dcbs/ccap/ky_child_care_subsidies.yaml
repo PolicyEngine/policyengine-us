@@ -29,8 +29,12 @@
         state_code: KY
         county_str: JEFFERSON_COUNTY_KY
   output:
-    # Monthly ky_ccap = $620 (see ky_ccap.yaml Case 1); annual = 620 x 12 = $7,440.
-    ky_child_care_subsidies: 7_440
+    # Jefferson (Region 4) Licensed Type I preschool full day = $41/day x 20
+    # days = $820/month reimbursement (charge 24_000/12/20 = $100 > $41).
+    # Copay (2024-11-18 chart): $1,900/month -> band [1_900, 2_200) household
+    # of 2 = $5/day x 20 days = $100. Monthly ky_ccap = 820 - 100 = $720;
+    # annual = 720 x 12 = $8,640.
+    ky_child_care_subsidies: 8_640
 
 - name: Case 2, non-Kentucky household has no Kentucky subsidy.
   period: 2025

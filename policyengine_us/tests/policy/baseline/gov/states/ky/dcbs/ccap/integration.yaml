@@ -1,11 +1,14 @@
 # KY CCAP integration tests.
 # Income test: gross monthly income <= 85% Kentucky SMI by family size
 #   (DCC-113): size 2 = $4,217; size 3 = $5,210; size 4 = $6,202.
-# Copay: per-day fee by income band x family size x children-in-care, x care days.
+# Copay (2024-01 periods, 5-31-2019 edition): per-day fee by income band x
+#   family size x children-in-care, x care days.
+# Copay (2025-01 periods, 11-18-2024 edition): per-day fee by income band x
+#   household size (household-of-2 fee - $1 per additional member), x care days.
 # Rate: DCC-300 daily max by region x provider x age x day length.
 
 - name: Case 1, basic eligible family with a positive benefit.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -61,7 +64,7 @@
     ky_ccap: 660
 
 - name: Case 2, low-income family with zero copay, charge below rate.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -103,7 +106,7 @@
     ky_ccap: 500
 
 - name: Case 3, income above the SMI limit gives zero benefit.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -136,7 +139,7 @@
     ky_ccap: 0
 
 - name: Case 4, special-needs child over twelve is eligible.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -175,7 +178,7 @@
     ky_ccap_daily_rate: [0, 37]
 
 - name: Case 5, non-Kentucky household receives no benefit.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -206,7 +209,7 @@
     ky_ccap: 0
 
 - name: Case 6, two children in care use the two-or-more copay column.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -256,7 +259,7 @@
     ky_ccap: 1_320
 
 - name: Case 7, Kentucky Works enrollment satisfies the activity test.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -295,7 +298,7 @@
     ky_ccap: 820
 
 - name: Case 8, income at the size-2 boundary is eligible and the benefit flows through.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -336,7 +339,7 @@
     ky_ccap: 580
 
 - name: Case 9, special-care supplement flows through to the top-level benefit.
-  period: 2025-01
+  period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
@@ -374,4 +377,61 @@
     # size_2 band at $2,000/month = $11/day x 20 = $220 copay.
     ky_ccap_copay: 220
     # reimbursement = 42 x 20 = $840; benefit = max(840 - 220, 0) = $620.
+    ky_ccap: 620
+
+- name: Case 10 (2024 chart), full chain under the 11-18-2024 copay table.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 27_000
+        # 27_000 / 12 = 2_250/month gross countable income.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        # PRESCHOOL
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person3:
+        age: 9
+        # School-age child not in paid care.
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+        county_str: ADAIR_COUNTY_KY
+  output:
+    # === Eligibility ===
+    # 2_250/month < 5_210 size-3 SMI limit; parent works 30 hrs/wk >= 20.
+    ky_ccap_eligible: true
+
+    # === Region and rate ===
+    # Adair -> Region 2; Licensed Type I, Preschool, Full Day = $36. The
+    # school-age child not in care still shows a potential rate (Part Day =
+    # $30) but earns no benefit because the charge cap is zero with no care
+    # days.
+    ky_ccap_rate_region: REGION_2
+    ky_ccap_daily_rate: [0, 36, 30]
+
+    # === Copay (11-18-2024 chart) ===
+    # 2_250/month -> band [2_200, 2_500) household-of-2 fee $6 - $1 (third
+    # member) = $5/day x 20 care days = $100.
+    ky_ccap_copay: 100
+
+    # === Monthly benefit ===
+    # Unit expense 30_000/yr splits evenly across the two children:
+    # 15_000/12/20 = $62.50 daily charge > $36 -> daily benefit = $36.
+    # Monthly reimbursement = 36 x 20 = $720; benefit = max(720 - 100, 0) = $620.
     ky_ccap: 620

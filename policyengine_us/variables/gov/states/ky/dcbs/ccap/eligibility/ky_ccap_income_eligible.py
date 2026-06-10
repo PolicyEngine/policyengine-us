@@ -19,7 +19,17 @@ class ky_ccap_income_eligible(Variable):
         # Section 8(3): a child eligible under the Protection and Permanency
         # pathway (Section 5) is eligible without regard to the family's income.
         # P&P status covers a child in foster care or one receiving or needing
-        # child protective or preventive services.
+        # child protective or preventive services. The waiver applies unit-wide
+        # because Section 5(1)(a) keys on residing with an applicant who
+        # receives or needs the services — every child co-residing with that
+        # applicant qualifies, not only the flagged child.
+        # We don't track employment in a licensed child-care center or
+        # certified family child-care home at the moment, so the Section 4(4)
+        # child-care-worker full income exclusion (eff. 11-18-2024) is not
+        # applied. The Section 4(5) working-foster-parent income exclusion is
+        # effectively covered by the P&P bypass above. We also don't track
+        # months since an income change, so the Section 9(6) six-month
+        # transitional period after exceeding the income limit is not modeled.
         p = parameters(period).gov.states.ky.dcbs.ccap.income.smi_limit
         countable_income = spm_unit("ky_ccap_countable_income", period)
         family_size = spm_unit("spm_unit_size", period.this_year)

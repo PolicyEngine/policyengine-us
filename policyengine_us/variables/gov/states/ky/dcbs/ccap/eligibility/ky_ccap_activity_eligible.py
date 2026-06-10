@@ -18,7 +18,9 @@ class ky_ccap_activity_eligible(Variable):
         # Section 5: a child receiving child protective or preventive services
         # (Protection and Permanency) is eligible without a work pathway; P&P
         # status covers a child in foster care or one receiving or needing
-        # child protective or preventive services.
+        # child protective or preventive services. The bypass applies unit-wide
+        # because Section 5(1)(a) keys on residing with an applicant who
+        # receives or needs the services, covering all co-residing children.
         # We don't model the remaining pathways individually — the
         # incapacitated-parent branch (Section 4(1)(c)), teen-parent education
         # status (Section 4(1)(e)), relative-caregiver status (Section 4(1)(d)),
