@@ -1,0 +1,233 @@
+# KY CCAP activity eligibility (Section 4(1)): single parent >= 20 hrs/wk;
+# couple combined >= 40 hrs/wk with lesser worker >= 5 hrs/wk; or Kentucky
+# Works enrollment (is_tanf_enrolled) as a categorical bypass.
+# weekly_hours_worked_before_lsr default is 40, so the "not working" cases
+# set it explicitly to a low value.
+
+- name: Case 1, single parent working 20 hours is activity-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true
+
+- name: Case 2, single parent working under 20 hours is not activity-eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: false
+
+- name: Case 3, couple with 40 combined hours and lesser worker over 5 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 33
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 7
+      person3:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true
+
+- name: Case 4, Kentucky Works enrollment is a categorical bypass.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true
+
+- name: Case 5, idle single parent not enrolled in Kentucky Works is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: false
+
+- name: Case 6, couple at exactly 40 combined with lesser worker at exactly 5 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 35
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 5
+        # Combined 40 >= 40 and lesser worker 5 >= 5 -> both boundaries met.
+      person3:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true
+
+- name: Case 7, couple at 40 combined but lesser worker under 5 fails the secondary minimum.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 36
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 4
+        # Combined 40 >= 40 but lesser worker 4 < 5 -> not eligible.
+      person3:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: false
+
+- name: Case 8, couple at 39 combined hours is just under the floor and not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 32
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 7
+        # Combined 39 < 40 -> not eligible despite lesser worker over 5.
+      person3:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: false
+
+- name: Case 9, Protection and Permanency child is eligible without a work pathway.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        weekly_hours_worked_before_lsr: 0
+        is_in_foster_care: true
+        # Section 5: a foster-care child receiving protective services is
+        # eligible even though no caretaker meets the work-hours floor.
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_activity_eligible: true

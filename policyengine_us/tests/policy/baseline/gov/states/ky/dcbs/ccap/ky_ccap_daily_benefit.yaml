@@ -1,0 +1,124 @@
+# KY CCAP daily benefit per child (Section 10(4)): the DCC-300 rate (plus any
+# add-ons) capped at the daily charge to the general public, floored at 0.
+
+- name: Case 1, provider charge above the rate is capped at the rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        # 12 months -> INFANT_TODDLER
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Daily charge = (24_000/12)/20 = $100/day; rate (R4 LicI IT full) = $47.
+    # daily benefit = min(47, 100) = $47.
+    ky_ccap_daily_benefit: [0, 47]
+
+- name: Case 2, provider charge below the rate caps the benefit at the charge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Daily charge = (8_000/12)/20 = $33.33/day; rate = $47.
+    # daily benefit = min(47, 33.33) = $33.33.
+    ky_ccap_daily_benefit: [0, 33.33]
+
+- name: Case 3, special-needs child adds the one dollar special-care supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        # 12 months -> INFANT_TODDLER
+        is_disabled: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Rate (R4 LicI IT full) = $47; +$1 special-care supplement = $48.
+    # Daily charge = (24_000/12)/20 = $100/day > $48 -> daily benefit = $48.
+    ky_ccap_daily_benefit: [0, 48]
+
+- name: Case 4, zero care days yields a zero daily benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 0
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # No care days -> daily charge is 0 -> min(rate, 0) = $0.
+    ky_ccap_daily_benefit: [0, 0]

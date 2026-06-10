@@ -1,0 +1,376 @@
+# KY CCAP integration tests.
+# Income test: gross monthly income <= 85% Kentucky SMI by family size
+#   (DCC-113): size 2 = $4,217; size 3 = $5,210; size 4 = $6,202.
+# Copay: per-day fee by income band x family size x children-in-care, x care days.
+# Rate: DCC-300 daily max by region x provider x age x day length.
+
+- name: Case 1, basic eligible family with a positive benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # 24_000 / 12 = 2_000/month gross countable income.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        # 48 months -> PRESCHOOL
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # === Eligibility ===
+    ky_ccap_eligible_child: [false, true]
+    # 2_000/month < 4_217 size-2 SMI limit -> income eligible.
+    ky_ccap_income_eligible: true
+    # Parent works 30 hrs/wk >= 20 -> activity eligible.
+    ky_ccap_activity_eligible: true
+    ky_ccap_eligible: true
+
+    # === Region and age ===
+    ky_ccap_rate_region: REGION_4
+    ky_ccap_child_age_category: [SCHOOL_AGE, PRESCHOOL]
+
+    # === Daily rate ===
+    # Region 4, Licensed Type I, Preschool, Full Day = $41.
+    ky_ccap_daily_rate: [0, 41]
+
+    # === Copay ===
+    # size_2 band at $2,000/month = $11/day x 22 care days = $242.
+    ky_ccap_copay: 242
+
+    # === Monthly benefit ===
+    # Daily charge = (30_000/12)/22 = $113.64 > $41 -> daily benefit = $41.
+    # Monthly reimbursement = 41 x 22 = $902.
+    # benefit = max(902 - 242, 0) = $660.
+    ky_ccap: 660
+
+- name: Case 2, low-income family with zero copay, charge below rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 9_600
+        # 9_600 / 12 = 800/month <= 899 -> $0 copay.
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 1
+        # 12 months -> INFANT_TODDLER
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: ALLEN_COUNTY_KY
+  output:
+    ky_ccap_eligible: true
+    ky_ccap_rate_region: REGION_1
+    # Region 1, Licensed Type I, Infant/Toddler, Full Day = $29.
+    ky_ccap_daily_rate: [0, 29]
+    # Income <= 899 -> $0 copay.
+    ky_ccap_copay: 0
+    # Daily charge = (6_000/12)/20 = $25 < $29 -> daily benefit = $25.
+    ky_ccap_daily_benefit: [0, 25]
+    # Monthly reimbursement = min(charge $500, 29 x 20) = $500.
+    # benefit = max(500 - 0, 0) = $500.
+    ky_ccap: 500
+
+- name: Case 3, income above the SMI limit gives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 84_000
+        # 84_000 / 12 = 7_000/month > 4_217 size-2 limit -> income ineligible.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_income_eligible: false
+    ky_ccap_eligible: false
+    ky_ccap: 0
+
+- name: Case 4, special-needs child over twelve is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000
+        # 3_000/month < 4_217 size-2 limit -> income eligible.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15
+        has_developmental_delay: true
+        # special-needs limit is 19, so age 15 is an eligible child.
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_eligible_child: [false, true]
+    ky_ccap_income_eligible: true
+    ky_ccap_eligible: true
+    # age 15 = 180 months -> SCHOOL_AGE
+    ky_ccap_child_age_category: [SCHOOL_AGE, SCHOOL_AGE]
+    # Region 4, Licensed Type I, School Age, Full Day = $37.
+    ky_ccap_daily_rate: [0, 37]
+
+- name: Case 5, non-Kentucky household receives no benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 22
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: HAMILTON_COUNTY_OH
+  output:
+    ky_ccap_eligible: false
+    ky_ccap: 0
+
+- name: Case 6, two children in care use the two-or-more copay column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_000
+        # 2_250/month; size_3_two_or_more band [2_200, 2_300) = $12/day.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        # PRESCHOOL
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person3:
+        age: 8
+        # SCHOOL_AGE
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_eligible: true
+    # Two eligible children in care, family size 3 -> 2+ children column.
+    ky_ccap_eligible_child: [false, true, true]
+    # Region 4: Preschool Full = $41, School Age Full = $37.
+    ky_ccap_daily_rate: [0, 41, 37]
+    # Copay: size_3_two_or_more $12/day x (20 + 20) child-days = $480.
+    ky_ccap_copay: 480
+    # Charge per child = (60_000/12)/2 children/20 days = $125/day > rates.
+    # reimbursement = 41 x 20 + 37 x 20 = 820 + 740 = $1,560.
+    # benefit = max(1_560 - 480, 0) = $1,080.
+    ky_ccap: 1_080
+
+- name: Case 7, Kentucky Works enrollment satisfies the activity test.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # No work hours, but Kentucky Works enrollment is a categorical activity bypass.
+    ky_ccap_activity_eligible: true
+    # Zero income -> income eligible and $0 copay.
+    ky_ccap_income_eligible: true
+    ky_ccap_eligible: true
+    ky_ccap_copay: 0
+    # Rate R4 LicI Preschool Full = $41; charge = (24_000/12)/20 = $100 > $41.
+    # reimbursement = 41 x 20 = $820; benefit = max(820 - 0, 0) = $820.
+    ky_ccap: 820
+
+- name: Case 8, income at the size-2 boundary is eligible and the benefit flows through.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_592
+        # 50_592 / 12 = 4_216/month: just under the $4,217 size-2 SMI limit.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        # 48 months -> PRESCHOOL
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # 4_216/month <= 4_217 size-2 limit -> income eligible at the boundary.
+    ky_ccap_income_eligible: true
+    ky_ccap_eligible: true
+    # Region 4, Licensed Type I, Preschool, Full Day = $41.
+    ky_ccap_daily_rate: [0, 41]
+    # size_2 band at $4,216/month is above the top $2,100 bracket = $12/day x 20 = $240.
+    ky_ccap_copay: 240
+    # Charge = (24_000/12)/20 = $100 > $41 -> reimbursement = 41 x 20 = $820.
+    # benefit = max(820 - 240, 0) = $580.
+    ky_ccap: 580
+
+- name: Case 9, special-care supplement flows through to the top-level benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # 2_000/month gross countable income.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        # 48 months -> PRESCHOOL
+        is_disabled: true
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_eligible: true
+    # Region 4, Licensed Type I, Preschool, Full Day = $41 base rate.
+    ky_ccap_daily_rate: [0, 41]
+    # +$1 special-care supplement -> daily benefit = min(42, $100 charge) = $42.
+    ky_ccap_daily_benefit: [0, 42]
+    # size_2 band at $2,000/month = $11/day x 20 = $220 copay.
+    ky_ccap_copay: 220
+    # reimbursement = 42 x 20 = $840; benefit = max(840 - 220, 0) = $620.
+    ky_ccap: 620

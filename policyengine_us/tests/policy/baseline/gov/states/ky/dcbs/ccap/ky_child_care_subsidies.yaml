@@ -1,0 +1,63 @@
+# KY child care subsidies (YEAR): aggregates the monthly ky_ccap into the
+# annual figure that feeds the federal child_care_subsidies total.
+
+- name: Case 1, annual subsidy is twelve times the monthly benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_800
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Monthly ky_ccap = $620 (see ky_ccap.yaml Case 1); annual = 620 x 12 = $7,440.
+    ky_child_care_subsidies: 7_440
+
+- name: Case 2, non-Kentucky household has no Kentucky subsidy.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_800
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: HAMILTON_COUNTY_OH
+  output:
+    ky_child_care_subsidies: 0

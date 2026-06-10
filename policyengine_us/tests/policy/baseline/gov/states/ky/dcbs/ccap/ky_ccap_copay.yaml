@@ -1,0 +1,337 @@
+# KY CCAP family copayment (Section 11(3)): per-day fee looked up by monthly
+# countable income band x family size (2/3/4/5+) x children-in-care (1 / 2+),
+# multiplied by each child's monthly care days, summed.
+# $0 copay for monthly income <= $899 (all sizes).
+
+- name: Case 1, monthly income at or below 899 has zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_440
+        # 10_440 / 12 = 870/month <= 899 -> $0/day fee
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_copay: 0
+
+- name: Case 2, two-person family with one child in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_800
+        # 22_800 / 12 = 1_900/month -> size_2 band [1_800, 2_000) = $10/day
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # daily fee $10 x 20 care days = $200/month
+    ky_ccap_copay: 200
+
+- name: Case 3, three-person family with one child in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 27_000
+        # 27_000 / 12 = 2_250/month -> size_3_one_child band [2_200, 2_300) = $11/day
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # size_3_one_child daily fee $11 x 20 days = $220/month
+    ky_ccap_copay: 220
+
+- name: Case 4, three-person family with two children in care uses the 2+ column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_000
+        # 27_000 / 12 = 2_250/month -> size_3_two_or_more band [2_200, 2_300) = $12/day
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # size_3_two_or_more daily fee $12 x (20 + 20) child-days = $480/month
+    ky_ccap_copay: 480
+
+- name: Case 5, four-person family with one child in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+        # 36_000 / 12 = 3_000/month -> size_4_one_child band [3_000, inf) = $15/day
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 8
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KY
+  output:
+    # size_4_one_child daily fee $15 x 20 days = $300/month
+    ky_ccap_copay: 300
+
+- name: Case 6, large family hits the 25 dollar per day maximum.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 45_000
+        # 45_000 / 12 = 3_750/month -> size_5_plus_one_child top band [3_600, inf) = $25/day
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 6
+      person6:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: KY
+  output:
+    # size_5_plus_one_child capped daily fee $25 x 20 days = $500/month
+    ky_ccap_copay: 500
+
+- name: Case 7, monthly income at exactly 899 stays on the zero-copay line.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_788
+        # 10_788 / 12 = 899/month: still below the first $900 bracket -> $0/day.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_copay: 0
+
+- name: Case 8, monthly income at exactly 900 crosses into the first paid band.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_800
+        # 10_800 / 12 = 900/month: reaches the $900 bracket -> $2/day (size_2).
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # size_2 daily fee $2 x 20 care days = $40/month.
+    ky_ccap_copay: 40
+
+- name: Case 9, family of six with two children in care uses the 5-plus 2-or-more column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 42_600
+        # 42_600 / 12 = 3_550/month -> size_5_plus_two_or_more top band [3_500, inf) = $25/day.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 10
+      person4:
+        age: 8
+      person5:
+        age: 6
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person6:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: KY
+  output:
+    # size_5_plus_two_or_more capped daily fee $25 x (20 + 20) child-days = $1,000/month.
+    ky_ccap_copay: 1_000
+
+- name: Case 10, negative countable income stays on the zero-copay line.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -12_000
+        # -1_000/month: below the $900 bracket -> $0/day, no negative copay.
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_copay: 0

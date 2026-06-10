@@ -1,0 +1,80 @@
+# KY CCAP countable income: positive source list (Section 8(2),(4)).
+# MONTH-defined; YEAR income inputs are annual, output is monthly (annual/12).
+
+- name: Case 1, employment income counts.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # 24_000 / 12 = 2_000/month
+    ky_ccap_countable_income: 2_000
+
+- name: Case 2, mixed counted sources sum.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+        social_security: 6_000
+        child_support_received: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # (12_000 + 6_000 + 1_200) / 12 = 1_600/month
+    ky_ccap_countable_income: 1_600
+
+- name: Case 3, child SSI is excluded (Section 8(4)(ll)).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+      person2:
+        age: 4
+        ssi: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # Only employment counts: 12_000 / 12 = 1_000/month. SSI excluded.
+    ky_ccap_countable_income: 1_000
+
+- name: Case 4, TANF is excluded to avoid circular dependency.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    # TANF not in sources list: 12_000 / 12 = 1_000/month.
+    ky_ccap_countable_income: 1_000
