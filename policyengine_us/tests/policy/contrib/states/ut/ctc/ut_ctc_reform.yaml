@@ -1,0 +1,208 @@
+- name: Default reform cap refunds 800 dollars of unused CTC for one child.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ctc_eligible_children: 1
+    ut_ctc_potential: 1_000
+    ut_ctc: 0
+    ut_refundable_ctc: 800
+    ut_income_tax: -800
+
+- name: Custom reform cap can be set to 850 dollars.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    gov.contrib.states.ut.ctc.refundable.amount: 850
+    people:
+      person1:
+        age: 35
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_refundable_ctc: 850
+    ut_income_tax: -850
+
+- name: Refundability is limited to unused CTC after the non-refundable credit.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 4
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ctc_potential: 1_000
+    ut_ctc: 300
+    ut_refundable_ctc: 700
+    ut_income_tax: -700
+
+- name: Joint threshold is increased to 98000 dollars.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 38
+        ctc_qualifying_child: false
+      person3:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        ut_total_income: 98_000
+        ut_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ut_ctc_potential: 1_000
+    ut_ctc: 1_000
+    ut_refundable_ctc: 0
+
+- name: Joint threshold phases out above 98000 dollars.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 40
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 38
+        ctc_qualifying_child: false
+      person3:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        ut_total_income: 103_000
+        ut_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ut_ctc_potential: 500
+    ut_ctc: 500
+
+- name: Single threshold remains 49000 dollars by default.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        ut_total_income: 54_000
+        ut_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ctc_potential: 500
+    ut_ctc: 500
+
+- name: Credit amount and refundable cap uprate in 2027.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ut.ctc.ut_ctc_reform.ut_ctc_reform
+  input:
+    gov.contrib.states.ut.ctc.in_effect: true
+    people:
+      person1:
+        age: 35
+        ctc_qualifying_child: false
+        tax_exempt_interest_income: 0
+      person2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        ut_total_income: 20_000
+        ut_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ctc_potential: 1_026
+    ut_refundable_ctc: 821

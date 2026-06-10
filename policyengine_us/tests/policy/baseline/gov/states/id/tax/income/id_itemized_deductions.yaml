@@ -3,6 +3,7 @@
   input:
     id_salt_deduction: 1_000
     itemized_taxable_income_deductions: 1_600
+    foreign_tax_credit: 0
     state_code: ID
   output:
     id_itemized_deductions: 600
@@ -12,6 +13,20 @@
   input:
     id_salt_deduction: 2_000
     itemized_taxable_income_deductions: 1_600
+    foreign_tax_credit: 0
     state_code: ID
   output:
+    id_itemized_deductions: 0
+
+- name: Idaho does not add back the federal foreign tax credit when it is claimed as a credit
+  period: 2025
+  input:
+    id_salt_deduction: 2_000
+    itemized_taxable_income_deductions: 1_600
+    foreign_tax_credit: 700
+    state_code: ID
+  output:
+    # Idaho Form 39R only requires an addback when foreign tax is part of
+    # the itemized deduction (already inside itemized_taxable_income_deductions),
+    # not when it is claimed as a federal credit.
     id_itemized_deductions: 0

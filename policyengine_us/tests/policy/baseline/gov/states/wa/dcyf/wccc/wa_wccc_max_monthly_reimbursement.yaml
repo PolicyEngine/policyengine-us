@@ -249,3 +249,91 @@
   output:
     # Family home HALF_DAY: 24.62/day * 22 days = 541.64.
     wa_wccc_max_monthly_reimbursement: [541.64]
+
+- name: Case 13, center full day for Region 4 infant before the 2026-07-01 DCYF rate update.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: CENTER
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: WA
+        wa_wccc_center_region: REGION_4
+        wa_wccc_region: REGION_4
+  output:
+    # Center (pre-2026-07-01): 113.64/day * 23 days = 2,613.72.
+    wa_wccc_max_monthly_reimbursement: [2_613.72]
+
+- name: Case 14, center full day for Region 4 infant starting with the 2026-07-01 DCYF rate update.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: CENTER
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: WA
+        wa_wccc_center_region: REGION_4
+        wa_wccc_region: REGION_4
+  output:
+    # Center (post-2026-07-01): 135.23/day * 23 days = 3,110.29.
+    wa_wccc_max_monthly_reimbursement: [3_110.29]
+
+- name: Case 15, in-home relative provider before the 2025-07-01 DCYF rate update.
+  period: 2025-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: IN_HOME_RELATIVE
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # In-home: 4.00/hour * 230 hours = 920.
+    wa_wccc_max_monthly_reimbursement: [920]
+
+- name: Case 16, in-home relative provider starting with the 2025-07-01 DCYF rate update.
+  period: 2025-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        wa_wccc_eligible_child: true
+        wa_wccc_provider_type: IN_HOME_RELATIVE
+        wa_wccc_center_age_group: INFANT
+        wa_wccc_family_home_age_group: INFANT
+        wa_wccc_day_type: FULL_DAY
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+        wa_wccc_center_region: REGION_1
+        wa_wccc_region: REGION_1
+  output:
+    # In-home: 4.50/hour * 230 hours = 1,035.
+    wa_wccc_max_monthly_reimbursement: [1_035]

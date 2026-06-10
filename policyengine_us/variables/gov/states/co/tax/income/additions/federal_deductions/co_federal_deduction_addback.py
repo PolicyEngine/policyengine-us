@@ -22,7 +22,11 @@ class co_federal_deduction_addback(Variable):
         if p.itemized_only:
             deductions = tax_unit("itemized_taxable_income_deductions", period)
         else:
-            deductions = tax_unit("taxable_income_deductions", period)
+            deductions = where(
+                tax_unit("tax_unit_itemizes", period),
+                tax_unit("itemized_taxable_income_deductions", period),
+                tax_unit("standard_deduction", period),
+            )
         filing_status = tax_unit("filing_status", period)
         exemption = p.exemption[filing_status]
         return max_(deductions - exemption, 0)
