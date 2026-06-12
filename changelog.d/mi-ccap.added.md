@@ -1,1 +1,1 @@
-Initialize Michigan Child Care Assistance Program (CDC) implementation.
+Add Michigan Child Development and Care (CDC) program.
