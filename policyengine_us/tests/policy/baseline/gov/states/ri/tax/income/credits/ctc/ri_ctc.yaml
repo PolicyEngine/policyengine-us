@@ -1,0 +1,127 @@
+- name: Rhode Island Child Tax Credit is unavailable before 2027
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ri_agi: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    ri_ctc: 0
+
+- name: Rhode Island Child Tax Credit provides $330 per eligible child in 2027
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 18
+        is_tax_unit_dependent: true
+      child3:
+        age: 19
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+        filing_status: SINGLE
+        ri_agi: 0
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: RI
+  output:
+    ri_ctc_eligible_children: 2
+    ri_ctc: 660
+
+- name: Rhode Island Child Tax Credit phases out by 20 percent per single-filer step
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+        ri_agi: 91_376
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: RI
+  output:
+    ri_ctc: 396
+
+- name: Rhode Island Child Tax Credit uses the joint-filer phase-out increment
+  period: 2027
+  input:
+    people:
+      parent1:
+        age: 35
+        is_tax_unit_head: true
+      parent2:
+        age: 35
+        is_tax_unit_spouse: true
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        ri_agi: 113_516
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: RI
+  output:
+    ri_ctc: 528
+
+- name: Rhode Island Child Tax Credit is fully refundable
+  period: 2027
+  input:
+    people:
+      parent:
+        age: 35
+        is_tax_unit_dependent: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ri_agi: 0
+        ri_income_tax_before_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: RI
+  output:
+    ri_ctc: 330
+    ri_income_tax: -330

@@ -1,0 +1,53 @@
+description: Rhode Island reduces its Child Tax Credit for each of these increments of adjusted gross income exceeding the threshold.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island Child Tax Credit phase-out increment
+  breakdown:
+    - filing_status
+  breakdown_label:
+    - Filing status
+  reference:
+    - title: 2026 R.I. H 7127 Substitute A as amended, Article 6, Section 4, § 44-30-104(c)
+      href: https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.pdf#page=131
+
+SINGLE:
+  values:
+    2027-01-01: 2_875
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+JOINT:
+  values:
+    2027-01-01: 3_590
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+SEPARATE:
+  values:
+    2027-01-01: 2_875
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+HEAD_OF_HOUSEHOLD:
+  values:
+    2027-01-01: 2_875
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+SURVIVING_SPOUSE:
+  values:
+    2027-01-01: 2_875
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5

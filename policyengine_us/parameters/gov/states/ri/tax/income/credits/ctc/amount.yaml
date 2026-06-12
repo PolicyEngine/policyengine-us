@@ -1,0 +1,16 @@
+description: Rhode Island provides this Child Tax Credit amount per eligible child.
+values:
+  2026-01-01: 0
+  2027-01-01: 330
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island Child Tax Credit amount
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+  reference:
+    - title: 2026 R.I. H 7127 Substitute A as amended, Article 6, Section 4, § 44-30-104(b)
+      href: https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.pdf#page=131

@@ -12,4 +12,5 @@ class ri_income_tax_before_non_refundable_credits(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("ri_taxable_income", period)
         rate = parameters(period).gov.states.ri.tax.income.rate
-        return rate.calc(income)
+        high_earner_tax = tax_unit("ri_high_earner_tax", period)
+        return rate.calc(income) + high_earner_tax
