@@ -8,8 +8,7 @@ class mi_ccap_income_waived(Variable):
     definition_period = MONTH
     defined_for = StateCode.MI
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=14",
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=15",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=14"
     )
 
     def formula(spm_unit, period, parameters):

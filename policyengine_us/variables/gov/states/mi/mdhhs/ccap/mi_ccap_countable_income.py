@@ -14,8 +14,7 @@ class mi_ccap_countable_income(Variable):
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/500.pdf#page=9",
     )
 
-    # BEM 703: counts gross monthly income of the program group. Grandparent
-    # and guardian P/SP income is excluded by BEM 703, but we don't track the
-    # relationship of each adult to the child at the moment, so all program
-    # group income is counted.
+    # BEM 500/502/503: counts gross monthly income of the program group. We
+    # don't track each adult's relationship to the child at the moment, so all
+    # program group income is counted.
     adds = "gov.states.mi.mdhhs.ccap.income.countable_income.sources"

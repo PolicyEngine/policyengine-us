@@ -9,8 +9,7 @@ class mi_ccap_authorized_hours(Variable):
     defined_for = StateCode.MI
     label = "Michigan CDC authorized hours per two-week pay period"
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/EXF/BP/Public/BEM/710.pdf#page=1",
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/EXF/BP/Public/BEM/710.pdf#page=2",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/EXF/BP/Public/BEM/710.pdf#page=1"
     )
 
     def formula(spm_unit, period, parameters):
