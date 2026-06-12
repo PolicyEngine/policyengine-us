@@ -9,7 +9,9 @@ class mi_ccap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.MI
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=13"
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/503.pdf#page=31",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/502.pdf#page=3",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/500.pdf#page=9",
     )
 
     # BEM 703: counts gross monthly income of the program group. Grandparent

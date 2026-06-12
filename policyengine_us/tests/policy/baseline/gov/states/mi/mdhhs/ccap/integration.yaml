@@ -1,12 +1,15 @@
 # Michigan CDC (CCAP) integration tests.
 #
 # Subsidy model (BEM 706): per child per two-week pay period,
-#   reimbursement = hourly_rate x min(block_hours, authorized_hours),
-# capped at the child's monthly charge, less the flat family contribution,
-# floored at zero, then converted to monthly. There are 26 two-week pay
-# periods per year, so the monthly conversion factor is 52/2/12 = 2.16667.
-# Billed hours are not tracked separately from authorized hours, so paid
-# hours equal the authorized tier.
+#   reimbursement = hourly_rate x block_hours(authorized),
+# where the authorized hours pick the full block they fall into (1-30 -> 30,
+# 31-60 -> 60, 61+ -> 90; the authorization is a ceiling on billable hours,
+# not a downward cap on the block, BEM 706 p.9-13). License-exempt providers
+# are paid hourly with no block. The reimbursement is capped at the child's
+# monthly charge, less the flat family contribution, floored at zero, then
+# converted to monthly. There are 26 two-week pay periods per year, so the
+# monthly conversion factor is 52/2/12 = 2.16667. Billed hours are not tracked
+# separately from authorized hours, so the block is keyed to authorized hours.
 #
 # Rates (RFT 270 Table 2, eff 2024-09-22):
 #   Center STAR_1: Inf/Tod 7.15, Preschool 5.05, School 4.90
@@ -55,14 +58,14 @@
     mi_ccap_authorized_hours: 80
     # Center STAR_1 infant/toddler hourly rate
     mi_ccap_hourly_rate: [0, 7.15]
-    # 7.15 x 80 = 572.00 per pay period
-    mi_ccap_block_payment: [0, 572.00]
+    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
     # 3,500/mo -> size 2 band 1, per-child FC 15, 1 paying child, cap 45 -> 15/pp
     mi_ccap_family_contribution: 15
-    # monthly payment = 572.00 x 2.16667 = 1,239.33
+    # monthly payment = 643.50 x 2.16667 = 1,394.25
     # monthly FC = 15 x 2.16667 = 32.50
-    # benefit = 1,239.33 - 32.50 = 1,206.83
-    mi_ccap: 1_206.83
+    # benefit = 1,394.25 - 32.50 = 1,361.75
+    mi_ccap: 1_361.75
 
 - name: Case 2, two working parents, two children at a 1 Star center.
   period: 2026-01
@@ -108,14 +111,15 @@
     mi_ccap_eligible: true
     # Both parents work; highest need = 80 biweekly -> tier 80
     mi_ccap_authorized_hours: 80
-    # person3 infant 7.15, person4 preschool 5.05
-    mi_ccap_block_payment: [0, 0, 572.00, 404.00]
+    # Authorized 80 -> 61+ block tier 90; person3 infant 7.15 x 90 = 643.50,
+    # person4 preschool 5.05 x 90 = 454.50
+    mi_ccap_block_payment: [0, 0, 643.50, 454.50]
     # 5,000/mo -> size 4 band 1, per-child FC 15, 2 paying children = 30, cap 45 -> 30/pp
     mi_ccap_family_contribution: 30
-    # monthly: person3 572.00 x 2.16667 = 1,239.33; person4 404.00 x 2.16667 = 875.33
-    # total = 2,114.67; monthly FC = 30 x 2.16667 = 65.00
-    # benefit = 2,114.67 - 65.00 = 2,049.67
-    mi_ccap: 2_049.67
+    # monthly: person3 643.50 x 2.16667 = 1,394.25; person4 454.50 x 2.16667 = 984.75
+    # total = 2,379.00; monthly FC = 30 x 2.16667 = 65.00
+    # benefit = 2,379.00 - 65.00 = 2,314.00
+    mi_ccap: 2_314.00
 
 - name: Case 3, family contribution waived at a 3 Star provider.
   period: 2026-01
@@ -263,11 +267,12 @@
     mi_ccap_income_waived: true
     mi_ccap_eligible: true
     mi_ccap_authorized_hours: 80
-    mi_ccap_block_payment: [0, 572.00]
+    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
     # Income-waived group -> family contribution 0
     mi_ccap_family_contribution: 0
-    # monthly = 572.00 x 2.16667 = 1,239.33; FC 0 -> benefit 1,239.33
-    mi_ccap: 1_239.33
+    # monthly = 643.50 x 2.16667 = 1,394.25; FC 0 -> benefit 1,394.25
+    mi_ccap: 1_394.25
 
 - name: Case 7, applicant income above the entry limit is ineligible.
   period: 2026-01
@@ -330,10 +335,10 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Same monthly benefit as Case 1 (1,206.83) summed over 12 months
-    # = 14,482.00 annually.
-    mi_child_care_subsidies: 14_482.00
-    child_care_subsidies: 14_482.00
+    # Same monthly benefit as Case 1 (1,361.75) summed over 12 months
+    # = 16,341.00 annually.
+    mi_child_care_subsidies: 16_341.00
+    child_care_subsidies: 16_341.00
 
 # Edge cases.
 
@@ -369,12 +374,13 @@
     mi_ccap_income_eligible: true
     mi_ccap_eligible: true
     mi_ccap_authorized_hours: 80
-    mi_ccap_block_payment: [0, 572.00]
+    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
     # Negative income maps to the lowest band -> family contribution 0,
     # not a negative amount that would inflate the benefit
     mi_ccap_family_contribution: 0
-    # benefit = 572.00 x 2.16667 = 1,239.33 (block payment only, FC 0)
-    mi_ccap: 1_239.33
+    # benefit = 643.50 x 2.16667 = 1,394.25 (block payment only, FC 0)
+    mi_ccap: 1_394.25
 
 - name: Case 10, subsidy capped tightly at a low actual child care charge.
   period: 2026-01
@@ -406,8 +412,8 @@
   output:
     mi_ccap_eligible: true
     mi_ccap_authorized_hours: 80
-    # Uncapped block payment 7.15 x 80 = 572.00/pp -> monthly 1,239.33
-    mi_ccap_block_payment: [0, 572.00]
+    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50/pp -> monthly 1,394.25
+    mi_ccap_block_payment: [0, 643.50]
     mi_ccap_family_contribution: 0
     # Monthly charge is only 250.00, below the uncapped subsidy -> capped at 250.00
     mi_ccap: 250.00
