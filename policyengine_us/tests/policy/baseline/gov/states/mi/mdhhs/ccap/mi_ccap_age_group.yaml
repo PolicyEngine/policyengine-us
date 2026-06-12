@@ -1,0 +1,125 @@
+# REQ-025: Age groups for the RFT 270 rate table.
+# Infant/Toddler (birth up to age 2.5), Preschool (2.5 up to 5),
+# School Age (5 and over). Boundary is 2.5 years (RFT 270 p.4).
+
+- name: Case 1, infant under 2.5 is Infant/Toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 2, child just below the 2.5 boundary is Infant/Toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 3, child at exactly 2.5 is Preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: PRESCHOOL
+
+- name: Case 4, child between 2.5 and 5 is Preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: PRESCHOOL
+
+- name: Case 5, child at exactly 5 is School Age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: SCHOOL_AGE
+
+- name: Case 6, older child is School Age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_age_group: SCHOOL_AGE
+
+# Edge cases.
+
+- name: Case 7, child just below 2.5 is Infant/Toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.4
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 2.4 < 2.5 boundary -> still Infant/Toddler
+    mi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 8, child just below 5 is Preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4.9
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # 4.9 < 5 boundary -> still Preschool
+    mi_ccap_age_group: PRESCHOOL
+
+- name: Case 9, oldest eligible child age 12 is School Age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # The rate table has no group above School Age, so a 12-year-old maps there
+    mi_ccap_age_group: SCHOOL_AGE

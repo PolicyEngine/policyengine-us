@@ -1,0 +1,33 @@
+description: Michigan counts these income sources of the program group under the Child Development and Care program.
+values:
+  2024-09-22:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - social_security
+    - ssi
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    # The following are counted under BEM 500/502/503 but have no matching
+    # variables at the moment:
+    # - adoption_subsidy
+    # - royalties
+    # - strike benefits
+    # - paid jury duty
+    # - cash gifts and contributions
+
+metadata:
+  unit: list
+  period: year
+  label: Michigan CDC countable income sources
+  reference:
+    - title: BEM 703, Income
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=13

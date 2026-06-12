@@ -1,0 +1,236 @@
+# REQ-022/023: Reimbursement per child per two-week pay period.
+# Licensed centers and group/family homes use the block schedule (billed
+# 1-30 hours -> 30, 31-60 -> 60, 61+ -> 90), capped at the child's authorized
+# hours. License-exempt providers are paid hourly, also capped at authorized
+# hours. Because billed hours are not tracked separately from authorized
+# hours, paid hours equal the authorized tier for every provider type, so
+# the payment is hourly_rate x authorized_hours per pay period.
+# Authorized hours come from the parent's activity: 40 hrs/week -> 80 biweekly.
+
+- name: Case 1, center 1 Star infant, parent 40 hrs/week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40  # authorized 80
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Child: 7.15 hourly x 80 authorized = 572.00 per pay period
+    mi_ccap_block_payment: [0, 572.00]
+
+- name: Case 2, group and family home 1 Star infant, parent 30 hrs/week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30  # authorized 60
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Child: 5.70 hourly x 60 authorized = 342.00 per pay period
+    mi_ccap_block_payment: [0, 342.00]
+
+- name: Case 3, license-exempt Level 1 school age, parent 20 hrs/week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20  # authorized 40
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Child: 2.95 hourly x 40 authorized = 118.00 per pay period
+    mi_ccap_block_payment: [0, 118.00]
+
+- name: Case 4, center 5 Star infant, parent 45 hrs/week reaches the 90-hour max.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 45  # authorized 90 (max)
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Child: 9.60 hourly x 90 authorized = 864.00 per pay period
+    mi_ccap_block_payment: [0, 864.00]
+
+- name: Case 5, parent with no activity gives zero authorized hours and zero payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # authorized 0
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Authorized 0 -> 7.15 x 0 = 0
+    mi_ccap_block_payment: [0, 0]
+
+# Edge cases.
+
+- name: Case 6, family home at the 60-hour block tier boundary, parent 30 hrs/week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30  # authorized 60
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Authorized 60 -> block tier 60 (min(60, 60)); family home STAR_1 school age
+    # 4.80 x 60 = 288.00 per pay period
+    mi_ccap_block_payment: [0, 288.00]
+
+- name: Case 7, license-exempt Level 2 at the 90-hour maximum, parent 45 hrs/week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 45  # authorized 90 (max)
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # License-exempt is paid hourly with no block: 4.95 x 90 authorized = 445.50
+    mi_ccap_block_payment: [0, 445.50]
+
+- name: Case 8, center at the 20-hour tier, block schedule capped at authorized hours.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 10  # authorized 20
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Block schedule for 20 authorized hours pays 30, but is capped at the
+    # authorized 20: min(30, 20) = 20; center STAR_1 preschool 5.05 x 20 = 101.00
+    mi_ccap_block_payment: [0, 101.00]

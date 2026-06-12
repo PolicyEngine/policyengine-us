@@ -1,0 +1,281 @@
+# REQ-024: Department hourly rate looked up by provider type, star/quality
+# level, and age group (RFT 270 Table 2, eff 2024-09-22). Tested across all
+# three provider types and a spread of star/level and age combinations.
+# Rate variable is defined_for the eligible child, so each test child is a
+# young citizen dependent.
+
+- name: Case 1, center, 1 Star, infant/toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 7.15
+
+- name: Case 2, center, 1 Star, preschool.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 5.05
+
+- name: Case 3, center, 3 Star, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_3
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 6.15
+
+- name: Case 4, center, 5 Star, infant/toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 9.60
+
+- name: Case 5, group and family home, 1 Star, infant/toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 5.70
+
+- name: Case 6, group and family home, 2 Star, preschool.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 5.35
+
+- name: Case 7, license-exempt, Level 1, infant/toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 2.95
+
+- name: Case 8, license-exempt, Level 2, preschool.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 4.40
+
+# Edge cases: cover the remaining star levels and age combinations.
+
+- name: Case 9, center, 2 Star, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_2
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 5.35
+
+- name: Case 10, center, 4 Star, preschool.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 6.75
+
+- name: Case 11, group and family home, 4 Star, infant/toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_4
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 7.35
+
+- name: Case 12, group and family home, 5 Star, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_5
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ccap_hourly_rate: 7.25
+
+- name: Case 13, license-exempt, Level 1, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # License-exempt Level 1 is a flat 2.95 across all ages
+    mi_ccap_hourly_rate: 2.95

@@ -1,0 +1,205 @@
+# REQ-017/028: Income-eligible group. Applicants (not enrolled) must have
+# monthly gross program-group income at or below the ENTRY limit (RFT 270
+# column 2); ongoing recipients (enrolled) at or below the EXIT limit
+# (column 7). Thresholds by program-group size, eff 2025-09-21 (RFT 270 p.3).
+# Family of 2: entry 3,526/mo, exit 5,638/mo.
+
+- name: Case 1, applicant income just below entry limit is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 3,500/mo, below 3,526 entry
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: true
+
+- name: Case 2, applicant income at exactly the entry limit is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_312  # 3,526/mo, exactly the entry limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: true
+
+- name: Case 3, applicant income just above entry limit is not income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3,600/mo, above 3,526 entry
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: false
+
+- name: Case 4, enrolled recipient between entry and exit limits stays income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo, above entry 3,526 but below exit 5,638
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: true
+
+- name: Case 5, enrolled recipient at exactly the exit limit stays income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 67_656  # 5,638/mo, exactly the exit limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: true
+
+- name: Case 6, enrolled recipient just above the exit limit loses income eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_400  # 5,700/mo, above 5,638 exit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: false
+
+- name: Case 7, enrolled recipient above entry but applicant would be ineligible at same income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo, above entry 3,526
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false  # applicant gate uses entry limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: false
+
+# Edge cases: zero income and the size-1 entry boundary.
+
+- name: Case 8, applicant with zero income is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Zero income is far below the entry limit -> eligible
+    mi_ccap_income_eligible: true
+
+- name: Case 9, single-person applicant just above the size-1 entry limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_308  # 2,609/mo, above the 2,608 size-1 entry limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Size 1 entry limit 2,608/mo; 2,609 > 2,608 -> not eligible
+    mi_ccap_income_eligible: false
+
+- name: Case 10, single-person applicant at exactly the size-1 entry limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_296  # 2,608/mo, exactly the size-1 entry limit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Income at exactly the entry limit passes the <= test -> eligible
+    mi_ccap_income_eligible: true

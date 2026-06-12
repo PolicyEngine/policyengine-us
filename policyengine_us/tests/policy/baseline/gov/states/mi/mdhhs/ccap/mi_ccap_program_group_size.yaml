@@ -1,0 +1,189 @@
+# REQ-026: Family size for the RFT 270 scale = CDC program group (BEM 205):
+# parent(s)/stepparent + children needing care + their unmarried under-18
+# siblings. Modeled approximately as the SPM unit, capped at 10
+# (max_program_group_size). A single eligible parent applying for one child
+# gives family size 2.
+
+- name: Case 1, single parent and one child gives program group size 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_program_group_size: 2
+
+- name: Case 2, two parents and two children gives program group size 4.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 30
+      person3:
+        age: 6
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    mi_ccap_program_group_size: 4
+
+- name: Case 3, program group size is capped at 10.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 15
+      person5:
+        age: 14
+      person6:
+        age: 12
+      person7:
+        age: 10
+      person8:
+        age: 8
+      person9:
+        age: 6
+      person10:
+        age: 4
+      person11:
+        age: 2
+      person12:
+        age: 1
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+        state_code: MI
+  output:
+    mi_ccap_program_group_size: 10
+
+# Edge cases: minimum and exactly-at-cap group sizes.
+
+- name: Case 4, single-person unit gives the minimum program group size of 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Degenerate single-person unit -> size 1 (no child needed for this helper)
+    mi_ccap_program_group_size: 1
+
+- name: Case 5, unit of exactly 10 is not reduced by the cap.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+          ]
+        state_code: MI
+  output:
+    # Exactly 10 members -> size 10 (cap is non-binding at the boundary)
+    mi_ccap_program_group_size: 10
