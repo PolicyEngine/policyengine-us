@@ -16,7 +16,7 @@ class tx_ceap_eligible(Variable):
         p = parameters(period).gov.states.tx.tdhca.ceap
         p_hhs = parameters(period).gov.hhs.liheap
 
-        income = add(spm_unit, period, ["irs_gross_income"])
+        income = spm_unit("tx_ceap_countable_income", period)
 
         # FPG-based limit (always applies)
         fpg = spm_unit("spm_unit_fpg", period)
