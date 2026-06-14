@@ -1,0 +1,72 @@
+description: Kentucky charges this daily family copayment for a four-person family with one child needing care, by monthly countable income, under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: month
+  label: Kentucky CCAP daily copayment for a four-person family with one child needing care
+  reference:
+    - title: 922 KAR 2:160 Section 11(3)(a) — Family Co-Payment Per Day (pp.11-12)
+      href: https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=11
+
+brackets:
+  - threshold:
+      2019-05-31: 0
+    amount:
+      2019-05-31: 0
+  - threshold:
+      2019-05-31: 900
+    amount:
+      2019-05-31: 2
+  - threshold:
+      2019-05-31: 1_100
+    amount:
+      2019-05-31: 3
+  - threshold:
+      2019-05-31: 1_200
+    amount:
+      2019-05-31: 4
+  - threshold:
+      2019-05-31: 1_300
+    amount:
+      2019-05-31: 5
+  - threshold:
+      2019-05-31: 1_500
+    amount:
+      2019-05-31: 6
+  - threshold:
+      2019-05-31: 1_700
+    amount:
+      2019-05-31: 7
+  - threshold:
+      2019-05-31: 1_900
+    amount:
+      2019-05-31: 8
+  - threshold:
+      2019-05-31: 2_100
+    amount:
+      2019-05-31: 9
+  - threshold:
+      2019-05-31: 2_200
+    amount:
+      2019-05-31: 10
+  - threshold:
+      2019-05-31: 2_300
+    amount:
+      2019-05-31: 11
+  - threshold:
+      2019-05-31: 2_400
+    amount:
+      2019-05-31: 12
+  - threshold:
+      2019-05-31: 2_600
+    amount:
+      2019-05-31: 13
+  - threshold:
+      2019-05-31: 2_800
+    amount:
+      2019-05-31: 14
+  - threshold:
+      2019-05-31: 3_000
+    amount:
+      2019-05-31: 15

@@ -1,0 +1,13 @@
+description: Kentucky deducts this amount from the daily family copayment for each household member beyond the chart's base household size, with zero as the lowest copayment, under the Child Care Assistance Program.
+# The chart's extension column says "for each additional household member over
+# age 6" but prints the household-of-seven value as an unconditional step, so
+# the deduction is applied by household size alone.
+values:
+  2024-11-18: 1
+metadata:
+  unit: currency-USD
+  period: year
+  label: Kentucky CCAP copayment reduction per additional household member
+  reference:
+    - title: 922 KAR 2:160 Section 11(3) — CCAP Daily Co-Payment Chart (eff. 11-18-2024)
+      href: https://apps.legislature.ky.gov/law/kar/downloads/docs/15544/document.engrossed.pdf#page=12

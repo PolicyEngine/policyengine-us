@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -515,19 +515,24 @@ programs:
         full_name: Idaho Child Care Program
         full_name: Indiana Child Care and Development Fund Voucher Program
         full_name: Kansas Child Care Assistance Program
+        full_name: Kentucky Child Care Assistance Program
+        name: CCAP
         name: ICCP
         name: Indiana CCDF
         name: Kansas CCAP
         parameter_prefix: gov.states.id.dhw.iccp
         parameter_prefix: gov.states.in.fssa.ccdf
         parameter_prefix: gov.states.ks.dcf.ccap
+        parameter_prefix: gov.states.ky.dcbs.ccap
         status: complete
         variable: id_iccp
         variable: in_ccdf
         variable: ks_child_care_subsidies
+        variable: ky_ccap
       - state: ID
       - state: IN
       - state: KS
+      - state: KY
       - state: MA
         status: complete
         name: Massachusetts CCFA
