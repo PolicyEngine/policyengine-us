@@ -1,0 +1,93 @@
+# Tests for in_ccdf_countable_income (SPMUnit, MONTH, USD).
+# Sums the listed countable income sources, then excludes earned income of
+# household members under 18 (emancipated minors and minor parents are not
+# tracked). Policy Manual Section 1.8 Countable Income.
+
+- name: Case 1, single earner, earned income only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # 24,000 / 12 = 2,000 / month
+    in_ccdf_countable_income: 2_000
+
+- name: Case 2, multiple unearned sources summed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security: 12_000
+        unemployment_compensation: 6_000
+        child_support_received: 2_400
+        rental_income: 3_600
+        veterans_benefits: 1_200
+        workers_compensation: 1_800
+        alimony_income: 2_400
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # (12,000 + 6,000 + 2,400 + 3,600 + 1,200 + 1,800 + 2,400) / 12
+    # = 29,400 / 12 = 2,450 / month
+    in_ccdf_countable_income: 2_450
+
+- name: Case 3, earned income of a minor is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+      person2:
+        age: 16
+        employment_income: 6_000
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    # Adult 24,000 counted; minor's 6,000 earned excluded.
+    # 24,000 / 12 = 2,000 / month
+    in_ccdf_countable_income: 2_000
+
+- name: Case 4, negative self-employment income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -12_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Countable income can be negative here; the copay formula floors it at 0.
+    # -12,000 / 12 = -1,000 / month
+    in_ccdf_countable_income: -1_000

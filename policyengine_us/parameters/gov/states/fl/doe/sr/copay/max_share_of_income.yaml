@@ -1,0 +1,17 @@
+description: Florida caps the family copay at this share of family income under the School Readiness program.
+# Federal CCDF rules cap copays at 7% of family income (45 CFR 98.45(l)(3)). The
+# cap applies per family. Because the sliding fee scale percentages top out at 6.0%
+# full-time, this cap is rarely binding for a single child but guarantees
+# affordability across the household.
+values:
+  2025-10-01: 0.07
+
+metadata:
+  unit: /1
+  period: year
+  label: Florida School Readiness maximum copay share of income
+  reference:
+    - title: Fla. Admin. Code 6M-4.400, Required Parent Copayment FAQ Q3
+      href: https://www.elcduval.org/wp-content/uploads/2025/07/Rule-6M-4.400_Frequently-Asked-Questions.pdf#page=1
+    - title: 45 CFR 98.45(l)(3)
+      href: https://www.law.cornell.edu/cfr/text/45/98.45
