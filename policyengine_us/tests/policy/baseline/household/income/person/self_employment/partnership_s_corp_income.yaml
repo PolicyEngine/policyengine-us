@@ -1,0 +1,7 @@
+- name: Partnership and S-corp income sum to the aggregate pass-through input.
+  period: 2024
+  input:
+    partnership_income: 3_000
+    s_corp_income: 7_000
+  output:
+    partnership_s_corp_income: 10_000

@@ -1,0 +1,91 @@
+- name: Case 1, one vehicle is fully excluded.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 1
+    household_vehicles_value: 20_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 2, additional vehicle equity above the combined limit is countable.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 2
+    household_vehicles_value: 20_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 7_072
+
+- name: Case 3, no vehicle value is countable when no vehicles are owned.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 0
+    household_vehicles_value: 0
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 4, additional vehicles with low combined equity are fully exempt.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 2
+    household_vehicles_value: 2_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 5, three low-value vehicles with combined additional equity under the threshold are fully exempt.
+  period: 2026
+  input:
+    in_smc: true
+    household_vehicles_owned: 3
+    household_vehicles_value: 4_000
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 6, two-adult unit with two vehicles exempts one; the additional vehicle equity above the combined limit is countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 7_072
+
+- name: Case 7, three-adult unit with three vehicles exempts one; the additional vehicle equity above the combined limit is countable.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 25
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_smc: true
+        household_vehicles_owned: 3
+        household_vehicles_value: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 7_072

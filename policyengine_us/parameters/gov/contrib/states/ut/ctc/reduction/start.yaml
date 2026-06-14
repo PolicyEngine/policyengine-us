@@ -1,0 +1,24 @@
+description: Utah phases the child tax credit reform out above this income threshold, based on filing status.
+
+SINGLE:
+  2026-01-01: 49_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 49_000
+JOINT:
+  2026-01-01: 98_000
+SURVIVING_SPOUSE:
+  2026-01-01: 98_000
+SEPARATE:
+  2026-01-01: 30_500
+
+metadata:
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  period: year
+  label: Utah child tax credit reform reduction start
+  uprating: gov.irs.uprating
+  propagate_metadata_to_children: true
+  reference:
+    - title: Utah Code §59-10-1047
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1047.html

@@ -1,0 +1,27 @@
+description: Kansas provides these maximum hourly rates for out-of-home relative child care under the Child Care Assistance Program.
+metadata:
+  period: hour
+  unit: currency-USD
+  label: Kansas CCAP out-of-home relative maximum hourly rates
+  breakdown:
+    - ks_ccap_rate_group
+    - ks_ccap_relative_age_group
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+GROUP_1:
+  UNDER_18_MONTHS:
+    2024-10-01: 2.94
+  OVER_18_MONTHS:
+    2024-10-01: 2.81
+GROUP_2:
+  UNDER_18_MONTHS:
+    2024-10-01: 2.44
+  OVER_18_MONTHS:
+    2024-10-01: 2.19
+GROUP_3:
+  UNDER_18_MONTHS:
+    2024-10-01: 1.87
+  OVER_18_MONTHS:
+    2024-10-01: 1.77

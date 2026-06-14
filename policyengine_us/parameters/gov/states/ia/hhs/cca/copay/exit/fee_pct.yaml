@@ -1,0 +1,21 @@
+description: Iowa charges this CCA Exit copay as a share of the cost of care for each child under the Child Care Assistance program, by fee level. The same percentages apply to basic care and special-needs care.
+metadata:
+  period: year
+  unit: /1
+  label: Iowa CCA Exit copay percentage of cost of care by fee level
+  breakdown:
+    - [A, B, C, D]
+  breakdown_labels:
+    - Fee level
+  reference:
+    - title: Iowa HHS CCA Exit Program Family Fee Chart (effective July 1, 2024)
+      href: https://hhs.iowa.gov/media/12445/download?inline=#page=2
+
+A:
+  2024-07-01: 0.33
+B:
+  2024-07-01: 0.45
+C:
+  2024-07-01: 0.60
+D:
+  2024-07-01: 0.60

@@ -1,3 +1,62 @@
+## [1.728.0] - 2026-06-14
+
+### Added
+
+- Add Kansas Child Care Assistance Program (CCAP).
+
+### Changed
+
+- Texas CEAP countable income now follows the state plan income sources list instead of IRS gross income.
+
+### Fixed
+
+- Fixed California SSI state supplement payment standards for disabled recipients identified by SSI disability criteria.
+- - Split partnership and S-corporation income into separate person-level inputs, and rename partnership self-employment income to partnership net earnings from self-employment.
+
+
+## [1.727.0] - 2026-06-14
+
+### Added
+
+- Added a medically frail or special medical needs input for Medicaid community engagement exclusions.
+
+
+## [1.726.0] - 2026-06-10
+
+### Added
+
+- Added Contra Costa County, CA General Assistance program.
+- Add Marin County, CA General Relief program.
+- Add San Francisco County Adult Assistance Program (CAAP).
+- Add Santa Clara County General Assistance program.
+- Added the Orange County, California General Relief benefit, paying the maximum aid payment for the number of eligible persons in the economic unit and shared-housing situation net of countable income.
+
+
+## [1.725.0] - 2026-06-10
+
+### Added
+
+- Add San Mateo County General Assistance.
+
+### Fixed
+
+- Restricted Massachusetts Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.724.0] - 2026-06-10
+
+### Added
+
+- SNAP work program participant input variable, satisfying the general work requirements under 7 CFR 273.7.
+
+
+## [1.723.0] - 2026-06-10
+
+### Added
+
+- Added a configurable Utah child tax credit reform with partial refundability, joint-threshold, and indexing parameters.
+
+
 ## [1.722.5] - 2026-06-09
 
 ### Fixed
