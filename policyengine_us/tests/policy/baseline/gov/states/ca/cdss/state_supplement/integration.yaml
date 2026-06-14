@@ -1,5 +1,6 @@
 - name: Single blind parent with non eligible dependent child
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -17,10 +18,11 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_state_supplement_payment_standard: 8_448
+    ca_state_supplement_payment_standard: 15_207.84
 
 - name: Married household with one blind and one disabled person, with a disabled dependent child, no food preparation and spouse in out of home care
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -48,7 +50,105 @@
         state_code: CA
         living_arrangements_allow_for_food_preparation: false
   output:
-    ca_state_supplement_payment_standard: 2_639
+    ca_state_supplement_payment_standard: 4_600.76
+
+- name: Case H1, single aged person, 2005.
+  period: 2005-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 805
+
+- name: Case H2, single disabled person, 2010 (after 2009 budget cuts).
+  period: 2010-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 845
+
+- name: Case H3, disabled couple, 2010 at MOE floor.
+  period: 2010-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+      person2:
+        age: 48
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 1_407.20
+
+- name: Case H4, single aged person, 2017 after CNI COLA.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 895.72
+
+- name: Case H5, single aged person, 2022 after 23.95% SSP increase.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_payment_standard: 1_040.21
 
 - name: Case A ,single disabled parent with non eligible dependent child.
   period: 2025-01

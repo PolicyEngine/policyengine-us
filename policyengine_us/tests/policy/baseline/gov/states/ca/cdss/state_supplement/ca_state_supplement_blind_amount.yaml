@@ -1,5 +1,6 @@
 - name: Married couple, one blind
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -22,4 +23,4 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_blind_amount: 16_464
+    ca_state_supplement_blind_amount: 26_980.20

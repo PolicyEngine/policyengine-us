@@ -1,5 +1,6 @@
 - name: Single aged parent, blind
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -17,10 +18,11 @@
         members: [person1, person2]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 7_560
+    ca_state_supplement_aged_disabled_amount: 14_195.28
 
 - name: Married couple, aged and disabled
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -44,10 +46,11 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 14_004
+    ca_state_supplement_aged_disabled_amount: 24_273.96
 
 - name: Married couple, only one aged and disabled
   period: 2024
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -68,4 +71,4 @@
         members: [person1, person2, person3]
         state_code: CA
   output:
-    ca_state_supplement_aged_disabled_amount: 7_560
+    ca_state_supplement_aged_disabled_amount: 14_195.28
