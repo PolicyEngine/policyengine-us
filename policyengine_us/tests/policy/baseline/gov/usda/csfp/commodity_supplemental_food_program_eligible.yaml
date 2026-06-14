@@ -259,3 +259,39 @@
         county_str: ANDREW_COUNTY_MO
   output:
     commodity_supplemental_food_program_eligible: true
+
+- name: Case 11, Massachusetts senior in a CSFP covered county is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: MIDDLESEX_COUNTY_MA
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Case 12, Massachusetts senior outside CSFP covered counties is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: BARNSTABLE_COUNTY_MA
+  output:
+    commodity_supplemental_food_program_eligible: false

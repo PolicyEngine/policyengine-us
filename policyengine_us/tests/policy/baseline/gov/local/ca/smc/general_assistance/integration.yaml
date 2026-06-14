@@ -1,0 +1,313 @@
+- name: Case 1, independent living unit with no income receives full standard.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_payment_standard: 732
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance: 732
+
+- name: Case 2, independent living unit with earned income receives reduced benefit after the 20 percent deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_400
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_income: 160
+    ca_smc_general_assistance: 572
+
+- name: Case 3, unearned income above independent living standard makes unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 8_796
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_income: 733
+    ca_smc_general_assistance_income_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 4, NMOHC with referral uses 2025 standard.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance: 1_599.07
+
+- name: Case 5, NMOHC with referral uses 2026 standard and offsets income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_000
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_smc_general_assistance_living_arrangement: NMOHC_WITH_REFERRAL
+  output:
+    ca_smc_general_assistance_payment_standard: 1_626.07
+    ca_smc_general_assistance_countable_income: 200
+    ca_smc_general_assistance: 1_426.07
+
+- name: Case 6, property at limit makes unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_464
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_property_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 7, one vehicle is excluded from property.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_smc: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_463
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_countable_vehicle_value: 0
+    ca_smc_general_assistance_property_eligible: true
+    ca_smc_general_assistance: 732
+
+- name: Case 8, single parent with a young child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 9, two unrelated adults without children each receive their own benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance: 1_464
+
+- name: Case 10, two adults where one receives SSI still qualifies the non-SSI adult via the SPM unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 65
+        immigration_status: CITIZEN
+        ssi: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance: 732
+
+- name: Case 11, couple where one adult has very high income is ineligible (income deeming via SPM unit aggregation).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 0
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+        employment_income: 48_000
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 12, both adults already receive SSI so the unit is categorically ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 12_000
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+        ssi: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: false
+    ca_smc_general_assistance: 0
+
+- name: Case 13, three adults with combined property below the flat limit and no income each receive their own benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 25
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 1_000
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_eligible: true
+    ca_smc_general_assistance: 2_196
+
+- name: Case 14, three adults with combined property above the flat limit are ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+      person3:
+        age: 25
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 5_000
+        ca_smc_general_assistance_living_arrangement: INDEPENDENT_LIVING
+  output:
+    ca_smc_general_assistance_property_eligible: false
+    ca_smc_general_assistance: 0

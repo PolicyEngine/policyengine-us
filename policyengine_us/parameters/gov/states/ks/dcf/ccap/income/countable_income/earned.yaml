@@ -1,0 +1,15 @@
+description: Kansas counts these earned income sources under the Child Care Assistance Program.
+values:
+  2021-07-01:
+    # Earned income (KEESM 6300).
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Kansas CCAP countable earned income sources
+  reference:
+    - title: KEESM 6300 (Earned Income)
+      href: https://content.dcf.ks.gov/ees/keesm/Current/keesm6300.htm

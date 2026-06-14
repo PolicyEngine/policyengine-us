@@ -1,0 +1,18 @@
+description: Santa Clara County uses these immigration statuses as qualified non-citizens under the General Assistance program.
+values:
+  2016-04-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD  # "entitled to remain indefinitely" per GA 141
+    - CUBAN_HAITIAN_ENTRANT
+metadata:
+  label: Santa Clara County General Assistance qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: Santa Clara County General Assistance Handbook, GA 141 (Residence of a Non-Citizen)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/01Policy/Policy.htm
+    - title: Santa Clara County General Assistance Handbook, Noncitizen Status chapter
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/07Citizens_Noncitizens/Non_Citizen_Status.htm

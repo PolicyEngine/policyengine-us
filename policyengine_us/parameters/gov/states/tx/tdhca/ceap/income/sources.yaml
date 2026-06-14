@@ -1,0 +1,48 @@
+description: Texas counts these income sources when determining eligibility under the Comprehensive Energy Assistance Program.
+values:
+  2023-10-01:
+    # Wages and commissions
+    - employment_income
+    # Net receipts from self-employment and independent contract work
+    # per 10 TAC 6.4(c)(1)
+    - self_employment_income
+    - farm_operations_income
+    # Net gambling or lottery winnings count per 10 TAC 6.4(c)(2);
+    # we track gross winnings at the moment
+    - gambling_winnings
+    - unemployment_compensation
+    - strike_benefits
+    # Counted excluding the Medicare deduction; we don't track
+    # Medicare premium withholding at the moment
+    - social_security
+    - ssi
+    - pension_income
+    - retirement_distributions
+    - general_assistance
+    # Royalties included in rental income
+    - rental_income
+    - alimony_income
+    - interest_income
+    - dividend_income
+    # Counted except means-tested veterans pensions under
+    # 38 U.S.C. 1315, 1521, 1541, and 1542, which we don't
+    # track separately
+    - veterans_benefits
+    # Temporary Assistance for Needy Families benefits are counted
+    # at the SPM unit level in tx_ceap_countable_income
+    # Excluded per 10 TAC 6.4(d): capital gains, child support
+    # received, jury duty compensation, gifts, loans, lump sums,
+    # tax refunds, compensation for injury, foster care payments,
+    # education assistance, reimbursements, and benefits from the
+    # Supplemental Nutrition Assistance Program and the Special
+    # Supplemental Nutrition Program for Women, Infants, and Children
+
+metadata:
+  unit: list
+  period: year
+  label: Texas CEAP countable income sources
+  reference:
+    - title: Texas LIHEAP State Plan FY 2026, Sections 1.8-1.9 (pages 8-9)
+      href: https://www.tdhca.texas.gov/sites/default/files/community-affairs/docs/26-LIHEAP-Plan-Amend1.pdf#page=8
+    - title: 10 Tex. Admin. Code § 6.4(c)-(d) - Income Determination
+      href: https://www.law.cornell.edu/regulations/texas/10-Tex-Admin-Code-SS-6-4

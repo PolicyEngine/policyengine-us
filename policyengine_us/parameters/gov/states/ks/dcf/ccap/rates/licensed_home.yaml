@@ -1,0 +1,39 @@
+description: Kansas provides these maximum hourly rates for licensed child care homes under the Child Care Assistance Program.
+metadata:
+  period: hour
+  unit: currency-USD
+  label: Kansas CCAP licensed home maximum hourly rates
+  breakdown:
+    - ks_ccap_rate_group
+    - ks_ccap_home_age_group
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+GROUP_1:
+  GROUP_0_17:
+    2024-10-01: 4.52
+  GROUP_18_35:
+    2024-10-01: 4.33
+  GROUP_36_59:
+    2024-10-01: 4.23
+  GROUP_60_PLUS:
+    2024-10-01: 3.85
+GROUP_2:
+  GROUP_0_17:
+    2024-10-01: 3.75
+  GROUP_18_35:
+    2024-10-01: 3.37
+  GROUP_36_59:
+    2024-10-01: 3.37
+  GROUP_60_PLUS:
+    2024-10-01: 3.17
+GROUP_3:
+  GROUP_0_17:
+    2024-10-01: 2.88
+  GROUP_18_35:
+    2024-10-01: 2.73
+  GROUP_36_59:
+    2024-10-01: 2.73
+  GROUP_60_PLUS:
+    2024-10-01: 2.5
