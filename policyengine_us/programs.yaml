@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, HI, IA, IL, IN, KS, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, IL, IN, KS, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -495,12 +495,17 @@ programs:
         status: in_progress
         name: Care 4 Kids
         full_name: Connecticut Care 4 Kids
-      - state: HI
-        status: complete
-        name: Hawaii Child Care Subsidy
+        full_name: Florida School Readiness Program
         full_name: Hawaii Child Care Subsidy (CCAP)
-        variable: hi_ccap
+        name: Hawaii Child Care Subsidy
+        name: School Readiness
+        parameter_prefix: gov.states.fl.doe.sr
         parameter_prefix: gov.states.hi.bessd.ccap
+        status: complete
+        variable: fl_sr
+        variable: hi_ccap
+      - state: FL
+      - state: HI
       - state: IL
         status: complete
         name: CCAP

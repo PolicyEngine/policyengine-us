@@ -1,0 +1,42 @@
+# Florida School Readiness protective-services pathway (State Plan s. 2.2.2.f-h):
+# true when any member receives or needs protective services. It waives the
+# income test (is_fl_sr_eligible) and the activity test (is_fl_sr_activity_eligible).
+
+- name: Case 1, a child receiving or needing protective services triggers the pathway.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_sr_protective_services: true
+
+- name: Case 2, no protective-services member.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_sr_protective_services: false
