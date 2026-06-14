@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, IA, ID, IL, KS, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -495,6 +495,17 @@ programs:
         status: in_progress
         name: Care 4 Kids
         full_name: Connecticut Care 4 Kids
+        full_name: Florida School Readiness Program
+        full_name: Hawaii Child Care Subsidy (CCAP)
+        name: Hawaii Child Care Subsidy
+        name: School Readiness
+        parameter_prefix: gov.states.fl.doe.sr
+        parameter_prefix: gov.states.hi.bessd.ccap
+        status: complete
+        variable: fl_sr
+        variable: hi_ccap
+      - state: FL
+      - state: HI
       - state: IL
         status: complete
         name: CCAP
@@ -502,15 +513,20 @@ programs:
         variable: il_ccap_eligible
         notes: Only includes eligibility rules
         full_name: Idaho Child Care Program
+        full_name: Indiana Child Care and Development Fund Voucher Program
         full_name: Kansas Child Care Assistance Program
         name: ICCP
+        name: Indiana CCDF
         name: Kansas CCAP
         parameter_prefix: gov.states.id.dhw.iccp
+        parameter_prefix: gov.states.in.fssa.ccdf
         parameter_prefix: gov.states.ks.dcf.ccap
         status: complete
         variable: id_iccp
+        variable: in_ccdf
         variable: ks_child_care_subsidies
       - state: ID
+      - state: IN
       - state: KS
       - state: MA
         status: complete
