@@ -1,3 +1,15 @@
+## [1.729.0] - 2026-06-14
+
+### Added
+
+- - Added the Florida School Readiness Program (child care subsidy).
+- Add Hawaii Child Care Assistance Program (CCAP / Child Care Subsidy).
+- Add Iowa Child Care Assistance (CCA / CCAP) - 3-tier CCDF child care subsidy with full provider rate matrix and sliding/percentage copays.
+- Add Idaho Child Care Program benefits.
+- Add Indiana Child Care Assistance Program (CCAP / CCDF).
+- Add Kentucky Child Care Assistance Program (CCAP), including eligibility, 85% SMI income test, county-region provider rates, and family copays.
+
+
 ## [1.728.0] - 2026-06-14
 
 ### Added
