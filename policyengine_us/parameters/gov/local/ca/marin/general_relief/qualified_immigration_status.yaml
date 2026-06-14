@@ -1,0 +1,23 @@
+description: Marin County considers these statuses as qualified immigrants under the General Relief program.
+values:
+  2025-07-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    # The Standards require US citizenship, legal permanent residency, or
+    # permanently residing in the United States under color of law (PRUCOL).
+    # We do not track a PRUCOL flag at the moment, so PRUCOL is approximated
+    # with the available humanitarian statuses above. UNDOCUMENTED, DACA, and
+    # TPS are excluded.
+metadata:
+  unit: list
+  period: year
+  label: Marin County General Relief qualified immigration statuses
+  reference:
+    - title: Marin County General Relief Program Policies and Standards, Section II.E Citizenship
+      href: https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=10

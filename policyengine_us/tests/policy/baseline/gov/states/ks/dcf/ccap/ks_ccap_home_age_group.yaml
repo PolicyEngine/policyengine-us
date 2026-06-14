@@ -1,0 +1,91 @@
+# Licensed home age columns (Appendix C-18):
+#   0-17 months, 18-35 months, 36-59 months, 60+ months.
+#   age_in_months = age (years) * 12.
+
+- name: Case 1, infant under 18 months in licensed home care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 12 months -> 0-17 month band (below 18).
+    ks_ccap_home_age_group: GROUP_0_17
+
+- name: Case 2, child at 18 months in licensed home care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18 months -> 18-35 month band (band starts at 18).
+    ks_ccap_home_age_group: GROUP_18_35
+
+- name: Case 3, child at 36 months in licensed home care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 36 months -> 36-59 month band.
+    ks_ccap_home_age_group: GROUP_36_59
+
+- name: Case 4, child at 60 months in licensed home care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 60 months -> 60+ band.
+    ks_ccap_home_age_group: GROUP_60_PLUS
+
+# Edge case: child just under 18 months stays in the 0-17 band. The 18-35 band
+# starts at exactly 18 (Case 2 above covers exactly 18 -> GROUP_18_35).
+# age_in_months = 1.41667 * 12 = 17 months.
+- name: Case 5, child at 17 months stays in the 0-17 band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1.41667  # 17 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 17 months < 18 -> still 0-17 band.
+    ks_ccap_home_age_group: GROUP_0_17
+
+# Edge case: child at 59 months stays in the 36-59 band (60+ starts at 60).
+- name: Case 6, child at 59 months stays in the 36-59 band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4.91667  # 59 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 59 months < 60 -> still 36-59 band.
+    ks_ccap_home_age_group: GROUP_36_59

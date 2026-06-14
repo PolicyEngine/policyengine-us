@@ -1,0 +1,47 @@
+- name: A citizen meets the modeled immigration-status rule.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: true
+
+- name: An undocumented person does not meet the modeled immigration-status rule.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: false
+
+- name: A person paroled for one year does not meet the manual's indefinite-stay standard.
+  period: 2026-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: false
+
+- name: A permanent legal resident meets the modeled immigration-status rule.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: true
+
+- name: A person granted an indefinite stay from deportation meets the modeled rule.
+  period: 2026-01
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: true
+
+- name: A refugee is not in the regulation's enumerated eligible list.
+  period: 2026-01
+  input:
+    immigration_status: REFUGEE
+    in_oc: true
+  output:
+    ca_oc_general_relief_immigration_status_eligible: false

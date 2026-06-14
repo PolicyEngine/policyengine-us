@@ -1,0 +1,63 @@
+- name: Case 1, personal property below $500 limit, eligible.
+  period: 2024-01
+  input:
+    personal_property: 499
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 2, personal property at $500 limit, eligible (at-or-below).
+  period: 2024-01
+  input:
+    personal_property: 500
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 3, personal property above $500 limit, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 501
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 4, personal property well above $500 limit, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 1_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 5, zero personal property, eligible.
+  period: 2024-01
+  input:
+    personal_property: 0
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 6, personal property exactly $500.00, eligible at boundary (at-or-below).
+  period: 2024-01
+  input:
+    personal_property: 500.00
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 7, personal property $500.01 (one cent over), ineligible.
+  period: 2024-01
+  input:
+    personal_property: 500.01
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 8, very large personal property, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 1_000_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
