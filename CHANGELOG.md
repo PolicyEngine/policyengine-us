@@ -1,3 +1,10 @@
+## [1.727.0] - 2026-06-14
+
+### Added
+
+- Added a medically frail or special medical needs input for Medicaid community engagement exclusions.
+
+
 ## [1.726.0] - 2026-06-10
 
 ### Added
