@@ -1,0 +1,251 @@
+# Maximum hourly provider rate (Appendix C-18).
+# Rate is defined_for the eligible child, so each case sets up a Kansas
+# citizen child under 13 and selects provider type, county (rate group),
+# and age (age group).
+#
+# Verified C-18 rates (eff. 10-1-2024):
+#   Center Group 3 Toddler = $5.26; Center Group 1 Infant = $7.33;
+#   Center Group 2 School-Age = $3.65; Licensed Home Group 3 0-17mo = $2.88;
+#   OOH Relative Group 1 under-18mo = $2.94; In-home relative = $2.42;
+#   Enhanced special care = $7.34.
+
+- name: Case 1, center Group 3 toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1  # 12 months -> Toddler
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_hourly_rate: [0, 5.26]
+
+- name: Case 2, center Group 1 (Johnson) infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0  # 0 months -> Infant
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS  # Group 1
+  output:
+    ks_ccap_hourly_rate: [0, 7.33]
+
+- name: Case 3, center Group 2 (Sedgwick) school-age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8  # 96 months -> School-Age
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: SEDGWICK_COUNTY_KS  # Group 2
+  output:
+    ks_ccap_hourly_rate: [0, 3.65]
+
+- name: Case 4, licensed home Group 3 infant (0-17 months).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1  # 12 months -> 0-17 month home band
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: LICENSED_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_hourly_rate: [0, 2.88]
+
+- name: Case 5, out-of-home relative Group 1 under 18 months.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1  # 12 months -> 18 months and less
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: OUT_OF_HOME_RELATIVE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS  # Group 1
+  output:
+    ks_ccap_hourly_rate: [0, 2.94]
+
+- name: Case 6, in-home relative flat statewide rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: IN_HOME_RELATIVE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS  # Group 1, but in-home is a flat statewide rate
+  output:
+    # Flat $2.42 regardless of rate group or age.
+    ks_ccap_hourly_rate: [0, 2.42]
+
+- name: Case 7, enhanced rate for special care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: ENHANCED_SPECIAL_CARE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS
+  output:
+    # Flat $7.34 statewide, all ages.
+    ks_ccap_hourly_rate: [0, 7.34]
+
+# Edge case: licensed home in Group 2 (a rate group not yet exercised for home
+# care). Licensed Home Group 2, 0-17 months = $3.75/hr.
+- name: Case 8, licensed home Group 2 infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1  # 12 months -> 0-17 month home band
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: LICENSED_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: SEDGWICK_COUNTY_KS  # Group 2
+  output:
+    ks_ccap_hourly_rate: [0, 3.75]
+
+# Edge case: out-of-home relative in Group 3, over 18 months = $1.77/hr (the
+# rate used in the integration tests).
+- name: Case 9, out-of-home relative Group 3 over 18 months.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4  # 48 months -> over 18 months
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: OUT_OF_HOME_RELATIVE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_hourly_rate: [0, 1.77]
