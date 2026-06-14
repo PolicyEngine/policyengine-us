@@ -1,0 +1,195 @@
+# Authorized monthly hours (KEESM 7600):
+#   monthly = weekly hours * 52 / 12, capped at 240 (standard) or 215 (relative
+#   providers). Defined_for the eligible child.
+
+- name: Case 1, 40 weekly hours under the standard cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 40 * 52 / 12 = 173.3333, below the 240 cap.
+    ks_ccap_monthly_hours: [0, 173.33]
+
+- name: Case 2, high weekly hours capped at the standard 240.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 60 * 52 / 12 = 260, capped at 240.
+    ks_ccap_monthly_hours: [0, 240]
+
+- name: Case 3, relative provider capped at the lower 215.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: OUT_OF_HOME_RELATIVE
+        childcare_hours_per_week: 60
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 60 * 52 / 12 = 260, capped at 215 for relative providers.
+    ks_ccap_monthly_hours: [0, 215]
+
+- name: Case 4, in-home relative provider also uses the 215 cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: IN_HOME_RELATIVE
+        childcare_hours_per_week: 50
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 50 * 52 / 12 = 216.6667, capped at 215.
+    ks_ccap_monthly_hours: [0, 215]
+
+# Edge case: zero authorized hours yields zero monthly hours.
+- name: Case 5, zero weekly hours gives zero monthly hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_ccap_monthly_hours: [0, 0]
+
+# Edge case: weekly hours that convert to exactly the 240 standard cap.
+# 55.384615 * 52 / 12 = 240.0.
+- name: Case 6, hours converting to exactly the 240 standard cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 55.384615  # -> 240.0 monthly
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 55.384615 * 52 / 12 = 240.0, exactly at the cap.
+    ks_ccap_monthly_hours: [0, 240]
+
+# Edge case: weekly hours just above the standard cap stay clamped at 240.
+- name: Case 7, hours just above the standard cap stay at 240.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 56  # 56 * 52 / 12 = 242.6667 -> capped at 240
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 242.6667 capped at the 240 standard cap.
+    ks_ccap_monthly_hours: [0, 240]

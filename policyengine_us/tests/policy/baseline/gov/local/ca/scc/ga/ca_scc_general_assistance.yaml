@@ -1,0 +1,265 @@
+- name: Case 1, single eligible adult with zero income, receives full single MAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 343
+
+- name: Case 2, single eligible adult with partial unearned income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 1_200
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # countable = 1_200/12 = 100; benefit = 343 - 100 = 243.
+    ca_scc_general_assistance: 243
+
+- name: Case 3, single eligible adult with unearned income at MAP, zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 4_116
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # countable = 4_116/12 = 343 == MAP; benefit = 0.
+    ca_scc_general_assistance: 0
+
+- name: Case 4, ineligible due to SSI receipt.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 100
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 0
+
+- name: Case 5, negative employment income does not inflate benefit beyond MAP.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        self_employment_income: -120_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 343
+
+- name: Case 6, extremely negative SE income — benefit must not exceed single MAP.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        self_employment_income: -1_000_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Benefit must be capped at the MAP ($343), not 343 - (-83_333) = 83_676.
+    ca_scc_general_assistance: 343
+
+- name: Case 7, single eligible adult with countable income exactly at single MAP, zero benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 4_116
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # countable_income = 4_116 / 12 = 343 == MAP -> income_eligible true but fill-the-gap = 343 - 343 = 0
+    ca_scc_general_assistance: 0
+
+- name: Case 8, single eligible adult with countable income $1 below single MAP, $1 benefit.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 4_104
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # countable = 4_104 / 12 = 342; benefit = 343 - 342 = 1
+    ca_scc_general_assistance: 1
+
+- name: Case 9, married couple with $200 combined unearned countable income receives $260.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        social_security: 1_200
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 100
+        immigration_status: CITIZEN
+        social_security: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # combined countable = (1_200 + 1_200) / 12 = 200; benefit = 460 - 200 = 260
+    ca_scc_general_assistance: 260
+
+- name: Case 10, self-employed adult with no income receives full single MAP (self-employment is not a categorical bar).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_self_employed: true
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    ca_scc_general_assistance: 343
+
+- name: Case 11, self-employed adult with high self-employment income is income-ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_self_employed: true
+        self_employment_income: 100_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # Countable self-employment income far exceeds the $343 MAP -> no benefit.
+    ca_scc_general_assistance: 0

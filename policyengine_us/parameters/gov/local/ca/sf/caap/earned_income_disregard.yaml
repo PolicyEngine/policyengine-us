@@ -1,0 +1,43 @@
+description: San Francisco County disregards this share of a recipient's gross monthly earned income within each bracket under the County Adult Assistance Programs.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: month
+  label: San Francisco County CAAP earned income disregard rate
+  reference:
+    - title: CAAP Eligibility Manual, 94-14 Earned Income & Asset Disregard, Levels of Disregards
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=316
+    - title: SF Administrative Code SEC. 20.7-21(j) Computation and Payment of Aid Grants; Amounts Payable
+      href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-65352
+brackets:
+  # All of the first $200
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 1
+  # 2/3 of the next $150
+  - threshold:
+      2017-01-01: 200
+    rate:
+      2017-01-01: 0.666667
+  # 1/2 of the next $150
+  - threshold:
+      2017-01-01: 350
+    rate:
+      2017-01-01: 0.5
+  # 1/3 of the next $150
+  - threshold:
+      2017-01-01: 500
+    rate:
+      2017-01-01: 0.333333
+  # 1/5 of the next $150
+  - threshold:
+      2017-01-01: 650
+    rate:
+      2017-01-01: 0.2
+  # Remainder deducted dollar-for-dollar (no disregard)
+  - threshold:
+      2017-01-01: 800
+    rate:
+      2017-01-01: 0

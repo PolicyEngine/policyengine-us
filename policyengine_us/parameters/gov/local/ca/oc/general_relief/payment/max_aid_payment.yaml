@@ -1,0 +1,46 @@
+description: Orange County provides this maximum aid payment based on economic unit size under the General Relief program.
+metadata:
+  unit: currency-USD
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Economic unit size
+  period: month
+  label: Orange County General Relief maximum aid payment
+  reference:
+    - title: County of Orange General Relief Program Monthly Maximum Aid Payment (MAP) Table, effective April 1, 2015
+      href: https://www.ochealthinfo.com/sites/hca/files/2021-07/DUI%20Program%20Standards%20%28FINAL%29%207.2021.pdf#page=32
+    - title: 2017 Orange County Continuum of Care Application, Social Service Agency Benefits (single homeless individual maximum, effective October 1, 2016)
+      href: https://ochealthinfo.com/sites/hca/files/import/data/files/73607.pdf#page=21
+# Only the size-1 October 2016 increase ($350 -> $355) is documented; the
+# 2016-10-01 values for sizes 2-10 assume the same flat $5 increase.
+1:
+  2015-04-01: 350
+  2016-10-01: 355
+2:
+  2015-04-01: 569
+  2016-10-01: 574
+3:
+  2015-04-01: 704
+  2016-10-01: 709
+4:
+  2015-04-01: 840
+  2016-10-01: 845
+5:
+  2015-04-01: 954
+  2016-10-01: 959
+6:
+  2015-04-01: 1_072
+  2016-10-01: 1_077
+7:
+  2015-04-01: 1_178
+  2016-10-01: 1_183
+8:
+  2015-04-01: 1_283
+  2016-10-01: 1_288
+9:
+  2015-04-01: 1_387
+  2016-10-01: 1_392
+10:
+  2015-04-01: 1_490
+  2016-10-01: 1_495

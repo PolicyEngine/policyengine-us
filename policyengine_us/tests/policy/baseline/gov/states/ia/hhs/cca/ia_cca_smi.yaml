@@ -1,0 +1,29 @@
+# ia_cca_smi: SPMUnit, USD, MONTH.
+# 85% of Iowa median family income, reused from the federal hhs_smi() helper and
+# returned as a monthly figure. The SMI table is on a fiscal year starting Oct 1,
+# so a January 2025 period uses the 2024-10-01 (FY2025) value: IA 4-person SMI =
+# 113_549. Household size adjustment: first 0.52, persons 2-6 +0.16 each.
+
+- name: 85 percent MFI monthly cap for a family of three.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # size adjustment (size 3) = 0.52 + 0.16 * 2 = 0.84
+    # annual SMI = 113_549 * 0.84 = 95_381.16
+    # 85% monthly = 95_381.16 * 0.85 / 12 = 6_756.17
+    ia_cca_smi: 6_756.17
