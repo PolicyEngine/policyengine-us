@@ -1,0 +1,103 @@
+# Center age columns (Appendix C-18):
+#   Infant 0-11 months, Toddler 12-35 months, Preschool 36-59 months,
+#   School-Age 60+ months. age_in_months = age (years) * 12.
+
+- name: Case 1, infant under 12 months in center care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 0 months -> Infant.
+    ks_ccap_center_age_group: INFANT
+
+- name: Case 2, toddler at 12 months in center care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 12 months -> Toddler (12-35 month band starts at 12).
+    ks_ccap_center_age_group: TODDLER
+
+- name: Case 3, preschooler at 36 months in center care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 36 months -> Preschool (36-59 month band starts at 36).
+    ks_ccap_center_age_group: PRESCHOOL
+
+- name: Case 4, school-age child at 60 months in center care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 60 months -> School-Age (60+ band starts at 60).
+    ks_ccap_center_age_group: SCHOOL_AGE
+
+# Edge cases: upper edge of each band (just below the next threshold).
+# age_in_months = age (years) * 12, so 11/12 = 0.91667 -> 11 months.
+- name: Case 5, child at 11 months stays Infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0.91667  # 11 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 11 months < 12 -> still Infant.
+    ks_ccap_center_age_group: INFANT
+
+- name: Case 6, child at 35 months stays Toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2.91667  # 35 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 35 months < 36 -> still Toddler.
+    ks_ccap_center_age_group: TODDLER
+
+- name: Case 7, child at 59 months stays Preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4.91667  # 59 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 59 months < 60 -> still Preschool.
+    ks_ccap_center_age_group: PRESCHOOL

@@ -1,0 +1,181 @@
+# Per-person eligibility: age >= 18 AND personal property <= $500 AND qualified
+# immigration status AND NOT receiving SSI/SSDI/UIB/SDI AND tax-unit head or spouse.
+- name: Fully eligible adult.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        ssi: 0
+        social_security_disability: 0
+        unemployment_compensation: 0
+        ca_state_disability_insurance: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: true
+
+- name: Ineligible because under age 18.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because personal property exceeds the $500 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 600
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because of a non-qualified immigration status.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: UNDOCUMENTED
+        personal_property: 400
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because not a tax-unit head or spouse.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: false
+        immigration_status: CITIZEN
+        personal_property: 400
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because receiving SSI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        ssi: 100
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because receiving SSDI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        social_security_disability: 1_200
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because receiving unemployment compensation.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        unemployment_compensation: 1_200
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false
+
+- name: Ineligible because receiving CA state disability insurance.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        ca_state_disability_insurance: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false

@@ -1,0 +1,30 @@
+description: Kansas sets the family share deduction to this share of the income tier's lower bound, based on the family's income as a share of the federal poverty guideline, under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Kansas CCAP family share deduction rate
+  reference:
+    - title: DCF Implementation Memo — Child Care Poverty Level Changes Effective May 1, 2026
+      href: https://content.dcf.ks.gov/ees/KEESM/Implem_Memo/2026_05_01_ccfpl_increase.html
+    - title: KEESM Appendix F-1 — Monthly Family Income and Family Share Deduction Schedule
+      href: https://content.dcf.ks.gov/ees/KEESM/Appendix/F-1MonthlyFamilyIncomeandFamilyShareDeductionSchedule.pdf
+
+brackets:
+  - threshold:
+      # Countable income can be negative (self-employment loss), so the first
+      # bracket starts at -inf to make the 0% rate clamp explicit.
+      2026-05-01: -.inf
+    amount:
+      2026-05-01: 0
+  - threshold:
+      # Above 100% of the federal poverty guideline.
+      2026-05-01: 1.0001
+    amount:
+      2026-05-01: 0.03
+  - threshold:
+      # Above 185% of the federal poverty guideline.
+      2026-05-01: 1.8501
+    amount:
+      2026-05-01: 0.05

@@ -149,6 +149,39 @@ class TestApplySingleYearUprating:
         expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
         np.testing.assert_allclose(current.person["employment_income"].values, expected)
 
+    def test_given_legacy_partnership_s_corp_column_then_values_scaled(
+        self, base_dataset
+    ):
+        # Given
+        current = base_dataset.copy()
+        current.time_period = str(BASE_YEAR + 1)
+        previous = base_dataset.copy()
+        current.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        previous.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        variables = {
+            "partnership_s_corp_income": MockVariable(
+                "partnership_s_corp_income", uprating=None
+            )
+        }
+        partnership_s_corp_uprating = (
+            "calibration.gov.irs.soi.partnership_s_corp_income"
+        )
+        system = MockSystem(
+            variables=variables,
+            parameters=build_mock_parameters(
+                {partnership_s_corp_uprating: EMPLOYMENT_INCOME_PARAM_VALUES}
+            ),
+        )
+
+        # When
+        _apply_single_year_uprating(current, previous, system)
+
+        # Then
+        np.testing.assert_allclose(
+            current.person["partnership_s_corp_income"].values,
+            np.array([110.0] * NUM_PERSONS),
+        )
+
     def test_given_household_variable_with_uprating_then_values_scaled(
         self, base_dataset, mock_system
     ):
