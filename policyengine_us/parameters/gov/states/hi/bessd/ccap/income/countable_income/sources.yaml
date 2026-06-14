@@ -1,0 +1,54 @@
+description: Hawaii counts these monthly gross income sources under the Child Care Subsidy program.
+values:
+  2017-08-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - social_security_retirement
+    - social_security_disability
+    - social_security_survivors
+    # Recurring SSI is countable; HAR 17-798.2-11(5)(B) excludes only
+    # retroactive lump-sum SSI, not recurring monthly SSI payments.
+    - ssi
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    # Military retirement pay maps to HAR 17-798.2-10(b) item (5)
+    # (pensions and annuities), not item (7) (allotments).
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    # The following are counted per HAR 17-798.2-10(b) but have no
+    # matching PolicyEngine variables:
+    # - railroad retirement (item (2)(A); captured via social_security_*)
+    # - temporary disability insurance (item (4)(B))
+    # - income from estates or trust funds (item (15))
+    # - royalties (item (17))
+    # - free rent converted to cost compensation (item (19));
+    #   we don't track in-kind rent-for-activity at the moment
+    # - strike benefits (item (3)(B); captured via unemployment_compensation)
+    # HAR 17-798.2-10(b)(11) counts Hawaii public assistance (TANF), but we do
+    # NOT add `tanf` here to avoid the CCAP<->TANF circular dependency (CCAP
+    # income -> tanf -> TANF dependent-care deduction -> childcare_expenses ->
+    # child_care_subsidies -> CCAP). TANF families fall well below the lowest
+    # copay band, so the omission does not change their subsidy in practice.
+    # Items (10) out-of-state public assistance and (12) adoption assistance
+    # have no clean PolicyEngine income input.
+    # Excluded per HAR 17-798.2-11 (omitted from the list above): capital
+    # gains, SNAP, WIC, USDA donated foods, EITC, Title IV HEA aid, lump sums,
+    # and others. The half-time+ student-minor earnings exclusion (item (8)) is
+    # applied as a formula filter in hi_ccap_countable_income.
+
+metadata:
+  unit: list
+  period: year
+  label: Hawaii CCAP countable income sources
+  reference:
+    - title: HAR 17-798.2-10(b)
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=19
+    - title: HAR 17-798.2-11
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=24
