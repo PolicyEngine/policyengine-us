@@ -1,0 +1,45 @@
+# Inputs describe the family (age, disability, immigration, work history);
+# the model computes whether they receive SSI / CalWORKs / CAPI.
+- name: An able-bodied adult with modest earnings receives no other cash assistance.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    employment_income: 6_000
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: false
+
+- name: A disabled adult with no income receives SSI.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+
+- name: An aged adult with no income receives SSI.
+  period: 2026-01
+  input:
+    age: 70
+    immigration_status: CITIZEN
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+
+- name: A recently arrived aged permanent resident without work history receives CAPI.
+  period: 2026-01
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 0
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true

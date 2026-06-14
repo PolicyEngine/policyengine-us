@@ -1,0 +1,156 @@
+- name: Case 1, adult employment income is counted.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ceap_countable_income: 20_000
+
+- name: Case 2, earned income of a child under 18 is excluded.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 16
+        employment_income: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_ceap_countable_income: 20_000
+
+- name: Case 3, income of a person at exactly age 18 is counted.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ceap_countable_income: 10_000
+
+- name: Case 4, Social Security and Supplemental Security Income are counted.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_000
+        ssi: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 9,000 Social Security + 3,000 SSI = 12,000
+    tx_ceap_countable_income: 12_000
+
+- name: Case 5, Temporary Assistance for Needy Families benefits are counted.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ceap_countable_income: 3_600
+
+- name: Case 6, capital gains and child support received are excluded.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        long_term_capital_gains: 10_000
+        child_support_received: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_ceap_countable_income: 0
+
+- name: Case 7, multiple countable sources combine across members.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        pension_income: 6_000
+      person2:
+        age: 40
+        unemployment_compensation: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 12,000 Social Security + 6,000 pension + 4,000 unemployment
+    # + 1,200 TANF = 23,200
+    tx_ceap_countable_income: 23_200
+
+- name: Case 8, household not in Texas has no countable income.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    tx_ceap_countable_income: 0

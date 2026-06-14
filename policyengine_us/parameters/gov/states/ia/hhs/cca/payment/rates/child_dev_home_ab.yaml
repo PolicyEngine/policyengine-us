@@ -1,0 +1,64 @@
+description: Iowa provides these maximum half-day-unit rates for child development homes A and B (Table 2) under the Child Care Assistance program.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Iowa CCA child development home A/B half-day-unit rates
+  breakdown:
+    - ia_cca_quality_rating
+    - ia_cca_age_group
+  reference:
+    - title: IAC 441-170.4(7) — Table 2, Child Development Home A/B (effective July 1, 2024)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=14
+
+NO_RATING:
+  INFANT_TODDLER:
+    2024-07-01: 16.63
+  INFANT_TODDLER_SN:
+    2024-07-01: 24.95
+  PRESCHOOL:
+    2024-07-01: 15.00
+  PRESCHOOL_SN:
+    2024-07-01: 22.50
+  SCHOOL_AGE:
+    2024-07-01: 15.00
+  SCHOOL_AGE_SN:
+    2024-07-01: 22.50
+RATING_1_OR_2:
+  INFANT_TODDLER:
+    2024-07-01: 16.63
+  INFANT_TODDLER_SN:
+    2024-07-01: 24.95
+  PRESCHOOL:
+    2024-07-01: 15.50
+  PRESCHOOL_SN:
+    2024-07-01: 23.25
+  SCHOOL_AGE:
+    2024-07-01: 15.25
+  SCHOOL_AGE_SN:
+    2024-07-01: 22.88
+RATING_3_OR_4:
+  INFANT_TODDLER:
+    2024-07-01: 16.63
+  INFANT_TODDLER_SN:
+    2024-07-01: 24.95
+  PRESCHOOL:
+    2024-07-01: 16.00
+  PRESCHOOL_SN:
+    2024-07-01: 24.00
+  SCHOOL_AGE:
+    2024-07-01: 15.50
+  SCHOOL_AGE_SN:
+    2024-07-01: 23.25
+RATING_5:
+  INFANT_TODDLER:
+    2024-07-01: 17.50
+  INFANT_TODDLER_SN:
+    2024-07-01: 26.25
+  PRESCHOOL:
+    2024-07-01: 17.00
+  PRESCHOOL_SN:
+    2024-07-01: 25.50
+  SCHOOL_AGE:
+    2024-07-01: 15.75
+  SCHOOL_AGE_SN:
+    2024-07-01: 23.63

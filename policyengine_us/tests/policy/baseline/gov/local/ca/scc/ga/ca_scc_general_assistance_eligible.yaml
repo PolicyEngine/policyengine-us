@@ -1,0 +1,139 @@
+- name: Case 1, single eligible adult with zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_scc_general_assistance_eligible: true
+
+- name: Case 2, household with minor child — referred to CalWORKs.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Single mom with a 5-year-old child must apply for CalWORKs per
+    # Chapter 2 (Eligibility for Other Programs — CalWORKs) and Chapter 9
+    # (Potential Income and Resources).
+    ca_scc_general_assistance_eligible: false
+
+- name: Case 3, no eligible person in unit (all SSI).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 100
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_scc_general_assistance_eligible: false
+
+- name: Case 4, income above payment standard — ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        social_security: 12_000
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_scc_general_assistance_living_arrangement: NOT_SHARED
+  output:
+    # $12,000/12 = $1,000 > $343 single MAP -> income-ineligible.
+    ca_scc_general_assistance_eligible: false
+
+- name: Case 5, married couple, both eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_scc_general_assistance_eligible: true
+
+- name: Case 6, pregnant adult — referred to CalWORKs.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 26
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        personal_property: 0
+        immigration_status: CITIZEN
+        is_pregnant: true
+    households:
+      household:
+        members: [person1]
+        in_scc: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Pregnant women age 19+ must apply for CalWORKs per Chapter 2 — no GA.
+    ca_scc_general_assistance_eligible: false
