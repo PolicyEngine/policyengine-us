@@ -1,6 +1,8 @@
-# Sliding fee scale footnote: co-payments are waived for families
-# experiencing homelessness, children enrolled in Early Head Start-Child
-# Care Partnerships, children with disabilities, and STEP participants.
+# CCDF State Plan FFY 2025-2027 Section 3.3.1 waives co-payments for families
+# experiencing homelessness, children with disabilities, and categorically
+# eligible households (foster care, STEP). Generic Head Start / Early Head
+# Start enrollment is not a waiver category; only Early Head Start-Child Care
+# Partnership (EHS-CCP) families are waived, which we do not track.
 - name: Case 1, family with a disabled child has the co-payment waived.
   period: 2026-01
   input:
@@ -20,7 +22,7 @@
   output:
     la_ccap_copay_waived: true
 
-- name: Case 2, child enrolled in Head Start has the co-payment waived.
+- name: Case 2, generic Head Start enrollment does not waive the co-payment.
   period: 2026-01
   input:
     people:
@@ -37,7 +39,9 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_ccap_copay_waived: true
+    # Only EHS-CCP, not generic Head Start, is a waiver category, and EHS-CCP
+    # is not tracked, so an ordinary Head Start enrollee is not waived.
+    la_ccap_copay_waived: false
 
 - name: Case 3, homeless family has the co-payment waived.
   period: 2026-01

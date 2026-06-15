@@ -184,7 +184,7 @@
   output:
     la_ccap_daily_copay: 0
 
-- name: Case 10, child enrolled in Head Start waives the co-payment.
+- name: Case 10, generic Head Start enrollment does not waive the co-payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -203,4 +203,6 @@
         members: [person1, person2]
         state_code: LA
   output:
-    la_ccap_daily_copay: 0
+    # EHS-CCP, not generic Head Start, is the waiver category and is not
+    # tracked, so the top-band co-payment still applies.
+    la_ccap_daily_copay: 10
