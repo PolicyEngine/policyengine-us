@@ -8,7 +8,7 @@ class ri_ctc(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.RI
-    reference = "https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#bookmark6"
+    reference = "https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=44-30-104.%20Child%20Tax%20Credit"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.ctc

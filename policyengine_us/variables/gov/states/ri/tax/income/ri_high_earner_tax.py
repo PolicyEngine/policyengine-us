@@ -8,7 +8,7 @@ class ri_high_earner_tax(Variable):
     defined_for = StateCode.RI
     unit = USD
     definition_period = YEAR
-    reference = "https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#bookmark6"
+    reference = "https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=High-income%20surtax"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.high_earner_tax

@@ -195,3 +195,29 @@
     tax_unit_itemizes: true
     ri_cdcc: 0
     ri_income_tax: -398
+
+- name: 2027 RI CTC and high-income surtax apply in the same tax unit
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: SINGLE
+        ri_agi: 0
+        ri_taxable_income: 1_250_000
+    households:
+      household:
+        members: [person1, child]
+        state_code: RI
+  output:
+    ri_ctc: 330
+    ri_high_earner_tax: 2_500
+    ri_income_tax: 73_993.54
