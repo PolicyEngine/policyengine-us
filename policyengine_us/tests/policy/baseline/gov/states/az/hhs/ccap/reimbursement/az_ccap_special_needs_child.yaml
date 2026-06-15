@@ -30,7 +30,7 @@
   output:
     az_ccap_special_needs_child: false
 
-- name: Case 3, eligible child who is not disabled is not a special needs child.
+- name: Case 3, eligible child with none of the disability flags is not a special needs child.
   period: 2026-01
   input:
     people:
@@ -38,9 +38,47 @@
         age: 4
         childcare_attending_days_per_month: 20
         is_disabled: false
+        has_individualized_education_program: false
+        has_developmental_delay: false
     households:
       household:
         members: [person1]
         state_code: AZ
   output:
     az_ccap_special_needs_child: false
+
+- name: Case 4, eligible child with an IEP is a special needs child.
+  # CCA-1210B item 14(ii): a child with an Individualized Education Program (IEP)
+  # qualifies even without the generic is_disabled flag.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        is_disabled: false
+        has_individualized_education_program: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+
+- name: Case 5, eligible child with a developmental delay is a special needs child.
+  # CCA-1210B item 14(i)/(iii): a child with a documented developmental delay
+  # (AzEIP / IFSP or DDD / ISP pathway) qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_attending_days_per_month: 20
+        is_disabled: false
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true

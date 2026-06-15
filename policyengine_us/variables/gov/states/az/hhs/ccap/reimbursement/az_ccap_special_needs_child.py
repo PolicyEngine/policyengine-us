@@ -13,6 +13,13 @@ class az_ccap_special_needs_child(Variable):
     )
 
     def formula(person, period, parameters):
-        return person("az_ccap_eligible_child", period) & person(
-            "is_disabled", period.this_year
+        # CCA-1210B item 14: a child with special needs has a documented disability
+        # via an IFSP (AzEIP / IDEA Part C), an IEP (special education / IDEA Part B),
+        # an ISP (Division of Developmental Disabilities), or a 504 Plan. We
+        # approximate those pathways with the available person-level flags.
+        has_documented_disability = (
+            person("is_disabled", period.this_year)
+            | person("has_individualized_education_program", period.this_year)
+            | person("has_developmental_delay", period.this_year)
         )
+        return person("az_ccap_eligible_child", period) & has_documented_disability
