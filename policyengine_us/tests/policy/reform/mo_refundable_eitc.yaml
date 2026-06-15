@@ -1,0 +1,32 @@
+# Tests for the Missouri refundable EITC (WFTC) contrib reform.
+# Regression coverage for https://github.com/PolicyEngine/policyengine-us/issues/8640
+# (the reform previously crashed at calculation time and, once running, paid no
+# refundable credit to zero-liability filers).
+
+- name: Reform pays the full potential WFTC as a refundable credit at zero liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc_reform.mo_refundable_eitc
+  input:
+    state_code: MO
+    eitc: 5_000
+  output:
+    # 2026 WFTC match is 20% of the federal EITC: 5,000 * 0.2 = 1,000.
+    mo_wftc_potential: 1_000
+    # WFTC is moved out of the nonrefundable bucket...
+    mo_non_refundable_wftc: 0
+    # ...and paid in full as refundable, even with no Missouri tax liability.
+    mo_refundable_wftc: 1_000
+    mo_refundable_credits: 1_000
+
+- name: Reform does not double count when liability already absorbs the WFTC
+  period: 2026
+  reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc_reform.mo_refundable_eitc
+  input:
+    state_code: MO
+    eitc: 5_000
+    mo_income_tax_before_credits: 1_000
+  output:
+    # Full potential still paid as refundable; nonrefundable portion stays zero.
+    mo_refundable_wftc: 1_000
+    mo_non_refundable_wftc: 0
+    mo_refundable_credits: 1_000
