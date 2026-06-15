@@ -8,12 +8,17 @@ class mn_ccap_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     reference = (
-        # Minn. Stat. 142E.06 subd. 1 — income eligibility (formerly 119B.09);
-        # DHS-6413N entrance and exit limits.
-        "https://www.revisor.mn.gov/statutes/cite/142E.06",
+        # Minn. Stat. 142E.10, subd. 1 — financial eligibility (formerly
+        # 119B.09); DHS-6413N entrance and exit limits.
+        "https://www.revisor.mn.gov/statutes/cite/142E.10",
     )
 
     def formula(spm_unit, period, parameters):
+        # Families enrolled during the 12-month eligibility period remain
+        # eligible until income exceeds 85% of SMI; we apply that limit to all
+        # enrolled families. The separate 67%-of-SMI limit tested at
+        # redetermination is not modeled, because we don't track
+        # redetermination events at the moment (a point-in-time limitation).
         p = parameters(period).gov.states.mn.dcyf.ccap.income.smi_rate
         countable_income = spm_unit("mn_ccap_countable_income", period.this_year)
         smi = spm_unit("hhs_smi", period.this_year)
@@ -26,8 +31,5 @@ class mn_ccap_income_eligible(Variable):
             p.entrance_mfip,
             p.entrance_other,
         )
-        # Applicants are tested against the entrance limit; families already
-        # enrolled remain eligible until income exceeds 85% of SMI during the
-        # 12-month eligibility period.
         smi_rate = where(enrolled, p.exit_during_period, entrance_rate)
         return countable_income <= smi * smi_rate

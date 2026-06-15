@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, MN, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -560,6 +560,12 @@ programs:
         full_name: Iowa Child Care Assistance
         variable: ia_cca
         parameter_prefix: gov.states.ia.hhs.cca
+      - state: MN
+        status: complete
+        name: Minnesota CCAP
+        full_name: Minnesota Child Care Assistance Program
+        variable: mn_ccap
+        parameter_prefix: gov.states.mn.dcyf.ccap
       - state: NH
         status: complete
         name: New Hampshire CCAP

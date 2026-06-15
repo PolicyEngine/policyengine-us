@@ -48,6 +48,6 @@ class mn_ccap_copay(Variable):
             ],
             default=p.size_13.calc(annual_income),
         )
-        # Convert the biweekly copayment to a monthly amount (26 pay periods
-        # per year over 12 months).
-        return biweekly_copay * 26 / MONTHS_IN_YEAR
+        # Convert the biweekly copayment to a monthly amount (26 biweekly pay
+        # periods per year over 12 months).
+        return biweekly_copay * (WEEKS_IN_YEAR / 2) / MONTHS_IN_YEAR

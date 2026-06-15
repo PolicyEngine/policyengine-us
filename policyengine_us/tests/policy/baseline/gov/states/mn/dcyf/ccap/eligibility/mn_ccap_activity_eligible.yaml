@@ -1,8 +1,8 @@
-# Tests MN CCAP parent activity eligibility (Minn. Rules 3400.0040; manual
-# section 9.x). Parents in an authorized activity (work, job search, education,
-# training) qualify. For initial applicants the activity requirement is treated
-# as met for employable/willing parents (per the program's applicant rules), so
-# a working parent is activity eligible.
+# Tests MN CCAP parent activity eligibility (Minn. Stat. 142E.12, subd. 1(b);
+# Minn. Rules 3400.0040). Each caretaker must be in an authorized activity: an
+# employed caretaker must work at least 20 hours per week, while a full-time
+# student must work at least 10 hours per week. A disabled caretaker is treated
+# as meeting the requirement.
 - name: Case 1, working parent is activity eligible.
   period: 2026-01
   input:
@@ -22,10 +22,10 @@
   output:
     mn_ccap_activity_eligible: true
 
-# Edge cases. The formula treats a caretaker as in an authorized activity when
-# working (weekly_hours_worked_before_lsr > 0), a full-time student, or
-# disabled. weekly_hours_worked_before_lsr defaults to a positive value for
-# adults, so inactive-caretaker cases set it to 0 explicitly.
+# Edge cases. A caretaker meets the activity requirement when working at least
+# 20 hours per week, when a full-time student working at least 10 hours per
+# week, or when disabled. weekly_hours_worked_before_lsr defaults to 40 hours
+# for adults, so inactive-caretaker cases set it to 0 explicitly.
 - name: Case 2, single parent with no activity is not activity eligible.
   period: 2026-01
   input:
@@ -48,13 +48,13 @@
     # No working/student/disabled caretaker -> not activity eligible.
     mn_ccap_activity_eligible: false
 
-- name: Case 3, full-time student parent is activity eligible without working.
+- name: Case 3, full-time student parent working at least 10 hours per week is activity eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 0
+        weekly_hours_worked_before_lsr: 10  # meets the 10 hr/wk student floor
         is_full_time_student: true
       person2:
         age: 4
@@ -134,3 +134,44 @@
         state_code: MN
   output:
     mn_ccap_activity_eligible: true
+
+- name: Case 7, full-time student parent working below the 10 hour floor is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 9  # below the 10 hr/wk student floor
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: false
+
+- name: Case 8, employed parent working below the 20 hour floor is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 19  # below the 20 hr/wk employment floor
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: false

@@ -8,28 +8,37 @@ class mn_ccap_activity_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     reference = (
+        # Minn. Stat. 142E.12, subd. 1 — employment and education requirements.
+        "https://www.revisor.mn.gov/statutes/cite/142E.12",
         # Minn. Rules 3400.0040 — authorized activities (employment, job
         # search, education, training).
         "https://www.revisor.mn.gov/rules/3400.0040/",
     )
 
     def formula(spm_unit, period, parameters):
-        # Each parent (sole parent or both parents in a two-parent household)
-        # must be in an authorized activity: employment, job search, education,
-        # or training. Minnesota imposes no minimum-hours bar at application, so
-        # we treat an applicant caretaker as meeting the activity requirement
-        # when employed, a student, or disabled (a disability can interrupt an
-        # authorized activity). We don't track job-search status at the moment,
-        # so caretakers in job search are not separately captured here.
+        # Each caretaker (sole parent or both parents in a two-parent
+        # household) must be in an authorized activity. An employed caretaker
+        # must work an average of at least 20 hours per week; a full-time
+        # student must work at least 10 hours per week (Minn. Stat. 142E.12
+        # subd. 1(b)). A disability can interrupt an authorized activity, so a
+        # disabled caretaker is treated as meeting the requirement. We don't
+        # track job-search status or the minimum-wage component at the moment,
+        # so caretakers in job search and the minimum-wage test are not
+        # separately captured here.
+        p = parameters(period).gov.states.mn.dcyf.ccap.activity
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         # Use the pre-labor-supply-response hours to avoid a circular
         # dependency in reform and microsimulation runs.
         hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
-        is_working = hours_worked > 0
         is_student = person("is_full_time_student", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
-        in_authorized_activity = is_working | is_student | is_disabled
+        meets_hours_floor = where(
+            is_student,
+            hours_worked >= p.student_min_weekly_hours,
+            hours_worked >= p.min_weekly_hours,
+        )
+        in_authorized_activity = meets_hours_floor | is_disabled
         has_caretaker = spm_unit.sum(is_head_or_spouse) > 0
         no_inactive_caretaker = (
             spm_unit.sum(is_head_or_spouse & ~in_authorized_activity) == 0

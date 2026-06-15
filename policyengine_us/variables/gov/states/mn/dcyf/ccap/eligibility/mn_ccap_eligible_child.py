@@ -8,7 +8,7 @@ class mn_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     reference = (
-        # Minn. Stat. 142E.01 subd. 7 — eligible child (formerly 119B.011).
+        # Minn. Stat. 142E.01, subd. 4 — definition of "Child".
         "https://www.revisor.mn.gov/statutes/cite/142E.01",
     )
 

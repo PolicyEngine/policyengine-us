@@ -434,3 +434,99 @@
     # Subsidy = min(5,000, 2,470.00) - 4.33 = 2,465.67.
     mn_ccap_copay: 4.33
     mn_ccap: 2_465.67
+
+- name: Case 14, legal non-licensed hourly provider feeds the end-to-end benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 20  # LNL is always paid hourly per section 9.9
+        mn_ccap_provider_type: LEGAL_NON_LICENSED
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Becker LNL infant hourly 3.69 * (20 * 52 / 12) = 3.69 * 86.6667 = 319.80/month.
+    # Size-2 copay at 18,000 -> $2 biweekly -> 2 * 26 / 12 = 4.33/month.
+    mn_ccap_copay: 4.33
+    # Subsidy = min(1,000, 319.80) - 4.33 = 315.47.
+    mn_ccap: 315.47
+
+- name: Case 15, license-exempt program paid at the licensed center rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # > 35 -> weekly rate
+        mn_ccap_provider_type: LICENSE_EXEMPT
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # License-exempt programs are paid at the licensed center column (section 9.9).
+    # Becker center infant weekly 274 -> 274 * 52 / 12 = 1,187.33/month.
+    # Size-2 copay at 18,000 -> $2 biweekly -> 4.33/month.
+    mn_ccap_copay: 4.33
+    # Subsidy = min(1,500, 1,187.33) - 4.33 = 1,183.00.
+    mn_ccap: 1_183
+
+- name: Case 16, full-day rate unit feeds the end-to-end benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 30  # <= 35
+        childcare_hours_per_day: 6  # > 5 -> full-day rate
+        childcare_attending_days_per_month: 20
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Becker family infant full-day 45 * 20 attending days = 900.00/month max rate.
+    # Size-2 copay at 18,000 -> $2 biweekly -> 4.33/month.
+    mn_ccap_copay: 4.33
+    # Subsidy = min(1,000, 900.00) - 4.33 = 895.67.
+    mn_ccap: 895.67

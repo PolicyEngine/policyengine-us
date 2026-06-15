@@ -205,3 +205,73 @@
     # size <= 2 -> size-2 table. 30,000 lands in the 29,738 band -> $31 biweekly.
     # Monthly = 31 * 26 / 12 = 67.17.
     mn_ccap_copay: 67.17
+
+- name: Case 9, seven-person family in a mid income band uses the size-7 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 63_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: MN
+  output:
+    # Size-7 table (DHS-6413N p.8): 63,000 lands in the 61,604-64,169 band ->
+    # $72 biweekly. Monthly = 72 * 26 / 12 = 156.00.
+    mn_ccap_copay: 156
+
+- name: Case 10, ten-person family in a mid income band uses the size-10 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 75_000
+      person2:
+        age: 43
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: MN
+  output:
+    # Size-10 table (DHS-6413N p.10): 75,000 lands in the 73,944-76,659 band ->
+    # $86 biweekly. Monthly = 86 * 26 / 12 = 186.33.
+    mn_ccap_copay: 186.33
