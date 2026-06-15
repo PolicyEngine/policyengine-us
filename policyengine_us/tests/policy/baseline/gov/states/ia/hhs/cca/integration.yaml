@@ -1,0 +1,571 @@
+# Iowa CCA integration tests — full pipeline from eligibility through benefit.
+# Scenarios mirror the program's worked examples (family of 3, young children,
+# center-based) across the three income tiers (CCA / CCA Plus / CCA Exit), plus a
+# special-needs scenario and an in-home (3+ children, minimum-wage rate) scenario.
+#
+# Benefit pipeline (ia_cca):
+#   per child: child_ceiling = ia_cca_max_rate (per half-day unit) * ia_cca_monthly_units
+#   ia_cca_monthly_units(hpw) = hpw * (52 / 12) / 5; monthly_units(40) = 34.6667
+#   ia_cca = max( sum_over_in-care_children min(expense, ceiling) - copay, 0 )
+# Income tests are monthly: ia_cca_countable_income = employment_income / 12.
+# 2025 FPG: family of 2 = 21_150; family of 3 = 26_650; family of 4 = 32_150.
+# pre_subsidy_childcare_expenses is YEAR-defined, so the annual figures below are
+# divided to a monthly cost inside the MONTH benefit formula (12_000/yr -> 1_000/mo).
+#
+# The dollar figures here are recomputed from the modeled formulas (which infer
+# monthly units from scheduled hours) rather than transcribed from the overview
+# PDF's authorized-unit accounting, so they differ from the PDF's illustrative
+# $1,808 / $1,620 / $1,540 / $447 figures while exercising the same tiers.
+
+# === Case 1: CCA tier (applicant), copay waived at fee Level A ===
+- name: Case 1, single parent two young children licensed center, CCA Level A no copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, infant, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: IA
+  output:
+    # Eligibility: infant (1) and preschooler (4) are eligible children.
+    ia_cca_eligible_child: [false, true, true]
+    # Family of 3; income 2_000/mo <= 160% FPL (3_553.33) -> income eligible.
+    ia_cca_income_eligible: true
+    ia_cca_eligible: true
+    # Age groups: parent SCHOOL_AGE, infant INFANT_TODDLER, preschooler PRESCHOOL.
+    ia_cca_age_group: [SCHOOL_AGE, INFANT_TODDLER, PRESCHOOL]
+    # Rates (NO_RATING licensed center): infant 25.66, preschool 19.50.
+    ia_cca_max_rate: [0, 25.66, 19.50]
+    # Income 2_000/mo <= Level A (2_044, family 3) -> Level A unit fee 0 -> copay 0.
+    ia_cca_copay: 0
+    # Each expense 12_000/yr -> 1_000/mo. Ceilings:
+    #   infant 25.66 * 34.6667 = 889.55 (< 1_000/mo expense -> capped to 889.55),
+    #   preschool 19.50 * 34.6667 = 676.00 (< 1_000/mo expense -> capped to 676.00).
+    # Benefit = (889.55 + 676.00) - 0 = 1_565.55
+    ia_cca: 1_565.55
+
+# === Case 2: CCA tier (applicant), income between Level A and B floors -> Level A ===
+- name: Case 2, single parent two children licensed center, CCA Level A no copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 25_200
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, infant, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, infant, preschooler]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, infant, preschooler]
+        state_code: IA
+  output:
+    ia_cca_eligible: true
+    # Income 2_100/mo: >= Level A floor (2_044), < Level B floor (2_152) -> Level A.
+    # 2 children in care -> column 2 -> Level A unit fee 0.00 -> copay 0.
+    ia_cca_copay: 0
+    # Same ceilings as Case 1: total capped 889.55 + 676.00 = 1_565.55.
+    # Benefit = 1_565.55 - 0 = 1_565.55
+    ia_cca: 1_565.55
+
+# === Case 3: CCA Plus tier (enrolled, 160-225% FPL), sliding fee Level BB ===
+- name: Case 3, enrolled family one preschooler licensed center, CCA Plus.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 57_600
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      coparent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, preschooler]
+        ia_cca_enrolled: true
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, coparent, preschooler]
+        state_code: IA
+  output:
+    ia_cca_eligible: true
+    # Family of 3 enrolled; income 4_800/mo <= 250% FPL (5_552.08) -> eligible.
+    ia_cca_income_eligible: true
+    # 4_800/mo <= 225% FPL (4_996.88) -> NOT exit tier -> sliding unit fee.
+    ia_cca_in_exit_tier: false
+    # Sliding level: 4_800/mo >= AA floor (4_254), < BB floor (6_000) -> Level AA.
+    # 1 child in care -> column 1 -> unit fee 6.45.
+    # focal_units = monthly_units(30) = 26.0; copay = 6.45 * 26.0 = 167.70.
+    ia_cca_copay: 167.70
+    # Preschool ceiling = 19.50 * 26.0 = 507.00; expense 12_000/yr -> 1_000/mo,
+    # capped to the 507.00 ceiling.
+    # Benefit = max(507.00 - 167.70, 0) = 339.30
+    ia_cca: 339.30
+
+# === Case 4: CCA Exit tier (enrolled, >225% FPL), percentage-of-cost copay ===
+- name: Case 4, enrolled family one preschooler licensed center, CCA Exit 45 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 62_400
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      coparent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, coparent, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, coparent, preschooler]
+        ia_cca_enrolled: true
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, coparent, preschooler]
+        state_code: IA
+  output:
+    ia_cca_eligible: true
+    # Family of 3 enrolled; income 5_200/mo <= 250% FPL (5_552.08) -> eligible.
+    ia_cca_income_eligible: true
+    # 5_200/mo > 225% FPL (4_996.88) and enrolled -> CCA Exit tier.
+    ia_cca_in_exit_tier: true
+    # Exit basic level: >= B floor (5_057), < C floor (5_272) -> Level B -> 45%.
+    # Expense 12_000/yr -> 1_000/mo. Exit copay = 45% of the child's monthly cost
+    # of care = 0.45 * 1_000 = 450.
+    ia_cca_copay: 450
+    # Preschool ceiling = 19.50 * 34.6667 = 676.00; monthly expense 1_000 capped to
+    # 676.00. Benefit = max(676.00 - 450.00, 0) = 226.00
+    ia_cca: 226
+
+# === Case 5: Special-needs branch (applicant, 200% FPL, SN rate) ===
+- name: Case 5, single parent disabled preschooler, special-needs rate and limit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 36_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 30
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Disabled preschooler -> special-needs age group and limits.
+    ia_cca_age_group: [SCHOOL_AGE, PRESCHOOL_SN]
+    # Family of 2 special-needs; income 3_000/mo <= 200% FPL (3_525) -> eligible
+    # (would fail the 160% basic limit of 2_820/mo).
+    ia_cca_income_eligible: true
+    # Special-needs child -> 28-hour activity threshold; parent works 30 -> eligible.
+    ia_cca_activity_eligible: true
+    ia_cca_eligible: true
+    # Licensed center NO_RATING PRESCHOOL_SN rate = 30.43.
+    ia_cca_max_rate: [0, 30.43]
+    # Sliding level (family 2): income 3_000/mo -> Level V (>= V floor 2_938,
+    # < W floor 3_021); 1 child -> column 1 -> 5.20.
+    # focal_units = monthly_units(40) = 34.6667; copay = 5.20 * 34.6667 = 180.27.
+    ia_cca_copay: 180.27
+    # Ceiling = 30.43 * 34.6667 = 1_054.91; expense 12_000/yr -> 1_000/mo < ceiling
+    # -> capped to 1_000. Benefit = max(1_000 - 180.27, 0) = 819.73
+    ia_cca: 819.73
+
+# === Case 6: In-Home provider, three children in care, minimum-wage rate ===
+- name: Case 6, single parent three children in-home minimum wage rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: IN_HOME
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: IN_HOME
+      child3:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: IN_HOME
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: IA
+  output:
+    ia_cca_eligible: true
+    # Three eligible children in care -> in-home rate allowed (>= 3).
+    ia_cca_children_in_care: 3
+    # In-home flat rate 36.25 per half-day unit for each child (parent gets 0).
+    ia_cca_max_rate: [0, 36.25, 36.25, 36.25]
+    # Family of 4; income 2_000/mo <= Level A (2_470, family 4) -> copay 0.
+    ia_cca_copay: 0
+    # Per-child ceiling = 36.25 * monthly_units(30) = 36.25 * 26.0 = 942.50;
+    # each expense 12_000/yr -> 1_000/mo > ceiling -> capped to 942.50 per child;
+    # 3 children -> 2_827.50. Benefit = 2_827.50 - 0 = 2_827.50
+    ia_cca: 2_827.50
+
+# === Case 7: In-home with only two children — rate gated off, no benefit ===
+- name: Case 7, in-home with only two children pays no in-home benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      child1:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 800
+        ia_cca_provider_type: IN_HOME
+      child2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 800
+        ia_cca_provider_type: IN_HOME
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IA
+  output:
+    # Family is otherwise eligible, but only 2 children -> in-home rate gated to 0.
+    ia_cca_eligible: true
+    ia_cca_children_in_care: 2
+    ia_cca_max_rate: [0, 0, 0]
+    # Ceiling 0 for both children -> capped expense 0 -> benefit 0.
+    ia_cca: 0
+
+# === Case 8: Ineligible — child over the age limit ===
+- name: Case 8, household with only an over-age child is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 20_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      teen:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        pre_subsidy_childcare_expenses: 600
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    spm_units:
+      spm_unit:
+        members: [parent, teen]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, teen]
+        state_code: IA
+  output:
+    # Child age 13 (not < 13, not disabled) -> no eligible child.
+    ia_cca_eligible_child: [false, false]
+    ia_cca_eligible: false
+    ia_cca: 0
+
+# === Case 9: Non-Iowa household — defined_for zeroes the benefit ===
+- name: Case 9, identical household outside Iowa receives no benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 28
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      preschooler:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 900
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, preschooler]
+    spm_units:
+      spm_unit:
+        members: [parent, preschooler]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, preschooler]
+        state_code: NE
+  output:
+    # Nebraska household -> ia_cca defined_for StateCode.IA zeroes the benefit
+    # and ia_cca_eligible is false.
+    ia_cca_eligible: false
+    ia_cca: 0
+
+# === Edge cases ===
+
+# === Case 10: Eligible child with zero care hours — eligible but no benefit ===
+- name: Case 10, eligible child with zero care hours yields a zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # The family is eligible (age/dependency/immigration), but the child is not in
+    # care (0 hours) -> the per-child contribution is gated to $0 -> benefit 0.
+    ia_cca_eligible: true
+    ia_cca_children_in_care: 0
+    ia_cca: 0
+
+# === Case 11: Income above every tier — ineligible, no benefit ===
+- name: Case 11, very high income family receives no benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 500_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 500_000/yr far exceeds the 160% FPL initial limit -> income ineligible ->
+    # not eligible -> benefit 0 (degenerate high-income boundary)
+    ia_cca_income_eligible: false
+    ia_cca_eligible: false
+    ia_cca: 0
+
+# === Case 12: Adult-only unit with no children — degenerate, no benefit ===
+- name: Case 12, adult-only unit with no children receives no benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent]
+    spm_units:
+      spm_unit:
+        members: [parent]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # No children -> no eligible child -> ineligible -> benefit 0. The full pipeline
+    # must run on a unit with zero eligible children without error.
+    ia_cca_children_in_care: 0
+    ia_cca_eligible: false
+    ia_cca: 0

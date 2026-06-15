@@ -1,0 +1,148 @@
+# ia_cca_age_group: Person, Enum, MONTH (derived from age via
+# age_group/age_group.yaml bracket parameter; school-age cutoff = age 5).
+# IAC 441-170.4(7) definitions: infant and toddler = two weeks to three years;
+# preschool = three years to school age (kindergarten entry, modeled as age 5);
+# school age = a child attending school.
+#   age < 3 -> INFANT_TODDLER (bracket index 0)
+#   3 <= age < 5 -> PRESCHOOL (bracket index 1)
+#   age >= 5 -> SCHOOL_AGE (bracket index 2)
+# Special-needs variants (suffix _SN) are derived from the is_disabled flag,
+# matching the rate-table breakdown keys (INFANT_TODDLER_SN, etc.).
+
+- name: Newborn is infant and toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_cca_age_group: INFANT_TODDLER
+
+- name: Child at 1 year is infant and toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 1 < 3 -> INFANT_TODDLER
+    ia_cca_age_group: INFANT_TODDLER
+
+- name: Child just under 3 is infant and toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 2 < 3 -> INFANT_TODDLER (upper boundary of infant/toddler band)
+    ia_cca_age_group: INFANT_TODDLER
+
+- name: Child at exactly 3 years is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 3 <= age < 5 -> PRESCHOOL (lower boundary of preschool band)
+    ia_cca_age_group: PRESCHOOL
+
+- name: Child at 4 years is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # 4 < 5 -> PRESCHOOL (upper boundary of preschool band)
+    ia_cca_age_group: PRESCHOOL
+
+- name: Child at exactly 5 years is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    # age >= 5 -> SCHOOL_AGE (kindergarten entry, lower boundary)
+    ia_cca_age_group: SCHOOL_AGE
+
+- name: Child at 10 years is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 10
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_cca_age_group: SCHOOL_AGE
+
+- name: Disabled infant or toddler has special-needs variant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_cca_age_group: INFANT_TODDLER_SN
+
+- name: Disabled preschooler has special-needs variant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_cca_age_group: PRESCHOOL_SN
+
+- name: Disabled school-age child has special-needs variant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_cca_age_group: SCHOOL_AGE_SN

@@ -97,3 +97,50 @@
   output:
     # High-income adult child fails qualifying relative income test
     filing_status: SINGLE
+
+- name: Separated filer with only a qualifying relative is not HOH.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+        is_separated: true
+      adult_child:
+        age: 19
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+  output:
+    filing_status: SEPARATE
+
+- name: Separated non-qualifying dependent does not make the filer separate.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_related_to_head_or_spouse: false
+        is_separated: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    filing_status: SINGLE

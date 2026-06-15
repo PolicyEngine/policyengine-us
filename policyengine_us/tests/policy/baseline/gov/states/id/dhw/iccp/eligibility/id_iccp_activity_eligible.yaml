@@ -1,0 +1,191 @@
+- name: Case 1, activity eligibility uses the CCDF activity-test fallback.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Case 2, activity eligibility fails when the CCDF fallback is false.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false
+
+- name: Case 3, activity eligibility via employment income only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Case 4, activity eligibility via self-employment income only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 12_000
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Case 5, activity eligibility via full-time student status only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Case 6, activity eligibility fails with no activity and no fallback.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false
+
+- name: Case 7, activity eligibility via CCDF fallback with no activity signals.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_activity_eligible: true
+
+- name: Case 8, activity eligibility fails when one of two parents has no activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        self_employment_income: 0
+        is_full_time_student: false
+      person2:
+        age: 33
+        employment_income: 0
+        self_employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_activity_eligible: false
+
+- name: Case 9, activity eligibility via farm operations income only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        self_employment_income: 0
+        farm_operations_income: 12_000
+        is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+  output:
+    # farm_operations_income is a self-employment source, so it qualifies as a
+    # work activity even with no other activity signal or fallback
+    id_iccp_activity_eligible: true

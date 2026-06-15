@@ -15,3 +15,27 @@
     state_code: CA
   output:
     ca_state_supplement: 800
+
+- name: Case 3, disabled SSI recipient receives state supplement.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        meets_ssi_disability_criteria: true
+        ssi_engaged_in_sga: false
+        ssi: 3_458.28
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ca_state_supplement_eligible_person: true
+    ca_state_supplement: 4_101.72

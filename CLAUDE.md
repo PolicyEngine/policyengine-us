@@ -67,6 +67,19 @@ echo "Description of change." > changelog.d/<branch-name>.<type>.md
 ```
 Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
 
+The fragment must be a top-level file in `changelog.d/`. Do not create type subdirectories.
+
+Correct:
+```text
+changelog.d/medicaid-ce-exclusions.added.md
+```
+
+Incorrect:
+```text
+changelog.d/added/medicaid-ce-exclusions.md
+changelog.d/medicaid-ce-exclusions.md
+```
+
 **DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
 
 ## Project Requirements
@@ -115,6 +128,17 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
   - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`
   - Code that lives near dead code is not necessarily dead — verify each piece independently
   - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
+
+- **PARTNER API CONTRACT TESTS ARE NOT ORDINARY SNAPSHOTS**
+  - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
+  - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
+  - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
+  - Before editing files in this folder, flag the partner-facing risk to the user and use the `AskUserQuestion` tool to ask these three questions in a single call:
+    1. Are you sure you want to edit this test file?
+    2. Have you notified a team member about this change?
+    3. Have you notified the API partner about this change?
+  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent runs the three-question gate with the user before any edit is made.
+  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations

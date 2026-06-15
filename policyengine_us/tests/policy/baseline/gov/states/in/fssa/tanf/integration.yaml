@@ -366,3 +366,68 @@
     in_tanf_eligible: true
     in_tanf: 145
     # $320 - $175 = $145
+
+- name: Case 11, family of 3 no income receives 2025-07-01 maximum benefit in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    spm_unit_size: 3
+    in_tanf_payment_standard: 320
+    # Standard of need (eligibility table) is unchanged
+    in_tanf_maximum_benefit: 513
+    # Family of 3 maximum benefit (IC 12-14-2-5, effective 2025-07-01)
+    in_tanf_countable_income_for_payment: 0
+    in_tanf_countable_income_eligible: true
+    in_tanf_payment_eligible: true
+    in_tanf_eligible: true
+    in_tanf: 513
+    # Maximum benefit ($513) - countable income ($0) = $513
+
+- name: Case 12, applicant income above old standard of need now receives a benefit in 2026.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_unearned_income: 400
+      person2:
+        age: 10
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    spm_unit_size: 3
+    in_tanf_maximum_benefit: 513
+    in_tanf_countable_income_for_payment: 400
+    in_tanf_countable_income_for_eligibility: 400
+    in_tanf_countable_income_eligible: true
+    # Net ($400) < maximum grant ($513); gross ($400) < 35% FPG -> eligible
+    in_tanf_payment_eligible: true
+    # $400 < maximum benefit ($513); above the old standard of need ($320)
+    in_tanf_eligible: true
+    in_tanf: 113
+    # Maximum benefit ($513) - countable income ($400) = $113

@@ -1,0 +1,249 @@
+# KY CCAP daily provider reimbursement rate (DCC-300), per child.
+# Keyed by region x provider type x age category x day length.
+# defined_for = ky_ccap_eligible_child, so the parent row is 0.
+
+- name: Case 1, region 1 Licensed Type I infant/toddler full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        # 12 months -> INFANT_TODDLER
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: ALLEN_COUNTY_KY
+  output:
+    # Region 1, Licensed Type I, Infant/Toddler, Full Day = $29
+    ky_ccap_daily_rate: [0, 29]
+
+- name: Case 2, region 1 Licensed Type I infant/toddler part day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: ALLEN_COUNTY_KY
+  output:
+    # Region 1, Licensed Type I, Infant/Toddler, Part Day = $27
+    ky_ccap_daily_rate: [0, 27]
+
+- name: Case 3, region 4 Licensed Type I preschool full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        # 48 months -> PRESCHOOL
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Region 4, Licensed Type I, Preschool, Full Day = $41
+    ky_ccap_daily_rate: [0, 41]
+
+- name: Case 4, region 4 Licensed Type I school age part day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        # 96 months -> SCHOOL_AGE
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_I
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Region 4, Licensed Type I, School Age, Part Day = $32
+    ky_ccap_daily_rate: [0, 32]
+
+- name: Case 5, region 4 Licensed Type II infant/toddler full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: LICENSED_TYPE_II
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Region 4, Licensed Type II, Infant/Toddler, Full Day = $47
+    ky_ccap_daily_rate: [0, 47]
+
+- name: Case 6, region 4 Certified school age full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: CERTIFIED
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Region 4, Certified, School Age, Full Day = $28
+    ky_ccap_daily_rate: [0, 28]
+
+- name: Case 7, region 1 Registered preschool full day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: REGISTERED
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: ALLEN_COUNTY_KY
+  output:
+    # Region 1, Registered, Preschool, Full Day = $13
+    ky_ccap_daily_rate: [0, 13]
+
+- name: Case 8, region 4 Registered infant/toddler part day.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: REGISTERED
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    # Region 4, Registered, Infant/Toddler, Part Day = $10
+    ky_ccap_daily_rate: [0, 10]
+
+- name: Case 9, singleton region 7 Certified school age part day differs from region 6.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ky_ccap_provider_type: CERTIFIED
+        childcare_hours_per_day: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: BOYD_COUNTY_KY
+  output:
+    # Region 7 (Boyd), Certified, School Age, Part Day = $13 (region 6 = $12)
+    ky_ccap_daily_rate: [0, 13]
