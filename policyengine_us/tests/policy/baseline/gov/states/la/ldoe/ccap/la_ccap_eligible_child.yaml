@@ -43,7 +43,7 @@
     people:
       person1:
         age: 13
-        is_disabled: true
+        is_incapable_of_self_care: true
     households:
       household:
         members: [person1]
@@ -57,7 +57,7 @@
     people:
       person1:
         age: 17
-        is_disabled: true
+        is_incapable_of_self_care: true
     households:
       household:
         members: [person1]
@@ -71,7 +71,7 @@
     people:
       person1:
         age: 18
-        is_disabled: true
+        is_incapable_of_self_care: true
     households:
       household:
         members: [person1]
@@ -105,3 +105,17 @@
         state_code: TX
   output:
     la_ccap_eligible_child: false
+
+- name: Case 8, thirteen-year-old receiving SSI is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        ssi: 600  # Receipt of SSI satisfies the §503.A.2 13-17 route.
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true

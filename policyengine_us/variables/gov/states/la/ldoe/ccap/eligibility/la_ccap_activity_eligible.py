@@ -16,11 +16,10 @@ class la_ccap_activity_eligible(Variable):
         hours = person("weekly_hours_worked_before_lsr", period.this_year)
         student = person("is_full_time_student", period.this_year)
         disabled = person("is_disabled", period.this_year)
-        age = person("age", period.this_year)
         # LAC 28:CLXV.509.A.5.d reduces the hours requirement for households
-        # that qualify for special needs child care.
-        has_special_needs_child = spm_unit.any(
-            disabled & (age < p.age.disabled_child_limit)
+        # that qualify for special needs child care (§103).
+        has_special_needs_child = (
+            add(spm_unit, period, ["la_ccap_special_needs_child"]) > 0
         )
         required_hours = where(
             has_special_needs_child,

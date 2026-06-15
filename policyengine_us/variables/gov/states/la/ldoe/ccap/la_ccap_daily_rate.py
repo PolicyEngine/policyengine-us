@@ -16,7 +16,7 @@ class la_ccap_daily_rate(Variable):
         age_group = person("la_ccap_age_group", period.this_year)
         # LAC 28:CLXV.515.A: the Special Needs Care Incentive rate applies to
         # children qualifying for care for children with disabilities (§103).
-        special_needs = person("is_disabled", period.this_year)
+        special_needs = person("la_ccap_special_needs_child", period)
         regular_rate = p.regular[provider_type][age_group]
         special_needs_rate = p.special_needs[provider_type][age_group]
         return where(special_needs, special_needs_rate, regular_rate)

@@ -19,6 +19,11 @@ class la_ccap(Variable):
         # The sliding fee scale co-payment is per child per day; waivers
         # (homelessness, disability, Head Start, STEP) zero it through
         # la_ccap_copay_waived.
+        # NOTE: we bill the copay as the daily band x attendance days, per the
+        # FFY 2022-2024 CCDF Plan's "copay as a daily rate" framing. The current
+        # plan (FFY 2025-2027 Section 3.2.1.b) treats the published monthly band
+        # as not varying by hours in care, so this slightly under-charges
+        # part-time families; full-time care (the dominant case) is exact.
         unit_copay = spm_unit("la_ccap_daily_copay", period)
         child_copay = spm_unit.project(unit_copay)
         monthly_expense = person("pre_subsidy_childcare_expenses", period)

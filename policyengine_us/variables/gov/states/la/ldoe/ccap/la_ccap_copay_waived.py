@@ -22,9 +22,9 @@ class la_ccap_copay_waived(Variable):
         # co-payment because the state pays 100% of the maximum rate
         # (LAC 28:CLXV.515.B).
         eligible_child = person("la_ccap_eligible_child", period)
-        disabled = person("is_disabled", period.this_year)
+        special_needs = person("la_ccap_special_needs_child", period)
         head_start = person("is_enrolled_in_head_start", period.this_year)
-        waived_child = spm_unit.any(eligible_child & (disabled | head_start))
+        waived_child = spm_unit.any(eligible_child & (special_needs | head_start))
         homeless = spm_unit.household("is_homeless", period.this_year)
         categorical = spm_unit("la_ccap_categorically_eligible", period)
         return waived_child | homeless | categorical
