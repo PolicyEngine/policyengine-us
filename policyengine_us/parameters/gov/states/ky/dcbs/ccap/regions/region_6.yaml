@@ -1,0 +1,16 @@
+description: Kentucky applies the same Child Care Assistance Program maximum daily payment rates to each of these counties, whose identical DCC-300 rate rows PolicyEngine groups as rate region 6.
+values:
+  2022-10-01:
+    - BELL_COUNTY_KY
+    - GREENUP_COUNTY_KY
+    - MASON_COUNTY_KY
+    - PERRY_COUNTY_KY
+    - PIKE_COUNTY_KY
+
+metadata:
+  unit: list
+  period: year
+  label: Kentucky CCAP rate region 6 counties
+  reference:
+    - title: DCC-300 Kentucky Child Care Maximum Payment Rate Chart (R.10/22), pp.1-4
+      href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc300kymaxpaymentchart.pdf#page=1

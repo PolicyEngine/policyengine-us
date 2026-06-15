@@ -15,12 +15,12 @@ class ca_state_supplement_dependent_amount(Variable):
         person = spm_unit.members
         # Blind amount
         blind = person("is_blind", period)
-        is_disabled = person("is_disabled", period)
+        is_ssi_disabled = person("is_ssi_disabled", period.this_year)
         age = person("monthly_age", period)
         # Dependent amount
         dependent = person("is_tax_unit_dependent", period)
         dependent_age_eligible = age < p.dependent.age_limit
         dependent_count = spm_unit.sum(
-            dependent & dependent_age_eligible & (is_disabled | blind)
+            dependent & dependent_age_eligible & (is_ssi_disabled | blind)
         )
         return dependent_count * p.dependent.amount

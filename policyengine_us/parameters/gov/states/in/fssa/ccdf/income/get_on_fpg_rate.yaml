@@ -1,0 +1,21 @@
+description: Indiana limits initial eligibility to families with income at or below this percentage of the federal poverty guideline under the Child Care and Development Fund program.
+
+# The OECOSL bulletin documents a 127% limit in effect through July 31, 2023;
+# the start date of the 127% era is unverified, so its entry is placed at
+# PolicyEngine's 2015 backdating floor.
+values:
+  2015-01-01: 1.27
+  2023-08-01: 1.5
+  2026-04-05: 1.35
+
+metadata:
+  unit: /1
+  period: year
+  label: Indiana CCDF initial income limit rate
+  reference:
+    - title: Indiana CCDF Policy Manual, Section 1.1 Eligibility Requirements
+      href: https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=5
+    - title: Income to Get on CCDF
+      href: https://www.in.gov/fssa/carefinder/files/Income-Get-on-CCDF.pdf
+    - title: OECOSL bulletin, New CCDF Reimbursement Rates and Expanded Income Eligibility (127% to 150% FPL eff. Aug 1, 2023)
+      href: https://content.govdelivery.com/accounts/INOECOSL/bulletins/366774c

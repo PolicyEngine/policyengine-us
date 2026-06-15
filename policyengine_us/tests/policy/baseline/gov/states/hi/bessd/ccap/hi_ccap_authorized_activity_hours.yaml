@@ -1,0 +1,80 @@
+# HI CCAP authorized monthly activity hours (HAR 17-798.2-14(b)(1)).
+# Employed caretakers cap the tier by their work hours (weekly x 52/12).
+# Non-work activities (school, etc.) have no tracked hour count and are
+# non-binding. For two-parent units the binding constraint is the caretaker
+# with the fewest hours (min of parents).
+
+- name: Case 1, single employed caretaker caps hours by work hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 40 x 52 / 12 = 173.333... monthly
+    hi_ccap_authorized_activity_hours: 173.33
+
+- name: Case 2, full-time student caretaker has non-binding (unbounded) hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # no work hours
+        is_full_time_student: true  # non-work activity, no tracked hour count
+      person2:
+        age: 4
+        childcare_hours_per_week: 30  # ~130 monthly care hours -> would be FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # The student caretaker's activity hours are np.inf (non-binding), so the
+    # child's effective care hours are NOT capped to 0: a high-care child
+    # (130 monthly) stays FULL_TIME. This proves activity hours are unbounded,
+    # not zero, for the non-work activity pathway.
+    hi_ccap_monthly_care_hours: [0, 130]
+    hi_ccap_hours_tier: [PART_TIME, FULL_TIME]
+
+- name: Case 3, two employed caretakers bind to the minimum of their hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40  # 173.33 monthly
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 10  # 43.33 monthly
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Binds to the MIN of the two caretakers: 10 x 52 / 12 = 43.333... monthly
+    # (would be 173.33 if the formula used max instead of min).
+    hi_ccap_authorized_activity_hours: 43.33

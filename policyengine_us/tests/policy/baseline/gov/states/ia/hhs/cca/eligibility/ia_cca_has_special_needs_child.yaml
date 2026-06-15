@@ -1,0 +1,113 @@
+# ia_cca_has_special_needs_child: SPMUnit, bool, MONTH.
+# IAC 441-170.2(2)"a": a family includes a child with special needs when an
+# age-eligible child (under the special-needs age limit of 19) is disabled.
+# Formula: spm_unit.any(ia_cca_eligible_child & is_disabled). The is_eligible_child
+# filter binds so that disabled adults and over-age disabled children do not flip
+# the flag true.
+
+- name: Age-eligible disabled child makes the family special-needs.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+      child:
+        age: 10
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Child age 10 < 19, dependent citizen -> eligible child; disabled -> true
+    ia_cca_has_special_needs_child: true
+
+- name: Over-age disabled child does not make the family special-needs.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 45
+        immigration_status: CITIZEN
+      child:
+        age: 20
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Age 20 > special-needs limit 19 -> not an eligible child, so the disabled
+    # flag is filtered out -> false (proves the is_eligible_child filter binds)
+    ia_cca_has_special_needs_child: false
+
+- name: Disabled adult with a non-disabled eligible child is not special-needs.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_disabled: true
+        immigration_status: CITIZEN
+      child:
+        age: 8
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # The disabled member is an adult (not an eligible child) and the eligible
+    # child is not disabled -> false (proves the flag keys off the child)
+    ia_cca_has_special_needs_child: false
+
+- name: Family with no disabled member is not special-needs.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+      child:
+        age: 5
+        is_disabled: false
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # No disabled member -> false
+    ia_cca_has_special_needs_child: false

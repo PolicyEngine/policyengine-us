@@ -1,0 +1,18 @@
+description: San Francisco County values provided food at this monthly amount by family size under the County Adult Assistance Programs.
+metadata:
+  unit: currency-USD
+  period: month
+  label: San Francisco County CAAP in-kind food value by family size
+  breakdown:
+    - range(1, 3)
+  breakdown_labels:
+    - Family size
+  reference:
+    - title: CAAP Eligibility Manual, 99-1 Income-In-Kind Values (Revised 11/1/25)
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=468
+    - title: California Code of Regulations Title 22 Section 50511 Income-in-Kind Chart
+      href: https://www.law.cornell.edu/regulations/california/22-CCR-50511
+1:
+  2025-11-01: 231
+2:
+  2025-11-01: 493

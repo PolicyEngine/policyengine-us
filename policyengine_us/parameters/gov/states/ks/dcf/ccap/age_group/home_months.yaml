@@ -1,0 +1,33 @@
+description: Kansas assigns children to licensed child care home age groups by age in months under the Child Care Assistance Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Kansas CCAP licensed home age group by months
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule (licensed home age columns)
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+brackets:
+  # 0-17 months
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  # 18-35 months
+  - threshold:
+      2024-10-01: 18
+    amount:
+      2024-10-01: 1
+  # 36-59 months
+  - threshold:
+      2024-10-01: 36
+    amount:
+      2024-10-01: 2
+  # 60 months and older
+  - threshold:
+      2024-10-01: 60
+    amount:
+      2024-10-01: 3
