@@ -492,9 +492,11 @@ programs:
         variable: co_ccap_subsidy
         notes: CCCAP
       - state: CT
-        status: in_progress
+        status: complete
         name: Care 4 Kids
         full_name: Connecticut Care 4 Kids
+        variable: ct_c4k
+        parameter_prefix: gov.states.ct.oec.c4k
       - state: FL
         status: complete
         name: School Readiness
@@ -504,7 +506,7 @@ programs:
       - state: HI
         status: complete
         name: Hawaii Child Care Subsidy
-        full_name: Hawaii Child Care Subsidy (CCAP)
+        full_name: Hawaii Child Care Subsidy
         variable: hi_ccap
         parameter_prefix: gov.states.hi.bessd.ccap
       - state: IL
@@ -512,6 +514,7 @@ programs:
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
         variable: il_ccap_eligible
+        parameter_prefix: gov.states.il.dhs.ccap
         notes: Only includes eligibility rules
       - state: ID
         status: complete
