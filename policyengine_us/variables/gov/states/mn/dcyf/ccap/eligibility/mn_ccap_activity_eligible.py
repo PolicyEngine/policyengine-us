@@ -8,7 +8,8 @@ class mn_ccap_activity_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MN
     reference = (
-        # Minn. Stat. 142E.12, subd. 1 — employment and education requirements.
+        # Minn. Stat. 142E.12, subd. 1(b) — minimum weekly hours for employed
+        # caretakers (20) and working full-time students (10).
         "https://www.revisor.mn.gov/statutes/cite/142E.12",
         # Minn. Rules 3400.0040 — authorized activities (employment, job
         # search, education, training).
@@ -24,7 +25,12 @@ class mn_ccap_activity_eligible(Variable):
         # disabled caretaker is treated as meeting the requirement. We don't
         # track job-search status or the minimum-wage component at the moment,
         # so caretakers in job search and the minimum-wage test are not
-        # separately captured here.
+        # separately captured here. We also don't track approved
+        # education/training program enrollment at the moment, so the Minn.
+        # Stat. 142E.12 subd. 3 education/training-only pathway (a non-employed
+        # full-time student in an approved program, with no minimum
+        # employment-hours requirement) is not modeled and such caretakers are
+        # under-included here.
         p = parameters(period).gov.states.mn.dcyf.ccap.activity
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)

@@ -1,6 +1,6 @@
 # Tests MN CCAP eligible-child determination: a dependent child under 13
 # (or under 15 if disabled) who is a citizen or qualified noncitizen
-# (Minn. Stat. 142E.01 subd. 7; reuses is_ccdf_immigration_eligible_child).
+# (Minn. Stat. 142E.01 subd. 4; reuses is_ccdf_immigration_eligible_child).
 - name: Case 1, dependent citizen child under 13 is eligible.
   period: 2026-01
   input:
