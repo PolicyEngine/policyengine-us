@@ -1,1 +1,1 @@
-Add Rhode Island's 2027 Child Tax Credit and high-income surtax.
+Add Rhode Island's 2027 Child Tax Credit, high-income surtax, and Social Security subtraction age-gate removal.
