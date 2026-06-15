@@ -1,0 +1,27 @@
+description: Kentucky maps a child's age in months to a child care rate age group under the Child Care Assistance Program, where 0 is infant/toddler, 1 is preschool, and 2 is school-age.
+brackets:
+  # Infant/Toddler: under 36 months (Infant under 1 year, Toddler 1 to under 3).
+  - threshold:
+      2019-05-31: 0
+    amount:
+      2019-05-31: 0
+  # Preschool: reached third birthday (36 months) up to under sixth birthday.
+  - threshold:
+      2019-05-31: 36
+    amount:
+      2019-05-31: 1
+  # School-age: reached sixth birthday (72 months).
+  - threshold:
+      2019-05-31: 72
+    amount:
+      2019-05-31: 2
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Kentucky CCAP child age group by months
+  reference:
+    - title: 922 KAR 2:160 Section 1(18), (22), (29), (33) — Infant, Preschool, School-age, Toddler (pp.2-3)
+      href: https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=2

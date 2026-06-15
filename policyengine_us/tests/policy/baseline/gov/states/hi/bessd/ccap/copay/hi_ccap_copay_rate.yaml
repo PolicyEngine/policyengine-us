@@ -1,0 +1,368 @@
+# HI CCAP co-payment rate by FPG band (Exhibit II, HAR 17-798.2-14(b)(4)).
+# The rate is a function of monthly gross income as a share of the federal
+# poverty guidelines, independent of family size. Bands (income above X%):
+#   0-100% -> 0%, 101-115% -> 1%, 116-130% -> 2%, 131-145% -> 3%,
+#   146-160% -> 4%, 161-175% -> 5%, 176-190% -> 6%, 191-205% -> 7%,
+#   206-230% -> 8%, 231%+ (to 85% SMI) -> 9%.
+#
+# All cases are a family of 2 (one adult + one child). 2025 HI FPG for a
+# family of 2 = 24,320/year = 2,026.67/month. Annual employment_income is
+# converted to monthly; the implied FPG ratio is noted per case.
+
+- name: Case 1, income below 100 percent FPG has no copay.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, ratio 0.49
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0
+
+- name: Case 2, income exactly at 100 percent FPG has no copay.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_320  # 2,026.67/mo, ratio exactly 1.00
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Band top at exactly 100% FPG stays in the 0% band
+    hi_ccap_copay_rate: 0
+
+- name: Case 3, income in 101 to 115 percent FPG band is 1 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 26_280  # 2,190/mo, ratio 1.08
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.01
+
+- name: Case 4, income in 116 to 130 percent FPG band is 2 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/mo, ratio 1.23
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.02
+
+- name: Case 5, income in 131 to 145 percent FPG band is 3 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 34_080  # 2,840/mo, ratio 1.40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.03
+
+- name: Case 6, income in 146 to 160 percent FPG band is 4 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 37_200  # 3,100/mo, ratio 1.53
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.04
+
+- name: Case 7, income in 161 to 175 percent FPG band is 5 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800  # 3,400/mo, ratio 1.68
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.05
+
+- name: Case 8, income in 176 to 190 percent FPG band is 6 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 44_400  # 3,700/mo, ratio 1.83
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.06
+
+- name: Case 9, income in 191 to 205 percent FPG band is 7 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/mo, ratio 1.97
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.07
+
+- name: Case 10, income in 206 to 230 percent FPG band is 8 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 53_040  # 4,420/mo, ratio 2.18
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.08
+
+- name: Case 11, income just above 230 percent FPG is 9 percent.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, ratio 2.30 (just above)
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Just above 230% FPG -> top 9% band
+    hi_ccap_copay_rate: 0.09
+
+- name: Case 12, income in highest band reaches the 9 percent cap.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 58_320  # 4,860/mo, ratio 2.40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.09
+
+# === Edge cases: zero and negative countable income ===
+
+- name: Case 13, exactly zero countable income has no copay.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0  # ratio 0.00 -> 0% band
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_countable_income: 0
+    hi_ccap_copay_rate: 0
+
+- name: Case 14, negative countable income floors at the 0 percent band.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # Self-employment loss with no offsetting income -> negative
+        # countable income; the FPG ratio is negative, so the bracket's
+        # lowest band (0%) applies (no negative-band lookup).
+        self_employment_income: -120_000  # -10,000/mo
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0

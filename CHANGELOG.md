@@ -1,3 +1,52 @@
+## [1.729.2] - 2026-06-15
+
+### Fixed
+
+- Fixed the Rhode Island contributed Child Tax Credit stepped phaseout to use filing-status-specific thresholds and increments.
+
+
+## [1.729.1] - 2026-06-15
+
+### Fixed
+
+- Fixed scrambled CCDF program coverage metadata in programs.yaml for Connecticut, Florida, Hawaii, Idaho, Indiana, Kansas, and Kentucky, and corrected the Hawaii program name, Connecticut status and variable, and Illinois parameter prefix.
+
+
+## [1.729.0] - 2026-06-14
+
+### Added
+
+- - Added the Florida School Readiness Program (child care subsidy).
+- Add Hawaii Child Care Assistance Program (CCAP / Child Care Subsidy).
+- Add Iowa Child Care Assistance (CCA / CCAP) - 3-tier CCDF child care subsidy with full provider rate matrix and sliding/percentage copays.
+- Add Idaho Child Care Program benefits.
+- Add Indiana Child Care Assistance Program (CCAP / CCDF).
+- Add Kentucky Child Care Assistance Program (CCAP), including eligibility, 85% SMI income test, county-region provider rates, and family copays.
+
+
+## [1.728.0] - 2026-06-14
+
+### Added
+
+- Add Kansas Child Care Assistance Program (CCAP).
+
+### Changed
+
+- Texas CEAP countable income now follows the state plan income sources list instead of IRS gross income.
+
+### Fixed
+
+- Fixed California SSI state supplement payment standards for disabled recipients identified by SSI disability criteria.
+- - Split partnership and S-corporation income into separate person-level inputs, and rename partnership self-employment income to partnership net earnings from self-employment.
+
+
+## [1.727.0] - 2026-06-14
+
+### Added
+
+- Added a medically frail or special medical needs input for Medicaid community engagement exclusions.
+
+
 ## [1.726.0] - 2026-06-10
 
 ### Added

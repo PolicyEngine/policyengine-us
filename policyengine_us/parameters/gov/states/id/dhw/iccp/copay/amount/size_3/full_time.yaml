@@ -1,0 +1,27 @@
+description: Idaho sets this copayment amount for a family of three in full-time care under the Idaho Child Care Program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: Idaho Child Care Program full-time copay for family size three
+  reference:
+    - title: Idaho Child Care Copay Chart, effective October 1, 2025
+      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=4671&repo=PUBLIC-DOCUMENTS
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 20
+  - threshold:
+      2025-10-01: 2_222
+    amount:
+      2025-10-01: 25
+  - threshold:
+      2025-10-01: 2_444
+    amount:
+      2025-10-01: 50
+  - threshold:
+      2025-10-01: 2_666
+    amount:
+      2025-10-01: 75

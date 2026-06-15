@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, IL, MA, MD, ME, MI, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, MI, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -492,15 +492,54 @@ programs:
         variable: co_ccap_subsidy
         notes: CCCAP
       - state: CT
-        status: in_progress
+        status: complete
         name: Care 4 Kids
         full_name: Connecticut Care 4 Kids
+        variable: ct_c4k
+        parameter_prefix: gov.states.ct.oec.c4k
+      - state: FL
+        status: complete
+        name: School Readiness
+        full_name: Florida School Readiness Program
+        variable: fl_sr
+        parameter_prefix: gov.states.fl.doe.sr
+      - state: HI
+        status: complete
+        name: Hawaii Child Care Subsidy
+        full_name: Hawaii Child Care Subsidy
+        variable: hi_ccap
+        parameter_prefix: gov.states.hi.bessd.ccap
       - state: IL
         status: complete
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
         variable: il_ccap_eligible
+        parameter_prefix: gov.states.il.dhs.ccap
         notes: Only includes eligibility rules
+      - state: ID
+        status: complete
+        name: ICCP
+        full_name: Idaho Child Care Program
+        variable: id_iccp
+        parameter_prefix: gov.states.id.dhw.iccp
+      - state: IN
+        status: complete
+        name: Indiana CCDF
+        full_name: Indiana Child Care and Development Fund Voucher Program
+        variable: in_ccdf
+        parameter_prefix: gov.states.in.fssa.ccdf
+      - state: KS
+        status: complete
+        name: Kansas CCAP
+        full_name: Kansas Child Care Assistance Program
+        variable: ks_child_care_subsidies
+        parameter_prefix: gov.states.ks.dcf.ccap
+      - state: KY
+        status: complete
+        name: CCAP
+        full_name: Kentucky Child Care Assistance Program
+        variable: ky_ccap
+        parameter_prefix: gov.states.ky.dcbs.ccap
       - state: MA
         status: complete
         name: Massachusetts CCFA
@@ -521,6 +560,12 @@ programs:
         full_name: Child Development and Care program
         variable: mi_child_care_subsidies
         parameter_prefix: gov.states.mi.mdhhs.ccap
+      - state: IA
+        status: complete
+        name: Iowa CCA
+        full_name: Iowa Child Care Assistance
+        variable: ia_cca
+        parameter_prefix: gov.states.ia.hhs.cca
       - state: NH
         status: complete
         name: New Hampshire CCAP

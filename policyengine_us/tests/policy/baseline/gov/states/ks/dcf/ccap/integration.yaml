@@ -1,0 +1,629 @@
+# Kansas CCAP integration tests.
+# Tested at 2026-01 so the Appendix F-1 income-limit and family-share schedule
+# (effective May 1, 2026) and the C-18 provider rates (effective 10-1-2024)
+# both apply. The income limit and family share are derived from the 2026
+# federal poverty guideline and the FFY2026 (2025-10-01) state median income,
+# the figures DCF used to build the published F-1 dollars, so at 2026 the
+# computed values match the published schedule exactly.
+#
+# Monthly hours = weekly hours * 52 / 12. Default childcare_hours_per_week in
+# these cases is 40, giving 40 * 52 / 12 = 173.3333 monthly hours.
+# Per-child benefit = min(monthly expense, hourly rate * monthly hours).
+# Total benefit = max(sum of per-child reimbursements - family share, 0),
+# capped at total monthly child care expenses.
+
+- name: Case 1, family of 2 with center toddler, rate exceeds expense.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1  # 12 months -> center Toddler
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000  # $750/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible_child: [false, true]
+    ks_ccap_income_eligible: true
+    ks_ccap_activity_eligible: true
+    ks_ccap_eligible: true
+    # Center Group 3 Toddler = $5.26/hr; max rate = 5.26 * 173.3333 = $911.73.
+    # Per-child = min($750 expense, $911.73) = $750.
+    # FSD (size 2, $2,000/mo) = $60.
+    # Benefit = max($750 - $60, 0) = $690, under the $750 expense cap.
+    ks_ccap_family_share: 60
+    ks_ccap: 690
+
+- name: Case 2, low-income family of 2 owes no family share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 12_000  # $1,000/month, below the size-2 FSD floor
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0  # 0 months -> center Infant
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible: true
+    # Center Group 3 Infant = $6.28/hr; max rate = 6.28 * 173.3333 = $1,088.53.
+    # Per-child = min($500 expense, $1,088.53) = $500.
+    # FSD (size 2, $1,000/mo below 100% FPL) = $0.
+    # Benefit = max($500 - $0, 0) = $500, capped at $500 expenses.
+    ks_ccap_family_share: 0
+    ks_ccap: 500
+
+- name: Case 3, family of 3 with center preschooler in Group 2.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # $3,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 3  # 36 months -> center Preschool
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: SEDGWICK_COUNTY_KS  # Group 2
+  output:
+    ks_ccap_eligible: true
+    # Center Group 2 Preschool = $4.13/hr; max rate = 4.13 * 173.3333 = $715.87.
+    # Per-child = min($1,000 expense, $715.87) = $715.87 (rate binds).
+    # FSD (size 3, $3,000/mo) = $89.
+    # Benefit = max($715.87 - $89, 0) = $626.87.
+    ks_ccap_family_share: 89
+    ks_ccap: 626.87
+
+- name: Case 4, family of 4 with two children in center care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        employment_income: 36_000  # $3,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 34
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 1  # 12 months -> center Toddler ($5.26)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6_000  # $500/month
+      person4:
+        age: 4  # 48 months -> center Preschool ($4.27)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 6_000  # $500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible: true
+    # Both children expense-bound: per-child = min($500, rate*173.33) = $500 each.
+    # Total reimbursement = $1,000.
+    # FSD (size 4, $3,000/mo) = $83.
+    # Benefit = max($1,000 - $83, 0) = $917.
+    ks_ccap_family_share: 83
+    ks_ccap: 917
+
+- name: Case 5, out-of-home relative care with rate cap binding.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4  # 48 months -> OOH relative over-18-months band
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: OUT_OF_HOME_RELATIVE
+        childcare_hours_per_week: 60  # relative cap = 215 monthly hours
+        pre_subsidy_childcare_expenses: 7_200  # $600/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 7_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible: true
+    # OOH relative Group 3 over-18mo = $1.77/hr; relative monthly cap = 215 hours.
+    # max rate = 1.77 * 215 = $380.55; per-child = min($600 expense, $380.55) = $380.55.
+    # FSD (size 2, $2,000/mo) = $60.
+    # Benefit = max($380.55 - $60, 0) = $320.55.
+    ks_ccap_family_share: 60
+    ks_ccap: 320.55
+
+- name: Case 6, TANF-enrolled family eligible despite high income and no work hours.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000  # $10,000/month, above the size-2 limit
+        weekly_hours_worked_before_lsr: 0  # no work activity
+      person2:
+        age: 1  # 12 months -> center Toddler
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    # TANF bypass grants income and activity eligibility.
+    ks_ccap_income_eligible: true
+    ks_ccap_activity_eligible: true
+    ks_ccap_eligible: true
+    # Center Group 3 Toddler = $5.26/hr; max rate = $911.73.
+    # Per-child = min($1,000 expense, $911.73) = $911.73.
+    # KEESM 7541 assesses the family share only for Income Eligible (Non-TANF)
+    # clients, so a TANF-enrolled family owes $0.
+    # Benefit = max($911.73 - $0, 0) = $911.73.
+    ks_ccap_family_share: 0
+    ks_ccap: 911.73
+
+- name: Case 7, disabled child with the enhanced special-care rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # $2,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 6  # 72 months, disabled -> eligible under special-needs branch
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: ENHANCED_SPECIAL_CARE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 18_000  # $1,500/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible_child: [false, true]
+    ks_ccap_eligible: true
+    # Enhanced special-care = $7.34/hr; max rate = 7.34 * 173.3333 = $1,272.27.
+    # Per-child = min($1,500 expense, $1,272.27) = $1,272.27 (rate binds).
+    # FSD (size 2, $2,000/mo) = $60.
+    # Benefit = max($1,272.27 - $60, 0) = $1,212.27.
+    ks_ccap_family_share: 60
+    ks_ccap: 1_212.27
+
+- name: Case 8, income-ineligible family gets zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 84_000  # $7,000/month, above the size-2 $5,439 limit
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS
+  output:
+    # $7,000/month > $5,439 size-2 limit -> ineligible.
+    ks_ccap_income_eligible: false
+    ks_ccap_eligible: false
+    ks_ccap: 0
+
+- name: Case 9, non-Kansas family gets zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        # Missouri household: defined_for = StateCode.KS zeroes the benefit.
+        state_code: MO
+  output:
+    ks_ccap_eligible: false
+    ks_ccap: 0
+
+# Cases 10-11 are a non-TANF vs TANF contrast pair on the SAME family, isolating
+# the KEESM 7541 family-share waiver: the deduction is assessed only for Income
+# Eligible (Non-TANF) clients, so a TANF family owes $0 and keeps the full
+# reimbursement. Family of 3, $3,000/mo, Johnson County (Group 1), infant in
+# center, $12,000/yr ($1,000/mo) expenses.
+- name: Case 10, non-TANF family of 3 pays the family share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 0  # 0 months -> center Infant
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS  # Group 1
+  output:
+    ks_ccap_eligible: true
+    # Center Group 1 Infant = $7.33/hr; max rate = 7.33 * 173.3333 = $1,270.53.
+    # Per-child = min($1,000 expense, $1,270.53) = $1,000 (expense binds).
+    # FSD (size 3, $3,000/mo) = $89.
+    # Benefit = max($1,000 - $89, 0) = $911.
+    ks_ccap_family_share: 89
+    ks_ccap: 911
+
+- name: Case 11, same family TANF-enrolled owes no family share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 0  # 0 months -> center Infant
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000  # $1,000/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS  # Group 1
+  output:
+    ks_ccap_eligible: true
+    # Same reimbursement ($1,000), but KEESM 7541 waives the family share for
+    # TANF-enrolled families, so the deduction is $0.
+    # Benefit = max($1,000 - $0, 0) = $1,000.
+    ks_ccap_family_share: 0
+    ks_ccap: 1_000
+
+# Edge case: in-home relative provider (the one provider type not exercised by
+# the cases above). Flat $2.42/hr statewide; the 215-hour relative cap does not
+# bind at 40 weekly hours (173.33 monthly).
+- name: Case 12, in-home relative provider end-to-end.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month -> size-2 FSD $60
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2  # in-home relative flat $2.42/hr
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: IN_HOME_RELATIVE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000  # $750/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible: true
+    # In-home relative flat $2.42/hr; max rate = 2.42 * 173.3333 = $419.47.
+    # Per-child = min($750 expense, $419.47) = $419.47.
+    # FSD (size 2, $2,000/mo) = $60; benefit = max($419.47 - $60, 0) = $359.47.
+    ks_ccap_family_share: 60
+    ks_ccap: 359.47
+
+# Edge case: largest family size in the F-1 table (family of 11) with a positive
+# benefit. Only the toddler is an eligible child in paid care; the other
+# children have no authorized hours, so they add no reimbursement.
+- name: Case 13, family of 11 with a positive benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 73_200  # $6,100/month -> size-11 FSD $182
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 38
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 1  # center Toddler Group 3 = $5.26/hr
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000  # $750/month
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+      person5:
+        age: 6
+        is_tax_unit_dependent: true
+      person6:
+        age: 7
+        is_tax_unit_dependent: true
+      person7:
+        age: 8
+        is_tax_unit_dependent: true
+      person8:
+        age: 9
+        is_tax_unit_dependent: true
+      person9:
+        age: 10
+        is_tax_unit_dependent: true
+      person10:
+        age: 11
+        is_tax_unit_dependent: true
+      person11:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+          ]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_eligible: true
+    # Only person3 is in paid care: per-child = min($750, $5.26 * 173.3333 =
+    # $911.73) = $750. Other children have 0 authorized hours -> $0 each.
+    # FSD (size 11, $6,100/mo) = $182; benefit = max($750 - $182, 0) = $568.
+    ks_ccap_family_share: 182
+    ks_ccap: 568
+
+# Edge case: negative income (self-employment loss) end-to-end. The family stays
+# income eligible, the family share floors at $0, and the benefit is not
+# inflated by the negative income.
+- name: Case 14, negative income does not inflate the benefit end-to-end.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -$5,000/month loss
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1  # center Toddler Group 3 = $5.26/hr
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ks_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 9_000  # $750/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+        county: FINNEY_COUNTY_KS  # Group 3
+  output:
+    ks_ccap_income_eligible: true
+    # FSD floors at $0 for negative income (first F-1 bracket).
+    # Per-child = min($750, $911.73) = $750; benefit = max($750 - $0, 0) = $750,
+    # capped at the $750 expense -> $750, NOT $750 + $5,000.
+    ks_ccap_family_share: 0
+    ks_ccap: 750
