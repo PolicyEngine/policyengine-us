@@ -220,3 +220,81 @@
     # Toddler rate $42 x 21.67 = $910, below the $1,000 monthly expense;
     # copay $3 x 21.67 = $65; $910 - $65 = $845.
     la_ccap: 845
+
+- name: Case 10, part-time schedule with attendance days bills hourly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 3  # Derives 15 hours/week, part-time care.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Part-time (15 < 30 hours/week) bills the hours proration even though
+    # attendance days are reported: 22 x 15/30 = 11 day-equivalents;
+    # min($1,000, $42 x 11 = $462) - $2 x 11 = $440 — not 21.67 full days.
+    la_ccap: 440
+
+- name: Case 11, full-time hours with attendance days bills day units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8  # Derives 40 hours/week, full-time care.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Full-time care pays day units: 5 x 52/12 = 21.67 days;
+    # min($1,000, $42 x 21.67 = $910) - $2 x 21.67 = $866.67.
+    la_ccap: 866.67
+
+- name: Case 12, full-time hours without days caps at 22 monthly days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_hours_per_week: 40  # No attendance days reported.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # The min(hours/30, 1) clamp holds the proration at the 22-day maximum:
+    # min($1,000, $42 x 22 = $924) - $2 x 22 = $880.
+    la_ccap: 880

@@ -41,3 +41,26 @@
   output:
     # $86,934 x 0.68 / 12 = $4,926.26.
     la_ccap_smi: 4_926.26
+
+- name: Case 3, whole-year 2026 spans the February scale change without uprating.
+  period: 2026
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Jan uses the FY 2025 table: $95,801 x 0.68 / 12 = $5,428.72; Feb-Dec
+    # use the published FY 2026 table (2025-10-01 entry, $98,137), not the
+    # CBO-uprated projection: 11 x $5,561.10 = $61,172.06. Total $66,600.79.
+    # Regression guard: uprating past the table end would give $69,935.79.
+    la_ccap_smi: 66_600.79
