@@ -1,0 +1,31 @@
+# End-to-end check that a TY2025 joint filer who reaches age 67 in 2025
+# (born 1958) qualifies for the tier 3 standard deduction against all income.
+# Source: 2025 MI-1040 instructions, Worksheet 2 / Line 26 (born 1953 through
+# January 1, 1959, reached age 67 by December 31, 2025).
+- name: 2025 MFJ both age 67 (born 1958) receive tier 3 standard deduction
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 225_238
+        taxable_interest_income: 158_834
+      spouse:
+        age: 67
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: true
+    mi_standard_deduction: 28_400
+    mi_taxable_income: 344_072
+    mi_income_tax: 14_623
