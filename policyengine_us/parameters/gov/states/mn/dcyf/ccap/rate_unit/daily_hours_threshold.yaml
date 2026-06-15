@@ -1,0 +1,11 @@
+description: Minnesota pays the full-day child care rate rather than the hourly rate when daily care exceeds this many hours under the Child Care Assistance Program.
+values:
+  2025-01-01: 5
+
+metadata:
+  unit: hour
+  period: day
+  label: Minnesota CCAP full-day rate hours-per-day threshold
+  reference:
+    - title: Minnesota CCAP Policy Manual, section 9.9 (Determination of payment amounts)
+      href: https://www.revisor.mn.gov/statutes/cite/142E.17

@@ -1,0 +1,436 @@
+# MN CCAP end-to-end integration scenarios. Benefit (per spm unit) =
+#   max(min(pre_subsidy_expenses, sum of per-child max rate x (1 + quality diff))
+#       - family copay, 0)
+# Rates: DHS-6441F (eff Jan 6 2025). Copay: DHS-6413N (eff Oct 13 2025).
+# Weekly-to-monthly conversion = x 52 / 12; copay biweekly-to-monthly = x 26 / 12.
+# spm_unit_pre_subsidy_childcare_expenses is annual; the monthly formula divides
+# it by 12 (e.g. 14,400/year = 1,200/month).
+- name: Case 1, single infant in Becker family child care with a mid-income copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/month
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # > 35 -> weekly rate
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # 1,200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Income: 30,000/12 = 2,500/month countable.
+    mn_ccap_countable_income: 2_500
+    # 2-person household 47% SMI = 46,021.76; 30,000 < limit -> eligible.
+    mn_ccap_eligible: true
+    # Becker family child care infant weekly 205 -> 205*52/12 = 888.33/month.
+    # Person-level: parent is not an eligible child (0), infant gets the rate.
+    mn_ccap_provider_rate: [0, 888.33]
+    # Copay: size-2 table, 30,000 lands in the 29,738-31,031 band -> $31 biweekly
+    # -> monthly 31*26/12 = 67.17.
+    mn_ccap_copay: 67.17
+    # Subsidy = min(1,200, 888.33) - 67.17 = 821.17.
+    mn_ccap: 821.17
+
+- name: Case 2, subsidy capped at actual expenses below the maximum rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # size-2 copay band (>= 15,863) -> $2 biweekly
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/month < 888.33 max
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    mn_ccap_countable_income: 1_500  # 18,000/12
+    # Copay: 18,000 in size-2 [15,863, 21,150) band -> $2 biweekly -> 4.33/month.
+    # Subsidy = min(500, 888.33) - 4.33 = 495.67.
+    mn_ccap_copay: 4.33
+    mn_ccap: 495.67
+
+- name: Case 3, negative income does not inflate the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -6_000_000  # large business loss
+      person2:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # 1,200/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Countable income floors at 0 (not negative).
+    mn_ccap_countable_income: 0
+    mn_ccap_copay: 0
+    # Subsidy = min(1,200, 888.33) - 0 = 888.33, NOT inflated by negative income.
+    mn_ccap: 888.33
+
+- name: Case 4, four-star quality differential raises the maximum rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # size-2 copay band (>= 15,863) -> $2 biweekly
+      person2:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: STAR_4  # +20%
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Copay: 18,000 in size-2 [15,863, 21,150) band -> $2 biweekly -> 4.33/month.
+    mn_ccap_copay: 4.33
+    # Max rate 888.33 * 1.20 = 1,066.00; expenses 1,500 -> not capped.
+    # Subsidy = min(1,500, 1,066.00) - 4.33 = 1,061.67.
+    mn_ccap: 1_061.67
+
+- name: Case 5, MFIP family eligible under the higher 67 percent entrance limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/month
+      person2:
+        age: 28
+      person3:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: true  # MFIP/DWP -> 67% entrance limit
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # 3-person 67% SMI = 81,042.07; 60,000 < limit -> eligible via MFIP path.
+    mn_ccap_eligible: true
+    mn_ccap_countable_income: 5_000  # 60,000/12
+    # Becker center infant weekly 274 -> 274*52/12 = 1,187.33/month max rate.
+    # Person-level: the two parents are not eligible children (0), infant gets the rate.
+    mn_ccap_provider_rate: [0, 0, 1_187.33]
+
+- name: Case 6, two-parent two-child household sums per-child rates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 18_000  # $0 copay band
+      person2:
+        age: 30
+      person3:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+      person4:
+        age: 3
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Infant weekly 205 + preschool weekly 190 = 395/week -> 395*52/12 = 1,711.67.
+    # Copay $0 (4-person, 18,000 below first band). Expenses 3,000 -> not capped.
+    # Subsidy = min(3,000, 1,711.67) - 0 = 1,711.67.
+    mn_ccap_copay: 0
+    mn_ccap: 1_711.67
+
+- name: Case 7, ineligible family with no child in care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    mn_ccap_eligible: false
+    mn_ccap: 0
+
+# Edge cases.
+- name: Case 8, negative income with no deductions does not inflate the subsidy beyond expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -6_000_000  # large business loss, no deductions
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/month < 888.33 max rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Countable income floors at 0; copay $0. Subsidy = min(500, 888.33) - 0 =
+    # 500, capped at actual expenses (not max(888.33 - (-N)) which would inflate).
+    mn_ccap_countable_income: 0
+    mn_ccap_copay: 0
+    mn_ccap: 500
+
+- name: Case 9, copay exceeding the cost of care floors the subsidy at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 62_000  # high income -> large copay
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: true  # 85% exit limit keeps the family eligible
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 3_000  # 250/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    mn_ccap_eligible: true
+    # Size-2 copay at 62,000 -> $305 biweekly -> 305 * 26 / 12 = 660.83/month.
+    mn_ccap_copay: 660.83
+    # Subsidy = max(min(250, 888.33) - 660.83, 0) = max(250 - 660.83, 0) = 0.
+    mn_ccap: 0
+
+- name: Case 10, hourly rate unit feeds the end-to-end benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 20  # <= 35
+        childcare_hours_per_day: 4  # <= 5 -> hourly rate
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Becker center infant hourly 14 * (20 * 52 / 12) = 1,213.33/month max rate.
+    # Size-2 copay at 18,000 -> $2 biweekly -> 2 * 26 / 12 = 4.33/month.
+    mn_ccap_copay: 4.33
+    # Subsidy = min(2,000, 1,213.33) - 4.33 = 1,209.00.
+    mn_ccap: 1_209
+
+- name: Case 11, registration fee adds to the subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # 1,200/month
+        mn_ccap_registration_fee: 50  # optional input paid to the provider
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Max rate 888.33; copay 4.33. Care subsidy = min(1,200, 888.33) - 4.33 = 884.00.
+    # Plus the 50 registration fee -> 934.00.
+    mn_ccap_copay: 4.33
+    mn_ccap: 934
+
+- name: Case 12, accredited or three-star differential capped at actual expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: ACCREDITED_OR_3STAR  # +15%
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Max rate 888.33 * 1.15 = 1,021.58; expenses 1,000/month cap the subsidy.
+    # Copay 4.33. Subsidy = min(1,000, 1,021.58) - 4.33 = 995.67.
+    mn_ccap_copay: 4.33
+    mn_ccap: 995.67
+
+- name: Case 13, large five-person family sums per-child rates across age groups.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+      person3:
+        age: 0  # infant
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+      person4:
+        age: 3  # preschool
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+      person5:
+        age: 6  # school age
+        is_in_k12_school: true
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 60_000  # 5,000/month, not capping
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    mn_ccap_eligible: true
+    # Becker family weekly: infant 205, preschool 190, school-age 175.
+    # Monthly max = (205 + 190 + 175) * 52 / 12 = 570 * 52 / 12 = 2,470.00.
+    # Size-5 copay at 30,000 -> $2 biweekly -> 4.33/month.
+    # Subsidy = min(5,000, 2,470.00) - 4.33 = 2,465.67.
+    mn_ccap_copay: 4.33
+    mn_ccap: 2_465.67

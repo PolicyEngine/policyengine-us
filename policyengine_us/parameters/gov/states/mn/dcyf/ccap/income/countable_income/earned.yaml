@@ -1,0 +1,27 @@
+description: Minnesota counts these earned income sources under the Child Care Assistance Program.
+values:
+  2025-01-01:
+    # Wages and salaries (including overtime and bonuses), paid vacation and
+    # sick leave, tips, commissions, severance based on accrued leave, and
+    # taxable allowances are all captured by employment_income. Earned income
+    # is counted gross, before payroll deductions.
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    # The following earned income types are counted per Minn. Stat. 256P.06
+    # and manual section 6.6 but have no matching variable, so we do not track
+    # them at the moment:
+    # - royalties
+    # - honoraria
+    # - incentive payments from work or training
+    # - military pay (combat-zone pay is excluded)
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota CCAP countable earned income sources
+  reference:
+    - title: Minn. Stat. 256P.06, subd. 3 (earned income)
+      href: https://www.revisor.mn.gov/statutes/cite/256P.06
+    - title: Minn. Rules 3400.0170, subp. 4 (gross annual income)
+      href: https://www.revisor.mn.gov/rules/3400.0170/

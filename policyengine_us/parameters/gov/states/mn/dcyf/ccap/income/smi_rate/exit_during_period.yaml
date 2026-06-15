@@ -1,0 +1,13 @@
+description: Minnesota ends Child Care Assistance Program eligibility when income exceeds this fraction of state median income during the 12-month eligibility period.
+values:
+  2025-01-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Minnesota CCAP exit income limit during eligibility period (share of SMI)
+  reference:
+    - title: Minn. Stat. 142E.06, subd. 1 (income eligibility; formerly 119B.09)
+      href: https://www.revisor.mn.gov/statutes/cite/142E.06
+    - title: Minnesota CCAP Copayment schedules (DHS-6413N), effective Oct. 13, 2025, p.5
+      href: https://edocs.dhs.state.mn.us/lfserver/Public/DHS-6413N-ENG#page=5

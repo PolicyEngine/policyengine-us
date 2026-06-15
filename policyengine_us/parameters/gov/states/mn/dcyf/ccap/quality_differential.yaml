@@ -1,0 +1,18 @@
+description: Minnesota raises the maximum child care rate by this fraction for higher-quality providers under the Child Care Assistance Program.
+# Applied as max_rate x (1 + differential), capped at the provider's actual charge.
+metadata:
+  unit: /1
+  period: year
+  label: Minnesota CCAP quality differential
+  breakdown:
+    - mn_ccap_quality_rating
+  reference:
+    - title: Minn. Stat. 142E.17, subd. 4-5 (accreditation and Parent Aware differentials; formerly 119B.13)
+      href: https://www.revisor.mn.gov/statutes/cite/142E.17
+
+STAR_4:
+  2025-01-01: 0.20
+ACCREDITED_OR_3STAR:
+  2025-01-01: 0.15
+NONE:
+  2025-01-01: 0

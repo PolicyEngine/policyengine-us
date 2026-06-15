@@ -1,0 +1,91 @@
+# Tests the MN CCAP overall eligibility gate: at least one eligible child AND
+# income eligible AND asset eligible AND parent activity eligible
+# (Minn. Rules 3400; manual section 6.x). Asset test reuses is_ccdf_asset_eligible
+# (federal limit 1,000,000, which equals MN's limit).
+- name: Case 1, eligible family with a young child and low income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_eligible: true
+
+- name: Case 2, no eligible child (only adults) is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # No child under 13 -> ineligible regardless of income.
+    mn_ccap_eligible: false
+
+- name: Case 3, income above the entrance limit makes the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # 2-person 47% limit is 46,021.76
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 70,000 > 46,021.76 (2-person 47% entrance) -> income ineligible.
+    mn_ccap_eligible: false
+
+- name: Case 4, assets above the CCDF limit make the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        # Assets above the 1,000,000 CCDF limit.
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_eligible: false

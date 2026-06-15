@@ -1,0 +1,55 @@
+# Tests the MN CCAP annual aggregator that feeds the federal child_care_subsidies
+# variable. mn_child_care_subsidies (YEAR) adds the monthly mn_ccap benefit, so a
+# whole-year period sums 12 months.
+- name: Case 1, single infant in Becker family child care, full year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # size-2 copay band (>= 15,863) -> $2 biweekly
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # weekly rate
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Copay: 18,000 in the size-2 [15,863, 21,150) band -> $2 biweekly -> 4.33/month.
+    # Monthly subsidy = min(1,500, 888.33) - 4.33 = 884.00; annual = 884.00 * 12 = 10,608.
+    mn_child_care_subsidies: 10_608
+
+- name: Case 2, no eligible child yields zero annual subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    mn_child_care_subsidies: 0

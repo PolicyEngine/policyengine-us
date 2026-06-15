@@ -1,0 +1,136 @@
+# Tests MN CCAP parent activity eligibility (Minn. Rules 3400.0040; manual
+# section 9.x). Parents in an authorized activity (work, job search, education,
+# training) qualify. For initial applicants the activity requirement is treated
+# as met for employable/willing parents (per the program's applicant rules), so
+# a working parent is activity eligible.
+- name: Case 1, working parent is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: true
+
+# Edge cases. The formula treats a caretaker as in an authorized activity when
+# working (weekly_hours_worked_before_lsr > 0), a full-time student, or
+# disabled. weekly_hours_worked_before_lsr defaults to a positive value for
+# adults, so inactive-caretaker cases set it to 0 explicitly.
+- name: Case 2, single parent with no activity is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # not working
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # No working/student/disabled caretaker -> not activity eligible.
+    mn_ccap_activity_eligible: false
+
+- name: Case 3, full-time student parent is activity eligible without working.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: true
+
+- name: Case 4, disabled parent is activity eligible without working.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: true
+
+- name: Case 5, two-parent household with one inactive parent is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000  # working
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # inactive caretaker
+        is_full_time_student: false
+        is_disabled: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Both parents must be in an authorized activity; the inactive spouse fails.
+    mn_ccap_activity_eligible: false
+
+- name: Case 6, two-parent household with both parents working is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+        employment_income: 20_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_ccap_activity_eligible: true

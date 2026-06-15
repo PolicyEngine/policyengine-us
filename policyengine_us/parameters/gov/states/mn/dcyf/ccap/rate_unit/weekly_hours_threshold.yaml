@@ -1,0 +1,11 @@
+description: Minnesota pays the weekly child care rate when authorized care exceeds this many hours per week under the Child Care Assistance Program.
+values:
+  2025-01-01: 35
+
+metadata:
+  unit: hour
+  period: week
+  label: Minnesota CCAP weekly rate hours-per-week threshold
+  reference:
+    - title: Minnesota CCAP Policy Manual, section 9.9 (Determination of payment amounts)
+      href: https://www.revisor.mn.gov/statutes/cite/142E.17

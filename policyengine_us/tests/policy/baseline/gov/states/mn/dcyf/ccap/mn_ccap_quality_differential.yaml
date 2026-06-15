@@ -1,0 +1,77 @@
+# Tests the MN CCAP quality differential, applied inside mn_ccap_max_rate as
+# standard_rate x (1 + differential) (Minn. Stat. 142E.17 subd. 4-5; REQ-024).
+# 4-star Parent Aware = +20%, accredited or 3-star Parent Aware = +15%, none = 0%.
+# Each case uses a Becker family-child-care infant on a weekly rate: standard
+# monthly max rate = 205 * 52 / 12 = 888.33. The differential is capped at the
+# provider's charge downstream in mn_ccap (see integration Case 12), not here.
+- name: Case 1, four-star provider gets a 20 percent differential above the standard rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_hours_per_week: 45  # > 35 -> weekly rate
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: STAR_4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Standard rate 888.33 * 1.20 = 1,066.00 (parent is not an eligible child).
+    mn_ccap_max_rate: [0, 1_066]
+
+- name: Case 2, accredited or three-star provider gets a 15 percent differential.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: ACCREDITED_OR_3STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Standard rate 888.33 * 1.15 = 1,021.58.
+    mn_ccap_max_rate: [0, 1_021.58]
+
+- name: Case 3, no quality rating gets no differential.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Standard rate 888.33 * 1.00 = 888.33.
+    mn_ccap_max_rate: [0, 888.33]

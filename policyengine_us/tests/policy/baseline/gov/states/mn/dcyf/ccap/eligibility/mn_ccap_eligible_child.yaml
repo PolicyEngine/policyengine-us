@@ -1,0 +1,178 @@
+# Tests MN CCAP eligible-child determination: a dependent child under 13
+# (or under 15 if disabled) who is a citizen or qualified noncitizen
+# (Minn. Stat. 142E.01 subd. 7; reuses is_ccdf_immigration_eligible_child).
+- name: Case 1, dependent citizen child under 13 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Child age 6 < 13, dependent, citizen by default -> eligible.
+    mn_ccap_eligible_child: [false, true]
+
+- name: Case 2, child exactly 13 is not eligible (strict under 13).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_eligible_child: [false, false]
+
+- name: Case 3, disabled child age 14 is eligible under the extended limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 14 < 15 disabled limit -> eligible.
+    mn_ccap_eligible_child: [false, true]
+
+- name: Case 4, disabled child age 15 is not eligible (strict under 15).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_ccap_eligible_child: [false, false]
+
+- name: Case 5, undocumented child is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 6
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Fails the CCDF immigration test even though age/dependency qualify.
+    mn_ccap_eligible_child: [false, false]
+
+# Edge cases.
+- name: Case 6, non-disabled child age 12 is eligible (just under the 13 limit).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 12 < 13 (non-disabled limit) -> eligible.
+    mn_ccap_eligible_child: [false, true]
+
+- name: Case 7, non-disabled child age 14 is not eligible (extended limit applies only if disabled).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 14 >= 13 and not disabled -> ineligible. The 15-year extended limit
+    # requires a disability.
+    mn_ccap_eligible_child: [false, false]
+
+- name: Case 8, disabled child age 14 just under the extended limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 14 < 15 (disabled limit) -> eligible.
+    mn_ccap_eligible_child: [false, true]
+
+- name: Case 9, newborn dependent citizen is eligible (lower age bound).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Age 0 < 13, dependent, citizen by default -> eligible.
+    mn_ccap_eligible_child: [false, true]

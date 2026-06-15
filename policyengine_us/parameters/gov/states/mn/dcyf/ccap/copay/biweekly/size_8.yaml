@@ -1,0 +1,140 @@
+description: Minnesota charges this biweekly copayment for a eight-person family by gross annual income after deductions under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: year
+  label: Minnesota CCAP biweekly copayment for eight-person family
+  reference:
+    - title: Minnesota CCAP Copayment schedules (DHS-6413N), effective Oct. 13, 2025, p.9
+      href: https://edocs.dhs.state.mn.us/lfserver/Public/DHS-6413N-ENG#page=9
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 40_613
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 54_150
+    amount:
+      2025-10-01: 55
+  - threshold:
+      2025-10-01: 55_104
+    amount:
+      2025-10-01: 58
+  - threshold:
+      2025-10-01: 57_727
+    amount:
+      2025-10-01: 60
+  - threshold:
+      2025-10-01: 60_350
+    amount:
+      2025-10-01: 63
+  - threshold:
+      2025-10-01: 62_973
+    amount:
+      2025-10-01: 73
+  - threshold:
+      2025-10-01: 65_596
+    amount:
+      2025-10-01: 76
+  - threshold:
+      2025-10-01: 68_220
+    amount:
+      2025-10-01: 79
+  - threshold:
+      2025-10-01: 70_862
+    amount:
+      2025-10-01: 82
+  - threshold:
+      2025-10-01: 73_466
+    amount:
+      2025-10-01: 94
+  - threshold:
+      2025-10-01: 76_109
+    amount:
+      2025-10-01: 97
+  - threshold:
+      2025-10-01: 78_732
+    amount:
+      2025-10-01: 101
+  - threshold:
+      2025-10-01: 81_355
+    amount:
+      2025-10-01: 124
+  - threshold:
+      2025-10-01: 83_978
+    amount:
+      2025-10-01: 128
+  - threshold:
+      2025-10-01: 86_601
+    amount:
+      2025-10-01: 153
+  - threshold:
+      2025-10-01: 89_224
+    amount:
+      2025-10-01: 168
+  - threshold:
+      2025-10-01: 91_847
+    amount:
+      2025-10-01: 184
+  - threshold:
+      2025-10-01: 94_470
+    amount:
+      2025-10-01: 211
+  - threshold:
+      2025-10-01: 97_093
+    amount:
+      2025-10-01: 228
+  - threshold:
+      2025-10-01: 99_716
+    amount:
+      2025-10-01: 246
+  - threshold:
+      2025-10-01: 102_339
+    amount:
+      2025-10-01: 276
+  - threshold:
+      2025-10-01: 104_962
+    amount:
+      2025-10-01: 314
+  - threshold:
+      2025-10-01: 107_585
+    amount:
+      2025-10-01: 353
+  - threshold:
+      2025-10-01: 110_208
+    amount:
+      2025-10-01: 399
+  - threshold:
+      2025-10-01: 112_832
+    amount:
+      2025-10-01: 447
+  - threshold:
+      2025-10-01: 115_455
+    amount:
+      2025-10-01: 497
+  - threshold:
+      2025-10-01: 118_078
+    amount:
+      2025-10-01: 536
+  - threshold:
+      2025-10-01: 120_701
+    amount:
+      2025-10-01: 577
+  - threshold:
+      2025-10-01: 123_344
+    amount:
+      2025-10-01: 618
+  - threshold:
+      2025-10-01: 125_967
+    amount:
+      2025-10-01: 662
+  - threshold:
+      2025-10-01: 128_590
+    amount:
+      2025-10-01: 717
