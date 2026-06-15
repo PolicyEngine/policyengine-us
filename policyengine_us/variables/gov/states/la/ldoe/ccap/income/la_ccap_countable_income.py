@@ -17,10 +17,12 @@ class la_ccap_countable_income(Variable):
         # and the legal or non-legal spouse; minor unmarried parents are not
         # tracked separately at the moment.
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        # §509.A.3.a counts gross earnings: a net loss from self-employment
-        # or farm operations yields zero gross earnings and cannot offset
-        # other earned income, so each source is floored at zero.
-        earned = sum(max_(person(source, period), 0) for source in p.earned_sources)
+        # §509.A.3.a counts gross earnings. Wages cannot be negative, but a
+        # self-employment or farm loss yields zero gross earnings and cannot
+        # offset wages, so the self-employment subtotal is floored at zero.
+        wages = add(person, period, p.wage_sources)
+        self_employment = max_(add(person, period, p.self_employment_sources), 0)
+        earned = wages + self_employment
         countable_earned = spm_unit.sum(earned * is_head_or_spouse)
         # LAC 28:CLXV.509.A.3.b counts enumerated recurring unearned income of
         # all household members.
