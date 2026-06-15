@@ -11,7 +11,19 @@ class oh_homestead_property_tax_reduction(Variable):
     defined_for = "oh_homestead_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
-        assessed_value = add(tax_unit, period, ["assessed_property_value"])
-        return add(tax_unit, period, ["real_estate_taxes"]) * (
+        person = tax_unit.members
+        head = person("is_tax_unit_head", period)
+        spouse_in_joint = person("is_tax_unit_spouse", period) & person.tax_unit(
+            "tax_unit_is_joint", period
+        )
+        head_or_spouse = head | spouse_in_joint
+        assessed_value = tax_unit.sum(
+            person("assessed_property_value", period) * head_or_spouse
+        )
+        real_estate_taxes = tax_unit.sum(
+            person("real_estate_taxes", period) * head_or_spouse
+        )
+
+        return real_estate_taxes * (
             tax_unit("oh_homestead_exemption", period) / max_(assessed_value, 1)
         )

@@ -27,7 +27,9 @@ class oh_homestead_exemption_eligible(Variable):
             & person("oh_homestead_exemption_qualifying_surviving_spouse", period)
             & head_or_spouse,
         )
-        owns_and_occupies_homestead = add(tax_unit, period, ["real_estate_taxes"]) > 0
+        owns_and_occupies_homestead = tax_unit.any(
+            (person("real_estate_taxes", period) > 0) & head_or_spouse
+        )
 
         return (
             (aged_or_disabled | surviving_spouse)
