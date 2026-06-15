@@ -7,7 +7,10 @@ class ri_social_security_modification(Variable):
     label = "Rhode Island Social Security Modification"
     unit = USD
     definition_period = YEAR
-    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
+    reference = [
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf",
+        "https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=For%20the%20tax%20years%20beginning%20on%20or%20after%20January%201%2C%202027",
+    ]
     defined_for = "ri_social_security_modification_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -19,8 +22,11 @@ class ri_social_security_modification(Variable):
             period
         ).gov.states.ri.tax.income.agi.subtractions.social_security.limit
 
-        aged = birth_year <= p.birth_year
-        head_or_spouse_aged = head_or_spouse & aged
+        # The 2027 budget bill removes the age condition for Social Security.
+        social_security_subtraction_eligible = (birth_year <= p.birth_year) | (
+            period.start.year >= 2027
+        )
+        head_or_spouse_aged = head_or_spouse & social_security_subtraction_eligible
 
         total_social_security = person("social_security", period)
         aged_head_or_spouse_ss = tax_unit.sum(

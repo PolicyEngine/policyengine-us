@@ -114,3 +114,13 @@
     older_spouse_birth_year: 1960
   output:
     ri_retirement_income_subtraction_eligible: false
+
+- name: 2027 - Age still required for taxable retirement income modification
+  period: 2027
+  input:
+    state_code: RI
+    adjusted_gross_income: 80_000
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+  output:
+    ri_retirement_income_subtraction_eligible: false

@@ -86,3 +86,23 @@
     state_code: RI
   output:
     ri_social_security_modification_eligible: false
+
+- name: 2027 - Age not required for social security modification
+  period: 2027
+  input:
+    adjusted_gross_income: 70_000
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+
+- name: 2027 - Income limit still applies after age requirement removal
+  period: 2027
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
