@@ -16,8 +16,8 @@ class mi_ccap_eligible_child(Variable):
         age = person("age", period.this_year)
         # BEM 703: children under 13 are age-eligible; children 13 to under 18
         # who require constant care are also eligible (is_disabled proxy). We
-        # don't track court-ordered supervision or the age-18 high-school
-        # completion pathway at the moment.
+        # don't track the court-supervision pathway (also 13 to under 18) at the
+        # moment.
         requires_constant_care = person("is_disabled", period.this_year)
         age_eligible = where(
             requires_constant_care,
@@ -27,4 +27,5 @@ class mi_ccap_eligible_child(Variable):
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year
         )
-        return age_eligible & immigration_eligible
+        is_dependent = person("is_tax_unit_dependent", period.this_year)
+        return age_eligible & immigration_eligible & is_dependent

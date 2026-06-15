@@ -28,4 +28,14 @@ class mi_ccap_activity_eligible(Variable):
         )
         has_need_reason = is_employed | is_student | needs_protective_services
         # Every P/SP must individually have a need reason.
-        return spm_unit.sum(is_head_or_spouse & ~has_need_reason) == 0
+        all_psp_have_need_reason = (
+            spm_unit.sum(is_head_or_spouse & ~has_need_reason) == 0
+        )
+        # Fallback: the unit can also qualify via the federal CCDF activity-test
+        # input, which covers approved BEM 703 need reasons we don't model
+        # individually (job search, education/training, treatment, temporary
+        # leave from work or school, etc.).
+        meets_ccdf_activity_test = spm_unit(
+            "meets_ccdf_activity_test", period.this_year
+        )
+        return all_psp_have_need_reason | meets_ccdf_activity_test

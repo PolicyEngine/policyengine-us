@@ -5,7 +5,9 @@ values:
     - self_employment_income
     - sstb_self_employment_income
     - social_security
-    - ssi
+    # SSI (public assistance) is not counted: State Plan FFY 2025-2027 §2.2.4.c
+    # leaves "public assistance" unchecked. SSI recipients are income-waived
+    # anyway (see mi_ccap_income_waived), so this never affects the income test.
     - dividend_income
     - interest_income
     - rental_income

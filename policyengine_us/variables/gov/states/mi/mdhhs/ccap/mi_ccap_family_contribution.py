@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.mi.mdhhs.ccap.mi_ccap_star_rating import (
     MICCAPStarRating,
 )
+from policyengine_us.variables.gov.states.mi.mdhhs.ccap.mi_ccap_provider_type import (
+    MICCAPProviderType,
+)
 
 
 class mi_ccap_family_contribution(Variable):
@@ -60,12 +63,15 @@ class mi_ccap_family_contribution(Variable):
         # The family contribution is waived entirely for income-waived groups.
         income_waived = spm_unit("mi_ccap_income_waived", period)
 
-        # BEM 706: the contribution is also waived per child when the child's
-        # provider is at the star waiver threshold or higher. License-exempt
-        # providers never reach the threshold, so their income-eligible
-        # children always pay.
+        # BEM 706 / RFT 270 p.3: the contribution is also waived per child when
+        # the child attends a licensed provider (center or family/group home) at
+        # the star waiver threshold or higher. License-exempt providers have no
+        # Great Start to Quality rating, so their income-eligible children
+        # always pay regardless of any star rating on the record.
         person = spm_unit.members
         is_eligible_child = person("mi_ccap_eligible_child", period)
+        provider_type = person("mi_ccap_provider_type", period)
+        is_licensed = provider_type != MICCAPProviderType.LICENSE_EXEMPT
         star_rating = person("mi_ccap_star_rating", period)
         star_level = select(
             [
@@ -77,7 +83,7 @@ class mi_ccap_family_contribution(Variable):
             ],
             [1, 2, 3, 4, 5],
         )
-        star_waived = star_level >= fc.star_waiver_threshold
+        star_waived = is_licensed & (star_level >= fc.star_waiver_threshold)
         child_pays = is_eligible_child & ~star_waived
         num_paying_children = spm_unit.sum(child_pays)
         total_fc = per_child_fc * num_paying_children
