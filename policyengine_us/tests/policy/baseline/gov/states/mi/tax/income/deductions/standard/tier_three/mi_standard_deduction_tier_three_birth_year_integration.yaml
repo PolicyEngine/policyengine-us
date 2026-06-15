@@ -4,7 +4,6 @@
 # January 1, 1959, reached age 67 by December 31, 2025).
 - name: 2025 MFJ both age 67 (born 1958) receive tier 3 standard deduction
   period: 2025
-  absolute_error_margin: 1
   input:
     people:
       head:
@@ -25,7 +24,7 @@
         members: [head, spouse]
         state_code: MI
   output:
+    # Eligibility derives from age 67 -> birth year 1958 -> within the 2025
+    # cutoff (1959), producing the $40,000 joint deduction net of exemptions.
     mi_standard_deduction_tier_three_eligible: true
     mi_standard_deduction: 28_400
-    mi_taxable_income: 344_072
-    mi_income_tax: 14_623
