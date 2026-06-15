@@ -53,3 +53,11 @@
     state_code: MI
   output:
     mi_standard_deduction_tier_three_eligible: true
+
+- name: 2026 filer born 1960 below the tier 3 age threshold
+  period: 2026
+  input:
+    older_spouse_birth_year: 1960
+    state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: false
