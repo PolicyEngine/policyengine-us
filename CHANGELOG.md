@@ -1,3 +1,10 @@
+## [1.729.3] - 2026-06-15
+
+### Fixed
+
+- Base the Oklahoma Sales Tax Relief Credit TANF exclusion on actual enrollment (is_tanf_enrolled) rather than the modeled ok_tanf benefit.
+
+
 ## [1.729.2] - 2026-06-15
 
 ### Fixed
