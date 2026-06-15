@@ -22,7 +22,8 @@ def create_mo_refundable_eitc() -> Reform:
         def formula(tax_unit, period, parameters):
             # Use the potential (uncapped) WFTC so the full credit is paid as
             # a refund; `mo_wftc` is capped at tax liability and would zero out
-            # the credit for the low-liability filers refundability benefits.
+            # the credit for the low-liability filers refundability is meant
+            # to help.
             return tax_unit("mo_wftc_potential", period)
 
     class mo_non_refundable_wftc(Variable):

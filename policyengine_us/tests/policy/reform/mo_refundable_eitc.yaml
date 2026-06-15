@@ -12,8 +12,12 @@
   output:
     # 2026 WFTC match is 20% of the federal EITC: 5,000 * 0.2 = 1,000.
     mo_wftc_potential: 1_000
+    # The capped credit is 0 at zero liability; the fix pays the uncapped
+    # potential instead, so this contrast is the whole point of the reform.
+    mo_wftc: 0
     # WFTC is moved out of the nonrefundable bucket...
     mo_non_refundable_wftc: 0
+    mo_non_refundable_credits: 0
     # ...and paid in full as refundable, even with no Missouri tax liability.
     mo_refundable_wftc: 1_000
     mo_refundable_credits: 1_000
@@ -26,7 +30,12 @@
     eitc: 5_000
     mo_income_tax_before_credits: 1_000
   output:
-    # Full potential still paid as refundable; nonrefundable portion stays zero.
+    # Full potential paid as refundable; nonrefundable portion stays zero.
     mo_refundable_wftc: 1_000
     mo_non_refundable_wftc: 0
     mo_refundable_credits: 1_000
+    # The $1,000 liability is offset exactly once by the refundable credit:
+    # 1,000 before refundable credits - 1,000 refundable = 0. If the credit
+    # were double counted this would go negative.
+    mo_income_tax_before_refundable_credits: 1_000
+    mo_income_tax: 0
