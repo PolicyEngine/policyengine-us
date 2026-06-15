@@ -1,0 +1,24 @@
+# Age eligibility: the head of the unit must be at least 18.
+- name: Head at the age threshold is eligible
+  period: 2026
+  input:
+    in_marin: true
+    age_head: 18
+  output:
+    ca_marin_general_relief_age_eligible: true
+
+- name: Head above the age threshold is eligible
+  period: 2026
+  input:
+    in_marin: true
+    age_head: 40
+  output:
+    ca_marin_general_relief_age_eligible: true
+
+- name: Head below the age threshold is ineligible
+  period: 2026
+  input:
+    in_marin: true
+    age_head: 17
+  output:
+    ca_marin_general_relief_age_eligible: false

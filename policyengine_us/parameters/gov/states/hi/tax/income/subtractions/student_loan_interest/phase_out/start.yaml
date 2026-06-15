@@ -1,0 +1,24 @@
+description: Hawaii begins phasing out the student loan interest deduction when modified adjusted gross income exceeds this amount, by filing status.
+
+SINGLE:
+  2025-01-01: 50_000
+JOINT:
+  2025-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 50_000
+SURVIVING_SPOUSE:
+  2025-01-01: 100_000
+SEPARATE:
+  2025-01-01: 0
+
+metadata:
+  breakdown:
+    - filing_status
+  unit: currency-USD
+  period: year
+  label: Hawaii student loan interest deduction phase-out start
+  reference:
+    - title: HRS section 235-2.4 - Hawaii operative IRC provisions (sections 63 to 530)
+      href: https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm
+    - title: 2025 Hawaii N-11 Instructions
+      href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35

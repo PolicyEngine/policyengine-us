@@ -1,0 +1,15 @@
+- name: Family of 3 uses the 2025 gross income standard through February 2026
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    state_code: IN
+  output:
+    in_tanf_initial_gross_income_standard: 778
+
+- name: Family of 3 uses the post-March-2026 gross income standard
+  period: 2027-01
+  input:
+    spm_unit_size: 3
+    state_code: IN
+  output:
+    in_tanf_initial_gross_income_standard: 797

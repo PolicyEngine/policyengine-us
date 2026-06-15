@@ -1,0 +1,264 @@
+- name: A single adult citizen with resources below the limits receives the maximum aid payment.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_eligible_person_count: 1
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief_eligible: true
+    # EU size 1, no shared housing, no countable income.
+    ca_oc_general_relief_max_aid_payment: 355
+    ca_oc_general_relief: 355
+
+- name: An undocumented adult does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: A unit with a minor child is routed to CalWORKs and does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 10
+    households:
+      household:
+        members: [adult, child]
+        county_str: ORANGE_COUNTY_CA
+        state_code: CA
+  output:
+    # A family with a minor child and no income receives CalWORKs, so the parent
+    # is an excluded other-cash-assistance recipient (Sec 20.4.b) and is not an
+    # eligible person; the child is not an eligible person either.
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: A person receiving SSI does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 100
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: A CalWORKs unit does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 100 * 12
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_eligible: false
+
+- name: Cash above the resource limit does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+        spm_unit_cash_assets: 1_001
+  output:
+    # Cash exceeds the $1,000 personal property limit (Sec 60.2.a).
+    ca_oc_general_relief_resources_eligible: false
+    ca_oc_general_relief_eligible: false
+
+- name: Income above the maximum aid payment makes the unit financially ineligible.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        employment_income: 1_000 * 12
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+  output:
+    # Countable income 800 exceeds the size-1 MAP (355), so net income is not
+    # below the MAP: financially ineligible (Sec 80.2.d), and the grant is 0.
+    ca_oc_general_relief_countable_income: 800
+    ca_oc_general_relief_income_eligible: false
+    ca_oc_general_relief_eligible: false
+    ca_oc_general_relief: 0
+
+# Mapping the eligible population from real family inputs: only able-bodied,
+# childless, qualified-immigration adults with low assets pass the screen.
+- name: An able-bodied childless citizen adult with low assets passes the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        county_str: ORANGE_COUNTY_CA
+        state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: false
+    ca_oc_general_relief_eligible: true
+
+- name: A disabled adult receives SSI and so does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person]
+        county_str: ORANGE_COUNTY_CA
+        state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_eligible: false
+
+- name: A recently arrived aged permanent resident receives CAPI and so does not pass the partial screen.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+    households:
+      household:
+        members: [person]
+        county_str: ORANGE_COUNTY_CA
+        state_code: CA
+  output:
+    # No SSI (not an SSI-qualified noncitizen), but receives CAPI, which is an
+    # excluded "other type of public assistance" under Sec 20.4.b.
+    ca_oc_general_relief_receives_other_cash_assistance: true
+    ca_oc_general_relief_eligible: false
+
+- name: A single adult in shared living has the grant reduced for shared housing.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_oc: true
+        is_shared_living: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+  output:
+    # Shared living reduces the size-1 MAP (355) by 15%: 355 x 0.85 = 301.75.
+    ca_oc_general_relief: 301.75
+
+- name: Cash within the resource limit passes with the full grant.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    households:
+      household:
+        members: [person]
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        ca_tanf: 0
+        spm_unit_cash_assets: 250
+  output:
+    # Cash 250 <= $1,000 limit and is no longer counted as income, so the unit
+    # passes and receives the full size-1 grant.
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief: 355
+
+- name: A fully eligible adult outside Orange County does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 30
+    households:
+      household:
+        members: [person]
+        county_str: LOS_ANGELES_COUNTY_CA
+        state_code: CA
+  output:
+    # Same person who qualifies in Orange County; the in_oc gate denies aid
+    # everywhere else.
+    ca_oc_general_relief_eligible: false
+    ca_oc_general_relief: 0
