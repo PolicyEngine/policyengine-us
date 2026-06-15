@@ -8,8 +8,8 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.SINGLE: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.SINGLE: 7450
     gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
     people:
       parent1:
@@ -38,8 +38,8 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.SINGLE: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.SINGLE: 7450
     gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
     people:
       parent1:
@@ -68,8 +68,8 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.JOINT: 261000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.JOINT: 7450
     gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
     people:
       parent1:
