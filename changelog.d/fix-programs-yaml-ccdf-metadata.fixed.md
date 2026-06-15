@@ -1,1 +1,0 @@
-Fixed scrambled CCDF program coverage metadata in programs.yaml for Connecticut, Florida, Hawaii, Idaho, Indiana, Kansas, and Kentucky, and corrected the Hawaii program name, Connecticut status and variable, and Illinois parameter prefix.
