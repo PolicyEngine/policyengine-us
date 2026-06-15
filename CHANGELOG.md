@@ -1,3 +1,10 @@
+## [1.729.2] - 2026-06-15
+
+### Fixed
+
+- Fixed the Rhode Island contributed Child Tax Credit stepped phaseout to use filing-status-specific thresholds and increments.
+
+
 ## [1.729.1] - 2026-06-15
 
 ### Fixed
