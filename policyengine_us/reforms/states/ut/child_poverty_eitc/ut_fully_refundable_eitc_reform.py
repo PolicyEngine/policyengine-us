@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    ordered_capped_state_non_refundable_credits,
+)
 
 
 def create_ut_fully_refundable_eitc() -> Reform:
@@ -49,20 +52,24 @@ def create_ut_fully_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
 
         def formula(tax_unit, period, parameters):
-            # Baseline non-refundable credits, resolved to the list of
-            # variable names before passing to `add` (which iterates variable
-            # names, not parameter paths).
-            non_refundable_list = parameters(
+            # Mirror the baseline's ordered-cap logic but drop ut_eitc from
+            # the non-refundable bucket — it's paid as refundable under this
+            # reform. A raw `sum - ut_eitc` instead of the ordered walk would
+            # overstate the non-refundable total whenever the bucket binds at
+            # liability (later credits in the ordered list would no longer
+            # see the EITC's slot freed correctly).
+            ordered_credits = parameters(
                 period
             ).gov.states.ut.tax.income.credits.non_refundable
-            baseline_non_refundable = add(
-                tax_unit, period, non_refundable_list
+            filtered_credits = [
+                credit for credit in list(ordered_credits) if credit != "ut_eitc"
+            ]
+            return ordered_capped_state_non_refundable_credits(
+                tax_unit,
+                period,
+                filtered_credits,
+                "ut_income_tax_before_non_refundable_credits",
             )
-            # Remove ut_eitc from non-refundable (it's now handled separately)
-            ut_eitc = tax_unit("ut_eitc", period)
-            # Add back nonrefundable EITC (0 when reform is in effect)
-            nonrefundable_eitc = tax_unit("ut_non_refundable_eitc", period)
-            return baseline_non_refundable - ut_eitc + nonrefundable_eitc
 
     class ut_refundable_credits(Variable):
         value_type = float
