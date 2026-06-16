@@ -322,11 +322,12 @@
         state_code: MN
         county: BECKER_COUNTY_MN
   output:
-    # Becker center infant hourly 14 * (20 * 52 / 12) = 1,213.33/month max rate.
+    # Becker center infant hourly 14, 4 hrs/day: daily cap min(14*4, 67.50)=56
+    # not binding; weekly cap min(14*20, 274)=274 -> 274 * 52 / 12 = 1,187.33.
     # Size-2 copay at 18,000 -> $2 biweekly -> 2 * 26 / 12 = 4.33/month.
     mn_ccap_copay: 4.33
-    # Subsidy = min(2,000, 1,213.33) - 4.33 = 1,209.00.
-    mn_ccap: 1_209
+    # Subsidy = min(2,000, 1,187.33) - 4.33 = 1,183.00.
+    mn_ccap: 1_183
 
 - name: Case 11, registration fee adds to the subsidy.
   period: 2026-01
@@ -525,8 +526,9 @@
         state_code: MN
         county: BECKER_COUNTY_MN
   output:
-    # Becker family infant full-day 45 * 20 attending days = 900.00/month max rate.
+    # Becker family infant full-day 45 * 20 days = 900 capped at the weekly rate
+    # 205 * 52 / 12 = 888.33/month max rate.
     # Size-2 copay at 18,000 -> $2 biweekly -> 4.33/month.
     mn_ccap_copay: 4.33
-    # Subsidy = min(1,000, 900.00) - 4.33 = 895.67.
-    mn_ccap: 895.67
+    # Subsidy = min(1,000, 888.33) - 4.33 = 884.00.
+    mn_ccap: 884

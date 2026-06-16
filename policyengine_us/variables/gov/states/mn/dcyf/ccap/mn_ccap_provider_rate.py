@@ -15,8 +15,10 @@ class mn_ccap_provider_rate(Variable):
     definition_period = MONTH
     defined_for = "mn_ccap_eligible_child"
     reference = (
-        # DHS-6441F standard maximum rates; Minn. Stat. 142E.17.
+        # DHS-6441F standard maximum rates.
         "https://edocs.dhs.state.mn.us/lfserver/Public/DHS-6441F-ENG#page=5",
+        # Minn. Stat. 142E.17 subd. 1(f), 2(b) — daily and weekly payment caps.
+        "https://www.revisor.mn.gov/statutes/cite/142E.17",
     )
 
     def formula(person, period, parameters):
@@ -59,17 +61,39 @@ class mn_ccap_provider_rate(Variable):
         )
         lnl_hourly_rate = p.lnl_hourly[age_group][county_key]
 
-        # Convert each rate unit to a monthly maximum: weekly rates use the
-        # average weeks-per-month factor (RI precedent), daily rates use
-        # monthly attending days, and hourly rates use monthly attending hours.
-        days_per_month = person("childcare_attending_days_per_month", period.this_year)
+        hours_per_day = person("childcare_hours_per_day", period.this_year)
         hours_per_week = person("childcare_hours_per_week", period.this_year)
-        hours_per_month = hours_per_week * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
+        days_per_month = person("childcare_attending_days_per_month", period.this_year)
+        weeks_per_month = WEEKS_IN_YEAR / MONTHS_IN_YEAR
 
-        monthly_weekly = weekly_rate * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
-        monthly_full_day = full_day_rate * days_per_month
-        monthly_hourly = hourly_rate * hours_per_month
-        monthly_lnl = lnl_hourly_rate * hours_per_month
+        # Minn. Stat. 142E.17 subd. 1(f): payment for one day of care cannot
+        # exceed the daily rate and payment for one week cannot exceed the
+        # weekly rate. Cap the hourly rate at the daily rate per day, then cap
+        # the week at the weekly rate.
+        capped_daily = min_(hourly_rate * hours_per_day, full_day_rate)
+        effective_hourly = where(
+            hours_per_day > 0, capped_daily / hours_per_day, hourly_rate
+        )
+        weekly_from_hourly = min_(effective_hourly * hours_per_week, weekly_rate)
+        monthly_hourly = weekly_from_hourly * weeks_per_month
+
+        # A week of full-day care cannot exceed the weekly rate.
+        monthly_full_day = min_(
+            full_day_rate * days_per_month, weekly_rate * weeks_per_month
+        )
+        monthly_weekly = weekly_rate * weeks_per_month
+
+        # Subd. 2(b): legal non-licensed providers are paid hourly, capped at
+        # the maximum payable hours per day and per week.
+        lnl_daily_fraction = where(
+            hours_per_day > p.lnl_max_daily_hours,
+            p.lnl_max_daily_hours / hours_per_day,
+            1,
+        )
+        lnl_weekly_hours = min_(
+            hours_per_week * lnl_daily_fraction, p.lnl_max_weekly_hours
+        )
+        monthly_lnl = lnl_hourly_rate * lnl_weekly_hours * weeks_per_month
 
         return select(
             [

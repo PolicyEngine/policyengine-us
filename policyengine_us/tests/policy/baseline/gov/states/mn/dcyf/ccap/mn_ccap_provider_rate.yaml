@@ -79,7 +79,7 @@
 
 # Edge cases covering the full-day, hourly, and LNL-hourly rate units (the
 # cases above all exercise the weekly unit). Becker County center rates:
-# infant full-day 67.50, infant hourly 14. Becker LNL school-age hourly 3.69.
+# infant full-day 67.50, infant hourly 14. Becker LNL school-age hourly 3.15.
 # Daily rate -> monthly via attending days; hourly -> monthly via hours/week x
 # (52 / 12).
 - name: Case 5, Becker center infant full-day rate converts by attending days.
@@ -118,8 +118,9 @@
         state_code: MN
         county: BECKER_COUNTY_MN
   output:
-    # Hourly 14 * (20 * 52 / 12) = 14 * 86.6667 = 1,213.33/month.
-    mn_ccap_provider_rate: 1_213.33
+    # Hourly 14, 4 hrs/day -> daily cap min(14 * 4, 67.50) = 56 (not binding).
+    # Weekly cap: min(14 * 20, 274) = 274 -> 274 * 52 / 12 = 1,187.33/month.
+    mn_ccap_provider_rate: 1_187.33
 
 - name: Case 7, Becker legal non-licensed school-age hourly rate.
   period: 2026-01
@@ -136,6 +137,69 @@
         state_code: MN
         county: BECKER_COUNTY_MN
   output:
-    # LNL uses its own hourly table; school-age 3.69 * (40 * 52 / 12) =
-    # 3.69 * 173.3333 = 546.00/month.
+    # LNL uses its own hourly table; school-age 3.15 * (40 * 52 / 12) =
+    # 3.15 * 173.3333 = 546.00/month (40 hrs/week is under the 50-hour cap).
     mn_ccap_provider_rate: 546
+
+# Statutory caps (Minn. Stat. 142E.17 subd. 1(f), 2(b)): a day of care cannot
+# exceed the daily rate, a week cannot exceed the weekly rate, and legal
+# non-licensed payment is capped at 10 hours/day and 50 hours/week.
+- name: Case 8, hourly daily cap binds when the hourly rate times daily hours exceeds the daily rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 20  # <= 35
+        childcare_hours_per_day: 5  # <= 5 -> hourly rate
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Daily cap: min(14 * 5, 67.50) = 67.50 -> effective hourly 13.50.
+    # Weekly: min(13.50 * 20, 274) = 270 -> 270 * 52 / 12 = 1,170.00/month.
+    mn_ccap_provider_rate: 1_170
+
+- name: Case 9, full-day weekly cap binds when the daily rate times attending days exceeds the weekly rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 30  # <= 35
+        childcare_hours_per_day: 6  # > 5 -> full-day rate
+        childcare_attending_days_per_month: 20
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Full-day 67.50 * 20 = 1,350 capped at the weekly rate 274 * 52 / 12 =
+    # 1,187.33/month.
+    mn_ccap_provider_rate: 1_187.33
+
+- name: Case 10, legal non-licensed weekly hours capped at 50.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_hours_per_week: 60  # capped at 50 payable hours/week
+        mn_ccap_provider_type: LEGAL_NON_LICENSED
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # LNL school-age 3.15 * min(60, 50) = 157.50/week -> 157.50 * 52 / 12 =
+    # 682.50/month.
+    mn_ccap_provider_rate: 682.50
