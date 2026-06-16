@@ -1,7 +1,9 @@
 # MO CCS overall eligibility tests
 # mo_ccs_eligible is SPMUnit, MONTH.
-# Requires: an eligible child AND income eligible AND asset eligible AND
-# (activity eligible OR protective services). State scope is MO.
+# Requires: an eligible child AND asset eligible AND
+# ((income eligible AND activity eligible) OR protective services).
+# Protective-services children bypass BOTH the income and activity tests
+# (5 CSR 25-200.060(7)(B)). State scope is MO.
 
 - name: Case 1, eligible working family in MO.
   period: 2025-01
@@ -132,7 +134,8 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Foster child waives the activity requirement; income still eligible.
+    # Foster (protective-services) child bypasses the activity requirement; the
+    # family is also within the income limit, so the unit is eligible.
     mo_ccs_eligible: true
 
 - name: Case 6, non-MO family ineligible.
@@ -160,3 +163,34 @@
         state_code: KS
   output:
     mo_ccs_eligible: false
+
+- name: Case 7, protective services child above 150 percent FPL is still eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 60,000/yr = 5,000/mo > 2,643.75 (150% FPL size 2) -> income ineligible,
+    # but the foster (protective-services) child bypasses the income maximum
+    # (5 CSR 25-200.060(7)(B)), so the unit is eligible.
+    mo_ccs_income_eligible: false
+    mo_ccs_eligible: true

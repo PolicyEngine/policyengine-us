@@ -1,7 +1,13 @@
 # MO Child Care Subsidy integration tests
 # End-to-end scenarios exercising eligibility, region/time classification,
-# the daily rate (with transitional funding multiplier), the sliding fee, and
-# the final monthly benefit.
+# the daily rate, the sliding fee, the transitional funding multiplier
+# (applied in mo_ccs to the post-fee remainder), and the final monthly benefit.
+#
+# Test period is 2025-01: this uses the 2025 federal poverty guidelines, which
+# match the dollar income bands on the Nov-2025 DESE Income/Sliding-Fee chart
+# and the 2025-10-01 rate and copay schedules these cases are calibrated to.
+# (2025-01 is the same calendar year as the 2025-10-01 parameter start, so it
+# does not raise ParameterNotFoundError.)
 #
 # 2025 reference values (test period 2025-01):
 #   FPG (contiguous US): family of 2 = 21,150/yr -> 1,762.50/mo.
@@ -141,14 +147,14 @@
     mo_ccs_income_eligible: true
     mo_ccs_eligible: true
     # FPL ratio = 2,820 / 1,762.50 = 1.60 -> TCC1 funding 0.80.
-    # Daily benefit = $96 * 0.80 = $76.80.
-    mo_ccs_maximum_daily_benefit: [0, 76.8]
+    # Daily benefit returns the gross base $96/day (funding applied in mo_ccs).
+    mo_ccs_maximum_daily_benefit: [0, 96]
     # Size 2 income 2,820 > 2,644 -> tier 8 (TCC1) full fee $7.50/day.
     # $7.50 * 20 = $150/mo copay.
     mo_ccs_copay: 150
-    # Reimbursement = min($76.80 * 20, $2,500) = $1,536.
-    # Benefit = max(1,536 - 150, 0) = $1,386/mo.
-    mo_ccs: 1_386
+    # Reimbursement = min($96 * 20, $2,500) = $1,920.
+    # TCC: benefit = funding 0.80 * max(1,920 - 150, 0) = 0.80 * 1,770 = $1,416/mo.
+    mo_ccs: 1_416
 
 - name: Case 4, special-needs child with no sliding fee.
   period: 2025-01

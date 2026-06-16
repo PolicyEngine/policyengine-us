@@ -18,20 +18,21 @@ class mo_ccs_copay(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dese.ccs.copay
-        monthly_income = spm_unit("mo_ccs_countable_income", period)
+        adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
 
         # The sliding fee tier is read from the household-size ladder by
-        # monthly gross income. Households larger than the largest published
-        # size (20) use the largest size column.
+        # monthly adjusted gross income (5 CSR 25-200.060(3)(C)1). Households
+        # larger than the largest published size (20) use the largest size
+        # column.
         size = spm_unit("spm_unit_size", period.this_year)
         max_size = 20
         tier = select(
             [size == n for n in range(1, max_size)],
             [
-                getattr(p.tier, f"size_{n}").calc(monthly_income)
+                getattr(p.tier, f"size_{n}").calc(adjusted_income)
                 for n in range(1, max_size)
             ],
-            default=getattr(p.tier, f"size_{max_size}").calc(monthly_income),
+            default=getattr(p.tier, f"size_{max_size}").calc(adjusted_income),
         )
 
         # The daily fee per child depends on the tier and the child's care
@@ -64,10 +65,12 @@ class mo_ccs_copay(Variable):
 
         # Households whose only income is Temporary Assistance, or whose gross
         # income is below the state median income floor, pay only the minimum
-        # annual fee.
+        # annual fee. The 25% SMI floor is keyed on gross income (Manual
+        # 2025.010 item 3), unlike the sliding fee tier above.
+        gross_income = spm_unit("mo_ccs_countable_income", period)
         smi = spm_unit("hhs_smi", period.this_year)
         smi_floor = smi * p.smi_minimum_rate / MONTHS_IN_YEAR
         is_tanf = spm_unit("is_tanf_enrolled", period)
-        pays_minimum = is_tanf | (monthly_income < smi_floor)
+        pays_minimum = is_tanf | (gross_income < smi_floor)
         minimum_fee = p.minimum_annual_fee / MONTHS_IN_YEAR
         return where(pays_minimum, minimum_fee, monthly_fee)

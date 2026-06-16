@@ -10,8 +10,10 @@ metadata:
   period: year
   label: Missouri Child Care Subsidy transitional funding rate
   reference:
-    - title: Missouri Child Care Subsidy Eligibility Policy Manual 2010.045 Income Eligibility Guidelines
-      href: https://web.archive.org/web/20211208073807id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/10
+    # The live DESE manual page returns HTTP 403 to automated access; this is
+    # the current page text recovered via the Wayback Machine.
+    - title: Missouri Child Care Subsidy Eligibility Policy Manual 2010.045.00 Income Eligibility Guidelines
+      href: https://web.archive.org/web/20250831220820id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/00
     - title: 5 CSR 25-200.060 Eligibility and Authorization for Child Care Subsidy (Transitional Child Care)
       href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060
 

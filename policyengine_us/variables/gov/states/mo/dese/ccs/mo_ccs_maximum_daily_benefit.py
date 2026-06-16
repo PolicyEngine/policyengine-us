@@ -30,7 +30,7 @@ class mo_ccs_maximum_daily_benefit(Variable):
             special_needs = provider.special_needs[region][age_group][time_category]
             return where(is_disabled, special_needs, base)
 
-        daily_rate = select(
+        return select(
             [
                 provider_type == MOCCSProviderType.REGISTERED_CENTER,
                 provider_type == MOCCSProviderType.SIX_OR_FEWER,
@@ -46,12 +46,3 @@ class mo_ccs_maximum_daily_benefit(Variable):
                 provider_rate(rates.group_home),
             ],
         )
-
-        # Transitional Child Care families are funded at a reduced share of the
-        # base rate by federal poverty guideline ratio; traditional families
-        # are funded at the full rate.
-        adjusted_income = person.spm_unit("mo_ccs_adjusted_income", period)
-        monthly_fpg = person.spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
-        fpl_ratio = where(monthly_fpg > 0, adjusted_income / monthly_fpg, 0)
-        funding_rate = p.transitional.funding_rate.calc(fpl_ratio)
-        return daily_rate * funding_rate

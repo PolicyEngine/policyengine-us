@@ -1,9 +1,10 @@
 # MO CCS activity (need for care) eligibility tests
 # mo_ccs_activity_eligible is SPMUnit, MONTH.
 # Requires at least one tax-unit head/spouse, and every head/spouse to have a
-# qualifying activity: employment (weekly_hours_worked > 0) or full-time study.
+# qualifying activity: employment (weekly_hours_worked > 0), full-time study,
+# or being an incapacitated parent (modeled as is_disabled; Manual 2010.050.25).
 # We don't track activity-hours verification at the moment, so any positive
-# activity is treated as meeting the need (Manual 2010.050.05-.20).
+# activity is treated as meeting the need (Manual 2010.050.05-.25).
 
 - name: Case 1, working parent meets activity requirement.
   period: 2025-01
@@ -127,3 +128,34 @@
   output:
     # No head/spouse present -> not eligible.
     mo_ccs_activity_eligible: false
+
+- name: Case 6, two-parent unit with one working and one incapacitated parent passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # An incapacitated parent is itself a valid need for care (Manual
+    # 2010.050.25), so the disabled non-working spouse satisfies the per-parent
+    # activity requirement and the unit passes.
+    mo_ccs_activity_eligible: true

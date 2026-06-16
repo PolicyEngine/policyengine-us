@@ -1,12 +1,17 @@
 # MO CCS sliding fee (copay) tests
 # mo_ccs_copay is SPMUnit, MONTH.
-# Tier looked up from copay/tier/size_N by monthly countable income; daily fee
-# from copay/daily_fee/{full,half,part}_unit by tier and the child's time unit;
+# Tier looked up from copay/tier/size_N by monthly ADJUSTED gross income
+# (gross countable income minus health_insurance_premiums; 5 CSR
+# 25-200.060(3)(C)1). No case below sets health_insurance_premiums, so adjusted
+# income equals gross countable income here. The daily fee comes from
+# copay/daily_fee/{full,half,part}_unit by tier and the child's time unit;
 # monthly fee = sum over paying children of daily_fee * attending days.
 # A paying child is an eligible, non-disabled child attending care (days > 0).
-# $1/year minimum (1/12 per month) applies when only-TANF or income < 25% SMI.
+# $1/year minimum (1/12 per month) applies when only-TANF or GROSS income < 25%
+# SMI (the 25% SMI floor keys on gross income per Manual 2025.010 item 3).
 #
-# 2025 values used below (test period 2025-01):
+# 2025 values used below (test period 2025-01, which uses 2025 FPG to match the
+# Nov-2025 chart dollar bands and the 2025-10-01 copay schedule):
 #   FPG size 2 = 21,150/yr. MO SMI base 2025 = 105,825.
 #   SMI size 2 = 105,825 * 0.68 = 71,961/yr; 25% / 12 = $1,499.19/mo floor.
 #   Size 2 tier bands (monthly income): tier 7 is >$1,199 up to $2,644.
@@ -479,4 +484,200 @@
     # floor; 4,000 > floor -> not minimum. Size-20 tier 7 band is > 3,068 up to
     # 15,019 -> tier 7. Only person2 is a paying child (others have no care
     # days). Full fee $5/day * 20 days * 1 child = $100/mo.
+    mo_ccs_copay: 100
+
+- name: Case 14, single-person household exercises the size-1 tier branch.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Degenerate size-1 unit: spm_unit_size == 1 hits the size_1 tier column
+    # (not the size_20 default). Income 2,000/mo > size-1 SMI floor
+    # (105,825 * 0.52 * 0.25 / 12 = $1,146.44) -> not the minimum fee.
+    # No eligible child in care -> monthly fee $0.
+    mo_ccs_copay: 0
+
+- name: Case 15, transitional family half-time child in the TCC1 fee row.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_600
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 4
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 4 hrs/week -> half
+    # unit. Tier 8 half fee = $3.75/day. $3.75 * 20 * 1 = $75/mo.
+    mo_ccs_copay: 75
+
+- name: Case 16, transitional family part-time child in the TCC1 fee row.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_600
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 2
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 2 hrs/week -> part
+    # unit. Tier 8 part fee = $2.50/day. $2.50 * 20 * 1 = $50/mo.
+    mo_ccs_copay: 50
+
+- name: Case 17, household above the published max size uses the size-20 column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 48_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        childcare_attending_days_per_month: 20
+      person3:
+        age: 38
+      person4:
+        age: 30
+      person5:
+        age: 30
+      person6:
+        age: 30
+      person7:
+        age: 30
+      person8:
+        age: 30
+      person9:
+        age: 30
+      person10:
+        age: 30
+      person11:
+        age: 30
+      person12:
+        age: 30
+      person13:
+        age: 30
+      person14:
+        age: 30
+      person15:
+        age: 30
+      person16:
+        age: 30
+      person17:
+        age: 30
+      person18:
+        age: 30
+      person19:
+        age: 30
+      person20:
+        age: 30
+      person21:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+            person13,
+            person14,
+            person15,
+            person16,
+            person17,
+            person18,
+            person19,
+            person20,
+            person21,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+            person13,
+            person14,
+            person15,
+            person16,
+            person17,
+            person18,
+            person19,
+            person20,
+            person21,
+          ]
+        state_code: MO
+  output:
+    # Size 21 > 20 -> falls to the select() default (size_20 column). Countable
+    # income = 48,000 / 12 = 4,000/mo. Size-21 SMI = 105,825 * 1.77 =
+    # 187,310.25; 25% / 12 = $3,902.30 floor; 4,000 > floor -> not minimum.
+    # Size-20 tier 7 band > 3,068 up to 15,019 -> tier 7. Only person2 is a
+    # paying child. Full fee $5/day * 20 days * 1 child = $100/mo.
     mo_ccs_copay: 100

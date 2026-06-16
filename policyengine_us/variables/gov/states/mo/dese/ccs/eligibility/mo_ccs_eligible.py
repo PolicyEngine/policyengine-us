@@ -9,7 +9,7 @@ class mo_ccs_eligible(Variable):
     defined_for = StateCode.MO
     reference = (
         "https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060",
-        "https://web.archive.org/web/20211208073247id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/005/00",
+        "https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-050",
     )
 
     def formula(spm_unit, period, parameters):
@@ -18,11 +18,12 @@ class mo_ccs_eligible(Variable):
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
         activity_eligible = spm_unit("mo_ccs_activity_eligible", period)
         protective = spm_unit("mo_ccs_protective_services", period)
-        # The need for care is met by an activity or by the protective-services
-        # pathway.
+        # Protective-services children are eligible regardless of parental
+        # financial need and are not subject to the income maximums or the need
+        # for care, so the protective pathway bypasses both the income and
+        # activity tests (5 CSR 25-200.060(7)(B)).
         return (
             has_eligible_child
-            & income_eligible
             & asset_eligible
-            & (activity_eligible | protective)
+            & ((income_eligible & activity_eligible) | protective)
         )
