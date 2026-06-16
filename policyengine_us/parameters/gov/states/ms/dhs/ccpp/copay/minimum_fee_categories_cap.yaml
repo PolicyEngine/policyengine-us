@@ -1,0 +1,16 @@
+description: Mississippi caps the monthly co-payment at this amount for minimum-fee categories under the Child Care Payment Program.
+# Minimum-fee categories (income above the federal poverty line) include
+# protective-services children, parents with a disability receiving SSI, and
+# special-needs children. The categories that cannot be tracked at the moment
+# (transitional child care, teen parents, Healthy Families Mississippi) are
+# handled on the variable side.
+values:
+  2021-11-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Mississippi CCPP minimum-fee co-payment cap
+  reference:
+    - title: Mississippi CCPP Policy Manual, Rule 6.2 (Co-payment Fees)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=39

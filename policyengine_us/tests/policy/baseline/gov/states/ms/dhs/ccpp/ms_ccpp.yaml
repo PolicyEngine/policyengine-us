@@ -1,0 +1,192 @@
+# ms_ccpp is SPMUnit, MONTH.
+# Benefit = max( min(monthly childcare expenses, sum of per-child weekly max
+# rates x 52/12) - monthly family copay, 0 ).
+# spm_unit_pre_subsidy_childcare_expenses is annual; read monthly it divides by 12.
+
+- name: Case 1, single parent one preschooler in metro center full time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8  # full time
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Rate: center metro FT preschool = 135/wk -> 135 * 52/12 = 585.00/mo
+    # Copay: 2,000/mo, size 2, <= 50% SMI 2,133.50 -> very-low 5.5% = 110
+    # Benefit = max(min(1,000, 585) - 110, 0) = 585 - 110 = 475.00
+    ms_ccpp: 475
+
+- name: Case 2, provider charge below the maximum rate caps the subsidy at the charge.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000  # 250/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Monthly rate 585 > monthly expenses 250 -> capped at 250
+    # Copay = 110 (very-low band, size 2)
+    # Benefit = max(min(250, 585) - 110, 0) = 250 - 110 = 140.00
+    ms_ccpp: 140
+
+- name: Case 3, copay exceeds capped expenses so benefit floors at zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000  # 4,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200  # 100/mo
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Rates: preschool 135 + school-age 130 = 265/wk -> 1,148.33/mo
+    # Copay: 4,000/mo, size 4, > 50% SMI 3,137.50 -> low band 5.5% = 220
+    # Monthly expenses = 100
+    # Benefit = max(min(100, 1,148.33) - 220, 0) = max(100 - 220, 0) = 0
+    ms_ccpp: 0
+
+- name: Case 4, negative countable income does not inflate the benefit.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Income floored at 0 -> copay $0 (at/below FPL)
+    # Rate: center metro FT preschool = 135/wk -> 585/mo
+    # Benefit = max(min(1,000, 585) - 0, 0) = 585.00 (capped at rate, not inflated)
+    ms_ccpp: 585
+
+# Edge case: two children in care aggregate per-child rates, with the single
+# family copay subtracted once (not per child). See Cases 1-4 above.
+- name: Case 5, two children aggregate distinct per-child rates with one copay.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 28_800  # 2,400/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:  # infant
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:  # preschool
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Per-child rates: infant 152 + preschool 135 = 287/wk -> 287 * 52/12 = 1,243.67/mo
+    # Copay: 2,400/mo, size 3, > FPG 2,151.67 and <= 50% SMI 2,635.50
+    #   -> very-low band 5.0% = 120 (single family copay, subtracted once)
+    # Benefit = max(min(2,000, 1,243.67) - 120, 0) = 1,243.67 - 120 = 1,123.67
+    ms_ccpp: 1_123.67

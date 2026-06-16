@@ -1,0 +1,26 @@
+description: Mississippi provides these maximum weekly payment rates for special-needs children in registered family child care homes under the Child Care Payment Program.
+# Flat all-ages special-needs rate effective July 2023 (2024 Market Rate Survey
+# Table 2, p.10). This rate is the same for metro and non-metro facilities, but is
+# keyed by location for structural consistency with the standard family-home rates.
+# In-home care (special-needs only, child's own home) is paid this home-based rate.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Mississippi CCPP special-needs family home weekly rates
+  breakdown:
+    - ms_ccpp_facility_location
+    - ms_ccpp_time_category
+  reference:
+    - title: 2024 Mississippi Child Care Market Rate Survey, Table 2 (Current CCPP Rates, Registered Family Homes, Special Needs)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=10
+
+METRO:
+  FULL_TIME:
+    2023-07-01: 125
+  PART_TIME:
+    2023-07-01: 63
+NON_METRO:
+  FULL_TIME:
+    2023-07-01: 125
+  PART_TIME:
+    2023-07-01: 63

@@ -1,0 +1,139 @@
+# ms_ccpp_eligible is SPMUnit, MONTH.
+# Standard path: eligible child AND assets AND income AND activity.
+# Categorical path: eligible child AND assets AND (TANF | homeless | protective),
+# which bypasses the income and activity tests.
+
+- name: Case 1, working low-income family with eligible child is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_income_eligible: true
+    ms_ccpp_activity_eligible: true
+    ms_ccpp_eligible: true
+
+- name: Case 2, income over 85 percent SMI and not working is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000
+        weekly_hours_worked_before_lsr: 10
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Family of 2: 70,000 > 43,523.40 (85% SMI) and activity not met
+    ms_ccpp_income_eligible: false
+    ms_ccpp_activity_eligible: false
+    ms_ccpp_eligible: false
+
+- name: Case 3, TANF family over income limit is eligible via categorical bypass.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # above 85% SMI for family of 2
+        weekly_hours_worked_before_lsr: 0  # activity not met
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Income and activity both fail, but TANF categorical bypasses them
+    ms_ccpp_income_eligible: false
+    ms_ccpp_activity_eligible: false
+    ms_ccpp_categorically_eligible: true
+    ms_ccpp_eligible: true
+
+- name: Case 4, no eligible child means not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15  # over 13, not disabled -> not an eligible child
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_eligible: false
+
+- name: Case 5, non-Mississippi household is not eligible (defined_for gate).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL  # not Mississippi
+  output:
+    # defined_for = StateCode.MS zeroes the gate and the benefit for non-MS
+    ms_ccpp_eligible: false
+    ms_ccpp: 0

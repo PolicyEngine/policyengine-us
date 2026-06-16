@@ -1,0 +1,171 @@
+# ms_ccpp_activity_eligible is SPMUnit, MONTH.
+# Each parent/caretaker (tax unit head/spouse) must work >= 25 hr/wk OR be a
+# full-time student OR be an SSI-disabled parent (activity waived).
+# Uses weekly_hours_worked_before_lsr (default 40), NOT weekly_hours_worked.
+
+- name: Case 1, single parent working 40 hours per week.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: true
+
+- name: Case 2, single parent working exactly 25 hours per week (lower boundary).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: true
+
+- name: Case 3, single parent working 24 hours per week and not a student.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 24
+        is_full_time_student: false
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: false
+
+- name: Case 4, single parent full-time student working under 25 hours.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked_before_lsr: 10
+        is_full_time_student: true
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: true
+
+- name: Case 5, SSI-disabled parent has activity requirement waived.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        is_ssi_disabled: true
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: true
+
+- name: Case 6, two-parent household one parent working under 25 hours.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 10
+        is_full_time_student: false
+        is_ssi_disabled: false
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Every head/spouse must individually meet activity; person2 fails -> not eligible
+    ms_ccpp_activity_eligible: false
+
+- name: Case 7, two-parent household both meeting activity.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 30
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    ms_ccpp_activity_eligible: true

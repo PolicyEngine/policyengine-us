@@ -1,0 +1,13 @@
+description: Mississippi uses this share of state median income to split the co-payment bands under the Child Care Payment Program.
+# Families at or below 50% of state median income use the lower co-payment band;
+# families above 50% (up to the 85% entry limit) use the higher band.
+values:
+  2021-11-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Mississippi CCPP very low income SMI rate
+  reference:
+    - title: Mississippi CCPP Family Co-Payment Fee Scale (effective November 1, 2021)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2021/11/Copay-Table-Update-11_01_21.pdf

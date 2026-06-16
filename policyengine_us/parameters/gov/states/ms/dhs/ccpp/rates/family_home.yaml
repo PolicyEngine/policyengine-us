@@ -1,0 +1,59 @@
+description: Mississippi provides these maximum weekly payment rates for registered family child care homes under the Child Care Payment Program.
+# Operative "Current CCPP Rates" schedule effective July 2023 (2024 Market Rate
+# Survey Table 2, p.10). Rates vary by the facility's location (metro / non-metro);
+# we use the household's county as a proxy for facility location. Special-needs
+# children are paid the flat all-ages special-needs rate (see special_needs_home).
+metadata:
+  period: week
+  unit: currency-USD
+  label: Mississippi CCPP family home weekly rates
+  breakdown:
+    - ms_ccpp_facility_location
+    - ms_ccpp_age_group
+    - ms_ccpp_time_category
+  reference:
+    - title: 2024 Mississippi Child Care Market Rate Survey, Table 2 (Current CCPP Rates, Registered Family Homes)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=10
+
+METRO:
+  INFANT:
+    FULL_TIME:
+      2023-07-01: 115
+    PART_TIME:
+      2023-07-01: 68
+  TODDLER:
+    FULL_TIME:
+      2023-07-01: 120
+    PART_TIME:
+      2023-07-01: 75
+  PRESCHOOL:
+    FULL_TIME:
+      2023-07-01: 120
+    PART_TIME:
+      2023-07-01: 60
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-07-01: 95
+    PART_TIME:
+      2023-07-01: 58
+NON_METRO:
+  INFANT:
+    FULL_TIME:
+      2023-07-01: 94
+    PART_TIME:
+      2023-07-01: 60
+  TODDLER:
+    FULL_TIME:
+      2023-07-01: 98
+    PART_TIME:
+      2023-07-01: 61
+  PRESCHOOL:
+    FULL_TIME:
+      2023-07-01: 106
+    PART_TIME:
+      2023-07-01: 60
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-07-01: 79
+    PART_TIME:
+      2023-07-01: 53

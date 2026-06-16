@@ -1,0 +1,25 @@
+description: Mississippi determines a child's care time category from daily care hours under the Child Care Payment Program.
+# Maps childcare hours per day to the time-category index used by the rate tables:
+#   0 = PART_TIME (fewer than 6 hours of a 24-hour day)
+#   1 = FULL_TIME (6 or more hours of a 24-hour day)
+# Threshold from the CCPP Policy Manual definitions of Full-Time (#44) and
+# Part-Time (#65) care.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Mississippi CCPP time category by daily hours
+  reference:
+    - title: Mississippi CCPP Policy Manual, Definitions (Full-Time, Part-Time)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=14
+
+brackets:
+  - threshold:
+      2023-07-01: 0
+    amount:
+      2023-07-01: 0
+  - threshold:
+      2023-07-01: 6
+    amount:
+      2023-07-01: 1
