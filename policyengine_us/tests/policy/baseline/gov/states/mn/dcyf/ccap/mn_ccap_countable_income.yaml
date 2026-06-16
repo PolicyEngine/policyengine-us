@@ -137,3 +137,80 @@
     # Only the parent's 36,000/12 = 3,000 counts; the child's earnings are
     # excluded (section 6.6.1).
     mn_ccap_countable_income: 3_000
+
+- name: Case 9, a self-employment loss does not offset wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # 3,000/month wages
+        self_employment_income: -60_000  # business loss
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Minn. Rules 3400.0170 subp. 4: a self-employment loss is confined to
+    # self-employment, so the -60,000 loss is floored at zero and the 36,000
+    # wages still count. 36,000 / 12 = 3,000 per month.
+    mn_ccap_countable_income: 3_000
+
+- name: Case 10, a self-employment loss does not offset unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        unemployment_compensation: 30_000  # 2,500/month unearned
+        self_employment_income: -10_000  # business loss
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # The floored loss (0) cannot erode unearned income. 30,000 / 12 = 2,500.
+    mn_ccap_countable_income: 2_500
+
+- name: Case 11, one member's self-employment loss does not offset another's wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # 3,000/month wages
+      person2:
+        age: 30
+        self_employment_income: -60_000  # other adult's business loss
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Each person's self-employment total is floored at zero independently, so
+    # person2's loss cannot reduce person1's wages. 36,000 / 12 = 3,000.
+    mn_ccap_countable_income: 3_000
+
+- name: Case 12, a self-employment loss offsets other self-employment income of the same person.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 20_000  # one business
+        sstb_self_employment_income: -8_000  # a different business at a loss
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # The allowed cross-business offset still works: max(20,000 - 8,000, 0) =
+    # 12,000 net self-employment. 12,000 / 12 = 1,000 per month.
+    mn_ccap_countable_income: 1_000

@@ -4,10 +4,10 @@ values:
     # Wages and salaries (including overtime and bonuses), paid vacation and
     # sick leave, tips, commissions, severance based on accrued leave, and
     # taxable allowances are all captured by employment_income. Earned income
-    # is counted gross, before payroll deductions.
+    # is counted gross, before payroll deductions. Self-employment income is
+    # counted separately (see self_employment_sources) so that a net business
+    # loss is confined to self-employment and cannot reduce wages.
     - employment_income
-    - self_employment_income
-    - sstb_self_employment_income
     # The following earned income types are counted per Minn. Stat. 256P.06
     # and manual section 6.6 but have no matching variable, so we do not track
     # them at the moment:

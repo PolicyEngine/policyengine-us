@@ -50,6 +50,15 @@ class mn_ccap_activity_eligible(Variable):
         # tracked, so the meets_ccdf_activity_test input covers them.
         on_mfip_or_dwp = spm_unit("is_tanf_enrolled", period)
         fallback = spm_unit("meets_ccdf_activity_test", period.this_year)
+        # Section 4.6.9: families experiencing homelessness are exempt from the
+        # activity requirement. We don't track the length of the exemption at the
+        # moment (the manual limits it to roughly the first three months), so a
+        # household flagged as homeless is treated as meeting the requirement for
+        # the full period.
+        is_homeless = spm_unit.household("is_homeless", period.this_year)
         return (
-            on_mfip_or_dwp | fallback | (no_inactive_caretaker & has_active_caretaker)
+            on_mfip_or_dwp
+            | fallback
+            | is_homeless
+            | (no_inactive_caretaker & has_active_caretaker)
         )
