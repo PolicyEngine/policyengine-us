@@ -1,1 +1,1 @@
-Initialize Mississippi Child Care Payment Program (CCPP/CCAP) implementation.
+Add Mississippi Child Care Payment Program (CCPP).
