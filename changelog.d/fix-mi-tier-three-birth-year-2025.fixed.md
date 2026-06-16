@@ -1,1 +1,0 @@
-Updated the Michigan tier three standard deduction birth year cutoff so filers born in 1958 qualify in tax year 2025 and filers born in 1959 qualify in tax year 2026, the years in which they reach age 67.
