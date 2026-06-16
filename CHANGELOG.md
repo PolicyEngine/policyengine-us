@@ -1,3 +1,10 @@
+## [1.729.4] - 2026-06-16
+
+### Fixed
+
+- Fixed states-shard-2 contrib CI OOM by isolating RI's reform tests per subprocess and splitting the heavy-states stage into three shards.
+
+
 ## [1.729.3] - 2026-06-15
 
 ### Fixed
