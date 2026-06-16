@@ -21,7 +21,12 @@ def create_ut_fully_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
 
         def formula(tax_unit, period, parameters):
-            return tax_unit("ut_eitc", period)
+            # Use the potential (uncapped) UT EITC so the full credit is paid
+            # as a refund; `ut_eitc` is capped at tax liability and would zero
+            # out the credit for the low-liability filers refundability is
+            # meant to help. `ut_eitc_potential` still applies the W-2 wages
+            # cap mandated by Utah Code § 59-10-1044.
+            return tax_unit("ut_eitc_potential", period)
 
     class ut_non_refundable_eitc(Variable):
         value_type = float
@@ -44,12 +49,14 @@ def create_ut_fully_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
 
         def formula(tax_unit, period, parameters):
-            # Use parameter-driven approach: get baseline non-refundable credits
-            # then subtract ut_eitc (now refundable) and add back ut_non_refundable_eitc (0)
+            # Baseline non-refundable credits, resolved to the list of
+            # variable names before passing to `add` (which iterates variable
+            # names, not parameter paths).
+            non_refundable_list = parameters(
+                period
+            ).gov.states.ut.tax.income.credits.non_refundable
             baseline_non_refundable = add(
-                tax_unit,
-                period,
-                "gov.states.ut.tax.income.credits.non_refundable",
+                tax_unit, period, non_refundable_list
             )
             # Remove ut_eitc from non-refundable (it's now handled separately)
             ut_eitc = tax_unit("ut_eitc", period)
@@ -64,6 +71,11 @@ def create_ut_fully_refundable_eitc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.UT
+        # The baseline variable computes via `adds`. We replace it with a
+        # formula, so clear the inherited computation modes to avoid mixing
+        # `formula` with `adds`/`subtracts` (rejected by the core engine).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
             # Add the fully refundable EITC (positive when reform is in effect)
