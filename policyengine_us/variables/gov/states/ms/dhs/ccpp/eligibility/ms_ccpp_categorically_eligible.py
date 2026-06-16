@@ -7,7 +7,10 @@ class ms_ccpp_categorically_eligible(Variable):
     label = "Categorically eligible for Mississippi CCPP"
     definition_period = MONTH
     defined_for = StateCode.MS
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=16"
+    reference = (
+        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=19",
+        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=26",
+    )
 
     def formula(spm_unit, period, parameters):
         # Categorical pathways bypass the income test. We model TANF

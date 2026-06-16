@@ -8,9 +8,14 @@ class ms_ccpp_copay(Variable):
     label = "Mississippi CCPP monthly family co-payment"
     definition_period = MONTH
     defined_for = StateCode.MS
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=39"
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=41"
 
     def formula(spm_unit, period, parameters):
+        # The published Copay Fee Scale snaps income up to the next $1,000 band
+        # before applying the rate and ties the band split to those $1,000 rows.
+        # We apply the percentage to exact monthly countable income and split the
+        # band at exactly 50% SMI, so results will not match the published
+        # per-row dollar cells to the cent.
         p = parameters(period).gov.states.ms.dhs.ccpp.copay
         p_income = parameters(period).gov.states.ms.dhs.ccpp.income
 
@@ -23,7 +28,7 @@ class ms_ccpp_copay(Variable):
         fee_scale_size = min_(size, p.max_family_size)
 
         # Select the co-payment rate band by position relative to 50% SMI.
-        monthly_smi = spm_unit("hhs_smi", period.this_year) / MONTHS_IN_YEAR
+        monthly_smi = spm_unit("hhs_smi", period)
         very_low_income = (
             monthly_income <= monthly_smi * p_income.very_low_income_smi_rate
         )
@@ -36,7 +41,7 @@ class ms_ccpp_copay(Variable):
 
         # Families at or below the federal poverty line, TANF recipients, and
         # homeless families with no countable income pay no co-payment.
-        monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        monthly_fpg = spm_unit("spm_unit_fpg", period)
         at_or_below_fpl = monthly_income <= monthly_fpg * p.fpg_exempt_rate
         is_tanf = spm_unit("is_tanf_enrolled", period)
         is_homeless = spm_unit.household("is_homeless", period.this_year)

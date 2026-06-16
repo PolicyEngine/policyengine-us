@@ -8,8 +8,8 @@ class ms_ccpp_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MS
     reference = (
-        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=16",
-        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=23",
+        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=26",
+        "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=19",
     )
 
     def formula(spm_unit, period, parameters):

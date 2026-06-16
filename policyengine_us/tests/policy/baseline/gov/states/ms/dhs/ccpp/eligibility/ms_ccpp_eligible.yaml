@@ -137,3 +137,32 @@
     # defined_for = StateCode.MS zeroes the gate and the benefit for non-MS
     ms_ccpp_eligible: false
     ms_ccpp: 0
+
+- name: Case 6, otherwise-eligible family over the asset limit is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_100_000  # above the $1,000,000 CCDF asset limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Income and activity both pass, but the asset gate fails the AND, so
+    # neither the standard nor the categorical path is eligible.
+    ms_ccpp_income_eligible: true
+    ms_ccpp_activity_eligible: true
+    ms_ccpp_eligible: false

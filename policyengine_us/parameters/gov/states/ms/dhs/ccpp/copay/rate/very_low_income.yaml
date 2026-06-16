@@ -1,6 +1,9 @@
 description: Mississippi sets the co-payment as this share of gross income for families at or below 50% of state median income under the Child Care Payment Program.
 # Co-payment percentage by family size for the "up to 50% SMI" band. Family size
-# is capped at 6 (the published table's "6 or more" row) before lookup.
+# is capped at 6 (the published table's "6 or more" row) before lookup. These
+# values are derived from the State Plan's 5.5% cap for the up-to-50%-SMI band
+# (-0.5 percentage point per family size: 5.5/5/4.5/4/3.5%), not transcribed
+# from a published per-size table.
 metadata:
   type: single_amount
   threshold_unit: person
@@ -8,6 +11,8 @@ metadata:
   period: year
   label: Mississippi CCPP co-payment rate at or below 50% SMI
   reference:
+    - title: Mississippi CCDF State Plan FFY 2025-2027, Section 3.1 Family Co-payments (pp. 39-40)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2025/01/ACF-118-CCDF-FFY-2025-2027-For-Mississippi.pdf#page=39
     - title: Mississippi CCPP Family Co-Payment Fee Scale (effective November 1, 2021)
       href: https://www.mdhs.ms.gov/wp-content/uploads/2021/11/Copay-Table-Update-11_01_21.pdf
 

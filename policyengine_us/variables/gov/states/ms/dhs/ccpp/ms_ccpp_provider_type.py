@@ -18,4 +18,4 @@ class ms_ccpp_provider_type(Variable):
     # rate, so there is no separate in-home provider type; route in-home and
     # special-needs children through FAMILY_HOME (or CENTER) and the special-needs
     # rate set.
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=56"
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=45"

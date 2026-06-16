@@ -13,11 +13,10 @@ values:
     - veterans_benefits
     - pension_income  # retirement and pension
     - rental_income
-    - dividend_income
-    - interest_income
+    - dividend_income  # dividends (regular and ongoing); interest is not on the manual's list
     - capital_gains
     # Countable items in the manual with no matching variable at the moment:
-    #   military allotments, lump sums.
+    #   military allotments, lump sums, short-term disability payments.
     # Tips, commissions, and bonuses are captured by employment_income.
 
 metadata:
@@ -25,5 +24,5 @@ metadata:
   period: year
   label: Mississippi CCPP countable income sources
   reference:
-    - title: Mississippi CCPP Policy Manual, Rule 5.9 (Income)
-      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=24
+    - title: Mississippi CCPP Policy Manual, Rule 5.4 (How Income is Calculated — Countable Income)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=29

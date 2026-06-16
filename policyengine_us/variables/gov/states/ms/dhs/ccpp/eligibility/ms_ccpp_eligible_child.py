@@ -7,7 +7,7 @@ class ms_ccpp_eligible_child(Variable):
     label = "Eligible child for Mississippi CCPP"
     definition_period = MONTH
     defined_for = StateCode.MS
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=23"
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=26"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ms.dhs.ccpp.eligibility

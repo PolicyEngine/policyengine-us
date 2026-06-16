@@ -11,10 +11,9 @@ class ms_ccpp_maximum_weekly_rate(Variable):
     label = "Mississippi CCPP maximum weekly rate per child"
     definition_period = MONTH
     defined_for = "ms_ccpp_eligible_child"
-    reference = (
-        "https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=9",
-        "https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=10",
-    )
+    # 2024 Market Rate Survey, Table 1 (licensed center, p.9) and Table 2
+    # (registered family home, p.10); operative "Current CCPP Rates" pp.9-10.
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=9"
 
     def formula(person, period, parameters):
         rates = parameters(period).gov.states.ms.dhs.ccpp.rates

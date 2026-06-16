@@ -14,7 +14,9 @@ class ms_ccpp_facility_location(Variable):
     definition_period = YEAR
     label = "Mississippi CCPP facility metro or non-metro location"
     defined_for = StateCode.MS
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=56"
+    # The metro / non-metro split is a Market Rate Survey rate-table dimension
+    # (Table 1 and Table 2 disaggregate rates by metro status), not a manual rule.
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=9"
 
     def formula(household, period, parameters):
         # CCPP rates vary by the facility's metro / non-metro location. We don't
