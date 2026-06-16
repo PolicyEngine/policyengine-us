@@ -204,6 +204,9 @@
       person1:
         age: 40
         is_tax_unit_head: true
+        birth_year: 1990
+        social_security: 20_000
+        taxable_social_security: 10_000
       child:
         age: 8
         is_tax_unit_dependent: true
@@ -211,6 +214,7 @@
       tax_unit:
         members: [person1, child]
         filing_status: SINGLE
+        adjusted_gross_income: 70_000
         ri_agi: 0
         ri_taxable_income: 1_250_000
     households:
@@ -220,4 +224,5 @@
   output:
     ri_ctc: 330
     ri_high_earner_tax: 2_500
+    ri_social_security_modification: 10_000
     ri_income_tax: 73_993.54

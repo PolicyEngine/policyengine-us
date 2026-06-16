@@ -1,5 +1,4 @@
 - name: Age not eligible for social security modification
-  absolute_error_margin: 0.01
   period: 2021
   input:
     adjusted_gross_income: 70_000
@@ -10,7 +9,6 @@
     ri_social_security_modification_eligible: false
 
 - name: Income not eligible for social security modification
-  absolute_error_margin: 0.01
   period: 2021
   input:
     adjusted_gross_income: 100_000
@@ -21,7 +19,6 @@
     ri_social_security_modification_eligible: false
 
 - name: Eligible for the social security modification
-  absolute_error_margin: 0.01
   period: 2021
   input:
     adjusted_gross_income: 70_000
@@ -33,7 +30,6 @@
 
 # 2025 tests - Birth year threshold: 1959, Income limits vary by filing status
 - name: 2025 - Age eligible (born 1959) for social security modification
-  absolute_error_margin: 2
   period: 2025
   input:
     adjusted_gross_income: 80_000
@@ -44,7 +40,6 @@
     ri_social_security_modification_eligible: true
 
 - name: 2025 - Age not eligible (born 1960) for social security modification
-  absolute_error_margin: 2
   period: 2025
   input:
     adjusted_gross_income: 80_000
@@ -55,7 +50,6 @@
     ri_social_security_modification_eligible: false
 
 - name: 2025 - Income not eligible for single filer (above $107,000)
-  absolute_error_margin: 2
   period: 2025
   input:
     adjusted_gross_income: 110_000
@@ -66,7 +60,6 @@
     ri_social_security_modification_eligible: false
 
 - name: 2025 - Joint filer eligible (income below $133,750)
-  absolute_error_margin: 2
   period: 2025
   input:
     adjusted_gross_income: 125_000
@@ -77,7 +70,6 @@
     ri_social_security_modification_eligible: true
 
 - name: 2025 - Joint filer not eligible (income above $133,750)
-  absolute_error_margin: 2
   period: 2025
   input:
     adjusted_gross_income: 135_000
@@ -102,6 +94,56 @@
   input:
     adjusted_gross_income: 200_000
     filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+
+- name: 2026 - Under full retirement age remains ineligible
+  period: 2026
+  input:
+    adjusted_gross_income: 70_000
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+
+- name: 2027 - Single filer just below income limit is eligible
+  period: 2027
+  input:
+    adjusted_gross_income: 106_999
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+
+- name: 2027 - Single filer at income limit is ineligible
+  period: 2027
+  input:
+    adjusted_gross_income: 107_000
+    filing_status: SINGLE
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: false
+
+- name: 2027 - Joint filer just below income limit is eligible
+  period: 2027
+  input:
+    adjusted_gross_income: 133_749
+    filing_status: JOINT
+    older_spouse_birth_year: 1990
+    state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
+
+- name: 2027 - Joint filer at income limit is ineligible
+  period: 2027
+  input:
+    adjusted_gross_income: 133_750
+    filing_status: JOINT
     older_spouse_birth_year: 1990
     state_code: RI
   output:
