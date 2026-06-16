@@ -18,10 +18,15 @@ class mi_ccap_income_eligible(Variable):
         p = parameters(period).gov.states.mi.mdhhs.ccap.income.scale
         countable_income = spm_unit("mi_ccap_countable_income", period)
         size = spm_unit("mi_ccap_program_group_size", period)
+        # Non-MI units are masked out by defined_for but still run this formula
+        # vectorized, reporting program-group size 0 (the size variable is itself
+        # MI-scoped). Clamp to the scale's minimum size of 1 so the size-indexed
+        # breakdown lookup never misses on those masked-out rows.
+        lookup_size = max_(size, 1)
         enrolled = spm_unit("mi_ccap_enrolled", period)
         income_limit = where(
             enrolled,
-            p.exit_limit[size],
-            p.entry_limit[size],
+            p.exit_limit[lookup_size],
+            p.entry_limit[lookup_size],
         )
         return countable_income <= income_limit
