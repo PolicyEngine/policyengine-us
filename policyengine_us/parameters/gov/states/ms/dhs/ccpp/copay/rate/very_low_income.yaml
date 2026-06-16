@@ -1,9 +1,9 @@
 description: Mississippi sets the co-payment as this share of gross income for families at or below 50% of state median income under the Child Care Payment Program.
 # Co-payment percentage by family size for the "up to 50% SMI" band. Family size
-# is capped at 6 (the published table's "6 or more" row) before lookup. These
-# values are derived from the State Plan's 5.5% cap for the up-to-50%-SMI band
-# (-0.5 percentage point per family size: 5.5/5/4.5/4/3.5%), not transcribed
-# from a published per-size table.
+# is capped at 6 (the fee scale's "6 or more" column) before lookup. These per-size
+# rates are published directly in the Copay Fee Scale "Table 2: Family Co-Pay Rates"
+# (5.5/5/4.5/4/3.5%); they also equal the State Plan's 5.5% cap stepped down
+# 0.5 percentage point per family size.
 metadata:
   type: single_amount
   threshold_unit: person
