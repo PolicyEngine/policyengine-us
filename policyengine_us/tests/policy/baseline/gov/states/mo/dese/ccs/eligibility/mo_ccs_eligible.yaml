@@ -194,3 +194,71 @@
     # (5 CSR 25-200.060(7)(B)), so the unit is eligible.
     mo_ccs_income_eligible: false
     mo_ccs_eligible: true
+
+- name: Case 8, homeless family above the income limit with no work is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    # Homelessness satisfies the need-for-care/activity requirement (Manual
+    # 2010.050.35), but unlike the (7)(A) protective categories it does NOT
+    # bypass the income test. 60,000/yr = 5,000/mo > 2,643.75 (150% FPL size 2)
+    # -> income ineligible, no protective pathway, so the unit is ineligible.
+    mo_ccs_income_eligible: false
+    mo_ccs_activity_eligible: true
+    mo_ccs_protective_services: false
+    mo_ccs_eligible: false
+
+- name: Case 9, homeless family within the income limit with no work is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    # 12,000/yr = 1,000/mo < 2,643.75 (150% FPL size 2) -> income eligible.
+    # Homelessness satisfies the activity/need-for-care requirement (Manual
+    # 2010.050.35), so the unit is eligible without any work activity.
+    mo_ccs_income_eligible: true
+    mo_ccs_activity_eligible: true
+    mo_ccs_eligible: true

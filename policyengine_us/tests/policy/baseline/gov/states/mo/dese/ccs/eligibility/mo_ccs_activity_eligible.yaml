@@ -159,3 +159,32 @@
     # 2010.050.25), so the disabled non-working spouse satisfies the per-parent
     # activity requirement and the unit passes.
     mo_ccs_activity_eligible: true
+
+- name: Case 7, homeless family with no other activity meets need for care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    # The head has no employment, is not a student, and is not disabled, but the
+    # family is homeless. Homelessness is a valid need for care for the whole
+    # family (Manual 2010.050.35), so the activity requirement is satisfied.
+    mo_ccs_activity_eligible: true
