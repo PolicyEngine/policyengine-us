@@ -1,0 +1,123 @@
+description: Missouri provides these daily reimbursement rates to a group home serving a child with special needs under the Child Care Subsidy program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Missouri Child Care Subsidy group home daily special needs rates
+  breakdown:
+    - mo_ccs_region
+    - mo_ccs_age_group
+    - mo_ccs_time_category
+  reference:
+    - title: 2025 Rates Held Harmless 2.0, Daytime Rates 2025
+      href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx
+
+DENSE_URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 72
+    HALF_TIME:
+      2025-10-01: 54
+    PART_TIME:
+      2025-10-01: 36
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 66
+    HALF_TIME:
+      2025-10-01: 49.5
+    PART_TIME:
+      2025-10-01: 33
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 38
+    HALF_TIME:
+      2025-10-01: 28.5
+    PART_TIME:
+      2025-10-01: 19
+METRO:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 59.09
+    HALF_TIME:
+      2025-10-01: 44.3175
+    PART_TIME:
+      2025-10-01: 29.545
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 66
+    HALF_TIME:
+      2025-10-01: 49.5
+    PART_TIME:
+      2025-10-01: 33
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 45
+    HALF_TIME:
+      2025-10-01: 33.75
+    PART_TIME:
+      2025-10-01: 22.5
+URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 59.09
+    HALF_TIME:
+      2025-10-01: 44.3175
+    PART_TIME:
+      2025-10-01: 29.545
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 45
+    HALF_TIME:
+      2025-10-01: 33.75
+    PART_TIME:
+      2025-10-01: 22.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 41
+    HALF_TIME:
+      2025-10-01: 30.75
+    PART_TIME:
+      2025-10-01: 20.5
+MICROPOLITAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 43.2
+    HALF_TIME:
+      2025-10-01: 32.4
+    PART_TIME:
+      2025-10-01: 21.6
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 56.75
+    HALF_TIME:
+      2025-10-01: 42.5625
+    PART_TIME:
+      2025-10-01: 28.375
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 40
+    HALF_TIME:
+      2025-10-01: 30
+    PART_TIME:
+      2025-10-01: 20
+RURAL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 59.09
+    HALF_TIME:
+      2025-10-01: 44.3175
+    PART_TIME:
+      2025-10-01: 29.545
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 40
+    HALF_TIME:
+      2025-10-01: 30
+    PART_TIME:
+      2025-10-01: 20
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 40
+    HALF_TIME:
+      2025-10-01: 30
+    PART_TIME:
+      2025-10-01: 20

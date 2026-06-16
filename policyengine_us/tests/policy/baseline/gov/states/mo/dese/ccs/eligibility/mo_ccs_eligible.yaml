@@ -1,0 +1,162 @@
+# MO CCS overall eligibility tests
+# mo_ccs_eligible is SPMUnit, MONTH.
+# Requires: an eligible child AND income eligible AND asset eligible AND
+# (activity eligible OR protective services). State scope is MO.
+
+- name: Case 1, eligible working family in MO.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_eligible: true
+
+- name: Case 2, ineligible due to income above 150 percent FPL.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 60,000/yr = 5,000/mo > 2,643.75 (150% FPL size 2) -> income ineligible.
+    mo_ccs_eligible: false
+
+- name: Case 3, ineligible with no eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_eligible: false
+
+- name: Case 4, ineligible due to no activity.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # No work, not a student, no protective pathway -> ineligible.
+    mo_ccs_eligible: false
+
+- name: Case 5, protective services family with no activity is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Foster child waives the activity requirement; income still eligible.
+    mo_ccs_eligible: true
+
+- name: Case 6, non-MO family ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    mo_ccs_eligible: false

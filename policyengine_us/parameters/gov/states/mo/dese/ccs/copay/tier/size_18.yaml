@@ -1,0 +1,60 @@
+description: Missouri assigns a sliding fee tier by monthly gross income for a household of eighteen under the Child Care Subsidy program.
+# Amount is the sliding fee tier index used by copay/daily_fee. Tier 0 is
+# the $1/year minimum; tiers 1-7 are the traditional ladder; tiers 8-10 are
+# Transitional Child Care Levels 1-3.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: month
+  period: month
+  label: Missouri Child Care Subsidy sliding fee tier for household of eighteen
+  reference:
+    - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 1347.0001
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 1616.0001
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 1885.0001
+    amount:
+      2025-10-01: 3
+  - threshold:
+      2025-10-01: 2155.0001
+    amount:
+      2025-10-01: 4
+  - threshold:
+      2025-10-01: 2424.0001
+    amount:
+      2025-10-01: 5
+  - threshold:
+      2025-10-01: 2694.0001
+    amount:
+      2025-10-01: 6
+  - threshold:
+      2025-10-01: 2963.0001
+    amount:
+      2025-10-01: 7
+  - threshold:
+      2025-10-01: 13644.0001
+    amount:
+      2025-10-01: 8
+  - threshold:
+      2025-10-01: 16827.0001
+    amount:
+      2025-10-01: 9
+  - threshold:
+      2025-10-01: 19556.0001
+    amount:
+      2025-10-01: 10

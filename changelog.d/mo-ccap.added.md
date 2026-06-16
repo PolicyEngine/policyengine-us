@@ -1,1 +1,1 @@
-Implement Missouri Child Care Assistance Program (CCAP / Child Care Subsidy).
+Add Missouri Child Care Subsidy program.

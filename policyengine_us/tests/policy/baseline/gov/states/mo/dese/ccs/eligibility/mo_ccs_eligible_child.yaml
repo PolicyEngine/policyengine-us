@@ -1,0 +1,196 @@
+# MO CCS eligible child tests
+# mo_ccs_eligible_child is Person, MONTH.
+# Eligible if age < 13 (or < 18, or < 19 if in K-12 school, when disabled),
+# AND a CCDF immigration-eligible child AND a tax-unit dependent.
+
+- name: Case 1, eligible child under 13.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 2, child age 12 at boundary eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 3, child age 13 ineligible without disability.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Age 13 not < 13 limit -> ineligible.
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 4, disabled child age 15 in school eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Disabled, age 15 in K-12 school -> limit 19 -> eligible.
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 5, disabled child age 19 ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Age 19 not < 19 -> ineligible even when disabled.
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 6, undocumented child ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 7, non-dependent child ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Child must reside with caretaker in the EU (tax-unit dependent proxy).
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 8, disabled child age 18 not in school is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_in_k12_school: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Disabled, not in school -> limit 18; age 18 not < 18 -> ineligible.
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 9, disabled child age 18 in school is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_in_k12_school: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Disabled, in school -> limit 19; age 18 < 19 -> eligible.
+    mo_ccs_eligible_child: [false, true]

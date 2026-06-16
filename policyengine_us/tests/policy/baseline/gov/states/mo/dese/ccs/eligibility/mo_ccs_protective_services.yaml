@@ -1,0 +1,79 @@
+# MO CCS protective services pathway tests
+# mo_ccs_protective_services is SPMUnit, MONTH.
+# True when the unit has a foster child, is homeless, or has a child
+# receiving/needing protective services.
+
+- name: Case 1, foster child triggers protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: true
+
+- name: Case 2, homeless family triggers protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    mo_ccs_protective_services: true
+
+- name: Case 3, child needing protective services triggers pathway.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: true
+
+- name: Case 4, no protective services indicators.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: false

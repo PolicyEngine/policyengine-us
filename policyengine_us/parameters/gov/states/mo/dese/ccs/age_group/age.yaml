@@ -1,0 +1,26 @@
+description: Missouri determines a child's age group from age for provider payment rates under the Child Care Subsidy program.
+# 0 = INFANT_TODDLER (newborn to 2 years), 1 = PRESCHOOL (2 to 5 years),
+# 2 = SCHOOL_AGE (5 years and over).
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Missouri Child Care Subsidy child age group by age
+  reference:
+    - title: Missouri Child Care Subsidy Payments — Age Rate Categories
+      href: https://dese.mo.gov/childhood/child-care-subsidy/payments
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 2

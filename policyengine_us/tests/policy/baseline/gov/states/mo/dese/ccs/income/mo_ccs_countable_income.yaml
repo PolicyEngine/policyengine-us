@@ -1,0 +1,127 @@
+# MO CCS countable income tests
+# mo_ccs_countable_income is SPMUnit, MONTH.
+# Sums the listed monthly gross income sources; excluded types (SSI, SNAP,
+# TANF, capital gains, etc.) are omitted from the sources list. The annual
+# input variables are auto-divided to a monthly amount at the MONTH period.
+
+- name: Case 1, employment income counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 36,000 / 12 = 3,000 monthly.
+    mo_ccs_countable_income: 3_000
+
+- name: Case 2, SSI excluded from countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        ssi: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SSI is excluded (Manual 2010.045.10.05); only employment counts.
+    # 24,000 / 12 = 2,000 monthly.
+    mo_ccs_countable_income: 2_000
+
+- name: Case 3, multiple counted sources summed.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        self_employment_income: 12_000
+        social_security: 6_000
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # (24,000 + 12,000 + 6,000 + 3,600) / 12 = 45,600 / 12 = 3,800.
+    mo_ccs_countable_income: 3_800
+
+- name: Case 4, two-person household income summed.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # (30,000 + 18,000) / 12 = 4,000 monthly.
+    mo_ccs_countable_income: 4_000
+
+- name: Case 5, SNAP excluded from countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNAP value is excluded (Manual 2010.045.10.20).
+    # 18,000 / 12 = 1,500 monthly.
+    mo_ccs_countable_income: 1_500
+
+- name: Case 6, zero income family.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_countable_income: 0

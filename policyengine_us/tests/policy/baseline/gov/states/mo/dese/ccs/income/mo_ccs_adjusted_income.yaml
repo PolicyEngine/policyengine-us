@@ -1,0 +1,63 @@
+# MO CCS adjusted gross income tests
+# mo_ccs_adjusted_income is SPMUnit, MONTH.
+# = monthly countable income - health insurance premiums, floored at 0.
+# Medical premiums are the only allowed deduction (5 CSR 25-200.050(2)).
+
+- name: Case 1, no premiums leaves income unchanged.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 36,000 / 12 = 3,000; no premiums.
+    mo_ccs_adjusted_income: 3_000
+
+- name: Case 2, premiums deducted from countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        health_insurance_premiums: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Countable 3,000/mo; premiums 6,000/12 = 500/mo; adjusted = 2,500.
+    mo_ccs_adjusted_income: 2_500
+
+- name: Case 3, premiums larger than income floor at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000
+        health_insurance_premiums: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Countable 500/mo; premiums 1,000/mo; max(500 - 1,000, 0) = 0.
+    mo_ccs_adjusted_income: 0

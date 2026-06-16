@@ -1,0 +1,57 @@
+from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.mo.dese.ccs.mo_ccs_provider_type import (
+    MOCCSProviderType,
+)
+
+
+class mo_ccs_maximum_daily_benefit(Variable):
+    value_type = float
+    entity = Person
+    unit = USD
+    label = "Missouri Child Care Subsidy maximum daily benefit per child"
+    definition_period = MONTH
+    defined_for = "mo_ccs_eligible_child"
+    reference = "https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx"
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.mo.dese.ccs
+        region = person.household("mo_ccs_region", period.this_year)
+        age_group = person("mo_ccs_age_group", period)
+        time_category = person("mo_ccs_time_category", period)
+        provider_type = person("mo_ccs_provider_type", period)
+
+        rates = p.rates
+        # A child with special needs is reimbursed from the special needs (PS)
+        # rate column; all other children use the base column.
+        is_disabled = person("is_disabled", period.this_year)
+
+        def provider_rate(provider):
+            base = provider.base[region][age_group][time_category]
+            special_needs = provider.special_needs[region][age_group][time_category]
+            return where(is_disabled, special_needs, base)
+
+        daily_rate = select(
+            [
+                provider_type == MOCCSProviderType.REGISTERED_CENTER,
+                provider_type == MOCCSProviderType.SIX_OR_FEWER,
+                provider_type == MOCCSProviderType.LICENSED_CENTER,
+                provider_type == MOCCSProviderType.LICENSED_FAMILY_HOME,
+                provider_type == MOCCSProviderType.GROUP_HOME,
+            ],
+            [
+                provider_rate(rates.registered_center),
+                provider_rate(rates.six_or_fewer),
+                provider_rate(rates.licensed_center),
+                provider_rate(rates.licensed_family_home),
+                provider_rate(rates.group_home),
+            ],
+        )
+
+        # Transitional Child Care families are funded at a reduced share of the
+        # base rate by federal poverty guideline ratio; traditional families
+        # are funded at the full rate.
+        adjusted_income = person.spm_unit("mo_ccs_adjusted_income", period)
+        monthly_fpg = person.spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        fpl_ratio = where(monthly_fpg > 0, adjusted_income / monthly_fpg, 0)
+        funding_rate = p.transitional.funding_rate.calc(fpl_ratio)
+        return daily_rate * funding_rate
