@@ -24,6 +24,9 @@ class oh_homestead_property_tax_reduction(Variable):
             person("real_estate_taxes", period) * head_or_spouse
         )
 
-        return real_estate_taxes * (
-            tax_unit("oh_homestead_exemption", period) / max_(assessed_value, 1)
+        return where(
+            assessed_value > 0,
+            real_estate_taxes
+            * (tax_unit("oh_homestead_exemption", period) / assessed_value),
+            0,
         )

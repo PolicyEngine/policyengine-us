@@ -22,11 +22,14 @@ class oh_homestead_exemption_eligible(Variable):
         aged_or_disabled = tax_unit.any(
             ((age >= p.age_threshold) | is_disabled) & head_or_spouse,
         )
+        # Surviving spouses age 65+ already qualify through the age path.
         surviving_spouse = tax_unit.any(
             (age >= p.surviving_spouse_age_threshold)
             & person("oh_homestead_exemption_qualifying_surviving_spouse", period)
             & head_or_spouse,
         )
+        # PolicyEngine has no principal-residence input, so real estate tax
+        # paid by the qualifying owner proxies for ownership and occupancy.
         owns_and_occupies_homestead = tax_unit.any(
             (person("real_estate_taxes", period) > 0) & head_or_spouse
         )

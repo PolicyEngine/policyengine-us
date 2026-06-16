@@ -82,3 +82,48 @@
         state_code: OH
   output:
     oh_homestead_exemption: 8_000
+
+- name: Case 5, filer over the income limit receives no exemption.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 41_001
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption: 0
+
+- name: Case 6, joint spouse property value qualifies.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        assessed_property_value: 8_000
+        real_estate_taxes: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_homestead_exemption: 8_000
