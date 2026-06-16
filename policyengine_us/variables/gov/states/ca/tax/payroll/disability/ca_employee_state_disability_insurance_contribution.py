@@ -15,4 +15,4 @@ class ca_employee_state_disability_insurance_contribution(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).gov.states.ca.tax.payroll.disability.employee_rate
-        return rate * person("payroll_tax_gross_wages", period)
+        return rate * person("ca_payroll_tax_gross_wages", period)

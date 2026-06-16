@@ -1,0 +1,97 @@
+description: Alabama groups counties into nine Child Care Subsidy Program rate-setting regions.
+
+metadata:
+  unit: list
+  period: year
+  label: Alabama CCSP counties by region
+  breakdown:
+    - al_ccsp_region
+  reference:
+    - title: Alabama DHR Child Care Subsidy Program Provider Rate Chart, Regions and Counties Served
+      href: https://dhr.alabama.gov/wp-content/uploads/2023/04/Provider-Rates-with-QRIS-Tiers-April-1-2022-b.pdf#page=1
+
+HUNTSVILLE:
+  2022-04-11:
+    - COLBERT_COUNTY_AL
+    - CULLMAN_COUNTY_AL
+    - FRANKLIN_COUNTY_AL
+    - LAUDERDALE_COUNTY_AL
+    - LAWRENCE_COUNTY_AL
+    - LIMESTONE_COUNTY_AL
+    - MADISON_COUNTY_AL
+    - MORGAN_COUNTY_AL
+    - WINSTON_COUNTY_AL
+TUSCALOOSA:
+  2022-04-11:
+    - BIBB_COUNTY_AL
+    - CHOCTAW_COUNTY_AL
+    - FAYETTE_COUNTY_AL
+    - GREENE_COUNTY_AL
+    - HALE_COUNTY_AL
+    - LAMAR_COUNTY_AL
+    - MARENGO_COUNTY_AL
+    - MARION_COUNTY_AL
+    - PERRY_COUNTY_AL
+    - PICKENS_COUNTY_AL
+    - SUMTER_COUNTY_AL
+    - TUSCALOOSA_COUNTY_AL
+MOBILE:
+  2022-04-11:
+    - BALDWIN_COUNTY_AL
+    - CLARKE_COUNTY_AL
+    - CONECUH_COUNTY_AL
+    - ESCAMBIA_COUNTY_AL
+    - MOBILE_COUNTY_AL
+    - MONROE_COUNTY_AL
+    - WASHINGTON_COUNTY_AL
+FT_PAYNE:
+  2022-04-11:
+    - CHEROKEE_COUNTY_AL
+    - DEKALB_COUNTY_AL
+    - ETOWAH_COUNTY_AL
+    - JACKSON_COUNTY_AL
+    - MARSHALL_COUNTY_AL
+BIRMINGHAM:
+  2022-04-11:
+    - BLOUNT_COUNTY_AL
+    - JEFFERSON_COUNTY_AL
+    - ST_CLAIR_COUNTY_AL
+    - SHELBY_COUNTY_AL
+    - WALKER_COUNTY_AL
+TALLADEGA:
+  2022-04-11:
+    - CALHOUN_COUNTY_AL
+    - CLAY_COUNTY_AL
+    - CLEBURNE_COUNTY_AL
+    - COOSA_COUNTY_AL
+    - RANDOLPH_COUNTY_AL
+    - TALLADEGA_COUNTY_AL
+MONTGOMERY:
+  2022-04-11:
+    - AUTAUGA_COUNTY_AL
+    - BULLOCK_COUNTY_AL
+    - BUTLER_COUNTY_AL
+    - CHILTON_COUNTY_AL
+    - COVINGTON_COUNTY_AL
+    - DALLAS_COUNTY_AL
+    - ELMORE_COUNTY_AL
+    - LOWNDES_COUNTY_AL
+    - MONTGOMERY_COUNTY_AL
+    - WILCOX_COUNTY_AL
+DOTHAN:
+  2022-04-11:
+    - BARBOUR_COUNTY_AL
+    - COFFEE_COUNTY_AL
+    - CRENSHAW_COUNTY_AL
+    - DALE_COUNTY_AL
+    - GENEVA_COUNTY_AL
+    - HENRY_COUNTY_AL
+    - HOUSTON_COUNTY_AL
+    - PIKE_COUNTY_AL
+OPELIKA:
+  2022-04-11:
+    - CHAMBERS_COUNTY_AL
+    - LEE_COUNTY_AL
+    - MACON_COUNTY_AL
+    - RUSSELL_COUNTY_AL
+    - TALLAPOOSA_COUNTY_AL

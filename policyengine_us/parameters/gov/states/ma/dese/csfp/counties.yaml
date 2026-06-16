@@ -1,0 +1,24 @@
+description: Massachusetts defines the following counties as covered counties under the Commodity Supplemental Food Program.
+
+# Counties are derived from the distribution sites of The Greater Boston Food Bank,
+# the sole local agency under the Massachusetts CSFP State Plan.
+metadata:
+  unit: list
+  period: year
+  label: Massachusetts Commodity Supplemental Food Program covered counties
+  reference:
+    - title: Massachusetts Department of Elementary and Secondary Education Food Distribution Programs
+      href: https://www.doe.mass.edu/cnp/food_dist.html
+    - title: Massachusetts Commodity Supplemental Food Program State Plan
+      href: https://www.doe.mass.edu/cnp/csfp-state-plan.docx
+    - title: The Greater Boston Food Bank Commodity Supplemental Food Program distribution sites
+      href: https://www.gbfb.org/what-we-do/our-programs/commodity-supplemental-food-program/
+
+values:
+  2025-01-01:
+    - BRISTOL_COUNTY_MA
+    - ESSEX_COUNTY_MA
+    - MIDDLESEX_COUNTY_MA
+    - NORFOLK_COUNTY_MA
+    - PLYMOUTH_COUNTY_MA
+    - SUFFOLK_COUNTY_MA

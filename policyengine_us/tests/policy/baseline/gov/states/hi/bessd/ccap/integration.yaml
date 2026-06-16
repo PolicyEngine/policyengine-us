@@ -1,0 +1,346 @@
+# HI CCAP integration tests (HAR Title 17 Chapter 798.2).
+# Rates from Exhibit I (HAR 17-798.3, eff. 2020-01-02); copay scale from
+# Exhibit II (eff. 2020-01-02). All cases use 2025 values.
+#
+# 2025 Hawaii FPG (state_group HI):
+#   first_person 17,990; additional_person 6,330.
+#   Family of 2: 24,320/yr = 2,026.67/mo.
+#   Family of 3: 30,650/yr = 2,554.17/mo.
+# 2025 Hawaii SMI base 129,108; 85% SMI / 12 monthly limit:
+#   Family of 2: 129,108 x 0.68 x 0.85 / 12 = 6,218.70.
+# Copay rate bands (income as % FPG): 0-100% -> 0%, ..., 231%+ -> 9%.
+# Hours tier: monthly hours = weekly x 52/12 (x 4.3333).
+
+- name: Case 1, low-income family with infant in center care, zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # 1,500/mo
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 1  # < 36 months -> INFANT_TODDLER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30  # ~130 monthly -> FULL_TIME
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # === Eligibility ===
+    # Child age 1 < 13, citizen -> eligible child
+    hi_ccap_eligible_child: [false, true]
+    # Income 1,500/mo <= 6,218.70 (85% SMI family of 2) -> eligible
+    hi_ccap_income_eligible: true
+    # Parent works 40 hrs -> activity eligible
+    hi_ccap_activity_eligible: true
+    hi_ccap_eligible: true
+    # === Rate ===
+    # FULL_TIME licensed center infant/toddler = 1,733
+    hi_ccap_hours_tier: [PART_TIME, FULL_TIME]
+    hi_ccap_maximum_monthly_rate: [0, 1_733]
+    # === Copay ===
+    # FPG ratio = 1,500 / 2,026.67 = 0.74 -> 0% band
+    hi_ccap_copay_rate: 0
+    hi_ccap_copay: 0
+    # === Benefit ===
+    # capped = min(1,500 expenses, 1,733 rate) = 1,500; subsidy = 1,500 - 0
+    hi_ccap: 1_500
+
+- name: Case 2, higher-income family with copay flowing through.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+    # 5,000/mo <= 6,218.70 -> income eligible
+    hi_ccap_income_eligible: true
+    hi_ccap_eligible: true
+    # FULL_TIME licensed center or group home = 795
+    hi_ccap_maximum_monthly_rate: [0, 795]
+    # FPG ratio = 5,000 / 2,026.67 = 2.4671 -> 9% band
+    hi_ccap_copay_rate: 0.09
+    # copay = 795 x 0.09 = 71.55
+    hi_ccap_copay: 71.55
+    # capped = min(1,000 expenses, 795 rate) = 795; subsidy = 795 - 71.55
+    hi_ccap: 723.45
+
+- name: Case 3, protective-services child with income test waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 200_000  # far above income limit
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 6
+        receives_or_needs_protective_services: true
+        is_in_k12_school: false
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: ACCREDITED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # CPS child eligible at any age; income test waived despite high income
+    hi_ccap_eligible_child: [false, true]
+    hi_ccap_income_eligible: true
+    hi_ccap_eligible: true
+    # FULL_TIME accredited center = 980
+    hi_ccap_maximum_monthly_rate: [0, 980]
+    # FPG ratio far above 230% -> 9% band
+    hi_ccap_copay_rate: 0.09
+    # copay = 980 x 0.09 = 88.20
+    hi_ccap_copay: 88.20
+    # capped = min(1,000, 980) = 980; subsidy = 980 - 88.20
+    hi_ccap: 891.80
+
+- name: Case 4, disabled teenager in before-after-school care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000  # 2,500/mo
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+        is_disabled: true
+        is_in_k12_school: true
+        immigration_status: CITIZEN
+        # 50 monthly hours / 4.3333 = 11.5385 weekly -> FULL_TIME (>=45 monthly)
+        childcare_hours_per_week: 11.5385
+        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000  # 250/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Disabled child age 15 (13-17) -> eligible child
+    hi_ccap_eligible_child: [false, true]
+    hi_ccap_income_eligible: true
+    hi_ccap_eligible: true
+    # Before/after-school FULL_TIME licensed = 155
+    hi_ccap_hours_tier: [PART_TIME, FULL_TIME]
+    hi_ccap_maximum_monthly_rate: [0, 155]
+    # FPG ratio = 2,500 / 2,026.67 = 1.2336 -> 2% band
+    hi_ccap_copay_rate: 0.02
+    # copay = 155 x 0.02 = 3.10
+    hi_ccap_copay: 3.10
+    # capped = min(250 expenses, 155 rate) = 155; subsidy = 155 - 3.10
+    hi_ccap: 151.90
+
+- name: Case 5, two children at different provider types.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 2  # < 36 months -> INFANT_TODDLER rate
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30  # FULL_TIME standard
+        hi_ccap_provider_category: LEGALLY_EXEMPT
+      person3:
+        age: 7
+        is_in_k12_school: true
+        immigration_status: CITIZEN
+        # 35 monthly hours / 4.3333 = 8.0769 weekly -> PART_TIME (1-44 monthly)
+        childcare_hours_per_week: 8.0769
+        hi_ccap_provider_category: LICENSED_BEFORE_AFTER_SCHOOL
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000  # 750/mo
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true, true]
+    # 3,000/mo <= 85% SMI family of 3 -> eligible
+    hi_ccap_income_eligible: true
+    hi_ccap_eligible: true
+    # child2: exempt infant/toddler FULL_TIME = 400
+    # child3: licensed before/after-school PART_TIME = 86
+    hi_ccap_hours_tier: [PART_TIME, FULL_TIME, PART_TIME]
+    hi_ccap_maximum_monthly_rate: [0, 400, 86]
+    # FPG family of 3 = 30,650/yr = 2,554.17/mo
+    # ratio = 3,000 / 2,554.17 = 1.1746 -> 2% band
+    hi_ccap_copay_rate: 0.02
+    # copay = (400 + 86) x 0.02 = 9.72
+    hi_ccap_copay: 9.72
+    # capped = min(750 expenses, 486 rates) = 486; subsidy = 486 - 9.72
+    hi_ccap: 476.28
+
+- name: Case 6, two-parent family with one idle parent is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        is_disabled: false
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # Second parent in no approved activity -> both-parent test fails
+    hi_ccap_activity_eligible: false
+    hi_ccap_eligible: false
+    hi_ccap: 0
+
+- name: Case 7, income above 85 percent SMI is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 78_000  # 6,500/mo > 6,218.70 limit
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 6,500/mo > 6,218.70 monthly 85% SMI limit -> income ineligible
+    hi_ccap_income_eligible: false
+    hi_ccap_eligible: false
+    hi_ccap: 0
+
+- name: Case 8, non-Hawaii household receives no subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        weekly_hours_worked_before_lsr: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    hi_ccap_eligible: false
+    hi_ccap: 0

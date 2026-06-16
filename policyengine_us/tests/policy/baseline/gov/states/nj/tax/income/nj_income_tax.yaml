@@ -17,16 +17,68 @@
   output:
     nj_income_tax: 0
 
-- name: NJ income tax below filing threshold but tax is negative because of refundable credits.
+- name: Below the filing threshold, tax is zeroed before applying refundable credits
   period: 2022
   input:
     state_code: NJ
     nj_agi: 19_999
     filing_status: JOINT
+    # Per N.J.S.A. 54A:2-4, the pre-credit liability is wiped before
+    # credits flow through; the full $1,001 of credits is refunded
+    # rather than netted against the $1,000 of bracket-schedule tax.
     nj_income_tax_before_refundable_credits: 1_000
     nj_refundable_credits: 1_001
   output:
-    nj_income_tax: -1
+    nj_income_tax: -1_001
+
+- name: NJ joint at $20K gross income owes no tax, full refundable credits
+  period: 2025
+  input:
+    people:
+      head: {age: 40}
+      spouse: {age: 40, employment_income: 20_000}
+      k1: {age: 2}
+      k2: {age: 11}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, k1, k2]
+        tax_unit_childcare_expenses: 3_000
+    marital_units:
+      m:
+        members: [head, spouse]
+      m1:
+        members: [k1]
+      m2:
+        members: [k2]
+    households:
+      household:
+        members: [head, spouse, k1, k2]
+        state_name: NJ
+  output:
+    nj_income_tax: -3_860.8
+
+- name: AGI exactly at the SINGLE filing threshold still zeroes pre-credit tax
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_000
+    filing_status: SINGLE
+    nj_income_tax_before_refundable_credits: 500
+    nj_refundable_credits: 200
+  output:
+    # <= comparison: $10,000 is still inside the no-tax zone.
+    nj_income_tax: -200
+
+- name: AGI one dollar above the SINGLE filing threshold falls through to schedule
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_001
+    filing_status: SINGLE
+    nj_income_tax_before_refundable_credits: 500
+    nj_refundable_credits: 200
+  output:
+    nj_income_tax: 300
 
 - name: NJ income tax above filing threshold so tax is calculated amount minus refundable credits.
   period: 2022

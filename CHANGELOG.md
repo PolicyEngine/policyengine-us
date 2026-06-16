@@ -1,3 +1,786 @@
+## [1.729.5] - 2026-06-16
+
+### Fixed
+
+- Updated the Michigan tier three standard deduction birth year cutoff so filers born in 1958 qualify in tax year 2025 and filers born in 1959 qualify in tax year 2026, the years in which they reach age 67.
+
+
+## [1.729.4] - 2026-06-16
+
+### Fixed
+
+- Fixed states-shard-2 contrib CI OOM by isolating RI's reform tests per subprocess and splitting the heavy-states stage into three shards.
+
+
+## [1.729.3] - 2026-06-15
+
+### Fixed
+
+- Base the Oklahoma Sales Tax Relief Credit TANF exclusion on actual enrollment (is_tanf_enrolled) rather than the modeled ok_tanf benefit.
+
+
+## [1.729.2] - 2026-06-15
+
+### Fixed
+
+- Fixed the Rhode Island contributed Child Tax Credit stepped phaseout to use filing-status-specific thresholds and increments.
+
+
+## [1.729.1] - 2026-06-15
+
+### Fixed
+
+- Fixed scrambled CCDF program coverage metadata in programs.yaml for Connecticut, Florida, Hawaii, Idaho, Indiana, Kansas, and Kentucky, and corrected the Hawaii program name, Connecticut status and variable, and Illinois parameter prefix.
+
+
+## [1.729.0] - 2026-06-14
+
+### Added
+
+- - Added the Florida School Readiness Program (child care subsidy).
+- Add Hawaii Child Care Assistance Program (CCAP / Child Care Subsidy).
+- Add Iowa Child Care Assistance (CCA / CCAP) - 3-tier CCDF child care subsidy with full provider rate matrix and sliding/percentage copays.
+- Add Idaho Child Care Program benefits.
+- Add Indiana Child Care Assistance Program (CCAP / CCDF).
+- Add Kentucky Child Care Assistance Program (CCAP), including eligibility, 85% SMI income test, county-region provider rates, and family copays.
+
+
+## [1.728.0] - 2026-06-14
+
+### Added
+
+- Add Kansas Child Care Assistance Program (CCAP).
+
+### Changed
+
+- Texas CEAP countable income now follows the state plan income sources list instead of IRS gross income.
+
+### Fixed
+
+- Fixed California SSI state supplement payment standards for disabled recipients identified by SSI disability criteria.
+- - Split partnership and S-corporation income into separate person-level inputs, and rename partnership self-employment income to partnership net earnings from self-employment.
+
+
+## [1.727.0] - 2026-06-14
+
+### Added
+
+- Added a medically frail or special medical needs input for Medicaid community engagement exclusions.
+
+
+## [1.726.0] - 2026-06-10
+
+### Added
+
+- Added Contra Costa County, CA General Assistance program.
+- Add Marin County, CA General Relief program.
+- Add San Francisco County Adult Assistance Program (CAAP).
+- Add Santa Clara County General Assistance program.
+- Added the Orange County, California General Relief benefit, paying the maximum aid payment for the number of eligible persons in the economic unit and shared-housing situation net of countable income.
+
+
+## [1.725.0] - 2026-06-10
+
+### Added
+
+- Add San Mateo County General Assistance.
+
+### Fixed
+
+- Restricted Massachusetts Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.724.0] - 2026-06-10
+
+### Added
+
+- SNAP work program participant input variable, satisfying the general work requirements under 7 CFR 273.7.
+
+
+## [1.723.0] - 2026-06-10
+
+### Added
+
+- Added a configurable Utah child tax credit reform with partial refundability, joint-threshold, and indexing parameters.
+
+
+## [1.722.5] - 2026-06-09
+
+### Fixed
+
+- Exclude state use tax from state income tax variables and aggregates.
+
+
+## [1.722.4] - 2026-06-08
+
+### Changed
+
+- Update Washington WCCC and Connecticut Care 4 Kids child care payment parameters.
+
+
+## [1.722.3] - 2026-06-08
+
+### Fixed
+
+- Fixed California itemized deductions double-counting investment interest expense.
+
+
+## [1.722.2] - 2026-06-08
+
+### Fixed
+
+- Use the number of current pregnancies when increasing WIC family size for pregnant applicants.
+
+
+## [1.722.1] - 2026-06-08
+
+No significant changes.
+
+
+## [1.722.0] - 2026-06-08
+
+### Added
+
+- - Add an Illinois SB3567 (104th General Assembly) contributed reform, opt-in via `gov.contrib.states.il.sb3567.in_effect`, that boosts the child tax credit for low-AGI filers.
+- Added the Kentucky Homestead Exemption property tax reduction.
+
+### Fixed
+
+- Apply the Montana Elderly Homeowner/Renter Credit multiplier to household-level gross income and include the full Social Security amount.
+- Zero the New Jersey pre-credit liability before refundable credits flow through when AGI is at or below the filing threshold.
+- Correct Indiana TANF benefit payments to use the IC 12-14-2-5 maximum benefit and add the post-2025 gross/net income eligibility screens.
+
+
+## [1.721.4] - 2026-06-08
+
+### Fixed
+
+- - Fixed federal alimony above-the-line deductions, Pennsylvania retirement income exclusions, and Ohio retirement credit regression coverage.
+- Updated Colorado Temporary Assistance for Needy Families grant standards for the July 2025 current-law amounts.
+
+
+## [1.721.3] - 2026-06-08
+
+### Fixed
+
+- Fixed federal/state conformity across EITC, deduction, ALD, HoH, and CDCC linkages.
+
+  - Federal HoH: tighten IRC 7703(b) "considered unmarried" to MFS/HoH/single filers only; a JOINT filer with `is_separated=true` no longer qualifies.
+  - IN EITC: advance the TY 2026+ static-conformity IRC snapshot to January 1, 2026 per Indiana SEA 243 (2025); the IN snapshot date and the WA WFTC 2022-06-09 snapshot remain Python literals because policyengine-core does not support string-valued parameters. Replace the IN 2021-only branch with a `gov.states.in.tax.income.credits.earned_income.childless.in_effect` gate.
+  - CT dropped from `states_using_federal_itemized_deductions` and `states_using_federal_standard_deduction` (CT-1040 uses neither — only a personal exemption); SC drops out effective TY 2026 per H. 4216 / Act 110 of 2026.
+  - DC: `dc_eitc` continues to model Law 23-149 ITIN inclusivity; the previously-added `dc_base_eitc` diagnostic variable is removed (unreferenced in this PR's scope).
+  - OH educator expense: the federal `educator_expense` is no longer in OH's deductions list. ORC § 5747.01(A)(31) only allows the *excess* above the federal $300 cap, modeled via the new `oh_educator_expense_deduction_person` input variable. Filers without explicit input receive 0 for the OH-only excess; downstream microdata should populate it. The federal-cap interaction is no longer auto-applied to the OH deduction list — an under-implementation, documented as a known limitation.
+  - GA: `ga_itemized_deductions_adjustment` ships as an explicit-input stub for now (other-state taxes and exempt-investment interest are not separately observed in the baseline microdata).
+  - HI: new student loan interest deduction subtree (`gov.states.hi.tax.income.subtractions.student_loan_interest/*`) and supporting `hi_modified_agi`, `hi_student_loan_interest_*` variables modelling pre-current IRC § 221, effective TY 2025+. The pre-2025 HI subtractions list retains `student_loan_interest_ald` so years 2021-2024 continue to receive the federal-equivalent SLI deduction.
+
+
+## [1.721.2] - 2026-06-06
+
+### Fixed
+
+- Fix Alameda County name string in `in_ala` so it matches the all-caps county enum name (`ALAMEDA_COUNTY_CA`).
+
+
+## [1.721.1] - 2026-06-06
+
+### Fixed
+
+- Restricted Kansas Commodity Supplemental Food Program eligibility to covered counties.
+
+
+## [1.721.0] - 2026-06-06
+
+### Added
+
+- Added the Kansas Lifeline phone service supplement from the Kansas Universal Service Fund.
+
+
+## [1.720.7] - 2026-06-05
+
+### Fixed
+
+- Restricted Missouri Commodity Supplemental Food Program eligibility to counties with DHSS distribution sites.
+
+
+## [1.720.6] - 2026-06-03
+
+### Changed
+
+- Removed injected medicaid_cost_if_enrolled inputs from partner contract tests and re-derived expected outputs from the restored SLCSP-index Medicaid cost formula.
+
+
+## [1.720.5] - 2026-06-03
+
+### Fixed
+
+- Model Virginia Medicaid parent eligibility limits by LIFC locality group.
+- Prevent Virginia Medicaid LIFC locality limits from applying before their effective date.
+
+
+## [1.720.4] - 2026-06-02
+
+### Fixed
+
+- Route the Iowa child/dependent care credit fraction lookup through the post-2023 consolidated taxable income so federal Schedule 1-A deductions (OBBBA enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) flow into the Iowa credit base.
+
+
+## [1.720.3] - 2026-06-02
+
+### Fixed
+
+- Flow the federal OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified tip and overtime income exclusions, and passenger-vehicle loan interest) through into Montana taxable income, since Mont. Code Ann. § 15-30-2120 starts from federal taxable income.
+
+
+## [1.720.2] - 2026-06-02
+
+### Fixed
+
+- Remove the Utah Homeowner's/Renter's Relief from Utah income tax refundable credits, since it is administered on Form TC-90CB rather than Form TC-40. The credit remains in the household-level state property tax credits aggregate.
+- Apply ACA premium tax credit formulas to years with historical SLCSP premiums.
+
+
+## [1.720.1] - 2026-06-02
+
+### Fixed
+
+- Relocate the Rhode Island contrib reform tests to the lighter states shard so the two states-shard CI runners are balanced.
+- Isolate refundable credit conversion contrib tests per-file so the other-shard-1 batch no longer exceeds the CI runner memory cap.
+
+
+## [1.720.0] - 2026-06-02
+
+### Added
+
+- Added Alabama Child Care Subsidy Program (CCSP).
+
+
+## [1.719.2] - 2026-06-01
+
+### Fixed
+
+- Wire the Vermont renter credit into the state property tax credits aggregate.
+
+
+## [1.719.1] - 2026-06-01
+
+### Fixed
+
+- Correct the refundable credit conversion per-other-dependent credit to count all non-CTC tax-unit dependents.
+
+
+## [1.719.0] - 2026-06-01
+
+### Added
+
+- Added the South Carolina Homestead Exemption property tax reduction.
+- Added the Texas school district residence homestead exemptions.
+- Added the Mississippi age or disability Homestead Exemption property tax reduction.
+
+
+## [1.718.0] - 2026-06-01
+
+### Added
+
+- Added Nebraska Aid to the Aged, Blind, or Disabled - Payment Maintenance (AABD-PMT) program, the state's SSI supplement, including standard-of-need and shelter allowance parameters, eligibility rules, and living arrangement logic.
+
+
+## [1.717.0] - 2026-06-01
+
+### Added
+
+- Minnesota Supplemental Aid (MSA) — State Supplementary Payment to SSI.
+
+
+## [1.716.0] - 2026-06-01
+
+### Added
+
+- Implement West Virginia Child Care Assistance Program (CCAP).
+
+
+## [1.715.3] - 2026-05-29
+
+### Fixed
+
+- Allocate taxable unemployment compensation by actual recipient instead of all to head.
+
+
+## [1.715.2] - 2026-05-29
+
+### Changed
+
+- Moved Medicaid conditional cost allocation into PolicyEngine US using an SLCSP age, family-composition, and location cost index.
+
+
+## [1.715.1] - 2026-05-28
+
+### Fixed
+
+- Fixed two code-health regressions on main: precompute per-person arrays in `ar_sra_countable_income` (replaces `sum()` over an entity-variable generator), and switch `wa_wccc_provider_type.defined_for` from `"wa_wccc_eligible_child"` to `StateCode.WA` so an input variable no longer carries a non-geographic gate.
+
+
+## [1.715.0] - 2026-05-28
+
+### Added
+
+- Add Arkansas School Readiness Assistance (SRA) child care subsidy program. The 4% per-family copay ceiling is computed against countable (adult) income — children's SSI and Social Security are excluded per FSU §4.3.3 — and the per-child copay used in that ceiling is clamped to the child's actual provider charge. The ESS Year-1 alt path (FSU §4.1.5.1) is gated on earned income alone exceeding the TEA limit, consistent with the regulation's "earnings alone" wording.
+
+
+## [1.714.0] - 2026-05-28
+
+### Added
+
+- Add New Jersey unemployment insurance rules. Phase-1 compute-only program: callers provide pre-aggregated base-period wages, qualifying base weeks, and qualifying dependents; the modeled benefit is not yet wired into the `unemployment_compensation` aggregate (mirrors the existing PA UC precedent).
+
+
+## [1.713.0] - 2026-05-28
+
+### Added
+
+- Implement Washington State Working Connections Child Care (WCCC), the state's child care subsidy program (CCAP-equivalent).
+
+
+## [1.712.1] - 2026-05-28
+
+### Fixed
+
+- Fixed YAML syntax error in partner API impact notice workflow.
+
+
+## [1.712.0] - 2026-05-27
+
+### Added
+
+- Added Slack notices for partner API contract test changes.
+
+
+## [1.711.0] - 2026-05-27
+
+### Added
+
+- Added coding-agent guidance for partner API contract tests and removed stale working references.
+
+
+## [1.710.7] - 2026-05-27
+
+### Fixed
+
+- Validate changed changelog fragment paths in pull request CI.
+
+
+## [1.710.6] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.5] - 2026-05-27
+
+### Fixed
+
+- Apply rate cap before deducting copay in DC, NJ, SC, RI, PA, ME, MA, VA, and DE child care subsidy formulas, so the family copay is properly deducted from the state's max reimbursement when expenses exceed the cap.
+
+
+## [1.710.4] - 2026-05-27
+
+### Fixed
+
+- Model the recent incarceration exception for Medicaid community engagement requirements.
+
+
+## [1.710.3] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.2] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.1] - 2026-05-27
+
+No significant changes.
+
+
+## [1.710.0] - 2026-05-27
+
+### Added
+
+- Add an annual approximation of the 2018-2019 Arkansas Works Medicaid work requirement.
+
+
+## [1.709.1] - 2026-05-26
+
+### Fixed
+
+- Deduct the Parent Share of Cost from Texas Child Care Services when childcare expense exceeds the Board's maximum reimbursement rate.
+
+
+## [1.709.0] - 2026-05-26
+
+### Added
+
+- Added Alabama senior homestead property tax relief.
+
+
+## [1.708.0] - 2026-05-26
+
+### Added
+
+- Add Arizona MCTCP subtraction (Executive Order 2025-15) propagating the OBBBA federal enhanced senior, tip, overtime, and auto loan interest deductions to AZ subtractions starting 2025.
+
+
+## [1.707.1] - 2026-05-25
+
+No significant changes.
+
+
+## [1.707.0] - 2026-05-25
+
+### Added
+
+- Added the Medicaid long-term care home equity limit from H.R. 1.
+
+
+## [1.706.17] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.16] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.15] - 2026-05-25
+
+### Changed
+
+- - Made Medicaid cost if enrolled data-backed and used Medicaid enrollment, rather than the Medicaid dollar value, for categorical eligibility checks.
+
+### Fixed
+
+- Prevent a net capital loss in the Delaware pension exclusion basket from producing a negative subtraction that wipes out other DE subtractions.
+
+
+## [1.706.14] - 2026-05-25
+
+No significant changes.
+
+
+## [1.706.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.11] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.10] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.9] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.8] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.7] - 2026-05-24
+
+### Fixed
+
+- Fixed `RuntimeWarning: invalid value encountered in divide` in `qbid_amount` when the QBI phaseout length parameter is zero. The unguarded `(taxinc_less_qbid - po_start) / po_length` is now `np.divide(..., where=po_length > 0)` with a fully-phased-out fallback. Resolves the QBI source of the divide warnings tracked in #8216.
+
+
+## [1.706.6] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.5] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.4] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.3] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.2] - 2026-05-24
+
+### Fixed
+
+- Add regression tests asserting Roth 401(k) and 403(b) contributions do not reduce taxable wages, and document the exclusion in the pre-tax contributions parameter.
+
+
+## [1.706.1] - 2026-05-24
+
+No significant changes.
+
+
+## [1.706.0] - 2026-05-24
+
+### Added
+
+- Cap traditional and Roth 401(k) and 403(b) contributions at the IRC Section 402(g) elective deferral limit, including age-based catch-ups.
+
+
+## [1.705.23] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.22] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.21] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.20] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.19] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.18] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.17] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.16] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.15] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.14] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.13] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.12] - 2026-05-24
+
+No significant changes.
+
+
+## [1.705.11] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.10] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.9] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.8] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.7] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.6] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.5] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.4] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.3] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.2] - 2026-05-23
+
+No significant changes.
+
+
+## [1.705.1] - 2026-05-22
+
+### Fixed
+
+- Traditional 401(k) and 403(b) elective deferrals no longer incorrectly reduce the FICA (Social Security and Medicare) wage base. Under IRC §3121(a), only Section 125 cafeteria plan items (employer-sponsored health premiums and HSA payroll contributions) reduce FICA wages. This fixes understated Social Security and Medicare tax in any simulation with retirement deferrals.
+
+
+## [1.705.0] - 2026-05-22
+
+### Added
+
+- Implement Missouri State Supplementary Payment (SAB and SNC components) under DSS Family Support Division.
+
+
+## [1.704.0] - 2026-05-22
+
+### Added
+
+- Add Maryland Public Assistance to Adults (state SSP).
+
+
+## [1.703.2] - 2026-05-22
+
+No significant changes.
+
+
+## [1.703.1] - 2026-05-21
+
+### Changed
+
+- Update Medicaid work requirement eligibility to reflect CMS community engagement guidance.
+
+
+## [1.703.0] - 2026-05-21
+
+### Added
+
+- Added the Indiana Over 65 Property Tax Credit.
+
+
+## [1.702.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.702.0] - 2026-05-21
+
+### Added
+
+- Added the North Dakota Renter's Refund.
+- Added the Pennsylvania Property Tax/Rent Rebate standard rebate.
+
+
+## [1.701.1] - 2026-05-21
+
+No significant changes.
+
+
+## [1.701.0] - 2026-05-21
+
+### Added
+
+- Added a data-overridable SSI disability criteria variable for calibrated SSI simulations.
+
+
+## [1.700.2] - 2026-05-20
+
+### Changed
+
+- Apply Georgia HB463 (2025-2026): cut the flat individual income tax rate to 4.99%, raise the standard deduction to $30,000 joint / $15,000 single, raise the dependent exemption to $5,000, increase the age-65+ retirement income exclusion to $70,000 in 2027, and add qualified-overtime and cash-tip exclusions for tax years 2026-2028.
+
+
+## [1.700.1] - 2026-05-20
+
+No significant changes.
+
+
+## [1.700.0] - 2026-05-19
+
+### Added
+
+- Add statutory American Opportunity Credit student eligibility inputs and compute eligibility from those inputs.
+
+### Changed
+
+- Reintroduce age-specific labor supply response multipliers without changing the legacy scalar income elasticity path, and fix the labor-supply-response zero guard so nonzero primary or secondary substitution elasticities are not skipped.
+
+### Fixed
+
+- Fixed the Maryland pension exclusion maximum amount for 2026.
+- Count SSTB self-employment income in Social Security, state and benefit income definitions, and mixed-category QBID allocation.
+- Fixed Idaho's OBBBA Schedule 1-A deduction conformity after 2028.
+- Fix EITC earned income calculations for self-employment loss netting.
+
+
+## [1.699.1] - 2026-05-19
+
+### Fixed
+
+- Fix Medicare enrollment defaults by modeling enrollment as eligibility-gated take-up.
+
+
+## [1.699.0] - 2026-05-19
+
+### Added
+
+- Added `gov.contrib.refundable_credit_conversion` reform: a configurable refundable flat credit composed of per-taxpayer, per-CTC-dependent, per-other-dependent, per-household, and per-earner earnings-subsidy components. The credit is appended to the federal refundable credit list when `in_effect` is true. Repealing existing credits and deductions is handled separately via direct overrides to baseline parameters.
+
+
+## [1.698.0] - 2026-05-19
+
+### Added
+
+- Implemented the Alaska Child Care Assistance Program (CCAP) for PASS II (post-ATAP transitional) and PASS III (general low-income); PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled.
+
+### Changed
+
+- Replaced the full US County enum (3,175 values) with a 29-value AKCCAPRateRegion enum for Alaska CCAP rate-region lookups, cutting the AK CCAP test suite from ~10 minutes to ~12 seconds.
+
+
+## [1.697.0] - 2026-05-19
+
+### Added
+
+- YAML tests under tests/policy/baseline/partners/ that fail CI when a PR would change calculation results for any household API partner, surfaced as a standalone "Household API Partners" CI check. Includes (1) customer fixture mirrors for Amplifi, Impactica, and MyFriendBen, (2) analytics_coverage/ with 81 per-signature test cases grouped by state (one per unique input-variable shape sent through the production API), and (3) analytics_coverage/edge_cases/ with 642 boundary cases organized as federal/{category}/{program}/ (tax_credits, nutrition, healthcare, childcare, cash, housing, utility, composition) and state/{xx}/{program}.yaml. Cases target binding thresholds — income at FPL boundaries, age cutoffs, asset limits, immigration status, household composition — using state-aware values (e.g., per-state SNAP BBCE multipliers).
+
+
 ## [1.696.0] - 2026-05-19
 
 ### Added

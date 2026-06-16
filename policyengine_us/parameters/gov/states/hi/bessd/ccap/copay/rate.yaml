@@ -1,0 +1,67 @@
+description: Hawaii sets this co-payment percentage of the department's maximum rate allowable under the Child Care Subsidy program, by the family's gross income as a share of the federal poverty guidelines.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Hawaii CCAP co-payment rate by FPG ratio
+  reference:
+    # HAR 17-798.2-14(b)(4): co-payment = (percentage of the department's
+    # maximum rate allowable) based on the family's monthly gross income.
+    # The rule's attached scale is "Exhibit III (dated Oct 1, 2009)", which has
+    # been superseded by the 2020 sliding-fee scale below; the implemented
+    # 0-9% percentages come from that 2020 scale, the operative source.
+    - title: HAR 17-798.2-14(b)(4)
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=29
+    # Operative sliding fee scale (single-page scanned chart, eff 2020-01-02)
+    # mapping each FPG band to its co-payment percentage. The standalone PDF
+    # labels itself "Exhibit II" in its own footer, which is its internal
+    # numbering and differs from the HAR's exhibit numbering (Exhibit III).
+    - title: Hawaii DHS Child Care Gross Income Eligibility Limits and Sliding Fee Scale (PDF "Exhibit II"), effective 2020-01-02
+      href: https://childcaresubsidyapplication.dhs.hawaii.gov/Child-Care-Gross-Income-Eligibility-Limits-and-Sliding-Fee-Scale
+
+# Bands are "above X%" boundaries (e.g., 101-115% means above 100% up to
+# 115% FPG), so each threshold is shifted by 0.0001 to keep families at
+# exactly the band top in the lower band.
+brackets:
+  - threshold:
+      2020-01-02: 0
+    amount:
+      2020-01-02: 0
+  - threshold:
+      2020-01-02: 1.0001
+    amount:
+      2020-01-02: 0.01
+  - threshold:
+      2020-01-02: 1.1501
+    amount:
+      2020-01-02: 0.02
+  - threshold:
+      2020-01-02: 1.3001
+    amount:
+      2020-01-02: 0.03
+  - threshold:
+      2020-01-02: 1.4501
+    amount:
+      2020-01-02: 0.04
+  - threshold:
+      2020-01-02: 1.6001
+    amount:
+      2020-01-02: 0.05
+  - threshold:
+      2020-01-02: 1.7501
+    amount:
+      2020-01-02: 0.06
+  - threshold:
+      2020-01-02: 1.9001
+    amount:
+      2020-01-02: 0.07
+  - threshold:
+      2020-01-02: 2.0501
+    amount:
+      2020-01-02: 0.08
+  - threshold:
+      2020-01-02: 2.3001
+    amount:
+      2020-01-02: 0.09

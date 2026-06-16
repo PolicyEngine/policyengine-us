@@ -1,0 +1,7 @@
+description: Apply the per-other-dependent flat credit, which counts tax-unit dependents who do NOT meet the CTC definition. When false, the per_other_dependent amount is ignored.
+metadata:
+  unit: bool
+  period: year
+  label: Refundable credit conversion apply per-other-dependent flat credit
+values:
+  0000-01-01: false

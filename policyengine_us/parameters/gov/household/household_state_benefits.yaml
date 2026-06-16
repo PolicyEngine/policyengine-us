@@ -12,10 +12,16 @@ values:
     - ga_ssp
     # Maine benefits
     - me_ssp
+    # Missouri benefits
+    - mo_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Maryland benefits
+    - md_paa
     # Michigan benefits
     - mi_ssp
+    # Minnesota benefits
+    - mn_msa
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -32,15 +38,18 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
+    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
+    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
     # Nebraska benefits
+    - ne_aabd
     - ne_child_care_subsidies
     # South Carolina benefits
     - sc_child_care_subsidies
@@ -67,22 +76,31 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
+    # Washington benefits
+    - wa_child_care_subsidies
   2024-01-01:
     # Delaware benefits
     - de_ssp
     - de_child_care_subsidies
     # Indiana benefits
     - in_ssp
+    - in_child_care_subsidies
     # Connecticut benefits
     - ct_ssp
     # Georgia benefits
     - ga_ssp
     # Maine benefits
     - me_ssp
+    # Missouri benefits
+    - mo_ssp
     # Massachusetts benefits
     - ma_state_supplement
+    # Maryland benefits
+    - md_paa
     # Michigan benefits
     - mi_ssp
+    # Minnesota benefits
+    - mn_msa
     # Colorado benefits
     - co_state_supplement
     - co_oap
@@ -99,15 +117,18 @@ values:
     - ca_state_supplement
     # Alabama benefits
     - al_ssp
+    - al_child_care_subsidies
     # Alaska benefits
     - ak_ssp
     # Florida benefits
     - fl_oss
     # Idaho benefits
     - id_aabd
+    - id_child_care_subsidies
     # Kentucky benefits
     - ky_ssp
     # Nebraska benefits
+    - ne_aabd
     - ne_child_care_subsidies
     # New Mexico benefits
     - nm_ssi_state_supplement
@@ -117,6 +138,8 @@ values:
     - tx_ssi_state_supplement
     # Virginia benefits
     - va_child_care_subsidies
+    # West Virginia benefits
+    - wv_child_care_subsidies
     # North Carolina benefits
     - nc_scca
     # South Carolina benefits
@@ -136,6 +159,10 @@ values:
     - wa_rca
     # Louisiana benefits
     - la_oss
+    # Arkansas benefits
+    - ar_child_care_subsidies
+    # Washington child care subsidies
+    - wa_child_care_subsidies
 metadata:
   unit: list
   period: year

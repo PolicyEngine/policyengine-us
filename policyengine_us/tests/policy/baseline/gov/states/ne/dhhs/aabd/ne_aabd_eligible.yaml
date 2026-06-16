@@ -1,0 +1,116 @@
+- name: Case 1, Nebraska resident receiving SSI is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Full 2025 individual FBR.
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: true
+
+- name: Case 2, Nebraska resident SSI-eligible but income above FBR receives no SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Negative uncapped_ssi means countable income exceeds the FBR,
+        # so actual ssi = 0 and the person is not an AABD recipient.
+        uncapped_ssi: -200
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: false
+
+- name: Case 3, non-Nebraska resident receiving SSI is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ne_aabd_eligible: false
+
+- name: Case 4, Nebraska resident not SSI-eligible is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_ssi_aged_blind_disabled: false
+        is_ssi_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: false
+
+- name: Case 5, countable income exactly equal to FBR yields zero SSI and ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # uncapped_ssi = FBR - countable_income; setting it to 0 means
+        # countable income exactly equals the FBR -> ssi = 0 -> not an AABD recipient.
+        uncapped_ssi: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: false
+
+- name: Case 6, countable income just below FBR yields positive SSI and eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # $1 positive SSI -> eligible.
+        uncapped_ssi: 1
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: true
+
+- name: Case 7, zero-income SSI recipient is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        ssi_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: true

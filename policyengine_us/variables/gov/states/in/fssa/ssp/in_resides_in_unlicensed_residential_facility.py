@@ -5,7 +5,7 @@ class in_resides_in_unlicensed_residential_facility(Variable):
     value_type = bool
     entity = Person
     label = "Resides in an Indiana unlicensed residential care facility"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.IN
     default_value = False
     reference = (

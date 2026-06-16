@@ -391,3 +391,50 @@
         aca_magi_fraction: 2.50
   output:
      is_aca_ptc_eligible: [true, true, true, true, false]
+
+- name: Case 8, legacy and reported Marketplace coverage flags do not gate eligibility.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        has_marketplace_health_coverage: false
+        has_marketplace_health_coverage_at_interview: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        filing_status: SINGLE
+  output:
+    pays_aca_premium: [true]
+    is_aca_ptc_eligible: [true]
+
+- name: New York Essential Plan expansion group can qualify for ACA PTC in 2027
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.3
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+     is_medicaid_eligible: [false]
+     is_basic_health_program_eligible: [false]
+     is_aca_ptc_eligible: [true]

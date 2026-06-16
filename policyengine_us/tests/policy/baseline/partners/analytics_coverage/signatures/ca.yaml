@@ -1,0 +1,5604 @@
+- name: signature_15 (14 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        spm_unit_pre_subsidy_childcare_expenses: 6000
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: &id002
+        - head
+        - spouse
+      mu_child1:
+        members: &id003
+        - child1
+      mu_child2:
+        members: &id004
+        - child2
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 6000.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_21 (10 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_riv_general_relief_meets_work_requirements: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_22 (10 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_23 (10 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_28 (8 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        is_homeless: false
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_29 (8 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_31 (8 reqs, +2 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_41 (6 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_43 (6 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_44 (6 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_46 (6 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_riv_general_relief_meets_work_requirements: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_58 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        pre_subsidy_rent: 0
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        pre_subsidy_rent: 0
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        bedrooms: 2
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        spm_unit_pre_subsidy_childcare_expenses: 6000
+        receives_housing_assistance: false
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 6000.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        housing_assistance: 0.0
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_59 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_riv_general_relief_meets_work_requirements: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        is_homeless: false
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_60 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_61 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_62 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        alimony_income: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        alimony_income: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_63 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_64 (4 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        was_in_foster_care: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_65 (4 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 0
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_riv_general_relief_meets_work_requirements: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_67 (4 reqs, +3 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_68 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_70 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        self_employment_income: 0
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_77 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 0
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_riv_general_relief_meets_work_requirements: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_78 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_79 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        rent: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 3713.94
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_80 (4 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 40
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        weekly_hours_worked_before_lsr: 20
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+        receives_medicaid: false
+        other_medical_expenses: 0
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 9862.22
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: false
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 505.16
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 0.0
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 3769.5
+        eitc_eligible: true
+        income_tax: -6589.5
+        income_tax_before_credits: 1580.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 1580.0
+        income_tax_non_refundable_credits: 1580.0
+        income_tax_refundable_credits: 6589.5
+        premium_tax_credit: 9862.22
+        refundable_ctc: 2820.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: true
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 0.0
+        ca_tanf_eligible: false
+        is_lifeline_eligible: true
+        is_snap_eligible: false
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 0.0
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: true
+        is_medicaid_eligible: false
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 0.0
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_100 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        pre_subsidy_electricity_expense: 1500
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 487.5
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: signature_113 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 18000
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        rent: 0
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        household_vehicles_owned: 1
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 120.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 10398.24
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true
+- name: signature_128 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        health_insurance_premiums: 0
+        receives_medicaid: false
+        ca_calworks_child_care_time_category: MONTHLY
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_aca_eshi_eligible: false
+        immigration_status_str: CITIZEN
+        receives_medicaid: false
+        health_insurance_premiums: 0
+        ca_calworks_child_care_time_category: MONTHLY
+    households:
+      household:
+        members: *id001
+        household_vehicles_value: 8000
+        lives_in_vehicle: false
+        tenant_pays_utilities: true
+        living_arrangements_allow_for_food_preparation: true
+        ca_tanf_region1: true
+        in_ala: false
+        in_la: true
+        in_riv: false
+        state_code_str: CA
+        zip_code: '90001'
+    spm_units:
+      spm_unit:
+        members: *id001
+        heating_cooling_expense: 1200
+        was_calworks_recipient: false
+        months_since_calworks_exit: 0
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        ca_cdcc: 0.0
+        ca_eitc: 0.0
+        ca_eitc_eligible: true
+        ca_foster_youth_tax_credit: 0.0
+        ca_income_tax_before_credits: 0.0
+        ca_income_tax_before_refundable_credits: 0.0
+        ca_renter_credit: 0.0
+        ca_yctc: 1215.95
+        cdcc: 0.0
+        ctc: 4400.0
+        eitc: 0.0
+        eitc_eligible: true
+        income_tax: 0.0
+        income_tax_before_credits: 0.0
+        income_tax_before_refundable_credits: 0.0
+        income_tax_capped_non_refundable_credits: 0.0
+        income_tax_non_refundable_credits: 4400.0
+        income_tax_refundable_credits: 0.0
+        premium_tax_credit: 0.0
+        refundable_ctc: 0.0
+    spm_units:
+      spm_unit:
+        ca_ala_general_assistance: 0.0
+        ca_ala_general_assistance_income_eligible: false
+        ca_calworks_child_care: 0.0
+        ca_calworks_child_care_eligible: false
+        ca_calworks_stage_2: 0.0
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_3: 0.0
+        ca_calworks_stage_3_eligible: false
+        ca_capp: 0.0
+        ca_capp_eligible: false
+        ca_riv_general_relief: 0.0
+        ca_riv_general_relief_eligible: false
+        ca_riv_share_eligible: false
+        ca_riv_share_payment: 0.0
+        ca_state_supplement: 0.0
+        ca_tanf: 16992.0
+        ca_tanf_eligible: true
+        is_lifeline_eligible: true
+        is_snap_eligible: true
+        la_general_relief: 0.0
+        la_general_relief_eligible: false
+        lifeline: 228.0
+        snap: 7947.54
+    people:
+      head:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11429.95
+        ssi: 0.0
+        wic: 0.0
+      spouse:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 11205.27
+        ssi: 0.0
+        wic: 0.0
+      child1:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 0.0
+      child2:
+        ca_ala_general_assistance_eligible_person: false
+        ca_state_supplement_eligible_person: false
+        is_aca_ptc_eligible: false
+        is_medicaid_eligible: true
+        is_ssi_aged: false
+        is_ssi_eligible: false
+        medicaid: 7155.35
+        ssi: 0.0
+        wic: 723.15
+    households:
+      household:
+        ca_care: 0.0
+        ca_care_eligible: true
+        ca_fera: 0.0
+        ca_fera_eligible: false
+        ca_la_ez_save: 0.0
+        ca_la_ez_save_eligible: true

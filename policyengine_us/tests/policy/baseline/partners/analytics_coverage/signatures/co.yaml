@@ -1,0 +1,1087 @@
+- name: signature_2 (62 reqs, +8 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+        school_meal_countable_income: 48000
+        co_tanf_countable_gross_earned_income: 4000
+        co_tanf_countable_gross_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: &id002
+        - head
+        - spouse
+      mu_child1:
+        members: &id003
+        - child1
+      mu_child2:
+        members: &id004
+        - child2
+  output:
+    people:
+      head:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      spouse:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child1:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 2
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child2:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 1
+        ssi: 0.0
+        wic: 723.15
+        wic_category: 4
+    tax_units:
+      tax_unit:
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    spm_units:
+      spm_unit:
+        co_tanf: 0.0
+        lifeline: 228.0
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0
+        snap: 11994.84
+- name: signature_16 (13 reqs, +8 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+        school_meal_countable_income: 48000
+        co_tanf_countable_gross_earned_income: 4000
+        co_tanf_countable_gross_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      spouse:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child1:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 2
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child2:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 1
+        ssi: 0.0
+        wic: 723.15
+        wic_category: 4
+    tax_units:
+      tax_unit:
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    spm_units:
+      spm_unit:
+        co_tanf: 0.0
+        lifeline: 228.0
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0
+- name: signature_26 (9 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+        other_medical_expenses: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+        other_medical_expenses: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+        other_medical_expenses: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+        other_medical_expenses: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+        school_meal_countable_income: 48000
+        co_tanf_countable_gross_earned_income: 4000
+        co_tanf_countable_gross_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      spouse:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child1:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 2
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child2:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 1
+        ssi: 0.0
+        wic: 723.15
+        wic_category: 4
+    tax_units:
+      tax_unit:
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    spm_units:
+      spm_unit:
+        co_tanf: 0.0
+        lifeline: 228.0
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0
+        snap: 11994.84
+- name: signature_92 (3 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    tax_units:
+      tax_unit:
+        co_care_worker_credit: 0.0
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+      child1:
+        co_family_affordability_credit: 0.0
+      child2:
+        co_family_affordability_credit: 0.0
+- name: signature_108 (2 reqs)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+        school_meal_countable_income: 48000
+        co_tanf_countable_gross_earned_income: 4000
+        co_tanf_countable_gross_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        wic: 0.0
+        wic_category: 5
+      spouse:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        wic: 0.0
+        wic_category: 5
+      child1:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 2
+        wic: 0.0
+        wic_category: 5
+      child2:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 1
+        wic: 723.15
+        wic_category: 4
+    tax_units:
+      tax_unit:
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    spm_units:
+      spm_unit:
+        co_tanf: 0.0
+        lifeline: 228.0
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0
+        snap: 11994.84
+- name: signature_124 (2 reqs, +1 dupes)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 36000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 12000
+        self_employment_income: 0
+        social_security: 0
+        capital_gains: 0
+        rental_income: 0
+        taxable_ira_distributions: 0
+        taxable_pension_income: 0
+        unemployment_compensation: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        current_pregnancies: 0
+        child_support_expense: 0
+        real_estate_taxes: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_blind: false
+        is_pregnant: false
+        is_full_time_college_student: false
+        is_snap_ineligible_student: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        self_employment_income: 0
+        ssi: 0
+        ssi_reported: 0
+        ssi_countable_resources: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        real_estate_taxes: 0
+        child_support_expense: 0
+        current_pregnancies: 0
+    households:
+      household:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        heating_cooling_expense: 1200
+        has_heating_cooling_expense: true
+        phone_expense: 600
+        has_phone_expense: true
+        water_expense: 480
+        broadband_cost: 720
+        childcare_expenses: 6000
+        homeowners_association_fees: 0
+        homeowners_insurance: 0
+        housing_cost: 18000
+        snap_earned_income: 0
+        snap_emergency_allotment: 0
+        snap_unearned_income: 0
+        school_meal_countable_income: 48000
+        co_tanf_countable_gross_earned_income: 4000
+        co_tanf_countable_gross_unearned_income: 0
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members: *id002
+      mu_child1:
+        members: *id003
+      mu_child2:
+        members: *id004
+  output:
+    people:
+      head:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      spouse:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 0.0
+        medicaid_category: 9
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child1:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 2
+        ssi: 0.0
+        wic: 0.0
+        wic_category: 5
+      child2:
+        co_chp_eligible: false
+        co_family_affordability_credit: 0.0
+        co_oap: 0.0
+        co_state_supplement: 0.0
+        commodity_supplemental_food_program: 0.0
+        is_optional_senior_or_disabled_for_medicaid: false
+        medicaid: 7155.35
+        medicaid_category: 1
+        ssi: 0.0
+        wic: 723.15
+        wic_category: 4
+    tax_units:
+      tax_unit:
+        co_ctc: 0.0
+        co_eitc: 0.0
+        ctc_value: 4400.0
+        eitc: 3769.5
+    spm_units:
+      spm_unit:
+        co_tanf: 0.0
+        lifeline: 228.0
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0

@@ -23,11 +23,19 @@ test-yaml-structural:
 test-yaml-structural-heavy:
 	$(BATCH) $(TESTS)/policy/contrib/states --batches 1
 test-yaml-structural-heavy-shard-1:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/2
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/3
 test-yaml-structural-heavy-shard-2:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/2
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/3
+test-yaml-structural-heavy-shard-3:
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 3/3
 test-yaml-structural-other:
-	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress
+	# refundable_credit_conversion force-applies a reform per case; each
+	# distinct gov.contrib.* combination clones the full tax-benefit system
+	# (~5 GB peak/file). Auto-batching grouped all its files into one
+	# subprocess, stacking the peaks past the runner cap → OOM. Isolate
+	# per-file so each peak is freed between files (same as ctc/crfb below).
+	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion
+	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file
 test-yaml-structural-other-shard-2:
 	# ctc + crfb are microsim-heavy: per-file isolation keeps RAM under the cap.
 	$(BATCH) $(TESTS)/policy/contrib/ctc --mode per-file
@@ -75,9 +83,13 @@ test-yaml-no-structural-other-ssa:
 test-yaml-no-structural-other-rest:
 	# All remaining gov/ subdirs + any new ones auto-route here.
 	$(BATCH) $(TESTS)/policy/baseline/gov --exclude states,irs,ssa --mode per-subdir
-	# All top-level baseline/ subdirs except gov/household/contrib
+	# All top-level baseline/ subdirs except gov/household/contrib/partners
 	# (calcfunctions, income, parameters + any new folder) auto-route here.
-	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib --mode per-subdir
+	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib,partners --mode per-subdir
+test-yaml-no-structural-other-partners:
+	# Customer/API partner fixtures mirrored from policyengine-household-api.
+	# One subprocess per partner; new partners auto-route.
+	$(BATCH) $(TESTS)/policy/baseline/partners --mode per-subdir
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0
 coverage:

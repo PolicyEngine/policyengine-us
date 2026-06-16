@@ -27,9 +27,19 @@ class qbid_amount(Variable):
         filing_status = person.tax_unit("filing_status", period)
         po_start = p.phase_out.start[filing_status]
         po_length = p.phase_out.length[filing_status]
-        reduction_rate = min_(  # Worksheet 12-A, line 24; Schedule A, line 9
-            1, (max_(0, taxinc_less_qbid - po_start)) / po_length
+        # po_length can legitimately be zero for filing-status / year
+        # combinations where the phaseout is not configured. Guarded
+        # division avoids RuntimeWarning: invalid value encountered in
+        # divide; when po_length is zero the row above the threshold
+        # is treated as fully phased out (reduction_rate=1).
+        excess = max_(0, taxinc_less_qbid - po_start)
+        raw_reduction = np.divide(
+            excess,
+            po_length,
+            out=np.ones_like(excess, dtype=float),
+            where=po_length > 0,
         )
+        reduction_rate = min_(1, raw_reduction)  # Worksheet 12-A, line 24
         applicable_rate = 1 - reduction_rate  # Schedule A, line 10
         total_w2_wages = person("w2_wages_from_qualified_business", period)
         total_b_property = person("unadjusted_basis_qualified_property", period)
@@ -55,8 +65,19 @@ class qbid_amount(Variable):
         sstb_qbi = sstb_qbi_from_se + where(is_sstb_legacy, non_sstb_qbi, 0)
         non_sstb_qbi_final = where(is_sstb_legacy, 0, non_sstb_qbi)
 
-        has_non_sstb = non_sstb_qbi_final > 0
-        has_sstb = sstb_qbi > 0
+        non_sstb_gross = 0
+        for var in p.income_definition:
+            non_sstb_gross += person(var, period) * person(
+                var + "_would_be_qualified", period
+            )
+        sstb_gross = person("sstb_self_employment_income", period) * person(
+            "sstb_self_employment_income_would_be_qualified", period
+        )
+        non_sstb_gross_final = where(is_sstb_legacy, 0, non_sstb_gross)
+        sstb_gross_final = sstb_gross + where(is_sstb_legacy, non_sstb_gross, 0)
+
+        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final > 0)
+        has_sstb = (sstb_gross_final != 0) | (sstb_qbi > 0)
         has_mixed_categories = has_non_sstb & has_sstb
 
         # Schedule A applies the SSTB applicable percentage to the SSTB's own

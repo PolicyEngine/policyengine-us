@@ -1,5 +1,5 @@
 # ri_ccap: SPMUnit, float, MONTH
-# monthly benefit = min(max(pre_subsidy_childcare_expenses - copay, 0), max_weekly_benefit * 52) / 12
+# monthly benefit = max(min(pre_subsidy_childcare_expenses, max_weekly_benefit * 52) - copay, 0) / 12
 # 2025 FPG family of 3: 15_650 + 5_500 * 2 = 26_650
 
 - name: Case 1, basic eligible family with childcare expenses.
@@ -209,6 +209,21 @@
     # FPG family of 2: 21_150
     # FPL ratio = 50_000 / 21_150 = 2.364 -> 7% copay rate
     # annual copay = 50_000 * 0.07 = 3_500
-    # uncapped = max(2_000 - 3_500, 0) = 0
-    # benefit = 0
+    # capped = min(2_000, max) = 2_000
+    # benefit = max(2_000 - 3_500, 0) = 0
     ri_ccap: 0
+
+- name: Case 7, copay deducted from capped expense when expense exceeds max rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    ri_ccap_eligible: true
+    ri_ccap_copay: 120
+    ri_ccap_maximum_weekly_benefit: 150
+    spm_unit_pre_subsidy_childcare_expenses: 12_000
+    state_code: RI
+  output:
+    # Max monthly = 150 * 52 / 12 = 650
+    # Monthly expense 12_000 / 12 = 1_000 > monthly max -> capped = 650
+    # Benefit = max(650 - 120, 0) = 530
+    ri_ccap: 530
