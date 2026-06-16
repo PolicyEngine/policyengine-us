@@ -1,5 +1,5 @@
-from policyengine_core.tools.hugging_face import download_huggingface_dataset
 from policyengine_us.tools.geography.county_helpers import (
+    BUNDLED_COUNTY_FIPS_DATASET,
     load_county_fips_dataset,
 )
 from pathlib import Path
@@ -56,38 +56,15 @@ def mock_download_huggingface_dataset_failure(filepath):
 
 class TestCountyFIPSDatasetFile:
     """
-    Test that the county FIPS dataset file exists and downloads properly.
+    Test that the bundled county FIPS dataset file exists and parses properly.
     """
 
-    HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
-    COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+    def test_when_packaged_county_fips__file_exists(self):
+        assert BUNDLED_COUNTY_FIPS_DATASET.is_file()
 
-    def test_when_downloading_county_fips__download_is_successful(self, tmp_fips_dir):
-        download_huggingface_dataset(
-            repo=self.HUGGINGFACE_REPO,
-            repo_filename=self.COUNTY_FIPS_DATASET_FILENAME,
-            version=None,
-            local_dir=tmp_fips_dir,
-        )
-
-        TMP_FILE = tmp_fips_dir / self.COUNTY_FIPS_DATASET_FILENAME
-        assert TMP_FILE.is_file()
-
-    def test_when_downloading_and_parsing_county_fips__result_is_correct(
-        self, tmp_fips_dir
-    ):
-        download_huggingface_dataset(
-            repo=self.HUGGINGFACE_REPO,
-            repo_filename=self.COUNTY_FIPS_DATASET_FILENAME,
-            version=None,
-            local_dir=tmp_fips_dir,
-        )
-
-        TMP_FILE = tmp_fips_dir / self.COUNTY_FIPS_DATASET_FILENAME
-
+    def test_when_parsing_county_fips__result_is_correct(self):
         df = pd.read_csv(
-            TMP_FILE,
-            compression="gzip",
+            BUNDLED_COUNTY_FIPS_DATASET,
             dtype={"county_fips": str},
             encoding="utf-8",
             nrows=5,  # Just read a few rows
@@ -114,6 +91,10 @@ class TestLoadCountyFIPSDataset:
 
         # Apply the mock
         monkeypatch.setattr(
+            "policyengine_us.tools.geography.county_helpers.BUNDLED_COUNTY_FIPS_DATASET",
+            mock_dataset_file.parent / "missing.csv",
+        )
+        monkeypatch.setattr(
             "policyengine_us.tools.geography.county_helpers.download_huggingface_dataset",
             mock_download_huggingface_dataset_success(mock_dataset_file),
         )
@@ -135,6 +116,10 @@ class TestLoadCountyFIPSDataset:
         """
 
         # Apply the mock
+        monkeypatch.setattr(
+            "policyengine_us.tools.geography.county_helpers.BUNDLED_COUNTY_FIPS_DATASET",
+            mock_dataset_file.parent / "missing.csv",
+        )
         monkeypatch.setattr(
             "policyengine_us.tools.geography.county_helpers.download_huggingface_dataset",
             mock_download_huggingface_dataset_failure(mock_dataset_file),

@@ -7,16 +7,27 @@ from pathlib import Path
 from policyengine_core.tools.hugging_face import download_huggingface_dataset
 
 
+DATA_FOLDER = Path("data")
+HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
+COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+BUNDLED_COUNTY_FIPS_DATASET = Path(__file__).parent / "county_fips_2020.csv"
+
+
 def load_county_fips_dataset() -> pd.DataFrame:
     """
-    Download the county FIPS dataset from Hugging Face and load it into a pandas DataFrame.
-    If the dataset already exists in the 'data' folder and is the most recent version, this
-    function will just load that into a pandas DataFrame.
+    Load the county FIPS dataset into a pandas DataFrame.
+
+    Prefer the bundled copy so tests and household calculations do not depend
+    on a live Hugging Face request. Fall back to Hugging Face if the bundled
+    file is unavailable.
     """
 
-    DATA_FOLDER = Path("data")
-    HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
-    COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+    if BUNDLED_COUNTY_FIPS_DATASET.exists():
+        return pd.read_csv(
+            BUNDLED_COUNTY_FIPS_DATASET,
+            dtype={"county_fips": str},
+            encoding="utf-8",
+        )
 
     try:
         COUNTY_FIPS_RAW = download_huggingface_dataset(
