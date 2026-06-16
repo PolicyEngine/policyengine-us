@@ -50,7 +50,6 @@
 
 # 2025 tests - Birth year threshold: 1959, Income limits: $107,000 (single/HOH/separate), $133,750 (joint/widow)
 - name: 2025 - Single filer eligible (income below $107,000)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
@@ -61,7 +60,6 @@
     ri_retirement_income_subtraction_eligible: true
 
 - name: 2025 - Single filer ineligible (income at $107,000)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
@@ -72,7 +70,6 @@
     ri_retirement_income_subtraction_eligible: false
 
 - name: 2025 - Joint filer eligible (income below $133,750)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
@@ -83,7 +80,6 @@
     ri_retirement_income_subtraction_eligible: true
 
 - name: 2025 - Joint filer ineligible (income at $133,750)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
@@ -94,7 +90,6 @@
     ri_retirement_income_subtraction_eligible: false
 
 - name: 2025 - Surviving spouse eligible (income below $133,750)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
@@ -105,7 +100,6 @@
     ri_retirement_income_subtraction_eligible: true
 
 - name: 2025 - Age ineligible (born 1960)
-  absolute_error_margin: 0.01
   period: 2025
   input:
     state_code: RI
