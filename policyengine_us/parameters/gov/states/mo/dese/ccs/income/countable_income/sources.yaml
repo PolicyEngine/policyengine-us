@@ -17,6 +17,8 @@ values:
     - interest_income
     - dividend_income
     - rental_income
+    # Estate income is an enumerated gross income type (5 CSR 25-200.050(20)(F)).
+    - estate_income
     # The student/education-maintenance portion of veterans benefits is excluded
     # (Manual 2010.045.10.05) but we don't track that split at the moment, so the
     # gross amount is counted.

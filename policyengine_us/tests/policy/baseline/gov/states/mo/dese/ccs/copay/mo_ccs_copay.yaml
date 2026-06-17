@@ -681,3 +681,34 @@
     # Size-20 tier 7 band > 3,068 up to 15,019 -> tier 7. Only person2 is a
     # paying child. Full fee $5/day * 20 days * 1 child = $100/mo.
     mo_ccs_copay: 100
+
+- name: Case 18, foster (protective-services) child is not charged a sliding fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Income 24,000 / 12 = 2,000 > SMI floor 1,499.19 (not the $1/yr minimum);
+    # size 2 tier 7. A non-foster child would pay $5 * 20 = $100, but a
+    # Protective Service child is waived from the sliding fee (Manual 9.1/9.2).
+    mo_ccs_copay: 0

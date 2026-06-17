@@ -14,19 +14,24 @@ class mo_ccs_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dese.ccs.income.fpl_rate
+        p_ccdf = parameters(period).gov.hhs.ccdf
         adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
         monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
-        # Missouri's operative income limit is the FPG-based ceiling (150% for
-        # new applicants, 242% transitional). The 85% State Median Income row on
-        # the DESE chart is the informational federal CCDF ceiling, not a
-        # separate operative cap, and binds above the FPG limit, so it is not
-        # modeled as a test here.
-        # New applicants use the traditional limit; existing families may
+        # New applicants use the traditional FPG limit; existing families may
         # qualify up to the higher transitional limit.
         enrolled = spm_unit("mo_ccs_enrolled", period)
-        income_limit = where(
+        fpg_limit = where(
             enrolled,
             monthly_fpg * p.transitional,
             monthly_fpg * p.initial_eligibility,
         )
-        return adjusted_income <= income_limit
+        # Adjusted gross income may also not exceed 85% of the state median
+        # income (CCDF State Plan FFY 2025-2027 secs. 4.7 and 2.3.2). For most
+        # household sizes the FPG limit is the lower, binding ceiling; the 85%
+        # SMI cap only binds for very large households (roughly 8 or more).
+        smi_limit = (
+            spm_unit("hhs_smi", period.this_year)
+            * p_ccdf.income_limit_smi
+            / MONTHS_IN_YEAR
+        )
+        return adjusted_income <= min_(fpg_limit, smi_limit)
