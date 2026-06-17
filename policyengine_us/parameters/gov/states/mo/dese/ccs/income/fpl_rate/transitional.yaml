@@ -7,6 +7,12 @@ metadata:
   period: year
   label: Missouri Child Care Subsidy transitional income limit
   reference:
+    # The 242% figure is stated verbatim in the Manual ("not to exceed 242
+    # percent of poverty"); 5 CSR 25-200.060 is the enabling authority and the
+    # chart shows the dollar bands. The live manual page returns HTTP 403 to
+    # automated access, so the Wayback Machine snapshot is cited.
+    - title: Missouri Child Care Subsidy Eligibility Policy Manual 2010.045.00 Income Eligibility Guidelines
+      href: https://web.archive.org/web/20250831220820id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/00
     - title: 5 CSR 25-200.060 Eligibility and Authorization for Child Care Subsidy
       href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060
     - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart

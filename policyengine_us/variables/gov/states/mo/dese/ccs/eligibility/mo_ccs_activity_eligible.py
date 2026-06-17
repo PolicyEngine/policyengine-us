@@ -19,7 +19,10 @@ class mo_ccs_activity_eligible(Variable):
         # The need for care is met by employment, training or education, or job
         # search. We don't track activity-hours verification at the moment, so
         # an applicant is treated as meeting the need when an activity is
-        # present (Manual 2010.050.05-.20). The incapacitated-parent pathway
+        # present (Manual 2010.050.05-.20). Job search (Manual 2010.050.20) is
+        # also a qualifying need but has no clean PolicyEngine input, so a
+        # family needing care solely for job search is not captured. The
+        # incapacitated-parent pathway
         # (Manual 2010.050.25) requires a physician's statement attesting that
         # child care is needed because of the incapacity; we don't track that
         # attestation at the moment, so is_disabled is used as a proxy for the

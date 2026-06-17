@@ -24,9 +24,10 @@ class mo_ccs(Variable):
 
         # Transitional Child Care families are funded at a reduced share of the
         # base rate remaining after the sliding fee is subtracted (5 CSR
-        # 25-200.060(3)(C)2 and Manual 2010.045.00: DESE funds the percentage
-        # "of the remaining state base rate"). Traditional families are funded
-        # at the full rate, so the multiplier is 1 and the order has no effect.
+        # 25-200.060(4)(C) Transitional Child Care and Manual 2010.045.00: DESE
+        # funds the percentage "of the remaining state base rate"). Traditional
+        # families are funded at the full rate, so the multiplier is 1 and the
+        # order has no effect.
         adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
         monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
         fpl_ratio = where(monthly_fpg > 0, adjusted_income / monthly_fpg, 0)

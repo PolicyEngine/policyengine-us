@@ -20,7 +20,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -49,7 +49,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: REGISTERED_CENTER
     tax_units:
       tax_unit:
@@ -78,7 +78,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: SIX_OR_FEWER
     tax_units:
       tax_unit:
@@ -107,7 +107,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_FAMILY_HOME
     tax_units:
       tax_unit:
@@ -136,7 +136,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: GROUP_HOME
     tax_units:
       tax_unit:
@@ -166,7 +166,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -195,7 +195,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -224,7 +224,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -253,7 +253,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -283,7 +283,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 4
+        childcare_hours_per_day: 4
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -297,7 +297,7 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # 4 hours/week -> half time. Licensed center, dense urban, infant/toddler,
+    # 4 hours/day -> half time. Licensed center, dense urban, infant/toddler,
     # half time = $72/day.
     mo_ccs_maximum_daily_benefit: [0, 72]
 
@@ -313,7 +313,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 2
+        childcare_hours_per_day: 2
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -327,7 +327,7 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # 2 hours/week -> part time. Licensed center, dense urban, infant/toddler,
+    # 2 hours/day -> part time. Licensed center, dense urban, infant/toddler,
     # part time = $48/day.
     mo_ccs_maximum_daily_benefit: [0, 48]
 
@@ -344,7 +344,7 @@
         age: 8
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -375,7 +375,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -407,7 +407,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -439,7 +439,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -471,7 +471,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -505,7 +505,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -536,7 +536,7 @@
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -572,7 +572,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: REGISTERED_CENTER
     tax_units:
       tax_unit:
@@ -603,7 +603,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: SIX_OR_FEWER
     tax_units:
       tax_unit:
@@ -634,7 +634,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_FAMILY_HOME
     tax_units:
       tax_unit:
@@ -665,7 +665,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: GROUP_HOME
     tax_units:
       tax_unit:
@@ -697,7 +697,7 @@
         age: 8
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -726,7 +726,7 @@
         age: 1
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -755,7 +755,7 @@
         age: 8
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         mo_ccs_provider_type: LICENSED_CENTER
     tax_units:
       tax_unit:
@@ -771,3 +771,64 @@
   output:
     # Licensed center, rural (Region 5 default), school age, full time = $30.02/day.
     mo_ccs_maximum_daily_benefit: [0, 30.02]
+
+# === Half/part time coverage on a second provider type and region ===
+- name: Case 26, registered center urban infant half time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # 4 hours/day -> half time. Registered center, urban (Region 3),
+    # infant/toddler, half time = $52.50/day.
+    mo_ccs_maximum_daily_benefit: [0, 52.5]
+
+- name: Case 27, registered center urban infant part time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # 2 hours/day -> part time. Registered center, urban (Region 3),
+    # infant/toddler, part time = $35/day.
+    mo_ccs_maximum_daily_benefit: [0, 35]

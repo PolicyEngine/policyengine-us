@@ -8,7 +8,7 @@ class mo_ccs_income_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.MO
     reference = (
-        "https://web.archive.org/web/20211208073807id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/10",
+        "https://web.archive.org/web/20250831220820id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/00",
         "https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060",
     )
 
@@ -16,6 +16,11 @@ class mo_ccs_income_eligible(Variable):
         p = parameters(period).gov.states.mo.dese.ccs.income.fpl_rate
         adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
         monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        # Missouri's operative income limit is the FPG-based ceiling (150% for
+        # new applicants, 242% transitional). The 85% State Median Income row on
+        # the DESE chart is the informational federal CCDF ceiling, not a
+        # separate operative cap, and binds above the FPG limit, so it is not
+        # modeled as a test here.
         # New applicants use the traditional limit; existing families may
         # qualify up to the higher transitional limit.
         enrolled = spm_unit("mo_ccs_enrolled", period)

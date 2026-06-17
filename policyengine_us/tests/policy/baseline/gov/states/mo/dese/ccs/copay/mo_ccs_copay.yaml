@@ -30,7 +30,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -60,7 +60,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 4
+        childcare_hours_per_day: 4
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -88,7 +88,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 2
+        childcare_hours_per_day: 2
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -116,7 +116,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -145,7 +145,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -174,7 +174,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -204,7 +204,7 @@
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
         is_disabled: true
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -232,13 +232,13 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
       person3:
         age: 3
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -269,7 +269,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -299,7 +299,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -328,7 +328,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -357,7 +357,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -386,7 +386,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
       person3:
         age: 38
@@ -520,7 +520,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 4
+        childcare_hours_per_day: 4
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -533,7 +533,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 4 hrs/week -> half
+    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 4 hrs/day -> half
     # unit. Tier 8 half fee = $3.75/day. $3.75 * 20 * 1 = $75/mo.
     mo_ccs_copay: 75
 
@@ -549,7 +549,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 2
+        childcare_hours_per_day: 2
         childcare_attending_days_per_month: 20
     tax_units:
       tax_unit:
@@ -562,7 +562,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 2 hrs/week -> part
+    # Income 33,600 / 12 = 2,800 > 2,644 -> tier 8 (TCC1). 2 hrs/day -> part
     # unit. Tier 8 part fee = $2.50/day. $2.50 * 20 * 1 = $50/mo.
     mo_ccs_copay: 50
 
@@ -578,7 +578,7 @@
         age: 5
         is_tax_unit_dependent: true
         immigration_status: CITIZEN
-        childcare_hours_per_week: 40
+        childcare_hours_per_day: 8
         childcare_attending_days_per_month: 20
       person3:
         age: 38

@@ -15,6 +15,13 @@ class mo_ccs_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mo.dese.ccs.eligibility
         age = person("age", period.this_year)
+        # "Child with special needs" (5 CSR 25-200.050) covers six criteria:
+        # SSI receipt, mental-health services, verified disability, protective
+        # services, adoption subsidy, or court supervision. We approximate it
+        # with is_disabled (verified disability); the other pathways are not
+        # tracked at the moment. is_disabled also selects the special-needs rate
+        # column (mo_ccs_maximum_daily_benefit) and waives the sliding fee
+        # (mo_ccs_copay).
         is_disabled = person("is_disabled", period.this_year)
         is_in_school = person("is_in_k12_school", period.this_year)
         # A child with special needs is eligible to a higher age, extended by
