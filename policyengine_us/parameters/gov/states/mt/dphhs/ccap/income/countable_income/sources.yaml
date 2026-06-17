@@ -1,0 +1,36 @@
+description: Montana uses these income sources as countable income under the Best Beginnings Child Care Scholarship program.
+values:
+  2016-11-01:
+    # Earned income (CC 2-6: Commissions/Salary/Wages, AmeriCorps VISTA, College
+    # Work Study, Internship, Jury Duty, Military Allotment, WIA-as-Work, Tips,
+    # Bonuses, Training Allowance, dependent child not attending school)
+    - employment_income
+    - self_employment_income  # Self-employment, sale of blood, FFN/RCP provider, farm
+    - sstb_self_employment_income
+    - farm_operations_income
+    # Unearned income
+    - interest_income  # Interest, dividend, royalty, annuity, trust fund, capital investment returns
+    - dividend_income
+    - rental_income  # Rental/lease income, contract for deed
+    - social_security  # SS and SSDI counted; SSI excluded (social_security omits SSI)
+    - pension_income  # Government pension, annuity, railroad retirement, veterans' pensions
+    - retirement_distributions
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received  # Child support retained, "in excess", arrearage
+    - alimony_income
+    - disability_benefits
+    - capital_gains  # Counted as a lump sum
+    - veterans_benefits  # Veterans' pensions and benefits (educational VA payments excluded)
+    # TANF cash (child-only/tribal) is excluded here to break the childcare<->TANF
+    # circular dependency (mt_tanf's dependent care deduction reads childcare_expenses,
+    # which nets out child_care_subsidies). TANF cash-assistance families are handled
+    # via the is_tanf_enrolled categorical pathway and the flat $10 copay instead.
+
+metadata:
+  unit: list
+  period: year
+  label: Montana CCAP countable income sources
+  reference:
+    - title: Child Care 2-6 Income Evaluation Table (pp. 1-14)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC26IncomeTable070718.pdf#page=2

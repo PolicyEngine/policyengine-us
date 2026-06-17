@@ -1,0 +1,230 @@
+# Unit tests for mt_ccap_eligible (SPMUnit, MONTH).
+# Eligible = has >=1 eligible child AND income-eligible AND asset-eligible AND
+# activity-eligible. Scoped to Montana (defined_for = StateCode.MT).
+# Base eligible household: single working parent + one young child, low income.
+- name: Case 1, eligible single-parent household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # ~110% FPG for size 2
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: true
+
+- name: Case 2, identical household outside Montana is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY  # not Montana
+  output:
+    mt_ccap_eligible: false
+
+- name: Case 3, no eligible child (only an over-age child) is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        weekly_hours_worked: 40
+      person2:
+        age: 14  # over the age limit, not disabled
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: false
+
+- name: Case 4, over-income household (above 200% FPG, non-TANF) is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # above 200% FPG for size 2
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: false
+
+- name: Case 5, fails the activity requirement (non-working non-student parent).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # low income, eligible on income
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: false
+
+- name: Case 6, fails the CCDF asset test (assets over $1,000,000).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_assets: 1_500_000  # over the CCDF $1,000,000 limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: false
+
+# --- Edge cases: asset-limit boundary, TANF over-income categorical pathway,
+# immigration-ineligible child, and a multi-child household. ---
+- name: Case 7, assets exactly at the $1,000,000 CCDF limit are eligible (inclusive).
+  period: 2026-01
+  # asset test uses "<="; assets == limit passes.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_assets: 1_000_000  # exactly at the CCDF limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: true
+
+- name: Case 8, TANF-enrolled over-income family is eligible via the categorical pathway.
+  period: 2026-01
+  # income above 200% FPG, but is_tanf_enrolled makes the family income-eligible; all other gates pass.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # above 200% FPG for size 2
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: true
+
+- name: Case 9, undocumented child leaves the household with no eligible child (ineligible).
+  period: 2026-01
+  # the only child fails CCDF immigration eligibility, so has_eligible_child is false.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible: false
+
+- name: Case 10, multi-child eligible household (one of several children qualifies).
+  period: 2026-01
+  # large household with mixed-age children; at least one eligible child plus all gates pass.
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # within income limits for size 5
+        weekly_hours_worked: 40
+      person2:
+        age: 2
+      person3:
+        age: 6
+      person4:
+        age: 10
+      person5:
+        age: 15  # over the age limit, not an eligible child, but others qualify
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MT
+  output:
+    mt_ccap_eligible: true

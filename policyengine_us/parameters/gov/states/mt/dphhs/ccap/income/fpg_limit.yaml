@@ -1,0 +1,17 @@
+description: Montana limits gross income to this share of the federal poverty guideline under the Best Beginnings Child Care Scholarship program.
+# Operational sliding fee scale value, not the 150% in the ARM 37.80.202 body text.
+# The scale runs standard eligibility through 185% FPG and graduated eligibility
+# (non-TANF over-income families) through 200% FPG; 200% is the outer eligibility
+# ceiling. Graduated eligibility was added effective 11-01-2016.
+values:
+  2016-11-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Montana CCAP income limit share of federal poverty guideline
+  reference:
+    - title: Best Beginnings Child Care Scholarship Sliding Fee Scale (effective 07-01-2025)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf
+    - title: Mont. Admin. R. 37.80.202
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.202

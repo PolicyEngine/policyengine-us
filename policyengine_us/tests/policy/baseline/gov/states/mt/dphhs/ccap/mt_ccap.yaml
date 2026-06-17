@@ -1,0 +1,254 @@
+# Unit tests for mt_ccap (SPMUnit, MONTH) benefit amount.
+# Benefit = max(sum over eligible children of min(per-child charge, state max rate)
+#               - household copay, 0).
+# Per-child charge comes from pre_subsidy_childcare_expenses, which prorates
+# spm_unit_pre_subsidy_childcare_expenses (annual) evenly across children.
+# 2026 (contiguous) FPG: size 2 = 21,640 annual; size 3 = 27,320 annual.
+- name: Case 1, one child at a center, charge exceeds the max rate (capped at max rate).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # size 2, ~111% FPG -> 1.5% copay bracket
+        weekly_hours_worked: 40
+      person2:
+        age: 4  # preschool
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo for the child
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # max rate (center preschool full-time) = 1,210; charge 1,500 -> capped at 1,210
+    # copay: GMI 2,000 * 1.5% = 30
+    # benefit = 1,210 - 30 = 1,180
+    mt_ccap: 1_180
+
+- name: Case 2, one child, charge below the max rate (benefit capped at the charge).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 9_000  # 750/mo for the child
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # charge 750 < max rate 1,210 -> min = 750
+    # copay 30; benefit = 750 - 30 = 720
+    mt_ccap: 720
+
+- name: Case 3, two children at a center, both charges exceed the max rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # size 3, ~110% FPG -> 1.0% copay bracket
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+      person3:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 1,500/mo each child
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # each child capped at 1,210 -> sum 2,420
+    # copay: GMI 2,500 * 1.0% = 25
+    # benefit = 2,420 - 25 = 2,395
+    mt_ccap: 2_395
+
+- name: Case 4, TANF recipient pays the flat $10 copay.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # max rate 1,210; flat TANF copay 10
+    # benefit = 1,210 - 10 = 1,200
+    mt_ccap: 1_200
+
+- name: Case 5, ineligible household (over income) receives no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # above 200% FPG for size 2
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap: 0
+
+- name: Case 6, no childcare expenses yields no benefit (zero charge minus copay floors at 0).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # min(0, 1,210) = 0; 0 - copay floored at 0
+    mt_ccap: 0
+
+# --- Edge cases: charge exactly at the max rate, half-time reimbursement, and the
+# benefit floor at 0 when the copay exceeds the reimbursement. ---
+- name: Case 7, provider charge exactly equal to the max rate (reimbursement is the max rate).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # charge == max rate; min(1,210, 1,210) = 1,210; copay 30 -> benefit 1,180.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # size 2, ratio 1.109 -> 1.5% copay bracket
+        weekly_hours_worked: 40
+      person2:
+        age: 4  # preschool
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 14_520  # 1,210/mo, exactly the max rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # min(1,210, 1,210) = 1,210; copay 2,000 * 1.5% = 30; benefit = 1,210 - 30
+    mt_ccap: 1_180
+
+- name: Case 8, half-time care reimburses at the half-time max rate.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # HALF_TIME direct input; center infant/toddler half-time max rate = 638.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # ratio 1.109 -> 1.5%
+        weekly_hours_worked: 40
+      person2:
+        age: 1  # infant/toddler
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: HALF_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo > 638 half-time rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # min(1,000, 638) = 638; copay 30; benefit = 638 - 30
+    mt_ccap: 608
+
+- name: Case 9, copay exceeds the reimbursement so the benefit floors at 0.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # high-income eligible family with a small provider charge; copay 205.83 > reimbursement 200 -> benefit floored at 0.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_000  # size 2, ratio 1.756 -> 6.5% copay bracket
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 2_400  # 200/mo charge, below the copay
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # reimbursement = min(200, 1,210) = 200
+    # copay = 3,166.67 * 6.5% = 205.83 > 200 -> max(200 - 205.83, 0) = 0
+    mt_ccap: 0

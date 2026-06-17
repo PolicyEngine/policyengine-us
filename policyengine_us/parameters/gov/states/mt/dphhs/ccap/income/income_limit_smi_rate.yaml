@@ -1,0 +1,12 @@
+description: Montana limits gross income to this share of state median income under the Best Beginnings Child Care Scholarship program.
+# Households over 85% SMI are not eligible; this ceiling overlays the FPG brackets.
+values:
+  2016-11-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Montana CCAP income limit share of state median income
+  reference:
+    - title: Best Beginnings Child Care Scholarship Sliding Fee Scale (effective 07-01-2025)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf

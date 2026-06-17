@@ -1,0 +1,128 @@
+# Unit tests for mt_ccap_child_age_category.
+# Derived from age via age_group/months.yaml bracket:
+#   0-35 months  -> INFANT_TODDLER
+#   36-59 months -> PRESCHOOL
+#   60+ months   -> SCHOOL_AGE
+# age is a YEAR variable; the MONTH formula reads age * 12 for months.
+- name: Case 1, infant under 3 (24 months) classified as infant/toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2  # 24 months < 36
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 2, newborn (0 months) classified as infant/toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 3, three-year-old (36 months) classified as preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3  # 36 months, boundary into preschool
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: PRESCHOOL
+
+- name: Case 4, four-year-old classified as preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4  # 48 months, 36-59 range
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: PRESCHOOL
+
+- name: Case 5, five-year-old (60 months) classified as school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5  # 60 months, boundary into school age
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 6, ten-year-old classified as school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10  # 120 months
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: SCHOOL_AGE
+
+# --- Edge cases: bracket boundaries just-below the transition months ---
+# age is a float; ages chosen so age*12 lands at month - 1 (just under the cutoff)
+# to confirm the lower bracket still applies at threshold-1.
+- name: Case 7, 35-month child (just below the 36-month Preschool cutoff) is infant/toddler.
+  period: 2026-01
+  # Boundary at threshold-1; 35/12 = 2.9167 years -> 35 months < 36 stays INFANT_TODDLER.
+  input:
+    people:
+      person1:
+        age: 2.9167  # 35 months, one below the Preschool boundary
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 8, 59-month child (just below the 60-month School Age cutoff) is preschool.
+  period: 2026-01
+  # Boundary at threshold-1; 59/12 = 4.9167 years -> 59 months < 60 stays PRESCHOOL.
+  input:
+    people:
+      person1:
+        age: 4.9167  # 59 months, one below the School Age boundary
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: PRESCHOOL
+
+- name: Case 9, adult parent age (336 months) lands in the top School Age bracket.
+  period: 2026-01
+  # Documents that the age->category bracket has no upper cap; adults fall in SCHOOL_AGE (the default rate lookup is gated elsewhere by mt_ccap_eligible_child).
+  input:
+    people:
+      person1:
+        age: 28  # 336 months
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: SCHOOL_AGE

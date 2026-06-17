@@ -1,0 +1,148 @@
+# Unit tests for mt_ccap_countable_income (SPMUnit, MONTH).
+# Sums the income sources listed in income/countable_income/sources.yaml.
+# SSI is NOT in the list (social_security omits SSI), so it must be excluded.
+# Income inputs are YEAR variables; in a MONTH-period test they are entered as
+# annual amounts and the output is the monthly value (annual / 12).
+- name: Case 1, employment income only.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 24_000  # annual
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 2_000  # 24,000 / 12
+
+- name: Case 2, earned plus unearned (Social Security counted).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 12_000  # annual
+        social_security: 6_000  # annual, counted
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 1_500  # (12,000 + 6,000) / 12
+
+- name: Case 3, SSI is excluded from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 12_000  # annual, counted
+        ssi: 9_000  # annual, NOT counted
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 1_000  # 12,000 / 12 (SSI excluded)
+
+- name: Case 4, child support and unemployment compensation counted.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 0
+        child_support_received: 3_600  # annual, counted
+        unemployment_compensation: 6_000  # annual, counted
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 800  # (3,600 + 6,000) / 12
+
+# --- Edge cases: zero, negative self-employment, additional sources ---
+- name: Case 5, zero income yields zero countable income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # Degenerate zero-income case; the source sum is 0.
+  input:
+    people:
+      person1:
+        employment_income: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 0
+
+- name: Case 6, negative self-employment loss offsets earned income in the source sum.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # A self-employment loss reduces the summed countable income; the sum is not floored at the source level.
+  input:
+    people:
+      person1:
+        employment_income: 24_000  # annual, counted
+        self_employment_income: -6_000  # annual loss, reduces the sum
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 1_500  # (24,000 - 6,000) / 12
+
+- name: Case 7, capital gains and veterans benefits counted.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # Both capital_gains (lump sum) and veterans_benefits are listed countable sources.
+  input:
+    people:
+      person1:
+        employment_income: 0
+        capital_gains: 12_000  # annual, counted lump sum
+        veterans_benefits: 6_000  # annual, counted
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_countable_income: 1_500  # (12,000 + 6,000) / 12

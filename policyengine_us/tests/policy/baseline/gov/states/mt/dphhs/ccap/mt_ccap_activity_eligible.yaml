@@ -1,0 +1,244 @@
+# Unit tests for mt_ccap_activity_eligible (SPMUnit, MONTH).
+# Activity requirement: two-parent households 120 hrs/month total; single-parent
+# 60 hrs/month, OR full-time student (no work requirement), OR part-time student
+# plus 40 hrs/month work. weekly_hours_worked (Person, weekly) drives the work test;
+# monthly hours = weekly hours * (52 / 12) ~= 4.333.
+# person2 / person3 are children (age < 13).
+- name: Case 1, single working parent well above 60 hrs/month is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 40  # ~173 hrs/month >> 60
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 2, single non-working non-student parent is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 5  # ~21.7 hrs/month < 60
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+- name: Case 3, single full-time student parent has no work requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 4, two working parents above 120 hrs/month total are activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 20  # ~86.7 hrs/month
+      person2:
+        age: 30
+        weekly_hours_worked: 20  # ~86.7 hrs/month, combined ~173 > 120
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 5, two parents with neither working and neither a student fail the activity test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+# --- Edge cases: activity-hour boundaries (monthly hours = weekly * 52/12 = 4.3333).
+# Single-parent threshold 60 hrs/mo; two-parent threshold 120 hrs/mo; both ">=". ---
+- name: Case 6, single parent just above 60 hrs/month is activity-eligible.
+  period: 2026-01
+  # 14 hrs/week * 4.3333 = 60.67 hrs/mo >= 60.
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 14  # 60.67 hrs/mo
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 7, single parent just below 60 hrs/month is not activity-eligible.
+  period: 2026-01
+  # 13 hrs/week * 4.3333 = 56.33 hrs/mo < 60.
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 13  # 56.33 hrs/mo
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+- name: Case 8, two parents just above 120 hrs/month combined are activity-eligible.
+  period: 2026-01
+  # each 14 hrs/week -> 28 combined * 4.3333 = 121.33 hrs/mo >= 120.
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 14
+      person2:
+        age: 30
+        weekly_hours_worked: 14  # combined 28 hrs/week -> 121.33 hrs/mo
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 9, two parents just below 120 hrs/month combined are not activity-eligible.
+  period: 2026-01
+  # each 13 hrs/week -> 26 combined * 4.3333 = 112.67 hrs/mo < 120.
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 13
+      person2:
+        age: 30
+        weekly_hours_worked: 13  # combined 26 hrs/week -> 112.67 hrs/mo
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+- name: Case 10, two-parent household, one a full-time student, still needs 120 work hours.
+  period: 2026-01
+  # the full-time-student no-work exemption applies only to single-parent households; a two-parent family with a student parent and only ~87 combined work hours fails the 120-hour test.
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked: 20  # 86.67 hrs/mo
+        is_full_time_student: false
+      person2:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true  # student, but two-parent path ignores the exemption
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+- name: Case 11, household with no parents (only children) is not activity-eligible.
+  period: 2026-01
+  # degenerate case; zero parent work hours, single-parent path with 0 >= 60 is false.
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
