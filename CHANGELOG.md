@@ -1,3 +1,10 @@
+## [1.732.0] - 2026-06-17
+
+### Added
+
+- Added the Ohio Homestead Exemption property tax reduction.
+
+
 ## [1.731.0] - 2026-06-17
 
 ### Added
