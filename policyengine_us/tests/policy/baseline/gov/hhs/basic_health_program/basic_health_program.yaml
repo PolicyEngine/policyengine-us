@@ -1,0 +1,57 @@
+- name: Case 1, Minnesota enrolled adult receives Basic Health Program value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MN
+        county_str: HENNEPIN_COUNTY_MN
+  output:
+    is_basic_health_program_eligible: [true]
+    basic_health_program_enrolled: [true]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+    aca_ptc: 0
+    basic_health_program: 4_001.53
+    household_health_benefits: 4_001.53
+    healthcare_benefit_value: 4_001.53
+
+- name: Case 2, New York family-tier BHP reference premium does not require ACA premiums.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: ONE_ADULT
+    basic_health_program_family_tier_multiplier: 1
+    basic_health_program_reference_premium: 760
