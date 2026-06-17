@@ -8,46 +8,114 @@ metadata:
     - mo_ccs_age_group
     - mo_ccs_time_category
   reference:
-    - title: 2025 Rates Held Harmless 2.0, Daytime Rates 2025
+    - title: 2025 Rates Held Harmless 2.0, Daytime Rates 2025 (PS @ Market Rate with 25% special-needs enhancement)
       href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx
+    - title: FFY 2025-2027 CCDF State Plan, Amendment 2, Section 4.3.3 (children with special needs 25% rate differential)
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=52
 
 DENSE_URBAN:
   INFANT_TODDLER:
     FULL_TIME:
-      2025-10-01: 84
+      2025-10-01: 105
     HALF_TIME:
-      2025-10-01: 63
+      2025-10-01: 78.75
     PART_TIME:
-      2025-10-01: 42
+      2025-10-01: 52.5
   PRESCHOOL:
     FULL_TIME:
-      2025-10-01: 68
+      2025-10-01: 85
     HALF_TIME:
-      2025-10-01: 51
+      2025-10-01: 63.75
     PART_TIME:
-      2025-10-01: 34
+      2025-10-01: 42.5
   SCHOOL_AGE:
     FULL_TIME:
-      2025-10-01: 55.43
+      2025-10-01: 69.2875
     HALF_TIME:
-      2025-10-01: 41.5725
+      2025-10-01: 51.965625
     PART_TIME:
-      2025-10-01: 27.715
+      2025-10-01: 34.64375
 METRO:
   INFANT_TODDLER:
     FULL_TIME:
-      2025-10-01: 70
+      2025-10-01: 87.5
     HALF_TIME:
-      2025-10-01: 52.5
+      2025-10-01: 65.625
     PART_TIME:
-      2025-10-01: 35
+      2025-10-01: 43.75
   PRESCHOOL:
     FULL_TIME:
-      2025-10-01: 53
+      2025-10-01: 66.25
     HALF_TIME:
-      2025-10-01: 39.75
+      2025-10-01: 49.6875
     PART_TIME:
-      2025-10-01: 26.5
+      2025-10-01: 33.125
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 50
+    HALF_TIME:
+      2025-10-01: 37.5
+    PART_TIME:
+      2025-10-01: 25
+URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 87.5
+    HALF_TIME:
+      2025-10-01: 65.625
+    PART_TIME:
+      2025-10-01: 43.75
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 49.075
+    HALF_TIME:
+      2025-10-01: 36.80625
+    PART_TIME:
+      2025-10-01: 24.5375
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 38.5
+    HALF_TIME:
+      2025-10-01: 28.875
+    PART_TIME:
+      2025-10-01: 19.25
+MICROPOLITAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 87.5
+    HALF_TIME:
+      2025-10-01: 65.625
+    PART_TIME:
+      2025-10-01: 43.75
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 75.375
+    HALF_TIME:
+      2025-10-01: 56.53125
+    PART_TIME:
+      2025-10-01: 37.6875
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 46.25
+    HALF_TIME:
+      2025-10-01: 34.6875
+    PART_TIME:
+      2025-10-01: 23.125
+RURAL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 87.5
+    HALF_TIME:
+      2025-10-01: 65.625
+    PART_TIME:
+      2025-10-01: 43.75
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 47.625
+    HALF_TIME:
+      2025-10-01: 35.71875
+    PART_TIME:
+      2025-10-01: 23.8125
   SCHOOL_AGE:
     FULL_TIME:
       2025-10-01: 40
@@ -55,69 +123,3 @@ METRO:
       2025-10-01: 30
     PART_TIME:
       2025-10-01: 20
-URBAN:
-  INFANT_TODDLER:
-    FULL_TIME:
-      2025-10-01: 70
-    HALF_TIME:
-      2025-10-01: 52.5
-    PART_TIME:
-      2025-10-01: 35
-  PRESCHOOL:
-    FULL_TIME:
-      2025-10-01: 39.26
-    HALF_TIME:
-      2025-10-01: 29.445
-    PART_TIME:
-      2025-10-01: 19.63
-  SCHOOL_AGE:
-    FULL_TIME:
-      2025-10-01: 30.8
-    HALF_TIME:
-      2025-10-01: 23.1
-    PART_TIME:
-      2025-10-01: 15.4
-MICROPOLITAN:
-  INFANT_TODDLER:
-    FULL_TIME:
-      2025-10-01: 70
-    HALF_TIME:
-      2025-10-01: 52.5
-    PART_TIME:
-      2025-10-01: 35
-  PRESCHOOL:
-    FULL_TIME:
-      2025-10-01: 60.3
-    HALF_TIME:
-      2025-10-01: 45.225
-    PART_TIME:
-      2025-10-01: 30.15
-  SCHOOL_AGE:
-    FULL_TIME:
-      2025-10-01: 37
-    HALF_TIME:
-      2025-10-01: 27.75
-    PART_TIME:
-      2025-10-01: 18.5
-RURAL:
-  INFANT_TODDLER:
-    FULL_TIME:
-      2025-10-01: 70
-    HALF_TIME:
-      2025-10-01: 52.5
-    PART_TIME:
-      2025-10-01: 35
-  PRESCHOOL:
-    FULL_TIME:
-      2025-10-01: 38.1
-    HALF_TIME:
-      2025-10-01: 28.575
-    PART_TIME:
-      2025-10-01: 19.05
-  SCHOOL_AGE:
-    FULL_TIME:
-      2025-10-01: 32
-    HALF_TIME:
-      2025-10-01: 24
-    PART_TIME:
-      2025-10-01: 16

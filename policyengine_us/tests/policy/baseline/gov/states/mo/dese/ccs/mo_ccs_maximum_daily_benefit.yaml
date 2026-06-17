@@ -389,9 +389,10 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # Disabled -> special-needs (PS) column. Licensed center, dense urban,
-    # preschool, full time PS = $71.57/day (base would be $50).
-    mo_ccs_maximum_daily_benefit: [0, 71.57]
+    # Disabled -> special-needs column (PS market + 25% differential). Licensed
+    # center, dense urban, preschool, full time = $89.4625/day (base $50, PS
+    # market $71.57).
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
 
 # === Transitional families return the gross base rate (funding multiplier
 #     is applied downstream in mo_ccs, not here) ===
@@ -586,9 +587,9 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # Registered center, dense urban, preschool, full time PS = $68/day
-    # (base would be $40.25).
-    mo_ccs_maximum_daily_benefit: [0, 68]
+    # Registered center, dense urban, preschool, full time special-needs
+    # (PS market $68 + 25%) = $85/day (base would be $40.25).
+    mo_ccs_maximum_daily_benefit: [0, 85]
 
 - name: Case 20, six-or-fewer special-needs school age uses the PS column.
   period: 2025-01
@@ -617,9 +618,9 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # Six or fewer, dense urban, school age, full time PS = $35/day
-    # (base would be $25.45).
-    mo_ccs_maximum_daily_benefit: [0, 35]
+    # Six or fewer, dense urban, school age, full time special-needs
+    # (PS market $35 + 25%) = $43.75/day (base would be $25.45).
+    mo_ccs_maximum_daily_benefit: [0, 43.75]
 
 - name: Case 21, licensed family home special-needs preschool uses the PS column.
   period: 2025-01
@@ -648,9 +649,9 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # Licensed family home, dense urban, preschool, full time PS = $70/day
-    # (base would be $40).
-    mo_ccs_maximum_daily_benefit: [0, 70]
+    # Licensed family home, dense urban, preschool, full time special-needs
+    # (PS market $70 + 25%) = $87.5/day (base would be $40).
+    mo_ccs_maximum_daily_benefit: [0, 87.5]
 
 - name: Case 22, group home special-needs preschool uses the PS column.
   period: 2025-01
@@ -679,9 +680,9 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # Group home, dense urban, preschool, full time PS = $66/day
-    # (base would be $50).
-    mo_ccs_maximum_daily_benefit: [0, 66]
+    # Group home, dense urban, preschool, full time special-needs
+    # (PS market $66 + 25%) = $82.5/day (base would be $50).
+    mo_ccs_maximum_daily_benefit: [0, 82.5]
 
 # === Region x age rate-matrix cells outside Region 1 (school age and infant
 #     in Regions 2/3/5, which previously had no coverage) ===

@@ -21,12 +21,12 @@ class mo_ccs_maximum_daily_benefit(Variable):
         provider_type = person("mo_ccs_provider_type", period)
 
         rates = p.rates
-        # A child with special needs is reimbursed from the special needs (PS)
-        # rate column; all other children use the base column. For preschool and
-        # school-age children the PS column is the market rate; for
-        # infant/toddler the published PS rate equals the base rate (the +25%
-        # special-needs enhancement is a deferred follow-up), so special-needs
-        # infants reimburse at the base rate.
+        # A child with special needs is reimbursed at the special-needs rate
+        # (special_needs column); all other children use the base column. Per
+        # the CCDF State Plan FFY 2025-2027 (secs. 2.3.2(d), 4.3.3), special-
+        # needs children receive the market rate plus a 25% rate differential.
+        # The non-traditional-hours (+15%), accreditation (+20%), and
+        # high-subsidy-enrollment (+30%) differentials are not modeled.
         is_disabled = person("is_disabled", period.this_year)
 
         def provider_rate(provider):

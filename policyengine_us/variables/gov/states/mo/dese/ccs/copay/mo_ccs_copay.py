@@ -13,7 +13,7 @@ class mo_ccs_copay(Variable):
     defined_for = StateCode.MO
     reference = (
         "https://web.archive.org/web/20211208060516id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2025/010",
-        "https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf",
+        "https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):

@@ -8,7 +8,7 @@
 # 2025 values (test period 2025-01): FPG size 2 = 21,150/yr (1,762.50/mo);
 #   150% FPL = 2,643.75/mo. MO SMI size 2 = 71,961/yr; 25%/12 floor = $1,499.19/mo.
 #   Licensed center, dense urban (Jackson County), infant/toddler, full time
-#   base rate = $96/day; preschool special-needs (PS) rate = $71.57/day.
+#   base rate = $96/day; preschool special-needs rate (PS market + 25%) = $89.4625/day.
 
 - name: Case 1, positive benefit, rate not capped by expenses.
   period: 2025-01
@@ -181,11 +181,12 @@
         state_code: MO
         county: JACKSON_COUNTY_MO
   output:
-    # PS rate, dense urban, preschool, full time = $71.57/day * 20 = $1,431.40.
+    # Special-needs rate (PS market $71.57 + 25% differential), dense urban,
+    # preschool, full time = $89.4625/day * 20 = $1,789.25.
     # Disabled child excluded from the sliding fee -> copay $0.
     # Expenses cap = 30,000 / 12 = 2,500 not binding.
-    # Benefit = max(1,431.40 - 0, 0) = $1,431.40.
-    mo_ccs: 1_431.40
+    # Benefit = max(1,789.25 - 0, 0) = $1,789.25.
+    mo_ccs: 1_789.25
 
 - name: Case 6, negative income does not inflate the benefit.
   period: 2025-01
@@ -341,9 +342,10 @@
   output:
     # Size 3, income 30,000/yr = 2,500/mo (above SMI floor 1,851.94; not TANF).
     # New applicant: 2,500 <= 150% FPL size 3 (3,331.25) -> eligible; funding 1.0.
-    # Disabled preschooler -> PS rate $71.57/day; infant -> base rate $96/day.
-    # Reimbursement = (71.57 + 96) * 20 = $3,351.40 (expenses not binding).
+    # Disabled preschooler -> special-needs rate $89.4625/day (PS market +25%);
+    # infant -> base rate $96/day.
+    # Reimbursement = (89.4625 + 96) * 20 = $3,709.25 (expenses not binding).
     # Copay: only the non-disabled child is charged; size 3 income 2,500 ->
     #   tier 7 full fee $5/day * 20 = $100. Disabled child waived.
-    # Benefit = max(3,351.40 - 100, 0) = $3,251.40.
-    mo_ccs: 3_251.40
+    # Benefit = max(3,709.25 - 100, 0) = $3,609.25.
+    mo_ccs: 3_609.25

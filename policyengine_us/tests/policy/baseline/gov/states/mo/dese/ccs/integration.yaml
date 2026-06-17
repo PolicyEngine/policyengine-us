@@ -15,7 +15,7 @@
 #   MO SMI base 2025 = 105,825; size 2 = * 0.68 = 71,961/yr;
 #     25% / 12 floor = $1,499.19/mo.
 #   Licensed center, dense urban (Jackson County), infant/toddler, full time
-#     base rate = $96/day; preschool special-needs (PS) rate = $71.57/day.
+#     base rate = $96/day; preschool special-needs rate (PS market + 25%) = $89.4625/day.
 #   Size 2 sliding fee tier 7 full fee = $5/day; tier 8 (TCC1) full fee = $7.50/day.
 
 - name: Case 1, eligible working family with an infant in a licensed center.
@@ -189,12 +189,13 @@
   output:
     # Disabled preschooler -> eligible child; PS rate used.
     mo_ccs_eligible_child: [false, true]
-    # PS rate, dense urban, preschool, full time = $71.57/day.
-    mo_ccs_maximum_daily_benefit: [0, 71.57]
+    # Special-needs rate (PS market + 25% differential), dense urban,
+    # preschool, full time = $89.4625/day.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
     # Special-needs child not charged -> copay $0.
     mo_ccs_copay: 0
-    # Reimbursement = min($71.57 * 20, $2,500) = $1,431.40; benefit = $1,431.40.
-    mo_ccs: 1_431.40
+    # Reimbursement = min($89.4625 * 20, $2,500) = $1,789.25; benefit = $1,789.25.
+    mo_ccs: 1_789.25
 
 - name: Case 5, low-income family pays only the minimum fee.
   period: 2025-01

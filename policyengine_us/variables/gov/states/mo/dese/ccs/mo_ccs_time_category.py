@@ -15,7 +15,7 @@ class mo_ccs_time_category(Variable):
     definition_period = MONTH
     label = "Missouri Child Care Subsidy care time unit"
     defined_for = StateCode.MO
-    reference = "https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf"
+    reference = "https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf#page=1"
 
     def formula(person, period, parameters):
         # The chart's full/half/part thresholds (5/3/0.5 hours) are per day of
