@@ -1,3 +1,10 @@
+## [1.730.0] - 2026-06-17
+
+### Added
+
+- Added FY2024 Head Start and Early Head Start spending and enrollment values for all states from the ACF Head Start Program Facts.
+
+
 ## [1.729.5] - 2026-06-16
 
 ### Fixed
