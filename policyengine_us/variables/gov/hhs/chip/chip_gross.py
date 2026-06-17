@@ -14,10 +14,11 @@ class chip_gross(Variable):
     documentation = (
         "Gross CHIP service value for a CHIP-eligible person, equal to the "
         "per-capita net CHIP spending plus the state's household cost-sharing "
-        "offsets. Counterpart to `chip`, which is the net-of-premium value "
-        "reported by MACPAC. Use this for household-side resource accounting "
-        "when premiums paid by the household are tracked separately via "
-        "`chip_premium`."
+        "offsets. This is eligibility-gated rather than enrollment-gated, "
+        "and is the counterpart to `chip`, which is the enrolled "
+        "net-of-premium value reported by MACPAC. Use this only when a gross "
+        "eligible-value concept is needed and enrollment take-up is modeled "
+        "separately."
     )
     defined_for = "is_chip_eligible"
     adds = ["per_capita_chip_gross"]

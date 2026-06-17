@@ -6,7 +6,11 @@ class per_capita_chip(Variable):
     entity = Person
     label = "Average CHIP payment"
     unit = USD
-    documentation = "Per-capita CHIP payment for this person's State."
+    documentation = (
+        "Per-capita net CHIP payment for this person's state. This variable "
+        "is eligibility-gated and does not model enrollment or take-up; use "
+        "`chip` for enrolled household resource accounting."
+    )
     definition_period = YEAR
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
     defined_for = "is_chip_eligible"
