@@ -47,7 +47,12 @@ def create_mo_refundable_eitc() -> Reform:
         defined_for = StateCode.MO
 
         def formula(tax_unit, period, parameters):
-            # Include the nonrefundable WFTC (0 when reform is in effect)
+            # Today `gov.states.mo.tax.income.credits.non_refundable` is
+            # just `[mo_wftc]`, so returning the (zeroed) reform replacement
+            # is equivalent to the baseline. If Missouri later adds a second
+            # nonrefundable credit, this formula would silently drop it —
+            # at that point switch to summing the full nonrefundable list
+            # with `mo_wftc` filtered out, mirroring the UT/OH fix pattern.
             return tax_unit("mo_non_refundable_wftc", period)
 
     class mo_refundable_credits(Variable):
