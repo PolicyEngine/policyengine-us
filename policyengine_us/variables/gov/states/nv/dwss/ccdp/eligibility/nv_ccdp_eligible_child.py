@@ -16,9 +16,14 @@ class nv_ccdp_eligible_child(Variable):
         # a child age past 13 (or 19) keep coverage (MS 210/211) is not modeled.
         p = parameters(period).gov.states.nv.dwss.ccdp.eligibility
         age = person("age", period.this_year)
-        has_developmental_delay = person("has_developmental_delay", period.this_year)
+        # MS 211 defines a special need as a physical or mental condition that
+        # severely limits self-care, or an at-risk emotional condition; broader
+        # than developmental delay alone, so OR in the general disability flag.
+        has_special_need = person("has_developmental_delay", period.this_year) | person(
+            "is_disabled", period.this_year
+        )
         age_eligible = where(
-            has_developmental_delay,
+            has_special_need,
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )

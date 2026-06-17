@@ -9,9 +9,12 @@ metadata:
   reference:
     - title: Nevada CCDF State Plan FFY 2025-2027, Section 3.1.1.v — Flat Rate Copayments
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=36
-    - title: Nevada CC PT 06-25 Annual Income Changes, Co-Payment columns, effective October 1, 2025
+    - title: Nevada DWSS Policy Transmittal CC PT 06-25 (Oct 2, 2025) — Annual Income Changes
       href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2006-25%20ANNUAL%20INCOME%20CHANGES%2010.02.2025.pdf#page=1
 
+# The flat $0/$90/$150 copay and two-tier copay structure took effect
+# Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
+# income-chart refresh that restates the same percentages and bands.
 # Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; 43%-49% SMI -> $150.
 # The plan states "33% SMI to 42%" -> $90 and "43% SMI to 49%" -> $150, so the
 # 0.33 and 0.43 thresholds belong to the higher band (PolicyEngine's at-or-above

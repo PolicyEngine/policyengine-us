@@ -1,5 +1,6 @@
 # nv_ccdp_eligible_child: Person, bool, MONTH
 # MS 210: child under 13. MS 211: special-needs child under 19.
+# A special need is a developmental delay OR any disability (is_disabled).
 # MS 214: child must be a U.S. citizen or eligible non-citizen
 # (is_ccdf_immigration_eligible_child).
 
@@ -50,6 +51,23 @@
         state_code: NV
   output:
     # developmental delay -> uses 19 limit; 13 < 19 -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Disabled child age 13 (no developmental delay) is eligible (under 19 limit).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 13
+        immigration_status: CITIZEN
+        is_disabled: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # MS 211 special need via is_disabled -> uses 19 limit; 13 < 19 -> eligible
     nv_ccdp_eligible_child: true
 
 - name: Special-needs child at age 19 is not eligible.

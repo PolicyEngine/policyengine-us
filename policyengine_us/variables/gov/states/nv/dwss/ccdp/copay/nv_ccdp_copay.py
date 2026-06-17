@@ -29,6 +29,10 @@ class nv_ccdp_copay(Variable):
         # is_tanf_enrolled for the NEON waiver to avoid the CCDP <-> TANF
         # circular dependency. Waivers apply at the whole-family level; we
         # don't track per-child copay waivers at the moment.
+        # State Plan Section 3.3.1 additionally lists copay waivers for
+        # children with disabilities and for Head Start / Early Head Start
+        # enrollees, which we don't track at the moment: the operative
+        # Manual MS 163 omits both categories.
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         person = spm_unit.members
         is_eligible_child = person("nv_ccdp_eligible_child", period)
