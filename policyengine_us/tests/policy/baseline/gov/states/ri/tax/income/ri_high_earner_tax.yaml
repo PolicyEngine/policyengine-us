@@ -23,6 +23,7 @@
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
+    # 2% of ($1,250,000 - $1,020,750).
     ri_high_earner_tax: 4_585
 
 - name: Rhode Island high-income surtax applies at 3 percent in 2029
@@ -32,6 +33,7 @@
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
+    # 3% of ($1,250,000 - $1,042,800).
     ri_high_earner_tax: 6_216
 
 - name: Rhode Island high-income surtax is added before non-refundable credits

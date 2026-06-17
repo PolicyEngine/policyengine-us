@@ -109,6 +109,7 @@
   output:
     ri_social_security_modification_eligible: false
 
+# 2027 income limits remain at 2025 levels because the uprating index is 1.0 through 2027.
 - name: 2027 - Single filer just below income limit is eligible
   period: 2027
   input:
@@ -148,3 +149,27 @@
     state_code: RI
   output:
     ri_social_security_modification_eligible: false
+
+- name: 2027 - Joint filers under full retirement age are eligible
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 37
+        birth_year: 1990
+        is_tax_unit_head: true
+      person2:
+        age: 37
+        birth_year: 1990
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_social_security_modification_eligible: true
