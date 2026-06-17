@@ -190,3 +190,36 @@
     #   -> very-low band 5.0% = 120 (single family copay, subtracted once)
     # Benefit = max(min(2,000, 1,243.67) - 120, 0) = 1,243.67 - 120 = 1,123.67
     ms_ccpp: 1_123.67
+
+- name: Case 6, income above 85 percent SMI is ineligible and receives no subsidy.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Monthly income 5,000 > 85% SMI for family of 2 (4,267 * 0.85 = 3,626.95)
+    # -> income-ineligible, no categorical pathway -> not eligible, $0 subsidy
+    ms_ccpp_eligible: false
+    ms_ccpp: 0

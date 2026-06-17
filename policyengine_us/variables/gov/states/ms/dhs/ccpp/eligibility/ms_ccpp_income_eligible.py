@@ -7,7 +7,7 @@ class ms_ccpp_income_eligible(Variable):
     label = "Eligible for Mississippi CCPP based on income"
     definition_period = MONTH
     defined_for = StateCode.MS
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=26"
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=25"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ms.dhs.ccpp.income

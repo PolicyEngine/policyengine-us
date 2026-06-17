@@ -8,7 +8,7 @@ class ms_ccpp(Variable):
     label = "Mississippi CCPP benefit amount"
     definition_period = MONTH
     defined_for = "ms_ccpp_eligible"
-    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=45"
+    reference = "https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=57"
 
     def formula(spm_unit, period, parameters):
         copay = spm_unit("ms_ccpp_copay", period)

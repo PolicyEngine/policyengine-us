@@ -21,6 +21,8 @@ class ms_ccpp_activity_eligible(Variable):
         is_student = person("is_full_time_student", period.this_year)
         # The activity requirement is waived for an SSI-disabled parent.
         is_ssi_disabled = person("is_ssi_disabled", period.this_year)
+        # Rule 5.1(3) also waives the requirement for a parent with a
+        # life-threatening illness; we don't track that at the moment.
         individually_eligible = meets_work_requirement | is_student | is_ssi_disabled
         # Require at least one head/spouse so a unit of only dependents does not
         # vacuously pass, and require every head/spouse to be individually

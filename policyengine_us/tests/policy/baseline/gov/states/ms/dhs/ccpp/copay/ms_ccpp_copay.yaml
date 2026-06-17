@@ -360,3 +360,27 @@
   output:
     # is_homeless and zero countable income -> homeless_no_income branch -> $0
     ms_ccpp_copay: 0
+
+- name: Case 15, special-needs child at or below the poverty line pays zero copay.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # YEAR -> 1,500/mo
+      person2:
+        age: 4
+        is_disabled: true  # special-needs child -> minimum-fee category
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Monthly income 1,500 <= FPG 1,703.33 (family of 2): minimum-fee category
+    # (special-needs child) would cap at $10, but the $0 poverty-line exemption
+    # takes precedence -> $0 copay
+    ms_ccpp_copay: 0
