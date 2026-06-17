@@ -199,9 +199,11 @@
   output:
     mt_ccap_activity_eligible: false
 
-- name: Case 10, two-parent household, one a full-time student, still needs 120 work hours.
+- name: Case 10, two-parent household, only one a full-time student, still needs 120 work hours.
   period: 2026-01
-  # the full-time-student no-work exemption applies only to single-parent households; a two-parent family with a student parent and only ~87 combined work hours fails the 120-hour test.
+  # CC 2-3: the no-work-requirement waiver applies only when BOTH parents are full-time
+  # students. With just one student parent and ~87 combined work hours, the two-parent
+  # 120-hour test still governs, so the family is not activity-eligible.
   input:
     people:
       person1:
@@ -242,3 +244,32 @@
         state_code: MT
   output:
     mt_ccap_activity_eligible: false
+
+# Regression test for the C1 fix: CC 2-3 states "there is no work requirement for
+# either parent when both are attending school full time." The two-parent branch
+# must apply the full-time-student waiver, not only the single-parent branch.
+- name: Case 12, two-parent household with both parents full-time students has no work requirement.
+  period: 2026-01
+  # Both parents are full-time students with zero work hours. The waiver applies to
+  # the two-parent branch, so the family is activity-eligible despite 0 < 120 hours.
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 21
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true

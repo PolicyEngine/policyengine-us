@@ -33,11 +33,16 @@ class mt_ccap_activity_eligible(Variable):
         is_full_time_student = person("is_full_time_student", period.this_year)
 
         parent_work_hours = spm_unit.sum(monthly_hours * is_parent)
-        two_parent = spm_unit.sum(is_parent) > 1
-        any_full_time_student = spm_unit.sum(is_parent & is_full_time_student) > 0
+        parent_count = spm_unit.sum(is_parent)
+        full_time_student_parents = spm_unit.sum(is_parent & is_full_time_student)
+        two_parent = parent_count > 1
+        single_parent_is_full_time_student = full_time_student_parents > 0
+        both_parents_full_time_students = full_time_student_parents == parent_count
 
-        two_parent_eligible = parent_work_hours >= p.two_parent
+        two_parent_eligible = (
+            parent_work_hours >= p.two_parent
+        ) | both_parents_full_time_students
         single_parent_eligible = (
             parent_work_hours >= p.single_parent
-        ) | any_full_time_student
+        ) | single_parent_is_full_time_student
         return where(two_parent, two_parent_eligible, single_parent_eligible)

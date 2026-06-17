@@ -9,7 +9,7 @@ class mt_ccap_eligible_child(Variable):
     defined_for = StateCode.MT
     reference = (
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.201",
-        "https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC21Eligibility070718.pdf",
+        "https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC21Eligibility070718.pdf#page=4",
     )
 
     def formula(person, period, parameters):

@@ -10,7 +10,7 @@ class mt_ccap_countable_income(Variable):
     defined_for = StateCode.MT
     reference = (
         "https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.102",
-        "https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC26IncomeTable070718.pdf#page=2",
+        "https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/CC26IncomeTable070718.pdf#page=1",
     )
 
     adds = "gov.states.mt.dphhs.ccap.income.countable_income.sources"
