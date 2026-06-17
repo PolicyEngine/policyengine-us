@@ -29,7 +29,7 @@ class mo_ccs(Variable):
         # families are funded at the full rate, so the multiplier is 1 and the
         # order has no effect.
         adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
-        monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        monthly_fpg = spm_unit("spm_unit_fpg", period)
         fpl_ratio = where(monthly_fpg > 0, adjusted_income / monthly_fpg, 0)
         funding_rate = p.transitional.funding_rate.calc(fpl_ratio)
         return funding_rate * max_(total_reimbursement - copay, 0)

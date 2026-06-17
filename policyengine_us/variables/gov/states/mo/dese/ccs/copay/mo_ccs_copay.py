@@ -62,9 +62,7 @@ class mo_ccs_copay(Variable):
         # so foster / protective-services children are also waived.
         is_eligible_child = person("mo_ccs_eligible_child", period)
         is_disabled = person("is_disabled", period.this_year)
-        is_protective = person("is_in_foster_care", period) | person(
-            "receives_or_needs_protective_services", period.this_year
-        )
+        is_protective = person("mo_ccs_protective_services", period)
         days = person("childcare_attending_days_per_month", period.this_year)
         in_care = is_eligible_child & ~is_disabled & ~is_protective & (days > 0)
         monthly_fee = spm_unit.sum(daily_fee * days * in_care)
@@ -74,8 +72,7 @@ class mo_ccs_copay(Variable):
         # annual fee. The 25% SMI floor is keyed on gross income (Manual
         # 2025.010 item 3), unlike the sliding fee tier above.
         gross_income = spm_unit("mo_ccs_countable_income", period)
-        smi = spm_unit("hhs_smi", period.this_year)
-        smi_floor = smi * p.smi_minimum_rate / MONTHS_IN_YEAR
+        smi_floor = spm_unit("hhs_smi", period) * p.smi_minimum_rate
         is_tanf = spm_unit("is_tanf_enrolled", period)
         pays_minimum = is_tanf | (gross_income < smi_floor)
         minimum_fee = p.minimum_annual_fee / MONTHS_IN_YEAR

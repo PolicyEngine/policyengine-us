@@ -17,7 +17,7 @@ class mo_ccs_eligible(Variable):
         income_eligible = spm_unit("mo_ccs_income_eligible", period)
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
         activity_eligible = spm_unit("mo_ccs_activity_eligible", period)
-        protective = spm_unit("mo_ccs_protective_services", period)
+        protective = add(spm_unit, period, ["mo_ccs_protective_services"]) > 0
         # Protective-services children are eligible regardless of parental
         # financial need and are not subject to the income maximums or the need
         # for care, so the protective pathway bypasses both the income and

@@ -1,6 +1,6 @@
 # MO CCS protective services pathway tests
-# mo_ccs_protective_services is SPMUnit, MONTH.
-# True when the unit has a foster child or a child receiving/needing protective
+# mo_ccs_protective_services is Person, MONTH.
+# True for a foster child or a child receiving/needing protective
 # services. Homelessness is NOT a (7)(A) protective category; it is a separate
 # valid need for care handled in mo_ccs_activity_eligible (Manual 2010.050.35).
 
@@ -21,7 +21,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    mo_ccs_protective_services: true
+    mo_ccs_protective_services: [false, true]
 
 - name: Case 2, homelessness alone does not trigger protective services.
   period: 2025-01
@@ -43,7 +43,7 @@
     # Homelessness is not a (7)(A) protective category; it is a need for care
     # handled in mo_ccs_activity_eligible (Manual 2010.050.35), so the protective
     # pathway is not triggered by homelessness alone.
-    mo_ccs_protective_services: false
+    mo_ccs_protective_services: [false, false]
 
 - name: Case 3, child needing protective services triggers pathway.
   period: 2025-01
@@ -62,7 +62,7 @@
         members: [person1, person2]
         state_code: MO
   output:
-    mo_ccs_protective_services: true
+    mo_ccs_protective_services: [false, true]
 
 - name: Case 4, no protective services indicators.
   period: 2025-01
@@ -80,4 +80,4 @@
         members: [person1, person2]
         state_code: MO
   output:
-    mo_ccs_protective_services: false
+    mo_ccs_protective_services: [false, false]

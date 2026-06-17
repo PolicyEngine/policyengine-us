@@ -16,7 +16,7 @@ class mo_ccs_income_eligible(Variable):
         p = parameters(period).gov.states.mo.dese.ccs.income.fpl_rate
         p_ccdf = parameters(period).gov.hhs.ccdf
         adjusted_income = spm_unit("mo_ccs_adjusted_income", period)
-        monthly_fpg = spm_unit("spm_unit_fpg", period.this_year) / MONTHS_IN_YEAR
+        monthly_fpg = spm_unit("spm_unit_fpg", period)
         # New applicants use the traditional FPG limit; existing families may
         # qualify up to the higher transitional limit.
         enrolled = spm_unit("mo_ccs_enrolled", period)
@@ -29,9 +29,5 @@ class mo_ccs_income_eligible(Variable):
         # income (CCDF State Plan FFY 2025-2027 secs. 4.7 and 2.3.2). For most
         # household sizes the FPG limit is the lower, binding ceiling; the 85%
         # SMI cap only binds for very large households (roughly 8 or more).
-        smi_limit = (
-            spm_unit("hhs_smi", period.this_year)
-            * p_ccdf.income_limit_smi
-            / MONTHS_IN_YEAR
-        )
+        smi_limit = spm_unit("hhs_smi", period) * p_ccdf.income_limit_smi
         return adjusted_income <= min_(fpg_limit, smi_limit)

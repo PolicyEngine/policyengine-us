@@ -227,7 +227,7 @@
     # -> income ineligible, no protective pathway, so the unit is ineligible.
     mo_ccs_income_eligible: false
     mo_ccs_activity_eligible: true
-    mo_ccs_protective_services: false
+    mo_ccs_protective_services: [false, false]
     mo_ccs_eligible: false
 
 - name: Case 9, homeless family within the income limit with no work is eligible.
