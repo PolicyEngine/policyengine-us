@@ -1,10 +1,6 @@
-description: Mississippi counts these gross income sources for eligibility and the co-payment under the Child Care Payment Program.
+description: Mississippi counts these gross unearned income sources for eligibility and the co-payment under the Child Care Payment Program.
 values:
   2021-11-01:
-    - employment_income  # wages, salary, military base pay, commissions, bonuses, tips
-    - self_employment_income  # gross self-employment income (can be negative; floored at 0 downstream)
-    - sstb_self_employment_income
-    - farm_operations_income
     - social_security  # SSA benefits for parent and child (umbrella; do not also add social_security_disability)
     - ssi  # SSI for parent and child (separate from the social_security umbrella)
     - unemployment_compensation  # counted at redetermination only; simplified to always countable
@@ -17,12 +13,11 @@ values:
     - capital_gains
     # Countable items in the manual with no matching variable at the moment:
     #   military allotments, lump sums, short-term disability payments.
-    # Tips, commissions, and bonuses are captured by employment_income.
 
 metadata:
   unit: list
   period: year
-  label: Mississippi CCPP countable income sources
+  label: Mississippi CCPP countable unearned income sources
   reference:
     - title: Mississippi CCPP Policy Manual, Rule 5.4 (How Income is Calculated — Countable Income)
       href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=28

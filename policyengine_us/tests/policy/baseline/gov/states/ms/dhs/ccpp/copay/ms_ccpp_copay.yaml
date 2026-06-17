@@ -130,7 +130,7 @@
     # -> minimum-fee category caps at $10
     ms_ccpp_copay: 10
 
-- name: Case 6, SSI-disabled parent caps the copay at $10.
+- name: Case 6, parent with a disability receiving SSI caps the copay at $10.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -139,6 +139,7 @@
         age: 40
         employment_income: 24_000  # YEAR -> 2,000/mo
         is_ssi_disabled: true
+        ssi: 300  # MONTH, receiving SSI (counts as income)
       person2:
         age: 4
     tax_units:
@@ -152,8 +153,8 @@
         members: [person1, person2]
         state_code: MS
   output:
-    # Uncapped very-low band copay = 2,000 * 0.055 = 110; above FPL 1,703.33
-    # SSI-disabled parent -> minimum-fee category caps at $10
+    # Income 2,300/mo (2,000 wages + 300 SSI) > 50% SMI 2,133.50 -> low band;
+    # above FPL 1,703.33; disabled parent receiving SSI -> minimum-fee cap $10
     ms_ccpp_copay: 10
 
 - name: Case 7, TANF family pays zero copay even above FPL.
@@ -372,6 +373,7 @@
       person2:
         age: 4
         is_disabled: true  # special-needs child -> minimum-fee category
+        is_tax_unit_dependent: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -384,3 +386,52 @@
     # (special-needs child) would cap at $10, but the $0 poverty-line exemption
     # takes precedence -> $0 copay
     ms_ccpp_copay: 0
+
+- name: Case 16, a disabled parent not receiving SSI is not a minimum-fee category.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # YEAR -> 2,000/mo
+        is_disabled: true  # disabled but not receiving SSI, and an adult (not a child)
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Above FPL 1,703.33 and <= 50% SMI 2,133.50 -> very-low band 5.5% = 110.
+    # The parent's disability does not cap: not receiving SSI, and a disabled
+    # adult is not a special-needs child (under 19).
+    ms_ccpp_copay: 110
+
+- name: Case 17, a disabled 18-year-old head is not a special-needs child.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 24_000  # YEAR -> 2,000/mo
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # The disabled head is under 19 but is not a dependent child, so the
+    # special-needs child minimum-fee cap does not apply.
+    ms_ccpp_copay: 110
