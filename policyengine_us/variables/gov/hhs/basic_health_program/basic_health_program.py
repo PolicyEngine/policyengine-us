@@ -7,9 +7,7 @@ class basic_health_program(Variable):
     label = "Basic Health Program"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12102025.pdf#page=4"
-    )
+    reference = "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12102025.pdf#page=4"
     defined_for = "basic_health_program_tax_unit_enrolled"
     documentation = (
         "Initial BHP payment proxy using the 2026 CMS federal funding "
