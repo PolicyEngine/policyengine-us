@@ -13,6 +13,14 @@ def create_oh_refundable_eitc() -> Reform:
     credit. ORC § 5747.71 currently makes the credit nonrefundable; this
     contrib module is used for what-if analysis only and does not reflect
     enacted Ohio law.
+
+    Reading ``oh_eitc_potential`` (uncapped 30% of the federal EITC) yields
+    the full refundable amount for the modeled era (2020+): Ohio's pre-2019
+    "50% of tax when OH taxable income exceeds $20,000" limitation was
+    repealed by HB 62 (eff. 2019-07-03), so the only remaining limit on the
+    nonrefundable ``oh_eitc`` is the ordinary tax-liability cap — exactly
+    what refundability lifts.
+    https://codes.ohio.gov/ohio-revised-code/section-5747.71
     """
 
     class oh_refundable_eitc(Variable):
@@ -61,9 +69,10 @@ def create_oh_refundable_eitc() -> Reform:
             # Mirror the baseline's ordered-cap logic but drop oh_eitc from
             # the non-refundable bucket — it's paid as refundable under this
             # reform. The previous formula returned only oh_non_refundable_eitc
-            # (= 0 under the reform), which silently zeroed out Ohio's other
-            # six non-refundable credits (CDCC, senior, retirement, non-public
-            # school, exemption, joint filing).
+            # (= 0 under the reform), which silently zeroed out every other
+            # entry in Ohio's ordered non-refundable list (CDCC, senior,
+            # retirement, non-public school, exemption, joint filing — plus the
+            # adoption credit for pre-2023 years).
             ordered_credits = parameters(
                 period
             ).gov.states.oh.tax.income.credits.non_refundable

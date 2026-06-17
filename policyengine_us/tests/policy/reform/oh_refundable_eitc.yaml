@@ -1,7 +1,8 @@
 # Tests for the Ohio refundable EITC contrib reform.
 # Regression coverage for https://github.com/PolicyEngine/policyengine-us/issues/8656
 # (the reform previously paid no refundable credit to zero-liability filers and
-# discarded Ohio's other six non-refundable credits).
+# discarded all of Ohio's other non-refundable credits — six in 2023+, seven in
+# 2021-2022 with the adoption credit).
 
 - name: Reform pays the full potential OH EITC as a refundable credit at zero liability
   period: 2026
@@ -23,6 +24,9 @@
     # ...and paid in full as refundable, even with no Ohio tax liability.
     oh_refundable_eitc: 1_500
     oh_refundable_credits: 1_500
+    # End-to-end: the refund flows through to a negative oh_income_tax
+    # (liability 0 − refundable 1,500 = −1,500), i.e. an actual payout.
+    oh_income_tax: -1_500
 
 - name: Reform preserves other Ohio non-refundable credits (does not discard them)
   period: 2026
