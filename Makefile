@@ -23,9 +23,11 @@ test-yaml-structural:
 test-yaml-structural-heavy:
 	$(BATCH) $(TESTS)/policy/contrib/states --batches 1
 test-yaml-structural-heavy-shard-1:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/2
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/3
 test-yaml-structural-heavy-shard-2:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/2
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/3
+test-yaml-structural-heavy-shard-3:
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 3/3
 test-yaml-structural-other:
 	# refundable_credit_conversion force-applies a reform per case; each
 	# distinct gov.contrib.* combination clones the full tax-benefit system
