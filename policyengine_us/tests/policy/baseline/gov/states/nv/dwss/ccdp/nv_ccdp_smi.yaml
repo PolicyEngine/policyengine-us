@@ -1,0 +1,155 @@
+# nv_ccdp_smi: SPMUnit, float (USD), MONTH
+# Monthly 100% State Median Income, federal HHS SMI data at the Oct-1 instant.
+# For period 2025-01 (month < 10): uses the 2024-10-01 SMI table.
+# NV 4-person base (2024-10-01) = 96_026.
+# Size adjustments: first_person 0.52, second_to_sixth 0.16 each.
+#   Family of 2: 96_026 * (0.52 + 0.16)        / 12 = 5_441.47
+#   Family of 3: 96_026 * (0.52 + 0.16*2)      / 12 = 6_721.82
+#   Family of 4: 96_026 * (0.52 + 0.16*3) = 1.0 / 12 = 8_002.17
+
+- name: SMI for a family of 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 96_026 * 0.68 / 12 = 5_441.47
+    nv_ccdp_smi: 5_441.47
+
+- name: SMI for a family of 3.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 96_026 * 0.84 / 12 = 6_721.82
+    nv_ccdp_smi: 6_721.82
+
+- name: SMI for a family of 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NV
+  output:
+    # 96_026 * 1.00 / 12 = 8_002.17
+    nv_ccdp_smi: 8_002.17
+
+# Edge cases: minimum family size (1) and the additional-person branch (size >= 7).
+# Size adjustment = 0.52 + 0.16 * clip(size-1, 0, 5) + 0.03 * max(size-6, 0).
+
+- name: SMI for a family of 1 (minimum size).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NV
+  output:
+    # 96_026 * 0.52 / 12 = 4_161.13
+    nv_ccdp_smi: 4_161.13
+
+- name: SMI for a family of 6 (cap on second-to-sixth adjustment).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: NV
+  output:
+    # 96_026 * (0.52 + 0.16*5) / 12 = 96_026 * 1.32 / 12 = 10_562.86
+    nv_ccdp_smi: 10_562.86
+
+- name: SMI for a family of 7 (additional-person 0.03 branch).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 14
+      person4:
+        age: 12
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7]
+        state_code: NV
+  output:
+    # 96_026 * (0.52 + 0.16*5 + 0.03*1) / 12 = 96_026 * 1.35 / 12 = 10_802.93
+    nv_ccdp_smi: 10_802.93

@@ -1,0 +1,155 @@
+# nv_ccdp_eligible_child: Person, bool, MONTH
+# MS 210: child under 13. MS 211: special-needs child under 19.
+# MS 214: child must be a U.S. citizen or eligible non-citizen
+# (is_ccdf_immigration_eligible_child).
+
+- name: Citizen child under 13 is an eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 5
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # age 5 < 13 and citizen -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Citizen child at age 13 is not eligible (not special needs).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # age 13 not < 13 and no developmental delay -> ineligible
+    nv_ccdp_eligible_child: false
+
+- name: Special-needs child age 13 is eligible (under 19 limit).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 13
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # developmental delay -> uses 19 limit; 13 < 19 -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Special-needs child at age 19 is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 19
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 19 not < 19 -> ineligible even with developmental delay
+    nv_ccdp_eligible_child: false
+
+- name: Young child failing the immigration test is not an eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # age passes but immigration check fails -> ineligible
+    nv_ccdp_eligible_child: false
+
+# Edge cases: age limits (under 13 general, under 19 special needs).
+# The comparison is `age < limit` (strict), and `age` is a float.
+
+- name: Citizen child just under 13 (age 12.9) is an eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 12.9
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 12.9 < 13 -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Newborn citizen (age 0) is an eligible child.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 0 < 13 -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Special-needs citizen child just under 19 (age 18.9) is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 18.9
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # developmental delay -> 19 limit; 18.9 < 19 -> eligible
+    nv_ccdp_eligible_child: true
+
+- name: Special-needs citizen child over 19 (age 20) is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 20
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 20 not < 19 -> ineligible even with developmental delay
+    nv_ccdp_eligible_child: false

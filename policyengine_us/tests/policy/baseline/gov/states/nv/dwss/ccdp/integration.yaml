@@ -1,0 +1,257 @@
+# Nevada CCDP end-to-end integration tests.
+# Period 2025-01 uses the 2024-10-01 SMI table; NV 4-person base = 96_026.
+# Family of 3 -> monthly SMI = 96_026 * 0.84 / 12 = 6_721.82.
+#   intake  limit (not enrolled): 0.41 * 6_721.82 = 2_755.95/mo
+#   renewal limit (enrolled):     0.49 * 6_721.82 = 3_293.69/mo
+# Copay bands: < 0.33 -> $0; 0.33-0.42 -> $90; 0.43-0.49 -> $150.
+# Monthly max rate = daily rate * 21.67 billed days.
+# Dimensions exercised: both regions, both provider types, all four age
+# groups, all three copay tiers, and both enrollment states.
+
+- name: Case 1, Clark County center infant, intake, zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 1
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    nv_ccdp_eligible_child: [false, false, true]
+    nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE, INFANT]
+    nv_ccdp_region: [MOST_POPULOUS, MOST_POPULOUS, MOST_POPULOUS]
+    # 24_000 / 12 = 2_000/mo -> ratio 0.2975 < 0.33 -> $0 copay
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    nv_ccdp_copay: 0
+    # Clark center infant rate $62.50; max rate = 62.50 * 21.67 = 1_354.38.
+    # expense per child = 30_000 / 12 = 2_500 (does not bind).
+    # benefit = max(min(2_500, 1_354.38) - 0, 0) = 1_354.38.
+    nv_ccdp: 1_354.38
+
+- name: Case 2, Washoe County family child care preschool, intake, $90 copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 30
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    nv_ccdp_eligible_child: [false, false, true]
+    nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL]
+    nv_ccdp_region: [LOWEST_PERCENTILE, LOWEST_PERCENTILE, LOWEST_PERCENTILE]
+    nv_ccdp_eligible: true
+    # 30_000 / 12 = 2_500/mo -> ratio 0.3719 in [0.33, 0.43) -> $90 copay
+    nv_ccdp_copay: 90
+    # Lowest-percentile FCC preschool rate $40; max rate = 40 * 21.67 = 866.80.
+    # benefit = max(866.80 - 90, 0) = 776.80.
+    nv_ccdp: 776.80
+
+- name: Case 3, enrolled (renewal) Clark center school age, $150 copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000
+      person2:
+        age: 30
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    nv_ccdp_eligible_child: [false, false, true]
+    nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE, SCHOOL_AGE]
+    # 36_000 / 12 = 3_000/mo. Enrolled -> uses 49% renewal ceiling (3_293.69),
+    # so 3_000 <= 3_293.69 -> eligible.
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    # ratio 0.4463 in [0.43, 0.49) -> $150 copay
+    nv_ccdp_copay: 150
+    # Clark center school-age rate $48; max rate = 48 * 21.67 = 1_040.16.
+    # benefit = max(1_040.16 - 150, 0) = 890.16.
+    nv_ccdp: 890.16
+
+- name: Case 4, homeless family, Washoe FCC toddler, copay waived, charge caps benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 7_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+        is_homeless: true
+  output:
+    nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE, TODDLER]
+    nv_ccdp_region: [LOWEST_PERCENTILE, LOWEST_PERCENTILE, LOWEST_PERCENTILE]
+    # Homelessness satisfies the activity test and waives the copay.
+    nv_ccdp_activity_eligible: true
+    nv_ccdp_eligible: true
+    nv_ccdp_copay: 0
+    # Lowest-percentile FCC toddler rate $40; max rate = 40 * 21.67 = 866.80.
+    # expense per child = 7_200 / 12 = 600 (binds, below 866.80).
+    # benefit = max(min(600, 866.80) - 0, 0) = 600.
+    nv_ccdp: 600
+
+- name: Case 5, zero income eligible family receives full subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 30
+      person3:
+        age: 1
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Zero countable income -> income-eligible, $0 copay band.
+    nv_ccdp_countable_income: 0
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    nv_ccdp_copay: 0
+    # Clark center infant max rate = 62.50 * 21.67 = 1_354.38.
+    nv_ccdp: 1_354.38
+
+- name: Case 6, income just under the intake limit, $90 copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 33_000
+      person2:
+        age: 30
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 33_000 / 12 = 2_750/mo <= 2_755.95 intake limit -> eligible (boundary).
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    # ratio 0.4091 in [0.33, 0.43) -> $90 copay
+    nv_ccdp_copay: 90
+    # Clark center preschool rate $51.50; max rate = 51.50 * 21.67 = 1_116.01.
+    # benefit = max(1_116.01 - 90, 0) = 1_026.01.
+    nv_ccdp: 1_026.01
+
+- name: Case 7, degenerate family with no eligible child gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 14
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Only child is 14 (>= 13, no special need) -> no eligible child.
+    nv_ccdp_eligible_child: [false, false, false]
+    nv_ccdp_eligible: false
+    nv_ccdp: 0

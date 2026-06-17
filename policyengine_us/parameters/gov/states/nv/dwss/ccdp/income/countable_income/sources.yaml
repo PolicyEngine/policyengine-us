@@ -1,0 +1,42 @@
+description: Nevada counts these income sources under the Child Care and Development Program.
+values:
+  2024-01-01:
+    # Earned income (MS 306.48 Wages/Salaries/Commissions, 306.7 Contractual
+    # Earnings, 306.36 Seasonal Employment — all countable). employment_income
+    # already includes tips (306.48) and bonuses/commissions, so tip_income is
+    # not listed separately to avoid double-counting.
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    # Unearned income (countable per MS 306).
+    - social_security  # MS 306.34 RSDI umbrella (Retirement, Survivors, Disability)
+    - unemployment_compensation  # MS 306.45
+    - workers_compensation  # MS 306.49
+    - pension_income  # MS 306.29
+    - military_retirement_pay  # MS 306.29 pensions; PolicyEngine records this separately from pension_income
+    - alimony_income  # MS 306.2
+    - child_support_received  # MS 306.6
+    - dividend_income  # MS 306.10
+    - rental_income  # MS 306.30 Property Income (Rental/Lease)
+    # MS 306 income types we don't model at the moment:
+    # - MS 306.40 Supplemental Security Income (SSI) is EXEMPT in Nevada (differs
+    #   from many states); ssi is therefore NOT listed.
+    # - MS 306.41/306.42 TANF, Tribal TANF, Kinship Care, and General Assistance
+    #   are countable, but TANF is excluded here to avoid a circular dependency
+    #   (nv_ccdp_countable_income -> tanf -> ... -> childcare_expenses ->
+    #   child_care_subsidies -> nv_ccdp). The is_tanf_enrolled hook handles the
+    #   NEON pathway and copay waiver instead.
+    # - Interest income is not enumerated as a countable type in MS 306, so
+    #   interest_income is omitted (Dividends are listed at 306.10, interest is not).
+    # - MS 306.15 Gambling Winnings, 306.20 In-Kind Income, 306.35 Royalties,
+    #   306.44 Trust Funds, and 306.46 Veterans Administration Benefits (coded
+    #   "Maybe") have no corresponding PolicyEngine variable, or are not
+    #   reliably countable, at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Nevada CCDP countable income sources
+  reference:
+    - title: Nevada Child Care Policy Manual, MS 306 — Types of Income
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Child%20Care%20Manual%20July%202024.pdf#page=55

@@ -1,0 +1,59 @@
+# nv_child_care_subsidies: SPMUnit, float (USD), YEAR
+# adds = ["nv_ccdp"], so the annual value is the sum of the 12 monthly benefits.
+
+- name: Annual subsidy sums twelve monthly nv_ccdp benefits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Monthly nv_ccdp = 1_235.19 (Clark center toddler, $0 copay), times 12.
+    # 1_235.19 * 12 = 14_822.28.
+    nv_child_care_subsidies: 14_822.28
+
+- name: Non-Nevada household receives zero subsidy.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # defined_for = StateCode.NV zeroes the benefit outside Nevada.
+    nv_child_care_subsidies: 0

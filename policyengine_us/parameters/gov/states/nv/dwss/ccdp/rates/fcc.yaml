@@ -1,0 +1,32 @@
+description: Nevada provides these daily base reimbursement rates for family child care providers under the Child Care and Development Program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Nevada CCDP family child care daily rates
+  breakdown:
+    - nv_ccdp_region
+    - nv_ccdp_age_group
+  reference:
+    - title: Nevada CCDF State Plan FFY 2025-2027, Section 4.3.1, Table 1 and Table 2 — Base Payment Rate (pp. 54-56)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54
+
+# Table 1 (most populous region, Clark County) and Table 2 (lowest-percentile
+# region, all other counties); base payment rate per day.
+MOST_POPULOUS:
+  INFANT:
+    2024-10-01: 45
+  TODDLER:
+    2024-10-01: 45
+  PRESCHOOL:
+    2024-10-01: 46.50
+  SCHOOL_AGE:
+    2024-10-01: 46
+LOWEST_PERCENTILE:
+  INFANT:
+    2024-10-01: 40.50
+  TODDLER:
+    2024-10-01: 40
+  PRESCHOOL:
+    2024-10-01: 40
+  SCHOOL_AGE:
+    2024-10-01: 40

@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, NC, NH, NJ, NV, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -569,6 +569,12 @@ programs:
         status: in_progress
         name: New Jersey CCAP
         full_name: New Jersey Child Care Assistance Program
+      - state: NV
+        status: complete
+        name: CCDP
+        full_name: Nevada Child Care and Development Program
+        variable: nv_ccdp
+        parameter_prefix: gov.states.nv.dwss.ccdp
       - state: DC
         status: complete
         name: DC CCSP

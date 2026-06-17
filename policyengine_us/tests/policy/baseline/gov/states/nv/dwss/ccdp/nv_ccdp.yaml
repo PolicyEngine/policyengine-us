@@ -1,0 +1,227 @@
+# nv_ccdp: SPMUnit, float (USD), MONTH
+# MS 163: per child = min(monthly pre-subsidy expense, daily rate * 21.67
+# billed days) summed over eligible children, minus family copay, floored at 0.
+# defined_for = nv_ccdp_eligible.
+# Family of 3, period 2025-01, Clark County (MOST_POPULOUS), CENTER, child age 3
+# (TODDLER) -> daily rate $57; monthly max rate = 57 * 21.67 = 1_235.19.
+
+- name: Provider rate binds, zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # monthly per-child expense = 30_000 / 12 = 2_500 (does not bind).
+    # max rate = 57 * 21.67 = 1_235.19; copay $0 (2_000/mo < 33% SMI).
+    # benefit = max(min(2_500, 1_235.19) - 0, 0) = 1_235.19.
+    nv_ccdp: 1_235.19
+
+- name: Provider charge caps the reimbursement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 8_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # monthly per-child expense = 8_400 / 12 = 700 (binds, below 1_235.19).
+    # copay $0; benefit = max(min(700, 1_235.19) - 0, 0) = 700.
+    nv_ccdp: 700
+
+- name: Copay reduces the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # max rate = 1_235.19; copay $90 (2_500/mo in 33-42% band).
+    # benefit = max(1_235.19 - 90, 0) = 1_145.19.
+    nv_ccdp: 1_145.19
+
+- name: Ineligible family (income too high) gets zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 80_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 80_000 / 12 = 6_667/mo > 2_755.95 intake limit -> ineligible -> $0
+    nv_ccdp: 0
+
+# Edge cases: multiple eligible children, FCC provider, and negative income.
+
+- name: Two eligible children sum their per-child reimbursements.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 32
+      person3:
+        age: 1
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Family of 4: monthly SMI = 8_002.17; 30_000/12 = 2_500/mo -> ratio 0.3124 -> $0 copay.
+    # Expenses split evenly across the 2 children: 60_000 / 2 = 30_000/yr = 2_500/mo each.
+    # Clark center INFANT max = 62.50 * 21.67 = 1_354.38 (expense 2_500 does not bind).
+    # Clark center PRESCHOOL max = 51.50 * 21.67 = 1_116.005 (expense 2_500 does not bind).
+    # benefit = 1_354.375 + 1_116.005 - 0 = 2_470.38 (float32 sum).
+    nv_ccdp: 2_470.38
+
+- name: Family child care provider, Washoe County, infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 1
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # Lowest-percentile FCC infant rate $40.50; max rate = 40.50 * 21.67 = 877.635.
+    # expense per child = 30_000 / 12 = 2_500 (does not bind); copay $0.
+    # benefit = max(min(2_500, 877.635) - 0, 0) = 877.635 ~= 877.64.
+    nv_ccdp: 877.64
+
+- name: Negative self-employment income does not inflate the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        self_employment_income: -120_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Countable income floors at 0 -> income-eligible, $0 copay (no negative band).
+    # Clark center TODDLER max = 57 * 21.67 = 1_235.19; expense 2_500/mo does not bind.
+    # benefit = max(min(2_500, 1_235.19) - 0, 0) = 1_235.19 (not inflated by the loss).
+    nv_ccdp: 1_235.19

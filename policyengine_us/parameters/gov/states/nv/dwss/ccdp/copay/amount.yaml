@@ -1,0 +1,31 @@
+description: Nevada sets the monthly family copayment at this amount based on income as a share of state median income under the Child Care and Development Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Nevada CCDP monthly family copayment
+  reference:
+    - title: Nevada CCDF State Plan FFY 2025-2027, Section 3.1.1.v — Flat Rate Copayments
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=36
+    - title: Nevada CC PT 06-25 Annual Income Changes, Co-Payment columns, effective October 1, 2025
+      href: https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2006-25%20ANNUAL%20INCOME%20CHANGES%2010.02.2025.pdf#page=1
+
+# Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; 43%-49% SMI -> $150.
+# The plan states "33% SMI to 42%" -> $90 and "43% SMI to 49%" -> $150, so the
+# 0.33 and 0.43 thresholds belong to the higher band (PolicyEngine's at-or-above
+# default); no boundary epsilon is needed.
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 0.33
+    amount:
+      2024-10-01: 90
+  - threshold:
+      2024-10-01: 0.43
+    amount:
+      2024-10-01: 150
