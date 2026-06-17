@@ -61,6 +61,7 @@ venv/**
 oryx-build-commands.txt
 
 **/*.csv.gz
+!policyengine_us/data/county_fips_2020.csv.gz
 **/*.pkl
 
 # Claude Code temporary files

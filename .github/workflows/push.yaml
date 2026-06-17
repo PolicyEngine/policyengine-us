@@ -139,6 +139,8 @@ jobs:
             target: test-yaml-structural-heavy-shard-1
           - group: states-shard-2
             target: test-yaml-structural-heavy-shard-2
+          - group: states-shard-3
+            target: test-yaml-structural-heavy-shard-3
           - group: other-shard-1
             target: test-yaml-structural-other
           - group: other-shard-2
