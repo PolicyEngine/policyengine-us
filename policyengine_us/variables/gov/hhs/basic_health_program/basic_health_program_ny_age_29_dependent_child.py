@@ -7,6 +7,7 @@ class basic_health_program_ny_age_29_dependent_child(Variable):
     label = "Basic Health Program New York Age 29 dependent child"
     definition_period = MONTH
     defined_for = "basic_health_program_enrolled"
+    reference = "https://www.nysenate.gov/legislation/laws/ISC/3216"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.aca

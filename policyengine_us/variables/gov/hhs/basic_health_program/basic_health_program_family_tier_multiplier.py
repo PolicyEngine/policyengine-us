@@ -11,6 +11,7 @@ class basic_health_program_family_tier_multiplier(Variable):
     unit = "/1"
     definition_period = MONTH
     defined_for = "slcsp_family_tier_applies"
+    reference = "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating"
 
     def formula(tax_unit, period, parameters):
         family_category = tax_unit("basic_health_program_family_tier_category", period)

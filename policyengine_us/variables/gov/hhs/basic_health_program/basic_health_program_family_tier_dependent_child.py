@@ -7,6 +7,7 @@ class basic_health_program_family_tier_dependent_child(Variable):
     label = "Basic Health Program family tier dependent child"
     definition_period = MONTH
     defined_for = "basic_health_program_enrolled"
+    reference = "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.aca

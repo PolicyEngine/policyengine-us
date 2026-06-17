@@ -12,9 +12,10 @@ class basic_health_program_family_tier_category(Variable):
     label = "Basic Health Program family tier category"
     definition_period = MONTH
     defined_for = "slcsp_family_tier_applies"
+    reference = "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating"
 
     def formula(tax_unit, period, parameters):
-        state_code = tax_unit.household("state_code_str", period)
+        state_code = tax_unit.household("state_code", period)
 
         person = tax_unit.members
         enrolled = person("basic_health_program_enrolled", period)
@@ -56,7 +57,7 @@ class basic_health_program_family_tier_category(Variable):
             eligible_child_count > 0
         )
         ny_child_only = (
-            (state_code == "NY")
+            (state_code == state_code.possible_values.NY)
             & (eligible_adult_count == 0)
             & (eligible_child_count > 0)
         )

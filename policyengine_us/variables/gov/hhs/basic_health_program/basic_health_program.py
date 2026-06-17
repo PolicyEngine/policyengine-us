@@ -7,7 +7,9 @@ class basic_health_program(Variable):
     label = "Basic Health Program"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.medicaid.gov/basic-health-program"
+    reference = (
+        "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12102025.pdf"
+    )
     defined_for = "basic_health_program_tax_unit_enrolled"
     documentation = (
         "Initial BHP payment proxy using the 2026 CMS federal funding "
@@ -15,7 +17,11 @@ class basic_health_program(Variable):
         "contribution amount, multiplied by the income reconciliation factor "
         "and 95 percent federal payment rate. The CSR component is currently "
         "modeled as zero because CMS assigns the CSR payment portion a zero "
-        "value while there is no available CSR appropriation."
+        "value while there is no available CSR appropriation. The CMS "
+        "methodology averages the PTC component over one-percentage-point FPL "
+        "increments within each rate-cell income band; this proxy instead uses "
+        "the household's own MAGI and applicable contribution percentage, "
+        "mirroring how aca_ptc is computed."
     )
 
     def formula(tax_unit, period, parameters):
@@ -27,6 +33,10 @@ class basic_health_program(Variable):
         ptc_income_eligible = parameters(period).gov.aca.ptc_income_eligibility.calc(
             magi_fraction
         )
+        # The adjusted reference premium is a MONTH variable; reading it from
+        # this YEAR formula sums the twelve monthly values into an annual
+        # figure, matching the annual aca_magi contribution below (the same
+        # pattern aca_ptc uses to annualize the monthly slcsp).
         adjusted_reference_premium = tax_unit(
             "basic_health_program_adjusted_reference_premium", period
         )

@@ -55,3 +55,285 @@
     basic_health_program_family_tier_category: ONE_ADULT
     basic_health_program_family_tier_multiplier: 1
     basic_health_program_reference_premium: 760
+
+- name: Case 3, New York two enrolled adults map to the TWO_ADULTS tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        monthly_age: 38
+        basic_health_program_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: TWO_ADULTS
+    basic_health_program_family_tier_multiplier: 2
+    basic_health_program_reference_premium: 1_520
+
+- name: Case 4, New York one adult and one child map to the family tier with children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        monthly_age: 10
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_dependent_child: [false, true]
+    basic_health_program_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    basic_health_program_family_tier_multiplier: 1.7
+    basic_health_program_reference_premium: 1_292
+
+- name: Case 5, New York two adults and one child map to the largest family tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        monthly_age: 38
+        basic_health_program_enrolled: true
+      person3:
+        age: 10
+        monthly_age: 10
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    basic_health_program_family_tier_multiplier: 2.85
+    basic_health_program_reference_premium: 2_166
+
+- name: Case 6, New York child-only tax unit uses the CHILD_ONLY tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        monthly_age: 10
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: CHILD_ONLY
+    basic_health_program_family_tier_multiplier: 0.412
+    basic_health_program_reference_premium: 313.12
+
+- name: Case 7, New York three adults add an extra-adult increment to the TWO_ADULTS tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 38
+        monthly_age: 38
+        basic_health_program_enrolled: true
+      person3:
+        age: 36
+        monthly_age: 36
+        basic_health_program_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: TWO_ADULTS
+    basic_health_program_family_tier_multiplier: 3
+    basic_health_program_reference_premium: 2_280
+
+- name: Case 8, New York age-29 dependent child scales the family tier multiplier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        monthly_age: 50
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 27
+        monthly_age: 27
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_ny_age_29_dependent_child: [false, true]
+    basic_health_program_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    basic_health_program_family_tier_multiplier: 1.785
+    basic_health_program_reference_premium: 1_356.6
+
+- name: Case 9, New York dependent under 26 counts as a family-tier child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        monthly_age: 50
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 22
+        monthly_age: 22
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: NY
+        state_fips: 36
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_dependent_child: [false, true]
+    basic_health_program_ny_age_29_dependent_child: [false, false]
+    basic_health_program_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    basic_health_program_family_tier_multiplier: 1.7
+    basic_health_program_reference_premium: 1_292
+
+- name: Case 10, Vermont one adult and one child use Vermont family-tier multipliers.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        monthly_age: 40
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+      person2:
+        age: 10
+        monthly_age: 10
+        basic_health_program_enrolled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code_str: VT
+        state_fips: 50
+        slcsp_age_0: 760
+  output:
+    basic_health_program_family_tier_category: ONE_ADULT_AND_ONE_OR_MORE_CHILDREN
+    basic_health_program_family_tier_multiplier: 1.93
+    basic_health_program_reference_premium: 1_466.8
+
+- name: Case 11, Basic Health Program value is zero before 2026.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MN
+        county_str: HENNEPIN_COUNTY_MN
+  output:
+    basic_health_program: 0
+
+- name: Case 12, Income above the PTC ceiling yields no Basic Health Program value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        basic_health_program_enrolled: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MN
+        county_str: HENNEPIN_COUNTY_MN
+  output:
+    basic_health_program_tax_unit_enrolled: [true]
+    is_aca_ptc_eligible: [false]
+    basic_health_program: 0

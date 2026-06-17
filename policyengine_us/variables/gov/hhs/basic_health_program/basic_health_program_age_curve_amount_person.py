@@ -8,6 +8,7 @@ class basic_health_program_age_curve_amount_person(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = "basic_health_program_enrolled"
+    reference = "https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/state-rating"
 
     def formula(person, period, parameters):
         return (
