@@ -1,1 +1,1 @@
-Add Nevada Child Care Assistance Program (CCAP).
+Add Nevada Child Care and Development Program (CCDP).
