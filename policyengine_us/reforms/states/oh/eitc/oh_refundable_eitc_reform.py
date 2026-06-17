@@ -9,8 +9,10 @@ def create_oh_refundable_eitc() -> Reform:
     """
     Ohio Refundable EITC Reform
 
-    Converts the Ohio Earned Income Credit from a nonrefundable credit
-    to a refundable credit. By default, OH EITC is nonrefundable.
+    Hypothetical reform that pays the Ohio EITC as a fully refundable
+    credit. ORC § 5747.71 currently makes the credit nonrefundable; this
+    contrib module is used for what-if analysis only and does not reflect
+    enacted Ohio law.
     """
 
     class oh_refundable_eitc(Variable):
@@ -49,6 +51,9 @@ def create_oh_refundable_eitc() -> Reform:
         reference = (
             "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/sch-cre.pdf",
             "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/itschedule-credits.pdf",
+            "https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/1040-bundle-original.pdf#page=7",
+            "https://tax.ohio.gov/static/webview/view1/UIExtension/1/pdf-view.html?filename=forms/ohio_individual/individual/2024/1040-bundle-original-fi.pdf",
+            "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=28",
         )
         defined_for = StateCode.OH
 
@@ -81,6 +86,9 @@ def create_oh_refundable_eitc() -> Reform:
         reference = (
             "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/sch-cre.pdf",
             "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/itschedule-credits.pdf",
+            "https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2023/1040-bundle-original.pdf#page=7",
+            "https://tax.ohio.gov/static/webview/view1/UIExtension/1/pdf-view.html?filename=forms/ohio_individual/individual/2024/1040-bundle-original-fi.pdf",
+            "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=28",
         )
         defined_for = StateCode.OH
 

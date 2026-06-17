@@ -1,7 +1,7 @@
 # The reform makes the Ohio EITC fully refundable. It pays the uncapped
 # potential credit (oh_eitc_potential = rate * federal_eitc), so these tests
 # drive the credit from the federal EITC rather than injecting the capped
-# oh_eitc. The 2024 OH EITC rate is 30% of the federal EITC.
+# oh_eitc. The OH EITC rate is 30% of the federal EITC (constant since 2020).
 
 - name: Case 1 - OH EITC is fully refundable (uncapped) when reform active
   period: 2024

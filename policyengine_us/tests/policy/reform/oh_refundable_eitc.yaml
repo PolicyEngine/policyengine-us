@@ -33,8 +33,8 @@
     oh_income_tax_before_non_refundable_credits: 800
     # Force a non-EITC OH non-refundable credit to a positive value to prove
     # the reform's oh_non_refundable_credits formula does not zero it out.
-    # The bug returned `oh_non_refundable_eitc` (= 0), discarding every other
-    # credit in the ordered list.
+    # The bug returned `oh_non_refundable_eitc` (= 0), zeroing out every
+    # other credit in the ordered list.
     oh_joint_filing_credit: 500
   output:
     # Joint-filing credit still applies (capped at liability via the ordered
@@ -43,3 +43,41 @@
     # EITC is paid as refundable in full.
     oh_refundable_eitc: 1_500
     oh_refundable_credits: 1_500
+
+- name: Reform does not double count when liability partially absorbs other credits
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 2_000
+    # Liability lower than the potential EITC. After EITC is moved to the
+    # refundable bucket, the remaining $300 of liability is consumed by
+    # oh_cdcc (first surviving entry in the filtered ordered list).
+    oh_income_tax_before_non_refundable_credits: 300
+    oh_cdcc: 200
+  output:
+    # 0.3 * 2,000 federal EITC = 600 — paid as refundable regardless of
+    # liability, not capped at the 300 of OH tax remaining.
+    oh_refundable_eitc: 600
+    oh_refundable_credits: 600
+    # CDCC consumes 200 of the 300 remaining liability; no double-counting
+    # against the refundable EITC.
+    oh_non_refundable_credits: 200
+
+- name: Filtered ordered walk caps multiple non-EITC credits at remaining liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 0
+    # Multiple OH non-refundable credits compete for the cap; total = 1,200
+    # but only $600 of liability is available, so the ordered walk must
+    # cap the bucket at exactly $600.
+    oh_income_tax_before_non_refundable_credits: 600
+    oh_cdcc: 400
+    oh_exemption_credit: 400
+    oh_joint_filing_credit: 400
+  output:
+    # CDCC fills $400, exemption fills the remaining $200, joint-filing
+    # gets $0 (later in the order). Total caps at the liability of $600.
+    oh_non_refundable_credits: 600
