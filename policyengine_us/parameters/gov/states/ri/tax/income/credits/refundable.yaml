@@ -7,6 +7,10 @@ values:
   2022-01-01:
     - ri_eitc
     - ri_property_tax_credit
+  2027-01-01:
+    - ri_eitc
+    - ri_property_tax_credit
+    - ri_ctc
 
 metadata:
   unit: list
@@ -20,3 +24,13 @@ metadata:
     # Child tax rebate source
     - title: R.I. Gen. Law §44-30-103. Child Tax Rebates.
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf#page=1
+    # The budget bill establishes the CTC amount, eligibility, and phase-out;
+    # the budget report and signing press release describe the enacted CTC as refundable.
+    - title: Rhode Island Senate Fiscal Office FY2027 Budget as Passed by House Finance, page 8
+      href: https://www.rilegislature.gov/sfiscal/Budget%20Analyses/FY2027%20SFO%20Budget%20as%20passed%20by%20House%20Finance.pdf#page=8
+    - title: Governor McKee signs fiscal year 2027 budget advancing key affordability for all Rhode Islanders
+      href: https://governor.ri.gov/press-releases/governor-mckee-signs-fiscal-year-2027-budget-advancing-key-affordability-all
+    - title: Sen. Vargas lauds child tax credit in state budget bill
+      href: https://www.rilegislature.gov/pressrelease/_layouts/15/ril.pressrelease.inputform/DisplayForm.aspx?List=c8baae31-3c10-431c-8dcd-9dbbe21ce3e9&ID=376675
+    - title: 2026 R.I. H 7127 Substitute A as amended, Article 6, Section 4, § 44-30-104
+      href: https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=44-30-104.%20Child%20Tax%20Credit
