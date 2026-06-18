@@ -31,6 +31,9 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "sc_cdcc": {
         "reforms/states/sc/h3492/sc_h3492_eitc_refundable.py",
     },
+    "sc_eitc": {
+        "reforms/states/sc/child_poverty_eitc/sc_fully_refundable_eitc_reform.py",
+    },
     "sc_two_wage_earner_credit": {
         "reforms/states/sc/h3492/sc_h3492_eitc_refundable.py",
     },
