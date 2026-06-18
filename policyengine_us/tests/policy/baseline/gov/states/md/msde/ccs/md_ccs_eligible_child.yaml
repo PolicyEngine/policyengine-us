@@ -1,0 +1,132 @@
+# Tests for md_ccs_eligible_child
+# Child must be: under 13 (or under 19 if disabled), a tax unit dependent,
+# and CCDF immigration eligible.
+# COMAR 13A.14.06.02 (definition of "Child")
+
+- name: Case 1, child age 5 not disabled is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person1: adult, not dependent -> false
+    # person2: age 5 < 13, dependent, citizen -> true
+    md_ccs_eligible_child: [false, true]
+
+- name: Case 2, child age 14 not disabled is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2: age 14 >= 13 (non-disabled threshold) -> false
+    md_ccs_eligible_child: [false, false]
+
+- name: Case 3, disabled child age 14 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 14
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2: age 14 < 19 (disabled threshold), disabled -> true
+    md_ccs_eligible_child: [false, true]
+
+- name: Case 4, disabled child age 19 is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 19
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2: age 19 >= 19 (disabled threshold) -> false
+    md_ccs_eligible_child: [false, false]
+
+- name: Case 5, child age 12 at boundary is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2: age 12 < 13 -> true
+    md_ccs_eligible_child: [false, true]
