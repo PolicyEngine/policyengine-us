@@ -1,0 +1,87 @@
+# Tests for the Ohio refundable EITC contrib reform.
+# Regression coverage for https://github.com/PolicyEngine/policyengine-us/issues/8656
+# (the reform previously paid no refundable credit to zero-liability filers and
+# discarded all of Ohio's other non-refundable credits — six in 2023+, seven in
+# 2021-2022 with the adoption credit).
+
+- name: Reform pays the full potential OH EITC as a refundable credit at zero liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 5_000
+    # Pin OH tax liability to zero so the nonrefundable cap binds at $0 —
+    # the test is whether the reform pays the credit despite the cap.
+    oh_income_tax_before_non_refundable_credits: 0
+  output:
+    # 2026 OH EITC rate is 30% of the federal EITC: 5,000 * 0.3 = 1,500.
+    oh_eitc_potential: 1_500
+    # The capped credit is 0 at zero liability; the fix pays the uncapped
+    # potential instead, so this contrast is the whole point of the reform.
+    oh_eitc: 0
+    # EITC is moved out of the nonrefundable bucket...
+    oh_non_refundable_eitc: 0
+    # ...and paid in full as refundable, even with no Ohio tax liability.
+    oh_refundable_eitc: 1_500
+    oh_refundable_credits: 1_500
+    # End-to-end: the refund flows through to a negative oh_income_tax
+    # (liability 0 − refundable 1,500 = −1,500), i.e. an actual payout.
+    oh_income_tax: -1_500
+
+- name: Reform preserves other Ohio non-refundable credits (does not discard them)
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 5_000
+    oh_income_tax_before_non_refundable_credits: 800
+    # Force a non-EITC OH non-refundable credit to a positive value to prove
+    # the reform's oh_non_refundable_credits formula does not zero it out.
+    # The bug returned `oh_non_refundable_eitc` (= 0), zeroing out every
+    # other credit in the ordered list.
+    oh_joint_filing_credit: 500
+  output:
+    # Joint-filing credit still applies (capped at liability via the ordered
+    # walk, which has $800 remaining when joint-filing's turn comes).
+    oh_non_refundable_credits: 500
+    # EITC is paid as refundable in full.
+    oh_refundable_eitc: 1_500
+    oh_refundable_credits: 1_500
+
+- name: Reform does not double count when liability partially absorbs other credits
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 2_000
+    # Liability lower than the potential EITC. After EITC is moved to the
+    # refundable bucket, the remaining $300 of liability is consumed by
+    # oh_cdcc (first surviving entry in the filtered ordered list).
+    oh_income_tax_before_non_refundable_credits: 300
+    oh_cdcc: 200
+  output:
+    # 0.3 * 2,000 federal EITC = 600 — paid as refundable regardless of
+    # liability, not capped at the 300 of OH tax remaining.
+    oh_refundable_eitc: 600
+    oh_refundable_credits: 600
+    # CDCC consumes 200 of the 300 remaining liability; no double-counting
+    # against the refundable EITC.
+    oh_non_refundable_credits: 200
+
+- name: Filtered ordered walk caps multiple non-EITC credits at remaining liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.oh.eitc.oh_refundable_eitc_reform.oh_refundable_eitc
+  input:
+    state_code: OH
+    eitc: 0
+    # Multiple OH non-refundable credits compete for the cap; total = 1,200
+    # but only $600 of liability is available, so the ordered walk must
+    # cap the bucket at exactly $600.
+    oh_income_tax_before_non_refundable_credits: 600
+    oh_cdcc: 400
+    oh_exemption_credit: 400
+    oh_joint_filing_credit: 400
+  output:
+    # CDCC fills $400, exemption fills the remaining $200, joint-filing
+    # gets $0 (later in the order). Total caps at the liability of $600.
+    oh_non_refundable_credits: 600
