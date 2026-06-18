@@ -53,3 +53,37 @@
         county: BECKER_COUNTY_MN
   output:
     mn_child_care_subsidies: 0
+
+- name: Case 3, disabled school-age 13-year-old qualifies via the disability age limit.
+  # Children under 13 qualify, or under 15 with a disability, so a disabled
+  # 13-year-old (school age) flows end-to-end to a benefit; a non-disabled
+  # 13-year-old would be ineligible and yield zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # size-2 copay band -> $2 biweekly
+      person2:
+        age: 13
+        is_disabled: true
+        childcare_hours_per_week: 45  # weekly rate
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+        mn_ccap_quality_rating: NONE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/month
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+        county: BECKER_COUNTY_MN
+  output:
+    # Becker family school-age weekly 175 -> monthly 175 * 52 / 12 = 758.33.
+    # Copay $2 biweekly -> 4.33/month. Monthly = 758.33 - 4.33 = 754.00;
+    # annual = 754.00 * 12 = 9,048.
+    mn_child_care_subsidies: 9_048

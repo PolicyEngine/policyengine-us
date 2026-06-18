@@ -203,3 +203,41 @@
     # LNL school-age 3.15 * min(60, 50) = 157.50/week -> 157.50 * 52 / 12 =
     # 682.50/month.
     mn_ccap_provider_rate: 682.50
+
+- name: Case 11, Ramsey child care center infant weekly rate (broadens county coverage).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 45  # > 35 -> weekly
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+        county: RAMSEY_COUNTY_MN
+  output:
+    # Ramsey center infant weekly 512.4 -> monthly 512.4 * 52 / 12 = 2220.4
+    mn_ccap_provider_rate: 2220.4
+
+- name: Case 12, out-of-state household yields a zero rate (masking guard).
+  # A non-MN county_str is absent from the DHS-6441F rate tables; the formula
+  # masks to a MN county so the vectorized lookup cannot crash, and defined_for
+  # zeroes the output for non-MN residents.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county: MILWAUKEE_COUNTY_WI
+  output:
+    mn_ccap_provider_rate: 0

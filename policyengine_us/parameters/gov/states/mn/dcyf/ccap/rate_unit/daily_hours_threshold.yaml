@@ -1,4 +1,7 @@
 description: Minnesota pays the full-day child care rate rather than the hourly rate when daily care exceeds this many hours under the Child Care Assistance Program.
+# Section 9.9 rate-UNIT billing rule: 35 hours/week or less but more than 5
+# hours/day with a single provider pays the daily rate; 5 hours/day or less pays
+# the hourly rate. Administrative billing rule, not a statutory floor.
 values:
   2025-01-01: 5
 
@@ -7,7 +10,7 @@ metadata:
   period: day
   label: Minnesota CCAP full-day rate hours-per-day threshold
   reference:
-    - title: Minnesota CCAP Policy Manual, section 9.9 (Determination of Payment Amounts)
-      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=CCAP_02
-    - title: Minn. Stat. 142E.17, subd. 1 (hourly, full-day, and weekly rate basis)
+    - title: Minnesota CCAP Policy Manual, Chapter 9.9 (Determination of Payment Amounts)
+      href: https://www.dhs.state.mn.us/main/groups/manuals/documents/pub/mndhs-063513.pdf#page=287
+    - title: Minn. Stat. 142E.17 (hourly, daily, and weekly rate basis)
       href: https://www.revisor.mn.gov/statutes/cite/142E.17
