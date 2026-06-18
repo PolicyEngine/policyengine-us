@@ -8,8 +8,6 @@ class mo_ccs_countable_income(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.MO
-    reference = (
-        "https://web.archive.org/web/20211208073807id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/10",
-    )
+    reference = "https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-050"
 
     adds = "gov.states.mo.dese.ccs.income.countable_income.sources"

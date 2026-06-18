@@ -5,7 +5,7 @@ values:
     - self_employment_income
     - farm_operations_income
     # Regular monthly survivor / RSDI benefits are counted; only death and
-    # burial lump sums are excluded (Manual 2010.045.10.05).
+    # burial lump sums are excluded (Manual sec. 5.6.1).
     - social_security
     - pension_income
     # PolicyEngine records military retirement separately from pension_income.
@@ -20,31 +20,31 @@ values:
     # Estate income is an enumerated gross income type (5 CSR 25-200.050(20)(F)).
     - estate_income
     # The student/education-maintenance portion of veterans benefits is excluded
-    # (Manual 2010.045.10.05) but we don't track that split at the moment, so the
+    # (Manual sec. 5.6.1(8)) but we don't track that split at the moment, so the
     # gross amount is counted.
     - veterans_benefits
     #
-    # The Manual lists 45 excluded income types in 2010.045.10.05-.30; they are
+    # The Manual lists the excluded income types in secs. 5.6.1-5.6.6; they are
     # modeled by omission (anything not listed above is not counted). Excluded
     # types that DO have a PolicyEngine variable are deliberately left out:
-    # - ssi (2010.045.10.05)
-    # - tanf (2010.045.10.05 treats Temporary Assistance as the family's only
-    #   income under the $1/year sliding-fee rule; also omitted to avoid the
+    # - ssi (Manual sec. 5.6.1(14))
+    # - tanf (the Manual sec. 9.1 sliding fee treats Temporary Assistance as the
+    #   family's only income under the $1/year rule; also omitted to avoid the
     #   Child Care Subsidy -> TANF circular dependency, handled via
     #   is_tanf_enrolled in mo_ccs_copay)
-    # - capital_gains (2010.045.10.10 — treated as a resource, not income)
+    # - capital_gains (Manual sec. 5.6.2(3) — treated as a resource, not income)
     # Excluded types with no PolicyEngine variable (foster care, adoption
     # subsidy, LIHEAP, SNAP value, HUD allowances, tribal funds, restitution
     # payments, educational grants/loans, etc.) are excluded automatically.
     #
     # Provisions we don't model at the moment:
-    # - 2010.045.10.15 exclusion of a school-attending child's earnings — we
-    #   don't filter income sources by the age of the earner.
+    # - Manual sec. 5.6.3(2) exclusion of a school-attending child's earnings —
+    #   we don't filter income sources by the age of the earner.
 
 metadata:
   unit: list
   period: year
   label: Missouri Child Care Subsidy countable income sources
   reference:
-    - title: Missouri Child Care Subsidy Eligibility Policy Manual 2010.045.10 Exclusions from Monthly Gross Income
-      href: https://web.archive.org/web/20211208073807id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/10
+    - title: 5 CSR 25-200.050(20) Definitions (Gross Income)
+      href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-050

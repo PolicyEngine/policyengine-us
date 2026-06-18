@@ -21,6 +21,9 @@ class mo_ccs_maximum_daily_benefit(Variable):
         provider_type = person("mo_ccs_provider_type", period)
 
         rates = p.rates
+        # We model only Missouri's daytime rate schedule (the rates workbook's
+        # "Daytime Rates 2025" sheet). The separate evening/weekend (EW) rate
+        # schedule for nontraditional-hours care is not modeled at the moment.
         # A child with special needs is reimbursed at the special-needs rate
         # (special_needs column); all other children use the base column. Per
         # the CCDF State Plan FFY 2025-2027 (secs. 2.3.2(d), 4.3.3), special-

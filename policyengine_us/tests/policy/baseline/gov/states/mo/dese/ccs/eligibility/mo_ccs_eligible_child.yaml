@@ -194,3 +194,123 @@
   output:
     # Disabled, in school -> limit 19; age 18 < 19 -> eligible.
     mo_ccs_eligible_child: [false, true]
+
+- name: Case 10, protective-services child age 16 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # A protective-services child is a special-needs child
+    # (5 CSR 25-200.050(11)(D)), eligible to under 19 -> age 16 < 19 -> eligible.
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 11, protective-services child age 18 not in school is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        is_in_k12_school: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Protective children reach the under-19 ceiling without the school
+    # condition (Manual sec. 4.5(4)) -> age 18 < 19 -> eligible.
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 12, disabled child age 18 in secondary school is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_in_secondary_school: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Disabled and still in secondary school at 18 (is_in_k12_school only fires
+    # through 17, so captured via is_in_secondary_school) -> limit 19 ->
+    # age 18 < 19 -> eligible.
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 13, protective-services child age 19 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 19
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The special-needs/protective ceiling is under 19 -> age 19 not < 19 ->
+    # ineligible.
+    mo_ccs_eligible_child: [false, false]
+
+- name: Case 14, disabled child age 18 in college (not secondary school) is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_full_time_college_student: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The under-19 extension requires elementary or secondary school (Manual
+    # sec. 4.5(3)); a post-secondary/college student does not qualify -> limit
+    # 18 -> age 18 not < 18 -> ineligible.
+    mo_ccs_eligible_child: [false, false]

@@ -19,11 +19,10 @@ class mo_ccs_eligible(Variable):
         activity_eligible = spm_unit("mo_ccs_activity_eligible", period)
         protective = add(spm_unit, period, ["mo_ccs_protective_services"]) > 0
         # Protective-services children are eligible regardless of parental
-        # financial need and are not subject to the income maximums or the need
-        # for care, so the protective pathway bypasses both the income and
-        # activity tests (5 CSR 25-200.060(7)(B)).
-        return (
-            has_eligible_child
-            & asset_eligible
-            & ((income_eligible & activity_eligible) | protective)
+        # financial need: the protective pathway bypasses the income maximums and
+        # the need-for-care test (5 CSR 25-200.060(7)(B)) and the asset/net-worth
+        # limit (Manual sec. 4.8 excludes "applicants with a protective services
+        # child" from the net-worth test).
+        return has_eligible_child & (
+            protective | (income_eligible & activity_eligible & asset_eligible)
         )

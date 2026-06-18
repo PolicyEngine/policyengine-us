@@ -2,7 +2,7 @@
 # mo_ccs_protective_services is Person, MONTH.
 # True for a foster child or a child receiving/needing protective
 # services. Homelessness is NOT a (7)(A) protective category; it is a separate
-# valid need for care handled in mo_ccs_activity_eligible (Manual 2010.050.35).
+# valid need for care handled in mo_ccs_activity_eligible (Manual sec. 6.8).
 
 - name: Case 1, foster child triggers protective services.
   period: 2025-01
@@ -41,7 +41,7 @@
         is_homeless: true
   output:
     # Homelessness is not a (7)(A) protective category; it is a need for care
-    # handled in mo_ccs_activity_eligible (Manual 2010.050.35), so the protective
+    # handled in mo_ccs_activity_eligible (Manual sec. 6.8), so the protective
     # pathway is not triggered by homelessness alone.
     mo_ccs_protective_services: [false, false]
 
