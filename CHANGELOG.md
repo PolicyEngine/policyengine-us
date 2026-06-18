@@ -1,3 +1,10 @@
+## [1.735.0] - 2026-06-18
+
+### Added
+
+- Implement Georgia CAPS (Childcare and Parent Services) child care subsidy program.
+
+
 ## [1.734.1] - 2026-06-18
 
 ### Fixed
