@@ -1,0 +1,109 @@
+description: Georgia sets these counties as Zone 3 for reimbursement rate purposes under the Childcare and Parent Services program.
+values:
+  2026-03-02:
+    - APPLING_COUNTY_GA
+    - ATKINSON_COUNTY_GA
+    - BACON_COUNTY_GA
+    - BAKER_COUNTY_GA
+    - BANKS_COUNTY_GA
+    - BERRIEN_COUNTY_GA
+    - BLECKLEY_COUNTY_GA
+    - BRANTLEY_COUNTY_GA
+    - BROOKS_COUNTY_GA
+    - BURKE_COUNTY_GA
+    - CALHOUN_COUNTY_GA
+    - CANDLER_COUNTY_GA
+    - CARROLL_COUNTY_GA
+    - CHARLTON_COUNTY_GA
+    - CHATTAHOOCHEE_COUNTY_GA
+    - CHATTOOGA_COUNTY_GA
+    - CLAY_COUNTY_GA
+    - CLINCH_COUNTY_GA
+    - COFFEE_COUNTY_GA
+    - COLQUITT_COUNTY_GA
+    - COOK_COUNTY_GA
+    - CRAWFORD_COUNTY_GA
+    - CRISP_COUNTY_GA
+    - DADE_COUNTY_GA
+    - DECATUR_COUNTY_GA
+    - DODGE_COUNTY_GA
+    - DOOLY_COUNTY_GA
+    - EARLY_COUNTY_GA
+    - ECHOLS_COUNTY_GA
+    - ELBERT_COUNTY_GA
+    - EMANUEL_COUNTY_GA
+    - EVANS_COUNTY_GA
+    - FANNIN_COUNTY_GA
+    - FRANKLIN_COUNTY_GA
+    - GILMER_COUNTY_GA
+    - GLASCOCK_COUNTY_GA
+    - GRADY_COUNTY_GA
+    - GREENE_COUNTY_GA
+    - HABERSHAM_COUNTY_GA
+    - HANCOCK_COUNTY_GA
+    - HARALSON_COUNTY_GA
+    - HEARD_COUNTY_GA
+    - IRWIN_COUNTY_GA
+    - JASPER_COUNTY_GA
+    - JEFF_DAVIS_COUNTY_GA
+    - JEFFERSON_COUNTY_GA
+    - JENKINS_COUNTY_GA
+    - LANIER_COUNTY_GA
+    - LAURENS_COUNTY_GA
+    - LINCOLN_COUNTY_GA
+    - LONG_COUNTY_GA
+    - MACON_COUNTY_GA
+    - MARION_COUNTY_GA
+    - MCINTOSH_COUNTY_GA
+    - MILLER_COUNTY_GA
+    - MITCHELL_COUNTY_GA
+    - MONROE_COUNTY_GA
+    - MONTGOMERY_COUNTY_GA
+    - OGLETHORPE_COUNTY_GA
+    - PICKENS_COUNTY_GA
+    - PIERCE_COUNTY_GA
+    - POLK_COUNTY_GA
+    - QUITMAN_COUNTY_GA
+    - RABUN_COUNTY_GA
+    - RANDOLPH_COUNTY_GA
+    - SCHLEY_COUNTY_GA
+    - SCREVEN_COUNTY_GA
+    - SEMINOLE_COUNTY_GA
+    - STEPHENS_COUNTY_GA
+    - STEWART_COUNTY_GA
+    - SUMTER_COUNTY_GA
+    - TALBOT_COUNTY_GA
+    - TALIAFERRO_COUNTY_GA
+    - TATTNALL_COUNTY_GA
+    - TAYLOR_COUNTY_GA
+    - TELFAIR_COUNTY_GA
+    - TERRELL_COUNTY_GA
+    - THOMAS_COUNTY_GA
+    - TOWNS_COUNTY_GA
+    - TREUTLEN_COUNTY_GA
+    - TURNER_COUNTY_GA
+    - TWIGGS_COUNTY_GA
+    - UNION_COUNTY_GA
+    - UPSON_COUNTY_GA
+    - WALKER_COUNTY_GA
+    - WARE_COUNTY_GA
+    - WARREN_COUNTY_GA
+    - WASHINGTON_COUNTY_GA
+    - WAYNE_COUNTY_GA
+    - WEBSTER_COUNTY_GA
+    - WHEELER_COUNTY_GA
+    - WHITE_COUNTY_GA
+    - WILCOX_COUNTY_GA
+    - WILKES_COUNTY_GA
+    - WILKINSON_COUNTY_GA
+    - WORTH_COUNTY_GA
+    # Ben Hill, Johnson, and Toombs counties are listed as Zone 3 in Appendix C
+    # but are not yet present in the policyengine-us county enum.
+
+metadata:
+  unit: list
+  period: year
+  label: Georgia CAPS Zone 3 counties
+  reference:
+    - title: Georgia CAPS Appendix C - Reimbursement Rates, Zone Map (effective March 2, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=2
