@@ -1,3 +1,11 @@
+## [1.734.1] - 2026-06-18
+
+### Fixed
+
+- Fixed the Missouri refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Missouri tax liability.
+- Fixed the Ohio refundable EITC contrib reform, which paid no refundable credit to filers with no Ohio tax liability and zeroed out Ohio's other six non-refundable credits.
+
+
 ## [1.734.0] - 2026-06-18
 
 ### Added
