@@ -1,7 +1,8 @@
 # nv_ccdp_activity_eligible: SPMUnit, bool, MONTH
 # OR of: meets_ccdf_activity_test (SPMUnit/YEAR), is_tanf_enrolled (SPMUnit),
-# is_homeless (Household). Each disjunct is tested in isolation so an OR-to-AND
-# flip is caught.
+# is_homeless (Household), and a protective-care child (foster care or
+# receiving/needing protective services, restricted to an eligible child).
+# Each disjunct is tested in isolation so an OR-to-AND flip is caught.
 
 - name: No qualifying activity is not activity-eligible.
   period: 2025-01
@@ -90,3 +91,79 @@
         is_homeless: true
   output:
     nv_ccdp_activity_eligible: true
+
+- name: A foster child is activity-eligible without a working caretaker.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        is_homeless: false
+  output:
+    # Protective care (foster placement) for an eligible child satisfies the
+    # need-for-care test independent of caretaker activity.
+    nv_ccdp_activity_eligible: true
+
+- name: A child needing protective services is activity-eligible without a working caretaker.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        is_homeless: false
+  output:
+    nv_ccdp_activity_eligible: true
+
+- name: Protective services for a non-eligible child is not activity-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        # Age 15 with no special need -> not an nv_ccdp_eligible_child, so the
+        # protective-services flag cannot confer activity eligibility.
+        age: 15
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        is_homeless: false
+  output:
+    nv_ccdp_activity_eligible: false

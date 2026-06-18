@@ -15,10 +15,12 @@ metadata:
 # The flat $0/$90/$150 copay and two-tier copay structure took effect
 # Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
 # income-chart refresh that restates the same percentages and bands.
-# Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; 43%-49% SMI -> $150.
-# The plan states "33% SMI to 42%" -> $90 and "43% SMI to 49%" -> $150, so the
-# 0.33 and 0.43 thresholds belong to the higher band (PolicyEngine's at-or-above
-# default); no boundary epsilon is needed.
+# Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
+# The State Plan summary prose ("33%-42% -> $90, 43%-49% -> $150") leaves an
+# undefined 42%-43% gap; the operational CC PT 06-25 fee chart resolves it, with
+# the $90 band topping out at 42% SMI and the $150 band beginning just above it.
+# The scale is at-or-above, so 0.33 belongs to the $90 band and 0.4201 to the
+# $150 band (a family at exactly 42% SMI stays in the $90 band, per the chart).
 brackets:
   - threshold:
       2024-10-01: 0
@@ -29,6 +31,6 @@ brackets:
     amount:
       2024-10-01: 90
   - threshold:
-      2024-10-01: 0.43
+      2024-10-01: 0.4201
     amount:
       2024-10-01: 150

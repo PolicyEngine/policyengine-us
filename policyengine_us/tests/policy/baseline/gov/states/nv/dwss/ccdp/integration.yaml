@@ -3,10 +3,11 @@
 # Family of 3 -> monthly SMI = 96_026 * 0.84 / 12 = 6_721.82.
 #   intake  limit (not enrolled): 0.41 * 6_721.82 = 2_755.95/mo
 #   renewal limit (enrolled):     0.49 * 6_721.82 = 3_293.69/mo
-# Copay bands: < 0.33 -> $0; 0.33-0.42 -> $90; 0.43-0.49 -> $150.
+# Copay bands: < 0.33 -> $0; 0.33-0.42 -> $90; above 0.42 (0.4201) -> $150.
 # Monthly max rate = daily rate * 21.67 billed days.
-# Dimensions exercised: both regions, both provider types, all four age
-# groups, all three copay tiers, and both enrollment states.
+# Age brackets (MS 631/633.1): INFANT <12mo, TODDLER 12-36mo, PRESCHOOL 36-72mo,
+# SCHOOL_AGE >=72mo. Dimensions exercised: both regions, both provider types,
+# all four age groups, all three copay tiers, and both enrollment states.
 
 - name: Case 1, Clark County center infant, intake, zero copay.
   period: 2025-01
@@ -19,7 +20,7 @@
       person2:
         age: 30
       person3:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:
@@ -76,7 +77,7 @@
     nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL]
     nv_ccdp_region: [LOWEST_PERCENTILE, LOWEST_PERCENTILE, LOWEST_PERCENTILE]
     nv_ccdp_eligible: true
-    # 30_000 / 12 = 2_500/mo -> ratio 0.3719 in [0.33, 0.43) -> $90 copay
+    # 30_000 / 12 = 2_500/mo -> ratio 0.3719 in [0.33, 0.4201) -> $90 copay
     nv_ccdp_copay: 90
     # Lowest-percentile FCC preschool rate $40; max rate = 40 * 21.67 = 866.80.
     # benefit = max(866.80 - 90, 0) = 776.80.
@@ -114,7 +115,7 @@
     # so 3_000 <= 3_293.69 -> eligible.
     nv_ccdp_income_eligible: true
     nv_ccdp_eligible: true
-    # ratio 0.4463 in [0.43, 0.49) -> $150 copay
+    # ratio 0.4463 >= 0.4201 -> $150 copay
     nv_ccdp_copay: 150
     # Clark center school-age rate $48; max rate = 48 * 21.67 = 1_040.16.
     # benefit = max(1_040.16 - 150, 0) = 890.16.
@@ -131,7 +132,7 @@
       person2:
         age: 30
       person3:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: FCC
     spm_units:
@@ -167,7 +168,7 @@
       person2:
         age: 30
       person3:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:
@@ -219,7 +220,7 @@
     # 33_000 / 12 = 2_750/mo <= 2_755.95 intake limit -> eligible (boundary).
     nv_ccdp_income_eligible: true
     nv_ccdp_eligible: true
-    # ratio 0.4091 in [0.33, 0.43) -> $90 copay
+    # ratio 0.4091 in [0.33, 0.4201) -> $90 copay
     nv_ccdp_copay: 90
     # Clark center preschool rate $51.50; max rate = 51.50 * 21.67 = 1_116.01.
     # benefit = max(1_116.01 - 90, 0) = 1_026.01.
@@ -255,3 +256,43 @@
     nv_ccdp_eligible_child: [false, false, false]
     nv_ccdp_eligible: false
     nv_ccdp: 0
+
+- name: Case 8, court-ordered child support paid lowers countable income into eligibility.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 40_000
+        child_support_expense: 10_000
+      person2:
+        age: 30
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Gross 40_000/12 = 3_333/mo would exceed the 2_755.95 intake limit, but the
+    # $10_000 child support paid lowers annual countable income to 30_000; at the
+    # monthly test period that YEAR variable reads as 30_000/12 = 2_500/mo, so the
+    # deduction flows through to eligibility and the benefit.
+    nv_ccdp_countable_income: 2_500
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    # 2_500/mo -> ratio 0.3719 in [0.33, 0.4201) -> $90 copay
+    nv_ccdp_copay: 90
+    # Clark center preschool rate $51.50; max rate = 51.50 * 21.67 = 1_116.01.
+    # benefit = max(1_116.01 - 90, 0) = 1_026.01.
+    nv_ccdp: 1_026.01

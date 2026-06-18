@@ -7,29 +7,31 @@ metadata:
   period: year
   label: Nevada CCDP child age group by months
   reference:
-    - title: Nevada CCDF State Plan FFY 2025-2027, Section 4.3.1 — Base Payment Rate age categories (pp. 54-56)
-      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54
+    - title: Nevada Child Care Policy Manual, MS 631 Care Level & MS 633.1 Base Payment Rate age brackets (pp. 105-106)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=105
 
 # Maps a child's age in months to a rate-table age group index:
 #   0 = INFANT, 1 = TODDLER, 2 = PRESCHOOL, 3 = SCHOOL_AGE.
-# The State Plan rate table lists representative ages (Infant 6 months, Toddler
-# 18 months, Preschool 4 years, School-Age 6 years) but does not publish exact
-# month cutoffs. These boundaries follow the sibling CCAP convention pending
-# confirmation against an operational rate sheet (PR Verification TODO).
+# Nevada Child Care Policy Manual MS 631 (Care Level) and the MS 633.1 Base
+# Payment Rate table headers define the brackets: Infant newborn up to 1 year,
+# Toddler 1 up to 3 years, Preschool 3 up to 6 years, School Age 6 years and
+# older -- i.e. 0-12 / 12-36 / 36-72 / 72+ months. The scale is at-or-above and
+# MS 631 sets the care level to change on the child's birthday, so each cutoff
+# (12, 36, 72 months) belongs to the higher band with no epsilon offset.
 brackets:
   - threshold:
       2024-10-01: 0
     amount:
       2024-10-01: 0
   - threshold:
-      2024-10-01: 25
+      2024-10-01: 12
     amount:
       2024-10-01: 1
   - threshold:
-      2024-10-01: 37
+      2024-10-01: 36
     amount:
       2024-10-01: 2
   - threshold:
-      2024-10-01: 60
+      2024-10-01: 72
     amount:
       2024-10-01: 3

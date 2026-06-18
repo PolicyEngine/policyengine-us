@@ -16,7 +16,7 @@ class nv_ccdp_age_group(Variable):
     definition_period = MONTH
     label = "Nevada CCDP child age group"
     defined_for = StateCode.NV
-    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54"
+    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=105"
 
     def formula(person, period, parameters):
         # `monthly_age` reverses PolicyEngine's auto-division by 12, so it

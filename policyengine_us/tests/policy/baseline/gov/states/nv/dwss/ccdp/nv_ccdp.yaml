@@ -2,7 +2,7 @@
 # MS 163: per child = min(monthly pre-subsidy expense, daily rate * 21.67
 # billed days) summed over eligible children, minus family copay, floored at 0.
 # defined_for = nv_ccdp_eligible.
-# Family of 3, period 2025-01, Clark County (MOST_POPULOUS), CENTER, child age 3
+# Family of 3, period 2025-01, Clark County (MOST_POPULOUS), CENTER, child age 2
 # (TODDLER) -> daily rate $57; monthly max rate = 57 * 21.67 = 1_235.19.
 
 - name: Provider rate binds, zero copay.
@@ -16,7 +16,7 @@
       person2:
         age: 30
       person3:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:
@@ -47,7 +47,7 @@
       person2:
         age: 30
       person3:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:
@@ -77,7 +77,7 @@
       person2:
         age: 30
       person3:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:
@@ -95,6 +95,37 @@
     # max rate = 1_235.19; copay $90 (2_500/mo in 33-42% band).
     # benefit = max(1_235.19 - 90, 0) = 1_145.19.
     nv_ccdp: 1_145.19
+
+- name: Charge cap and copay both reduce the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 30
+      person3:
+        age: 2
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # expense = 9_600 / 12 = 800 (binds, below the 1_235.19 max rate);
+    # copay $90 (2_500/mo in 33-42% band).
+    # benefit = max(min(800, 1_235.19) - 90, 0) = 710.
+    nv_ccdp: 710
 
 - name: Ineligible family (income too high) gets zero benefit.
   period: 2025-01
@@ -125,6 +156,40 @@
     # 80_000 / 12 = 6_667/mo > 2_755.95 intake limit -> ineligible -> $0
     nv_ccdp: 0
 
+- name: Special-needs child age 14 receives a positive subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 14
+        is_disabled: true
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # MS 211: a special-needs child is eligible up to age 19, so age 14 with
+    # is_disabled is an eligible child. age 14 -> SCHOOL_AGE; Clark center
+    # SCHOOL_AGE max = 48 * 21.67 = 1_040.16; copay $0 (2_000/mo < 33% SMI).
+    # benefit = max(min(2_500, 1_040.16) - 0, 0) = 1_040.16.
+    nv_ccdp_eligible: true
+    nv_ccdp: 1_040.16
+
 # Edge cases: multiple eligible children, FCC provider, and negative income.
 
 - name: Two eligible children sum their per-child reimbursements.
@@ -138,7 +203,7 @@
       person2:
         age: 32
       person3:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
       person4:
@@ -175,7 +240,7 @@
       person2:
         age: 30
       person3:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: FCC
     spm_units:
@@ -206,7 +271,7 @@
       person2:
         age: 30
       person3:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     spm_units:

@@ -23,6 +23,11 @@ class nv_ccdp_activity_eligible(Variable):
         #     CCDP <-> TANF circular dependency.
         #   - is_homeless covers POC 440 (Homeless Self-Sufficiency Plan), a
         #     need-for-care reason that belongs inside the activity test.
+        #   - Protective services (State Plan Section 2.2; Manual CPS/Foster
+        #     Group Set, MS 410) make a child needing care eligible regardless
+        #     of caretaker activity, so a child in foster care or receiving/
+        #     needing protective services satisfies the need-for-care test on
+        #     its own (mirrors the nv_ccdp_copay protective-care waiver).
         # POC 470 disability is intentionally NOT a standalone bypass: a lone
         # idle disabled caretaker is not activity-eligible (it requires another
         # adult in an approved activity), so the disability pathway flows
@@ -33,4 +38,15 @@ class nv_ccdp_activity_eligible(Variable):
         meets_activity_test = spm_unit("meets_ccdf_activity_test", period.this_year)
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         is_homeless = spm_unit.household("is_homeless", period.this_year)
-        return meets_activity_test | is_tanf_enrolled | is_homeless
+        # Restrict the protective-care pathway to an nv_ccdp_eligible_child so a
+        # non-eligible household member does not confer eligibility.
+        person = spm_unit.members
+        is_eligible_child = person("nv_ccdp_eligible_child", period)
+        in_protective_care = is_eligible_child & (
+            person("is_in_foster_care", period)
+            | person("receives_or_needs_protective_services", period.this_year)
+        )
+        has_protective_child = spm_unit.any(in_protective_care)
+        return (
+            meets_activity_test | is_tanf_enrolled | is_homeless | has_protective_child
+        )

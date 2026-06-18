@@ -11,9 +11,9 @@ class nv_ccdp_copay(Variable):
     reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/CC%20PT%2006-25%20ANNUAL%20INCOME%20CHANGES%2010.02.2025.pdf#page=1"
 
     def formula(spm_unit, period, parameters):
-        # CC PT 06-25 (eff. Oct 1, 2025) replaced the manual's old sliding
-        # scale with a flat monthly copay keyed by income as a share of SMI:
-        # <= 32.99% SMI -> $0; 33%-42% SMI -> $90; 43%-49% SMI -> $150.
+        # Flat monthly copay keyed by income as a share of SMI, effective
+        # Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025
+        # annual refresh. <= 32.99% SMI -> $0; 33%-42% SMI -> $90; >42% -> $150.
         p = parameters(period).gov.states.nv.dwss.ccdp.copay
         # Floor income at 0 before taking the ratio: negative self-employment
         # income would otherwise produce a negative ratio and the wrong band.

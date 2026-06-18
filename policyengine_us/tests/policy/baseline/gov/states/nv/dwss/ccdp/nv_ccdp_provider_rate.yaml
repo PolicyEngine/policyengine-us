@@ -1,7 +1,8 @@
 # nv_ccdp_provider_rate: Person, float (USD/day), MONTH
 # defined_for = nv_ccdp_eligible_child, so the child must be NV-resident,
 # under the age limit, and immigration-eligible for a non-zero rate.
-# rates/center.yaml and rates/fcc.yaml, keyed by region x age group:
+# Age brackets (MS 631/633.1): INFANT <12mo, TODDLER 12-36mo, PRESCHOOL 36-72mo,
+# SCHOOL_AGE >=72mo. rates/center.yaml and rates/fcc.yaml, keyed by region x age:
 #   center MOST_POPULOUS:      INFANT 62.50, TODDLER 57, PRESCHOOL 51.50, SCHOOL_AGE 48
 #   center LOWEST_PERCENTILE:  INFANT 53.50, TODDLER 52.50, PRESCHOOL 47.50, SCHOOL_AGE 42.50
 #   fcc    MOST_POPULOUS:      INFANT 45, TODDLER 45, PRESCHOOL 46.50, SCHOOL_AGE 46
@@ -13,7 +14,7 @@
   input:
     people:
       person:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     households:
@@ -22,7 +23,7 @@
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # MOST_POPULOUS x CENTER x INFANT = 62.50
+    # 0 months -> INFANT; MOST_POPULOUS x CENTER x INFANT = 62.50
     nv_ccdp_provider_rate: 62.50
 
 - name: Center, lowest-percentile region, toddler.
@@ -31,7 +32,7 @@
   input:
     people:
       person:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     households:
@@ -40,8 +41,26 @@
         state_code: NV
         county: WASHOE_COUNTY_NV
   output:
-    # LOWEST_PERCENTILE x CENTER x TODDLER = 52.50
+    # 24 months -> TODDLER; LOWEST_PERCENTILE x CENTER x TODDLER = 52.50
     nv_ccdp_provider_rate: 52.50
+
+- name: Center, Clark County, preschool (age 5 is preschool, not school age).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 5
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 60 months in [36, 72) -> PRESCHOOL; MOST_POPULOUS x CENTER x PRESCHOOL = 51.50
+    nv_ccdp_provider_rate: 51.50
 
 - name: Family child care, Clark County, preschool.
   period: 2025-01
@@ -58,7 +77,7 @@
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # MOST_POPULOUS x FCC x PRESCHOOL = 46.50
+    # 48 months -> PRESCHOOL; MOST_POPULOUS x FCC x PRESCHOOL = 46.50
     nv_ccdp_provider_rate: 46.50
 
 - name: Family child care, lowest-percentile region, school age.
@@ -76,7 +95,7 @@
         state_code: NV
         county: WASHOE_COUNTY_NV
   output:
-    # LOWEST_PERCENTILE x FCC x SCHOOL_AGE = 40
+    # 72 months -> SCHOOL_AGE; LOWEST_PERCENTILE x FCC x SCHOOL_AGE = 40
     nv_ccdp_provider_rate: 40
 
 - name: Center, Clark County, school age (default provider type is CENTER).
@@ -93,7 +112,7 @@
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # MOST_POPULOUS x CENTER x SCHOOL_AGE = 48
+    # 72 months -> SCHOOL_AGE; MOST_POPULOUS x CENTER x SCHOOL_AGE = 48
     nv_ccdp_provider_rate: 48
 
 - name: Ineligible child (age 14) gets no rate via defined_for.
@@ -123,7 +142,7 @@
   input:
     people:
       person:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: FCC
     households:
@@ -132,7 +151,7 @@
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # MOST_POPULOUS x FCC x INFANT = 45
+    # 0 months -> INFANT; MOST_POPULOUS x FCC x INFANT = 45
     nv_ccdp_provider_rate: 45
 
 - name: Family child care, lowest-percentile region, toddler.
@@ -141,7 +160,7 @@
   input:
     people:
       person:
-        age: 3
+        age: 2
         immigration_status: CITIZEN
         nv_ccdp_provider_type: FCC
     households:
@@ -150,7 +169,7 @@
         state_code: NV
         county: WASHOE_COUNTY_NV
   output:
-    # LOWEST_PERCENTILE x FCC x TODDLER = 40
+    # 24 months -> TODDLER; LOWEST_PERCENTILE x FCC x TODDLER = 40
     nv_ccdp_provider_rate: 40
 
 - name: Center, lowest-percentile region, infant.
@@ -159,7 +178,7 @@
   input:
     people:
       person:
-        age: 1
+        age: 0
         immigration_status: CITIZEN
         nv_ccdp_provider_type: CENTER
     households:
@@ -168,5 +187,5 @@
         state_code: NV
         county: ELKO_COUNTY_NV
   output:
-    # LOWEST_PERCENTILE x CENTER x INFANT = 53.50
+    # 0 months -> INFANT; LOWEST_PERCENTILE x CENTER x INFANT = 53.50
     nv_ccdp_provider_rate: 53.50

@@ -1,145 +1,8 @@
 # nv_ccdp_age_group: Person, Enum (NVCCDPAgeGroup), MONTH
-# age_group/months.yaml brackets (age in months = age_years * 12):
-#   < 25 -> INFANT, 25-36 -> TODDLER, 37-59 -> PRESCHOOL, >= 60 -> SCHOOL_AGE
-
-- name: Infant at 12 months (age 1).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 1
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 1 * 12 = 12 months < 25 -> INFANT
-    nv_ccdp_age_group: INFANT
-
-- name: Infant at exactly 24 months (age 2, below 25-month toddler cutoff).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 2
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 2 * 12 = 24 months < 25 -> INFANT
-    nv_ccdp_age_group: INFANT
-
-- name: Toddler at 36 months (age 3).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 3
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 3 * 12 = 36 months in [25, 37) -> TODDLER
-    nv_ccdp_age_group: TODDLER
-
-- name: Preschool at 48 months (age 4).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 4
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 4 * 12 = 48 months in [37, 60) -> PRESCHOOL
-    nv_ccdp_age_group: PRESCHOOL
-
-- name: School age at 72 months (age 6).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 6
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 6 * 12 = 72 months >= 60 -> SCHOOL_AGE
-    nv_ccdp_age_group: SCHOOL_AGE
-
-# Edge cases: months-scale cut-points (25, 37, 60). The scale is at-or-above,
-# so each threshold belongs to the upper band. `age` is a float, so ages are
-# chosen to land just above each cutoff in months (age * 12).
-
-- name: Toddler just above the 25-month cutoff (age 2.1 = 25.2 months).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 2.1
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 2.1 * 12 = 25.2 months >= 25 -> TODDLER
-    nv_ccdp_age_group: TODDLER
-
-- name: Preschool just above the 37-month cutoff (age 3.1 = 37.2 months).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 3.1
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 3.1 * 12 = 37.2 months in [37, 60) -> PRESCHOOL
-    nv_ccdp_age_group: PRESCHOOL
-
-- name: Preschool just below the 60-month cutoff (age 4.9 = 58.8 months).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 4.9
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 4.9 * 12 = 58.8 months < 60 -> PRESCHOOL
-    nv_ccdp_age_group: PRESCHOOL
-
-- name: School age at exactly the 60-month cutoff (age 5 = 60 months).
-  period: 2025-01
-  absolute_error_margin: 0.1
-  input:
-    people:
-      person:
-        age: 5
-    households:
-      household:
-        members: [person]
-        state_code: NV
-  output:
-    # 5 * 12 = 60 months >= 60 -> SCHOOL_AGE
-    nv_ccdp_age_group: SCHOOL_AGE
+# Policy Manual MS 631 / MS 633.1 age brackets (age in months = age_years * 12):
+#   < 12 -> INFANT, 12-36 -> TODDLER, 36-72 -> PRESCHOOL, >= 72 -> SCHOOL_AGE
+# The scale is at-or-above, so each cutoff (12, 36, 72 months) belongs to the
+# higher band (care level changes on the child's birthday, MS 631).
 
 - name: Newborn at age 0 is an infant.
   period: 2025-01
@@ -153,5 +16,155 @@
         members: [person]
         state_code: NV
   output:
-    # 0 months < 25 -> INFANT
+    # 0 months < 12 -> INFANT
     nv_ccdp_age_group: INFANT
+
+- name: Infant just below the 12-month toddler cutoff (age 0.9 = 10.8 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 0.9
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 0.9 * 12 = 10.8 months < 12 -> INFANT
+    nv_ccdp_age_group: INFANT
+
+- name: Toddler at exactly the 12-month cutoff (age 1 = 12 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 1
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 1 * 12 = 12 months >= 12 -> TODDLER (care level changes on first birthday)
+    nv_ccdp_age_group: TODDLER
+
+- name: Toddler at 24 months (age 2).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 2
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 2 * 12 = 24 months in [12, 36) -> TODDLER
+    nv_ccdp_age_group: TODDLER
+
+- name: Toddler just below the 36-month preschool cutoff (age 2.9 = 34.8 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 2.9
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 2.9 * 12 = 34.8 months < 36 -> TODDLER
+    nv_ccdp_age_group: TODDLER
+
+- name: Preschool at exactly the 36-month cutoff (age 3 = 36 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 3 * 12 = 36 months >= 36 -> PRESCHOOL (care level changes on third birthday)
+    nv_ccdp_age_group: PRESCHOOL
+
+- name: Preschool at 48 months (age 4).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 4
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 4 * 12 = 48 months in [36, 72) -> PRESCHOOL
+    nv_ccdp_age_group: PRESCHOOL
+
+- name: Preschool at 60 months (age 5, below the 72-month school-age cutoff).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 5
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 5 * 12 = 60 months in [36, 72) -> PRESCHOOL
+    nv_ccdp_age_group: PRESCHOOL
+
+- name: Preschool just below the 72-month cutoff (age 5.9 = 70.8 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 5.9
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 5.9 * 12 = 70.8 months < 72 -> PRESCHOOL
+    nv_ccdp_age_group: PRESCHOOL
+
+- name: School age at exactly the 72-month cutoff (age 6 = 72 months).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 6
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 6 * 12 = 72 months >= 72 -> SCHOOL_AGE (care level changes on sixth birthday)
+    nv_ccdp_age_group: SCHOOL_AGE
+
+- name: School age at 96 months (age 8).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 8
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    # 8 * 12 = 96 months >= 72 -> SCHOOL_AGE
+    nv_ccdp_age_group: SCHOOL_AGE

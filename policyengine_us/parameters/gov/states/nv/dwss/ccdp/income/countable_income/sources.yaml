@@ -3,7 +3,7 @@ values:
   2024-01-01:
     # Earned income (MS 306.48 Wages/Salaries/Commissions, 306.7 Contractual
     # Earnings, 306.36 Seasonal Employment — all countable). employment_income
-    # already includes tips (306.48) and bonuses/commissions, so tip_income is
+    # already includes tips (306.43) and bonuses/commissions, so tip_income is
     # not listed separately to avoid double-counting.
     - employment_income
     - self_employment_income
@@ -29,9 +29,9 @@ values:
     # - Interest income is not enumerated as a countable type in MS 306, so
     #   interest_income is omitted (Dividends are listed at 306.10, interest is not).
     # - MS 306.15 Gambling Winnings, 306.20 In-Kind Income, 306.35 Royalties,
-    #   306.44 Trust Funds, and 306.46 Veterans Administration Benefits (coded
-    #   "Maybe") have no corresponding PolicyEngine variable, or are not
-    #   reliably countable, at the moment.
+    #   306.44 Trust Funds, and 306.46 Veterans Administration Benefits are
+    #   countable per MS 306 but have no corresponding PolicyEngine variable (or
+    #   are not reliably countable), so they are omitted at the moment.
 
 metadata:
   unit: list

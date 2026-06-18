@@ -19,11 +19,17 @@ class nv_ccdp_region(Variable):
     def formula(person, period, parameters):
         # The CCDF State Plan rate table reports two regions: the most populous
         # region (Clark County) and the lowest-percentile region (every other
-        # county). `county_str` is a Household accessor enumerating every US
-        # county, so non-Nevada county strings flow through this formula in
-        # microsim even though `defined_for` filters the output. Comparing the
-        # county string directly (rather than indexing a parameter by it) keeps
-        # the lookup safe for any county value.
+        # county). The Policy Manual MS 633.2 publishes a finer schedule (four
+        # areas -- Clark, Washoe, Carson-Douglas, Rural -- and QRIS star tiers
+        # 1-5), but we model the State Plan's 2-region, 1-Star base table as the
+        # authoritative CCDF rate-setting source; this applies the lowest-
+        # percentile (Washoe-level) rate to rural counties and does not track
+        # star-level rate enhancements at the moment.
+        # `county_str` is a Household accessor enumerating every US county, so
+        # non-Nevada county strings flow through this formula in microsim even
+        # though `defined_for` filters the output. Comparing the county string
+        # directly (rather than indexing a parameter by it) keeps the lookup
+        # safe for any county value.
         county = person.household("county_str", period.this_year)
         return where(
             county == "CLARK_COUNTY_NV",

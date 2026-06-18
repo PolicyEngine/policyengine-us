@@ -153,3 +153,31 @@
   output:
     # 96_026 * (0.52 + 0.16*5 + 0.03*1) / 12 = 96_026 * 1.35 / 12 = 10_802.93
     nv_ccdp_smi: 10_802.93
+
+# Program-year selection: the income table updates each October 1, so the FY is
+# keyed to the period. Period 2026-01 (month < 10) selects the 2025-10-01 table
+# (FY2026), distinct from the 2024-10-01 table (FY2025) used by the cases above.
+
+- name: SMI for a family of 4 in program year FY2026 (period 2026-01 selects the 2025-10-01 table).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NV
+  output:
+    # FY2026: NV base 100_681 * 1.00 / 12 = 8_390.08 (vs FY2025 96_026 -> 8_002.17)
+    nv_ccdp_smi: 8_390.08

@@ -1,6 +1,8 @@
 # nv_ccdp_copay: SPMUnit, float (USD), MONTH
-# CC PT 06-25 flat copay by income as a share of SMI:
-#   <= 32.99% SMI -> $0; 33%-42% SMI -> $90; 43%-49% SMI -> $150.
+# Flat copay by income as a share of SMI (eff. Oct 1, 2024; State Plan 2.4.v):
+#   <= 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
+# The $150 band begins just above 42% SMI (threshold 0.4201) per the operational
+# CC PT 06-25 fee chart; the State Plan summary's "43%" is superseded by the chart.
 # Waived for TANF/NEON (is_tanf_enrolled), CPS/foster placements, and homeless.
 # Family of 3, period 2025-01 -> monthly SMI = 6_721.82.
 
@@ -49,10 +51,10 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_500/mo / 6_721.82 = 0.3719 in [0.33, 0.43) -> $90
+    # 2_500/mo / 6_721.82 = 0.3719 in [0.33, 0.4201) -> $90
     nv_ccdp_copay: 90
 
-- name: Income in the 43-49% SMI band yields a $150 copay.
+- name: Income above the 42% SMI cut-point yields a $150 copay.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -73,7 +75,7 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 3_333/mo / 6_721.82 = 0.4959 >= 0.43 -> $150
+    # 3_333/mo / 6_721.82 = 0.4959 >= 0.4201 -> $150
     nv_ccdp_copay: 150
 
 - name: TANF/NEON enrollment waives the copay.
@@ -152,8 +154,8 @@
     nv_ccdp_copay: 0
 
 # Edge cases: copay-band cut-points. The scale is at-or-above (single_amount),
-# so the 0.33 and 0.43 thresholds belong to the HIGHER band:
-#   ratio < 0.33 -> $0; 0.33 <= ratio < 0.43 -> $90; ratio >= 0.43 -> $150.
+# so the 0.33 and 0.4201 thresholds belong to the HIGHER band:
+#   ratio < 0.33 -> $0; 0.33 <= ratio < 0.4201 -> $90; ratio >= 0.4201 -> $150.
 # Family of 3, period 2025-01: monthly SMI = 6_721.82.
 
 - name: Income just below the 33% SMI cut-point yields a zero copay.
@@ -204,7 +206,55 @@
     # 2_225/mo / 6_721.82 = 0.3310 >= 0.33 -> $90
     nv_ccdp_copay: 90
 
-- name: Income just below the 43% SMI cut-point stays in the $90 band.
+- name: Income just below the 42% SMI cut-point stays in the $90 band.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 33_600
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 2_800/mo / 6_721.82 = 0.4166 in [0.33, 0.4201) -> $90
+    nv_ccdp_copay: 90
+
+- name: Income just above the 42% SMI cut-point yields a $150 copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 34_200
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 2_850/mo / 6_721.82 = 0.4240 >= 0.4201 -> $150
+    nv_ccdp_copay: 150
+
+- name: Income at 42.8% SMI (above the operational 42% break) yields a $150 copay.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -225,31 +275,9 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 2_875/mo / 6_721.82 = 0.4277 in [0.33, 0.43) -> $90
-    nv_ccdp_copay: 90
-
-- name: Income just above the 43% SMI cut-point yields a $150 copay.
-  period: 2025-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 32
-        employment_income: 34_800
-      person2:
-        age: 30
-      person3:
-        age: 3
-        immigration_status: CITIZEN
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NV
-  output:
-    # 2_900/mo / 6_721.82 = 0.4314 >= 0.43 -> $150
+    # 2_875/mo / 6_721.82 = 0.4277 >= 0.4201 -> $150. The State Plan summary
+    # text ("43%-49% -> $150") would wrongly bucket this 42-43% SMI income as
+    # $90; the operational chart (42% break) correctly makes it $150.
     nv_ccdp_copay: 150
 
 - name: Zero income yields a zero copay.
@@ -352,6 +380,6 @@
         members: [person1, person2, person3]
         state_code: NV
   output:
-    # 3_333/mo / 6_721.82 = 0.4959 >= 0.43 -> $150; no eligible child in
+    # 3_333/mo / 6_721.82 = 0.4959 >= 0.4201 -> $150; no eligible child in
     # protective care, so the waiver does not apply.
     nv_ccdp_copay: 150
