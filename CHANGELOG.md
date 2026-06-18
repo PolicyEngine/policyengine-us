@@ -1,3 +1,45 @@
+## [1.734.0] - 2026-06-18
+
+### Added
+
+- Louisiana Child Care Assistance Program (CCAP).
+
+
+## [1.733.0] - 2026-06-18
+
+### Added
+
+- Implement Maryland Child Care Scholarship (CCS) program.
+
+
+## [1.732.0] - 2026-06-17
+
+### Added
+
+- Added the Ohio Homestead Exemption property tax reduction.
+
+
+## [1.731.0] - 2026-06-17
+
+### Added
+
+- Add Rhode Island's 2027 Child Tax Credit, high-income surtax, and Social Security subtraction age-gate removal.
+
+
+## [1.730.1] - 2026-06-17
+
+### Fixed
+
+- Bundle the county FIPS dataset so county lookups do not require live Hugging Face access.
+
+
+## [1.730.0] - 2026-06-17
+
+### Added
+
+- Added FY2024 Head Start and Early Head Start spending and enrollment values for all states from the ACF Head Start Program Facts.
+
+
 ## [1.729.5] - 2026-06-16
 
 ### Fixed

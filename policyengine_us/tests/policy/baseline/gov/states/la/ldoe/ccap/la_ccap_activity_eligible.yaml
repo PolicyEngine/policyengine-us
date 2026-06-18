@@ -1,0 +1,185 @@
+# LAC 28:CLXV.509.A.5: head of household and spouse must each average at
+# least 20 hours per week of employment, training, or education, or be a
+# full-time student; waived for disabled adults and homeless families;
+# reduced to 15 hours for special needs households.
+- name: Case 1, single parent working 40 hours qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: true
+
+- name: Case 2, single parent with no work or school fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: false
+
+- name: Case 3, non-working full-time student qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: true
+
+- name: Case 4, disabled head of household is exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: true
+
+- name: Case 5, non-working spouse fails the two-parent requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: false
+
+- name: Case 6, student spouse satisfies the two-parent requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: true
+
+- name: Case 7, 18 hours qualifies with a special needs child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 18
+      person2:
+        age: 4
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: true
+
+- name: Case 8, 18 hours fails without a special needs child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 18
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: false
+
+- name: Case 9, homeless family is exempt from the activity test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+        is_homeless: true
+  output:
+    la_ccap_activity_eligible: true

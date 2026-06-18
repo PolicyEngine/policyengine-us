@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, MO, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MO, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -540,15 +540,22 @@ programs:
         full_name: Kentucky Child Care Assistance Program
         variable: ky_ccap
         parameter_prefix: gov.states.ky.dcbs.ccap
+      - state: LA
+        status: complete
+        name: Louisiana CCAP
+        full_name: Louisiana Child Care Assistance Program
+        variable: la_ccap
+        parameter_prefix: gov.states.la.ldoe.ccap
       - state: MA
         status: complete
         name: Massachusetts CCFA
         full_name: Massachusetts Child Care Financial Assistance
         variable: ma_ccfa
       - state: MD
-        status: in_progress
+        status: complete
         name: Maryland CCS
         full_name: Maryland Child Care Scholarship
+        variable: md_child_care_subsidies
       - state: ME
         status: complete
         name: Maine CCAP
