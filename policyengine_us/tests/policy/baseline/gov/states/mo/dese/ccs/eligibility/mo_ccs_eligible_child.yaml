@@ -314,3 +314,51 @@
     # sec. 4.5(3)); a post-secondary/college student does not qualify -> limit
     # 18 -> age 18 not < 18 -> ineligible.
     mo_ccs_eligible_child: [false, false]
+
+- name: Case 15, child age 15 receiving SSI is a special-needs child and eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        ssi: 800
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # A child receiving SSI is a special-needs child (5 CSR 25-200.050(11)(A)),
+    # not disabled and not protective here -> limit 18 -> age 15 < 18 ->
+    # eligible. Without the SSI pathway this child would be capped at 13.
+    mo_ccs_eligible_child: [false, true]
+
+- name: Case 16, child age 14 in secondary school but not special needs is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Being in school only extends the ceiling for special-needs children; this
+    # child is not disabled, not receiving SSI, and not protective, so the limit
+    # stays at 13 -> age 14 not < 13 -> ineligible.
+    mo_ccs_eligible_child: [false, false]

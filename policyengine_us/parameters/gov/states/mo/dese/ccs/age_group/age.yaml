@@ -7,9 +7,12 @@ metadata:
   amount_unit: /1
   period: year
   label: Missouri Child Care Subsidy child age group by age
+  # Per State Plan Section 5.2.2: Infant = under 12 months, Toddler = 12-24 months
+  # (combined into INFANT_TODDLER 0-2), Preschool = two through five years (2-5),
+  # School-Age = five years or older (5+).
   reference:
-    - title: Missouri Child Care Subsidy Payments — Age Rate Categories
-      href: https://dese.mo.gov/childhood/child-care-subsidy/payments
+    - title: FFY 2025-2027 CCDF State Plan, Amendment 2, Section 5.2.2 Age classifications
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=65
 
 brackets:
   - threshold:

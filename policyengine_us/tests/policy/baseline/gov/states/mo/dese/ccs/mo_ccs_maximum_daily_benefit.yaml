@@ -833,3 +833,136 @@
     # 2 hours/day -> part time. Registered center, urban (Region 3),
     # infant/toddler, part time = $35/day.
     mo_ccs_maximum_daily_benefit: [0, 35]
+
+# === Special-needs (PS) rate column in each region outside Region 1 ===
+# provider.special_needs is read per region, so each rate region (Metro/Urban/
+# Micropolitan/Rural) needs at least one special-needs check to catch a
+# transcription error in that region's special_needs.yaml column. Region 1
+# (dense urban) is already covered by Cases 13, 19-22.
+- name: Case 28, licensed center metro special-needs infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: FRANKLIN_COUNTY_MO
+  output:
+    # Licensed center, metro (Region 2), infant/toddler, full time special-needs
+    # = $89.50/day (licensed_center/special_needs.yaml METRO/INFANT_TODDLER/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 89.5]
+
+- name: Case 29, licensed family home urban special-needs preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # Licensed family home, urban (Region 3), preschool, full time special-needs
+    # = $45/day (licensed_family_home/special_needs.yaml URBAN/PRESCHOOL/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 45]
+
+- name: Case 30, group home micropolitan special-needs school age full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: ADAIR_COUNTY_MO
+  output:
+    # Group home, micropolitan (Region 4), school age, full time special-needs
+    # = $50/day (group_home/special_needs.yaml MICROPOLITAN/SCHOOL_AGE/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 50]
+
+- name: Case 31, registered center rural special-needs preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BARRY_COUNTY_MO
+  output:
+    # Registered center, rural (Region 5 default), preschool, full time
+    # special-needs = $47.625/day (registered_center/special_needs.yaml RURAL/
+    # PRESCHOOL/FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 47.625]

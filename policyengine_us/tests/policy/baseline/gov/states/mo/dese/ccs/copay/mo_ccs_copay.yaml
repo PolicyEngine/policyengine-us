@@ -712,3 +712,110 @@
     # size 2 tier 7. A non-foster child would pay $5 * 20 = $100, but a
     # Protective Service child is waived from the sliding fee (Manual 9.1/9.2).
     mo_ccs_copay: 0
+
+# Cases 19-21 exercise the mid-ladder traditional tiers 2, 4, and 6. The tier is
+# looked up from ADJUSTED income (gross minus health_insurance_premiums; 5 CSR
+# 25-200.060(3)(C)1), while the 25% SMI minimum-fee floor keys on GROSS income
+# (Manual 2025.010 item 3). Setting gross above the floor but deducting medical
+# premiums drops adjusted income into a mid-ladder band, so the floor does not
+# bind and the genuine tier 2/4/6 fee is the result. All use size 2:
+#   gross = 24,000 / 12 = 2,000/mo > SMI floor 1,499.19 -> floor never binds.
+#   Size-2 mid-ladder bands (adjusted monthly): tier 2 (654, 763],
+#   tier 4 (872, 981], tier 6 (1090, 1199].
+#   Size-2 full-unit daily fees: tier 2 = $0.75, tier 4 = $2.00, tier 6 = $4.00.
+
+- name: Case 19, premium deduction lands adjusted income in mid-ladder tier 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # 15,600 / 12 = 1,300/mo premiums deducted from gross.
+        health_insurance_premiums: 15_600
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Gross = 2,000/mo > SMI floor 1,499.19 -> floor does NOT bind.
+    # Adjusted = 2,000 - 1,300 = 700, in (654, 763] -> tier 2.
+    # Full unit fee tier 2 = $0.75/day. $0.75 * 20 * 1 = $15/mo.
+    mo_ccs_copay: 15
+
+- name: Case 20, premium deduction lands adjusted income in mid-ladder tier 4.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # 13,200 / 12 = 1,100/mo premiums deducted from gross.
+        health_insurance_premiums: 13_200
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Gross = 2,000/mo > SMI floor 1,499.19 -> floor does NOT bind.
+    # Adjusted = 2,000 - 1,100 = 900, in (872, 981] -> tier 4.
+    # Full unit fee tier 4 = $2.00/day. $2.00 * 20 * 1 = $40/mo.
+    mo_ccs_copay: 40
+
+- name: Case 21, premium deduction lands adjusted income in mid-ladder tier 6.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        # 10,800 / 12 = 900/mo premiums deducted from gross.
+        health_insurance_premiums: 10_800
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Gross = 2,000/mo > SMI floor 1,499.19 -> floor does NOT bind.
+    # Adjusted = 2,000 - 900 = 1,100, in (1090, 1199] -> tier 6.
+    # Full unit fee tier 6 = $4.00/day. $4.00 * 20 * 1 = $80/mo.
+    mo_ccs_copay: 80
