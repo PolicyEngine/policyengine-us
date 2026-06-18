@@ -1,0 +1,90 @@
+- name: Case 1, working family with an eligible low-income child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_eligible: true
+
+- name: Case 2, family with no eligible child is not eligible.
+  # The only child is 13, so there is no eligible child and the gate fails
+  # regardless of income/activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 13
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_eligible: false
+
+- name: Case 3, high-income foster family qualifies via the categorical pathway.
+  # Income is far above the limit (so income_eligible is false) and the parent
+  # does not work, but a foster child makes the unit categorically eligible
+  # (R6-5-4914(A)(3)) and satisfies the activity-or-need test (R6-5-4912(A)(9)).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 20
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_income_eligible: false
+    az_ccap_categorically_eligible: true
+    az_ccap_eligible: true
+
+- name: Case 4, eligible low-income child but no qualifying activity is not eligible.
+  # The parent does not work and the unit is not categorically eligible, so the
+  # activity gate fails even though income and the child both qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_eligible: false
