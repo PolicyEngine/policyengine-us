@@ -1,4 +1,4 @@
-- name: Federal standard deduction adopted for Connecticut
+- name: Connecticut does not adopt the federal standard deduction
   period: 2023
   input:
     state_code: CT
@@ -6,7 +6,7 @@
     age_head: 30
   output:
     standard_deduction: 13_850
-    state_standard_deduction: 13_850
+    state_standard_deduction: 0
 
 - name: Federal standard deduction adopted for Utah married couple
   period: 2023
@@ -18,6 +18,15 @@
   output:
     standard_deduction: 27_700
     state_standard_deduction: 27_700
+
+- name: South Carolina does not use the federal standard deduction
+  period: 2026
+  input:
+    state_code: SC
+    filing_status: SINGLE
+    age_head: 30
+  output:
+    state_standard_deduction: 0
 
 - name: State-specific deduction for Georgia
   period: 2023

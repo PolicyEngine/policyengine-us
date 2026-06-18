@@ -1,0 +1,53 @@
+description: Rhode Island sets this adjusted gross income threshold under the Child Tax Credit program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island Child Tax Credit phase-out threshold
+  breakdown:
+    - filing_status
+  breakdown_label:
+    - Filing status
+  reference:
+    - title: 2026 R.I. H 7127 Substitute A as amended, Article 6, Section 4, § 44-30-104(c)
+      href: https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=exceeds%20eighty-eight%20thousand%20five%20hundred%20dollars
+
+SINGLE:
+  values:
+    2027-01-01: 88_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+JOINT:
+  values:
+    2027-01-01: 110_640
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+SEPARATE:
+  values:
+    2027-01-01: 88_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+HEAD_OF_HOUSEHOLD:
+  values:
+    2027-01-01: 88_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5
+SURVIVING_SPOUSE:
+  values:
+    2027-01-01: 88_500
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 5

@@ -1,0 +1,46 @@
+# ia_cca_provider_type: Person, Enum input, MONTH.
+# Input variable identifying the child's provider type. Default is LICENSED_CENTER.
+
+- name: Defaults to licensed center.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 4
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    ia_cca_provider_type: LICENSED_CENTER
+
+- name: Each provider type round-trips as set.
+  period: 2025-01
+  input:
+    people:
+      a:
+        age: 4
+        ia_cca_provider_type: LICENSED_CENTER
+      b:
+        age: 4
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+      c:
+        age: 4
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+      d:
+        age: 4
+        ia_cca_provider_type: CHILD_CARE_HOME_NOT_REGISTERED
+      e:
+        age: 4
+        ia_cca_provider_type: IN_HOME
+    households:
+      household:
+        members: [a, b, c, d, e]
+        state_code: IA
+  output:
+    ia_cca_provider_type:
+      - LICENSED_CENTER
+      - CHILD_DEVELOPMENT_HOME_AB
+      - CHILD_DEVELOPMENT_HOME_C
+      - CHILD_CARE_HOME_NOT_REGISTERED
+      - IN_HOME

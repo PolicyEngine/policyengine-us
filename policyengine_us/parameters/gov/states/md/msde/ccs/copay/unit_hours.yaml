@@ -1,0 +1,27 @@
+description: Maryland determines the number of service units based on daily hours of care under the Child Care Scholarship program.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Maryland CCS service units by daily hours
+  reference:
+    - title: Maryland CCS Provider Resources - Units of Service
+      href: https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
+    - title: COMAR 13A.14.06.11 - Units of Service (general framework)
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.11
+
+brackets:
+  - threshold:
+      2022-05-01: 0
+    amount:
+      2022-05-01: 1
+  - threshold:
+      2022-05-01: 3.0001
+    amount:
+      2022-05-01: 2
+  - threshold:
+      2022-05-01: 6
+    amount:
+      2022-05-01: 3

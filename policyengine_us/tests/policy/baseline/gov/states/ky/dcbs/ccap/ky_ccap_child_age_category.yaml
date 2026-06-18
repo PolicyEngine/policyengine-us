@@ -1,0 +1,106 @@
+# KY CCAP child age category: derived from age in months.
+# Thresholds: 0 -> INFANT_TODDLER, 36 -> PRESCHOOL, 72 -> SCHOOL_AGE.
+
+- name: Case 1, infant under 36 months is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0.5
+        # 0.5 years = 6 months -> INFANT_TODDLER
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 2, toddler just under 36 months is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2.9
+        # 2.9 years = 34.8 months -> INFANT_TODDLER
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 3, child at exactly 36 months is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        # 3 years = 36 months -> PRESCHOOL
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: PRESCHOOL
+
+- name: Case 4, preschooler just under 72 months is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5.9
+        # 5.9 years = 70.8 months -> PRESCHOOL
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: PRESCHOOL
+
+- name: Case 5, child at exactly 72 months is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 6
+        # 6 years = 72 months -> SCHOOL_AGE
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 6, older child is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 11
+        # 11 years = 132 months -> SCHOOL_AGE
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 7, newborn at zero months is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        # 0 months -> INFANT_TODDLER (lower boundary)
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: INFANT_TODDLER
+
+- name: Case 8, child just over 72 months is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 6.1
+        # 6.1 years = 73.2 months -> SCHOOL_AGE (just above the 72-month boundary)
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_child_age_category: SCHOOL_AGE

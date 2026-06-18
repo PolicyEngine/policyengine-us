@@ -1,0 +1,69 @@
+# Asset limit is $500. Formula is personal_property <= limit,
+# so $500 exactly is eligible.
+- name: Personal property of $499 is below the $500 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 499
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: true
+
+- name: Personal property of exactly $500 is at the limit and eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 500
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: true
+
+- name: Personal property of $501 exceeds the $500 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 501
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: false
+
+# Personal property is summed across all SPM-unit members, so two members each
+# holding $300 ($600 total) exceed the $500 limit.
+- name: Two members with $300 each ($600 total) exceed the $500 limit.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 300
+      person2:
+        personal_property: 300
+    households:
+      household:
+        members: [person1, person2]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: false

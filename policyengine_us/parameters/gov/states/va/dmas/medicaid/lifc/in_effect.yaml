@@ -1,0 +1,13 @@
+description: Virginia uses this indicator to determine whether regional Low Income Families With Children income limits apply under Medicaid.
+
+values:
+  0000-01-01: false
+  2025-07-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Virginia Medicaid LIFC regional income limits in effect
+  reference:
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3
+      href: https://www.dmas.virginia.gov/media/0aynyhxk/m04-1-1-26a.pdf#page=51

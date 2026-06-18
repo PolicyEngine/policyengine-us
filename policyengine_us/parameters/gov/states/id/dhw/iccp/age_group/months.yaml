@@ -1,0 +1,28 @@
+description: Idaho uses this age group by age in months under the Idaho Child Care Program.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Idaho Child Care Program age group by age in months
+  reference:
+    - title: Idaho Child Care Program Local Market Rates, effective July 1, 2025
+      href: https://publicdocuments.dhw.idaho.gov/WebLink/DocView.aspx?dbid=0&id=19508&repo=PUBLIC-DOCUMENTS
+
+brackets:
+  - threshold:
+      2025-07-01: 0
+    amount:
+      2025-07-01: 0 # INFANT
+  - threshold:
+      2025-07-01: 24
+    amount:
+      2025-07-01: 1 # TODDLER
+  - threshold:
+      2025-07-01: 36
+    amount:
+      2025-07-01: 2 # PRESCHOOL
+  - threshold:
+      2025-07-01: 60
+    amount:
+      2025-07-01: 3 # SCHOOL_AGE

@@ -1,0 +1,76 @@
+# Florida School Readiness monthly SMI, pinned to the federal fiscal year
+# (which begins October 1). For a January simulation period the FFY of the
+# prior October applies: 2026-01 -> FFY2026 (instant 2025-10-01).
+#
+# FL 4-person SMI @ 2025-10-01 = 103_063 (gov.hhs.smi.amount FL).
+# Size adjustment (gov.hhs.smi.household_size_adjustment):
+#   first_person 0.52, second_to_sixth 0.16, additional 0.03; threshold 6.
+#   size 1: 0.52                          -> 103_063 * 0.52 = 53_592.76
+#   size 2: 0.52 + 0.16                   -> 103_063 * 0.68 = 70_082.84
+#   size 3: 0.52 + 0.16*2                 -> 103_063 * 0.84 = 86_572.92
+#   size 4: 0.52 + 0.16*3                 -> 103_063 * 1.00 = 103_063.00
+# fl_sr_smi is MONTH-defined and returns annual_smi / 12.
+
+- name: Case 1, single-person SMI for FFY2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # 53_592.76 / 12 = 4_466.06
+    fl_sr_smi: 4_466.06
+
+- name: Case 2, three-person SMI for FFY2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # 86_572.92 / 12 = 7_214.41
+    fl_sr_smi: 7_214.41
+
+- name: Case 3, four-person SMI for FFY2026 equals the base amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 6
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    # 103_063.00 / 12 = 8_588.58
+    fl_sr_smi: 8_588.58

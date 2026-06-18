@@ -1,0 +1,118 @@
+# Tests for md_ccs_eligible
+# Eligible when: has at least one eligible child + income eligible
+#   OR TCA/SSI recipient (income test waived)
+
+- name: Case 1, basic eligible family with eligible child and income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # child age 5 < 13, dependent, citizen -> eligible child
+    # income 50,000 well below 75% SMI for family of 2
+    # (75% SMI for fam 2 = 101,489.32 * 0.75 = 76,116.99)
+    md_ccs_eligible: true
+
+- name: Case 2, TCA recipient is eligible regardless of income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # TCA recipient -> income test waived
+    # Has eligible child -> eligible
+    md_ccs_eligible: true
+
+- name: Case 3, SSI recipient is eligible regardless of income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        ssi: 9_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # SSI recipient (ssi > 0) -> income test waived
+    # Has eligible child -> eligible
+    md_ccs_eligible: true
+
+- name: Case 4, no eligible children means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # child age 15 >= 13, not disabled -> not eligible child
+    # no eligible children -> not eligible
+    md_ccs_eligible: false

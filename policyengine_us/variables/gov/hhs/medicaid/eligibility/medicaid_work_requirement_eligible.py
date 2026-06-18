@@ -64,6 +64,10 @@ class medicaid_work_requirement_eligible(Variable):
         is_blind = person("is_blind", period)
         is_incapable_of_self_care = person("is_incapable_of_self_care", period)
         eligible_disabled = is_blind | is_disabled | is_incapable_of_self_care
+        medically_frail = person(
+            "is_medically_frail_or_has_special_medical_needs_for_medicaid_ce",
+            period,
+        )
         # Current and recent incarceration exclusions/exceptions.
         is_incarcerated = person("is_incarcerated", period)
         was_recently_incarcerated = person(
@@ -85,6 +89,7 @@ class medicaid_work_requirement_eligible(Variable):
             | has_disabled
             | eligible_veteran
             | eligible_disabled
+            | medically_frail
             | is_incarcerated
             | was_recently_incarcerated
         )

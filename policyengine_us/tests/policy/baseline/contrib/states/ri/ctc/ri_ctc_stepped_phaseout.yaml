@@ -8,9 +8,9 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
-    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.SINGLE: 261_000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.SINGLE: 7_450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.2
     people:
       parent1:
         age: 40
@@ -21,7 +21,7 @@
       tax_unit:
         members: [parent1, child1]
         filing_status: SINGLE
-        ri_agi: 200000
+        ri_agi: 200_000
     households:
       household:
         members: [parent1, child1]
@@ -38,9 +38,9 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
-    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.SINGLE: 261_000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.SINGLE: 7_450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.2
     people:
       parent1:
         age: 40
@@ -51,7 +51,7 @@
       tax_unit:
         members: [parent1, child1]
         filing_status: SINGLE
-        ri_agi: 265000  # $4000 over threshold = 1 step
+        ri_agi: 265_000  # $4,000 over threshold = 1 step
     households:
       household:
         members: [parent1, child1]
@@ -68,9 +68,9 @@
     gov.contrib.states.ri.ctc.in_effect: true
     gov.contrib.states.ri.ctc.amount: 320
     gov.contrib.states.ri.ctc.age_limit: 19
-    gov.contrib.states.ri.ctc.stepped_phaseout.threshold: 261000
-    gov.contrib.states.ri.ctc.stepped_phaseout.increment: 7450
-    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.20
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.JOINT: 261_000
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.JOINT: 7_450
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.2
     people:
       parent1:
         age: 40
@@ -86,7 +86,7 @@
       tax_unit:
         members: [parent1, parent2, child1, child2]
         filing_status: JOINT
-        ri_agi: 261000
+        ri_agi: 261_000
     households:
       household:
         members: [parent1, parent2, child1, child2]

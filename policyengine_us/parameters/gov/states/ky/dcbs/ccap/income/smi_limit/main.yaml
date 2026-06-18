@@ -1,0 +1,28 @@
+description: Kentucky limits gross monthly income to this amount, by family size, under the Child Care Assistance Program.
+2:
+  2023-10-01: 4_217
+3:
+  2023-10-01: 5_210
+4:
+  2023-10-01: 6_202
+5:
+  2023-10-01: 7_194
+6:
+  2023-10-01: 8_186
+7:
+  2023-10-01: 8_372
+8:
+  2023-10-01: 8_559
+metadata:
+  unit: currency-USD
+  period: month
+  label: Kentucky CCAP 85% SMI monthly income limit
+  breakdown:
+    - range(2, 9)
+  breakdown_label:
+    - Family size
+  reference:
+    - title: DCC-113 Facts About the CCAP — 85% SMI income table (effective Oct 1, 2023)
+      href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc11319.pdf#page=2
+    - title: 922 KAR 2:160 Section 9(5) — 85% of Kentucky SMI (42 U.S.C. 9858c(c)(2)(N))
+      href: https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=10
