@@ -1,6 +1,6 @@
 description: Montana limits eligibility to children under this age under the Best Beginnings Child Care Scholarship program.
-# The manual references child eligibility in Policy Section 1-6 (not available); this
-# is the CCDF default under-13 age limit (45 CFR 98.20).
+# Standard CCDF eligible-child age cap from 45 CFR 98.20(a)(1): a child must be
+# under age 13.
 values:
   2016-11-01: 13
 
@@ -9,7 +9,5 @@ metadata:
   period: year
   label: Montana CCAP child age limit
   reference:
-    - title: Mont. Admin. R. 37.80.201
-      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.201
-    - title: 45 CFR 98.20(a)(1)
+    - title: 45 CFR 98.20(a)(1)(i) (CCDF eligible child under age 13)
       href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(1)

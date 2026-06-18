@@ -1,8 +1,8 @@
 # Unit tests for mt_ccap_child_age_category.
 # Derived from age via age_group/months.yaml bracket:
 #   0-35 months  -> INFANT_TODDLER
-#   36-59 months -> PRESCHOOL
-#   60+ months   -> SCHOOL_AGE
+#   36-71 months -> PRESCHOOL
+#   72+ months   -> SCHOOL_AGE
 # age is a YEAR variable; the MONTH formula reads age * 12 for months.
 - name: Case 1, infant under 3 (24 months) classified as infant/toddler.
   period: 2026-01
@@ -56,18 +56,18 @@
   output:
     mt_ccap_child_age_category: PRESCHOOL
 
-- name: Case 5, five-year-old (60 months) classified as school age.
+- name: Case 5, five-year-old (60 months) classified as preschool.
   period: 2026-01
   input:
     people:
       person1:
-        age: 5  # 60 months, boundary into school age
+        age: 5  # 60 months, still preschool (boundary into school age is 72 months / age 6)
     households:
       household:
         members: [person1]
         state_code: MT
   output:
-    mt_ccap_child_age_category: SCHOOL_AGE
+    mt_ccap_child_age_category: PRESCHOOL
 
 - name: Case 6, ten-year-old classified as school age.
   period: 2026-01
@@ -99,13 +99,13 @@
   output:
     mt_ccap_child_age_category: INFANT_TODDLER
 
-- name: Case 8, 59-month child (just below the 60-month School Age cutoff) is preschool.
+- name: Case 8, 71-month child (just below the 72-month School Age cutoff) is preschool.
   period: 2026-01
-  # Boundary at threshold-1; 59/12 = 4.9167 years -> 59 months < 60 stays PRESCHOOL.
+  # Boundary at threshold-1; 71/12 = 5.9167 years -> 71 months < 72 stays PRESCHOOL.
   input:
     people:
       person1:
-        age: 4.9167  # 59 months, one below the School Age boundary
+        age: 5.9167  # 71 months, one below the School Age boundary
     households:
       household:
         members: [person1]
@@ -120,6 +120,20 @@
     people:
       person1:
         age: 28  # 336 months
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_ccap_child_age_category: SCHOOL_AGE
+
+- name: Case 10, six-year-old (72 months) classified as school age.
+  period: 2026-01
+  # Locks the ARM 37.80.102 boundary: school-age starts at six / 72 months.
+  input:
+    people:
+      person1:
+        age: 6  # 72 months, boundary into school age
     households:
       household:
         members: [person1]

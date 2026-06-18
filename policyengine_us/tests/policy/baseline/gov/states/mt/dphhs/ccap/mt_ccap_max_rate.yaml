@@ -307,3 +307,22 @@
         state_code: MT
   output:
     mt_ccap_max_rate: [0, 1_210]
+
+- name: Case 18, center five-year-old (60 months) full-time uses preschool rate, not school-age.
+  period: 2026-01
+  # ARM 37.80.102 boundary: school-age starts at 72 months, so a 60-month child is
+  # preschool. CENTER preschool full-time = 1,210 (NOT school-age full-time 1,100).
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5  # 60 months, still preschool under the 72-month boundary
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 1_210]

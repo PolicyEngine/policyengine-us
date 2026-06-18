@@ -13,15 +13,34 @@ class mt_ccap_activity_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # CC 2-3: two-parent families need 120 activity hours/month total;
-        # single-parent families need 60 work hours/month, or full-time
-        # school/training (no work requirement), or part-time school plus 40
-        # work hours/month. We don't track part-time vs full-time student
-        # status at the moment, so the part-time-student + 40-work-hours
-        # pathway is treated the same as full-time student. The teen-parent-
-        # in-school no-work exception and the exclusion of disabled parents
-        # from the minimum-hour computation are also not modeled (no per-parent
-        # inputs).
+        # CC 2-3 Non-TANF Activity Requirements (CC23NonTANFActivity070718.pdf):
+        # two-parent families need 120 activity hours/month total; single-parent
+        # families need 60 work hours/month, or full-time school/training (no
+        # work requirement), or part-time school plus 40 work hours/month.
+        #
+        # Unmodeled activity waivers / pathways (known modeling limitations):
+        # - Part-time-student + 40-work-hours pathway (single- and two-parent):
+        #   we don't currently track part-time vs full-time student status, so
+        #   this pathway is collapsed into the full-time-student no-work-
+        #   requirement path. This makes the model slightly more generous than
+        #   the manual, which requires 40 work hours for a part-time student.
+        # - Disabled-parent activity waiver: in a two-parent household with one
+        #   disabled parent, the manual lets the other parent meet only the
+        #   60-hr single-parent standard. We currently hold them to the 120-hr
+        #   two-parent standard (slightly less generous). This is the most
+        #   material candidate to model later; it would need a per-parent
+        #   "unable to work due to disability" input.
+        # - Incarcerated / pre-release parent: when one parent is incarcerated
+        #   or in a pre-release program, the manual lets the other parent meet
+        #   only the 60-hr single-parent standard. We don't currently model
+        #   this (no per-parent incarceration/pre-release input).
+        # - Teen-parent in-school waiver: a parent under 20 attending high
+        #   school / HiSET has the work requirement waived. We don't currently
+        #   model this.
+        #
+        # Administrative-verification items are intentionally not modeled: the
+        # Work Verification Form, distance-learning program accreditation, and
+        # the 5-year degree-recency restriction (per CC 2-3).
         p = parameters(period).gov.states.mt.dphhs.ccap.eligibility.activity_hours
         person = spm_unit.members
         is_parent = person("is_tax_unit_head_or_spouse", period.this_year)

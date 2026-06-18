@@ -1,5 +1,20 @@
 description: Montana limits gross income to this share of state median income under the Best Beginnings Child Care Scholarship program.
 # Households over 85% SMI are not eligible; this ceiling overlays the FPG brackets.
+#
+# (S3) The 85% SMI ceiling is operational. It comes from the Best Beginnings Sliding
+# Fee Scale and mirrors the federal CCDF maximum at 45 CFR 98.20(a)(2) (no child care
+# subsidy above 85% of State median income). It is NOT in ARM 37.80.202.
+#
+# (S3) Binding behavior: for most household sizes the 200% FPG limit binds before this
+# 85% SMI cap, so the SMI ceiling rarely controls eligibility. It only binds (0.85*SMI
+# < 2.0*FPG) at large household sizes, e.g. sizes 11-12 in 2026 and sizes 10-12 in 2025
+# once HHS SMI uprating is applied. The cap therefore is operative only for unusually
+# large families; for typical sizes (1-9) it is non-binding.
+#
+# (S6) The SMI ceiling STRUCTURE dates to 2016-11-01, while the 0.85 share reflects the
+# 2025 Sliding Fee Scale (2025 Federal Register poverty guidelines context). The
+# 2016-11-01 effective date documents the structure's start; the operational value is
+# sourced from the 2025 scale.
 values:
   2016-11-01: 0.85
 
@@ -8,5 +23,7 @@ metadata:
   period: year
   label: Montana CCAP income limit share of state median income
   reference:
-    - title: Best Beginnings Child Care Scholarship Sliding Fee Scale (effective 07-01-2025)
+    - title: Best Beginnings Child Care Sliding Fee Scale (effective 2025-07-01)
       href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf
+    - title: 45 CFR 98.20(a)(2) (CCDF income eligibility maximum of 85% of State median income)
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(2)

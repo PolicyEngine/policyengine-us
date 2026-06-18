@@ -1,4 +1,8 @@
 description: Montana sets this minimum monthly copayment under the Best Beginnings Child Care Scholarship program.
+# (S6) The graduated-eligibility STRUCTURE dates to 2016-11-01, but this minimum
+# copayment value comes from the 2025 Best Beginnings Sliding Fee Scale (2025 Federal
+# Register poverty guidelines). The 2025-07-01 effective date documents that the value
+# is sourced from the 2025 scale, distinct from the structure's 2016-11-01 start.
 values:
   2025-07-01: 10
 
@@ -7,5 +11,5 @@ metadata:
   period: month
   label: Montana CCAP minimum monthly copayment
   reference:
-    - title: Best Beginnings Child Care Scholarship Sliding Fee Scale (effective 07-01-2025)
+    - title: Best Beginnings Child Care Sliding Fee Scale (effective 2025-07-01)
       href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf

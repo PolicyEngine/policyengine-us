@@ -6,6 +6,12 @@ description: Montana sets this share of gross monthly income as the copayment un
 # so a family exactly at a step's top stays in the lower tier. The top tier (7.0%)
 # runs through 200% FPG (graduated eligibility); above 200% the household is not
 # eligible (gated separately by the income limit).
+#
+# (S6) The graduated-eligibility STRUCTURE dates to 2016-11-01, but these copay
+# percentages come from the 2025 Best Beginnings Sliding Fee Scale (2025 Federal
+# Register poverty guidelines). The brackets carry a 2025-07-01 effective date to
+# document that the percentages are sourced from the 2025 scale, distinct from the
+# structure's 2016-11-01 start.
 metadata:
   type: single_amount
   threshold_unit: /1
@@ -13,7 +19,7 @@ metadata:
   period: year
   label: Montana CCAP copayment rate by FPG ratio
   reference:
-    - title: Best Beginnings Child Care Scholarship Sliding Fee Scale (effective 07-01-2025)
+    - title: Best Beginnings Child Care Sliding Fee Scale (effective 2025-07-01)
       href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf
 
 brackets:
