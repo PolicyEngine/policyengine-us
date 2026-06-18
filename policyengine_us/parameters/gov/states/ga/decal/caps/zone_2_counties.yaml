@@ -5,7 +5,10 @@ values:
     - BARROW_COUNTY_GA
     - BARTOW_COUNTY_GA
     - BIBB_COUNTY_GA
-    - BRYAN_COUNTY_GA
+    # BRYAN_COUNTY_GA and DAWSON_COUNTY_GA are Zone 2 per Appendix C, but are not
+    # in PolicyEngine's County enum yet, so residents fall to the Zone 3 default
+    # rate. Re-enable both once they are added to the County enum.
+    # - BRYAN_COUNTY_GA
     - BULLOCH_COUNTY_GA
     - BUTTS_COUNTY_GA
     - CATOOSA_COUNTY_GA
@@ -13,7 +16,7 @@ values:
     - CLARKE_COUNTY_GA
     - COLUMBIA_COUNTY_GA
     - COWETA_COUNTY_GA
-    - DAWSON_COUNTY_GA
+    # - DAWSON_COUNTY_GA  # see BRYAN_COUNTY_GA note above (not in County enum yet)
     - DOUGHERTY_COUNTY_GA
     - EFFINGHAM_COUNTY_GA
     - FLOYD_COUNTY_GA

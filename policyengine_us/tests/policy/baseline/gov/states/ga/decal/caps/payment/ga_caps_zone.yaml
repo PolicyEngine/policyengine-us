@@ -100,3 +100,21 @@
         county_str: TIFT_COUNTY_GA
   output:
     ga_caps_zone: ZONE_2
+
+# The three zone lists partition all 154 GA counties in PolicyEngine's County
+# enum, so the default=ZONE_3 arm is only reached by an unknown/unmapped county.
+# This is the residual path the enum-absent counties would take — Zone 2 (Bryan,
+# Dawson) and Zone 3 (Ben Hill, Johnson, Toombs) — and Zone 3 is the safe floor.
+- name: Case 8, unmapped county falls to the Zone 3 default.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: UNKNOWN
+  output:
+    ga_caps_zone: ZONE_3

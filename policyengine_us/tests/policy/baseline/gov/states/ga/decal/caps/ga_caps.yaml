@@ -476,3 +476,46 @@
     # base_subsidy = min(7,740, 10,140) = $7,740
     # monthly = 7,740 / 12 = $645.00
     ga_caps: 645.00
+
+- name: Case 12, fee exceeds the capped maximum base.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        ga_caps_provider_type: INFORMAL
+        ga_caps_care_type: PART_TIME
+        ga_caps_quality_rating: NONE
+        childcare_days_per_week: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Expenses far above the max rate, so the base is capped at the max.
+        spm_unit_pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: APPLING_COUNTY_GA
+  output:
+    ga_caps_eligible: true
+    # Zone 3, Informal, School Age, Part-time = $35/day * 1 day = $35/week
+    ga_caps_maximum_weekly_benefit: [0, 35]
+    # FPG family of 2: $21,640; FPL ratio = 35,000 / 21,640 = 1.617 -> 7% rate
+    # weekly fee = floor(35,000 * 0.07 / 52) = floor(47.12) = $47
+    # monthly fee = 47 * 52 / 12 = $203.67
+    ga_caps_family_fee: 203.67
+    # sum_max_monthly = 35 * 52 / 12 = $151.67
+    # expenses_monthly = 60,000 / 12 = $5,000
+    # base = min(5,000, 151.67) = $151.67 (capped at max, not expenses)
+    # net_base = max(151.67 - 203.67, 0) = $0 (fee exceeds the capped base)
+    ga_caps: 0

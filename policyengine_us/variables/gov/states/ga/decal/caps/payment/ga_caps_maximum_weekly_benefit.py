@@ -34,7 +34,11 @@ class ga_caps_maximum_weekly_benefit(Variable):
             default=center_rate,
         )
 
-        # Part-time rates are daily; convert to weekly using days per week.
         is_part_time = care_type == care_type.possible_values.PART_TIME
         days_per_week = person("childcare_days_per_week", period.this_year)
+        # Per Appendix C, part-time rates are per-day while full-time and
+        # before/after-school rates are per-week, so only part-time is scaled
+        # by days. A part-time child with childcare_days_per_week unset (0)
+        # yields $0 here by design — the household must supply days per week
+        # for a part-time rate to apply.
         return where(is_part_time, rate * days_per_week, rate)
