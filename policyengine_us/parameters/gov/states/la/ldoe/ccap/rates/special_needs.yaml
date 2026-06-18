@@ -1,0 +1,56 @@
+description: Louisiana pays these state maximum daily special needs care incentive rates under the Child Care Assistance Program, by provider type and child age group.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Louisiana CCAP special needs daily rates
+  breakdown:
+    - la_ccap_provider_type
+    - la_ccap_age_group
+  reference:
+    - title: Louisiana Register Vol. 48 No. 5, LR 48:1269-1270 (May 20, 2022), LAC 28:CLXV.515.A Special Needs Care Incentive
+      href: https://www.doa.la.gov/media/ny1gpl0g/2205.pdf#page=8
+    - title: Louisiana Register Vol. 51 No. 4, LR 51:524-529 (April 20, 2025), LAC 28:CLXV.515.A re-codified
+      href: https://www.doa.la.gov/media/aqifjzos/2504.pdf#page=50
+    - title: LDOE 2022 CCAP Rate Increase notice (rates paid from February 2022)
+      href: https://www.louisianabelieves.com/docs/default-source/child-care-providers/ccap-rate-changes.pdf?sfvrsn=2f5d8d1f_10
+    - title: Louisiana Register Vol. 47 No. 5, LR 47:573 (May 20, 2021), LAC 28:CLXV.515.A prior military center rates (effective February 1 to May 19, 2022)
+      href: https://www.doa.la.gov/media/ymql05n5/2105.pdf#page=23
+
+TYPE_III_EARLY_LEARNING_CENTER:
+  INFANT:
+    2022-02-01: 85.68
+  TODDLER:
+    2022-02-01: 52.92
+  REGULAR:
+    2022-02-01: 39.69
+SCHOOL_CHILD_CARE_CENTER:
+  INFANT:
+    2022-02-01: 30.24
+  TODDLER:
+    2022-02-01: 30.24
+  REGULAR:
+    2022-02-01: 30.24
+FAMILY_CHILD_CARE:
+  INFANT:
+    2022-02-01: 76.86
+  TODDLER:
+    2022-02-01: 52.92
+  REGULAR:
+    2022-02-01: 36.54
+IN_HOME:
+  INFANT:
+    2022-02-01: 33.58
+  TODDLER:
+    2022-02-01: 31.82
+  REGULAR:
+    2022-02-01: 31.5
+MILITARY_CHILD_CARE_CENTER:
+  INFANT:
+    2022-02-01: 44.92
+    2022-05-20: 85.68
+  TODDLER:
+    2022-02-01: 39.12
+    2022-05-20: 52.92
+  REGULAR:
+    2022-02-01: 37.8
+    2022-05-20: 39.69
