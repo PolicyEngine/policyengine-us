@@ -13,9 +13,12 @@ class ms_ccpp_copay(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ms.dhs.ccpp.copay
         income_based_copay = spm_unit("ms_ccpp_income_based_copay", period)
+        capped_minimum_fee_copay = min_(
+            income_based_copay, p.minimum_fee_categories_cap
+        )
         minimum_fee_copay = where(
             spm_unit("ms_ccpp_minimum_fee_category", period),
-            min_(income_based_copay, p.minimum_fee_categories_cap),
+            capped_minimum_fee_copay,
             income_based_copay,
         )
 
