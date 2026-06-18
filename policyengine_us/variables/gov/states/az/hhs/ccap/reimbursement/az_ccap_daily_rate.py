@@ -43,11 +43,18 @@ class az_ccap_daily_rate(Variable):
             base_rate * p.quality_multiplier,
         )
         regular_rate = where(quality, quality_rate, base_rate)
-        # CCA-1210B item 14: a disabled child (documented via IFSP/IEP/ISP/504 plan —
-        # we use is_disabled as a proxy) at a provider with a 3-5 star Quality First
-        # rating or national accreditation (the `quality` gate) receives the flat
-        # Special Needs Enhanced Rate, which replaces the base/age/provider rate.
-        # We don't model the separate +35% CDA tier for CDA-credentialed certified
-        # family / in-home providers at the moment (the +40% quality tier dominates
-        # it wherever a provider holds both credentials).
-        return where(special_needs & quality, p.special_needs, regular_rate)
+        # CCA-1210B item 14 (file page 14): the Special Needs Enhanced Rate is paid
+        # only by licensed Child Care Centers and certified Group Homes that hold a
+        # 3-5 star Quality First rating or national accreditation (the `quality` gate),
+        # for a child with a documented disability (IFSP/IEP/ISP/504 — proxied by
+        # az_ccap_special_needs_child). It replaces the base/age/provider rate. We do
+        # not model criterion (c)'s "no more than 10% of a group" cap, nor the separate
+        # +35% CDA tier for CDA-credentialed certified family / in-home providers.
+        is_center_or_group_home = (provider_type == AZCCAPProviderType.CENTER) | (
+            provider_type == AZCCAPProviderType.GROUP_HOME
+        )
+        return where(
+            special_needs & quality & is_center_or_group_home,
+            p.special_needs,
+            regular_rate,
+        )

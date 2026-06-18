@@ -7,12 +7,9 @@ class az_ccap_categorically_eligible(Variable):
     label = "Categorically eligible for Arizona Child Care Assistance without regard to income"
     definition_period = MONTH
     defined_for = StateCode.AZ
-    reference = (
-        # R6-5-4914(A) Child Care Assistance Without Regard to Income
-        "https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=29",
-        # R6-5-4915 (no fee/copayment for these families)
-        "https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=33",
-    )
+    # R6-5-4914(A) Child Care Assistance Without Regard to Income;
+    # R6-5-4915 no fee/copayment for these families (pages 29-33).
+    reference = "https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=29"
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members

@@ -303,3 +303,48 @@
         state_code: AZ
   output:
     az_ccap_daily_rate: 42.00
+
+- name: Case 19, special needs child at a quality certified family home gets the regular rate.
+  # CCA-1210B item 14: the Special Needs Enhanced Rate is limited to licensed Child
+  # Care Centers and certified Group Homes. A quality-enhanced certified family home
+  # with a disabled child gets its regular quality rate ($30 preschool base x 1.4 =
+  # $42.00), not the $89.81 special needs rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CERTIFIED_FAMILY
+        az_ccap_quality_enhanced_provider: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+    az_ccap_daily_rate: 42.00
+
+- name: Case 20, special needs child at a quality group home gets the special needs rate.
+  # CCA-1210B item 14: certified Group Homes are eligible for the Special Needs
+  # Enhanced Rate, so a quality-enhanced group home with a disabled child gets the
+  # flat $89.81, not the regular group home quality rate ($35 preschool base x 1.4).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: GROUP_HOME
+        az_ccap_quality_enhanced_provider: true
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_ccap_special_needs_child: true
+    az_ccap_daily_rate: 89.81
