@@ -1,3 +1,81 @@
+## [1.734.1] - 2026-06-18
+
+### Fixed
+
+- Fixed the Missouri refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Missouri tax liability.
+- Fixed the Ohio refundable EITC contrib reform, which paid no refundable credit to filers with no Ohio tax liability and zeroed out Ohio's other six non-refundable credits.
+
+
+## [1.734.0] - 2026-06-18
+
+### Added
+
+- Louisiana Child Care Assistance Program (CCAP).
+
+
+## [1.733.0] - 2026-06-18
+
+### Added
+
+- Implement Maryland Child Care Scholarship (CCS) program.
+
+
+## [1.732.0] - 2026-06-17
+
+### Added
+
+- Added the Ohio Homestead Exemption property tax reduction.
+
+
+## [1.731.0] - 2026-06-17
+
+### Added
+
+- Add Rhode Island's 2027 Child Tax Credit, high-income surtax, and Social Security subtraction age-gate removal.
+
+
+## [1.730.1] - 2026-06-17
+
+### Fixed
+
+- Bundle the county FIPS dataset so county lookups do not require live Hugging Face access.
+
+
+## [1.730.0] - 2026-06-17
+
+### Added
+
+- Added FY2024 Head Start and Early Head Start spending and enrollment values for all states from the ACF Head Start Program Facts.
+
+
+## [1.729.5] - 2026-06-16
+
+### Fixed
+
+- Updated the Michigan tier three standard deduction birth year cutoff so filers born in 1958 qualify in tax year 2025 and filers born in 1959 qualify in tax year 2026, the years in which they reach age 67.
+
+
+## [1.729.4] - 2026-06-16
+
+### Fixed
+
+- Fixed states-shard-2 contrib CI OOM by isolating RI's reform tests per subprocess and splitting the heavy-states stage into three shards.
+
+
+## [1.729.3] - 2026-06-15
+
+### Fixed
+
+- Base the Oklahoma Sales Tax Relief Credit TANF exclusion on actual enrollment (is_tanf_enrolled) rather than the modeled ok_tanf benefit.
+
+
+## [1.729.2] - 2026-06-15
+
+### Fixed
+
+- Fixed the Rhode Island contributed Child Tax Credit stepped phaseout to use filing-status-specific thresholds and increments.
+
+
 ## [1.729.1] - 2026-06-15
 
 ### Fixed
