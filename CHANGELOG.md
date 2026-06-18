@@ -1,3 +1,10 @@
+## [1.734.0] - 2026-06-18
+
+### Added
+
+- Louisiana Child Care Assistance Program (CCAP).
+
+
 ## [1.733.0] - 2026-06-18
 
 ### Added
