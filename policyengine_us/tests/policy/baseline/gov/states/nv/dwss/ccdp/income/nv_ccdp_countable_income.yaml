@@ -68,6 +68,31 @@
     # Only employment_income counts; SSI is exempt -> 12_000
     nv_ccdp_countable_income: 12_000
 
+- name: Counts disability insurance, gambling winnings, and general assistance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        disability_benefits: 5_000
+        gambling_winnings: 2_000
+        general_assistance: 3_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # MS 306 counts disability insurance benefits, gambling winnings (306.15),
+    # and general assistance (306.42): 12_000 + 5_000 + 2_000 + 3_000 = 22_000.
+    nv_ccdp_countable_income: 22_000
+
 - name: Countable income floors at zero.
   period: 2025
   absolute_error_margin: 0.01

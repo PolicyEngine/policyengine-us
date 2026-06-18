@@ -24,15 +24,19 @@ class nv_ccdp_copay(Variable):
         monthly_smi = spm_unit("nv_ccdp_smi", period)
         smi_ratio = where(monthly_smi > 0, monthly_income / monthly_smi, 0)
         copay = p.amount.calc(smi_ratio)
-        # MS 163 / CCDF Plan Section 3.3.1: copay waived for TANF/NEON
-        # referrals, CPS/foster placements, and homeless households. Use
-        # is_tanf_enrolled for the NEON waiver to avoid the CCDP <-> TANF
-        # circular dependency. Waivers apply at the whole-family level; we
-        # don't track per-child copay waivers at the moment.
-        # State Plan Section 3.3.1 additionally lists copay waivers for
-        # children with disabilities and for Head Start / Early Head Start
-        # enrollees, which we don't track at the moment: the operative
-        # Manual MS 163 omits both categories.
+        # Manual MS 180/181 (Co-Payments) waives the copay for exactly three
+        # categories: TANF/NEON referrals, CPS/foster placements, and homeless
+        # households (plus a discretionary case-by-case waiver by the CCDP
+        # Chief). Use is_tanf_enrolled for the NEON waiver to avoid the
+        # CCDP <-> TANF circular dependency. Waivers apply at the whole-family
+        # level; we don't track per-child copay waivers at the moment.
+        # State Plan Section 3.3.1 also checks boxes to waive copays for families
+        # with children with disabilities and for Head Start / Early Head Start,
+        # but those are "broad flexibility" plan options the operative Manual
+        # MS 180/181 does not adopt as automatic exemptions (and the State Plan's
+        # Head Start waiver is specifically for wraparound-collaboration cases,
+        # not all enrollees). We follow the operative Manual list and do not
+        # model the disability or Head Start waivers at the moment.
         is_tanf_enrolled = spm_unit("is_tanf_enrolled", period)
         person = spm_unit.members
         is_eligible_child = person("nv_ccdp_eligible_child", period)

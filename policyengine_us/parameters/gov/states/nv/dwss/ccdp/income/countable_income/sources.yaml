@@ -10,6 +10,7 @@ values:
     - farm_operations_income
     # Unearned income (countable per MS 306).
     - social_security  # MS 306.34 RSDI umbrella (Retirement, Survivors, Disability)
+    - disability_benefits  # MS 306 Disability Insurance Benefits (employer/private disability; distinct from RSDI 306.34 and workers' comp 306.49)
     - unemployment_compensation  # MS 306.45
     - workers_compensation  # MS 306.49
     - pension_income  # MS 306.29
@@ -18,20 +19,23 @@ values:
     - child_support_received  # MS 306.6
     - dividend_income  # MS 306.10
     - rental_income  # MS 306.30 Property Income (Rental/Lease)
+    - gambling_winnings  # MS 306.15 Gambling Winnings (countable)
+    - general_assistance  # MS 306.42 General Assistance / Indian General Assistance (countable; not TANF, so no circular dependency)
     # MS 306 income types we don't model at the moment:
     # - MS 306.40 Supplemental Security Income (SSI) is EXEMPT in Nevada (differs
     #   from many states); ssi is therefore NOT listed.
-    # - MS 306.41/306.42 TANF, Tribal TANF, Kinship Care, and General Assistance
-    #   are countable, but TANF is excluded here to avoid a circular dependency
-    #   (nv_ccdp_countable_income -> tanf -> ... -> childcare_expenses ->
-    #   child_care_subsidies -> nv_ccdp). The is_tanf_enrolled hook handles the
-    #   NEON pathway and copay waiver instead.
+    # - MS 306.41/306.42 TANF and Tribal TANF are countable but excluded here to
+    #   avoid a circular dependency (nv_ccdp_countable_income -> tanf -> ... ->
+    #   childcare_expenses -> child_care_subsidies -> nv_ccdp); the
+    #   is_tanf_enrolled hook handles the NEON pathway and copay waiver instead.
+    #   General Assistance (306.42) does not flow through childcare, so it is
+    #   counted above.
     # - Interest income is not enumerated as a countable type in MS 306, so
     #   interest_income is omitted (Dividends are listed at 306.10, interest is not).
-    # - MS 306.15 Gambling Winnings, 306.20 In-Kind Income, 306.35 Royalties,
-    #   306.44 Trust Funds, and 306.46 Veterans Administration Benefits are
-    #   countable per MS 306 but have no corresponding PolicyEngine variable (or
-    #   are not reliably countable), so they are omitted at the moment.
+    # - MS 306.20 In-Kind Income, 306.35 Royalties, and 306.44 Trust Funds are
+    #   countable per MS 306 but have no corresponding PolicyEngine variable, so
+    #   they are omitted at the moment. MS 306.46 Veterans benefits are not
+    #   counted at the moment (treatment varies by benefit type).
 
 metadata:
   unit: list
