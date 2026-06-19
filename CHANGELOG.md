@@ -1,3 +1,10 @@
+## [1.738.0] - 2026-06-19
+
+### Added
+
+- Added Minnesota Child Care Assistance Program (CCAP).
+
+
 ## [1.737.0] - 2026-06-18
 
 ### Added
