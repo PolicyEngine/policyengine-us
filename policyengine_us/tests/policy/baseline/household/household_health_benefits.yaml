@@ -1,33 +1,56 @@
-- name: flag off
+- name: Case 1, flag off excludes canonical and legacy health values.
   period: 2026
+  absolute_error_margin: 0.01
   input:
-    gov.simulation.include_health_benefits_in_net_income: false    
-    premium_tax_credit: 1_000
-    medicaid: 500
+    gov.simulation.include_health_benefits_in_net_income: false
+    assigned_aca_ptc: 1_000
+    premium_tax_credit: 999
+    medicaid_cost: 500
+    medicaid: 777
     snap: 0
   output:
     household_health_benefits: 0
     household_benefits: 0
 
-- name: flag on
+- name: Case 2, flag on includes annual canonical ACA PTC and Medicaid value.
   period: 2026
-  input:              
+  absolute_error_margin: 0.01
+  input:
     gov.simulation.include_health_benefits_in_net_income: true
-    premium_tax_credit: 1_000
-    medicaid: 500
+    assigned_aca_ptc: 1_000
+    medicaid_cost: 500
     snap: 0
   output:
     household_health_benefits: 1_500
     household_benefits: 1_500
 
-- name: flag on includes MSP limited-benefit cost
+- name: Case 3, flag on includes annual MSP and CHIP values.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     gov.simulation.include_health_benefits_in_net_income: true
-    premium_tax_credit: 1_000
-    medicaid: 500
+    assigned_aca_ptc: 1_000
+    medicaid_cost: 500
+    msp_cost: 2_434.8
+    per_capita_chip: 300
+    snap: 0
+  output:
+    household_health_benefits: 4_234.8
+    household_benefits: 4_234.8
+
+- name: Case 4, legacy wrappers do not double count canonical health values.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 1_000
+    premium_tax_credit: 999
+    medicaid_cost: 500
+    medicaid: 777
+    per_capita_chip: 300
+    chip: 888
     msp_cost: 2_434.8
     snap: 0
   output:
-    household_health_benefits: 3_934.8
-    household_benefits: 3_934.8
+    household_health_benefits: 4_234.8
+    household_benefits: 4_234.8

@@ -1,0 +1,7 @@
+- name: Case 1, monthly Premium Tax Credit is one twelfth of assigned annual ACA PTC.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    assigned_aca_ptc: 1_200
+  output:
+    premium_tax_credit: 100

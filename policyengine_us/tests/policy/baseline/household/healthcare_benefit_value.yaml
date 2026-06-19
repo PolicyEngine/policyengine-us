@@ -22,3 +22,17 @@
     msp_cost: 2_434.8
   output:
     healthcare_benefit_value: 2_434.8
+
+- name: Case 3, annual assigned ACA PTC is the canonical ACA health benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    per_capita_chip: 0
+    assigned_aca_ptc: 1_200
+    premium_tax_credit: 99
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 1_200
