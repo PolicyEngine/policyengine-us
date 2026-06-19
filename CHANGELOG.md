@@ -1,3 +1,10 @@
+## [1.739.0] - 2026-06-19
+
+### Added
+
+- Added Tennessee property tax relief for elderly homeowners.
+
+
 ## [1.738.0] - 2026-06-19
 
 ### Added
