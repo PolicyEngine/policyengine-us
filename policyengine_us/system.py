@@ -40,7 +40,10 @@ COUNTRY_DIR = Path(__file__).parent
 CURRENT_YEAR = 2024
 DEFAULT_START_DATE = str(CURRENT_YEAR) + "-01-01"
 
-DEFAULT_DATASET = "hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5"
+# Certified Populace build (primary-source US microdata), pinned by build id.
+# Populace ships from a Hugging Face *dataset* repo, hence the `hf://datasets/`
+# prefix handled in `_resolve_dataset_path`.
+DEFAULT_DATASET = "hf://datasets/policyengine/populace-us/populace_us_2024.h5@populace-us-2024-c86a631-6e1bcd0271a5-20260619T002242Z"
 
 
 class CountryTaxBenefitSystem(TaxBenefitSystem):
@@ -190,6 +193,24 @@ class Simulation(CoreSimulation):
 
 def _resolve_dataset_path(dataset_str):
     """Resolve a dataset string to a local file path, downloading if needed."""
+    if dataset_str.startswith("hf://datasets/"):
+        # Hugging Face *dataset* repos (e.g. Populace). `download_huggingface_dataset`
+        # assumes a model repo, so resolve dataset repos directly. URL form:
+        # hf://datasets/<owner>/<repo>/<path/to/file>[@<revision>]
+        from huggingface_hub import hf_hub_download
+
+        remainder = dataset_str[len("hf://datasets/") :]
+        owner, repo, *file_parts = remainder.split("/")
+        repo_filename = "/".join(file_parts)
+        version = None
+        if "@" in repo_filename:
+            repo_filename, version = repo_filename.rsplit("@", 1)
+        return hf_hub_download(
+            repo_id=f"{owner}/{repo}",
+            filename=repo_filename,
+            repo_type="dataset",
+            revision=version,
+        )
     if "hf://" in dataset_str:
         from policyengine_core.tools.hugging_face import (
             parse_hf_url,
@@ -255,6 +276,13 @@ class Microsimulation(CoreMicrosimulation):
         )
 
         dataset = kwargs.get("dataset")
+        if dataset is None:
+            # Route the class default through the same interception below as an
+            # explicit dataset, so an entity-level (HDFStore) default such as
+            # Populace is loaded via USSingleYearDataset rather than core's
+            # variable-centric loader.
+            dataset = self.default_dataset
+            kwargs["dataset"] = dataset
         if dataset is not None and isinstance(dataset, str) and "cps_2023" in dataset:
             self.default_input_period = 2023
 
