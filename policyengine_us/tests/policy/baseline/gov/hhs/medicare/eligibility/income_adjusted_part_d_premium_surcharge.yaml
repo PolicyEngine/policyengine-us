@@ -46,3 +46,16 @@
     takes_up_medicare_if_eligible: false
   output:
     income_adjusted_part_d_premium_surcharge: 0
+
+- name: unit test 5 - direct Medicare IRMAA MAGI input
+  period: 2025
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2023: 50_000
+    tax_exempt_interest_income:
+      2023: 0
+    medicare_irmaa_magi_two_years_prior: 500_000
+  output:
+    income_adjusted_part_d_premium_surcharge: 1_029.6

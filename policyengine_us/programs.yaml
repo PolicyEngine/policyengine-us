@@ -906,7 +906,10 @@ programs:
     variable: is_medicare_eligible
     parameter_prefix: gov.hhs.medicare
     verified_start_year: 2024
-    notes: Includes Part A (hospital) and Part B (medical) premiums with IRMAA adjustments
+    notes: >-
+      Includes Part A (hospital) and Part B (medical) premiums with IRMAA
+      adjustments; gross Part B premium calibration should use the
+      enrollment-gated gross_medicare_part_b_premium_if_enrolled variable.
 
   # --- HUD programs ---
   - id: section_8

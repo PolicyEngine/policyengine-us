@@ -101,6 +101,12 @@ def test_medicare_part_b_premium_is_zero_when_not_enrolled():
 
     assert sim.calculate("msp_part_b_premium_coverage", PERIOD)[0] == pytest.approx(0)
     assert sim.calculate("medicare_part_b_premium", PERIOD)[0] == pytest.approx(0)
+    assert sim.calculate("gross_medicare_part_b_premium", PERIOD)[0] == pytest.approx(
+        2_220
+    )
+    assert sim.calculate("gross_medicare_part_b_premium_if_enrolled", PERIOD)[
+        0
+    ] == pytest.approx(0)
 
 
 def test_msp_part_b_premium_coverage_scales_with_eligible_months():
@@ -292,3 +298,87 @@ def test_gross_medicare_part_b_premium_handles_direct_filing_status_inputs():
     assert result[0] == pytest.approx(7_546.8)
     assert result[1] == pytest.approx(7_546.8)
     assert result[2] == pytest.approx(2_220)
+
+
+def test_gross_medicare_part_b_premium_if_enrolled_preserves_irmaa():
+    sim = make_simulation(
+        medicare_enrolled=True,
+        gross_part_b_premium=4_440,
+        base_part_b_premium=2_220,
+        msp_income_eligible=False,
+        msp_asset_eligible=False,
+    )
+
+    assert sim.calculate("gross_medicare_part_b_premium_if_enrolled", PERIOD)[
+        0
+    ] == pytest.approx(4_440)
+    assert sim.calculate("medicare_cost", PERIOD)[0] == pytest.approx(10_060)
+
+
+def test_medicare_irmaa_magi_two_years_prior_falls_back_to_lagged_income():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "tax_exempt_interest_income": {"2023": 6_002},
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["person"],
+                    "filing_status": {PERIOD: "SINGLE"},
+                    "adjusted_gross_income": {"2023": 100_000},
+                }
+            },
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("medicare_irmaa_magi_two_years_prior", PERIOD)[
+        0
+    ] == pytest.approx(106_002)
+    assert sim.calculate("gross_medicare_part_b_premium", PERIOD)[0] == pytest.approx(
+        3_108
+    )
+
+
+def test_medicare_irmaa_magi_two_years_prior_input_drives_irmaa():
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "base_part_b_premium": {PERIOD: 2_220},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "tax_exempt_interest_income": {"2023": 0},
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["person"],
+                    "filing_status": {PERIOD: "SINGLE"},
+                    "adjusted_gross_income": {"2023": 50_000},
+                    "medicare_irmaa_magi_two_years_prior": {PERIOD: 500_000},
+                }
+            },
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("medicare_irmaa_magi_two_years_prior", PERIOD)[
+        0
+    ] == pytest.approx(500_000)
+    assert sim.calculate("gross_medicare_part_b_premium", PERIOD)[0] == pytest.approx(
+        7_546.8
+    )
