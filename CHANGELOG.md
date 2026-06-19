@@ -1,3 +1,88 @@
+## [1.738.0] - 2026-06-19
+
+### Added
+
+- Added Minnesota Child Care Assistance Program (CCAP).
+
+
+## [1.737.0] - 2026-06-18
+
+### Added
+
+- Add Mississippi Child Care Payment Program (CCPP).
+
+
+## [1.736.0] - 2026-06-18
+
+### Added
+
+- Add the Arizona Child Care Assistance Program.
+
+
+## [1.735.0] - 2026-06-18
+
+### Added
+
+- Implement Georgia CAPS (Childcare and Parent Services) child care subsidy program.
+
+
+## [1.734.1] - 2026-06-18
+
+### Fixed
+
+- Fixed the Missouri refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Missouri tax liability.
+- Fixed the Ohio refundable EITC contrib reform, which paid no refundable credit to filers with no Ohio tax liability and zeroed out Ohio's other six non-refundable credits.
+
+
+## [1.734.0] - 2026-06-18
+
+### Added
+
+- Louisiana Child Care Assistance Program (CCAP).
+
+
+## [1.733.0] - 2026-06-18
+
+### Added
+
+- Implement Maryland Child Care Scholarship (CCS) program.
+
+
+## [1.732.0] - 2026-06-17
+
+### Added
+
+- Added the Ohio Homestead Exemption property tax reduction.
+
+
+## [1.731.0] - 2026-06-17
+
+### Added
+
+- Add Rhode Island's 2027 Child Tax Credit, high-income surtax, and Social Security subtraction age-gate removal.
+
+
+## [1.730.1] - 2026-06-17
+
+### Fixed
+
+- Bundle the county FIPS dataset so county lookups do not require live Hugging Face access.
+
+
+## [1.730.0] - 2026-06-17
+
+### Added
+
+- Added FY2024 Head Start and Early Head Start spending and enrollment values for all states from the ACF Head Start Program Facts.
+
+
+## [1.729.5] - 2026-06-16
+
+### Fixed
+
+- Updated the Michigan tier three standard deduction birth year cutoff so filers born in 1958 qualify in tax year 2025 and filers born in 1959 qualify in tax year 2026, the years in which they reach age 67.
+
+
 ## [1.729.4] - 2026-06-16
 
 ### Fixed

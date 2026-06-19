@@ -1,0 +1,30 @@
+description: Georgia counts these income sources under the Childcare and Parent Services program.
+values:
+  2026-03-02:
+    - employment_income
+    - self_employment_income
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    - veterans_benefits
+    - capital_gains
+    - rental_income
+    - dividend_income
+    - pension_income
+    - social_security_retirement
+    - military_basic_pay
+    # The following are counted per CAPS Policy Manual §8.4 but have
+    # no matching variables:
+    # - military_allotments
+    # - lottery_payments
+    # - commissions (included in employment_income)
+    # - cash_bonuses (included in employment_income)
+
+metadata:
+  unit: list
+  period: year
+  label: Georgia CAPS countable income sources
+  reference:
+    - title: Georgia CAPS Policy Manual, Section 8.4 (Applicable Income)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/0-CAPS_Policy-Manual.pdf#page=49

@@ -1,0 +1,243 @@
+# Tests for md_ccs_weekly_copay
+# Weekly copay by service units:
+#   Full-time (>=6 hrs/day, 3 units): $3/week
+#   Part-time (>3 to <6 hrs/day, 2 units): $2/week
+#   Hourly (<=3 hrs/day, 1 unit): $1/week
+# Exempt: TCA, SSI, SNAP, WIC recipients pay $0
+# Federal 7% cap: annual copay cannot exceed 7% of countable income
+# Copay assessed for up to 3 children
+# COMAR 13A.14.06.12; Chapter 717 of 2024; 45 CFR 98.45(k)
+
+- name: Case 1, standard family with full-time care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # child hours/day = 8 >= 6 -> 3 units (full-time) -> $3/week
+    # annual copay: $3 * 52 = $156 -> well below 7% of $50,000 ($3,500)
+    md_ccs_weekly_copay: 3
+
+- name: Case 2, standard family with part-time care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # child hours/day = 5, >3 and <6 -> 2 units (part-time) -> $2/week
+    md_ccs_weekly_copay: 2
+
+- name: Case 3, standard family with hourly care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # child hours/day = 2, <=3 -> 1 unit (hourly) -> $1/week
+    md_ccs_weekly_copay: 1
+
+- name: Case 4, TCA recipient pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # TCA recipient -> copay exempt
+    md_ccs_weekly_copay: 0
+
+- name: Case 5, SSI recipient pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        ssi: 9_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # SSI recipient (ssi > 0) -> copay exempt
+    md_ccs_weekly_copay: 0
+
+- name: Case 6, SNAP eligible family pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_snap: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # SNAP recipient -> copay waived per Ch 525/526 of 2022
+    md_ccs_weekly_copay: 0
+
+- name: Case 7, WIC eligible parent pays zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        receives_wic: true
+        wic: 100
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # WIC recipient -> copay waived per Ch 525/526 of 2022
+    md_ccs_weekly_copay: 0
+
+- name: Case 8, federal 7 percent cap on very low income family.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Full-time -> $3/week raw copay
+    # Annual raw copay: $3 * 52 = $156
+    # 7% of annual income: $2,000 * 0.07 = $140
+    # $156 > $140 -> 7% cap applies
+    # Capped weekly: $140 / 52 = $2.69
+    md_ccs_weekly_copay: 2.69

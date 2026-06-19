@@ -1,0 +1,451 @@
+# MS CCPP integration tests — full pipeline at YEAR period.
+# ms_ccpp is MONTH; the YEAR aggregator ms_child_care_subsidies sums 12 months
+# and feeds the federal child_care_subsidies (YEAR).
+# Weekly rate -> monthly: x 52/12. Monthly benefit x 12 = annual.
+# Monthly federal SMI / FPG (MS, 2024):
+#   Size 2: 85% SMI = 3,626.95; 50% SMI = 2,133.50; FPG = 1,703.33
+#   Size 3: 85% SMI = 4,480.35; 50% SMI = 2,635.50; FPG = 2,151.67
+#   Size 4: 85% SMI = 5,333.75; 50% SMI = 3,137.50; FPG = 2,600.00
+
+- name: Case 1, single parent one preschooler metro center full time, full pipeline.
+  # Era-1 month (2024-01): rates use the 2023-07 schedule, before the 2024-10 increase.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Rate center metro FT preschool 135/wk -> 135 * 52/12 = 585/mo
+    # Copay: 2,000/mo, size 2, <= 50% SMI 2,133.50 -> very-low 5.5% = 110
+    # Monthly benefit = min(1,000, 585) - 110 = 475
+    ms_ccpp: 475
+
+- name: Case 2, two-parent family two children family home non-metro low band.
+  # Era-1 month (2024-01): rates use the 2023-07 schedule, before the 2024-10 increase.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000  # 4,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    ms_ccpp_income_eligible: true
+    ms_ccpp_eligible: true
+    # Rates home non-metro FT: toddler 98 + school-age 79 = 177/wk -> 177 * 52/12 = 767/mo
+    # Copay: 4,000/mo size 4 > 50% SMI 3,137.50 -> low 5.5% = 220
+    # Monthly benefit = min(1,500, 767) - 220 = 547
+    ms_ccpp: 547
+
+- name: Case 3, homeless family above income limit eligible via categorical bypass.
+  # Era-1 month (2024-01): rates use the 2023-07 schedule, before the 2024-10 increase.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/mo, above 85% SMI for family of 2
+        weekly_hours_worked_before_lsr: 0  # activity not met
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+        is_homeless: true
+  output:
+    # Income and activity both fail; homeless categorical bypass -> eligible
+    ms_ccpp_income_eligible: false
+    ms_ccpp_categorically_eligible: true
+    ms_ccpp_eligible: true
+    # Has income (4,000) so not homeless-no-income -> scale copay applies
+    # Copay: 4,000/mo size 2 > 50% SMI 2,133.50 -> low 6.5% = 260
+    # Rate center metro FT preschool 135/wk -> 135 * 52/12 = 585/mo
+    # Monthly benefit = min(1,000, 585) - 260 = 325
+    ms_ccpp: 325
+
+- name: Case 4, special-needs child draws special-needs rate with $10 copay cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 8
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Disabled child age 8 < 19 -> eligible; draws special-needs center FT = 145/wk
+    # 145 * 52/12 = 628.33/mo
+    # Special-needs child -> minimum-fee cap; 2,000 > FPG 1,703.33 -> copay $10
+    # Monthly benefit = min(1,000, 628.33) - 10 = 618.33; annual = 7,420
+    ms_ccpp: 7_420
+    child_care_subsidies: 7_420
+
+- name: Case 5, single parent two children part time metro center very-low band.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 28_800  # 2,400/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4  # part time
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4  # part time
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Rates PT center metro: infant 90 + preschool 75 = 165/wk -> 715/mo
+    # Copay: 2,400/mo size 3 <= 50% SMI 2,635.50 -> very-low 5.0% = 120
+    # Monthly benefit = min(1,500, 715) - 120 = 595; annual = 7,140
+    ms_ccpp: 7_140
+    child_care_subsidies: 7_140
+
+- name: Case 6, family above 85 percent SMI without categorical pathway is ineligible.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/mo > 85% SMI for family of 2
+        weekly_hours_worked_before_lsr: 10
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_income_eligible: false
+    ms_ccpp_eligible: false
+    ms_ccpp: 0
+    child_care_subsidies: 0
+
+- name: Case 7, non-Mississippi household is excluded (defined_for gate).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL  # not Mississippi
+        county: BALDWIN_COUNTY_AL
+  output:
+    # defined_for = StateCode.MS zeroes the eligibility gate and the benefit
+    ms_ccpp_eligible: false
+    ms_ccpp: 0
+    ms_child_care_subsidies: 0
+
+# Era-2 coverage (period 2025-01, a pure 2024-10 schedule month, before the
+# unmodeled July-2025 increase). Cases 8-11 confirm the FY2025-2027 full-time
+# base rates flow through and that part-time + special-needs leaves correctly
+# carry forward their era-1 (2023-07) values.
+- name: Case 8, era-2 metro center infant full time draws the FY2025-2027 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, at/below FPL size 2 -> copay 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Era-2 metro center infant FT = 167/wk -> 167 * 52/12 = 723.67/mo
+    # Income 1,000/mo <= FPL (size 2) -> copay 0
+    # Benefit = min(1,000, 723.67) - 0 = 723.67
+    ms_ccpp: 723.67
+
+- name: Case 9, era-2 non-metro center infant full time draws the lower regional rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, at/below FPL size 2 -> copay 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS  # non-metro
+  output:
+    ms_ccpp_eligible: true
+    # Era-2 non-metro center infant FT = 140/wk -> 140 * 52/12 = 606.67/mo
+    # Income 1,000/mo <= FPL (size 2) -> copay 0
+    # Benefit = min(1,000, 606.67) - 0 = 606.67
+    ms_ccpp: 606.67
+
+- name: Case 10, era-2 family home metro infant full time draws the FY2025-2027 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, at/below FPL size 2 -> copay 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Era-2 metro family home infant FT = 140/wk -> 140 * 52/12 = 606.67/mo
+    # Income 1,000/mo <= FPL (size 2) -> copay 0
+    # Benefit = min(1,000, 606.67) - 0 = 606.67
+    ms_ccpp: 606.67
+
+- name: Case 11, era-2 part time and special needs leaves carry forward era-1 rates.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, at/below FPL size 2 -> copay 0
+        weekly_hours_worked_before_lsr: 40
+      person2:  # part-time infant: PT rate has no era-2 entry -> carries era-1
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4  # part time
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # PART_TIME has no 2024-10 entry, so the 2023-07 value carries forward:
+    # metro center infant PT = 90/wk -> 90 * 52/12 = 390/mo
+    # Income 1,000/mo <= FPL (size 2) -> copay 0
+    # Benefit = min(1,000, 390) - 0 = 390
+    ms_ccpp: 390
+
+- name: Case 12, era-2 special needs child draws the carried-forward flat rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo, at/below FPL size 2 -> copay 0
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 8
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8  # full time
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    # Special-needs rate has no 2024-10 entry, so the 2023-07 flat value carries
+    # forward: special-needs center FT = 145/wk -> 145 * 52/12 = 628.33/mo
+    # Income 1,000/mo <= FPL (size 2) -> copay 0 (so the $10 min-fee cap does not bind)
+    # Benefit = min(1,000, 628.33) - 0 = 628.33
+    ms_ccpp: 628.33
