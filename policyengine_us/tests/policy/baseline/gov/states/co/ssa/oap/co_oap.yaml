@@ -24,3 +24,12 @@
     ssi: 6_000
   output:
     co_oap: 0
+
+- name: 2026 grant standard
+  period: 2026
+  input:
+    co_oap_eligible: true
+    ssi_countable_income: 384
+    ssi: 0
+  output:
+    co_oap: 12_000
