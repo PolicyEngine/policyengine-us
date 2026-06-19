@@ -1,0 +1,104 @@
+- name: Case 1, protective-services child is a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: true
+
+- name: Case 2, SSI-disabled parent receiving SSI is a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_ssi_disabled: true
+        ssi: 300
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: true
+
+- name: Case 3, disabled parent not receiving SSI is not a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_disabled: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: false
+
+- name: Case 4, disabled dependent child under nineteen is a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: true
+
+- name: Case 5, disabled 18-year-old head is not a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: false

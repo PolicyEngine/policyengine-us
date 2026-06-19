@@ -1,0 +1,384 @@
+# GA CAPS child eligibility
+# Standard: age < 13 (12 or younger)
+# Disabled: age <= 17
+# Must be immigration eligible (CCDF)
+
+- name: Case 1, child under 13 who is a citizen.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 2, child age 12 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 12 < 13 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 3, child age 13 ineligible without disability.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 13 not < 13 -> ineligible
+    ga_caps_eligible_child: [false, false]
+
+- name: Case 4, disabled child age 15 eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # disabled, age 15 <= 17 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 5, disabled child age 17 eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # disabled, age 17 <= 17 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 6, disabled child age 18 ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # disabled, age 18 > 17 -> ineligible
+    ga_caps_eligible_child: [false, false]
+
+- name: Case 7, undocumented child ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible_child: [false, false]
+
+- name: Case 8, adult is never an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_caps_eligible_child: [false]
+
+- name: Case 9, infant age 0 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 0
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 0 < 13 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 10, toddler age 1 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+      person2:
+        age: 1
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 1 < 13 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 11, preschool age 3 at boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 3 < 13 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 12, school-age 6 at boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 6
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # age 6 < 13 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 13, disabled child age 13 eligible with disability.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+
+        is_disabled: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # disabled, age 13 <= 17 -> eligible
+    ga_caps_eligible_child: [false, true]
+
+- name: Case 14, non-disabled child age 13 ineligible contrasted with disabled.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+
+        is_disabled: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # not disabled, age 13 >= 13 -> ineligible
+    ga_caps_eligible_child: [false, false]
+
+- name: Case 15, two children one eligible and one over age limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 10
+
+        immigration_status: CITIZEN
+      person3:
+        age: 14
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # person2: age 10 < 13 -> eligible
+    # person3: age 14 >= 13, not disabled -> ineligible
+    ga_caps_eligible_child: [false, true, false]
+
+- name: Case 16, legal permanent resident child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible_child: [false, true]
