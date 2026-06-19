@@ -1,0 +1,735 @@
+# GA CAPS Integration Tests
+#
+# Period: tests use 2026-01 intentionally. CAPS parameters are dated
+# 2026-03-02 (current Appendix C/D rates), and PolicyEngine backcasts the
+# first dated value, so a 2026-01 test exercises the current rules.
+# This avoids 2027-01 where FPG and SMI would be uprated rather than using
+# the published 2026 values cited in the inline calculation comments.
+#
+# 2026 FPG (Contiguous US):
+#   first_person = 15,960, additional = 5,680
+#   Family of 2: 21,640
+#   Family of 3: 27,320
+#   Family of 4: 33,000
+#
+# GA SMI 4-person at 2026-01: $116,773.19 (uprated)
+#   Family of 2: 116,773.19 * 0.68 = $79,405.77 -> 50% = $39,702.88
+#   Family of 3: 116,773.19 * 0.84 = $98,089.48 -> 50% = $49,044.74
+#   Family of 4: 116,773.19 * 1.00 = $116,773.19 -> 50% = $58,386.59
+
+- name: Case 1, basic eligible family with Zone 1 center care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 11_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # === Eligibility ===
+    # Child age 4 < 13 -> age eligible
+    # Citizen -> immigration eligible
+    ga_caps_eligible_child: [false, true]
+
+    # income 30,000 <= 39,702.88 (50% SMI for family of 2) -> income eligible
+    ga_caps_income_eligible: true
+    is_ccdf_asset_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rate ===
+    # Fulton County -> Zone 1
+    ga_caps_zone: ZONE_1
+    # Age 4 -> PRESCHOOL
+    ga_caps_age_group: [PRESCHOOL, PRESCHOOL]
+    # Zone 1, Center, Preschool, Full-time = $221/week
+    ga_caps_maximum_weekly_benefit: [0, 221]
+
+    # === Family fee ===
+    # FPG family of 2: $21,640
+    # FPL ratio = 30,000 / 21,640 = 1.386 -> 7% rate
+    # weekly fee = floor(30,000 * 0.07 / 52) = floor(40.38) = $40
+    # monthly fee = 40 * 52 / 12 = $173.33
+    ga_caps_family_fee: 173.33
+
+    # === Benefit ===
+    # base_max_monthly = 221 * 52 / 12 = $957.67
+    # pre_subsidy_monthly = 11,000 / 12 = $916.67
+    # base_payment = min(916.67, 957.67) = $916.67
+    # net_base = max(916.67 - 173.33, 0) = $743.33
+    # no quality bonus (NONE rating)
+    # subsidy = $743.33
+    ga_caps: 743.33
+
+- name: Case 2, low income family with zero fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 2_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: FAMILY
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # === Eligibility ===
+    ga_caps_eligible_child: [false, true]
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rate ===
+    # Zone 1, Family, Infant, Full-time = $199/week
+    ga_caps_zone: ZONE_1
+    ga_caps_age_group: [PRESCHOOL, INFANT]
+    ga_caps_maximum_weekly_benefit: [0, 199]
+
+    # === Family fee ===
+    # FPL ratio = 2,000 / 21,640 = 0.0924 -> 0% rate (<=10% FPL)
+    ga_caps_family_fee: 0
+
+    # === Benefit ===
+    # base_max_monthly = 199 * 52 / 12 = $862.33
+    # pre_subsidy_monthly = 8,000 / 12 = $666.67
+    # base_payment = min(666.67, 862.33) = $666.67
+    # net_base = max(666.67 - 0, 0) = $666.67
+    # no quality bonus (NONE rating)
+    # subsidy = $666.67
+    ga_caps: 666.67
+
+- name: Case 3, enrolled family at ongoing threshold with quality bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: THREE_STAR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: CHATHAM_COUNTY_GA
+  output:
+    # === Eligibility ===
+    ga_caps_eligible_child: [false, true]
+
+    # enrolled: 60,000 <= 67,494.90 (85% SMI for family of 2) -> eligible
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rate ===
+    # Chatham County -> Zone 2
+    ga_caps_zone: ZONE_2
+    # Age 2 -> TODDLER
+    ga_caps_age_group: [PRESCHOOL, TODDLER]
+    # Zone 2, Center, Toddler, Full-time = $160/week
+    ga_caps_maximum_weekly_benefit: [0, 160]
+
+    # === Family fee ===
+    # FPG family of 2: $21,640
+    # FPL ratio = 60,000 / 21,640 = 2.773 -> 7% rate
+    # weekly fee = floor(60,000 * 0.07 / 52) = floor(80.77) = $80
+    # monthly fee = 80 * 52 / 12 = $346.67
+    ga_caps_family_fee: 346.67
+
+    # === Benefit ===
+    # base_max_monthly = 160 * 52 / 12 = $693.33
+    # pre_subsidy_monthly = 12,000 / 12 = $1,000
+    # base_payment = min(1,000, 693.33) = $693.33
+    # net_base = max(693.33 - 346.67, 0) = $346.67
+    # effective_bonus = (160 * 0.10) / 160 = 0.10
+    # subsidy = 346.67 * 1.10 = $381.33
+    ga_caps: 381.33
+
+- name: Case 4, ineligible family gets zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    # income 40,000 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    ga_caps_income_eligible: false
+    ga_caps_eligible: false
+    ga_caps: 0
+
+- name: Case 5, two children with different ages in Zone 3.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: TWO_STAR
+      person3:
+        age: 8
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: BEFORE_AFTER_SCHOOL
+        ga_caps_quality_rating: TWO_STAR
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: APPLING_COUNTY_GA
+  output:
+    # === Eligibility ===
+    ga_caps_eligible_child: [false, true, true]
+
+    # FPG family of 3: $27,320
+    # 50% SMI family of 3 = $49,044.74
+    # income 20,000 <= 49,044.74 -> eligible
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rate ===
+    # Appling County -> Zone 3
+    ga_caps_zone: ZONE_3
+    # child1: age 0 -> INFANT, Zone 3 Center FT = $130/week
+    # child2: age 8 -> SCHOOL_AGE, Zone 3 Center B/A School = $53/week
+    ga_caps_age_group: [PRESCHOOL, INFANT, SCHOOL_AGE]
+    ga_caps_maximum_weekly_benefit: [0, 130, 53]
+
+    # === Family fee ===
+    # FPL ratio = 20,000 / 27,320 = 0.732 -> 5% rate
+    # weekly fee = floor(20,000 * 0.05 / 52) = floor(19.23) = $19
+    # monthly fee = 19 * 52 / 12 = $82.33
+    ga_caps_family_fee: 82.33
+
+    # === Benefit ===
+    # sum_max_weekly = 130 + 53 = $183
+    # sum_max_monthly = $183 * 52/12 = $793.00
+    # expenses_monthly = 10,000 / 12 = $833.33
+    # base = min($833.33, $793) = $793.00
+    # net_base = max($793 - $82.33, 0) = $710.67
+    # weighted_bonus_rate = (130*0.05 + 53*0.05) / 183 = 0.05
+    # subsidy = $710.67 * 1.05 = $746.20
+    ga_caps: 746.20
+
+- name: Case 6, disabled teenager with family care in Zone 2.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 35_000
+        immigration_status: CITIZEN
+      person2:
+        age: 15
+
+        is_disabled: true
+        immigration_status: CITIZEN
+        ga_caps_provider_type: FAMILY
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: BIBB_COUNTY_GA
+  output:
+    # === Eligibility ===
+    # disabled, age 15 <= 17 -> eligible child
+    ga_caps_eligible_child: [false, true]
+
+    # income 35,000 <= 39,702.88 (50% SMI for family of 2) -> eligible
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rate ===
+    # Bibb County -> Zone 2
+    ga_caps_zone: ZONE_2
+    # Age 15 -> SCHOOL_AGE
+    ga_caps_age_group: [PRESCHOOL, SCHOOL_AGE]
+    # Zone 2, Family, School Age, Full-time = $135/week
+    ga_caps_maximum_weekly_benefit: [0, 135]
+
+    # === Family fee ===
+    # FPG family of 2: $21,640
+    # FPL ratio = 35,000 / 21,640 = 1.618 -> 7% rate
+    # weekly fee = floor(35,000 * 0.07 / 52) = floor(47.12) = $47
+    # monthly fee = 47 * 52 / 12 = $203.67
+    ga_caps_family_fee: 203.67
+
+    # === Benefit ===
+    # base_max_monthly = 135 * 52 / 12 = $585.00
+    # pre_subsidy_monthly = 7,000 / 12 = $583.33
+    # base_payment = min(583.33, 585.00) = $583.33
+    # net_base = max(583.33 - 203.67, 0) = $379.67
+    # no quality bonus (NONE rating)
+    # subsidy = $379.67
+    ga_caps: 379.67
+
+- name: Case 7, non-Georgia family gets zero benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    ga_caps: 0
+
+# 2026 FPG family of 5: 38,680; family of 6: 44,360
+# 50% SMI family of 5 = $67,728.45; family of 6 = $77,070.30
+
+- name: Case 8, large family of 6 at income threshold boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 73_085
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: BEFORE_AFTER_SCHOOL
+        ga_caps_quality_rating: NONE
+      person4:
+        age: 3
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: FAMILY
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: TWO_STAR
+      person5:
+        age: 0
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: TWO_STAR
+      person6:
+        age: 14
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: GA
+        county_str: COBB_COUNTY_GA
+  output:
+    # === Eligibility ===
+    # person3 (10): age < 13 -> eligible
+    # person4 (3): age < 13 -> eligible
+    # person5 (0): age < 13 -> eligible
+    # person6 (14): age >= 13, not disabled -> ineligible
+    ga_caps_eligible_child: [false, false, true, true, true, false]
+
+    # 50% SMI family of 6 = $77,070.30
+    # income 73,085 <= 77,070.30 -> eligible
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rates ===
+    # Cobb County -> Zone 1
+    ga_caps_zone: ZONE_1
+    # person3 (10): SCHOOL_AGE, Zone 1 Center B/A School = $84/week
+    # person4 (3): PRESCHOOL, Zone 1 Family FT = $180/week
+    # person5 (0): INFANT, Zone 1 Center FT = $260/week
+    ga_caps_age_group: [PRESCHOOL, PRESCHOOL, SCHOOL_AGE, PRESCHOOL, INFANT, PRESCHOOL]
+    ga_caps_maximum_weekly_benefit: [0, 0, 84, 180, 260, 0]
+
+    # === Family fee ===
+    # FPG family of 6: $44,360
+    # FPL ratio = 73,085 / 44,360 = 1.648 -> 7% rate
+    # weekly fee = floor(73,085 * 0.07 / 52) = floor(98.38) = $98
+    # monthly fee = 98 * 52 / 12 = $424.67
+    ga_caps_family_fee: 424.67
+
+    # === Benefit ===
+    # sum_max_weekly = 84 + 180 + 260 = $524
+    # sum_max_monthly = $524 * 52/12 = $2,270.67
+    # expenses_monthly = 20,000 / 12 = $1,666.67
+    # base = min($1,666.67, $2,270.67) = $1,666.67
+    # net_base = max($1,666.67 - $424.67, 0) = $1,242.00
+    # weighted_bonus_rate = (84*0 + 180*0.05 + 260*0.05) / 524 = 0.04198
+    # subsidy = $1,242.00 * 1.04198 = $1,294.14
+    ga_caps: 1_294.14
+
+- name: Case 9, enrolled family between 50 and 85 percent SMI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: THREE_STAR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: DEKALB_COUNTY_GA
+  output:
+    # === Eligibility ===
+    ga_caps_eligible_child: [false, true]
+    # enrolled: 50,000 <= 67,494.90 (85% SMI) -> eligible
+    # NOT eligible as new applicant: 50,000 > 39,702.88 (50% SMI)
+    ga_caps_income_eligible: true
+    ga_caps_eligible: true
+
+    # === Zone and rates ===
+    # DeKalb County -> Zone 1
+    ga_caps_zone: ZONE_1
+    # Age 1 -> TODDLER, Zone 1 Center FT = $248/week
+    ga_caps_age_group: [PRESCHOOL, TODDLER]
+    ga_caps_maximum_weekly_benefit: [0, 248]
+
+    # === Family fee ===
+    # FPG family of 2: $21,640
+    # FPL ratio = 50,000 / 21,640 = 2.311 -> 7% rate
+    # weekly fee = floor(50,000 * 0.07 / 52) = floor(67.31) = $67
+    # monthly fee = 67 * 52 / 12 = $290.33
+    ga_caps_family_fee: 290.33
+
+    # === Benefit ===
+    # pre_subsidy_weekly = 15,000 / 52 = $288.46
+    # per_child = min($248, $288.46) = $248
+    # base_monthly = $248 * 52/12 = $1,074.67
+    # net_base = max($1,074.67 - $290.33, 0) = $784.33
+    # weighted_bonus_rate = ($248 * 0.10) / $248 = 0.10
+    # subsidy = $784.33 * 1.10 = $862.77
+    ga_caps: 862.77
+
+- name: Case 10, non-enrolled family at 50 percent SMI plus 1 dollar is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 39_703
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: THREE_STAR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    ga_caps_eligible_child: [false, true]
+    # 39,703 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    ga_caps_income_eligible: false
+    ga_caps_eligible: false
+    ga_caps: 0
+
+- name: Case 11, mixed eligible and ineligible children in family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+      person3:
+        age: 14
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: BIBB_COUNTY_GA
+  output:
+    # person2 (5): eligible, person3 (14): ineligible (not disabled)
+    ga_caps_eligible_child: [false, true, false]
+    # Family has at least one eligible child -> eligible
+    ga_caps_eligible: true
+    # Bibb -> Zone 2
+    ga_caps_zone: ZONE_2
+    # Only person2 gets a rate: Zone 2 Center Preschool FT = $150/week
+    # person3 is not an eligible child -> 0 rate
+    ga_caps_maximum_weekly_benefit: [0, 150, 0]
+    # FPG family of 3 = $27,320
+    # FPL ratio = 30,000 / 27,320 = 1.098 -> 7% rate
+    # weekly fee = floor(30,000 * 0.07 / 52) = floor(40.38) = $40
+    # monthly fee = 40 * 52 / 12 = $173.33
+    ga_caps_family_fee: 173.33
+    # pre_subsidy_weekly = 10,000 / 52 / 1 = $192.31 (only 1 eligible child)
+    # per_child = min($150, $192.31) = $150
+    # base_monthly = $150 * 52/12 = $650
+    # net_base = max($650 - $173.33, 0) = $476.67
+    # no quality bonus (NONE)
+    ga_caps: 476.67
+
+- name: Case 12, disabled child age 16 with family provider in Zone 3.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 16
+
+        is_disabled: true
+        immigration_status: CITIZEN
+        ga_caps_provider_type: FAMILY
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: TWO_STAR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+        county_str: APPLING_COUNTY_GA
+  output:
+    # disabled child age 16 <= 17 -> eligible
+    ga_caps_eligible_child: [false, true]
+    ga_caps_eligible: true
+    # Appling -> Zone 3
+    ga_caps_zone: ZONE_3
+    # Age 16 -> SCHOOL_AGE, Zone 3 Family FT = $94/week
+    ga_caps_maximum_weekly_benefit: [0, 94]
+    # FPG family of 2 = $21,640
+    # FPL ratio = 20,000 / 21,640 = 0.924 -> 5% rate
+    # weekly fee = floor(20,000 * 0.05 / 52) = floor(19.23) = $19
+    # monthly fee = 19 * 52 / 12 = $82.33
+    ga_caps_family_fee: 82.33
+    # pre_subsidy_weekly = 5,000 / 52 = $96.15
+    # per_child = min($94, $96.15) = $94
+    # base_monthly = $94 * 52/12 = $407.33
+    # net_base = max($407.33 - $82.33, 0) = $325.00
+    # weighted_bonus_rate = ($94 * 0.05) / $94 = 0.05
+    # subsidy = $325.00 * 1.05 = $341.25
+    ga_caps: 341.25
+
+- name: Case 13, two-parent family where one is a student.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 24
+      person2:
+        age: 28
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person3:
+        age: 4
+
+        immigration_status: CITIZEN
+        ga_caps_provider_type: CENTER
+        ga_caps_care_type: FULL_TIME
+        ga_caps_quality_rating: NONE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    ga_caps_eligible_child: [false, false, true]
+    # parent1: 24 hrs >= 24 -> ok
+    # parent2: student -> ok
+    # GA-specific activity gate isolated by pinning meets_ccdf_activity_test=false
+    ga_caps_activity_eligible: true
+    ga_caps_eligible: true
+    # Zone 1, Center, Preschool, FT = $221/week
+    ga_caps_maximum_weekly_benefit: [0, 0, 221]
+    # FPG family of 3 = $27,320
+    # FPL ratio = 20,000 / 27,320 = 0.732 -> 5% rate
+    # weekly fee = floor(20,000 * 0.05 / 52) = floor(19.23) = $19
+    # monthly fee = 19 * 52 / 12 = $82.33
+    ga_caps_family_fee: 82.33
+    # pre_subsidy_weekly = 10,000 / 52 = $192.31
+    # per_child = min($221, $192.31) = $192.31
+    # base_monthly = $192.31 * 52/12 = $833.33
+    # net_base = max($833.33 - $82.33, 0) = $751.00
+    # no quality bonus (NONE)
+    ga_caps: 751.00

@@ -1,0 +1,127 @@
+# ms_ccpp_eligible_child is Person, MONTH.
+# A child is eligible when under age 13 (under 19 if special-needs/disabled),
+# immigration-eligible (citizen or qualified non-citizen), and a tax-unit dependent.
+
+- name: Case 1, age 12 child is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # age 12 < 13 -> eligible
+    ms_ccpp_eligible_child: [false, true]
+
+- name: Case 2, age 13 child is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # age 13 not < 13 -> ineligible
+    ms_ccpp_eligible_child: [false, false]
+
+- name: Case 3, disabled child age 18 is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # disabled, age 18 < 19 -> eligible
+    ms_ccpp_eligible_child: [false, true]
+
+- name: Case 4, disabled child age 19 is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19
+        is_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # disabled, age 19 not < 19 -> ineligible
+    ms_ccpp_eligible_child: [false, false]
+
+- name: Case 5, undocumented child is not immigration eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # undocumented child is not a qualified non-citizen -> ineligible
+    ms_ccpp_eligible_child: [false, false]
+
+- name: Case 6, refugee child is immigration eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # refugee is a qualified non-citizen -> eligible
+    ms_ccpp_eligible_child: [false, true]

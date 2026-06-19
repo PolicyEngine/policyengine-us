@@ -1,3 +1,60 @@
+## [1.738.0] - 2026-06-19
+
+### Added
+
+- Added Minnesota Child Care Assistance Program (CCAP).
+
+
+## [1.737.0] - 2026-06-18
+
+### Added
+
+- Add Mississippi Child Care Payment Program (CCPP).
+
+
+## [1.736.0] - 2026-06-18
+
+### Added
+
+- Add the Arizona Child Care Assistance Program.
+
+
+## [1.735.0] - 2026-06-18
+
+### Added
+
+- Implement Georgia CAPS (Childcare and Parent Services) child care subsidy program.
+
+
+## [1.734.1] - 2026-06-18
+
+### Fixed
+
+- Fixed the Missouri refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Missouri tax liability.
+- Fixed the Ohio refundable EITC contrib reform, which paid no refundable credit to filers with no Ohio tax liability and zeroed out Ohio's other six non-refundable credits.
+
+
+## [1.734.0] - 2026-06-18
+
+### Added
+
+- Louisiana Child Care Assistance Program (CCAP).
+
+
+## [1.733.0] - 2026-06-18
+
+### Added
+
+- Implement Maryland Child Care Scholarship (CCS) program.
+
+
+## [1.732.0] - 2026-06-17
+
+### Added
+
+- Added the Ohio Homestead Exemption property tax reduction.
+
+
 ## [1.731.0] - 2026-06-17
 
 ### Added

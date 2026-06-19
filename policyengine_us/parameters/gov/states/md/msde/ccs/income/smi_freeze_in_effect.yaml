@@ -1,0 +1,15 @@
+description: Maryland uses this indicator to determine whether the State Median Income base year is frozen for Child Care Scholarship income eligibility.
+values:
+  2016-01-01: false
+  2018-07-01: true
+  2024-12-15: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Maryland CCS SMI freeze in effect
+  reference:
+    - title: MSDE Child Care Scholarship Program Briefing (Feb 4, 2026), slide 21 - fiscal-year freeze schedule
+      href: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21
+    - title: MSDE Jan 23, 2025 OCC Info Session - Dec 15, 2024 SMI unfreeze
+      href: https://earlychildhood.marylandpublicschools.org/system/files/filedepot/3/january_2025_occ_info_session.pdf#page=7
