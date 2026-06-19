@@ -1,16 +1,17 @@
 from policyengine_us.model_api import *
 
 
-class medicaid_uses_non_filer_rules(Variable):
+class medicaid_uses_missing_claimant_fallback(Variable):
     value_type = bool
     entity = Person
-    label = "Uses Medicaid MAGI non-filer household rules"
+    label = "Uses Medicaid MAGI missing-claimant non-filer fallback"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/42/435.603#f_3"
+    reference = "https://www.law.cornell.edu/cfr/text/42/435.603#f_2"
 
     def formula(person, period, parameters):
-        is_tax_dependent = person("medicaid_is_tax_dependent", period)
-        is_tax_filer = person.tax_unit("tax_unit_is_filer", period) & ~is_tax_dependent
+        claimed_by_another_return = person(
+            "claimed_as_dependent_on_another_return", period
+        )
         dependent_exception = (
             person(
                 "medicaid_tax_dependent_exception_other_than_spouse_or_child",
@@ -27,7 +28,7 @@ class medicaid_uses_non_filer_rules(Variable):
         )
 
         return (
-            (~is_tax_filer & ~is_tax_dependent)
-            | person("medicaid_uses_missing_claimant_fallback", period)
-            | dependent_exception
+            claimed_by_another_return
+            & ~person("medicaid_has_known_claiming_tax_unit", period)
+            & ~dependent_exception
         )
