@@ -141,6 +141,44 @@ from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
 )
+from .states.ok.dependent_exemption.ok_dependent_exemption_reform import (
+    create_ok_dependent_exemption_reform_fn,
+)
+from .states.vt.dependent_exemption.vt_dependent_exemption_reform import (
+    create_vt_dependent_exemption_reform_fn,
+)
+from .states.mi.dependent_exemption.mi_dependent_exemption_reform import (
+    create_mi_dependent_exemption_reform_fn,
+)
+from .states.ne.dependent_exemption.ne_dependent_exemption_reform import (
+    create_ne_dependent_exemption_reform_fn,
+)
+from .states.wv.dependent_exemption.wv_dependent_exemption_reform import (
+    create_wv_dependent_exemption_reform_fn,
+)
+from .states.wi.dependent_exemption.wi_dependent_exemption_reform import (
+    create_wi_dependent_exemption_reform_fn,
+)
+from .states.hi.dependent_exemption.hi_dependent_exemption_reform import (
+    create_hi_dependent_exemption_reform_fn,
+)
+from .states.md.dependent_exemption.md_dependent_exemption_reform import (
+    create_md_dependent_exemption_reform_fn,
+)
+from .states.oh.dependent_exemption.oh_dependent_exemption_reform import (
+    create_oh_dependent_exemption_reform_fn,
+)
+from .states.ar.dependent_credit.ar_dependent_credit_reform import (
+    create_ar_dependent_credit_reform_fn,
+)
+import importlib as _importlib
+
+# Indiana's module dir is `in`, a Python keyword, so it can't be imported with
+# a dotted ``from .states.in...`` path; load it dynamically instead.
+create_in_dependent_exemption_reform_fn = _importlib.import_module(
+    "policyengine_us.reforms.states.in.dependent_exemption."
+    "in_dependent_exemption_reform"
+).create_in_dependent_exemption_reform_fn
 from .states.de.dependent_credit.de_dependent_credit_reform import (
     create_de_dependent_credit_reform_fn,
 )
@@ -402,6 +440,17 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    ok_dependent_exemption = create_ok_dependent_exemption_reform_fn(parameters, period)
+    vt_dependent_exemption = create_vt_dependent_exemption_reform_fn(parameters, period)
+    in_dependent_exemption = create_in_dependent_exemption_reform_fn(parameters, period)
+    mi_dependent_exemption = create_mi_dependent_exemption_reform_fn(parameters, period)
+    ne_dependent_exemption = create_ne_dependent_exemption_reform_fn(parameters, period)
+    wv_dependent_exemption = create_wv_dependent_exemption_reform_fn(parameters, period)
+    wi_dependent_exemption = create_wi_dependent_exemption_reform_fn(parameters, period)
+    hi_dependent_exemption = create_hi_dependent_exemption_reform_fn(parameters, period)
+    md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
+    oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
+    ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
     de_dependent_credit = create_de_dependent_credit_reform_fn(parameters, period)
     or_dependent_exemption_credit = create_or_dependent_exemption_credit_reform_fn(
         parameters, period
@@ -529,6 +578,17 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_minimum_refundable_amount,
         ri_ctc,
         ri_exemption,
+        ok_dependent_exemption,
+        vt_dependent_exemption,
+        in_dependent_exemption,
+        mi_dependent_exemption,
+        ne_dependent_exemption,
+        wv_dependent_exemption,
+        wi_dependent_exemption,
+        hi_dependent_exemption,
+        md_dependent_exemption,
+        oh_dependent_exemption,
+        ar_dependent_credit,
         de_dependent_credit,
         or_dependent_exemption_credit,
         va_dependent_exemption,

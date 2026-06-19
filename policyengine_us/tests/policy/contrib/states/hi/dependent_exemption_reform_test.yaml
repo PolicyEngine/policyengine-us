@@ -1,0 +1,66 @@
+- name: HI dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  output: {hi_regular_exemptions: 3_432}  # 3 * 1,144
+
+- name: HI dependent exemption reform - amount zero removes dependent portion only
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  output: {hi_regular_exemptions: 1_144}  # personal only
+
+- name: HI dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    people: {parent: {age: 40, employment_income: 60_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: HI}}
+  output: {hi_regular_exemptions: 1_144}
+
+- name: HI dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    gov.contrib.states.hi.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  output: {hi_regular_exemptions: 2_288}  # 2 personal units (over-age dep falls back) * 1,144
+
+- name: HI dependent exemption reform - aged head add-on preserved at default amount
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 67, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  output: {hi_regular_exemptions: 4_576}  # (3 + 1 aged) * 1,144

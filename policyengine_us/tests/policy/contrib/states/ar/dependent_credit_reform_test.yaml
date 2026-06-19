@@ -1,0 +1,51 @@
+- name: AR dependent credit reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  output: {ar_personal_credits: 87}
+
+- name: AR dependent credit reform - amount zero removes dependent portion only
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  output: {ar_personal_credits: 29}
+
+- name: AR dependent credit reform - reduced amount partially repeals
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 10
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  output: {ar_personal_credits: 49}  # head 29 + 2 deps * 10
+
+- name: AR dependent credit reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 0
+    people: {parent: {age: 40, employment_income: 50_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: AR}}
+  output: {ar_personal_credits: 29}

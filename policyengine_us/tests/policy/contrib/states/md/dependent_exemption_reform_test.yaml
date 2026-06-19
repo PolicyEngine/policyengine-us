@@ -1,0 +1,53 @@
+- name: MD dependent exemption reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  output: {md_total_personal_exemptions: 9_600}
+
+- name: MD dependent exemption reform - amount zero removes dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people: {parent: {age: 40, employment_income: 40_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  output: {md_total_personal_exemptions: 6_400}
