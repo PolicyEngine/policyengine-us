@@ -1,3 +1,10 @@
+## [1.739.4] - 2026-06-21
+
+### Fixed
+
+- Rebalance the contrib structural test shards to prevent intermittent 30-minute per-batch timeout failures: split the other-shard-1 catch-all into per-subdir batches and move refundable_credit_conversion to a new other-shard-3.
+
+
 ## [1.739.3] - 2026-06-21
 
 ### Fixed
