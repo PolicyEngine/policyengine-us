@@ -16,14 +16,15 @@ class mt_ccap_income_eligible(Variable):
         p = parameters(period).gov.states.mt.dphhs.ccap.income
         countable_income = spm_unit("mt_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
-        # ARM 37.80.202(1): initial eligibility below 150% FPG (first-time
-        # applicant). ARM 37.80.202(2): graduated eligibility for non-TANF
-        # households at annual redetermination, 150% up to 185% FPG. We proxy "at
+        # ARM 37.80.202(1): initial eligibility for income below 150% FPG (first-
+        # time applicant). ARM 37.80.202(2): graduated eligibility for non-TANF
+        # households at annual redetermination, income below 185% FPG. We proxy "at
         # redetermination / continuing recipient" with the mt_ccap_enrolled input;
-        # first-time applicants (the default) use the 150% initial limit.
+        # first-time applicants (the default) use the 150% initial limit. The cap
+        # is exclusive ("below"), so income exactly at the limit is not eligible.
         enrolled = spm_unit("mt_ccap_enrolled", period)
         fpg_rate = where(enrolled, p.fpg_limit.graduated, p.fpg_limit.initial)
-        fpg_eligible = countable_income <= fpg * fpg_rate
+        fpg_eligible = countable_income < fpg * fpg_rate
         # 85% SMI ineligibility overlay (45 CFR 98.20(a)(2) / Sliding Fee Scale).
         # With the 185% FPG ceiling the FPG limit binds first for all but the
         # largest households, so this rarely controls eligibility.
