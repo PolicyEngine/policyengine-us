@@ -1,0 +1,84 @@
+# LAC 28:CLXV.103: a child birth through 17 with an IEP/IFSP under IDEA or
+# receiving SSI; the general is_disabled flag is also accepted.
+- name: Case 1, disabled child qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: true
+
+- name: Case 2, child with an IEP qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        has_individualized_education_program: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: true
+
+- name: Case 3, toddler with a developmental delay qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: true
+
+- name: Case 4, child receiving SSI qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        ssi: 600  # Monthly SSI receipt.
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: true
+
+- name: Case 5, child with no qualifying condition does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: false
+
+- name: Case 6, eighteen-year-old is above the birth-to-17 range.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: false

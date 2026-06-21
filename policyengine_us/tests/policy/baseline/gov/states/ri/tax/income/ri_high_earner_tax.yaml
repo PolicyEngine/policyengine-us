@@ -1,0 +1,64 @@
+- name: Rhode Island high-income surtax is unavailable before 2027
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_250_000
+  output:
+    ri_high_earner_tax: 0
+
+- name: Rhode Island high-income surtax applies at 1 percent in 2027
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_250_000
+  output:
+    ri_high_earner_tax: 2_500
+
+- name: Rhode Island high-income surtax applies at 2 percent in 2028
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_250_000
+  output:
+    # 2% of ($1,250,000 - $1,020,750).
+    ri_high_earner_tax: 4_585
+
+- name: Rhode Island high-income surtax applies at 3 percent in 2029
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_250_000
+  output:
+    # 3% of ($1,250,000 - $1,042,800).
+    ri_high_earner_tax: 6_216
+
+- name: Rhode Island high-income surtax is added before non-refundable credits
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_250_000
+  output:
+    ri_income_tax_before_non_refundable_credits: 74_323.54
+
+- name: Rhode Island high-income surtax does not apply at the threshold
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_000_000
+  output:
+    ri_high_earner_tax: 0
+
+- name: Rhode Island high-income surtax applies just above the threshold
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    ri_taxable_income: 1_000_001
+  output:
+    ri_high_earner_tax: 0.01

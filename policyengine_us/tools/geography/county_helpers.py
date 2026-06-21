@@ -1,46 +1,44 @@
-import pandas as pd
+from importlib import resources
+from pathlib import Path
+
 import numpy as np
+import pandas as pd
+
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
-from pathlib import Path
-from policyengine_core.tools.hugging_face import download_huggingface_dataset
+
+
+DATA_FOLDER = Path("data")
+COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+COUNTY_FIPS_PACKAGE = "policyengine_us.data"
+
+
+def _read_county_fips_dataset(dataset_file) -> pd.DataFrame:
+    return pd.read_csv(
+        dataset_file,
+        compression="gzip",
+        dtype={"county_fips": str},
+        encoding="utf-8",
+    )
 
 
 def load_county_fips_dataset() -> pd.DataFrame:
     """
-    Download the county FIPS dataset from Hugging Face and load it into a pandas DataFrame.
-    If the dataset already exists in the 'data' folder and is the most recent version, this
-    function will just load that into a pandas DataFrame.
+    Load the county FIPS dataset into a pandas DataFrame.
+    If the dataset exists in the 'data' folder, load that local copy. Otherwise,
+    use the packaged fallback so runtime county lookup does not require network access.
     """
 
-    DATA_FOLDER = Path("data")
-    HUGGINGFACE_REPO = "policyengine/policyengine-us-data"
-    COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
+    local_dataset = DATA_FOLDER / COUNTY_FIPS_DATASET_FILENAME
+    if local_dataset.is_file():
+        return _read_county_fips_dataset(local_dataset)
 
-    try:
-        COUNTY_FIPS_RAW = download_huggingface_dataset(
-            repo=HUGGINGFACE_REPO,
-            repo_filename=COUNTY_FIPS_DATASET_FILENAME,
-            version=None,
-            local_dir=DATA_FOLDER,
-        )
-
-        # Read raw data into pandas dataframe; county FIPS MUST be defined as string,
-        # else pandas reads as int and drops leading zeros
-        COUNTY_FIPS_DATASET = pd.read_csv(
-            COUNTY_FIPS_RAW,
-            compression="gzip",
-            dtype={"county_fips": str},
-            encoding="utf-8",
-        )
-
-        return COUNTY_FIPS_DATASET
-
-    except Exception as e:
-        raise Exception(
-            f"Error downloading {COUNTY_FIPS_DATASET_FILENAME} from {HUGGINGFACE_REPO}: {e}"
-        )
+    package_dataset = resources.files(COUNTY_FIPS_PACKAGE).joinpath(
+        COUNTY_FIPS_DATASET_FILENAME
+    )
+    with package_dataset.open("rb") as dataset_file:
+        return _read_county_fips_dataset(dataset_file)
 
 
 def map_county_string_to_enum(
