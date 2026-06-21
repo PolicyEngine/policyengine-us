@@ -29,13 +29,11 @@ test-yaml-structural-heavy-shard-2:
 test-yaml-structural-heavy-shard-3:
 	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 3/3
 test-yaml-structural-other:
-	# refundable_credit_conversion force-applies a reform per case; each
-	# distinct gov.contrib.* combination clones the full tax-benefit system
-	# (~5 GB peak/file). Auto-batching grouped all its files into one
-	# subprocess, stacking the peaks past the runner cap → OOM. Isolate
-	# per-file so each peak is freed between files (same as ctc/crfb below).
-	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion
-	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file
+	# Per-subdir so every remaining contrib folder runs in its own subprocess,
+	# instead of stacking ~20 light files into one ~13-min catch-all batch that
+	# risked the 30-min per-batch timeout on slow runners. ssa is excluded (it
+	# has no YAML tests — only a pytest .py run elsewhere).
+	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir
 test-yaml-structural-other-shard-2:
 	# ctc + crfb are microsim-heavy: per-file isolation keeps RAM under the cap.
 	$(BATCH) $(TESTS)/policy/contrib/ctc --mode per-file
@@ -44,6 +42,12 @@ test-yaml-structural-other-shard-2:
 	$(BATCH) $(TESTS)/policy/contrib/federal --batches 1
 	$(BATCH) $(TESTS)/policy/contrib/harris --batches 1
 	$(BATCH) $(TESTS)/policy/contrib/treasury --batches 1
+test-yaml-structural-other-shard-3:
+	# refundable_credit_conversion force-applies a reform per case; each distinct
+	# gov.contrib.* combination clones the full tax-benefit system (~5 GB peak/
+	# file). Per-file isolation frees each peak between files; run on its own
+	# shard so its ~27-min sweep no longer stacks onto other-shard-1.
+	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file
 test-yaml-structural-congress:
 	# One subprocess per congress proposal; new proposals auto-route.
 	$(BATCH) $(TESTS)/policy/contrib/congress --mode per-subdir
