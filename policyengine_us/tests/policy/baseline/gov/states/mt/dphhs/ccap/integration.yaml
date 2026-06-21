@@ -12,8 +12,8 @@
     people:
       person1:
         age: 28
-        employment_income: 26_000  # size 2, ratio 26,000/21,640 = 1.2015 -> 2.0%
-        weekly_hours_worked: 40  # ~173 hrs/month >> 60
+        employment_income: 26_000  # size 2, ratio 26,000/21,640 = 1.2015 -> 1.5%
+        weekly_hours_worked_before_lsr: 40  # ~173 hrs/month >> 60
       person2:
         age: 4  # 48 months -> PRESCHOOL
         mt_ccap_provider_type: FFN
@@ -36,9 +36,9 @@
     mt_ccap_eligible: true
     mt_ccap_max_rate: [0, 748]  # FFN preschool full-time = 748
     mt_ccap_countable_income: 2_166.67  # 26,000 / 12
-    mt_ccap_copay: 43.33  # 2,166.67 * 2.0%
-    # charge 1,000 > max rate 748 -> capped at 748; benefit = 748 - 43.33
-    mt_ccap: 704.67
+    mt_ccap_copay: 32.5  # 2,166.67 * 1.5%
+    # charge 1,000 > max rate 748 -> capped at 748; benefit = 748 - 32.50
+    mt_ccap: 715.5
 
 - name: Case 2, two-parent household + infant at a group home, full-time, 150% FPG.
   period: 2026-01
@@ -48,10 +48,10 @@
       person1:
         age: 33
         employment_income: 40_980  # size 3, ratio 40,980/27,320 = 1.50 -> 3.5%
-        weekly_hours_worked: 20  # ~86.7 hrs/month
+        weekly_hours_worked_before_lsr: 20  # ~86.7 hrs/month
       person2:
         age: 31
-        weekly_hours_worked: 20  # combined ~173 hrs/month > 120
+        weekly_hours_worked_before_lsr: 20  # combined ~173 hrs/month > 120
       person3:
         age: 1  # 12 months -> INFANT_TODDLER
         mt_ccap_provider_type: GROUP_HOME
@@ -85,7 +85,7 @@
       person1:
         age: 30
         employment_income: 27_320  # size 3, ratio 1.00 -> 0.5%
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4  # PRESCHOOL
         mt_ccap_provider_type: FAMILY_HOME
@@ -122,7 +122,7 @@
       person1:
         age: 29
         employment_income: 50_000  # above 185% FPG for size 2, but TANF-enrolled
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4  # PRESCHOOL
         mt_ccap_provider_type: RELATIVE_EXEMPT
@@ -153,10 +153,10 @@
       person1:
         age: 33
         employment_income: 60_000  # size 3, ratio 2.196 -> above 200% FPG (54,640)
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 31
-        weekly_hours_worked: 20
+        weekly_hours_worked_before_lsr: 20
       person3:
         age: 4
         mt_ccap_provider_type: CENTER
@@ -185,7 +185,7 @@
       person1:
         age: 27
         employment_income: 28_000  # size 2, ratio 1.2939 -> 2.0%
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 1  # INFANT_TODDLER
         mt_ccap_provider_type: CENTER
@@ -217,8 +217,8 @@
     people:
       person1:
         age: 35
-        employment_income: 24_000  # size 2, ratio 1.1091 -> 1.5%
-        weekly_hours_worked: 40
+        employment_income: 24_000  # size 2, ratio 1.1091 -> 1.0%
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 8  # 96 months -> SCHOOL_AGE
         mt_ccap_provider_type: SCHOOL_AGE_PROVIDER
@@ -234,9 +234,9 @@
         state_code: MT
   output:
     # max rate (school age provider, school age, full-time) = 572
-    # copay: GMI 2,000 * 1.5% = 30; charge 750 > 572 -> capped at 572
-    # monthly benefit = 572 - 30 = 542; annual aggregator = 12 * 542 = 6,504
-    mt_child_care_subsidies: 6_504
+    # copay: GMI 2,000 * 1.0% = 20; charge 750 > 572 -> capped at 572
+    # monthly benefit = 572 - 20 = 552; annual aggregator = 12 * 552 = 6,624
+    mt_child_care_subsidies: 6_624
 
 # --- Edge case integration scenarios: 185% standard ceiling, benefit floor at 0,
 # and the highest single max rate (infant at a center, full-time). ---
@@ -249,7 +249,7 @@
       person1:
         age: 31
         employment_income: 40_034  # size 2, exactly 185% of FPG (21,640 * 1.85)
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4  # PRESCHOOL
         mt_ccap_provider_type: CENTER
@@ -283,7 +283,7 @@
       person1:
         age: 31
         employment_income: 40_034  # 185% FPG, 7.0% copay bracket
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         mt_ccap_provider_type: CENTER
@@ -313,7 +313,7 @@
       person1:
         age: 26
         employment_income: 18_000  # size 2, ~83% FPG -> 0.5% bracket, copay at the $10 floor
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 0  # newborn, INFANT_TODDLER
         mt_ccap_provider_type: CENTER

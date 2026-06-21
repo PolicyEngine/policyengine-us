@@ -1,11 +1,14 @@
 description: Montana sets this share of gross monthly income as the copayment under the Best Beginnings Child Care Scholarship program.
 # The copayment share varies by the family's federal poverty guideline ratio.
-# Sliding fee scale rows are in 5-point % FPG steps; each rate tier applies to income
-# above the prior step's top up to and including the named step (e.g., the 1.0% tier
-# covers income above 100% FPG through 110% FPG). Thresholds use the "+ 0.0001" shift
-# so a family exactly at a step's top stays in the lower tier. The top tier (7.0%)
-# runs through 200% FPG (graduated eligibility); above 200% the household is not
-# eligible (gated separately by the income limit).
+# Sliding fee scale rows are in 5-point % FPG steps. Per the scale footnote ("the
+# co-payments listed are minimums and correspond to the lowest level for each income
+# range"), each labeled % is the FLOOR of its rate tier: a tier applies from its named
+# step (inclusive) up to the next tier's step. For example, the 1.0% tier covers 105%
+# FPG (inclusive) up to but not including 115% FPG. PolicyEngine single_amount is "at
+# or above threshold," and the scale places a family exactly at a step into the higher
+# tier (e.g. 105% -> 1.0%), so thresholds use the named % directly with no shift. The
+# top tier (7.0%) runs through 200% FPG (graduated eligibility); above 200% the
+# household is not eligible (gated separately by the income limit).
 #
 # (S6) The graduated-eligibility STRUCTURE dates to 2016-11-01, but these copay
 # percentages come from the 2025 Best Beginnings Sliding Fee Scale (2025 Federal
@@ -26,56 +29,56 @@ brackets:
   - threshold:
       2025-07-01: 0
     amount:
-      2025-07-01: 0.005  # Entry through 100% FPG
+      2025-07-01: 0.005  # Below 105% FPG
   - threshold:
-      2025-07-01: 1.0001  # Above 100% through 110% FPG
+      2025-07-01: 1.05  # 105% up to 115% FPG
     amount:
       2025-07-01: 0.01
   - threshold:
-      2025-07-01: 1.1001  # Above 110% through 120% FPG
+      2025-07-01: 1.15  # 115% up to 125% FPG
     amount:
       2025-07-01: 0.015
   - threshold:
-      2025-07-01: 1.2001  # Above 120% through 130% FPG
+      2025-07-01: 1.25  # 125% up to 135% FPG
     amount:
       2025-07-01: 0.02
   - threshold:
-      2025-07-01: 1.3001  # Above 130% through 140% FPG
+      2025-07-01: 1.35  # 135% up to 145% FPG
     amount:
       2025-07-01: 0.025
   - threshold:
-      2025-07-01: 1.4001  # Above 140% through 145% FPG
+      2025-07-01: 1.45  # 145% up to 150% FPG
     amount:
       2025-07-01: 0.03
   - threshold:
-      2025-07-01: 1.4501  # Above 145% through 150% FPG
+      2025-07-01: 1.5  # 150% up to 155% FPG
     amount:
       2025-07-01: 0.035
   - threshold:
-      2025-07-01: 1.5001  # Above 150% through 155% FPG
+      2025-07-01: 1.55  # 155% up to 160% FPG
     amount:
       2025-07-01: 0.04
   - threshold:
-      2025-07-01: 1.5501  # Above 155% through 160% FPG
+      2025-07-01: 1.6  # 160% up to 165% FPG
     amount:
       2025-07-01: 0.045
   - threshold:
-      2025-07-01: 1.6001  # Above 160% through 165% FPG
+      2025-07-01: 1.65  # 165% up to 170% FPG
     amount:
       2025-07-01: 0.05
   - threshold:
-      2025-07-01: 1.6501  # Above 165% through 170% FPG
+      2025-07-01: 1.7  # 170% up to 175% FPG
     amount:
       2025-07-01: 0.055
   - threshold:
-      2025-07-01: 1.7001  # Above 170% through 175% FPG
+      2025-07-01: 1.75  # 175% up to 180% FPG
     amount:
       2025-07-01: 0.06
   - threshold:
-      2025-07-01: 1.7501  # Above 175% through 180% FPG
+      2025-07-01: 1.8  # 180% up to 185% FPG
     amount:
       2025-07-01: 0.065
   - threshold:
-      2025-07-01: 1.8001  # Above 180% through 200% FPG
+      2025-07-01: 1.85  # 185% through 200% FPG
     amount:
       2025-07-01: 0.07

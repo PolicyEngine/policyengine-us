@@ -137,8 +137,9 @@
     mt_ccap_copay: 10  # flat $10 for TANF, not the 119.53 scale amount
 
 # --- Edge cases: $10 floor exactly, zero income, and FPG-step bracket boundaries.
-# Size 3 monthly FPG = 27,320 / 12 = 2,276.67. The sliding scale uses a "+0.0001"
-# threshold shift, so a family exactly at a step's top stays in the LOWER tier. ---
+# Size 3 monthly FPG = 27,320 / 12 = 2,276.67. Per the sliding scale footnote, each
+# labeled % is the FLOOR of its tier: a family AT a step enters the higher tier and
+# just below stays in the lower tier (single_amount is "at or above threshold"). ---
 - name: Case 7, zero income copay floors at the $10 minimum.
   period: 2026-01
   absolute_error_margin: 0.1
@@ -185,14 +186,15 @@
   output:
     mt_ccap_copay: 10  # max(10, 10) = 10 exactly at the floor
 
-- name: Case 9, exactly at 110% FPG stays in the 1.0% bracket (boundary, lower tier).
+- name: Case 9, just above 100% FPG stays in the 0.5% bracket (floor reading).
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 30,052/27,320 = 1.10 exactly; threshold 1.0001 covers above 100% through 110% -> 1.0%.
+  # ratio 28,140/27,320 = 1.03; floor keeps income below 105% in the 0.5% tier
+  # (a ceiling reading of the scale would instead charge 1.0% here).
   input:
     people:
       person1:
-        employment_income: 30_052  # 110% of size-3 FPG (27,320 * 1.10)
+        employment_income: 28_140  # 103% of size-3 FPG (2,345/mo)
       person2:
         age: 4
       person3:
@@ -206,16 +208,16 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 25.04  # 2,504.33/mo * 0.01
+    mt_ccap_copay: 11.73  # 2,345.00/mo * 0.005
 
-- name: Case 10, just above 110% FPG jumps to the 1.5% bracket (boundary, upper tier).
+- name: Case 10, above 105% FPG is in the 1.0% bracket.
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 30,500/27,320 = 1.1164 > 1.1001 -> 1.5% bracket; confirms the step transition above 110%.
+  # ratio 29,520/27,320 = 1.08; floor 1.0% tier runs 105% up to 115%.
   input:
     people:
       person1:
-        employment_income: 30_500  # ~111.6% FPG, just above the 110% step
+        employment_income: 29_520  # 108% of size-3 FPG (2,460/mo)
       person2:
         age: 4
       person3:
@@ -229,16 +231,17 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 38.13  # 2,541.67/mo * 0.015
+    mt_ccap_copay: 24.6  # 2,460.00/mo * 0.01
 
-- name: Case 11, exactly at 120% FPG stays in the 1.5% bracket (boundary, lower tier).
+- name: Case 11, just above 110% FPG stays in the 1.0% bracket (floor reading).
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 32,784/27,320 = 1.20 exactly; threshold 1.1001 covers above 110% through 120% -> 1.5%.
+  # ratio 30,600/27,320 = 1.12; floor keeps 110-115% in the 1.0% tier
+  # (a ceiling reading of the scale would instead charge 1.5% here).
   input:
     people:
       person1:
-        employment_income: 32_784  # 120% of size-3 FPG (27,320 * 1.20)
+        employment_income: 30_600  # 112% of size-3 FPG (2,550/mo)
       person2:
         age: 4
       person3:
@@ -252,16 +255,16 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 40.98  # 2,732.00/mo * 0.015
+    mt_ccap_copay: 25.5  # 2,550.00/mo * 0.01
 
-- name: Case 12, just above 120% FPG jumps to the 2.0% bracket (boundary, upper tier).
+- name: Case 12, above 115% FPG is in the 1.5% bracket.
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 33,000/27,320 = 1.2079 > 1.2001 -> 2.0% bracket; confirms the step transition above 120%.
+  # ratio 32,280/27,320 = 1.18; floor 1.5% tier runs 115% up to 125%.
   input:
     people:
       person1:
-        employment_income: 33_000  # ~120.8% FPG, just above the 120% step
+        employment_income: 32_280  # 118% of size-3 FPG (2,690/mo)
       person2:
         age: 4
       person3:
@@ -275,4 +278,4 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 55.00  # 2,750.00/mo * 0.02
+    mt_ccap_copay: 40.35  # 2,690.00/mo * 0.015

@@ -9,7 +9,7 @@
       person1:
         age: 30
         employment_income: 30_000  # ~110% FPG for size 2
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -30,7 +30,7 @@
       person1:
         age: 30
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -51,7 +51,7 @@
       person1:
         age: 35
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 14  # over the age limit, not disabled
         is_disabled: false
@@ -73,7 +73,7 @@
       person1:
         age: 30
         employment_income: 70_000  # above 200% FPG for size 2
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -94,7 +94,7 @@
       person1:
         age: 30
         employment_income: 6_000  # low income, eligible on income
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
       person2:
         age: 4
@@ -116,7 +116,7 @@
       person1:
         age: 30
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -141,7 +141,7 @@
       person1:
         age: 30
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -164,7 +164,7 @@
       person1:
         age: 30
         employment_income: 70_000  # above 200% FPG for size 2
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -186,7 +186,7 @@
       person1:
         age: 30
         employment_income: 30_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: UNDOCUMENTED
@@ -209,7 +209,7 @@
       person1:
         age: 35
         employment_income: 30_000  # within income limits for size 5
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 2
       person3:

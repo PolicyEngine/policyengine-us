@@ -10,7 +10,7 @@
       person1:
         age: 30
         employment_income: 24_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         mt_ccap_provider_type: CENTER
@@ -25,8 +25,8 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # monthly mt_ccap = 1,180 (see mt_ccap.yaml Case 1) -> annual 12 * 1,180 = 14,160
-    mt_child_care_subsidies: 14_160
+    # monthly mt_ccap = 1,190 (see mt_ccap.yaml Case 1) -> annual 12 * 1,190 = 14,280
+    mt_child_care_subsidies: 14_280
 
 - name: Case 2, ineligible household receives no annual subsidy.
   period: 2026
@@ -36,7 +36,7 @@
       person1:
         age: 30
         employment_income: 70_000  # above 200% FPG for size 2
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         mt_ccap_provider_type: CENTER
@@ -64,7 +64,7 @@
       person1:
         age: 30
         employment_income: 24_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         mt_ccap_provider_type: CENTER
@@ -90,7 +90,7 @@
       person1:
         age: 30
         employment_income: 24_000
-        weekly_hours_worked: 40
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         mt_ccap_provider_type: CENTER

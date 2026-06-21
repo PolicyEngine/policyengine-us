@@ -1,16 +1,20 @@
 # Unit tests for mt_ccap_activity_eligible (SPMUnit, MONTH).
-# Activity requirement: two-parent households 120 hrs/month total; single-parent
-# 60 hrs/month, OR full-time student (no work requirement), OR part-time student
-# plus 40 hrs/month work. weekly_hours_worked (Person, weekly) drives the work test;
-# monthly hours = weekly hours * (52 / 12) ~= 4.333.
-# person2 / person3 are children (age < 13).
+# CC 2-3: two-parent households need 120 combined work hrs/month; single-parent 60.
+# A parent's work-hour obligation is WAIVED when they are a full-time student, a
+# disabled parent (is_disabled), or an incarcerated parent in a two-parent ("intact")
+# family (is_incarcerated). When one parent of a two-parent home is waived, the
+# household drops to the single-parent (60-hr) standard for the remaining parent;
+# when all parents are waived there is no work requirement. meets_ccdf_activity_test
+# is a fallback input for other approved activities (e.g. part-time student + 40 hrs).
+# Work hours come from weekly_hours_worked_before_lsr (Person, weekly);
+# monthly hours = weekly * (52 / 12) ~= 4.333. person2 / person3 are children (age < 13).
 - name: Case 1, single working parent well above 60 hrs/month is activity-eligible.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked: 40  # ~173 hrs/month >> 60
+        weekly_hours_worked_before_lsr: 40  # ~173 hrs/month >> 60
       person2:
         age: 4
     spm_units:
@@ -29,7 +33,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 5  # ~21.7 hrs/month < 60
+        weekly_hours_worked_before_lsr: 5  # ~21.7 hrs/month < 60
         is_full_time_student: false
       person2:
         age: 4
@@ -49,7 +53,7 @@
     people:
       person1:
         age: 22
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: true
       person2:
         age: 4
@@ -69,10 +73,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 20  # ~86.7 hrs/month
+        weekly_hours_worked_before_lsr: 20  # ~86.7 hrs/month
       person2:
         age: 30
-        weekly_hours_worked: 20  # ~86.7 hrs/month, combined ~173 > 120
+        weekly_hours_worked_before_lsr: 20  # ~86.7 hrs/month, combined ~173 > 120
       person3:
         age: 4
     spm_units:
@@ -91,11 +95,11 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
       person2:
         age: 30
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: false
       person3:
         age: 4
@@ -118,7 +122,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 14  # 60.67 hrs/mo
+        weekly_hours_worked_before_lsr: 14  # 60.67 hrs/mo
         is_full_time_student: false
       person2:
         age: 4
@@ -139,7 +143,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked: 13  # 56.33 hrs/mo
+        weekly_hours_worked_before_lsr: 13  # 56.33 hrs/mo
         is_full_time_student: false
       person2:
         age: 4
@@ -160,10 +164,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 14
+        weekly_hours_worked_before_lsr: 14
       person2:
         age: 30
-        weekly_hours_worked: 14  # combined 28 hrs/week -> 121.33 hrs/mo
+        weekly_hours_worked_before_lsr: 14  # combined 28 hrs/week -> 121.33 hrs/mo
       person3:
         age: 4
     spm_units:
@@ -183,10 +187,10 @@
     people:
       person1:
         age: 32
-        weekly_hours_worked: 13
+        weekly_hours_worked_before_lsr: 13
       person2:
         age: 30
-        weekly_hours_worked: 13  # combined 26 hrs/week -> 112.67 hrs/mo
+        weekly_hours_worked_before_lsr: 13  # combined 26 hrs/week -> 112.67 hrs/mo
       person3:
         age: 4
     spm_units:
@@ -199,21 +203,21 @@
   output:
     mt_ccap_activity_eligible: false
 
-- name: Case 10, two-parent household, only one a full-time student, still needs 120 work hours.
+- name: Case 10, two-parent household with one full-time student drops to the single-parent standard.
   period: 2026-01
-  # CC 2-3: the no-work-requirement waiver applies only when BOTH parents are full-time
-  # students. With just one student parent and ~87 combined work hours, the two-parent
-  # 120-hour test still governs, so the family is not activity-eligible.
+  # CC 2-3: a full-time-student parent is waived from the work requirement, so the
+  # household is held to the single-parent 60-hr standard for the remaining (working)
+  # parent. The working parent's ~86.7 hrs/mo >= 60, so the family is activity-eligible.
   input:
     people:
       person1:
         age: 32
-        weekly_hours_worked: 20  # 86.67 hrs/mo
+        weekly_hours_worked_before_lsr: 20  # 86.67 hrs/mo >= single-parent 60
         is_full_time_student: false
       person2:
         age: 30
-        weekly_hours_worked: 0
-        is_full_time_student: true  # student, but two-parent path ignores the exemption
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true  # waived -> household held to single-parent standard
       person3:
         age: 4
     spm_units:
@@ -224,7 +228,7 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_activity_eligible: false
+    mt_ccap_activity_eligible: true
 
 - name: Case 11, household with no parents (only children) is not activity-eligible.
   period: 2026-01
@@ -245,22 +249,20 @@
   output:
     mt_ccap_activity_eligible: false
 
-# Regression test for the C1 fix: CC 2-3 states "there is no work requirement for
-# either parent when both are attending school full time." The two-parent branch
-# must apply the full-time-student waiver, not only the single-parent branch.
+# Regression test: CC 2-3 states "there is no work requirement for either parent when
+# both are attending school full time." The full-time-student waiver must reach the
+# two-parent case (all parents waived -> no work requirement).
 - name: Case 12, two-parent household with both parents full-time students has no work requirement.
   period: 2026-01
-  # Both parents are full-time students with zero work hours. The waiver applies to
-  # the two-parent branch, so the family is activity-eligible despite 0 < 120 hours.
   input:
     people:
       person1:
         age: 22
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: true
       person2:
         age: 21
-        weekly_hours_worked: 0
+        weekly_hours_worked_before_lsr: 0
         is_full_time_student: true
       person3:
         age: 4
@@ -270,6 +272,153 @@
     households:
       household:
         members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+# --- Disability waiver (CC 2-3 "Parent with a Disability"). is_disabled proxies the
+# ECSB "unable to work / unable to provide care" approval. ---
+- name: Case 13, single disabled parent has no work requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+        is_disabled: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 14, two-parent household with one disabled parent and the other meeting 60 hrs is eligible.
+  period: 2026-01
+  # Disabled parent is waived; the remaining parent meets the single-parent 60-hr
+  # standard (14 hrs/week -> 60.67 hrs/mo).
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 14  # 60.67 hrs/mo >= 60
+        is_full_time_student: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 15, two-parent household with one disabled parent and the other below 60 hrs is not eligible.
+  period: 2026-01
+  # Disabled parent waived; remaining parent at 13 hrs/week -> 56.33 hrs/mo < 60.
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 13  # 56.33 hrs/mo < 60
+        is_full_time_student: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+# --- Incarceration waiver (CC 2-3: intact family, one parent incarcerated/pre-release;
+# the other parent must meet the 60-hr standard). is_incarcerated is a MONTH input. ---
+- name: Case 16, two-parent household with one incarcerated parent and the other meeting 60 hrs is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+        is_incarcerated: true
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 14  # 60.67 hrs/mo >= 60
+        is_full_time_student: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: true
+
+- name: Case 17, two-parent household with one incarcerated parent and the other below 60 hrs is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+        is_incarcerated: true
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 13  # 56.33 hrs/mo < 60
+        is_full_time_student: false
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_activity_eligible: false
+
+# --- meets_ccdf_activity_test fallback (covers approved activities not individually
+# modeled, e.g. part-time student + 40 hrs, job search, training, SNAP E&T). ---
+- name: Case 18, non-working non-student single parent flagged as meeting the CCDF activity test is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
         state_code: MT
   output:
     mt_ccap_activity_eligible: true

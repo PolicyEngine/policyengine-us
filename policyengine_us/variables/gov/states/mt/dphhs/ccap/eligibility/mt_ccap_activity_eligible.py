@@ -13,55 +13,70 @@ class mt_ccap_activity_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        # CC 2-3 Non-TANF Activity Requirements (CC23NonTANFActivity070718.pdf):
-        # two-parent families need 120 activity hours/month total; single-parent
-        # families need 60 work hours/month, or full-time school/training (no
-        # work requirement), or part-time school plus 40 work hours/month.
+        # CC 2-3 Non-TANF Activity Requirements (CC23NonTANFActivity070718.pdf).
+        # Work-hour thresholds: two-parent families need 120 combined work
+        # hours/month; single-parent families need 60 work hours/month.
         #
-        # Unmodeled activity waivers / pathways (known modeling limitations):
-        # - Part-time-student + 40-work-hours pathway (single- and two-parent):
-        #   we don't currently track part-time vs full-time student status, so
-        #   this pathway is collapsed into the full-time-student no-work-
-        #   requirement path. This makes the model slightly more generous than
-        #   the manual, which requires 40 work hours for a part-time student.
-        # - Disabled-parent activity waiver: in a two-parent household with one
-        #   disabled parent, the manual lets the other parent meet only the
-        #   60-hr single-parent standard. We currently hold them to the 120-hr
-        #   two-parent standard (slightly less generous). This is the most
-        #   material candidate to model later; it would need a per-parent
-        #   "unable to work due to disability" input.
-        # - Incarcerated / pre-release parent: when one parent is incarcerated
-        #   or in a pre-release program, the manual lets the other parent meet
-        #   only the 60-hr single-parent standard. We don't currently model
-        #   this (no per-parent incarceration/pre-release input).
-        # - Teen-parent in-school waiver: a parent under 20 attending high
-        #   school / HiSET has the work requirement waived. We don't currently
-        #   model this.
+        # A parent's work-hour obligation is WAIVED (they count as meeting the
+        # activity test without work hours) when they are:
+        #   - a full-time student: each full-time-student parent is individually
+        #     excluded from the work-hour requirement, so a single student parent
+        #     has no work requirement, a two-parent family with one student drops
+        #     to the single-parent (60-hr) standard, and a two-parent family with
+        #     both students has no work requirement ("no work requirement ... when
+        #     both are attending school full time"). is_full_time_student includes
+        #     K-12, so this also covers a teen parent attending high school/HiSET;
+        #   - a parent with a disability who is unable to work ("Parent with a
+        #     Disability"); we use is_disabled as a proxy for the ECSB
+        #     "unable to work / unable to provide care" approval we don't track;
+        #   - an incarcerated or pre-release parent in a two-parent ("intact")
+        #     family ("the other parent must meet the ... 60 hours").
+        # When one parent of a two-parent family is waived, the household drops to
+        # the single-parent (60-hour) standard for the remaining parent; when all
+        # parents are waived there is no work requirement.
         #
-        # Administrative-verification items are intentionally not modeled: the
-        # Work Verification Form, distance-learning program accreditation, and
-        # the 5-year degree-recency restriction (per CC 2-3).
+        # meets_ccdf_activity_test is a fallback input covering approved activities
+        # we don't individually model, including the part-time-student-plus-40-
+        # hours pathway (we don't track part-time school/training status here),
+        # job search, education/training programs, SNAP E&T, and temporary leave.
+        #
+        # Not modeled (manual): the part-time-student + 40-hour pathway (use the
+        # meets_ccdf_activity_test input); the "care based on the parent with the
+        # least hours outside the home" nuance for mixed work/school two-parent
+        # families; and the administrative checks (Work Verification Form,
+        # 5-year degree-recency restriction, distance-learning accreditation).
         p = parameters(period).gov.states.mt.dphhs.ccap.eligibility.activity_hours
         person = spm_unit.members
         is_parent = person("is_tax_unit_head_or_spouse", period.this_year)
         monthly_hours = (
-            person("weekly_hours_worked", period.this_year)
+            person("weekly_hours_worked_before_lsr", period.this_year)
             * WEEKS_IN_YEAR
             / MONTHS_IN_YEAR
         )
-        is_full_time_student = person("is_full_time_student", period.this_year)
 
-        parent_work_hours = spm_unit.sum(monthly_hours * is_parent)
         parent_count = spm_unit.sum(is_parent)
-        full_time_student_parents = spm_unit.sum(is_parent & is_full_time_student)
         two_parent = parent_count > 1
-        single_parent_is_full_time_student = full_time_student_parents > 0
-        both_parents_full_time_students = full_time_student_parents == parent_count
 
-        two_parent_eligible = (
-            parent_work_hours >= p.two_parent
-        ) | both_parents_full_time_students
-        single_parent_eligible = (
-            parent_work_hours >= p.single_parent
-        ) | single_parent_is_full_time_student
-        return where(two_parent, two_parent_eligible, single_parent_eligible)
+        # Parents whose work-hour obligation is waived. Incarceration only waives
+        # within a two-parent family (the manual's "intact family" provision).
+        is_waived_parent = is_parent & (
+            person("is_full_time_student", period.this_year)
+            | person("is_disabled", period.this_year)
+            | (person("is_incarcerated", period) & spm_unit.project(two_parent))
+        )
+        working_parent = is_parent & ~is_waived_parent
+        working_parent_count = spm_unit.sum(working_parent)
+        working_parent_hours = spm_unit.sum(monthly_hours * working_parent)
+
+        # Two parents still subject to the work requirement -> 120 combined hours;
+        # otherwise the single-parent 60-hour standard applies to the remaining
+        # (or lone) working parent.
+        required_hours = where(working_parent_count >= 2, p.two_parent, p.single_parent)
+        meets_hours = working_parent_hours >= required_hours
+        all_parents_waived = (parent_count > 0) & (working_parent_count == 0)
+
+        return (
+            all_parents_waived
+            | meets_hours
+            | spm_unit("meets_ccdf_activity_test", period.this_year)
+        )
