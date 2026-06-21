@@ -185,10 +185,10 @@
   output:
     # MS 211: a special-needs child is eligible up to age 19, so age 14 with
     # is_disabled is an eligible child. age 14 -> SCHOOL_AGE; Clark center
-    # SCHOOL_AGE max = 48 * 21.67 = 1_040.16; copay $0 (2_000/mo < 33% SMI).
-    # benefit = max(min(2_500, 1_040.16) - 0, 0) = 1_040.16.
+    # SCHOOL_AGE max = 46 * 21.67 = 996.82; copay $0 (2_000/mo < 33% SMI).
+    # benefit = max(min(2_500, 996.82) - 0, 0) = 996.82.
     nv_ccdp_eligible: true
-    nv_ccdp: 1_040.16
+    nv_ccdp: 996.82
 
 # Edge cases: multiple eligible children, FCC provider, and negative income.
 

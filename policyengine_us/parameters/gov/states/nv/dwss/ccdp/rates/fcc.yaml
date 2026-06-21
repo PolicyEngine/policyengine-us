@@ -7,11 +7,13 @@ metadata:
     - nv_ccdp_region
     - nv_ccdp_age_group
   reference:
-    - title: Nevada CCDF State Plan FFY 2025-2027, Section 4.3.1, Table 1 and Table 2 — Base Payment Rate (pp. 54-56)
-      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54
+    - title: Nevada Child Care Policy Manual, MS 633.2 Licensed Provider Daily Rates (Family, 1-Star base), Clark and Washoe areas (p.107)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=107
 
-# Table 1 (most populous region, Clark County) and Table 2 (lowest-percentile
-# region, all other counties); base payment rate per day.
+# Manual MS 633.2 Licensed Provider Daily Rates (Family), 1-Star (base) tier,
+# per day. MOST_POPULOUS = Clark area; LOWEST_PERCENTILE = Washoe area, used as
+# the representative lowest-percentile rate for every non-Clark county. QRIS
+# star tiers 2-5 are not tracked at the moment.
 MOST_POPULOUS:
   INFANT:
     2024-10-01: 45

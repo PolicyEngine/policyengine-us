@@ -17,14 +17,14 @@ class nv_ccdp_region(Variable):
     reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54"
 
     def formula(person, period, parameters):
-        # The CCDF State Plan rate table reports two regions: the most populous
-        # region (Clark County) and the lowest-percentile region (every other
-        # county). The Policy Manual MS 633.2 publishes a finer schedule (four
-        # areas -- Clark, Washoe, Carson-Douglas, Rural -- and QRIS star tiers
-        # 1-5), but we model the State Plan's 2-region, 1-Star base table as the
-        # authoritative CCDF rate-setting source; this applies the lowest-
-        # percentile (Washoe-level) rate to rural counties and does not track
-        # star-level rate enhancements at the moment.
+        # The Policy Manual MS 633.2 publishes Licensed Provider rates for four
+        # areas (Clark, Washoe, Carson-Douglas, Rural) across QRIS star tiers
+        # 1-5. We collapse this to two modeled regions: the most populous region
+        # (Clark County) and a lowest-percentile region that applies the Washoe
+        # 1-Star rates as the representative for every other county. This applies
+        # the Washoe-level rate to Carson-Douglas and rural counties (whose
+        # Manual rates are lower) and does not track star-level rate
+        # enhancements at the moment.
         # `county_str` is a Household accessor enumerating every US county, so
         # non-Nevada county strings flow through this formula in microsim even
         # though `defined_for` filters the output. Comparing the county string

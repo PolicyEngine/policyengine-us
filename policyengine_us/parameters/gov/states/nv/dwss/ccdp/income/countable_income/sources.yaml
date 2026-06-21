@@ -3,14 +3,14 @@ values:
   2024-01-01:
     # Earned income (MS 306.48 Wages/Salaries/Commissions, 306.7 Contractual
     # Earnings, 306.36 Seasonal Employment — all countable). employment_income
-    # already includes tips (306.43) and bonuses/commissions, so tip_income is
+    # already includes tips (306.48) and bonuses/commissions, so tip_income is
     # not listed separately to avoid double-counting.
     - employment_income
     - self_employment_income
     - farm_operations_income
     # Unearned income (countable per MS 306).
     - social_security  # MS 306.34 RSDI umbrella (Retirement, Survivors, Disability)
-    - disability_benefits  # MS 306 Disability Insurance Benefits (employer/private disability; distinct from RSDI 306.34 and workers' comp 306.49)
+    - disability_benefits  # MS 306.9 Disability Insurance Benefits (employer/private disability; distinct from RSDI 306.34 and workers' comp 306.49)
     - unemployment_compensation  # MS 306.45
     - workers_compensation  # MS 306.49
     - pension_income  # MS 306.29

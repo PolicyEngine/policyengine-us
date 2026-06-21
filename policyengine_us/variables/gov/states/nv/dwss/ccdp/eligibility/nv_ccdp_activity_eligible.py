@@ -7,7 +7,7 @@ class nv_ccdp_activity_eligible(Variable):
     label = "Eligible for Nevada CCDP based on Purpose of Care activity"
     definition_period = MONTH
     defined_for = StateCode.NV
-    reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Child%20Care%20Manual%20July%202024.pdf#page=66"
+    reference = "https://dss.nv.gov/uploadedFiles/dwssnvgov/content/Care/Child%20Care%20Manual%20July%202024.pdf#page=76"
 
     def formula(spm_unit, period, parameters):
         # MS 400 series: each required caretaker must be in an approved Purpose

@@ -117,9 +117,9 @@
     nv_ccdp_eligible: true
     # ratio 0.4463 >= 0.4201 -> $150 copay
     nv_ccdp_copay: 150
-    # Clark center school-age rate $48; max rate = 48 * 21.67 = 1_040.16.
-    # benefit = max(1_040.16 - 150, 0) = 890.16.
-    nv_ccdp: 890.16
+    # Clark center school-age rate $46; max rate = 46 * 21.67 = 996.82.
+    # benefit = max(996.82 - 150, 0) = 846.82.
+    nv_ccdp: 846.82
 
 - name: Case 4, homeless family, Washoe FCC toddler, copay waived, charge caps benefit.
   period: 2025-01

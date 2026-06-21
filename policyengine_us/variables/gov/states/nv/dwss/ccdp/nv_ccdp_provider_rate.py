@@ -11,14 +11,13 @@ class nv_ccdp_provider_rate(Variable):
     label = "Nevada CCDP daily provider reimbursement rate"
     definition_period = MONTH
     defined_for = "nv_ccdp_eligible_child"
-    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=54"
+    reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=107"
 
     def formula(person, period, parameters):
-        # CCDF State Plan Section 4.3.1, Tables 1-2: per-day base reimbursement
-        # rate keyed by region x provider type x age group. These are the
-        # 1-Star (base) rates; the Policy Manual MS 633.2 QRIS star-level
-        # enhancements (stars 2-5) are a conservative floor we don't track at
-        # the moment.
+        # Policy Manual MS 633.2 Licensed Provider Daily Rates: per-day base
+        # reimbursement rate keyed by region x provider type x age group. These
+        # are the 1-Star (base) rates; the MS 633.2 QRIS star-level enhancements
+        # (stars 2-5) are a conservative floor we don't track at the moment.
         p = parameters(period).gov.states.nv.dwss.ccdp.rates
         provider_type = person("nv_ccdp_provider_type", period)
         region = person("nv_ccdp_region", period)

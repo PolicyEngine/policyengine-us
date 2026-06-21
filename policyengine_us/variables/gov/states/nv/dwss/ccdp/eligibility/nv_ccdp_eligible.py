@@ -13,7 +13,7 @@ class nv_ccdp_eligible(Variable):
         # MS 218 residency is enforced by defined_for = StateCode.NV.
         has_eligible_child = add(spm_unit, period, ["nv_ccdp_eligible_child"]) > 0
         income_eligible = spm_unit("nv_ccdp_income_eligible", period)
-        # MS 2.2.6 / 45 CFR 98.20: $1,000,000 federal CCDF asset ceiling.
+        # MS 320 (Manual p.75) / 45 CFR 98.20: $1,000,000 CCDF asset ceiling.
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
         activity_eligible = spm_unit("nv_ccdp_activity_eligible", period)
         return has_eligible_child & income_eligible & asset_eligible & activity_eligible

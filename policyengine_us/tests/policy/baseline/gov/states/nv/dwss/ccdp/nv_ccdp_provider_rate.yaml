@@ -3,7 +3,7 @@
 # under the age limit, and immigration-eligible for a non-zero rate.
 # Age brackets (MS 631/633.1): INFANT <12mo, TODDLER 12-36mo, PRESCHOOL 36-72mo,
 # SCHOOL_AGE >=72mo. rates/center.yaml and rates/fcc.yaml, keyed by region x age:
-#   center MOST_POPULOUS:      INFANT 62.50, TODDLER 57, PRESCHOOL 51.50, SCHOOL_AGE 48
+#   center MOST_POPULOUS:      INFANT 62.50, TODDLER 57, PRESCHOOL 51.50, SCHOOL_AGE 46
 #   center LOWEST_PERCENTILE:  INFANT 53.50, TODDLER 52.50, PRESCHOOL 47.50, SCHOOL_AGE 42.50
 #   fcc    MOST_POPULOUS:      INFANT 45, TODDLER 45, PRESCHOOL 46.50, SCHOOL_AGE 46
 #   fcc    LOWEST_PERCENTILE:  INFANT 40.50, TODDLER 40, PRESCHOOL 40, SCHOOL_AGE 40
@@ -112,8 +112,8 @@
         state_code: NV
         county: CLARK_COUNTY_NV
   output:
-    # 72 months -> SCHOOL_AGE; MOST_POPULOUS x CENTER x SCHOOL_AGE = 48
-    nv_ccdp_provider_rate: 48
+    # 72 months -> SCHOOL_AGE; MOST_POPULOUS x CENTER x SCHOOL_AGE = 46
+    nv_ccdp_provider_rate: 46
 
 - name: Ineligible child (age 14) gets no rate via defined_for.
   period: 2025-01

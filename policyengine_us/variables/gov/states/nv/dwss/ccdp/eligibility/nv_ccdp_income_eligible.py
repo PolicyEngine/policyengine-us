@@ -25,5 +25,14 @@ class nv_ccdp_income_eligible(Variable):
         # 98.21(a)(1)(ii)) bars terminating a family mid-certification until
         # income exceeds 85% SMI, but we don't track certification periods at
         # the moment, so the 85% mid-period ceiling is not modeled.
+        # MS 216.4.3.1 (Foster) and MS 216.4.4.1 (CPS) treat a foster or CPS
+        # child as a household of one and do NOT count the traditional
+        # household's income ("Income received by the traditional household is
+        # not countable"). Nevada applies this income exclusion only to
+        # foster/CPS children (not to all children), so we don't model it at the
+        # moment: a foster/CPS child in a higher-income household may be denied
+        # by this income test even though the program would serve them at 100%
+        # subsidy. Their copay is still waived and their need-for-care is met via
+        # the protective-care pathway in nv_ccdp_copay / nv_ccdp_activity_eligible.
         income_limit = monthly_smi * where(enrolled, p.smi_renewal, p.smi_intake)
         return countable_income <= income_limit

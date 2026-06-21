@@ -17,3 +17,6 @@ metadata:
 # 52 weeks * 5 days / 12 months = 21.67, applied when a household's actual
 # attended days per month are not available. It is a conservative modeling
 # assumption (PR Verification TODO — confirm against an operational rate sheet).
+# Note: MS 311 sets income-conversion factors (weekly x 4.3); that 4.3 is an
+# income multiplier, not a billing-day factor, but a 4.3-week month would imply
+# 5 * 4.3 = 21.5 billed days if a sourced figure is preferred over this proxy.
