@@ -1,3 +1,29 @@
+## [1.739.3] - 2026-06-21
+
+### Fixed
+
+- Increase the non-NY state baseline test batch count from 4 to 6 in the PR and push CI workflows to prevent intermittent out-of-memory failures on the states-non-ny shards.
+
+
+## [1.739.2] - 2026-06-19
+
+No significant changes.
+
+
+## [1.739.1] - 2026-06-19
+
+### Changed
+
+- - Switch the default US dataset to the certified Populace build (`populace_us_2024`), replacing the Enhanced CPS, and support loading datasets from Hugging Face dataset repositories via `hf://datasets/` URLs.
+
+
+## [1.739.0] - 2026-06-19
+
+### Added
+
+- Added Tennessee property tax relief for elderly homeowners.
+
+
 ## [1.738.0] - 2026-06-19
 
 ### Added
