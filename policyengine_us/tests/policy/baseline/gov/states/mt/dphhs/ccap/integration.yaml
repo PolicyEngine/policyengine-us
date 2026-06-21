@@ -40,14 +40,14 @@
     # charge 1,000 > max rate 748 -> capped at 748; benefit = 748 - 32.50
     mt_ccap: 715.5
 
-- name: Case 2, two-parent household + infant at a group home, full-time, 150% FPG.
+- name: Case 2, two-parent household + infant at a group home, full-time, 152% FPG (redetermination).
   period: 2026-01
   absolute_error_margin: 0.1
   input:
     people:
       person1:
         age: 33
-        employment_income: 40_980  # size 3, ratio 40,980/27,320 = 1.50 -> 3.5%
+        employment_income: 41_520  # size 3, ratio 41,520/27,320 = 1.52 -> 3.5%
         weekly_hours_worked_before_lsr: 20  # ~86.7 hrs/month
       person2:
         age: 31
@@ -60,6 +60,7 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo for the child
     households:
       household:
@@ -72,10 +73,10 @@
     mt_ccap_activity_eligible: true  # combined ~173 hrs/month >= 120
     mt_ccap_eligible: true
     mt_ccap_max_rate: [0, 0, 1_056]  # group home infant/toddler full-time = 1,056
-    mt_ccap_countable_income: 3_415  # 40,980 / 12
-    mt_ccap_copay: 119.53  # 3,415 * 3.5%
-    # charge 2,000 > max rate 1,056 -> capped at 1,056; benefit = 1,056 - 119.53
-    mt_ccap: 936.48
+    mt_ccap_countable_income: 3_460  # 41,520 / 12
+    mt_ccap_copay: 121.1  # 3,460 * 3.5%
+    # charge 2,000 > max rate 1,056 -> capped at 1,056; benefit = 1,056 - 121.10
+    mt_ccap: 934.9
 
 - name: Case 3, single parent + two children at a family home, 100% FPG.
   period: 2026-01
@@ -152,7 +153,7 @@
     people:
       person1:
         age: 33
-        employment_income: 60_000  # size 3, ratio 2.196 -> above 200% FPG (54,640)
+        employment_income: 60_000  # size 3, ratio 2.196 -> above the 150% applicant limit (40,980)
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 31
@@ -172,7 +173,7 @@
         state_code: MT
   output:
     mt_ccap_eligible_child: [false, false, true]
-    mt_ccap_income_eligible: false  # above 200% FPG, below 85% SMI -> FPG limit binds
+    mt_ccap_income_eligible: false  # above the 150% applicant limit -> FPG limit binds
     mt_ccap_eligible: false
     mt_ccap: 0
     mt_child_care_subsidies: 0
@@ -240,15 +241,15 @@
 
 # --- Edge case integration scenarios: 185% standard ceiling, benefit floor at 0,
 # and the highest single max rate (infant at a center, full-time). ---
-- name: Case 8, family at the 185% FPG standard ceiling, center preschooler, full-time.
+- name: Case 8, family at 182% FPG (continuing recipient), center preschooler, full-time.
   period: 2026-01
   absolute_error_margin: 0.1
-  # ratio 40,034/21,640 = 1.85 -> top 7.0% copay bracket; still income-eligible (185% < 200% ceiling and below 85% SMI).
+  # ratio 39,384/21,640 = 1.82 -> 6.5% copay bracket; continuing recipient eligible (182% < 185% graduated limit, below 85% SMI).
   input:
     people:
       person1:
         age: 31
-        employment_income: 40_034  # size 2, exactly 185% of FPG (21,640 * 1.85)
+        employment_income: 39_384  # size 2, 182% of FPG (3,282/mo)
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4  # PRESCHOOL
@@ -258,6 +259,7 @@
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1,500/mo for the child
     households:
       household:
@@ -265,24 +267,24 @@
         state_code: MT
   output:
     mt_ccap_eligible_child: [false, true]
-    mt_ccap_income_eligible: true  # 185% FPG < 200% ceiling, below 85% SMI
+    mt_ccap_income_eligible: true  # 182% FPG < 185% graduated limit (enrolled), below 85% SMI
     mt_ccap_activity_eligible: true
     mt_ccap_eligible: true
     mt_ccap_max_rate: [0, 1_210]  # center preschool full-time
-    mt_ccap_countable_income: 3_336.17  # 40,034 / 12
-    mt_ccap_copay: 233.53  # 3,336.17 * 7.0%
-    # charge 1,500 > max rate 1,210 -> capped at 1,210; benefit = 1,210 - 233.53
-    mt_ccap: 976.47
+    mt_ccap_countable_income: 3_282  # 39,384 / 12
+    mt_ccap_copay: 213.33  # 3,282.00 * 6.5%
+    # charge 1,500 > max rate 1,210 -> capped at 1,210; benefit = 1,210 - 213.33
+    mt_ccap: 996.67
 
 - name: Case 9, eligible family whose copay exceeds the small reimbursement (benefit floors at 0).
   period: 2026-01
   absolute_error_margin: 0.1
-  # high-income eligible family with a tiny provider charge; copay 233.53 > reimbursement 200 -> benefit floored at 0 even though the family is eligible.
+  # continuing recipient with a tiny provider charge; copay 213.33 > reimbursement 200 -> benefit floored at 0 even though the family is eligible.
   input:
     people:
       person1:
         age: 31
-        employment_income: 40_034  # 185% FPG, 7.0% copay bracket
+        employment_income: 39_384  # 182% FPG, 6.5% copay bracket
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
@@ -292,6 +294,7 @@
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 2_400  # 200/mo charge, below the copay
     households:
       household:
@@ -300,8 +303,8 @@
   output:
     mt_ccap_eligible: true
     mt_ccap_max_rate: [0, 1_210]
-    mt_ccap_copay: 233.53  # 3,336.17 * 7.0%
-    # reimbursement = min(200, 1,210) = 200; max(200 - 233.53, 0) = 0
+    mt_ccap_copay: 213.33  # 3,282.00 * 6.5%
+    # reimbursement = min(200, 1,210) = 200; max(200 - 213.33, 0) = 0
     mt_ccap: 0
 
 - name: Case 10, infant at a center, full-time (highest single max rate).

@@ -48,13 +48,14 @@
   output:
     mt_ccap_copay: 11.38  # 2,276.67 * 0.005 = 11.38
 
-- name: Case 3, 150% FPG copay (3.5% bracket).
+- name: Case 3, continuing recipient at 152% FPG pays the 3.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
+  # 41,520 annual (152% FPG) -> 3.5% tier; enrolled (eligible up to 185% FPG).
   input:
     people:
       person1:
-        employment_income: 40_980  # 150% FPG, ratio 1.5 -> 3.5%
+        employment_income: 41_520  # 3,460/mo, 152% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -63,20 +64,22 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 119.53  # 3,415.00 * 0.035 = 119.53
+    mt_ccap_copay: 121.1  # 3,460.00 * 0.035
 
-- name: Case 4, 185% FPG copay (top 7.0% bracket).
+- name: Case 4, continuing recipient at 182% FPG pays the 6.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
+  # 49,716 annual (182% FPG) -> 6.5% tier; enrolled (eligible up to 185% FPG).
   input:
     people:
       person1:
-        employment_income: 50_542  # 185% FPG, ratio 1.85 -> 7.0%
+        employment_income: 49_716  # 4,143/mo, 182% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -85,20 +88,22 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 294.83  # 4,211.83 * 0.07 = 294.83
+    mt_ccap_copay: 269.3  # 4,143.00 * 0.065
 
-- name: Case 5, 200% FPG graduated copay (7.0% bracket).
+- name: Case 5, continuing recipient at 172% FPG pays the 5.5% copay.
   period: 2026-01
   absolute_error_margin: 0.1
+  # 46,992 annual (172% FPG) -> 5.5% tier; enrolled (eligible up to 185% FPG).
   input:
     people:
       person1:
-        employment_income: 54_640  # 200% FPG, ratio 2.0 -> 7.0%
+        employment_income: 46_992  # 3,916/mo, 172% of size-3 FPG
       person2:
         age: 4
       person3:
@@ -107,12 +112,13 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_ccap_copay: 318.73  # 4,553.33 * 0.07 = 318.73
+    mt_ccap_copay: 215.38  # 3,916.00 * 0.055
 
 - name: Case 6, TANF recipient pays the flat $10 copay regardless of income.
   period: 2026-01

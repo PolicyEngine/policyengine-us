@@ -7,8 +7,9 @@ description: Montana sets this share of gross monthly income as the copayment un
 # FPG (inclusive) up to but not including 115% FPG. PolicyEngine single_amount is "at
 # or above threshold," and the scale places a family exactly at a step into the higher
 # tier (e.g. 105% -> 1.0%), so thresholds use the named % directly with no shift. The
-# top tier (7.0%) runs through 200% FPG (graduated eligibility); above 200% the
-# household is not eligible (gated separately by the income limit).
+# published scale's top tier (7.0%) runs through 200% FPG, but income eligibility caps
+# at 185% FPG for non-TANF families (ARM 37.80.202(2)), so the tiers above 185% are
+# unreachable for eligible families and retained only to mirror the published scale.
 #
 # (S6) The graduated-eligibility STRUCTURE dates to 2016-11-01, but these copay
 # percentages come from the 2025 Best Beginnings Sliding Fee Scale (2025 Federal

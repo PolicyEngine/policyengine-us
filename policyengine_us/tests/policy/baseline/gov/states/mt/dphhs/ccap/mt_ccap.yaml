@@ -228,12 +228,12 @@
 - name: Case 9, copay exceeds the reimbursement so the benefit floors at 0.
   period: 2026-01
   absolute_error_margin: 0.1
-  # high-income eligible family with a small provider charge; copay 233.53 > reimbursement 200 -> benefit floored at 0.
+  # continuing recipient with a small provider charge; copay 213.33 > reimbursement 200 -> benefit floored at 0.
   input:
     people:
       person1:
         age: 30
-        employment_income: 40_034  # size 2, exactly 185% FPG (21,640 * 1.85) -> 7.0% copay bracket
+        employment_income: 39_384  # size 2, 182% FPG (3,282/mo) -> 6.5% copay bracket
         weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
@@ -243,6 +243,7 @@
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: false
+        mt_ccap_enrolled: true
         spm_unit_pre_subsidy_childcare_expenses: 2_400  # 200/mo charge, below the copay
     households:
       household:
@@ -250,5 +251,5 @@
         state_code: MT
   output:
     # reimbursement = min(200, 1,210) = 200
-    # copay = 3,336.17 * 7.0% = 233.53 > 200 -> max(200 - 233.53, 0) = 0
+    # copay = 3,282.00 * 6.5% = 213.33 > 200 -> max(200 - 213.33, 0) = 0
     mt_ccap: 0
