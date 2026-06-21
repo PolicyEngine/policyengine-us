@@ -68,9 +68,9 @@ jobs:
       matrix:
         include:
           - group: states-non-ny-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 1/2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 1/2
           - group: states-non-ny-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 2/2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 2/2
           - group: states-ny
             cmd: make test-yaml-no-structural-states-ny
           - group: irs-household
