@@ -1,0 +1,25 @@
+description: Minnesota deducts these expenses from gross income under the Child Care Assistance Program.
+values:
+  2025-01-01:
+    # Actual child support paid to or on behalf of someone living outside the
+    # household (full payment deductible).
+    - child_support_expense
+    # Spousal support paid to or on behalf of someone living outside the
+    # household.
+    - alimony_expense
+    # The following deductions are allowed per Minn. Rules 3400.0170, subp. 6a
+    # and manual section 6.18 but have no matching variable, so we do not track
+    # them at the moment:
+    # - medical, dental, and vision insurance premiums paid by family members
+    # - the unreimbursed portion of an insurance premium for families on
+    #   Medical Assistance
+    # - expenditures necessary to secure payment of unearned income
+    #   (e.g., lawyer's fees for an insurance settlement)
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota CCAP allowable income deductions
+  reference:
+    - title: Minn. Rules 3400.0170, subp. 6a (allowable deductions)
+      href: https://www.revisor.mn.gov/rules/3400.0170/

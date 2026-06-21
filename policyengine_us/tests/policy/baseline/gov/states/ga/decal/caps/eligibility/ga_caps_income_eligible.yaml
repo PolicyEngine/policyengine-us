@@ -1,0 +1,336 @@
+# GA CAPS income eligibility
+# Initial (not enrolled): income <= 50% SMI
+# Ongoing (enrolled): income <= 85% SMI
+#
+# GA SMI for 4-person household at 2026-01: $116,773.19 (uprated)
+# Family of 2: 116,773.19 * 0.68 = $79,405.77
+#   50% SMI = $39,702.88
+#   85% SMI = $67,494.90
+
+- name: Case 1, new applicant income below 50 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # income 30,000 <= 39,702.88 (50% SMI for family of 2) -> eligible
+    ga_caps_income_eligible: true
+
+- name: Case 2, new applicant income above 50 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # income 40,000 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 3, enrolled family income between 50 and 85 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # enrolled: income 50,000 <= 67,494.90 (85% SMI) -> eligible
+    ga_caps_income_eligible: true
+
+- name: Case 4, enrolled family income above 85 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # enrolled: income 68,000 > 67,494.90 (85% SMI) -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 5, non-enrolled family between 50 and 85 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # not enrolled: income 50,000 > 39,702.88 (50% SMI) -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 6, zero income family is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: true
+
+# Additional family sizes for boundary tests:
+# Family of 3: 116,773.19 * 0.84 = $98,089.48
+#   50% SMI = $49,044.74; 85% SMI = $83,376.06
+# Family of 5: 116,773.19 * 1.16 = $135,456.90
+#   50% SMI = $67,728.45; 85% SMI = $115,138.36
+
+- name: Case 7, income exactly at 50 percent SMI threshold for family of 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 50% SMI for family of 2 is $39,702.88/yr
+        employment_income: 39_702
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # income 39,702 <= 39,702.88 -> eligible (just at threshold)
+    ga_caps_income_eligible: true
+
+- name: Case 8, income one dollar above 50 percent SMI threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_703
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # income 39,703 > 39,702.88 -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 9, enrolled income exactly at 85 percent SMI threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 67_494
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # enrolled: income 67,494 <= 67,494.90 -> eligible
+    ga_caps_income_eligible: true
+
+- name: Case 10, enrolled income one dollar above 85 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 67_495
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # enrolled: income 67,495 > 67,494.90 -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 11, very high income family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_income_eligible: false
+
+- name: Case 12, larger family of 5 at 50 percent SMI threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 67_728
+      person2:
+        age: 30
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: GA
+  output:
+    # 50% SMI family of 5 = $67,728.45
+    # income 67,728 <= 67,728.45 -> eligible
+    ga_caps_income_eligible: true
+
+- name: Case 13, larger family of 5 one dollar over threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 67_729
+      person2:
+        age: 30
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: GA
+  output:
+    # 50% SMI family of 5 = $67,728.45
+    # income 67,729 > 67,728.45 -> ineligible
+    ga_caps_income_eligible: false
+
+- name: Case 14, enrolled family of 3 at ongoing threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 83_376
+      person2:
+        age: 28
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ga_caps_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # 85% SMI family of 3 = $83,376.06
+    # enrolled: income 83,376 <= 83,376.06 -> eligible
+    ga_caps_income_eligible: true
+
+- name: Case 15, multiple income sources combined.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        self_employment_income: 10_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # total income = 25,000 + 10,000 = 35,000 <= 39,702.88 -> eligible
+    ga_caps_income_eligible: true

@@ -21,9 +21,6 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "md_non_refundable_eitc": {
         "variables/gov/states/md/tax/income/credits/eitc/md_eitc.py",
     },
-    "mo_wftc": {
-        "reforms/states/mo/eitc/mo_refundable_eitc_reform.py",
-    },
     "ny_household_credit": {
         "reforms/states/ny/wftc/ny_working_families_tax_credit.py",
         "variables/gov/states/ny/tax/income/credits/ny_eitc.py",
