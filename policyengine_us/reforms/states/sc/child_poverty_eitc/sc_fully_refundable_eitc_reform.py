@@ -11,7 +11,8 @@ def create_sc_fully_refundable_eitc() -> Reform:
 
     Converts the South Carolina EITC from nonrefundable to fully refundable
     for ALL filers. SC's EITC is 125% of the federal EITC (subject to a
-    per-filer cap — $200 from 2026) and is nonrefundable by default, i.e.
+    cap of $200 per return / per tax unit from 2026, including married filing
+    jointly) and is nonrefundable by default, i.e.
     applied only up to remaining state income tax liability. This reform pays
     the potential (uncapped-at-liability) credit as a refundable credit, so
     zero-liability filers receive it.
@@ -41,7 +42,8 @@ def create_sc_fully_refundable_eitc() -> Reform:
             # credit is refundable; ``sc_eitc`` is capped at tax liability and
             # would zero out for the low-liability filers refundability is
             # meant to help. ``sc_eitc_potential`` still applies the statutory
-            # per-filer cap (gov.states.sc.tax.income.credits.eitc.max).
+            # cap per return / per tax unit
+            # (gov.states.sc.tax.income.credits.eitc.max).
             return tax_unit("sc_eitc_potential", period)
 
     class sc_non_refundable_credits(Variable):
@@ -108,7 +110,7 @@ def create_sc_fully_refundable_eitc_reform(parameters, period, bypass: bool = Fa
     reform_active = False
     current_period = period_(period)
 
-    for i in range(5):
+    for _ in range(5):
         if p(current_period).in_effect:
             reform_active = True
             break

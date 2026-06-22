@@ -1,8 +1,9 @@
 # Tests for the South Carolina fully refundable EITC contrib reform.
 #
 # The reform converts SC's nonrefundable EITC (125% of the federal EITC, capped
-# per filer at $200 from 2026) to fully refundable for all filers. It pays the
-# potential (uncapped-at-liability) credit, so zero-liability filers receive it.
+# per return / per tax unit at $200 from 2026) to fully refundable for all
+# filers. It pays the potential (uncapped-at-liability) credit, so
+# zero-liability filers receive it.
 # These tests drive the credit from the federal EITC and pin SC tax liability
 # directly. Mirrors the corrected UT/MO/OH reforms (issues #8644/#8640/#8656).
 
@@ -17,7 +18,7 @@
     sc_income_tax_before_non_refundable_credits: 0
   output:
     # 2026 SC EITC is 125% of the federal EITC: 100 * 1.25 = 125, below the
-    # $200 per-filer cap.
+    # $200 per return / per tax unit cap.
     sc_eitc_potential: 125
     # The capped credit is 0 at zero liability; the reform pays the uncapped
     # potential instead — the whole point of the conversion.
@@ -39,7 +40,7 @@
     sc_non_refundable_credits: 0
     sc_refundable_credits: 125
 
-- name: Respects the statutory per-filer cap ($200 in 2026)
+- name: Respects the statutory per return / per tax unit cap ($200 in 2026)
   period: 2026
   reforms: policyengine_us.reforms.states.sc.child_poverty_eitc.sc_fully_refundable_eitc_reform.sc_fully_refundable_eitc
   input:
@@ -60,3 +61,90 @@
     eitc: 100
   output:
     sc_fully_refundable_eitc: 0
+
+# End-to-end: at zero liability the refundable EITC turns SC income tax negative
+# (a net refund flowing through the tax), not just the intermediate credit.
+- name: Refundable EITC produces a net SC income tax refund at zero liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.sc.child_poverty_eitc.sc_fully_refundable_eitc_reform.sc_fully_refundable_eitc
+  input:
+    state_code: SC
+    eitc: 100
+    sc_income_tax_before_non_refundable_credits: 0
+  output:
+    # 100 * 1.25 = 125, below the $200 cap; paid in full as refundable.
+    sc_fully_refundable_eitc: 125
+    sc_refundable_credits: 125
+    # No liability, so tax before refundable credits is 0.
+    sc_income_tax_before_refundable_credits: 0
+    # sc_income_tax = before_refundable_credits - refundable_credits
+    #              = 0 - 125 = -125 (a net refund flowing through the tax).
+    sc_income_tax: -125
+
+# Partial liability: the $200-capped refundable EITC offsets part of a larger
+# liability, leaving positive tax owed — the split (capped credit vs. residual
+# liability) is exercised, not a full wash to a refund.
+- name: Capped refundable EITC partially offsets a larger SC liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.sc.child_poverty_eitc.sc_fully_refundable_eitc_reform.sc_fully_refundable_eitc
+  input:
+    state_code: SC
+    eitc: 1_000
+    sc_income_tax_before_non_refundable_credits: 300
+  output:
+    # 1,000 * 1.25 = 1,250, capped at the $200 maximum (cap binds).
+    sc_eitc_potential: 200
+    sc_fully_refundable_eitc: 200
+    # sc_eitc is removed from the non-refundable bucket; no other SC credits.
+    sc_non_refundable_credits: 0
+    # before_refundable = 300 - 0 = 300.
+    sc_income_tax_before_refundable_credits: 300
+    # sc_income_tax = 300 - 200 = 100: the capped credit offsets part of the
+    # $300 liability, leaving $100 owed.
+    sc_income_tax: 100
+
+# MFJ: the refundable portion is capped at $200 PER TAX UNIT, not per filer —
+# a married-filing-jointly couple does NOT get $400.
+- name: Married filing jointly is capped at $200 per tax unit, not $400
+  period: 2026
+  reforms: policyengine_us.reforms.states.sc.child_poverty_eitc.sc_fully_refundable_eitc_reform.sc_fully_refundable_eitc
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        eitc: 1_000
+        sc_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 1,000 * 1.25 = 1,250, capped at $200 for the whole tax unit (not $400).
+    sc_eitc_potential: 200
+    sc_fully_refundable_eitc: 200
+    sc_refundable_credits: 200
+
+# No-op gating: with NO reform applied (in_effect defaults to false), the
+# always-on bypass is not exercised and baseline nonrefundable SC EITC behavior
+# holds — at zero liability the credit is fully absorbed to $0, not refunded.
+- name: Default (no reform, in_effect false) keeps baseline nonrefundable EITC
+  period: 2026
+  input:
+    state_code: SC
+    eitc: 100
+    sc_income_tax_before_non_refundable_credits: 0
+  output:
+    # Potential still 125, but baseline sc_eitc caps at remaining liability (0).
+    sc_eitc_potential: 125
+    sc_eitc: 0
+    # No fully refundable conversion: refundable bucket is empty (no tuition).
+    sc_refundable_credits: 0
+    # No refund flows through: tax stays at 0, not -125.
+    sc_income_tax: 0
