@@ -68,6 +68,9 @@ class medicaid_work_requirement_eligible(Variable):
             "is_medically_frail_or_has_special_medical_needs_for_medicaid_ce",
             period,
         )
+        treatment_program_participant = person(
+            "is_in_medicaid_community_engagement_treatment_program", period
+        )
         # Current and recent incarceration exclusions/exceptions.
         is_incarcerated = person("is_incarcerated", period)
         was_recently_incarcerated = person(
@@ -90,6 +93,7 @@ class medicaid_work_requirement_eligible(Variable):
             | eligible_veteran
             | eligible_disabled
             | medically_frail
+            | treatment_program_participant
             | is_incarcerated
             | was_recently_incarcerated
         )
