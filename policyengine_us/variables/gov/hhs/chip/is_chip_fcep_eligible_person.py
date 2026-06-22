@@ -39,9 +39,4 @@ class is_chip_fcep_eligible_person(Variable):
         income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
-        return (
-            is_pregnant
-            & state_has_fcep
-            & ~medicaid_eligible
-            & income_eligible
-        )
+        return is_pregnant & state_has_fcep & ~medicaid_eligible & income_eligible
