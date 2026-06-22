@@ -6,4 +6,3 @@ class has_chip_health_coverage_at_interview(Variable):
     entity = Person
     label = "Person currently has CHIP health coverage"
     definition_period = YEAR
-
