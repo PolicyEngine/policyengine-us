@@ -1,9 +1,7 @@
 # Tests for nd_ccap_eligible_child (Person, MONTH, bool).
 # A child is eligible if under the age limit AND a US citizen or lawful
 # permanent resident (400-28-35-02, 400-28-50-25). The general age limit is
-# 13 (under 13) through 2026-03-31 and 12 (under 12) from 2026-04-01; the
-# special-needs / court-order limit is 19. Because test periods must be the
-# first month or a whole year, the 12-limit era is exercised at 2027-01.
+# 13 (under 13) across all years; the special-needs / court-order limit is 19.
 
 - name: Case 1, citizen infant, eligible.
   period: 2026-01
@@ -44,7 +42,7 @@
   output:
     nd_ccap_eligible_child: false
 
-- name: Case 4, age 12 eff 2027 (under-12 era), at the 12 limit, ineligible.
+- name: Case 4, citizen age 12 in a later year, still under the 13 limit, eligible.
   period: 2027-01
   input:
     people:
@@ -55,20 +53,21 @@
         members: [person1]
         state_code: ND
   output:
-    nd_ccap_eligible_child: false
+    # The under-13 limit applies in all years, so a 12-year-old stays eligible.
+    nd_ccap_eligible_child: true
 
-- name: Case 5, age 11 eff 2027 (under-12 era), under the 12 limit, eligible.
+- name: Case 5, citizen age 13 in a later year, at the 13 limit, ineligible.
   period: 2027-01
   input:
     people:
       person1:
-        age: 11
+        age: 13
     households:
       household:
         members: [person1]
         state_code: ND
   output:
-    nd_ccap_eligible_child: true
+    nd_ccap_eligible_child: false
 
 - name: Case 6, disabled age 15, under the 19 special-needs limit, eligible.
   period: 2026-01

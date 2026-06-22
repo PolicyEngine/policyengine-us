@@ -1,0 +1,90 @@
+# Tests for nd_ccap (SPMUnit, MONTH, USD), the top-level North Dakota CCAP
+# benefit. nd_ccap = base subsidy + QRIS step bonus + infant/toddler bonus, where
+# the base subsidy is min(state max rate, billed expenses) - co-payment floored
+# at zero and the two provider bonuses are additive (not capped at expenses and
+# not reduced by the co-payment) (400-28-100-05, 400-28-100-30). defined_for =
+# nd_ccap_eligible, so each case is a working parent with an eligible child in
+# North Dakota. Rates are the statewide flat monthly maximums effective
+# 2026-01-01; Center infant full-time = 1,240.
+
+- name: Case 1, infant in a step-3 center, base subsidy plus both bonuses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/mo
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # copay: ratio 0.322 -> 6% band; 2,500 * 0.06 = 150.
+    # base = min(1,240, 2,000) - 150 = 1,090.
+    # QRIS step 3 (2026) bonus 1,240 * 0.05 = 62; infant bonus 200.
+    # nd_ccap = 1,090 + 62 + 200 = 1,352.
+    nd_ccap: 1_352
+
+- name: Case 2, infant at a step-2 center with the co-payment waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived (<= 30% SMI)
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # base = min(1,240, 2,000) - 0 = 1,240.
+    # QRIS step 2 carries no bonus in 2026; infant bonus 200.
+    # nd_ccap = 1,240 + 0 + 200 = 1,440.
+    nd_ccap: 1_440
+
+- name: Case 3, zero billed expenses, base subsidy is zero but the bonuses still pay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived (<= 30% SMI)
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0  # no billed expenses
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # base = min(1,240, 0) - 0 = 0 (the expense cap zeroes it).
+    # the bonuses are NOT capped at expenses: QRIS step 3 (2026) 1,240 * 0.05 =
+    # 62; infant bonus 200. nd_ccap = 0 + 62 + 200 = 262.
+    nd_ccap: 262

@@ -16,9 +16,13 @@ class nd_ccap_parent_in_eligible_activity(Variable):
         # activity is documented through proof of income (400-28-55-05). A
         # parent qualifies with positive wages, nonzero self-employment income
         # (a business loss still evidences active self-employment), full-time
-        # student status, TANF enrollment, or a disability (incapacity). We do
-        # not capture not-yet-paid new employment or active job search at the
-        # moment.
+        # student status, or TANF enrollment. A disabled caretaker also
+        # establishes a child care need: in a one-caretaker household child
+        # care is allowed when the caretaker is disabled, and in a
+        # two-caretaker household when one caretaker is in an activity and the
+        # other is disabled (Incapacity of a Caretaker/Child 400-28-35-15).
+        # We do not capture not-yet-paid new employment or active job search at
+        # the moment.
         has_earnings = (person("employment_income", period) > 0) | (
             person("self_employment_income", period) != 0
         )

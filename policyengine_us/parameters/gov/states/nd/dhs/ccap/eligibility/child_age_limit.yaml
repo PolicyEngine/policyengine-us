@@ -1,12 +1,10 @@
 description: North Dakota limits eligibility to children below this age under the Child Care Assistance Program.
 
 # Children are eligible through the month of their 13th birthday (under 13).
-# Effective April 1, 2026, eligibility runs through the month the child turns
-# 12 (under 12), aligning to state law. The 2020 entry is placed at
-# PolicyEngine's backdating floor.
+# The 2020 entry is placed at PolicyEngine's backdating floor. A reported
+# under-12 change effective April 1, 2026 was reverted pending a primary source.
 values:
   2020-01-01: 13
-  2026-04-01: 12
 
 metadata:
   unit: year
@@ -15,5 +13,3 @@ metadata:
   reference:
     - title: North Dakota CCAP Policy Manual, Eligible Children 400-28-35-02
       href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
-    - title: North Dakota HHS Child Care Assistance Program updates 2026
-      href: https://www.hhs.nd.gov/ec-news/child-care-assistance-program-ccap-updates-2026

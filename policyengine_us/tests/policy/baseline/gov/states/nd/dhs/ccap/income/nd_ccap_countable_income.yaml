@@ -1,9 +1,9 @@
 # Tests for nd_ccap_countable_income (SPMUnit, MONTH, USD).
 # Countable income is gross countable income minus the earned income of
-# household members under 18 and minus the court-ordered child/spousal support
-# deduction, floored at zero (400-28-65-15, 400-28-65-30). Annual person-level
-# income inputs are read with the bare monthly period, so Core auto-divides
-# them to monthly amounts.
+# household members under 19 and minus the court-ordered child/spousal support
+# deduction, floored at zero (400-28-65-10-05, 400-28-65-15, 400-28-65-30).
+# Annual person-level income inputs are read with the bare monthly period, so
+# Core auto-divides them to monthly amounts.
 
 - name: Case 1, single earner, gross equals countable.
   period: 2026-01
@@ -108,3 +108,47 @@
         state_code: ND
   output:
     nd_ccap_countable_income: 0
+
+- name: Case 6, an 18-year-old child's earned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000  # 3,000/mo
+      person2:
+        age: 18
+        employment_income: 6_000  # 500/mo, excluded as a child under 19
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,000 + 500 - 500 (18-year-old's earnings excluded under age 19) = 3,000
+    nd_ccap_countable_income: 3_000
+
+- name: Case 7, a 19-year-old child's earned income is counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000  # 3,000/mo
+      person2:
+        age: 19
+        employment_income: 6_000  # 500/mo, counted at age 19 and over
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,000 + 500 (19-year-old's earnings counted) = 3,500
+    nd_ccap_countable_income: 3_500

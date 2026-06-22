@@ -84,6 +84,7 @@
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
     spm_units:
       spm_unit:
@@ -99,7 +100,8 @@
     nd_ccap_eligible: true
     # ratio 0.799 > 40% -> copay capped at 7%: 6,200 * 0.07 = 434.
     # CENTER infant full-time 1,240; expenses 2,000 capped at 1,240.
-    # base = 1,240 - 434 = 806; infant bonus 200; nd_ccap = 1,006.
+    # base = 1,240 - 434 = 806. Step 2 carries no QRIS bonus in 2026 but
+    # unlocks the infant bonus 200; nd_ccap = 806 + 200 = 1,006.
     nd_ccap: 1_006
 
 - name: Case 4, family at or below 30% SMI has the co-payment waived.
@@ -113,6 +115,7 @@
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
     spm_units:
       spm_unit:
@@ -141,6 +144,7 @@
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
     spm_units:
       spm_unit:
@@ -304,6 +308,7 @@
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
     spm_units:
       spm_unit:
@@ -389,14 +394,17 @@
       person3:
         age: 0.5
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
       person4:
         age: 1.0
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
         childcare_hours_per_week: 40
       person5:
         age: 2.0
         nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the toddler bonus (step 2+)
         childcare_hours_per_week: 40
       person6:
         age: 6.0
@@ -427,8 +435,9 @@
     # (no "not in care" flag), so the pooled cap is 3,604 + 3 * 416 = 4,852;
     # expenses 10,000 do not bind. base = 4,852 - 0 = 4,852.
     nd_ccap_base_subsidy: 4_852
-    # infant/toddler bonuses: 200 + 200 + 115 = 515; no QRIS step set.
-    # nd_ccap = 4,852 + 515 = 5,367.
+    # all three children in care are at a step-2 provider, which unlocks the
+    # infant/toddler bonuses (200 + 200 + 115 = 515) but carries no QRIS step
+    # bonus in 2026. nd_ccap = 4,852 + 515 = 5,367.
     nd_ccap: 5_367
 
 - name: Case 15, disabled infant at a QRIS step-4 center stacks special needs and bonuses.
