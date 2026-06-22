@@ -26,3 +26,99 @@
     az_property_tax_credit_agi: 3_766.08
     # Income $3,766.08 > threshold $3,751 for single, so not eligible
     az_property_tax_credit: 0
+
+# HB 4168 (2026): combined-effect integration test. A single adult with one
+# dependent (head of household) exercising all five changes at once:
+#   1. Dependent credit: under-17 amount is $125 (was $100).
+#   2. Charitable add-on: capped at the $1,000 HOH cap (full $1,500 would have
+#      applied pre-cap; 2025 add-on would have been $1,500 * 0.34 = $510).
+#   3. Dependent care subtraction: childcare expenses minus CDCC.
+#   4. 530A distribution subtraction.
+#   5. New subtractions flow into az_subtractions / az_agi.
+- name: HB 4168 (2026) combined effect - HOH with dependent
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        az_530a_distribution: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 1_500
+        tax_unit_childcare_expenses: 5_000
+        cdcc: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    # Dependent credit: under-17 = $125 in 2026
+    az_dependent_tax_credit: 125
+    # Charitable add-on: min($1,500, $1,000 HOH cap) = $1,000
+    az_increased_standard_deduction_for_charitable_contributions: 1_000
+    # Standard deduction: $23,625 base + $1,000 add-on = $24,625
+    az_standard_deduction: 24_625
+    # Dependent care: max($5,000 - $1,200, 0) = $3,800
+    az_dependent_care_expense_subtraction: 3_800
+    # 530A distribution subtraction: $1,000
+    az_530a_distribution_subtraction: 1_000
+    # az_subtractions includes both new subtractions: $3,800 + $1,000 = $4,800
+    az_subtractions: 4_800
+    # AZ AGI = $80,000 - $4,800 = $75,200
+    az_agi: 75_200
+    # Taxable income = $75,200 - $24,625 = $50,575
+    az_taxable_income: 50_575
+    # Tax before credits = $50,575 * 2.5% = $1,264.375
+    az_income_tax_before_non_refundable_credits: 1_264.375
+    # AZ income tax = $1,264.375 - $125 dependent credit = $1,139.375
+    az_income_tax: 1_139.375
+
+# Confirms the pre-2026 regime is UNCHANGED for the identical household.
+# In 2025: dependent credit is $100, charitable add-on uses the 0.34 rate
+# ($510), and the new dependent-care / 530A subtractions are NOT in the 2025
+# subtractions list, so az_subtractions stays $0 and az_agi is unchanged.
+- name: HB 4168 pre-2026 unchanged - HOH with dependent (2025)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        az_530a_distribution: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 1_500
+        tax_unit_childcare_expenses: 5_000
+        cdcc: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_filing_status: HEAD_OF_HOUSEHOLD
+    # Dependent credit: under-17 = $100 in 2025 (unchanged regime)
+    az_dependent_tax_credit: 100
+    # Charitable add-on: $1,500 * 0.34 rate = $510 (rate regime, no cap)
+    az_increased_standard_deduction_for_charitable_contributions: 510
+    # Standard deduction: $23,625 base + $510 add-on = $24,135
+    az_standard_deduction: 24_135
+    # New subtractions are NOT in the 2025 list, so az_subtractions stays $0
+    az_subtractions: 0
+    # AZ AGI unchanged by the new subtractions: $80,000
+    az_agi: 80_000
+    # Taxable income = $80,000 - $24,135 = $55,865
+    az_taxable_income: 55_865
+    # Tax before credits = $55,865 * 2.5% = $1,396.625
+    az_income_tax_before_non_refundable_credits: 1_396.625
+    # AZ income tax = $1,396.625 - $100 dependent credit = $1,296.625
+    az_income_tax: 1_296.625

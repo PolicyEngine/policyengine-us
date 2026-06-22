@@ -1,0 +1,14 @@
+description: Arizona limits the state and local tax itemized deduction to this amount, in lieu of the federal deduction allowed under Internal Revenue Code section 164(b)(7).
+values:
+  2018-01-01: .inf
+  2026-01-01: 10_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona itemized state and local tax deduction cap
+  reference:
+    - title: A.R.S. 43-1042(D)
+      href: https://www.azleg.gov/ars/43/01042.htm
+    - title: Arizona HB 4168 (2026), Sec. 17, amending A.R.S. 43-1042(D)
+      href: https://www.azleg.gov/legtext/57leg/2R/bills/HB4168P.pdf

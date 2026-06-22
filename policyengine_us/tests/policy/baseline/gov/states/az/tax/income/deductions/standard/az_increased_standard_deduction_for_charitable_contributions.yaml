@@ -68,3 +68,52 @@
   output:
     # ($10,000 - $1,500) * 0.34 = $2,890
     az_increased_standard_deduction_for_charitable_contributions: 2_890
+
+# HB 4168 (2026): rate drops to 0 and the add-on becomes the full charitable
+# contribution amount, capped by filing status ($1,000 single/separate/HOH,
+# $2,000 joint). The rate-based and cap-based regimes do not overlap.
+
+- name: test for 2026 single filer over cap
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    charitable_deduction: 1_500
+    az_charitable_contributions_credit_potential: 0
+  output:
+    # rate (0) * 1_500 + min($1,500, $1,000 single cap) = $1,000
+    az_increased_standard_deduction_for_charitable_contributions: 1_000
+
+- name: test for 2026 single filer under cap
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    charitable_deduction: 600
+    az_charitable_contributions_credit_potential: 0
+  output:
+    # rate (0) * 600 + min($600, $1,000 single cap) = $600
+    az_increased_standard_deduction_for_charitable_contributions: 600
+
+- name: test for 2026 joint filer over cap
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    charitable_deduction: 2_500
+    az_charitable_contributions_credit_potential: 0
+  output:
+    # rate (0) * 2_500 + min($2,500, $2,000 joint cap) = $2,000
+    az_increased_standard_deduction_for_charitable_contributions: 2_000
+
+- name: test for 2026 cap applied after charitable contributions credit
+  period: 2026
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    charitable_deduction: 1_200
+    az_charitable_contributions_credit_potential: 400
+  output:
+    # charitable after credit = max($1,200 - $400, 0) = $800
+    # rate (0) * 800 + min($800, $1,000 single cap) = $800
+    az_increased_standard_deduction_for_charitable_contributions: 800

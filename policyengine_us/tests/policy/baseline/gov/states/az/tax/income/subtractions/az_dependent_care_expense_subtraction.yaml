@@ -1,0 +1,35 @@
+# HB 4168 (2026): A.R.S. 43-1022(34) subtracts IRC 21 child and dependent
+# care expenses that exceed the federal IRC 21 credit (CDCC). No cap. The
+# subtraction is floored at zero.
+
+- name: Case 1, childcare expenses exceed the federal credit.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: AZ
+    tax_unit_childcare_expenses: 5_000
+    cdcc: 1_200
+  output:
+    # max($5,000 - $1,200, 0) = $3,800
+    az_dependent_care_expense_subtraction: 3_800
+
+- name: Case 2, childcare expenses below the federal credit, floored at zero.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: AZ
+    tax_unit_childcare_expenses: 1_000
+    cdcc: 1_500
+  output:
+    # max($1,000 - $1,500, 0) = $0
+    az_dependent_care_expense_subtraction: 0
+
+- name: Case 3, no childcare expenses.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: AZ
+    tax_unit_childcare_expenses: 0
+    cdcc: 0
+  output:
+    az_dependent_care_expense_subtraction: 0
