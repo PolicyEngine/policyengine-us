@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
-    medicaid_claiming_tax_unit_sum,
+    medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
 
@@ -63,8 +63,8 @@ class medicaid_household_income(Variable):
             tax_member_income,
         )
         known_claiming_tax_unit = person("medicaid_has_known_claiming_tax_unit", period)
-        claimant_tax_household_income = medicaid_claiming_tax_unit_sum(
-            person, period, tax_member_income
+        claimant_tax_household_income = medicaid_claiming_tax_unit_value(
+            person, period, tax_household_income
         )
 
         return where(

@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
-    medicaid_claiming_tax_unit_sum,
+    medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
 
@@ -50,8 +50,8 @@ class medicaid_household_size(Variable):
             person_count,
         ).astype(int)
         known_claiming_tax_unit = person("medicaid_has_known_claiming_tax_unit", period)
-        claimant_tax_household_size = medicaid_claiming_tax_unit_sum(
-            person, period, person_count
+        claimant_tax_household_size = medicaid_claiming_tax_unit_value(
+            person, period, tax_household_size
         ).astype(int)
 
         # Count the applicant's unborn children in their own household size.
