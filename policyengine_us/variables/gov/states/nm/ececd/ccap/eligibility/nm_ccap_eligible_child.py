@@ -29,9 +29,14 @@ class nm_ccap_eligible_child(Variable):
             age < p.special_needs_child_age_limit,
             age < p.child_age_limit,
         )
-        # 8.15.2.11.E: child must be a citizen or qualified immigrant. This
-        # test is retained for all years, including under Universal Child Care.
-        immigration_eligible = person(
-            "is_ccdf_immigration_eligible_child", period.this_year
-        )
-        return age_eligible & immigration_eligible
+        # 8.15.2.11.E: before Universal Child Care, a child must be a citizen or
+        # qualified immigrant. Under Universal Child Care (from 2025-11-01) this
+        # bar is removed: a participating child without a federally eligible
+        # status is served with state funds, so status only sets the funding
+        # source, not eligibility (ECECD Universal Child Care).
+        if p.immigration_test_in_effect:
+            immigration_eligible = person(
+                "is_ccdf_immigration_eligible_child", period.this_year
+            )
+            return age_eligible & immigration_eligible
+        return age_eligible

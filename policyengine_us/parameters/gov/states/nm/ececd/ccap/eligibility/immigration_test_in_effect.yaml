@@ -1,0 +1,18 @@
+description: New Mexico uses this indicator to determine whether a child citizenship or qualified-immigrant test applies under the Child Care Assistance Program.
+# Universal Child Care (effective November 1, 2025) removes the child-level
+# citizenship/immigration test; a participating child without a federally
+# eligible status is served with state funds, so status only sets the funding
+# source, not eligibility.
+values:
+  2016-10-01: true
+  2025-11-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: New Mexico CCAP immigration test in effect
+  reference:
+    - title: 8.15.2.11.E NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+    - title: ECECD Universal Child Care
+      href: https://www.nmececd.org/universal/

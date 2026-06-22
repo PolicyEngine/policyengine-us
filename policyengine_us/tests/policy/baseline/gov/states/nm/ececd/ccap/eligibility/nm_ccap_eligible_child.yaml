@@ -197,3 +197,47 @@
         state_code: NM
   output:
     nm_ccap_eligible_child: [false, false]
+
+# ============================================================
+# Universal Child Care (from 2025-11-01) removes the child-level
+# citizenship/qualified-immigrant test (8.15.2.11.E NMAC pre-UCC;
+# ECECD Universal Child Care post-UCC). Before UCC the test bars
+# non-qualified-immigrant children; after UCC they are eligible.
+# ============================================================
+
+- name: Case 11, pre-UCC undocumented child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Under 13 but undocumented; immigration test in effect -> ineligible.
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+- name: Case 12, post-UCC undocumented child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Same undocumented child; Universal Child Care removes the immigration
+        # test, so the child is eligible on age alone.
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
