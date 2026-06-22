@@ -49,3 +49,20 @@
     tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
     households: {household: {members: [parent], state_name: AR}}
   output: {ar_personal_credits: 29}
+
+- name: AR dependent credit reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 0
+    people:
+      parent1: {age: 40, employment_income: 50_000}
+      parent2: {age: 38}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent1, parent2, child1, child2], filing_status: JOINT}}
+    households: {household: {members: [parent1, parent2, child1, child2], state_name: AR}}
+  # Head + spouse each receive the base personal credit: 2 * 29 = 58.
+  # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
+  output: {ar_personal_credits: 58}
