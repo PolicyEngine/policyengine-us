@@ -21,6 +21,10 @@ class nd_ccap_eligible_child(Variable):
         # court-order pathway is not tracked at the moment (400-28-35-02).
         is_disabled = person("is_disabled", period.this_year)
         age_limit = where(is_disabled, p.disabled_child_age_limit, p.child_age_limit)
+        # A child who turns 13 mid-eligibility-period stays eligible through the
+        # next review (up to age 14) under the grandfather/grace rule. We don't
+        # track the application/review month at the moment, so we use a flat
+        # age < 13 cutoff instead (400-28-35-02).
         age_eligible = age < age_limit
         # The child (not the caretaker) must be a United States citizen or an
         # alien lawfully admitted for permanent residence (400-28-50-25). This

@@ -22,4 +22,8 @@ class nd_ccap_income_eligible(Variable):
         initial_limit = monthly_smi * p.initial_smi_rate
         continuing_limit = monthly_smi * p.continuing_smi_rate
         income_limit = where(enrolled, continuing_limit, initial_limit)
+        # The CCAP Workforce Benefit waives the income limit (and copay) for
+        # eligible early-childhood workforce families. We don't track which
+        # families qualify for the Workforce Benefit at the moment, so this
+        # waiver is not modeled.
         return countable_income <= income_limit
