@@ -46,14 +46,12 @@
     oh_ccap_base_rate: [0, 1_265.98]
     oh_ccap_rate_with_addons: [0, 1_265.98]
     # Copay (size 2): ratio = 2,000*12/21,640 = 1.109, which rounds up to the
-    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074. In float32 the rounded
-    # ratio lands fractionally below 1.15, so the multiplier lookup returns the
-    # 1.10 band rate of 0.0735; weekly = round(2,074*0.0735) = round(152.4) = 152;
-    # monthly copay = 152.
-    oh_ccap_copay: 152
-    # 1,265.98 - 152 = 1,113.98.
-    oh_ccap: 1_113.98
-    oh_child_care_subsidies: 1_113.98
+    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074; multiplier 0.077;
+    # weekly = round(2,074*0.077) = round(159.7) = 160; monthly copay = 160.
+    oh_ccap_copay: 160
+    # 1,265.98 - 160 = 1,105.98.
+    oh_ccap: 1_105.98
+    oh_child_care_subsidies: 1_105.98
 
 - name: Case 2, Gold-rated center with a copay, family of three.
   period: 2026-01
@@ -385,10 +383,8 @@
     # Gold +25% = 881.35.
     oh_ccap_rate_with_addons: [0, 881.35]
     # Copay (size 2): ratio = 2,000*12/21,640 = 1.109, which rounds up to the
-    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074. In float32 the rounded
-    # ratio lands fractionally below 1.15, so the multiplier lookup returns the
-    # 1.10 band rate of 0.0735; weekly = round(2,074*0.0735) = round(152.4) = 152;
-    # monthly copay = 152.
-    oh_ccap_copay: 152
-    # 881.35 - 152 = 729.35.
-    oh_ccap: 729.35
+    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074; multiplier 0.077;
+    # weekly = round(2,074*0.077) = round(159.7) = 160; monthly copay = 160.
+    oh_ccap_copay: 160
+    # 881.35 - 160 = 721.35.
+    oh_ccap: 721.35

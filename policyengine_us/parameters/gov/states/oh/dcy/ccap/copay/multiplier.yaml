@@ -11,112 +11,116 @@ metadata:
       href: https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/2/16/5180$2-16-05_PH_FF_A_APP5_20221201_0903.pdf#page=1
 
 # The formula rounds the family's percentage of the federal poverty guideline
-# up to the next five percent, then looks up the multiplier for that band.
-# Each threshold below is the rounded band (1.05 = 105% FPG, etc.).
+# up to the next five percent, then looks up the multiplier for that band. Each
+# band label below is the rounded band (1.05 = 105% FPG, etc.), but the
+# thresholds are shifted down by 1e-4 (1.05 -> 1.0499, ...) so that a rounded
+# ratio landing exactly on a band, which float32 stores as e.g. 1.0499999,
+# still lands in that band rather than the prior one. The 0.05 spacing must stay
+# in lockstep with the np.ceil(..., 0.05) rounding in oh_ccap_copay.py.
 brackets:
   - threshold:
       2022-12-01: 0
     amount:
       2022-12-01: 0
-  - threshold:
-      2022-12-01: 1.05
+  - threshold:  # 105% FPG
+      2022-12-01: 1.0499
     amount:
       2022-12-01: 0.07
-  - threshold:
-      2022-12-01: 1.1
+  - threshold:  # 110% FPG
+      2022-12-01: 1.0999
     amount:
       2022-12-01: 0.0735
-  - threshold:
-      2022-12-01: 1.15
+  - threshold:  # 115% FPG
+      2022-12-01: 1.1499
     amount:
       2022-12-01: 0.077
-  - threshold:
-      2022-12-01: 1.2
+  - threshold:  # 120% FPG
+      2022-12-01: 1.1999
     amount:
       2022-12-01: 0.0805
-  - threshold:
-      2022-12-01: 1.25
+  - threshold:  # 125% FPG
+      2022-12-01: 1.2499
     amount:
       2022-12-01: 0.084
-  - threshold:
-      2022-12-01: 1.3
+  - threshold:  # 130% FPG
+      2022-12-01: 1.2999
     amount:
       2022-12-01: 0.0875
   # 135% through 200% are a flat plateau at 0.0875.
-  - threshold:
-      2022-12-01: 2.05
+  - threshold:  # 205% FPG
+      2022-12-01: 2.0499
     amount:
       2022-12-01: 0.09
-  - threshold:
-      2022-12-01: 2.1
+  - threshold:  # 210% FPG
+      2022-12-01: 2.0999
     amount:
       2022-12-01: 0.1
-  - threshold:
-      2022-12-01: 2.15
+  - threshold:  # 215% FPG
+      2022-12-01: 2.1499
     amount:
       2022-12-01: 0.11
-  - threshold:
-      2022-12-01: 2.2
+  - threshold:  # 220% FPG
+      2022-12-01: 2.1999
     amount:
       2022-12-01: 0.12
-  - threshold:
-      2022-12-01: 2.25
+  - threshold:  # 225% FPG
+      2022-12-01: 2.2499
     amount:
       2022-12-01: 0.13
-  - threshold:
-      2022-12-01: 2.3
+  - threshold:  # 230% FPG
+      2022-12-01: 2.2999
     amount:
       2022-12-01: 0.14
-  - threshold:
-      2022-12-01: 2.35
+  - threshold:  # 235% FPG
+      2022-12-01: 2.3499
     amount:
       2022-12-01: 0.15
-  - threshold:
-      2022-12-01: 2.4
+  - threshold:  # 240% FPG
+      2022-12-01: 2.3999
     amount:
       2022-12-01: 0.16
-  - threshold:
-      2022-12-01: 2.45
+  - threshold:  # 245% FPG
+      2022-12-01: 2.4499
     amount:
       2022-12-01: 0.17
-  - threshold:
-      2022-12-01: 2.5
+  - threshold:  # 250% FPG
+      2022-12-01: 2.4999
     amount:
       2022-12-01: 0.18
-  - threshold:
-      2022-12-01: 2.55
+  - threshold:  # 255% FPG
+      2022-12-01: 2.5499
     amount:
       2022-12-01: 0.19
-  - threshold:
-      2022-12-01: 2.6
+  - threshold:  # 260% FPG
+      2022-12-01: 2.5999
     amount:
       2022-12-01: 0.2
-  - threshold:
-      2022-12-01: 2.65
+  - threshold:  # 265% FPG
+      2022-12-01: 2.6499
     amount:
       2022-12-01: 0.21
-  - threshold:
-      2022-12-01: 2.7
+  - threshold:  # 270% FPG
+      2022-12-01: 2.6999
     amount:
       2022-12-01: 0.22
-  - threshold:
-      2022-12-01: 2.75
+  - threshold:  # 275% FPG
+      2022-12-01: 2.7499
     amount:
       2022-12-01: 0.23
-  - threshold:
-      2022-12-01: 2.8
+  - threshold:  # 280% FPG
+      2022-12-01: 2.7999
     amount:
       2022-12-01: 0.24
-  - threshold:
-      2022-12-01: 2.85
+  - threshold:  # 285% FPG
+      2022-12-01: 2.8499
     amount:
       2022-12-01: 0.25
-  - threshold:
-      2022-12-01: 2.9
+  - threshold:  # 290% FPG
+      2022-12-01: 2.8999
     amount:
       2022-12-01: 0.26
   # 295% and 300% share the 0.27 multiplier (300% is the eligibility ceiling).
-  - threshold:
-      2022-12-01: 2.95
+  - threshold:  # 295% FPG
+      2022-12-01: 2.9499
     amount:
       2022-12-01: 0.27

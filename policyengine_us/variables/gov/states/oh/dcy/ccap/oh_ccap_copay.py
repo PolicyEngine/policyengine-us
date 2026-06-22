@@ -29,7 +29,12 @@ class oh_ccap_copay(Variable):
         fpg_annual = fpg_monthly * MONTHS_IN_YEAR
         annual_income = monthly_income * MONTHS_IN_YEAR
         fpl_ratio = where(fpg_annual > 0, annual_income / fpg_annual, 0)
-        # (B)(3): round the FPL ratio up to the next five per cent.
+        # (B)(3): round the FPL ratio up to the next five per cent. The literal
+        # 0.05 is the regulation's (B)(3) rounding granularity; its spacing must
+        # stay in lockstep with the threshold spacing in copay/multiplier.yaml
+        # (1.05, 1.10, ...). Those thresholds are shifted down by 1e-4 so that a
+        # ratio rounded exactly onto a 5% band (which float32 stores as e.g.
+        # 1.0499999) still lands in that band rather than the prior one.
         rounded_ratio = np.ceil(fpl_ratio / 0.05) * 0.05
         # (B)(4): the band's maximum monthly income is the rounded percentage
         # times the annual FPG, divided by twelve, rounded up to the nearest

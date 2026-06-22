@@ -21,6 +21,9 @@ values:
     - dividend_income
     - interest_income
     - veterans_benefits
+    # 5180:2-16-03(H)(3)(c): railroad disability, retirement, or survivor's
+    # benefits are countable unearned income.
+    - railroad_benefits
     # Basic assistance payments from Ohio Works First (OWF) are countable per
     # 5180:2-16-03(H)(3)(j) but are omitted here to avoid a circular
     # dependency:
