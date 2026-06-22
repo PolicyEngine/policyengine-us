@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MN, MS, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MN, MS, NC, NH, NJ, OH, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -609,6 +609,12 @@ programs:
         name: Delaware POC
         full_name: Delaware Purchase of Care
         variable: de_poc
+      - state: OH
+        status: complete
+        name: Ohio Publicly Funded Child Care
+        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care)
+        variable: oh_child_care_subsidies
+        parameter_prefix: gov.states.oh.dcy.ccap
       - state: PA
         status: complete
         name: Pennsylvania CCW

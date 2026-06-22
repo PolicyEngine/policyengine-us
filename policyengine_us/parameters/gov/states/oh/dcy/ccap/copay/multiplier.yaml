@@ -1,0 +1,122 @@
+description: Ohio applies this multiplier to the family's federal-poverty-band maximum monthly income to determine the weekly copayment under the Publicly Funded Child Care program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Ohio PFCC copayment multiplier
+  reference:
+    - title: OAC 5180:2-16-05 Appendix A — Copayment Calculation Table
+      href: https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/2/16/5180$2-16-05_PH_FF_A_APP5_20221201_0903.pdf#page=1
+
+# The formula rounds the family's percentage of the federal poverty guideline
+# up to the next five percent, then looks up the multiplier for that band.
+# Each threshold below is the rounded band (1.05 = 105% FPG, etc.).
+brackets:
+  - threshold:
+      2022-12-01: 0
+    amount:
+      2022-12-01: 0
+  - threshold:
+      2022-12-01: 1.05
+    amount:
+      2022-12-01: 0.07
+  - threshold:
+      2022-12-01: 1.1
+    amount:
+      2022-12-01: 0.0735
+  - threshold:
+      2022-12-01: 1.15
+    amount:
+      2022-12-01: 0.077
+  - threshold:
+      2022-12-01: 1.2
+    amount:
+      2022-12-01: 0.0805
+  - threshold:
+      2022-12-01: 1.25
+    amount:
+      2022-12-01: 0.084
+  - threshold:
+      2022-12-01: 1.3
+    amount:
+      2022-12-01: 0.0875
+  # 135% through 200% are a flat plateau at 0.0875.
+  - threshold:
+      2022-12-01: 2.05
+    amount:
+      2022-12-01: 0.09
+  - threshold:
+      2022-12-01: 2.1
+    amount:
+      2022-12-01: 0.1
+  - threshold:
+      2022-12-01: 2.15
+    amount:
+      2022-12-01: 0.11
+  - threshold:
+      2022-12-01: 2.2
+    amount:
+      2022-12-01: 0.12
+  - threshold:
+      2022-12-01: 2.25
+    amount:
+      2022-12-01: 0.13
+  - threshold:
+      2022-12-01: 2.3
+    amount:
+      2022-12-01: 0.14
+  - threshold:
+      2022-12-01: 2.35
+    amount:
+      2022-12-01: 0.15
+  - threshold:
+      2022-12-01: 2.4
+    amount:
+      2022-12-01: 0.16
+  - threshold:
+      2022-12-01: 2.45
+    amount:
+      2022-12-01: 0.17
+  - threshold:
+      2022-12-01: 2.5
+    amount:
+      2022-12-01: 0.18
+  - threshold:
+      2022-12-01: 2.55
+    amount:
+      2022-12-01: 0.19
+  - threshold:
+      2022-12-01: 2.6
+    amount:
+      2022-12-01: 0.2
+  - threshold:
+      2022-12-01: 2.65
+    amount:
+      2022-12-01: 0.21
+  - threshold:
+      2022-12-01: 2.7
+    amount:
+      2022-12-01: 0.22
+  - threshold:
+      2022-12-01: 2.75
+    amount:
+      2022-12-01: 0.23
+  - threshold:
+      2022-12-01: 2.8
+    amount:
+      2022-12-01: 0.24
+  - threshold:
+      2022-12-01: 2.85
+    amount:
+      2022-12-01: 0.25
+  - threshold:
+      2022-12-01: 2.9
+    amount:
+      2022-12-01: 0.26
+  # 295% and 300% share the 0.27 multiplier (300% is the eligibility ceiling).
+  - threshold:
+      2022-12-01: 2.95
+    amount:
+      2022-12-01: 0.27
