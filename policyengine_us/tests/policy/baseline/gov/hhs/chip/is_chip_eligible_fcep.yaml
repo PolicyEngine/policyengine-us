@@ -93,6 +93,46 @@
   output:
     is_chip_fcep_eligible_person: False
 
+- name: Alabama FCEP is available in Montgomery County
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county_str: MONTGOMERY_COUNTY_AL
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+- name: Alabama FCEP is not available outside listed counties
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
+
 - name: Undocumented immigrant not eligible
   period: 2023
   input:

@@ -23,6 +23,17 @@ class is_chip_fcep_eligible_person(Variable):
         income_limit = p.income_limit[state_code]
 
         state_has_fcep = income_limit > 0
+        county_str = person.household("county_str", period)
+        in_alabama = state_code == StateCode.AL
+        alabama_fcep_county = np.isin(
+            county_str,
+            [
+                "MACON_COUNTY_AL",
+                "MONTGOMERY_COUNTY_AL",
+                "RUSSELL_COUNTY_AL",
+            ],
+        )
+        fcep_geographic_eligible = ~in_alabama | alabama_fcep_county
 
         # Check immigration status eligibility
         istatus = person("immigration_status", period)
@@ -42,6 +53,7 @@ class is_chip_fcep_eligible_person(Variable):
         return (
             is_pregnant
             & state_has_fcep
+            & fcep_geographic_eligible
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
