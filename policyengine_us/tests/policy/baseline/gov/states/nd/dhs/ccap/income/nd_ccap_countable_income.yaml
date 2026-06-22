@@ -1,0 +1,110 @@
+# Tests for nd_ccap_countable_income (SPMUnit, MONTH, USD).
+# Countable income is gross countable income minus the earned income of
+# household members under 18 and minus the court-ordered child/spousal support
+# deduction, floored at zero (400-28-65-15, 400-28-65-30). Annual person-level
+# income inputs are read with the bare monthly period, so Core auto-divides
+# them to monthly amounts.
+
+- name: Case 1, single earner, gross equals countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_countable_income: 3_000
+
+- name: Case 2, minor's earned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+      person2:
+        age: 10
+        employment_income: 6_000  # 500/mo, excluded as a minor's earnings
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,000 + 500 - 500 (minor earnings excluded) = 3,000
+    nd_ccap_countable_income: 3_000
+
+- name: Case 3, court-ordered child support paid is deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        child_support_expense: 12_000  # 1,000/mo deducted
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,000 - 1,000 = 2,000
+    nd_ccap_countable_income: 2_000
+
+- name: Case 4, Social Security counts as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 24_000  # 2,000/mo
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_countable_income: 2_000
+
+- name: Case 5, negative self-employment income is floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -120_000  # -10,000/mo
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_countable_income: 0

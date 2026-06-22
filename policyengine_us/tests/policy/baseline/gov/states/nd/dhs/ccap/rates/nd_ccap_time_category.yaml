@@ -1,0 +1,61 @@
+# Tests for nd_ccap_time_category (Person, MONTH, Enum).
+# Full-time level of care is 25 or more hours per week; part-time is 1 to fewer
+# than 25 hours per week (400-28-80-50). childcare_hours_per_week is a YEAR
+# variable read with period.this_year, so the weekly-hours value is passed
+# directly.
+
+- name: Case 1, 40 hours per week, full time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_time_category: FULL_TIME
+
+- name: Case 2, exactly 25 hours per week, full time (at the threshold).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 25
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_time_category: FULL_TIME
+
+- name: Case 3, 24 hours per week, part time (just below the threshold).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 24
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_time_category: PART_TIME
+
+- name: Case 4, 10 hours per week, part time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 10
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_time_category: PART_TIME

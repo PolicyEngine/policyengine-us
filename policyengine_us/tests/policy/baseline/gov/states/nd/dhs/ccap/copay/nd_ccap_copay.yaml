@@ -1,0 +1,249 @@
+# Tests for nd_ccap_copay (SPMUnit, MONTH, USD).
+# The family monthly co-payment is a share of countable monthly income by
+# income-to-SMI band, capped at 7% of income, and waived at or below 30% SMI or
+# for TANF recipients (400-28-90-10/-20; DN 241 10-2022). The bracket
+# percentages are PENDING validation against the HHS Power BI worksheet (the
+# copay/rate.yaml parameter); when those values change, update these expected
+# copays together.
+# 2-person ND monthly SMI for 2026 = $7,762.97 (30% = $2,328.89, 40% = $3,105.19).
+# Countable income is set directly and the unit is made eligible so copay
+# (defined_for = nd_ccap_eligible) is computed.
+
+- name: Case 1, income at or below 30% SMI, co-payment waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 2_000  # ratio 0.2576, at or below 30% SMI
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 2, income exactly at 30% SMI, co-payment waived (at or below).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 2_328.89  # exactly 30% SMI
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 3, income in the 30-40% SMI band, 6% of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 2_717.04  # ratio 0.35
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 2,717.04 * 0.06 = 163.02
+    nd_ccap_copay: 163.02
+
+- name: Case 4, income above 40% SMI, capped at 7% of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 3_881.49  # ratio 0.50
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,881.49 * 0.07 = 271.70
+    nd_ccap_copay: 271.70
+
+- name: Case 5, TANF recipient, co-payment waived regardless of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 5_000  # well above 40% SMI
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 6, negative countable income produces no co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: -5_000  # floored at zero in the formula
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 7, zero countable income, co-payment waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 0  # ratio 0, well below 30% SMI
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 8, income just above 30% SMI but at the band ceiling, still waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # ratio 0.3001 sits exactly on the 6% band threshold; the bracket
+        # applies 6% only strictly above 0.3001, so this lands in the 0% band.
+        nd_ccap_countable_income: 2_329.6672
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_copay: 0
+
+- name: Case 9, income at exactly 40% SMI, still in the 6% band (not yet 7%).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 3_105.1882  # exactly 40% SMI, ratio 0.40
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # ratio 0.40 < 0.4001, so still the 6% band: 3,105.1882 * 0.06 = 186.31.
+    nd_ccap_copay: 186.31
+
+- name: Case 10, income at the 40% band ceiling, still 6% (7% applies only above 40.01%).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # ratio 0.4001 sits exactly on the 7% band threshold; the bracket
+        # applies 7% only strictly above 0.4001, so this stays in the 6% band.
+        nd_ccap_countable_income: 3_105.9644
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 3,105.9644 * 0.06 = 186.36 (the 7% cap does not yet bind).
+    nd_ccap_copay: 186.36

@@ -1,0 +1,37 @@
+description: North Dakota sets the family monthly co-payment as this share of countable monthly income, by income as a share of the state median income, under the Child Care Assistance Program.
+
+# PENDING validation against current Power BI worksheet. North Dakota does not
+# publish a static co-pay percentage schedule; the family monthly co-pay is
+# computed through the HHS Power BI "Worksheet for Calculating Copay". The
+# bracket structure below recovers the schedule documented in DN 241 (10-2022):
+# the co-pay is waived at or below 30% SMI, then rises through the sliding-fee
+# levels to a 7% ceiling above 40% SMI. Replace these percentages once the
+# current Power BI values are confirmed. Brackets are keyed on income as a share
+# of the state median income; each "above X%" threshold is shifted by +0.0001 so
+# that income exactly at a band's ceiling stays in the lower band.
+
+brackets:
+  - threshold:
+      2022-10-01: 0
+    amount:
+      2022-10-01: 0  # at or below 30% SMI: waived
+  - threshold:
+      2022-10-01: 0.3001  # above 30% up to 40% SMI
+    amount:
+      2022-10-01: 0.06
+  - threshold:
+      2022-10-01: 0.4001  # above 40% SMI (capped at 7%)
+    amount:
+      2022-10-01: 0.07
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: North Dakota CCAP family co-payment rate by SMI share
+  reference:
+    - title: North Dakota CCAP Policy Manual, Co-pay Determination 400-28-90-10
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: DN 241 (10-2022) Sliding Fee Schedule, Child Care Assistance Program
+      href: https://ndlegis.gov/assembly/68-2023/testimony/SHUMSER-2190-20230118-13895-F-HOGAN_KATHY.pdf

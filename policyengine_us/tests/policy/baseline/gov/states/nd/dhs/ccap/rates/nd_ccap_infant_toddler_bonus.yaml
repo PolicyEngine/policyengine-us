@@ -1,0 +1,121 @@
+# Tests for nd_ccap_infant_toddler_bonus (Person, MONTH, USD).
+# A flat per-child provider payment of $200 for an infant or $115 for a toddler
+# attending 40 or more hours per month, paid to providers other than approved
+# relatives (400-28-100-30; HHS 2026 update). Effective 2026-01-01. The 40
+# hours/month condition is approximated as 9.3 child care hours per week.
+# Preschool and school-age children receive no bonus. defined_for =
+# nd_ccap_eligible_child.
+
+- name: Case 1, infant attending 40+ hours, $200 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 200
+
+- name: Case 2, toddler attending 40+ hours, $115 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 115
+
+- name: Case 3, infant below the weekly-hours threshold, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 9.0  # below the 9.3 approximation of 40 hours/month
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 4, infant at exactly the weekly-hours threshold, $200 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 9.3  # at the threshold
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 200
+
+- name: Case 5, infant at an approved-relative provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Approved relatives are not eligible for the licensed-provider bonus.
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 6, preschool child, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 7, school-age child, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 0

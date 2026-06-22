@@ -1,0 +1,18 @@
+description: North Dakota requires an infant or toddler to attend at least this many child care hours per week to qualify the provider for the infant/toddler bonus under the Child Care Assistance Program.
+
+# The bonus requires attendance of 40 or more hours per month. PolicyEngine
+# tracks weekly child care hours, so the monthly threshold is approximated as
+# 40 hours per month divided by the manual's 4.3 weeks-per-month conversion
+# factor (400-28-70-05), giving roughly 9.3 hours per week.
+values:
+  2026-01-01: 9.3
+
+metadata:
+  unit: hour
+  period: week
+  label: North Dakota CCAP infant/toddler bonus minimum weekly hours
+  reference:
+    - title: North Dakota HHS Child Care Assistance Program updates 2026
+      href: https://www.hhs.nd.gov/ec-news/child-care-assistance-program-ccap-updates-2026
+    - title: North Dakota CCAP Policy Manual, Income Conversion 400-28-70-05
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm

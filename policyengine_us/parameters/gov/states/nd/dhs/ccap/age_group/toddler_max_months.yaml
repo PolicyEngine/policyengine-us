@@ -1,0 +1,15 @@
+description: North Dakota classifies children below this age in months as toddlers for reimbursement rates under the Child Care Assistance Program.
+
+# The rate-table column "Toddler" covers 18 months through 35 months (under 36
+# months), matching the manual band of 18 months through the month the child
+# turns three years old (400-28-100-30).
+values:
+  2026-01-01: 36
+
+metadata:
+  unit: month
+  period: year
+  label: North Dakota CCAP toddler maximum age in months
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm

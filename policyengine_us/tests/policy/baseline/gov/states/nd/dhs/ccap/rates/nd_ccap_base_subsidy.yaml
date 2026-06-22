@@ -1,0 +1,84 @@
+# Tests for nd_ccap_base_subsidy (SPMUnit, MONTH, USD).
+# The base subsidy is the lesser of the summed per-child state maximum rates
+# and the family's billed child care expenses, minus the co-payment, floored at
+# zero (400-28-100-05). The special-needs +10% is already inside the state
+# maximum rate, so it sits within the expense cap. The two provider bonuses are
+# excluded from the base subsidy. defined_for = nd_ccap_eligible, so the unit
+# must be eligible (a working parent with an eligible child in North Dakota).
+
+- name: Case 1, rate-limited base, co-payment subtracted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/mo, ratio 0.515 -> copay 280
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # rate 1,240 < expenses 2,000, so capped at 1,240; copay 280.
+    # base = 1,240 - 280 = 960.
+    nd_ccap_base_subsidy: 960
+
+- name: Case 2, expense-limited base, co-payment waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived (<= 30% SMI)
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 7_200  # 600/mo, below the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # expenses 600 < rate 1,240, so capped at 600; copay 0.
+    # base = 600 - 0 = 600.
+    nd_ccap_base_subsidy: 600
+
+- name: Case 3, co-payment exceeds the capped rate, base floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo, ratio 0.644 -> copay 350
+      person2:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+        is_nd_ccap_enrolled: true  # 5,000/mo passes the 85% tier
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # approved-relative school-age full-time rate 348; copay 5,000 * 0.07 = 350.
+    # base = max(min(2,000, 348) - 350, 0) = max(-2, 0) = 0.
+    nd_ccap_base_subsidy: 0

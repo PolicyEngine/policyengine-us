@@ -1,0 +1,172 @@
+# Tests for nd_ccap_qris_step_bonus (Person, MONTH, USD).
+# The QRIS step bonus is a separate provider payment equal to the base state
+# maximum rate (full-time or part-time, excluding the special-needs +10%)
+# times the quality-step bonus rate (400-28-100-30). It is date-varying:
+#   2023-06-01 era: step 2 = +5%, step 3 = +10%, step 4 = +15%
+#   2026-01-01 era: step 2 = +0%, step 3 = +5%,  step 4 = +10%
+# The 2026 monthly rate table backfills to the 2025 era (the pre-2026 rate
+# schedule is not separately available), so the 2025 cases use the same base
+# rate but the earlier bonus percentages. Center infant full-time base = 1,240;
+# part-time base = 546. defined_for = nd_ccap_eligible_child.
+
+# --- 2026 era (step 2 eliminated; step 3 +5%, step 4 +10%) ---
+
+- name: Case 1, step 1 has no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_1
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_qris_step_bonus: 0
+
+- name: Case 2, step 2 eliminated in 2026, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_qris_step_bonus: 0
+
+- name: Case 3, step 3 in 2026 is +5% of the base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1,240 * 0.05 = 62
+    nd_ccap_qris_step_bonus: 62
+
+- name: Case 4, step 4 in 2026 is +10% of the base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1,240 * 0.10 = 124
+    nd_ccap_qris_step_bonus: 124
+
+- name: Case 5, unrated provider has no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_qris_step_bonus: 0
+
+- name: Case 6, step 4 part-time uses the part-time base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 20  # part-time
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # part-time base 546 * 0.10 = 54.6
+    nd_ccap_qris_step_bonus: 54.6
+
+# --- 2025 era (step 2 +5%, step 3 +10%, step 4 +15%) ---
+
+- name: Case 7, step 2 in 2025 is +5% of the base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1,240 * 0.05 = 62
+    nd_ccap_qris_step_bonus: 62
+
+- name: Case 8, step 3 in 2025 is +10% of the base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1,240 * 0.10 = 124
+    nd_ccap_qris_step_bonus: 124
+
+- name: Case 9, step 4 in 2025 is +15% of the base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # 1,240 * 0.15 = 186
+    nd_ccap_qris_step_bonus: 186

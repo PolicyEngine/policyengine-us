@@ -1,0 +1,154 @@
+# Tests for nd_ccap_eligible_child (Person, MONTH, bool).
+# A child is eligible if under the age limit AND a US citizen or lawful
+# permanent resident (400-28-35-02, 400-28-50-25). The general age limit is
+# 13 (under 13) through 2026-03-31 and 12 (under 12) from 2026-04-01; the
+# special-needs / court-order limit is 19. Because test periods must be the
+# first month or a whole year, the 12-limit era is exercised at 2027-01.
+
+- name: Case 1, citizen infant, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: true
+
+- name: Case 2, citizen age 12, under the 13 limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: true
+
+- name: Case 3, citizen age 13, at the 13 limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false
+
+- name: Case 4, age 12 eff 2027 (under-12 era), at the 12 limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false
+
+- name: Case 5, age 11 eff 2027 (under-12 era), under the 12 limit, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 11
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: true
+
+- name: Case 6, disabled age 15, under the 19 special-needs limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: true
+
+- name: Case 7, disabled age 19, at the 19 limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false
+
+- name: Case 8, non-disabled age 15, over the general limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false
+
+- name: Case 9, lawful permanent resident infant, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: true
+
+- name: Case 10, undocumented infant, immigration-ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false
+
+- name: Case 11, refugee infant, immigration-ineligible (narrower than CCDF).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: false

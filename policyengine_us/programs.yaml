@@ -654,6 +654,12 @@ programs:
         full_name: Georgia Childcare and Parent Services
         variable: ga_caps
         parameter_prefix: gov.states.ga.decal.caps
+      - state: ND
+        status: in_progress
+        name: North Dakota CCAP
+        full_name: North Dakota Child Care Assistance Program
+        variable: nd_ccap
+        parameter_prefix: gov.states.nd.dhs.ccap
 
   - id: head_start
     name: Head Start

@@ -1,0 +1,56 @@
+description: North Dakota provides these full-time monthly maximum reimbursement rates by provider type and age group under the Child Care Assistance Program.
+
+# Statewide flat full-time (25+ hours/week) monthly maximums effective
+# January 1, 2026, from the 2025 Market Rate Survey. Infant and toddler rates
+# are set at the 75th percentile of market rate; preschool and school-age rates
+# at the 50th percentile.
+
+metadata:
+  period: month
+  unit: currency-USD
+  label: North Dakota CCAP full-time monthly maximum rates
+  breakdown:
+    - nd_ccap_provider_type
+    - nd_ccap_age_group
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: North Dakota HHS Child Care Assistance Program provider rates
+      href: https://www.hhs.nd.gov/human-services/providers/ccap
+
+CENTER:
+  INFANT:
+    2026-01-01: 1_240
+  TODDLER:
+    2026-01-01: 1_124
+  PRESCHOOL:
+    2026-01-01: 940
+  SCHOOL_AGE:
+    2026-01-01: 800
+LICENSED_FAMILY:
+  INFANT:
+    2026-01-01: 900
+  TODDLER:
+    2026-01-01: 880
+  PRESCHOOL:
+    2026-01-01: 740
+  SCHOOL_AGE:
+    2026-01-01: 700
+SELF_DECLARED_TRIBAL:
+  INFANT:
+    2026-01-01: 646
+  TODDLER:
+    2026-01-01: 600
+  PRESCHOOL:
+    2026-01-01: 531
+  SCHOOL_AGE:
+    2026-01-01: 529
+APPROVED_RELATIVE:
+  INFANT:
+    2026-01-01: 422
+  TODDLER:
+    2026-01-01: 398
+  PRESCHOOL:
+    2026-01-01: 351
+  SCHOOL_AGE:
+    2026-01-01: 348
