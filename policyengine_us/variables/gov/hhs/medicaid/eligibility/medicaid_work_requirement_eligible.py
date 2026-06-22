@@ -13,9 +13,11 @@ class medicaid_work_requirement_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
-        # Works no less than 80 hours p.680 (2)(A)
-        monthly_hours_worked = person("monthly_hours_worked", period)
-        meets_monthly_work_hours = monthly_hours_worked >= p.monthly_hours_threshold
+        # Works or participates in qualifying activities no less than 80 hours.
+        activity_hours = person(
+            "medicaid_community_engagement_activity_hours", period
+        )
+        meets_monthly_activity_hours = activity_hours >= p.monthly_hours_threshold
         # Monthly income of at least federal minimum wage times 80 hours.
         monthly_income_threshold = (
             parameters(period).gov.dol.minimum_wage * p.monthly_hours_threshold
@@ -94,7 +96,7 @@ class medicaid_work_requirement_eligible(Variable):
             | was_recently_incarcerated
         )
         meets_base_requirement = (
-            meets_monthly_work_hours | meets_monthly_income | exempted_from_work
+            meets_monthly_activity_hours | meets_monthly_income | exempted_from_work
         )
         meets_conditions = meets_base_requirement | has_eligible_dependent_child
         return where(work_required_age, meets_conditions, True)
