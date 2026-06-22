@@ -23,6 +23,15 @@ class medicaid_work_requirement_eligible(Variable):
         meets_monthly_income = person("earned_income", period) >= (
             monthly_income_threshold * MONTHS_IN_YEAR
         )
+        seasonal_worker = person(
+            "is_medicaid_community_engagement_seasonal_worker", period
+        )
+        six_month_average_income = person(
+            "medicaid_community_engagement_six_month_average_income", period
+        )
+        meets_seasonal_worker_income = seasonal_worker & (
+            six_month_average_income >= monthly_income_threshold
+        )
         # The individual is enrolled in an educational program at least half-time.
         is_enrolled_at_least_half_time = person(
             "is_full_time_student", period
@@ -94,7 +103,10 @@ class medicaid_work_requirement_eligible(Variable):
             | was_recently_incarcerated
         )
         meets_base_requirement = (
-            meets_monthly_work_hours | meets_monthly_income | exempted_from_work
+            meets_monthly_work_hours
+            | meets_monthly_income
+            | meets_seasonal_worker_income
+            | exempted_from_work
         )
         meets_conditions = meets_base_requirement | has_eligible_dependent_child
         return where(work_required_age, meets_conditions, True)

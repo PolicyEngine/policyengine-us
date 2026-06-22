@@ -244,3 +244,39 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 27, seasonal worker with qualifying six-month average income meets the requirement.
+  period: 2027
+  input:
+    age: 30
+    employment_income: 0
+    monthly_hours_worked: 0
+    is_medicaid_community_engagement_seasonal_worker: true
+    medicaid_community_engagement_six_month_average_income: 580
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 28, seasonal worker below the six-month average income threshold fails.
+  period: 2027
+  input:
+    age: 30
+    employment_income: 0
+    monthly_hours_worked: 0
+    is_medicaid_community_engagement_seasonal_worker: true
+    medicaid_community_engagement_six_month_average_income: 579
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
+
+- name: Case 29, non-seasonal worker does not qualify through six-month average income.
+  period: 2027
+  input:
+    age: 30
+    employment_income: 0
+    monthly_hours_worked: 0
+    is_medicaid_community_engagement_seasonal_worker: false
+    medicaid_community_engagement_six_month_average_income: 580
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
