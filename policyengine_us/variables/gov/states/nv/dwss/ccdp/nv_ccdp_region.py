@@ -21,10 +21,10 @@ class nv_ccdp_region(Variable):
         # areas (Clark, Washoe, Carson-Douglas, Rural) across QRIS star tiers
         # 1-5. We collapse this to two modeled regions: the most populous region
         # (Clark County) and a lowest-percentile region that applies the Washoe
-        # 1-Star rates as the representative for every other county. This applies
-        # the Washoe-level rate to Carson-Douglas and rural counties (whose
-        # Manual rates are lower) and does not track star-level rate
-        # enhancements at the moment.
+        # rates as the representative for every other county. This applies the
+        # Washoe-level rate to Carson-Douglas and rural counties (whose Manual
+        # rates are lower). Star-level rate enhancements are tracked separately
+        # via nv_ccdp_provider_star_rating (default STAR_1 = base).
         # `county_str` is a Household accessor enumerating every US county, so
         # non-Nevada county strings flow through this formula in microsim even
         # though `defined_for` filters the output. Comparing the county string

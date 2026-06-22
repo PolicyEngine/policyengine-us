@@ -14,16 +14,18 @@ class nv_ccdp_provider_rate(Variable):
     reference = "https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=107"
 
     def formula(person, period, parameters):
-        # Policy Manual MS 633.2 Licensed Provider Daily Rates: per-day base
-        # reimbursement rate keyed by region x provider type x age group. These
-        # are the 1-Star (base) rates; the MS 633.2 QRIS star-level enhancements
-        # (stars 2-5) are a conservative floor we don't track at the moment.
+        # Policy Manual MS 633.2 Licensed Provider Daily Rates: per-day
+        # reimbursement rate keyed by region x provider type x age group x
+        # Nevada Silver State Stars QRIS tier. The star rating defaults to
+        # STAR_1 (the base rate), so a household with no provider star rating
+        # supplied falls back to the conservative floor.
         p = parameters(period).gov.states.nv.dwss.ccdp.rates
         provider_type = person("nv_ccdp_provider_type", period)
         region = person("nv_ccdp_region", period)
         age_group = person("nv_ccdp_age_group", period)
-        center_rate = p.center[region][age_group]
-        fcc_rate = p.fcc[region][age_group]
+        star = person("nv_ccdp_provider_star_rating", period)
+        center_rate = p.center[region][age_group][star]
+        fcc_rate = p.fcc[region][age_group][star]
         return where(
             provider_type == NVCCDPProviderType.FCC,
             fcc_rate,

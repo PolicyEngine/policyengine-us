@@ -1,4 +1,4 @@
-description: Nevada provides these daily base reimbursement rates for child care centers under the Child Care and Development Program.
+description: Nevada provides these daily reimbursement rates for child care centers under the Child Care and Development Program, by region, age group, and provider quality star rating.
 metadata:
   period: day
   unit: currency-USD
@@ -6,32 +6,105 @@ metadata:
   breakdown:
     - nv_ccdp_region
     - nv_ccdp_age_group
+    - nv_ccdp_provider_star_rating
   reference:
-    - title: Nevada Child Care Policy Manual, MS 633.2 Licensed Provider Daily Rates (1-Star base), Clark and Washoe areas (p.107)
+    - title: Nevada Child Care Policy Manual, MS 633.2 Licensed Provider Daily Rates (Center), Clark and Washoe areas (p.107)
       href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=107
 
-# Manual MS 633.2 Licensed Provider Daily Rates, 1-Star (base) tier, per day.
-# MOST_POPULOUS = Clark area; LOWEST_PERCENTILE = Washoe area, used as the
-# representative lowest-percentile rate for every non-Clark county (the Manual's
-# lower Carson/Douglas and Rural area rates are not separately modeled). QRIS
-# star tiers 2-5 are an enhancement we don't track at the moment. (The CCDF
-# State Plan FFY 2025-2027 base table matches these values except Clark center
-# school-age, which it lists at $48 vs the Manual's $46.)
+# Manual MS 633.2 Licensed Provider Daily Rates (Center), per day, by Nevada
+# Silver State Stars QRIS tier (STAR_1 = base, through STAR_5). MOST_POPULOUS =
+# Clark area; LOWEST_PERCENTILE = Washoe area, used as the representative
+# lowest-percentile rate for every non-Clark county (the Manual's lower
+# Carson/Douglas and Rural area rates are not separately modeled). The CCDF
+# State Plan FFY 2025-2027 base table matches the STAR_1 column; the per-star
+# increments come from MS 633.2.
 MOST_POPULOUS:
   INFANT:
-    2024-10-01: 62.50
+    STAR_1:
+      2024-10-01: 62.50
+    STAR_2:
+      2024-10-01: 63.50
+    STAR_3:
+      2024-10-01: 64.50
+    STAR_4:
+      2024-10-01: 65.50
+    STAR_5:
+      2024-10-01: 66.50
   TODDLER:
-    2024-10-01: 57
+    STAR_1:
+      2024-10-01: 57
+    STAR_2:
+      2024-10-01: 58
+    STAR_3:
+      2024-10-01: 59
+    STAR_4:
+      2024-10-01: 60
+    STAR_5:
+      2024-10-01: 61
   PRESCHOOL:
-    2024-10-01: 51.50
+    STAR_1:
+      2024-10-01: 51.50
+    STAR_2:
+      2024-10-01: 52.50
+    STAR_3:
+      2024-10-01: 53.50
+    STAR_4:
+      2024-10-01: 54.50
+    STAR_5:
+      2024-10-01: 55.50
   SCHOOL_AGE:
-    2024-10-01: 46
+    STAR_1:
+      2024-10-01: 48
+    STAR_2:
+      2024-10-01: 49
+    STAR_3:
+      2024-10-01: 50
+    STAR_4:
+      2024-10-01: 51
+    STAR_5:
+      2024-10-01: 52
 LOWEST_PERCENTILE:
   INFANT:
-    2024-10-01: 53.50
+    STAR_1:
+      2024-10-01: 53.50
+    STAR_2:
+      2024-10-01: 54.50
+    STAR_3:
+      2024-10-01: 55.50
+    STAR_4:
+      2024-10-01: 56.50
+    STAR_5:
+      2024-10-01: 57.50
   TODDLER:
-    2024-10-01: 52.50
+    STAR_1:
+      2024-10-01: 52.50
+    STAR_2:
+      2024-10-01: 53.50
+    STAR_3:
+      2024-10-01: 54.50
+    STAR_4:
+      2024-10-01: 55.50
+    STAR_5:
+      2024-10-01: 56.50
   PRESCHOOL:
-    2024-10-01: 47.50
+    STAR_1:
+      2024-10-01: 47.50
+    STAR_2:
+      2024-10-01: 48.50
+    STAR_3:
+      2024-10-01: 49.50
+    STAR_4:
+      2024-10-01: 50.50
+    STAR_5:
+      2024-10-01: 51.50
   SCHOOL_AGE:
-    2024-10-01: 42.50
+    STAR_1:
+      2024-10-01: 42.50
+    STAR_2:
+      2024-10-01: 43.50
+    STAR_3:
+      2024-10-01: 44.50
+    STAR_4:
+      2024-10-01: 45.50
+    STAR_5:
+      2024-10-01: 46.50
