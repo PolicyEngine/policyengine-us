@@ -1,0 +1,32 @@
+description: New Mexico assigns children to these reimbursement age categories by age in months under the Child Care Assistance Program.
+# Maps age in months to an nm_ccap_age_group enum index:
+# 0 = INFANT (0-23 months), 1 = TODDLER (24-35 months),
+# 2 = PRESCHOOL (three to five year olds, 36-71 months),
+# 3 = SCHOOL_AGE (six year olds and older, 72+ months).
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: New Mexico CCAP age group by months
+  reference:
+    - title: 8.15.2.7 NMAC, Definition (2)(a)-(d)
+      href: https://www.srca.nm.gov/parts/title08/08.015.0002.html
+
+brackets:
+  - threshold:
+      2016-10-01: 0
+    amount:
+      2016-10-01: 0
+  - threshold:
+      2016-10-01: 24
+    amount:
+      2016-10-01: 1
+  - threshold:
+      2016-10-01: 36
+    amount:
+      2016-10-01: 2
+  - threshold:
+      2016-10-01: 72
+    amount:
+      2016-10-01: 3

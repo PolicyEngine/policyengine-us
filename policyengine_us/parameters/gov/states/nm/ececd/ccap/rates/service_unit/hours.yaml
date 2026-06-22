@@ -1,0 +1,29 @@
+description: New Mexico assigns children to these service units by average weekly hours of care under the Child Care Assistance Program.
+# Maps average hours of care per week to an nm_ccap_service_unit enum index:
+# 3 = PART_TIME_3 (7 or fewer hours), 1 = PART_TIME_1 (8-29 hours),
+# 0 = FULL_TIME (30 or more hours). PART_TIME_2 (index 2) is a split-custody /
+# two-provider arrangement (8-19 hours) that cannot be derived from hours
+# alone, so it is reachable only via explicit input, not from this bracket.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: New Mexico CCAP service unit by weekly hours
+  reference:
+    - title: ECECD Child Care Assistance Rates, Definitions (Effective August 2023, p.1)
+      href: https://www.nmececd.org/wp-content/uploads/2024/05/Cost-Model-Reimbursement-Rate-Flyer-English-and-Spanish-Revised-May-2024.pdf#page=1
+
+brackets:
+  - threshold:
+      2023-08-01: 0
+    amount:
+      2023-08-01: 3
+  - threshold:
+      2023-08-01: 8
+    amount:
+      2023-08-01: 1
+  - threshold:
+      2023-08-01: 30
+    amount:
+      2023-08-01: 0

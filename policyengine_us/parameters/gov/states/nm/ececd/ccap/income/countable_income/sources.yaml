@@ -1,0 +1,44 @@
+description: New Mexico counts these income sources under the Child Care Assistance Program.
+values:
+  2016-10-01:
+    - employment_income
+    - self_employment_income
+    # PolicyEngine records farm income separately from self-employment, so
+    # include it under the 8.15.2.11.C(5) self-employment category.
+    - farm_operations_income
+    - alimony_income
+    # VA payments are counted except those exempted under 8.15.2.11.C(6).
+    - veterans_benefits
+    - workers_compensation
+    - railroad_benefits
+    - pension_income
+    # PolicyEngine records military retirement separately from pension_income,
+    # so include it under the 8.15.2.11.C(5) pensions category.
+    - military_retirement_pay
+    # Social security benefits are counted except those exempted under
+    # 8.15.2.11.C(6).
+    - social_security
+    - rental_income
+    # Overtime is counted only if CYFD finds it is paid regularly
+    # (8.15.2.11.C(5)); the regularity condition is captured within
+    # employment_income and not separately modeled.
+    #
+    # Provisions we don't model at the moment:
+    # - Royalties (8.15.2.11.C(5)) — no corresponding PolicyEngine variable.
+    # - The 8.15.2.11.C(6) child-earnings exclusion (earnings of household
+    #   dependents) and grandparent-non-guardian exclusion (8.15.2.11.C(3)) —
+    #   we don't filter income sources by the age or relationship of the earner.
+    # All ~30 exempt categories in 8.15.2.11.C(6) (SNAP, TANF, SSI, SSDI,
+    # unemployment, child support, energy assistance, foster care payments,
+    # etc.) are excluded by omission from this positive list. Omitting TANF
+    # also avoids a CCAP <-> TANF circular dependency; the is_tanf_enrolled
+    # bypass in nm_ccap_income_eligible already makes TANF-active families
+    # categorically income-eligible.
+
+metadata:
+  unit: list
+  period: year
+  label: New Mexico CCAP countable income sources
+  reference:
+    - title: 8.15.2.11.C(3) and (5) NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.015.0002.html

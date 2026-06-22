@@ -1,0 +1,112 @@
+# NM CCAP service unit classification by average weekly hours of care
+# (rate flyer definitions; rates/service_unit/hours.yaml).
+# Bracket boundaries:
+#   0-7 hours/week   -> PART_TIME_3 (25%)
+#   8-29 hours/week  -> PART_TIME_1 (75%)
+#   30+ hours/week   -> FULL_TIME   (100%)
+# PART_TIME_2 (split custody, 50%) is not derivable from hours alone and is
+# reachable only via explicit input, so it never appears from this bracket.
+
+- name: Case 1, seven or fewer hours is part time three.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 5
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 5 hours <= 7 -> PART_TIME_3
+    nm_ccap_service_unit: PART_TIME_3
+
+- name: Case 2, seven hours is the top of part time three.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 7
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 7 hours < 8 -> PART_TIME_3
+    nm_ccap_service_unit: PART_TIME_3
+
+- name: Case 3, eight hours is part time one.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 8
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 8 hours -> PART_TIME_1
+    nm_ccap_service_unit: PART_TIME_1
+
+- name: Case 4, twenty nine hours is the top of part time one.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 29
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 29 hours < 30 -> PART_TIME_1
+    nm_ccap_service_unit: PART_TIME_1
+
+- name: Case 5, thirty hours is full time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 30 hours -> FULL_TIME
+    nm_ccap_service_unit: FULL_TIME
+
+- name: Case 6, forty five hours is full time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 45
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_service_unit: FULL_TIME
+
+- name: Case 7, zero hours is part time three.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 0 hours falls in the lowest bracket [0, 8) -> PART_TIME_3.
+    nm_ccap_service_unit: PART_TIME_3

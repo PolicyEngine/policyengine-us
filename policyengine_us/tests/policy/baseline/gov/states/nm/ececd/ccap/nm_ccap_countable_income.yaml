@@ -1,0 +1,66 @@
+# NM CCAP countable income (8.15.2.11.C(3),(5) NMAC): a positive list of
+# counted earned and unearned income sources. Exempt sources (SNAP, TANF, SSI,
+# child support, etc.) are excluded by omission. This is a MONTH variable that
+# sums YEAR-defined income sources, so the monthly value is the annual sum / 12.
+
+- name: Case 1, counted earned and unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # counted
+        social_security: 6_000      # counted
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # (24_000 + 6_000) / 12 = 2_500/month
+    nm_ccap_countable_income: 2_500
+
+- name: Case 2, exempt sources are not counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000        # counted
+        ssi: 9_000                        # exempt (omitted)
+        child_support_received: 3_600     # exempt (omitted)
+        unemployment_compensation: 4_800  # exempt (omitted)
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 3_000  # exempt (omitted)
+        tanf: 2_400  # exempt (omitted)
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Only employment_income counts: 12_000 / 12 = 1_000/month.
+    nm_ccap_countable_income: 1_000
+
+- name: Case 3, zero income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_countable_income: 0

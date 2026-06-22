@@ -1,0 +1,73 @@
+# NM CCAP asset eligibility: family assets may not exceed $1,000,000
+# (8.15.2.11.C(4) NMAC). This is a state-specific limit, distinct from the
+# federal CCDF asset check.
+
+- name: Case 1, assets below the one million dollar limit are eligible.
+  period: 2025-01
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500_000
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_asset_eligible: true
+
+- name: Case 2, assets exactly at the one million dollar limit are eligible.
+  period: 2025-01
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000_000
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # At-or-below the limit -> eligible.
+    nm_ccap_asset_eligible: true
+
+- name: Case 3, assets above the one million dollar limit are ineligible.
+  period: 2025-01
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000_001
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_asset_eligible: false
+
+- name: Case 4, assets one dollar below the limit are eligible.
+  period: 2025-01
+  input:
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 999_999
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 999_999 <= 1_000_000 -> eligible (boundary just below the cap).
+    nm_ccap_asset_eligible: true

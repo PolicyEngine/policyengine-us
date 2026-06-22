@@ -1,0 +1,33 @@
+description: New Mexico adds this share of the applicable rate for non-traditional hours of care under the Child Care Assistance Program.
+# ECECD pays a differential of 5%, 10%, or 15% of the applicable full-time or
+# part-time rate for care provided during non-traditional hours (after-hours
+# 7 p.m.-7 a.m. Monday-Friday and weekend hours): 5% for 1-10 hrs/wk, 10% for
+# 11-20 hrs/wk, 15% for 21 or more hrs/wk. Zero non-traditional hours adds no
+# supplement.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: New Mexico CCAP non-traditional hours supplement rate
+  reference:
+    - title: ECECD Child Care Assistance Rates, Differential Rates for Non-Traditional Hours (Effective August 2023, p.5)
+      href: https://www.nmececd.org/wp-content/uploads/2024/05/Cost-Model-Reimbursement-Rate-Flyer-English-and-Spanish-Revised-May-2024.pdf#page=5
+
+brackets:
+  - threshold:
+      2023-08-01: 0
+    amount:
+      2023-08-01: 0
+  - threshold:
+      2023-08-01: 1
+    amount:
+      2023-08-01: 0.05
+  - threshold:
+      2023-08-01: 11
+    amount:
+      2023-08-01: 0.1
+  - threshold:
+      2023-08-01: 21
+    amount:
+      2023-08-01: 0.15

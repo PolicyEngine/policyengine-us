@@ -1,0 +1,90 @@
+# NM CCAP age group classification by age in months (8.15.2.7 NMAC).
+# Bracket boundaries (rates/age_group/months.yaml):
+#   0-23 months  -> INFANT
+#   24-35 months -> TODDLER
+#   36-71 months -> PRESCHOOL
+#   72+ months   -> SCHOOL_AGE
+
+- name: Case 1, six month old is an infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 0.5 years = 6 months -> INFANT
+        age: 0.5
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: INFANT
+
+- name: Case 2, twenty three months is the top of the infant band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 23/12 = 1.9167 years = 23 months -> INFANT (below 24-month threshold)
+        age: 1.9167
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: INFANT
+
+- name: Case 3, exactly twenty four months is a toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 2.0 years = 24 months -> TODDLER (at the 24-month threshold)
+        age: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: TODDLER
+
+- name: Case 4, exactly thirty six months is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 3.0 years = 36 months -> PRESCHOOL (at the 36-month threshold)
+        age: 3.0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: PRESCHOOL
+
+- name: Case 5, seventy one months is the top of preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 71/12 = 5.9167 years = 71 months -> PRESCHOOL (below 72-month threshold)
+        age: 5.9167
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: PRESCHOOL
+
+- name: Case 6, exactly seventy two months is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 6.0 years = 72 months -> SCHOOL_AGE (at the 72-month threshold)
+        age: 6.0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_age_group: SCHOOL_AGE
