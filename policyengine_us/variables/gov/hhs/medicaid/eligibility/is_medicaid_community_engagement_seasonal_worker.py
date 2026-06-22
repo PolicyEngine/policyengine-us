@@ -11,4 +11,3 @@ class is_medicaid_community_engagement_seasonal_worker(Variable):
         "Whether the person is a seasonal worker for the Medicaid community "
         "engagement six-month average income pathway."
     )
-
