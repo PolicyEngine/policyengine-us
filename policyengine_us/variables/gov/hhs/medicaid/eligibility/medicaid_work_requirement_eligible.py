@@ -20,7 +20,7 @@ class medicaid_work_requirement_eligible(Variable):
         monthly_income_threshold = (
             parameters(period).gov.dol.minimum_wage * p.monthly_hours_threshold
         )
-        meets_monthly_income = person("earned_income", period) >= (
+        meets_monthly_income = person("medicaid_household_income", period) >= (
             monthly_income_threshold * MONTHS_IN_YEAR
         )
         # The individual is enrolled in an educational program at least half-time.
