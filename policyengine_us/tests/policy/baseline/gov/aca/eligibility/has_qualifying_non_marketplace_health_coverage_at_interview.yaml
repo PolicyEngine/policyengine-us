@@ -53,3 +53,19 @@
     has_va_health_coverage_at_interview: false
   output:
     has_qualifying_non_marketplace_health_coverage_at_interview: false
+
+- name: Case 6, reported CHIP coverage counts as qualifying non-Marketplace coverage.
+  period: 2025
+  input:
+    medicaid_enrolled: false
+    is_chip_eligible: false
+    has_chip_health_coverage_at_interview: true
+    has_esi: false
+    has_non_marketplace_direct_purchase_health_coverage_at_interview: false
+    has_other_means_tested_health_coverage_at_interview: false
+    has_tricare_health_coverage_at_interview: false
+    has_champva_health_coverage_at_interview: false
+    has_va_health_coverage_at_interview: false
+  output:
+    qualifying_non_marketplace_health_coverage_type_count_at_interview: 1
+    has_qualifying_non_marketplace_health_coverage_at_interview: true

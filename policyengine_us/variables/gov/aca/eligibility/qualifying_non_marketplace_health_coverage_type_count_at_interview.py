@@ -10,6 +10,7 @@ class qualifying_non_marketplace_health_coverage_type_count_at_interview(Variabl
         "has_esi",
         "medicaid_enrolled",
         "has_medicaid_health_coverage_at_interview",
+        "has_chip_health_coverage_at_interview",
         "is_chip_eligible",
         "medicare_enrolled",
         "has_non_marketplace_direct_purchase_health_coverage_at_interview",
