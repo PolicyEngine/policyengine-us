@@ -18,4 +18,3 @@ class medicaid_community_engagement_activity_hours(Variable):
         "medicaid_community_engagement_work_program_hours",
         "medicaid_community_engagement_less_than_half_time_education_hours",
     ]
-

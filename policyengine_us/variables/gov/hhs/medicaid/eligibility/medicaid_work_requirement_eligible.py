@@ -14,9 +14,7 @@ class medicaid_work_requirement_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
         # Works or participates in qualifying activities no less than 80 hours.
-        activity_hours = person(
-            "medicaid_community_engagement_activity_hours", period
-        )
+        activity_hours = person("medicaid_community_engagement_activity_hours", period)
         meets_monthly_activity_hours = activity_hours >= p.monthly_hours_threshold
         # Monthly income of at least federal minimum wage times 80 hours.
         monthly_income_threshold = (

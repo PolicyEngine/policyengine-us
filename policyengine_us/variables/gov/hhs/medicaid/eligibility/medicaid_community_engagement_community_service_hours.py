@@ -8,4 +8,3 @@ class medicaid_community_engagement_community_service_hours(Variable):
     unit = "hour"
     definition_period = YEAR
     default_value = 0
-
