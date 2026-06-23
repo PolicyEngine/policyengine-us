@@ -525,8 +525,8 @@
         state_fips: 34
   output:
     # min($100 * 50%, $6,500) = min($50, $6,500) = $50
-    # ANCHOR = $1,750
-    # max($50 - $1,750, 0) = $0
+    # ANCHOR is capped at property taxes paid = $100
+    # max($50 - $100, 0) = $0
     nj_staynj: 0
 
 - name: Edge case 10, couple where only spouse is 65 plus.
@@ -630,8 +630,8 @@
         state_fips: 34
   output:
     # min($1 * 50%, $6,500) = $0.50
-    # ANCHOR = $1,750
-    # max($0.50 - $1,750, 0) = $0
+    # ANCHOR is capped at property taxes paid = $1
+    # max($0.50 - $1, 0) = $0
     nj_staynj: 0
 
 - name: Edge case 14, senior who neither owns nor rents is ineligible.

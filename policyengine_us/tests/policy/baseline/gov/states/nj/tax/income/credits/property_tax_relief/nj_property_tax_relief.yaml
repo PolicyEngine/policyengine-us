@@ -1,0 +1,82 @@
+- name: Case 1, combined relief reaches the Stay NJ target.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Stay NJ target = 50% of $10,000 = $5,000.
+    nj_anchor: 1_750
+    nj_capped_senior_freeze: 500
+    nj_staynj: 2_750
+    nj_property_tax_relief: 5_000
+    household_state_benefits: 5_000
+
+- name: Case 2, combined relief is capped by property taxes paid.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 2_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # ANCHOR = $1,750 and Senior Freeze is capped to the remaining $250.
+    nj_anchor: 1_750
+    nj_capped_senior_freeze: 250
+    nj_staynj: 0
+    nj_property_tax_relief: 2_000
+    household_state_benefits: 2_000
+
+- name: Case 3, New Jersey property tax relief starts in 2026.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_property_tax_relief: 0
+    household_state_benefits: 0
