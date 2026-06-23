@@ -1,0 +1,22 @@
+- name: Case 1, calculated SSI is used by default.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi: 3_000
+        ssi_reported: 5_000
+  output:
+    applicable_ssi: 3_000
+
+- name: Case 2, reported SSI replaces calculated SSI when toggled on.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        ssi: 3_000
+        ssi_reported: 5_000
+        use_reported_ssi: true
+  output:
+    applicable_ssi: 5_000

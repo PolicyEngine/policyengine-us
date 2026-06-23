@@ -154,3 +154,25 @@
         state_code: AR
   output:
     tx_ceap_countable_income: 0
+
+- name: Case 9, reported SSI replaces calculated SSI when an API partner opts in.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 9_000
+        ssi: 3_000
+        ssi_reported: 4_000
+        use_reported_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 9,000 Social Security + 4,000 reported SSI = 13,000
+    tx_ceap_countable_income: 13_000
