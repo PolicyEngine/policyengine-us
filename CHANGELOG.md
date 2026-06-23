@@ -1,3 +1,10 @@
+## [1.741.0] - 2026-06-23
+
+### Added
+
+- Added a South Carolina fully refundable EITC contrib reform for the Child Poverty Impact Dashboard.
+
+
 ## [1.740.0] - 2026-06-23
 
 ### Added
