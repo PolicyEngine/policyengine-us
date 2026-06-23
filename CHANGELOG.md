@@ -1,3 +1,17 @@
+## [1.741.2] - 2026-06-23
+
+### Fixed
+
+- Run reform YAML tests one file per subprocess in a dedicated CI job to fix out-of-memory failures.
+
+
+## [1.741.1] - 2026-06-23
+
+### Changed
+
+- Updated Hawaii TANF Standard of Assistance rate from 48% to 62% of the standard of need, effective March 1, 2025.
+
+
 ## [1.741.0] - 2026-06-23
 
 ### Added
