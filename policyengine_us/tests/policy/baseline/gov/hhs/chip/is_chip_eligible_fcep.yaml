@@ -133,7 +133,7 @@
   output:
     is_chip_fcep_eligible_person: False
 
-- name: Undocumented immigrant not eligible
+- name: FCEP eligibility does not screen the pregnant parent's immigration status
   period: 2023
   input:
     people:
@@ -150,7 +150,7 @@
         state_code: CA
         members: [head]
   output:
-    is_chip_fcep_eligible_person: False
+    is_chip_fcep_eligible_person: True
 
 # Boundary tests to verify 5% FPL disregard is correctly included in limits
 # AR has statutory limit of 209% FPL, effective limit with disregard is 214%
