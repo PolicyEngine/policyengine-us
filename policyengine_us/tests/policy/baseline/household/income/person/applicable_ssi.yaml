@@ -4,10 +4,11 @@
   input:
     people:
       person1:
-        ssi: 3_000
+        age: 40
         ssi_reported: 5_000
   output:
-    applicable_ssi: 3_000
+    ssi: 0
+    applicable_ssi: 0
 
 - name: Case 2, reported SSI replaces calculated SSI when toggled on.
   absolute_error_margin: 0.01
@@ -15,7 +16,7 @@
   input:
     people:
       person1:
-        ssi: 3_000
+        age: 40
         ssi_reported: 5_000
         use_reported_ssi: true
   output:
