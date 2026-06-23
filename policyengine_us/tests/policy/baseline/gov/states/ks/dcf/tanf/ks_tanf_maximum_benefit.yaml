@@ -1,74 +1,144 @@
 # Kansas TANF maximum benefit (payment standard) test
-# Group IV non-shared living per K.A.R. 30-4-101: basic + $135 shelter.
-# Group IV covers Douglas, Harvey, and Johnson counties — Johnson is the
-# most populous county in Kansas, so this is the cross-state research
-# convention used by CBPP and the Urban Welfare Rules Database.
-# Family size 1: $267, 2: $352, 3: $429, 4: $497, 5+: $497 + $61/person.
+# Per K.A.R. 30-4-101: payment standard = basic standard (by size) + shelter
+# allowance (by county group). Basic: 1=$132, 2=$217, 3=$294, 4=$362, +$61/person.
+# Shelter: Group I=$92, II=$97, III=$109, IV=$135.
+# Groups I, II, III are listed; Group IV (most populous counties) is the default.
+# A household with no county specified resolves to a rural Group I county.
+# SSI recipients are excluded from the household size.
 
-- name: Case 1, family of 1.
+# --- County tiers, family of 3 (basic $294) ---
+- name: Case 1, family of 3, Group I rural county (no county specified).
   period: 2025-01
-  input:
-    state_code: KS
-    spm_unit_size: 1
-  output:
-    ks_tanf_maximum_benefit: 267
-
-- name: Case 2, family of 2.
-  period: 2025-01
-  input:
-    state_code: KS
-    spm_unit_size: 2
-  output:
-    ks_tanf_maximum_benefit: 352
-
-- name: Case 3, family of 3.
-  period: 2025-01
+  absolute_error_margin: 0.01
   input:
     state_code: KS
     spm_unit_size: 3
   output:
+    # 294 + 92 = 386
+    ks_tanf_maximum_benefit: 386
+
+- name: Case 2, family of 3, Group II high cost rural county (Franklin).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    county: FRANKLIN_COUNTY_KS
+    spm_unit_size: 3
+  output:
+    # 294 + 97 = 391
+    ks_tanf_maximum_benefit: 391
+
+- name: Case 3, family of 3, Group III high population county (Sedgwick).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    county: SEDGWICK_COUNTY_KS
+    spm_unit_size: 3
+  output:
+    # 294 + 109 = 403
+    ks_tanf_maximum_benefit: 403
+
+- name: Case 4, family of 3, Group IV high cost high population county (Johnson).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    county: JOHNSON_COUNTY_KS
+    spm_unit_size: 3
+  output:
+    # 294 + 135 = 429
     ks_tanf_maximum_benefit: 429
 
-- name: Case 4, family of 4.
+# --- Sizes within Group I (rural) ---
+- name: Case 5, family of 1, Group I.
   period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    spm_unit_size: 1
+  output:
+    # 132 + 92 = 224
+    ks_tanf_maximum_benefit: 224
+
+- name: Case 6, family of 4, Group I.
+  period: 2025-01
+  absolute_error_margin: 0.01
   input:
     state_code: KS
     spm_unit_size: 4
   output:
-    ks_tanf_maximum_benefit: 497
+    # 362 + 92 = 454
+    ks_tanf_maximum_benefit: 454
 
-- name: Case 5, family of 5.
+- name: Case 7, family of 5, Group I, uses additional person amount.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
     state_code: KS
     spm_unit_size: 5
   output:
-    # 497 + 61 = 558
+    # 362 + 61 + 92 = 515
+    ks_tanf_maximum_benefit: 515
+
+# --- Group IV sizes (Johnson) ---
+- name: Case 8, family of 5, Group IV, uses additional person amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    county: JOHNSON_COUNTY_KS
+    spm_unit_size: 5
+  output:
+    # 362 + 61 + 135 = 558
     ks_tanf_maximum_benefit: 558
 
-- name: Case 6, family of 6.
+# --- SSI recipients excluded from household size ---
+- name: Case 9, SSI recipient excluded from size, Group I.
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 6
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        ssi: 900  # SSI recipient, excluded from the assistance plan
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
   output:
-    # 497 + 61*2 = 619
-    ks_tanf_maximum_benefit: 619
+    # Counted size = 3 - 1 SSI = 2; 217 + 92 = 309
+    ks_tanf_maximum_benefit: 309
 
-- name: Case 7, family of 7.
+- name: Case 10, SSI recipient excluded, Group IV (Johnson).
   period: 2025-01
+  absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 7
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+      person3:
+        age: 7
+      person4:
+        age: 4
+        ssi: 900  # SSI recipient, excluded from the assistance plan
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS
   output:
-    # 497 + 61*3 = 680
-    ks_tanf_maximum_benefit: 680
-
-- name: Case 8, family of 8.
-  period: 2025-01
-  input:
-    state_code: KS
-    spm_unit_size: 8
-  output:
-    # 497 + 61*4 = 741
-    ks_tanf_maximum_benefit: 741
+    # Counted size = 4 - 1 SSI = 3; 294 + 135 = 429
+    ks_tanf_maximum_benefit: 429

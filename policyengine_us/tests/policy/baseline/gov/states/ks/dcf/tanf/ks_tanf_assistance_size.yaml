@@ -1,0 +1,82 @@
+# Kansas TANF assistance plan size test
+# Per KEESM 4113: SSI recipients are excluded from the assistance plan and the
+# household size used to set the payment standard.
+
+- name: Case 1, family of 3 with no SSI recipients.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    ks_tanf_assistance_size: 3
+
+- name: Case 2, family of 3 with one SSI recipient excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        ssi: 900
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # 3 - 1 SSI recipient = 2
+    ks_tanf_assistance_size: 2
+
+- name: Case 3, all members are SSI recipients.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 900
+      person2:
+        age: 10
+        ssi: 900
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 2 - 2 SSI recipients = 0
+    ks_tanf_assistance_size: 0
+
+- name: Case 4, single non-SSI adult.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_tanf_assistance_size: 1
