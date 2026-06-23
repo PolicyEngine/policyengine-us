@@ -1,0 +1,22 @@
+- name: Household in a mandatory-SAFMR metro ZIP uses SAFMR
+  period: 2026
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: true
+
+- name: Household outside the in-scope SAFMR metros does not use SAFMR
+  period: 2026
+  input:
+    zip_code: "79901"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: false
+
+- name: Household with unknown ZIP does not use SAFMR
+  period: 2026
+  input:
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: false

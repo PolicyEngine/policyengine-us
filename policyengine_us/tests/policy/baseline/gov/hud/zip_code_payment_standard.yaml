@@ -1,0 +1,39 @@
+- name: TDHCA ZIP 0BR uses the published payment standard
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 0
+  output:
+    zip_code_payment_standard: 12_120 # 1,010/mo * 12
+
+- name: TDHCA ZIP 6BR uses the published payment standard
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 6
+  output:
+    zip_code_payment_standard: 31_668 # 2,639/mo * 12
+
+- name: TDHCA ZIP 7BR adds 15 percent to the 6BR standard
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    zip_code: "78002"
+    bedrooms: 7
+  output:
+    zip_code_payment_standard: 36_418.2 # 2,639 * 1.15 * 12
+
+- name: ZIP without a published standard returns zero
+  period: 2025
+  input:
+    zip_code: "77002" # Houston core - SAFMR only, no published TDHCA schedule
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 0
+
+- name: Unknown ZIP returns zero
+  period: 2025
+  input:
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 0

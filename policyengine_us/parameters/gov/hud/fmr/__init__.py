@@ -90,3 +90,32 @@ def nearest_fmr_year(year: int) -> int:
     if prior_years:
         return max(prior_years)
     return min(available_fmr_years)
+
+
+def _load_small_area_fair_market_rents() -> pd.DataFrame:
+    """ZIP-level Small Area FMRs, indexed by (zip_code, year, bedrooms).
+
+    Currently scoped to the four Texas metro areas where HUD mandates SAFMR
+    use under the Housing Choice Voucher program (Dallas, Fort Worth-Arlington,
+    Houston, and San Antonio). Outside these areas the model keeps the
+    county-level FMR.
+    """
+    raw = pd.read_csv(
+        FOLDER / "small_area_fair_market_rents.csv",
+        dtype={"zip_code": str},
+    )
+    raw["zip_code"] = raw["zip_code"].str.strip().str.zfill(5)
+    return raw
+
+
+small_area_fair_market_rents = _load_small_area_fair_market_rents()
+available_safmr_years = sorted(small_area_fair_market_rents["year"].unique().tolist())
+
+
+def nearest_safmr_year(year: int) -> int:
+    prior_years = [
+        candidate for candidate in available_safmr_years if candidate <= year
+    ]
+    if prior_years:
+        return max(prior_years)
+    return min(available_safmr_years)

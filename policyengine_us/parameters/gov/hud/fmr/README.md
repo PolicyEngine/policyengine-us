@@ -17,11 +17,39 @@ loader uses the median FMR-area value as a lossy county-level fallback.
 
 - **Year**: FY2025 only. The variable imputes unsupported years with the
   nearest bundled FMR year until more years are added.
-- **Geography**: county-level lookup from HUD FMR areas (no SAFMR ZIP-level
-  resolution yet — that lands in Phase 1B). Where HUD publishes one pseudo-area
-  for a territory, that pseudo-area is expanded to the territory's county FIPS
-  codes.
+- **Geography**: county-level lookup from HUD FMR areas. Where HUD publishes
+  one pseudo-area for a territory, that pseudo-area is expanded to the
+  territory's county FIPS codes. ZIP-level Small Area FMR resolution is now
+  available for the in-scope metros via `small_area_fair_market_rents.csv`
+  (see below).
 - **Data**: full FY2025 county-level HUD file.
+
+## Small Area FMRs (`small_area_fair_market_rents.csv`)
+
+ZIP-level Small Area FMRs, indexed by `(zip_code, year, bedrooms)`, read by the
+`small_area_fair_market_rent` variable. SAFMRs are 40th-percentile gross-rent
+estimates computed per ZIP rather than per FMR area, and HUD mandates their use
+for Housing Choice Voucher payment standards in designated metropolitan areas
+(24 CFR §888.113).
+
+- **Year**: FY2026 (HUD revised file). Unsupported years impute to the nearest
+  bundled SAFMR year.
+- **Geography**: the four Texas metros where SAFMR use is mandatory — Dallas,
+  Fort Worth-Arlington, Houston, and San Antonio (834 ZIP codes). Other areas
+  keep the county FMR. The handful of ZIP codes that straddle the Dallas and
+  Fort Worth HUD Metro FMR Areas carry identical SAFMRs, so the table is unique
+  per `(zip_code, year, bedrooms)`.
+
+| column | type | meaning |
+|---|---|---|
+| `zip_code` | str | five-digit ZIP code |
+| `hud_area_name` | str | HUD metro FMR area name (provenance only) |
+| `year` | int | HUD fiscal year |
+| `bedrooms` | int | 0 (efficiency) through 4 |
+| `value` | float | monthly SAFMR in current-year dollars |
+
+Source: HUD User FY2026 Small Area FMRs (revised),
+<https://www.huduser.gov/portal/datasets/fmr/smallarea/index.html>.
 
 ## Schema
 

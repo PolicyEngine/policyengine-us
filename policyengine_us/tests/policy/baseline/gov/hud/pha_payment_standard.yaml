@@ -49,3 +49,19 @@
     bedrooms: 2
   output:
     pha_payment_standard: 2_666 * 12
+
+- name: Houston core ZIP 2BR uses the metro Small Area FMR
+  period: 2026
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 28_320 # SAFMR 2,360 * 12
+
+- name: TDHCA ZIP 2BR uses the published standard over the metro SAFMR
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 16_320 # TDHCA 1,360 * 12 (beats SAFMR 1,330)

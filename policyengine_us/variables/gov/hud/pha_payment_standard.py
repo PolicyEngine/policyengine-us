@@ -11,13 +11,18 @@ class pha_payment_standard(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/24/982.503"
 
     def formula(household, period, parameters):
-        # Use actual local payment standards where encoded, otherwise fall
-        # back to HUD Fair Market Rent as a national proxy.
+        # Resolve the payment standard from most to least geographically
+        # specific: a PHA's published ZIP-level standard, then the metro Small
+        # Area FMR, then the LA County local schedule, then the county FMR as a
+        # national proxy. The ZIP-level paths only fire on a match, so
+        # households without a covered ZIP fall back unchanged.
         # https://www.lacda.org/docs/librariesprovider25/section-8-program/shared-document---payment-standard---vash/hcv-ehv-vash-payment-standards.pdf
         household_bedrooms = household("bedrooms", period)
         is_sro = household("is_sro", period)
         in_la = household("in_la", period)
         hud_fair_market_rent = household("hud_fair_market_rent", period)
+        zip_code_payment_standard = household("zip_code_payment_standard", period)
+        small_area_fair_market_rent = household("small_area_fair_market_rent", period)
         la_amount = select(
             [
                 is_sro,
@@ -34,4 +39,14 @@ class pha_payment_standard(Variable):
             default=6_086,  # 8 bedrooms
         )
         la_payment_standard = la_amount * MONTHS_IN_YEAR
-        return where(in_la, la_payment_standard, hud_fair_market_rent)
+        county_or_la = where(in_la, la_payment_standard, hud_fair_market_rent)
+        metro_or_county = where(
+            small_area_fair_market_rent > 0,
+            small_area_fair_market_rent,
+            county_or_la,
+        )
+        return where(
+            zip_code_payment_standard > 0,
+            zip_code_payment_standard,
+            metro_or_county,
+        )
