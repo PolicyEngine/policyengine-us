@@ -100,3 +100,39 @@
   # non-refundable credits to the head-only personal credit of 29. The 58-dollar
   # reduction (87 -> 29) increases AR income tax by the same amount.
   output: {ar_non_refundable_credits: 29}
+
+- name: AR dependent credit reform - default flows through to income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  # End-to-end: with the default (no-op) amount, the personal credit (head 29 +
+  # 2 deps * 29 = 87) is consumed via `adds` into ar_personal_credits and reduces
+  # AR income tax. This proves the shared-base-redirect dependent credit is wired
+  # through to the actual tax, not just the credit aggregate.
+  output: {ar_income_tax: 1346.67}
+
+- name: AR dependent credit reform - amount zero raises income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  # End-to-end: removing the dependent portion (amount 0) drops the personal
+  # credit from 87 to 29, raising AR income tax by exactly 58 (1346.67 -> 1404.67).
+  # Confirms the dependent-credit -> tax wiring under the shared-base-redirect pattern.
+  output: {ar_income_tax: 1404.67}
