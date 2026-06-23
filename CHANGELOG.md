@@ -1,3 +1,10 @@
+## [1.742.0] - 2026-06-23
+
+### Added
+
+- Add use_reported_ssi toggle and applicable_ssi variable, letting API partners count reported SSI instead of calculated SSI in Texas CEAP income.
+
+
 ## [1.741.2] - 2026-06-23
 
 ### Fixed
