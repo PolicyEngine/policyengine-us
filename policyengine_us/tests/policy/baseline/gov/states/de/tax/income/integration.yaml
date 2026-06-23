@@ -67,6 +67,46 @@
     de_income_tax_before_non_refundable_credits_unit: 1_750.25
     de_income_tax_before_refundable_credits: 1_650.25
 
+# Regression test for policyengine-taxsim#1007: on a separate/combined return,
+# each spouse's non-refundable credits are capped at that spouse's own tax
+# before credits, so one spouse's surplus personal credit cannot offset the
+# other spouse's tax.
+- name: Separate/combined return caps each spouse's non-refundable credits at their own tax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        taxable_interest_income: 10_895.24
+        is_tax_unit_head: true
+      spouse:
+        age: 20
+        taxable_interest_income: 10_895.24
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: DE
+  output:
+    de_files_separately: true
+    # Per spouse: taxable income $7,645.24 -> tax $169.16.
+    de_taxable_income_indv: [7_645.24, 7_645.24, 0]
+    de_income_tax_before_non_refundable_credits_indv: [169.16, 169.16, 0]
+    # Personal credit: head column = self + dependent = 2 x $110 = $220;
+    # spouse column = 1 x $110 = $110. Each capped at its own $169.16 tax:
+    # min(220, 169.16) + min(110, 169.16) = 169.16 + 110 = 279.16.
+    # (Pre-fix PE pooled all $330 against the $338.33 combined tax -> $8.33.)
+    de_non_refundable_credits: 279.16
+    de_income_tax_before_refundable_credits: 59.17
+
 #new baseline integration test
 - name: baseline integration test separate
   period: 2022
@@ -224,8 +264,19 @@
       household:
         members: [person1, person2, person3]
         state_fips: 10  # DE
-  output:  # expected results from patched TAXSIM35 2024-04-04 version
-    de_income_tax: 2429.20
+  output:
+    # This couple files separately (Filing Status 4). Per-column tax before
+    # credits: person1 (head) $6.05, person2 (spouse) $3,225.65.
+    # Each spouse's own personal + aged credits ($220) are capped at their own
+    # tax: person1 uses $6.05 (the rest of their $220 is unusable against $6.05
+    # of tax), person2 uses $220. The allocable credits (dependent's $110
+    # personal credit + $252.50 child care credit = $362.50) are placed in
+    # person2's column, which has the remaining capacity, and are fully used.
+    # Total credits = 6.05 + 220 + 362.50 = 588.55; tax = 3,231.70 - 588.55.
+    # The prior expected value ($2,429.20) came from TAXSIM-35, which pools the
+    # credits against combined tax and so wrongly lets person1's unusable
+    # credits offset person2's tax (see policyengine-taxsim#1007).
+    de_income_tax: 2643.15
 
 - name: Tax unit with taxsimid 22359 in k21.its.csv and k21.ots.csv
   absolute_error_margin: 0.01
