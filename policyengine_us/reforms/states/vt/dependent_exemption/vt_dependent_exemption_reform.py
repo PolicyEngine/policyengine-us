@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
-from policyengine_core.periods import instant
 
 
 def create_vt_dependent_exemption() -> Reform:
@@ -42,10 +41,9 @@ def create_vt_dependent_exemption() -> Reform:
             return dependents_count * p.amount
 
     class vt_older_dependents_count(Variable):
-        value_type = float
+        value_type = int
         entity = TaxUnit
         label = "Vermont older dependents count"
-        unit = USD
         definition_period = YEAR
         defined_for = StateCode.VT
 

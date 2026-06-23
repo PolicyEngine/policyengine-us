@@ -66,3 +66,37 @@
   # Head + spouse each receive the base personal credit: 2 * 29 = 58.
   # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
   output: {ar_personal_credits: 58}
+
+- name: AR dependent credit reform - default flows through to non-refundable credits (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  # Downstream: the personal credit (head 29 + 2 deps * 29 = 87) flows into the
+  # aggregate non-refundable credits subtracted from AR income tax. At $50,000 the
+  # other AR non-refundable credits (CDCC, additional qualified-individual credit)
+  # are $0 and AR tax before credits exceeds 87, so the credit applies uncapped.
+  output: {ar_non_refundable_credits: 87}
+
+- name: AR dependent credit reform - amount zero reduces non-refundable credits (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  # Downstream: removing the dependent portion (amount 0) drops the aggregate
+  # non-refundable credits to the head-only personal credit of 29. The 58-dollar
+  # reduction (87 -> 29) increases AR income tax by the same amount.
+  output: {ar_non_refundable_credits: 29}

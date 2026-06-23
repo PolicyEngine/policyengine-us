@@ -108,3 +108,70 @@
   # 2 head/spouse personal units (size 4 - 2 dependents) * 3,200 (joint, AGI 40,000) = 6,400.
   # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
   output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - default flows through to MD exemptions (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Downstream: md_exemptions = md_total_personal_exemptions + md_aged_blind_exemptions.
+  # No aged/blind here, so md_exemptions = md_total_personal_exemptions = 9,600.
+  # md_exemptions is the value subtracted in md_taxable_income, so the separated
+  # dependent portion flows into the MD tax base.
+  output: {md_exemptions: 9_600}
+
+- name: MD dependent exemption reform - amount zero reduces MD exemptions (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Downstream: removing the dependent portion drops md_exemptions to 3,200
+  # (personal only). The 6,400 reduction raises MD taxable income and tax.
+  output: {md_exemptions: 3_200}
+
+- name: MD dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 17, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MD}}
+  # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+  # is removed from the personal count. Personal = parent only = 1 * 3,200.
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 18, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MD}}
+  # age 18 is not < 18: dependent is excluded and falls back to the personal
+  # count. Personal = parent + over-age dependent = 2 * 3,200 = 6,400.
+  output: {md_total_personal_exemptions: 6_400}

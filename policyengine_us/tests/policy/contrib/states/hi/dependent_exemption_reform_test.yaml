@@ -81,3 +81,37 @@
   # 2 head/spouse personal units (exemptions_count 4 - 2 dependents) * 1,144 = 2,288.
   # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
   output: {hi_regular_exemptions: 2_288}
+
+- name: HI dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    gov.contrib.states.hi.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 17, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: HI}}
+  # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+  # is removed from the personal count. Personal = parent only = 1 * 1,144.
+  output: {hi_regular_exemptions: 1_144}
+
+- name: HI dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    gov.contrib.states.hi.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 18, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: HI}}
+  # age 18 is not < 18: dependent is excluded and falls back to the personal
+  # count. Personal = parent + over-age dependent = 2 * 1,144 = 2,288.
+  output: {hi_regular_exemptions: 2_288}

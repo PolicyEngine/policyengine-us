@@ -69,10 +69,9 @@ def create_md_dependent_exemption() -> Reform:
             return max_(maximum - phaseout, 0)
 
     class md_older_dependents_count(Variable):
-        value_type = float
+        value_type = int
         entity = TaxUnit
         label = "Maryland older dependents count"
-        unit = USD
         definition_period = YEAR
         defined_for = StateCode.MD
 

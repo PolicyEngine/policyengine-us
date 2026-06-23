@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
-from policyengine_core.periods import instant
 
 
 def create_ne_dependent_exemption() -> Reform:
@@ -42,10 +41,9 @@ def create_ne_dependent_exemption() -> Reform:
             return dependents_count * p.amount
 
     class ne_older_dependents_count(Variable):
-        value_type = float
+        value_type = int
         entity = TaxUnit
         label = "Nebraska older dependents count"
-        unit = USD
         definition_period = YEAR
         defined_for = StateCode.NE
 

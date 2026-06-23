@@ -41,10 +41,9 @@ def create_wv_dependent_exemption() -> Reform:
             return dependents_count * p.amount
 
     class wv_older_dependents_count(Variable):
-        value_type = float
+        value_type = int
         entity = TaxUnit
         label = "West Virginia older dependents count"
-        unit = USD
         definition_period = YEAR
         defined_for = StateCode.WV
 

@@ -104,3 +104,90 @@
     # Over-age dependent (20) falls back to personal count: 2 personal units * $1,000
     # Eligible dependent (10) gets $0 dependent exemption
     ok_exemptions: 2_000
+
+- name: OK dependent exemption reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.ok.dependent_exemption.ok_dependent_exemption_reform.ok_dependent_exemption_reform
+  input:
+    gov.contrib.states.ok.dependent_exemption.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.amount: 0
+    people:
+      parent1:
+        age: 40
+        employment_income: 60_000
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_name: OK
+  output:
+    # 2 head/spouse personal units (count 4 - 2 dependents) * $1,000 = $2,000.
+    # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
+    ok_exemptions: 2_000
+
+- name: OK dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.ok.dependent_exemption.ok_dependent_exemption_reform.ok_dependent_exemption_reform
+  input:
+    gov.contrib.states.ok.dependent_exemption.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.amount: 0
+    gov.contrib.states.ok.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: OK
+  output:
+    # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+    # is removed from the personal count. Personal = parent only = 1 * $1,000.
+    ok_exemptions: 1_000
+
+- name: OK dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.ok.dependent_exemption.ok_dependent_exemption_reform.ok_dependent_exemption_reform
+  input:
+    gov.contrib.states.ok.dependent_exemption.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.amount: 0
+    gov.contrib.states.ok.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ok.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: OK
+  output:
+    # age 18 is not < 18: dependent is excluded and falls back to the personal
+    # count. Personal = parent + over-age dependent = 2 * $1,000.
+    ok_exemptions: 2_000
