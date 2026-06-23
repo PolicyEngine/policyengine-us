@@ -451,3 +451,28 @@
   output:
     # Age 95 >= 65, homeowner, income $50K < $500K
     nj_staynj_eligible: true
+
+- name: Edge case 11, senior homeowner is ineligible when PAS-1 income exceeds limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 490_000
+        social_security_retirement: 15_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # PAS-1 income includes Social Security, so $490K + $15K >= $500K.
+    nj_staynj_eligible: false

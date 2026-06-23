@@ -1,0 +1,15 @@
+description: Additional income sources included in New Jersey property tax relief application income beyond New Jersey gross income.
+metadata:
+  unit: list
+  period: year
+  label: New Jersey property tax relief additional income sources
+  reference:
+    - title: NJ Division of Taxation - PAS-1 Income Calculation
+      href: https://www.nj.gov/treasury/taxation/relief.shtml#PAS1IncomeCalculation
+    - title: 2025 Form PAS-1 instructions, lines 17a-17f and 18a-18f
+      href: https://www.nj.gov/treasury/taxation/pdf/25-pas1in.pdf#page=9
+values:
+  2025-01-01:
+    - tax_exempt_interest_income
+    - tax_exempt_ira_distributions
+    - social_security
