@@ -1,7 +1,9 @@
-# NM CCAP countable income (8.15.2.11.C(3),(5) NMAC): a positive list of
-# counted earned and unearned income sources. Exempt sources (SNAP, TANF, SSI,
-# child support, etc.) are excluded by omission. This is a MONTH variable that
-# sums YEAR-defined income sources, so the monthly value is the annual sum / 12.
+# NM CCAP countable income (8.15.2.11.C NMAC). The counted sources are a
+# positive list (sources.yaml); exempt sources (SNAP, TANF, SSI, SSDI, child
+# support, etc.) are excluded by omission. 8.15.2.11.C(3) further excludes the
+# earned and unearned income of legal dependents, so the formula counts only
+# caretakers' (tax unit head/spouse) income. This is a MONTH variable that sums
+# YEAR-defined income sources, so the monthly value is the annual sum / 12.
 
 - name: Case 1, counted earned and unearned income.
   period: 2025-01
@@ -10,8 +12,8 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # counted
-        social_security: 6_000      # counted
+        employment_income: 24_000          # counted
+        social_security_retirement: 6_000  # counted (adult retirement)
     spm_units:
       spm_unit:
         members: [person1]
@@ -64,3 +66,50 @@
         state_code: NM
   output:
     nm_ccap_countable_income: 0
+
+- name: Case 4, SSDI is exempt for an adult.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000           # counted
+        social_security_disability: 18_000  # exempt SSDI (8.15.2.11.C(6))
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Only employment counts: 12_000 / 12 = 1_000/month. SSDI is excluded.
+    nm_ccap_countable_income: 1_000
+
+- name: Case 5, a household dependent's earned and unearned income is excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_retirement: 12_000  # counted (caretaker)
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        employment_income: 8_000            # excluded (dependent)
+        social_security_survivors: 6_000    # excluded (dependent)
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Only the caretaker's retirement counts: 12_000 / 12 = 1_000/month.
+    # Under 8.15.2.11.C(3), the dependent child's earnings and survivors
+    # benefit are both excluded from household income.
+    nm_ccap_countable_income: 1_000

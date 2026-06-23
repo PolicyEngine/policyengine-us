@@ -11,12 +11,11 @@ class nm_ccap_activity_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # 8.15.2.11.I / 8.15.2.7: benefits are for families working, attending
-        # school, or in job training. 8.15.2.11.I requires the activity to be
-        # present (it does not set a minimum-hours floor), so we test for any
-        # work hours or full-time student status. Each head/spouse caretaker
-        # must independently meet the activity requirement. We don't track
-        # job-training participation or temporary activity interruptions
-        # (8.15.2.7) at the moment.
+        # school, or in a job-training/educational program. 8.15.2.11.I
+        # requires the activity to be present (it does not set a minimum-hours
+        # floor), so we test for any work hours or full-time student status.
+        # Each head/spouse caretaker must independently meet the activity
+        # requirement.
         person = spm_unit.members
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         hours_worked = person("weekly_hours_worked", period.this_year)
@@ -26,4 +25,9 @@ class nm_ccap_activity_eligible(Variable):
         no_ineligible_caretaker = (
             spm_unit.sum(is_head_or_spouse & ~individually_eligible) == 0
         )
-        return has_caretaker & no_ineligible_caretaker
+        # Fallback for approved activities not modeled individually here -- job
+        # training, job search, and temporary leave from work or school
+        # (8.15.2.7): set meets_ccdf_activity_test to flag the unit as meeting
+        # the activity requirement.
+        meets_ccdf = spm_unit("meets_ccdf_activity_test", period.this_year)
+        return (has_caretaker & no_ineligible_caretaker) | meets_ccdf

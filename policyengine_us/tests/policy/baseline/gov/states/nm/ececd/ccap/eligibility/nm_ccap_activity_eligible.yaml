@@ -135,3 +135,29 @@
     # No head/spouse caretaker present -> activity test must fail, otherwise
     # child-only units would pass on income and assets alone.
     nm_ccap_activity_eligible: false
+
+- name: Case 7, CCDF activity fallback covers an activity not modeled here.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Parent is in job training / on temporary leave -- not captured by
+        # work hours or student status, so flagged via the federal CCDF input.
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Without the fallback this unit would fail (0 hours, not a student); the
+    # meets_ccdf_activity_test flag rescues it.
+    nm_ccap_activity_eligible: true

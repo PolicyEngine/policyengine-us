@@ -15,20 +15,30 @@ values:
     # PolicyEngine records military retirement separately from pension_income,
     # so include it under the 8.15.2.11.C(5) pensions category.
     - military_retirement_pay
-    # Social security benefits are counted except those exempted under
-    # 8.15.2.11.C(6).
-    - social_security
     - rental_income
+    # Social Security retirement, survivors, and dependents benefits are
+    # counted; SSDI is exempt (8.15.2.11.C(6)), so the aggregate social_security
+    # variable is split into its non-disability components here. (Social
+    # Security received by household children is also exempt, but that is
+    # handled by the caretaker filter below, not by omission.)
+    - social_security_retirement
+    - social_security_survivors
+    - social_security_dependents
     # Overtime is counted only if CYFD finds it is paid regularly
     # (8.15.2.11.C(5)); the regularity condition is captured within
     # employment_income and not separately modeled.
     #
+    # Whose income counts: 8.15.2.11.C(3) excludes the earned and unearned
+    # income of legal dependents and of grandparents who are not legal
+    # guardians. nm_ccap_countable_income applies this by counting only the
+    # income of caretakers (tax unit head/spouse), so household children's
+    # income (earnings and Social Security) is excluded. A non-guardian
+    # grandparent who files as their own tax unit head is not separately
+    # excluded at the moment.
+    #
     # Provisions we don't model at the moment:
     # - Royalties (8.15.2.11.C(5)) — no corresponding PolicyEngine variable.
-    # - The 8.15.2.11.C(6) child-earnings exclusion (earnings of household
-    #   dependents) and grandparent-non-guardian exclusion (8.15.2.11.C(3)) —
-    #   we don't filter income sources by the age or relationship of the earner.
-    # All ~30 exempt categories in 8.15.2.11.C(6) (SNAP, TANF, SSI, SSDI,
+    # The other ~30 exempt categories in 8.15.2.11.C(6) (SNAP, TANF, SSI,
     # unemployment, child support, energy assistance, foster care payments,
     # etc.) are excluded by omission from this positive list. Omitting TANF
     # also avoids a CCAP <-> TANF circular dependency; the is_tanf_enrolled
