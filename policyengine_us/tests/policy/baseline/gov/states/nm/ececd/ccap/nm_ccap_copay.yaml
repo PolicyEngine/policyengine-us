@@ -46,3 +46,27 @@
         state_code: NM
   output:
     nm_ccap_copay: 0
+
+- name: Case 3, copay is zero before the waiver because the formula is deferred.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Pre-2022 era: the waiver is not yet in effect (waived = false), but the
+    # pre-2022 copay formula (8.15.2.13.B) is not modeled, so the copay is
+    # still $0.
+    nm_ccap_copay: 0
