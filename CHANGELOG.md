@@ -1,3 +1,10 @@
+## [1.741.2] - 2026-06-23
+
+### Fixed
+
+- Run reform YAML tests one file per subprocess in a dedicated CI job to fix out-of-memory failures.
+
+
 ## [1.741.1] - 2026-06-23
 
 ### Changed
