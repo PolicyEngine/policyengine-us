@@ -18,7 +18,7 @@ class spm_unit_health_insurance_premiums(Variable):
         "chip_premium",
         "medicaid_premium",
         "marketplace_net_premium",
-        "base_part_a_premium",
+        "medicare_part_a_premium",
         "medicare_part_b_premium",
         "income_adjusted_part_d_premium_surcharge",
     ]

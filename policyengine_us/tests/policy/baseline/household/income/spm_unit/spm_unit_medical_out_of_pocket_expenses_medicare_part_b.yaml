@@ -54,6 +54,7 @@
       retiree:
         age: 70
         is_medicare_eligible: true
+        is_qmb_eligible: false
         other_health_insurance_premiums: 500
         base_part_a_premium: 6_216
         medicare_part_b_premium: 2_220
@@ -71,3 +72,31 @@
   output:
     spm_unit_health_insurance_premiums: 9_359.6
     spm_unit_medical_out_of_pocket_expenses: 9_359.6
+
+- name: SPM unit MOOP excludes Part A premiums covered by MSP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      retiree:
+        age: 70
+        is_medicare_eligible: true
+        other_health_insurance_premiums: 500
+        base_part_a_premium: 6_216
+        msp_part_a_premium_coverage: 6_216
+        medicare_part_b_premium: 2_220
+        income_adjusted_part_d_premium_surcharge: 423.6
+    tax_units:
+      tax_unit:
+        members: [retiree]
+    spm_units:
+      spm_unit:
+        members: [retiree]
+    households:
+      household:
+        members: [retiree]
+        state_code: CA
+  output:
+    medicare_part_a_premium: 0
+    spm_unit_health_insurance_premiums: 3_143.6
+    spm_unit_medical_out_of_pocket_expenses: 3_143.6
