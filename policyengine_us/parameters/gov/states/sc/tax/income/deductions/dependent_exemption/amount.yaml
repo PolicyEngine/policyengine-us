@@ -1,4 +1,4 @@
-description: South Carolina provides a young child deduction of this amount per dependent under age 6. Section 12-6-1160 sets it equal to the dependent exemption amount (Section 12-6-1140), but it is kept as its own parameter so the two can be modelled independently.
+description: South Carolina provides a dependent exemption of this amount per dependent. The young child deduction (Section 12-6-1160) is set equal to this amount.
 values:
   2019-01-01: 4_100 # Value in the legal code, last updated in 2019.
   2021-01-01: 4_300
@@ -14,9 +14,12 @@ metadata:
   rounding:
     type: downwards
     interval: 10
-  label: South Carolina young child deduction amount
+  label: South Carolina dependent exemption amount
   reference:
-    # 12-6-1160 defines the young child deduction equal to the 12-6-1140 amount.
+    # 12-6-1140(13) defines the dependent exemption amount; 12-6-1160 sets the
+    # young child deduction equal to it.
+    - title: SC Legal Code | SECTION 12-6-1140
+      href: https://www.scstatehouse.gov/code/t12c006.php
     - title: SC Legal Code | SECTION 12-6-1160
       href: https://www.scstatehouse.gov/code/t12c006.php
     - title: SC 1040 tax form instructions (2025)
