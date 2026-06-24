@@ -27,6 +27,24 @@ values:
     - overtime_income_deduction # MCTCP worksheet Line 3 (Sch 1-A Line 21)
     - auto_loan_interest_deduction # MCTCP worksheet Line 4 (Sch 1-A Line 30)
     - additional_senior_deduction # MCTCP worksheet Line 5 (Sch 1-A Line 37)
+  # HB 4168 (2026): auto loan interest sunsets after TY2025 (43-1022(36));
+  # adds child & dependent care and IRC 530A distribution subtractions.
+  2026-01-01:
+    - us_govt_interest # Line 28
+    - az_public_pension_exclusion # Line 29a
+    - az_long_term_capital_gains_subtraction # Line 20 - 24
+    - az_military_retirement_subtraction # Line 29b
+    - taxable_social_security # Line 30
+    - military_service_income # Line 32
+    - az_529_college_savings_plan_subtraction # Line 34a
+    - az_529a_able_account_subtraction # Line 34b
+    - az_adoption_expense_subtraction # Other subtractions - Item D
+    - az_families_tax_rebate_subtraction # Line 36, Item U
+    - tip_income_deduction # 43-1022(31)
+    - overtime_income_deduction # 43-1022(32)
+    - additional_senior_deduction # 43-1022(35)
+    - az_dependent_care_expense_subtraction # 43-1022(34)
+    - az_530a_distribution_subtraction # 43-1022(33)
 metadata:
   unit: list
   period: year
@@ -48,3 +66,5 @@ metadata:
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=25
     - title: 43-1022. Subtractions from Arizona gross income
       href: https://www.azleg.gov/ars/43/01022.htm
+    - title: Arizona HB 4168 (2026), Sec. 15, amending A.R.S. 43-1022(31)-(36)
+      href: https://www.azleg.gov/legtext/57leg/2R/bills/HB4168H.pdf#page=28
