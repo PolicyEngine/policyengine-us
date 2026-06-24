@@ -1,15 +1,16 @@
-- name: Attributing the state adjusted gross income based on federal AGI
+- name: Each person's VAGI is their federal AGI less their own Virginia subtractions
   period: 2021
   input:
     people:
       person1:
         adjusted_gross_income_person: 10_000
+        va_subtractions_person: 2_500
       person2:
         adjusted_gross_income_person: 30_000
+        va_subtractions_person: 7_500
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_subtractions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -23,12 +24,13 @@
     people:
       person1:
         adjusted_gross_income_person: 10_000
+        va_subtractions_person: 2_000
       person2:
         adjusted_gross_income_person: 0
+        va_subtractions_person: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_subtractions: 2_000
     households:
       household:
         members: [person1, person2]
