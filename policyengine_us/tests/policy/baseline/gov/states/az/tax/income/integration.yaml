@@ -64,20 +64,22 @@
     az_increased_standard_deduction_for_charitable_contributions: 1_000
     # Standard deduction: $23,625 base + $1,000 add-on = $24,625
     az_standard_deduction: 24_625
-    # Dependent care: max($5,000 - $1,200, 0) = $3,800
-    az_dependent_care_expense_subtraction: 3_800
+    # Dependent care: cdcc_relevant_expenses = min($5,000, $3,000 §21 cap for
+    # 1 QI, $80,000 earnings) = $3,000; subtraction = max($3,000 - $1,200, 0)
+    # = $1,800
+    az_dependent_care_expense_subtraction: 1_800
     # 530A distribution subtraction: $1,000
     az_530a_distribution_subtraction: 1_000
-    # az_subtractions includes both new subtractions: $3,800 + $1,000 = $4,800
-    az_subtractions: 4_800
-    # AZ AGI = $80,000 - $4,800 = $75,200
-    az_agi: 75_200
-    # Taxable income = $75,200 - $24,625 = $50,575
-    az_taxable_income: 50_575
-    # Tax before credits = $50,575 * 2.5% = $1,264.375
-    az_income_tax_before_non_refundable_credits: 1_264.375
-    # AZ income tax = $1,264.375 - $125 dependent credit = $1,139.375
-    az_income_tax: 1_139.375
+    # az_subtractions includes both new subtractions: $1,800 + $1,000 = $2,800
+    az_subtractions: 2_800
+    # AZ AGI = $80,000 - $2,800 = $77,200
+    az_agi: 77_200
+    # Taxable income = $77,200 - $24,625 = $52,575
+    az_taxable_income: 52_575
+    # Tax before credits = $52,575 * 2.5% = $1,314.375
+    az_income_tax_before_non_refundable_credits: 1_314.375
+    # AZ income tax = $1,314.375 - $125 dependent credit = $1,189.375
+    az_income_tax: 1_189.375
 
 # Confirms the pre-2026 regime is UNCHANGED for the identical household.
 # In 2025: dependent credit is $100, charitable add-on uses the 0.34 rate

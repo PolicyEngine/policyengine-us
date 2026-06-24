@@ -1,13 +1,16 @@
 # HB 4168 (2026): A.R.S. 43-1022(34) subtracts IRC 21 child and dependent
-# care expenses that exceed the federal IRC 21 credit (CDCC). No cap. The
-# subtraction is floored at zero.
+# care expenses for a qualifying individual that exceed the federal IRC 21
+# credit (CDCC). The expense base is cdcc_relevant_expenses, which applies the
+# IRC 21 dollar and earned-income limits and equals 0 when there is no
+# qualifying individual (count_cdcc_eligible == 0). The subtraction is floored
+# at zero.
 
 - name: Case 1, childcare expenses exceed the federal credit.
   absolute_error_margin: 0.01
   period: 2026
   input:
     state_code: AZ
-    tax_unit_childcare_expenses: 5_000
+    cdcc_relevant_expenses: 5_000
     cdcc: 1_200
   output:
     # max($5,000 - $1,200, 0) = $3,800
@@ -18,7 +21,7 @@
   period: 2026
   input:
     state_code: AZ
-    tax_unit_childcare_expenses: 1_000
+    cdcc_relevant_expenses: 1_000
     cdcc: 1_500
   output:
     # max($1,000 - $1,500, 0) = $0
@@ -29,7 +32,61 @@
   period: 2026
   input:
     state_code: AZ
-    tax_unit_childcare_expenses: 0
+    cdcc_relevant_expenses: 0
     cdcc: 0
   output:
     az_dependent_care_expense_subtraction: 0
+
+# Regression (flagged by Daphne): a dependent who is NOT an IRC 21 qualifying
+# individual (age 14, over the CDCC child-age limit of 13, not disabled)
+# generates no subtraction even with childcare expenses and earnings, because
+# cdcc_relevant_expenses is 0 when count_cdcc_eligible == 0.
+- name: Case 4, no IRC 21 qualifying individual yields no subtraction.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    count_cdcc_eligible: 0
+    cdcc: 0
+    az_dependent_care_expense_subtraction: 0
+
+# Positive case: a young qualifying child (age 5) with childcare expenses that
+# exceed the federal CDCC. The subtraction equals cdcc_relevant_expenses - cdcc.
+- name: Case 5, young qualifying child with expenses exceeding the federal credit.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # cdcc_relevant_expenses = min($5,000, $3,000 limit, $40,000 earnings)
+    #   = $3,000
+    # cdcc = $3,000 * 0.37 rate = $1,110
+    # subtraction = max($3,000 - $1,110, 0) = $1,890
+    az_dependent_care_expense_subtraction: 1_890

@@ -7,13 +7,19 @@ metadata:
   - az_filing_status
   reference:
   - title: Arizona HB 4168 (2026), Sec. 16 amending 43-1041(I)(2)(a)-(b)
-    href: https://www.azleg.gov/legtext/57leg/2R/bills/HB4168P.pdf
+    href: https://www.azleg.gov/legtext/57leg/2R/bills/HB4168H.pdf#page=30
   - title: 43-1041. Optional standard deduction Line I
     href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm
+  - title: 26 U.S.C. 170(p) Charitable deduction for individuals who do not itemize
+    href: https://www.law.cornell.edu/uscode/text/26/170#p
 
-# HB 4168 sets the cap at $1,000 for single/married-filing-separately filers
-# and $2,000 for joint filers. The bill is silent on head of household, so we
-# apply the $1,000 single-filer cap to head of household filers.
+# HB 4168 caps the increased standard deduction at $1,000 for single/married-
+# filing-separately filers and $2,000 for joint filers; the bill is silent on
+# head of household. Arizona's add-on equals the IRC 170(c) contribution amount
+# and mirrors the federal above-the-line charitable deduction under IRC 170(p),
+# which caps non-joint filers (single, married-filing-separately, and head of
+# household) at $1,000 and joint filers at $2,000. Head of household is a non-
+# joint filing status, so it uses the $1,000 non-joint cap.
 JOINT:
   2018-01-01: 0
   2026-01-01: 2_000
