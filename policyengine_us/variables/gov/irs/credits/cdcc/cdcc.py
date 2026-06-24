@@ -15,6 +15,12 @@ class cdcc(Variable):
         # In 2021, the CDCC was refundable
         p = parameters(period).gov.irs.credits
         if "cdcc" in p.refundable:
-            return potential
+            credit = potential
         else:
-            return min_(credit_limit, potential)
+            credit = min_(credit_limit, potential)
+        # IRC 21(e)(2): a married taxpayer may claim the credit only on a joint
+        # return. A separated taxpayer who qualifies under 21(e)(4) is treated
+        # as not married and files as head of household, not separately.
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return where(separate, 0, credit)

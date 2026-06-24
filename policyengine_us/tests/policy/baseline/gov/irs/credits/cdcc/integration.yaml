@@ -128,3 +128,32 @@
     care_expenses: [0, 0, 6_000]
     cdcc_relevant_expenses: 3_000  # min(6_000, $3,000 cap for one individual, earnings)
     cdcc: 600  # 20% x 3_000 at $70,000 joint AGI
+
+- name: Both spouses incapable of self-care are one qualifying individual
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        is_incapable_of_self_care: true
+      person2:  # incapacitated spouse: care billed as adult care via care_expenses
+        age: 43
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Two incapacitated spouses count as one qualifying individual (the taxpayer
+    # is never their own), so the cap and the deemed floor are $3,000, not
+    # $6,000. cdcc = 20% x $3,000 = $600 (was $1,200 before the count fix).
+    count_cdcc_eligible: 1
+    cdcc_limit: 3_000
+    cdcc: 600

@@ -1,0 +1,19 @@
+description: The IRS deems a spouse who is a full-time student or incapable of self-care to have at least this earned income for the Child and Dependent Care Credit, based on the number of qualifying individuals.
+brackets:
+  - threshold:
+      2013-01-01: 0
+    amount:
+      2013-01-01: 3_000
+  - threshold:
+      2013-01-01: 2
+    amount:
+      2013-01-01: 6_000
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: CDCC deemed earned income for student or disabled spouse
+  reference:
+    - title: 26 U.S. Code § 21(d)(2)
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section21&num=0&edition=prelim

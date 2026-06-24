@@ -31,3 +31,41 @@
     cdcc_potential: 1_000
   output:
     cdcc: 0
+
+# IRC 21(e)(2): a married taxpayer may only claim the credit on a joint return.
+- name: Married filing separately does not receive the credit
+  period: 2024
+  input:
+    cdcc_credit_limit: 1_000
+    cdcc_potential: 1_000
+    filing_status: SEPARATE
+  output:
+    cdcc: 0
+
+- name: Head of household receives the credit
+  period: 2024
+  input:
+    cdcc_credit_limit: 1_000
+    cdcc_potential: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    cdcc: 1_000
+
+- name: Married filing separately with a child and care expenses gets zero
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+        is_tax_unit_head: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+  output:
+    cdcc: 0

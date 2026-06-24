@@ -1,0 +1,1 @@
+Improve federal Child and Dependent Care Credit conformance with IRC section 21: count a disabled spouse modeled as the tax unit head and treat a couple's two incapacitated spouses as one qualifying individual, apply the section 21(d)(2) deemed earned income for a student or incapacitated spouse, and disallow the credit for married taxpayers filing separately.
