@@ -156,9 +156,14 @@ def split_into_batches(
 
         return batches if batches else [[str(base_path)]]
 
-    # Special handling for reform tests - run all together in one batch
+    # Special handling for reform tests - one batch per file. Reforms are
+    # force-applied and deepcopy the full parameter tree (~5.5 GB peak/file
+    # for ctc_linear_phase_out and winship, measured); running all files in
+    # one subprocess stacks past the 16 GB runner cap → "runner received a
+    # shutdown signal". A fresh subprocess per file frees each peak between
+    # files.
     if "reform" in str(base_path):
-        return [[str(base_path)]]
+        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
 
     # Special handling for states directory - support excluding specific states
     # and splitting into multiple sequential batches for memory management

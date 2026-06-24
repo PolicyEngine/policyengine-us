@@ -1,3 +1,38 @@
+## [1.742.0] - 2026-06-23
+
+### Added
+
+- Add use_reported_ssi toggle and applicable_ssi variable, letting API partners count reported SSI instead of calculated SSI in Texas CEAP income.
+
+
+## [1.741.2] - 2026-06-23
+
+### Fixed
+
+- Run reform YAML tests one file per subprocess in a dedicated CI job to fix out-of-memory failures.
+
+
+## [1.741.1] - 2026-06-23
+
+### Changed
+
+- Updated Hawaii TANF Standard of Assistance rate from 48% to 62% of the standard of need, effective March 1, 2025.
+
+
+## [1.741.0] - 2026-06-23
+
+### Added
+
+- Added a South Carolina fully refundable EITC contrib reform for the Child Poverty Impact Dashboard.
+
+
+## [1.740.0] - 2026-06-23
+
+### Added
+
+- Added a dedicated South Carolina dependent exemption parameter (Section 12-6-1140), with the young child deduction (Section 12-6-1160) set equal to it; no change to calculated values.
+
+
 ## [1.739.4] - 2026-06-21
 
 ### Fixed
