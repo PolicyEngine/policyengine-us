@@ -146,7 +146,7 @@
   # Security has no separate Virginia taxable income and the couple does not
   # qualify for the Spouse Tax Adjustment. Confirmed against the Virginia Form
   # 760 Spouse Tax Adjustment worksheet, TaxAct, and TAXSIM-35.
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   period: 2025
   input:
     people:
@@ -168,8 +168,60 @@
         members: [person1, person2]
         state_code: VA
   output:
+    va_spouse_tax_adjustment_eligible: false
     va_spouse_tax_adjustment: 0
-    va_income_tax: 5_795
+    va_income_tax: 5_795.24
+
+- name: MFJ - spouse with only Virginia-exempt unemployment does not trigger Spouse Tax Adjustment
+  # Virginia subtracts unemployment compensation (separate-VAGI worksheet, Line
+  # 17), so a spouse whose only income is unemployment has no separate Virginia
+  # taxable income and the couple does not qualify for the Spouse Tax Adjustment.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 125_714
+      person2:
+        age: 45
+        unemployment_compensation: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_rebate: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_tax_adjustment_eligible: false
+    va_spouse_tax_adjustment: 0
+
+- name: MFJ - two earners still receive the Spouse Tax Adjustment (no over-correction)
+  # Guard against over-correcting: a genuinely two-earner couple (no exempt
+  # income) must still qualify for and receive the Spouse Tax Adjustment.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_rebate: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_tax_adjustment_eligible: true
+    va_spouse_tax_adjustment: 257.5
 
 - name: Joint couple with one child, 81k income each
   absolute_error_margin: 2

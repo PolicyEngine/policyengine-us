@@ -59,6 +59,29 @@
     # separate VAGI is 0. The two columns still sum to the tax unit's VAGI.
     va_agi_person: [100_000, 0]
 
+- name: Unemployment subtraction applied directly to the recipient, not prorated
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 45
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Virginia subtracts unemployment compensation; person2's $15,000 is
+    # attributed to her, so her separate VAGI is 0 rather than a prorated
+    # share of the subtraction. The columns still sum to the tax unit's VAGI.
+    va_agi_person: [100_000, 0]
+
 - name: Age deduction applied directly to eligible person, not prorated
   period: 2021
   input:
