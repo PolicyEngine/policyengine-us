@@ -95,10 +95,10 @@ def nearest_fmr_year(year: int) -> int:
 def _load_small_area_fair_market_rents() -> pd.DataFrame:
     """ZIP-level Small Area FMRs, indexed by (zip_code, year, bedrooms).
 
-    Currently scoped to the four Texas metro areas where HUD mandates SAFMR
-    use under the Housing Choice Voucher program (Dallas, Fort Worth-Arlington,
-    Houston, and San Antonio). Outside these areas the model keeps the
-    county-level FMR.
+    Scoped to the four Texas metros where HUD mandates SAFMR use under the
+    Housing Choice Voucher program: Dallas, Fort Worth-Arlington, and San
+    Antonio (2018 cohort) plus Beaumont-Port Arthur (2024 cohort). Houston is
+    not a designated metro. Outside these areas the model keeps the county FMR.
     """
     raw = pd.read_csv(
         FOLDER / "small_area_fair_market_rents.csv",

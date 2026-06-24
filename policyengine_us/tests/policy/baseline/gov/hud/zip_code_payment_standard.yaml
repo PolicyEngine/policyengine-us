@@ -23,10 +23,26 @@
   output:
     zip_code_payment_standard: 36_418.2 # 2,639 * 1.15 * 12
 
+- name: Houston HHA Tier A ZIP 2BR uses the adopted payment standard
+  period: 2025
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 19_536 # HHA Tier A-1 1,628/mo * 12
+
+- name: Houston HHA Tier D ZIP 2BR uses the lower adopted standard
+  period: 2025
+  input:
+    zip_code: "77011"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 16_284 # HHA Tier D 1,357/mo * 12
+
 - name: ZIP without a published standard returns zero
   period: 2025
   input:
-    zip_code: "77002" # Houston core - SAFMR only, no published TDHCA schedule
+    zip_code: "75201" # Dallas - SAFMR metro, no published adopted schedule
     bedrooms: 2
   output:
     zip_code_payment_standard: 0

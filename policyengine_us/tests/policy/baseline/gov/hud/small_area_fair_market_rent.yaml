@@ -1,12 +1,4 @@
-- name: Houston core ZIP 2BR uses the ZIP-level Small Area FMR
-  period: 2026
-  input:
-    zip_code: "77002"
-    bedrooms: 2
-  output:
-    small_area_fair_market_rent: 28_320 # 2,360/mo * 12
-
-- name: Dallas core ZIP 2BR uses the ZIP-level Small Area FMR
+- name: Dallas mandatory-SAFMR metro ZIP 2BR uses the ZIP-level Small Area FMR
   period: 2026
   input:
     zip_code: "75201"
@@ -14,19 +6,35 @@
   output:
     small_area_fair_market_rent: 34_800 # 2,900/mo * 12
 
-- name: Houston core ZIP 5BR adds 15 percent to the 4BR SAFMR
+- name: Beaumont-Port Arthur ZIP 2BR uses the ZIP-level Small Area FMR
+  period: 2026
+  input:
+    zip_code: "77701"
+    bedrooms: 2
+  output:
+    small_area_fair_market_rent: 11_760 # 980/mo * 12
+
+- name: Beaumont-Port Arthur ZIP 5BR adds 15 percent to the 4BR SAFMR
   period: 2026
   absolute_error_margin: 0.01
   input:
-    zip_code: "77002"
+    zip_code: "77701"
     bedrooms: 5
   output:
-    small_area_fair_market_rent: 54_648 # 3,960 * 1.15 * 12
+    small_area_fair_market_rent: 21_252 # 1,540 * 1.15 * 12
 
-- name: ZIP outside the in-scope SAFMR metros returns zero
+- name: Houston ZIP returns zero (not a mandatory-SAFMR metro)
   period: 2026
   input:
-    zip_code: "79901" # El Paso - not an in-scope mandatory-SAFMR metro
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    small_area_fair_market_rent: 0
+
+- name: ZIP outside the mandatory-SAFMR metros returns zero
+  period: 2026
+  input:
+    zip_code: "79901" # El Paso
     bedrooms: 2
   output:
     small_area_fair_market_rent: 0

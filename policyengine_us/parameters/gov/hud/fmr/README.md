@@ -35,7 +35,11 @@ for Housing Choice Voucher payment standards in designated metropolitan areas
 - **Year**: FY2026 (HUD revised file). Unsupported years impute to the nearest
   bundled SAFMR year.
 - **Geography**: the four Texas metros where SAFMR use is mandatory — Dallas,
-  Fort Worth-Arlington, Houston, and San Antonio (834 ZIP codes). Other areas
+  Fort Worth-Arlington, San Antonio (2018 cohort) and Beaumont-Port Arthur
+  (2024 cohort) — 550 ZIP codes. Houston is **not** a mandatory-SAFMR metro
+  (HUD publishes SAFMR data for it but does not mandate its use), so it is
+  excluded; its adopted HCV standards live in
+  `../payment_standards/zip_code_payment_standards.csv` instead. Other areas
   keep the county FMR. The handful of ZIP codes that straddle the Dallas and
   Fort Worth HUD Metro FMR Areas carry identical SAFMRs, so the table is unique
   per `(zip_code, year, bedrooms)`.
@@ -57,8 +61,9 @@ Whether a SAFMR is the HCV payment standard for a ZIP is a policy question, not
 a data-availability one. The policy primitive is HUD's list of metros where
 SAFMR use is mandatory (2016 SAFMR Final Rule; 24 CFR §888.113), held as the
 `SAFMR_HCV_DESIGNATED_METROS` constant in the `safmr_used_for_hcv` variable
-(`Dallas`, `Fort Worth`, `Houston`, `San Antonio` — the Texas members, matching
-the `hud_area_name` column here). `safmr_used_for_hcv` is true for a ZIP iff its
+(`Beaumont-Port Arthur`, `Dallas`, `Fort Worth`, `San Antonio` — the Texas
+members, matching the `hud_area_name` column here; Houston is deliberately
+absent because it is not a mandatory-SAFMR metro). `safmr_used_for_hcv` is true for a ZIP iff its
 SAFMR row is in a designated metro, so the applicable ZIP set is just
 `small_area_fair_market_rents` restricted to those metros — nothing to
 duplicate or keep in sync.
