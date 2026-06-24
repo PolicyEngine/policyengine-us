@@ -5,11 +5,11 @@
 # - 60% earned income disregard on remainder (KEESM Memo 2008-0326)
 # - Dependent care deduction - no cap (KEESM 7224)
 # - Gross income must be < 30% FPL (K.S.A. 39-709)
-# - Payment standard = basic standard (by size) + shelter allowance (by county
-#   group) per K.A.R. 30-4-101. Basic: 1=$132, 2=$217, 3=$294, 4=$362, +$61/person.
-#   Shelter: Group I=$92, II=$97, III=$109, IV=$135. Groups I/II/III are listed;
-#   Group IV (most populous) is the default. With no county specified, households
-#   resolve to a rural Group I county: 1=$224, 2=$309, 3=$386, 4=$454, 5=$515.
+# - Combined payment standard by size, county group, and living arrangement
+#   (Kansas TANF State Plan FFY 2024-2026 p.29), +$61/person. Non-shared, no
+#   county (Group I): 1=$224, 2=$309, 3=$386, 4=$454, 5=$515. Group IV is the
+#   default tier; with no county a household resolves to a Group I county.
+#   is_shared_living (default false) selects the lower shared-living standard.
 # - SSI recipients are excluded from the assistance-plan size (KEESM 4113).
 # - Assigned child support is excluded from the payment amount (KEESM 6220(4)(b)).
 # - Resource limit: $3,000
@@ -576,3 +576,37 @@
     ks_tanf_eligible: true
     # Benefit: 309 - 164 = 145
     ks_tanf: 145
+
+- name: Case 16, shared living arrangement uses the reduced payment standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        is_shared_living: true
+  output:
+    # Shared living, Group I, size 3: 349 (vs 386 non-shared)
+    ks_tanf_maximum_benefit: 349
+    # person1 earnings $500 - $90 = $410, * 0.40 = $164
+    ks_tanf_countable_income: 164
+    ks_tanf_eligible: true
+    # Benefit: 349 - 164 = 185
+    ks_tanf: 185

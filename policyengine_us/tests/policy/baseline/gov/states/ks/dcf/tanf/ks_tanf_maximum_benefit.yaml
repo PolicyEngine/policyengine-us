@@ -1,10 +1,13 @@
 # Kansas TANF maximum benefit (payment standard) test
-# Per K.A.R. 30-4-101: payment standard = basic standard (by assistance unit
-# size) + shelter allowance (by county group). Basic: 1=$132, 2=$217, 3=$294,
-# 4=$362, +$61/person. Shelter: Group I=$92, II=$97, III=$109, IV=$135.
-# Groups I, II, III are listed; Group IV (most populous counties) is the default.
-# A household with no county specified resolves to a rural Group I county.
-# SSI recipients are excluded from the assistance unit size.
+# Per the Kansas TANF State Plan (FFY 2024-2026) p.29 and K.A.R. 30-4-101: the
+# combined payment standard depends on assistance unit size, county group, and
+# living arrangement, plus $61 per additional person above size 4.
+# Non-shared family of 3: Group I=386, II=391, III=403, IV=429.
+# Shared family of 3:     Group I=349, II=352, III=359, IV=375.
+# Groups I, II, III are listed; Group IV (Douglas, Harvey, Johnson) is the
+# default. A household with no county specified resolves to a Group I county.
+# SSI recipients are excluded from the assistance unit size; is_shared_living
+# (default false) selects the shared standard.
 
 # --- County tiers, family of 3 (basic $294) ---
 - name: Case 1, family of 3, Group I rural county (no county specified).
@@ -278,3 +281,78 @@
   output:
     # 362 + 4 * 61 + 92 = 698
     ks_tanf_maximum_benefit: 698
+
+# --- Shared living arrangements (reduced shelter, State Plan p.29) ---
+- name: Case 12, family of 3, shared living, Group I.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        is_shared_living: true
+  output:
+    # Shared living, Group I, size 3
+    ks_tanf_maximum_benefit: 349
+
+- name: Case 13, family of 3, shared living, Group IV (Johnson).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS
+        is_shared_living: true
+  output:
+    # Shared living, Group IV, size 3
+    ks_tanf_maximum_benefit: 375
+
+- name: Case 14, family of 5, shared living, Group I, additional person.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+        is_shared_living: true
+  output:
+    # Shared living, Group I: 421 + 61 = 482
+    ks_tanf_maximum_benefit: 482

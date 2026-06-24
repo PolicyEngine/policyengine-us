@@ -16,10 +16,7 @@ class ks_tanf_county_group(Variable):
     label = "Kansas TANF county group"
     definition_period = YEAR
     defined_for = StateCode.KS
-    reference = (
-        "https://content.dcf.ks.gov/ees/keesm/appendix/T-2_county_group_assignments_04_18_fromxls.pdf",
-        "https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101",
-    )
+    reference = "https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101"
 
     def formula(spm_unit, period, parameters):
         # Per KEESM Appendix T-2 and K.A.R. 30-4-101: counties fall into four

@@ -1,1 +1,0 @@
-Corrected Kansas TANF benefits to vary the payment standard by county group, exclude SSI recipients from the assistance unit (its size and income, requiring at least one remaining member for eligibility), and exclude assigned child support from the payment amount.
