@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ks_tanf_assistance_size(Variable):
+class ks_tanf_assistance_unit_size(Variable):
     value_type = int
     entity = SPMUnit
-    label = "Kansas TANF assistance plan size"
+    label = "Kansas TANF assistance unit size"
     definition_period = YEAR
     defined_for = StateCode.KS
     reference = (
@@ -14,6 +14,7 @@ class ks_tanf_assistance_size(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per KEESM 4113: SSI recipients are excluded from the TAF assistance
-        # plan, "excluded from the benefits and the household size."
-        ssi_recipients = spm_unit.sum(spm_unit.members("applicable_ssi", period) > 0)
-        return spm_unit("spm_unit_size", period) - ssi_recipients
+        # unit, "excluded from the benefits and the household size."
+        return spm_unit.sum(
+            spm_unit.members("ks_tanf_is_assistance_unit_member", period)
+        )

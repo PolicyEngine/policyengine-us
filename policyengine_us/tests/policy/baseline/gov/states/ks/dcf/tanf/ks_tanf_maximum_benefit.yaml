@@ -1,18 +1,30 @@
 # Kansas TANF maximum benefit (payment standard) test
-# Per K.A.R. 30-4-101: payment standard = basic standard (by size) + shelter
-# allowance (by county group). Basic: 1=$132, 2=$217, 3=$294, 4=$362, +$61/person.
-# Shelter: Group I=$92, II=$97, III=$109, IV=$135.
+# Per K.A.R. 30-4-101: payment standard = basic standard (by assistance unit
+# size) + shelter allowance (by county group). Basic: 1=$132, 2=$217, 3=$294,
+# 4=$362, +$61/person. Shelter: Group I=$92, II=$97, III=$109, IV=$135.
 # Groups I, II, III are listed; Group IV (most populous counties) is the default.
 # A household with no county specified resolves to a rural Group I county.
-# SSI recipients are excluded from the household size.
+# SSI recipients are excluded from the assistance unit size.
 
 # --- County tiers, family of 3 (basic $294) ---
 - name: Case 1, family of 3, Group I rural county (no county specified).
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 3
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
   output:
     # 294 + 92 = 386
     ks_tanf_maximum_benefit: 386
@@ -21,9 +33,21 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    county: FRANKLIN_COUNTY_KS
-    spm_unit_size: 3
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: FRANKLIN_COUNTY_KS
   output:
     # 294 + 97 = 391
     ks_tanf_maximum_benefit: 391
@@ -32,9 +56,21 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    county: SEDGWICK_COUNTY_KS
-    spm_unit_size: 3
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: SEDGWICK_COUNTY_KS
   output:
     # 294 + 109 = 403
     ks_tanf_maximum_benefit: 403
@@ -43,9 +79,21 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    county: JOHNSON_COUNTY_KS
-    spm_unit_size: 3
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS
   output:
     # 294 + 135 = 429
     ks_tanf_maximum_benefit: 429
@@ -55,8 +103,16 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 1
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
   output:
     # 132 + 92 = 224
     ks_tanf_maximum_benefit: 224
@@ -65,8 +121,22 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 4
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 10
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
   output:
     # 362 + 92 = 454
     ks_tanf_maximum_benefit: 454
@@ -75,8 +145,24 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    spm_unit_size: 5
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
   output:
     # 362 + 61 + 92 = 515
     ks_tanf_maximum_benefit: 515
@@ -86,9 +172,25 @@
   period: 2025-01
   absolute_error_margin: 0.01
   input:
-    state_code: KS
-    county: JOHNSON_COUNTY_KS
-    spm_unit_size: 5
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 12
+      person4:
+        age: 8
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS
   output:
     # 362 + 61 + 135 = 558
     ks_tanf_maximum_benefit: 558
@@ -103,7 +205,7 @@
         age: 30
       person2:
         age: 8
-        ssi: 900  # SSI recipient, excluded from the assistance plan
+        ssi: 900  # SSI recipient, excluded from the assistance unit
       person3:
         age: 5
     spm_units:
@@ -130,7 +232,7 @@
         age: 7
       person4:
         age: 4
-        ssi: 900  # SSI recipient, excluded from the assistance plan
+        ssi: 900  # SSI recipient, excluded from the assistance unit
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
@@ -142,3 +244,37 @@
   output:
     # Counted size = 4 - 1 SSI = 3; 294 + 135 = 429
     ks_tanf_maximum_benefit: 429
+
+- name: Case 11, family of 8, Group I, multiple additional persons.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 35
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 11
+      person6:
+        age: 8
+      person7:
+        age: 5
+      person8:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: KS
+  output:
+    # 362 + 4 * 61 + 92 = 698
+    ks_tanf_maximum_benefit: 698

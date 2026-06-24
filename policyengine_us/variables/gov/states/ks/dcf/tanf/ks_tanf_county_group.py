@@ -16,14 +16,18 @@ class ks_tanf_county_group(Variable):
     label = "Kansas TANF county group"
     definition_period = YEAR
     defined_for = StateCode.KS
-    reference = "https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101"
+    reference = (
+        "https://content.dcf.ks.gov/ees/keesm/appendix/T-2_county_group_assignments_04_18_fromxls.pdf",
+        "https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101",
+    )
 
     def formula(spm_unit, period, parameters):
-        # Per K.A.R. 30-4-101: counties fall into four groups with different
-        # shelter allowances. Groups I, II, and III are listed explicitly.
-        # Group IV (Douglas, Harvey, Johnson, and Wyandotte — the most populous
-        # counties) is the default, so any county with no listed group falls to
-        # the most populous tier rather than being understated.
+        # Per KEESM Appendix T-2 and K.A.R. 30-4-101: counties fall into four
+        # shelter-allowance tiers. Groups I, II, and III are listed explicitly;
+        # Group IV (Douglas, Harvey, and Johnson — the highest-cost, highest-
+        # population tier) is the default for any unlisted county. A household
+        # with no county input resolves to its state's first county, which is a
+        # Group I county, so the no-county fallback is Group I, not Group IV.
         county = spm_unit.household("county_str", period)
         p = parameters(period).gov.states.ks.dcf.tanf.payment_standard.county_group
         group_iii = np.isin(county, p.group_3)

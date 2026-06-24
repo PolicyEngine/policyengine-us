@@ -1,7 +1,7 @@
 # Kansas TANF county group assignment test
-# Per K.A.R. 30-4-101: counties fall into four groups by shelter allowance.
-# Groups I, II, and III are explicitly listed; Group IV (most populous counties:
-# Douglas, Harvey, Johnson, Wyandotte) is the default.
+# Per KEESM Appendix T-2 / K.A.R. 30-4-101: counties fall into four shelter
+# tiers. Groups I, II, and III are listed explicitly; Group IV (Douglas, Harvey,
+# Johnson — the highest tier) is the default.
 
 - name: Case 1, rural county is Group I.
   period: 2025-01
@@ -34,7 +34,15 @@
   output:
     ks_tanf_county_group: GROUP_III
 
-- name: Case 5, high cost high population county is Group IV.
+- name: Case 5, Wyandotte County is Group III (high population).
+  period: 2025-01
+  input:
+    state_code: KS
+    county: WYANDOTTE_COUNTY_KS
+  output:
+    ks_tanf_county_group: GROUP_III
+
+- name: Case 6, high cost high population county is Group IV (default tier).
   period: 2025-01
   input:
     state_code: KS
@@ -42,10 +50,10 @@
   output:
     ks_tanf_county_group: GROUP_IV
 
-- name: Case 6, Wyandotte County is Group IV.
+- name: Case 7, Douglas County is Group IV via the default tier.
   period: 2025-01
   input:
     state_code: KS
-    county: WYANDOTTE_COUNTY_KS
+    county: DOUGLAS_COUNTY_KS
   output:
     ks_tanf_county_group: GROUP_IV

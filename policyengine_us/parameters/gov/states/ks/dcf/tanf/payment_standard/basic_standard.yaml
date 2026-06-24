@@ -6,16 +6,18 @@ metadata:
   breakdown:
     - range(0, 5)
   breakdown_labels:
-    - Household size
+    - Assistance unit size
   label: Kansas TANF basic standard amount
   reference:
     - title: K.A.R. 30-4-101 - Basic Standards
       href: https://www.law.cornell.edu/regulations/kansas/K-A-R-30-4-101
+    - title: KEESM Appendix F-4 - TAF Non-Shared Living Standards
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/F-4_TAFtable07_11.pdf
     - title: Kansas TANF State Plan FFY 2024-2026, Benefit Structure
       href: https://www.dcf.ks.gov/services/ees/Documents/Reports/TANF%20State%20Plan%20FFY%202024%20-%202026.pdf#page=29
 
-# Basic standard per K.A.R. 30-4-101 (includes $18/person energy supplement).
-# The county-group shelter allowance is added on top in ks_tanf_maximum_benefit.
+# Basic standard per K.A.R. 30-4-101. The county-group shelter allowance is
+# added on top in ks_tanf_maximum_benefit.
 0:
   1997-03-01: 0
 1:

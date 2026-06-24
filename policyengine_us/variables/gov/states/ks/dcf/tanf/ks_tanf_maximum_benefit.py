@@ -15,11 +15,12 @@ class ks_tanf_maximum_benefit(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per K.A.R. 30-4-100 and K.A.R. 30-4-101:
-        # Payment standard = basic standard (by assistance plan size) + shelter
-        # allowance (by county group). The assistance plan size excludes SSI
-        # recipients (KEESM 4113).
+        # Payment standard = basic standard (by assistance unit size) + shelter
+        # allowance (by county group). The assistance unit size excludes SSI
+        # recipients (KEESM 4113). We use the non-shared (F-4) standards; we
+        # don't track shared-living arrangements (F-5, lower) at the moment.
         p = parameters(period).gov.states.ks.dcf.tanf
-        unit_size = spm_unit("ks_tanf_assistance_size", period.this_year)
+        unit_size = spm_unit("ks_tanf_assistance_unit_size", period.this_year)
         capped_size = min_(unit_size, p.max_family_size_in_table)
         additional_people = max_(unit_size - p.max_family_size_in_table, 0)
         basic_standard = (
