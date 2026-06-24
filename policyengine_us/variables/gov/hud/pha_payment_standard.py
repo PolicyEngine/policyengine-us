@@ -23,6 +23,7 @@ class pha_payment_standard(Variable):
         hud_fair_market_rent = household("hud_fair_market_rent", period)
         zip_code_payment_standard = household("zip_code_payment_standard", period)
         small_area_fair_market_rent = household("small_area_fair_market_rent", period)
+        safmr_used_for_hcv = household("safmr_used_for_hcv", period)
         la_amount = select(
             [
                 is_sro,
@@ -40,8 +41,10 @@ class pha_payment_standard(Variable):
         )
         la_payment_standard = la_amount * MONTHS_IN_YEAR
         county_or_la = where(in_la, la_payment_standard, hud_fair_market_rent)
+        # Use the metro SAFMR only where it is the designated HCV basis (the
+        # mandatory-SAFMR metros), not merely wherever a SAFMR value exists.
         metro_or_county = where(
-            small_area_fair_market_rent > 0,
+            safmr_used_for_hcv,
             small_area_fair_market_rent,
             county_or_la,
         )

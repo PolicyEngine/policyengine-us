@@ -51,6 +51,24 @@ for Housing Choice Voucher payment standards in designated metropolitan areas
 Source: HUD User FY2026 Small Area FMRs (revised),
 <https://www.huduser.gov/portal/datasets/fmr/smallarea/index.html>.
 
+### SAFMR-for-HCV applicability
+
+Whether a SAFMR is the HCV payment standard for a ZIP is a policy question, not
+a data-availability one. The policy primitive is HUD's list of metros where
+SAFMR use is mandatory (2016 SAFMR Final Rule; 24 CFR §888.113), held as the
+`SAFMR_HCV_DESIGNATED_METROS` constant in the `safmr_used_for_hcv` variable
+(`Dallas`, `Fort Worth`, `Houston`, `San Antonio` — the Texas members, matching
+the `hud_area_name` column here). `safmr_used_for_hcv` is true for a ZIP iff its
+SAFMR row is in a designated metro, so the applicable ZIP set is just
+`small_area_fair_market_rents` restricted to those metros — nothing to
+duplicate or keep in sync.
+
+This keeps the designation independent of the rent data: raw SAFMR data added
+for other uses (e.g. a reform's rent cap) never makes those ZIPs adopt SAFMR as
+their HCV payment standard. A PHA's published adopted schedule, where encoded in
+`../payment_standards/zip_code_payment_standards.csv`, still takes precedence
+over the SAFMR.
+
 ## Schema
 
 | column | type | meaning |
