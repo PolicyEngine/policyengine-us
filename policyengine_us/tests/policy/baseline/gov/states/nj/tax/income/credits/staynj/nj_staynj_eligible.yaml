@@ -476,3 +476,51 @@
   output:
     # PAS-1 income includes Social Security, so $490K + $15K >= $500K.
     nj_staynj_eligible: false
+
+- name: Edge case 12, age 65 homeowner with PAS-1 income just below limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 480_000
+        social_security_retirement: 19_999
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # PAS-1 income includes Social Security, so $499,999 < $500,000.
+    nj_staynj_eligible: true
+
+- name: Edge case 13, Stay NJ eligibility is inactive before 2026.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    nj_staynj_eligible: false

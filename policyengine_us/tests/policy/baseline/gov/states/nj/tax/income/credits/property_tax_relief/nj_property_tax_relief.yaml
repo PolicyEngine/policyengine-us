@@ -80,3 +80,33 @@
   output:
     nj_property_tax_relief: 0
     household_state_benefits: 0
+
+- name: Case 4, Senior Freeze fully absorbs the Stay NJ residual without binding the property tax cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Stay NJ target = 50% of $12,000 = $6,000.
+    # ANCHOR + capped Senior Freeze exceed that target, while total relief remains below property taxes.
+    nj_anchor: 1_750
+    nj_capped_senior_freeze: 6_000
+    nj_staynj: 0
+    nj_property_tax_relief: 7_750
+    household_state_benefits: 7_750

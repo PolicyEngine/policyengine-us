@@ -8,12 +8,12 @@ class nj_property_tax_relief_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.nj.gov/treasury/taxation/relief.shtml#PAS1IncomeCalculation",
+        "https://www.nj.gov/treasury/taxation/relief.shtml#collapsePAS",
         "https://www.nj.gov/treasury/taxation/pdf/25-pas1in.pdf#page=9",
     )
     defined_for = StateCode.NJ
 
-    def formula(tax_unit, period, parameters):
+    def formula_2026(tax_unit, period, parameters):
         p = parameters(
             period
         ).gov.states.nj.tax.income.credits.property_tax_relief.income
@@ -26,6 +26,7 @@ class nj_property_tax_relief_income(Variable):
         full_retirement_age = (
             person("ss_full_retirement_age_months", period) / MONTHS_IN_YEAR
         )
+        # Covers permanent-disability wage substitutes, not VA or military benefits.
         total_disability_payments = person("total_disability_payments", period)
         disability_pension_before_retirement_age = tax_unit.sum(
             (age < full_retirement_age) * total_disability_payments

@@ -8,6 +8,9 @@ class nj_property_tax_relief(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://pub.njleg.state.nj.us/Bills/2022/PL23/75_.PDF#page=3",
+        "https://pub.njleg.state.nj.us/Bills/2024/PL24/88_.PDF",
+        "https://lis.njleg.state.nj.us/nxt/gateway.dll?f=templates&fn=default.htm&vid=Publish:10.1048/Enu",
         "https://www.nj.gov/treasury/taxation/relief.shtml",
         "https://www.nj.gov/treasury/taxation/staynj/calculation.shtml",
     )
