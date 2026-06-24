@@ -1,0 +1,1 @@
+Corrected the Virginia per-person adjusted gross income used by the Spouse Tax Adjustment to subtract exempt Social Security benefits from the recipient spouse, preventing the adjustment from being wrongly granted to couples where one spouse only has Social Security income.

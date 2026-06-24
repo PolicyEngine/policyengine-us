@@ -140,6 +140,37 @@
     va_itemized_deductions: 37_049.81
     va_income_tax: 18175.545
 
+- name: MFJ both age 70 - Social Security recipient spouse does not trigger Spouse Tax Adjustment
+  # Regression test for https://github.com/PolicyEngine/policyengine-us/issues/8743.
+  # Virginia exempts Social Security, so a spouse whose only income is Social
+  # Security has no separate Virginia taxable income and the couple does not
+  # qualify for the Spouse Tax Adjustment. Confirmed against the Virginia Form
+  # 760 Spouse Tax Adjustment worksheet, TaxAct, and TAXSIM-35.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 125_714
+        taxable_interest_income: 255.5
+        social_security_retirement: 14_391.5
+      person2:
+        age: 70
+        taxable_interest_income: 255.5
+        social_security_retirement: 14_391.5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_rebate: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_spouse_tax_adjustment: 0
+    va_income_tax: 5_795
+
 - name: Joint couple with one child, 81k income each
   absolute_error_margin: 2
   period: 2023

@@ -36,6 +36,29 @@
   output:
     va_agi_person: [8_000, 0]
 
+- name: Social Security subtraction applied directly to the recipient, not prorated
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+      person2:
+        age: 70
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # person2's $17,000 taxable Social Security is exempt in Virginia and is
+    # subtracted from her own Virginia AGI (not prorated to person1), so her
+    # separate VAGI is 0. The two columns still sum to the tax unit's VAGI.
+    va_agi_person: [100_000, 0]
+
 - name: Age deduction applied directly to eligible person, not prorated
   period: 2021
   input:
