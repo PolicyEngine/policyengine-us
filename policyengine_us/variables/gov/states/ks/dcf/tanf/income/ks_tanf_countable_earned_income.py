@@ -16,13 +16,18 @@ class ks_tanf_countable_earned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per K.A.R. 30-4-110, KEESM 7110, and KEESM 7224:
-        # Sum person-level earned income after $90 and 60% deductions,
-        # then subtract dependent care expenses.
+        # Sum assistance-unit members' earned income after $90 and 60%
+        # deductions, then subtract dependent care expenses. SSI recipients are
+        # excluded from the assistance unit (KEESM 4113), so their earnings are
+        # not counted.
         #
         # Per KEESM 7224: Dependent care is applied after $90 and 60% disregards.
         # There is NO cap on dependent care deduction in Kansas TANF.
-        earned_after_deductions = add(
-            spm_unit, period, ["ks_tanf_earned_income_after_deductions"]
+        person = spm_unit.members
+        is_member = person("ks_tanf_is_assistance_unit_member", period.this_year)
+        earned_after_deductions = person(
+            "ks_tanf_earned_income_after_deductions", period
         )
+        countable_earned = spm_unit.sum(earned_after_deductions * is_member)
         dependent_care = spm_unit("childcare_expenses", period)
-        return max_(earned_after_deductions - dependent_care, 0)
+        return max_(countable_earned - dependent_care, 0)

@@ -57,3 +57,50 @@
         state_code: NY
   output:
     ks_tanf_max_benefit_standard: 0
+
+- name: Case 4, county-independent, rural county still returns Group IV standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+        county: SALINE_COUNTY_KS
+  output:
+    # Cross-state convention always uses Group IV ($135 shelter), regardless of
+    # the household's actual (rural Group I) county: 294 + 135 = 429
+    ks_tanf_max_benefit_standard: 429
+
+- name: Case 5, SSI-independent, SSI member does not reduce the standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ssi: 900
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Uses the full household size (3), not the SSI-excluded size: 294 + 135 = 429
+    ks_tanf_max_benefit_standard: 429
