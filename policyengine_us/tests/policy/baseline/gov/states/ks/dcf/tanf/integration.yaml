@@ -11,7 +11,8 @@
 #   default tier; with no county a household resolves to a Group I county.
 #   is_shared_living (default false) selects the lower shared-living standard.
 # - SSI recipients are excluded from the assistance-plan size (KEESM 4113).
-# - Assigned child support is excluded from the payment amount (KEESM 6220(4)(b)).
+# - Assigned child support is excluded from the payment amount
+#   (KEESM 6220, Assigned Support Retained by CSS, TANF only).
 # - Resource limit: $3,000
 
 - name: Case 1, family of 3 with no income, receives full benefit.

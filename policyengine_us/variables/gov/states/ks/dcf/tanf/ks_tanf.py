@@ -14,7 +14,8 @@ class ks_tanf(Variable):
     defined_for = "ks_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per K.A.R. 30-4-100 and KEESM 6220(4)(b):
+        # Per K.A.R. 30-4-100 and KEESM 6220 (Assigned Support Retained by
+        # CSS, TANF only):
         # Benefit = payment standard - countable income. Assigned child support
         # is retained by the state, so it is counted only for the income
         # eligibility test and excluded from the payment amount:
