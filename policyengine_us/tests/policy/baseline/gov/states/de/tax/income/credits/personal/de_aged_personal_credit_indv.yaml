@@ -1,0 +1,86 @@
+- name: only head 60+, spouse under 60
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_aged_personal_credit_indv: [110, 0]
+
+- name: aged dependent does not get credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_aged_personal_credit_indv: [110, 0]
+
+- name: both spouses 60+ each get $110 in own column
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+      person2:
+        age: 80
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_aged_personal_credit_indv: [110, 110]
+
+- name: only spouse 60+
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_aged_personal_credit_indv: [0, 110]
+
+- name: neither spouse 60+
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 50
+        is_tax_unit_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_aged_personal_credit_indv: [0, 0]

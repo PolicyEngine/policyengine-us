@@ -53,7 +53,23 @@ def create_de_dependent_credit_reform() -> Reform:
             p = parameters(period).gov.contrib.states.de.dependent_credit
 
             filing_status = tax_unit("filing_status", period)
-            files_separately = tax_unit("de_files_separately", period)
+            # Select the AGI basis from the pre-credit filing comparison rather
+            # than de_files_separately. The baseline election now compares
+            # post-credit liabilities, which depend on the personal credit this
+            # reform overrides; reading it here would create a circular
+            # dependency. The pre-credit comparison reproduces the election this
+            # phase-out was designed against.
+            itax_indiv = add(
+                tax_unit,
+                period,
+                ["de_income_tax_before_non_refundable_credits_indv"],
+            )
+            itax_joint = add(
+                tax_unit,
+                period,
+                ["de_income_tax_before_non_refundable_credits_joint"],
+            )
+            files_separately = itax_indiv < itax_joint
             agi_indiv = add(tax_unit, period, ["de_agi_indiv"])
             agi_joint = add(tax_unit, period, ["de_agi_joint"])
             agi = where(files_separately, agi_indiv, agi_joint)
