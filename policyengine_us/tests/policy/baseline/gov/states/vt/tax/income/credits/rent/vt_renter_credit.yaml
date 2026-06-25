@@ -89,3 +89,42 @@
   output:
     vt_renter_credit: 874
     
+
+- name: test 8, Act 169 - claim year 2026 baseline 10% rate (full credit)
+  period: 2026
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 1_692
+
+- name: test 9, Act 169 - claim year 2027 expansion to 12.5% rate (full credit)
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 2_115
+
+- name: test 10, Act 169 - claim year 2028 reverts to 10% rate (full credit)
+  period: 2028
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 1_692

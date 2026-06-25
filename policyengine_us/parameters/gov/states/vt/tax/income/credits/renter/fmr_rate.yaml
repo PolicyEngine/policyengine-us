@@ -1,6 +1,10 @@
 description: Vermont provides a renter credit of this fraction of fair market rent.
+# 2026 Vt. Acts No. 169 (H.949) temporarily raises the rate to 12.5% for claim
+# year 2027 (Secs. 8-9), then reverts it to 10% for claim year 2028+ (Secs. 10-11).
 values:
   2021-01-01: 0.1
+  2027-01-01: 0.125
+  2028-01-01: 0.1
 metadata:
   unit: /1
   period: year
@@ -8,6 +12,10 @@ metadata:
   reference:
     - title: 32 V.S.A. §6066. Homestead Property Tax Credit and Renter Credit (b)(1)(A)
       href: https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/
+    - title: 2026 Vt. Acts No. 169 (H.949), Sec. 9 (claim year 2027 renter credit expansion to 12.5%)
+      href: https://legislature.vermont.gov/Documents/2026/Docs/ACTS/ACT169/ACT169%20As%20Enacted.pdf#page=10
+    - title: 2026 Vt. Acts No. 169 (H.949), Sec. 11 (claim year 2028 reversion to 10%)
+      href: https://legislature.vermont.gov/Documents/2026/Docs/ACTS/ACT169/ACT169%20As%20Enacted.pdf#page=13
     - title: 2022 Vermont instruction booklet
       href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35
     - title: 2021 Vermont instruction booklet
