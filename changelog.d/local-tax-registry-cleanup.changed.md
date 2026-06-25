@@ -1,0 +1,1 @@
+Registered ten existing local taxes in the program coverage registry (programs.yaml): Philadelphia wage tax, Kansas City and St. Louis earnings taxes, Indiana county income tax, Maryland county income tax, Multnomah County Preschool for All tax, and the Denver, Glendale, Greenwood Village, and Sheridan occupational privilege taxes.
