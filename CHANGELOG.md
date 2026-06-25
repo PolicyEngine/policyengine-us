@@ -1,3 +1,10 @@
+## [1.745.0] - 2026-06-25
+
+### Added
+
+- Added a CBO source-aligned net business income variable for calibration target matching, and made ordinary dividend income the canonical variable while keeping dividend income as a legacy compatibility alias.
+
+
 ## [1.744.0] - 2026-06-24
 
 ### Added
