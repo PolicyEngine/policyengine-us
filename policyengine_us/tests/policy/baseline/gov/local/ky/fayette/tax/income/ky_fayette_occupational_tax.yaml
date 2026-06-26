@@ -15,3 +15,41 @@
     self_employment_income: -10_000
   output:
     ky_fayette_occupational_tax: 0
+
+- name: Non-Fayette Kentucky household owes no Fayette occupational fee
+  period: 2025
+  input:
+    state_code: KY
+    county_str: JEFFERSON_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_fayette_occupational_tax: 0
+
+- name: Fayette occupational fee includes self-employment income
+  period: 2025
+  input:
+    state_code: KY
+    county_str: FAYETTE_COUNTY_KY
+    employment_income: 30_000
+    self_employment_income: 20_000
+  output:
+    ky_fayette_occupational_tax: 1_125  # (30,000 + 20,000) * 2.25%
+
+- name: Fayette occupational fee sums earnings across earners in the tax unit
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: FAYETTE_COUNTY_KY
+  output:
+    ky_fayette_occupational_tax: 1_800  # (50,000 + 30,000) * 2.25%

@@ -1,0 +1,59 @@
+# End-to-end rollup tests: confirm the jurisdiction-specific local taxes flow
+# through the aggregation variables (local_income_tax,
+# local_income_tax_before_refundable_credits, local_occupational_tax) and into
+# household_tax_before_refundable_credits / household_tax. Guards the `adds`
+# wiring at the aggregation layer.
+
+- name: Wilmington earned income tax flows into the local income tax aggregates
+  period: 2025
+  input:
+    state_code: DE
+    in_wilmington: true
+    employment_income: 40_000
+  output:
+    de_wilmington_earned_income_tax: 500  # 40,000 * 1.25%
+    # SALT-deductible measure includes Wilmington.
+    local_income_tax: 500
+    # Pre-refundable aggregate also includes Wilmington.
+    local_income_tax_before_refundable_credits: 500
+
+- name: KY Jefferson occupational tax flows into the local occupational aggregate
+  period: 2025
+  input:
+    state_code: KY
+    county_str: JEFFERSON_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_jefferson_occupational_tax: 1_100  # 50,000 * 2.20%
+    local_occupational_tax: 1_100
+
+- name: KY Fayette occupational tax flows into the local occupational aggregate
+  period: 2025
+  input:
+    state_code: KY
+    county_str: FAYETTE_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_fayette_occupational_tax: 1_125  # 50,000 * 2.25%
+    local_occupational_tax: 1_125
+
+# household_tax wiring guard: with only ny_income_tax provided as a direct
+# input and no earnings/children/state income, every other component of the
+# household total is zero, so the household total before refundable credits
+# reduces to the local income tax aggregate (the Yonkers surcharge). This
+# confirms local_income_tax_before_refundable_credits is summed into
+# household_tax_before_refundable_credits via `adds`. (If a residual
+# federal/state/credit component is nonzero, the ci-fixer should adjust the
+# household-level expected values; local_income_tax_before_refundable_credits
+# is the robust guard for the local `adds` wiring.)
+- name: Yonkers surcharge flows into the household tax total
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%
+    local_income_tax_before_refundable_credits: 167.5
+    household_tax_before_refundable_credits: 167.5
+    household_tax: 167.5

@@ -7,6 +7,7 @@ class ny_yonkers_income_tax(Variable):
     label = "Yonkers income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.NY
     reference = "https://www.tax.ny.gov/pit/file/nyc_yonkers_residents.htm"
 
     def formula(tax_unit, period, parameters):
@@ -17,10 +18,11 @@ class ny_yonkers_income_tax(Variable):
         resident_surcharge = (
             where(resident, ny_income_tax, 0) * p.resident_surcharge_rate
         )
-        # Nonresident earnings tax: a flat rate on Yonkers-source wages.
+        # Nonresident earnings tax: a flat rate on Yonkers-source wages,
+        # only for nonresidents (residents pay the surcharge instead).
         person = tax_unit.members
         nonresident_earnings = person("ny_yonkers_nonresident_earnings", period)
         nonresident_tax = (
             tax_unit.sum(max_(nonresident_earnings, 0)) * p.nonresident_rate
         )
-        return resident_surcharge + nonresident_tax
+        return resident_surcharge + where(resident, 0, nonresident_tax)
