@@ -1,0 +1,1 @@
+Added local income taxes for Yonkers, NY (resident surcharge and nonresident earnings tax), Wilmington, DE (earned income tax), and the Louisville/Jefferson County and Lexington/Fayette County, KY occupational license fees.

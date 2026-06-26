@@ -1,0 +1,13 @@
+description: Louisville Metro (Jefferson County), Kentucky levies an occupational license fee on earnings at this rate.
+# Models the Louisville Metro occupational license fee. The separate Jefferson
+# County Public Schools (JCPS) occupational tax (0.75%, subject to a wage cap)
+# is not yet modeled.
+values:
+  2021-01-01: 0.0145
+metadata:
+  unit: /1
+  period: year
+  label: Louisville Metro occupational license fee rate
+  reference:
+    - title: Louisville Metro Revenue Commission — occupational license fees
+      href: https://louisvilleky.gov/government/revenue-commission

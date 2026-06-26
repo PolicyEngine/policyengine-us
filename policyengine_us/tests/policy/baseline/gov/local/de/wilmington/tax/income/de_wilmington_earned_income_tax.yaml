@@ -1,0 +1,27 @@
+- name: Wilmington resident pays 1.25% on earned income
+  period: 2025
+  input:
+    state_code: DE
+    in_wilmington: true
+    employment_income: 40_000
+  output:
+    de_wilmington_earned_income_tax: 500  # 40,000 * 1.25%
+
+- name: Wilmington nonresident pays 1.25% on Wilmington-source earnings only
+  period: 2025
+  input:
+    state_code: DE
+    in_wilmington: false
+    employment_income: 40_000
+    de_wilmington_nonresident_earnings: 20_000
+  output:
+    de_wilmington_earned_income_tax: 250  # 20,000 * 1.25%
+
+- name: Non-Wilmington Delaware household with no city-source earnings owes nothing
+  period: 2025
+  input:
+    state_code: DE
+    in_wilmington: false
+    employment_income: 40_000
+  output:
+    de_wilmington_earned_income_tax: 0
