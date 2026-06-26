@@ -1596,6 +1596,54 @@ programs:
     parameter_prefix: gov.local.co.sheridan.tax.payroll.occupational_privilege
     notes: Flat per-month employee occupational privilege tax (input-driven)
 
+  - id: ky_jefferson_occupational_tax
+    name: Louisville/Jefferson County occupational tax
+    full_name: Louisville Metro Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Louisville/Jefferson County, KY
+    variable: ky_jefferson_occupational_tax
+    parameter_prefix: gov.local.ky.jefferson.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based. JCPS school occupational tax not yet modeled.
+
+  - id: ky_fayette_occupational_tax
+    name: Lexington/Fayette County occupational tax
+    full_name: Lexington-Fayette Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Lexington/Fayette County, KY
+    variable: ky_fayette_occupational_tax
+    parameter_prefix: gov.local.ky.fayette.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based. FCPS school occupational tax not yet modeled.
+
+  - id: yonkers_income_tax
+    name: Yonkers income tax
+    full_name: Yonkers Resident Surcharge and Nonresident Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Yonkers, NY
+    variable: ny_yonkers_income_tax
+    parameter_prefix: gov.local.ny.yonkers.tax.income
+    verified_start_year: 2021
+    notes: Resident surcharge on NY State tax plus nonresident earnings tax (input-driven)
+
+  - id: wilmington_earned_income_tax
+    name: Wilmington earned income tax
+    full_name: Wilmington Earned Income (Wage) Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Wilmington, DE
+    variable: de_wilmington_earned_income_tax
+    parameter_prefix: gov.local.de.wilmington.tax.income
+    verified_start_year: 2021
+    notes: 1.25% earned income tax on residents and nonresident Wilmington-source earnings (input-driven)
+
   - id: sf_wftc
     name: San Francisco WFTC
     full_name: San Francisco Working Families Tax Credit

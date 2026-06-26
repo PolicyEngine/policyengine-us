@@ -1,0 +1,17 @@
+- name: Fayette County (Lexington) resident pays the occupational license fee
+  period: 2025
+  input:
+    state_code: KY
+    county_str: FAYETTE_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_fayette_occupational_tax: 1_125  # 50,000 * 2.25%
+
+- name: Self-employment loss does not create a negative occupational fee
+  period: 2025
+  input:
+    state_code: KY
+    county_str: FAYETTE_COUNTY_KY
+    self_employment_income: -10_000
+  output:
+    ky_fayette_occupational_tax: 0

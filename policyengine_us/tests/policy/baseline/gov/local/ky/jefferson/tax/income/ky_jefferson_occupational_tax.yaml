@@ -1,0 +1,17 @@
+- name: Jefferson County (Louisville) resident pays the occupational license fee
+  period: 2025
+  input:
+    state_code: KY
+    county_str: JEFFERSON_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_jefferson_occupational_tax: 725  # 50,000 * 1.45%
+
+- name: Non-Jefferson Kentucky household owes no Jefferson occupational fee
+  period: 2025
+  input:
+    state_code: KY
+    county_str: FAYETTE_COUNTY_KY
+    employment_income: 50_000
+  output:
+    ky_jefferson_occupational_tax: 0

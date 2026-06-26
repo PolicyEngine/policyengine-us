@@ -17,4 +17,6 @@ class local_occupational_tax(Variable):
         "co_glendale_employee_occupational_privilege_tax",
         "co_greenwood_village_employee_occupational_privilege_tax",
         "co_sheridan_employee_occupational_privilege_tax",
+        "ky_jefferson_occupational_tax",
+        "ky_fayette_occupational_tax",
     ]

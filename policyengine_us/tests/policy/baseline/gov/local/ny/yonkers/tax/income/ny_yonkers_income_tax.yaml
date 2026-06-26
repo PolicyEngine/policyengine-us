@@ -1,0 +1,27 @@
+- name: Yonkers resident pays the surcharge on NY State tax
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%
+
+- name: Yonkers nonresident pays the earnings tax on Yonkers-source wages
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: false
+    ny_income_tax: 1_000
+    ny_yonkers_nonresident_earnings: 40_000
+  output:
+    ny_yonkers_income_tax: 200  # 40,000 * 0.5%; no resident surcharge
+
+- name: Non-Yonkers New Yorker with no Yonkers wages owes nothing
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: false
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 0
