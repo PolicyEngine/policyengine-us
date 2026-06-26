@@ -1,0 +1,29 @@
+# SALT-asymmetry tests: Wilmington's earned income tax IS included in
+# local_income_tax (the SALT-deductible measure), while Yonkers's resident
+# surcharge is NOT (it would create a circular dependency via the federal SALT
+# deduction). Yonkers appears only in
+# local_income_tax_before_refundable_credits.
+
+- name: Wilmington earned income tax appears in the SALT-deductible local income tax
+  period: 2025
+  input:
+    state_code: DE
+    in_wilmington: true
+    employment_income: 40_000
+  output:
+    de_wilmington_earned_income_tax: 500  # 40,000 * 1.25%
+    local_income_tax: 500  # included in SALT-deductible measure
+    local_income_tax_before_refundable_credits: 500
+
+- name: Yonkers surcharge is excluded from the SALT-deductible local income tax
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+  output:
+    ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%
+    # Excluded from the SALT-deductible measure (circular-dependency avoidance).
+    local_income_tax: 0
+    # But still levied in the pre-refundable aggregate.
+    local_income_tax_before_refundable_credits: 167.5

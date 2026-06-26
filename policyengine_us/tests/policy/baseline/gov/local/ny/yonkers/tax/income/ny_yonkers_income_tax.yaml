@@ -25,3 +25,18 @@
     ny_income_tax: 1_000
   output:
     ny_yonkers_income_tax: 0
+
+# A Yonkers resident pays only the resident surcharge; the nonresident
+# earnings tax is gated off for residents, so the nonresident-earnings input
+# is ignored. NOTE: depends on the variable change that gates the nonresident
+# term on non-residence (made concurrently by a separate agent); expected
+# value reflects the intended post-fix behavior.
+- name: Yonkers resident with nonresident earnings pays only the resident surcharge
+  period: 2025
+  input:
+    state_code: NY
+    in_yonkers: true
+    ny_income_tax: 1_000
+    ny_yonkers_nonresident_earnings: 40_000
+  output:
+    ny_yonkers_income_tax: 167.5  # 1,000 * 16.75%; nonresident term gated off

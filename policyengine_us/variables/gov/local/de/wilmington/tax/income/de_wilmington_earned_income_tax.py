@@ -7,6 +7,7 @@ class de_wilmington_earned_income_tax(Variable):
     label = "Wilmington earned income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.DE
     reference = "https://www.wilmingtonde.gov/government/city-departments/department-of-finance/earned-income-tax-wage-tax"
 
     def formula(tax_unit, period, parameters):
@@ -23,4 +24,4 @@ class de_wilmington_earned_income_tax(Variable):
         resident_tax = where(resident, tax_unit.sum(earnings), 0) * rate
         nonresident_earnings = person("de_wilmington_nonresident_earnings", period)
         nonresident_tax = tax_unit.sum(max_(nonresident_earnings, 0)) * rate
-        return resident_tax + nonresident_tax
+        return resident_tax + where(resident, 0, nonresident_tax)

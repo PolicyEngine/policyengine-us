@@ -1606,7 +1606,7 @@ programs:
     variable: ky_jefferson_occupational_tax
     parameter_prefix: gov.local.ky.jefferson.tax.income.occupational
     verified_start_year: 2021
-    notes: Occupational license fee assigned via county; modeled residence-based. JCPS school occupational tax not yet modeled.
+    notes: Occupational license fee assigned via county; modeled residence-based at the 2.20% resident rate (1.25% Metro + 0.20% TARC + 0.75% JCPS school board included). The JCPS 0.75% wage cap is not modeled.
 
   - id: ky_fayette_occupational_tax
     name: Lexington/Fayette County occupational tax
