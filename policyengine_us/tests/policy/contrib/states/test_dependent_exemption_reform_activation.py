@@ -12,6 +12,10 @@ This module covers both outcomes for all eleven states in the PR, mirroring how
 ``reforms/reforms.py`` calls the factories with ``(parameters, period)`` and the
 Indiana dynamic-import special case (its package directory ``in`` is a Python
 keyword and cannot be imported with a dotted path).
+
+The parameter tree is deep-copied once (module-scoped fixture) rather than per
+test: deep-copying it 22 times made this module run for ~10 minutes and pushed
+the Python suite past its CI time budget.
 """
 
 import copy
@@ -125,23 +129,33 @@ def _in_effect_parameter(parameters, state, folder):
     return program.in_effect
 
 
+@pytest.fixture(scope="module")
+def parameters_all_in_effect():
+    # Deep-copy the parameter tree ONCE and turn every state's contrib reform
+    # on. Each factory reads only its own state's in_effect flag and the
+    # factories do not mutate the tree, so a single shared copy is safe and
+    # keeps this module fast.
+    parameters = copy.deepcopy(system.parameters)
+    for state, folder, _module, _fn in STATE_CONFIGS:
+        _in_effect_parameter(parameters, state, folder).update(
+            period="year:2025:1", value=True
+        )
+    return parameters
+
+
 @pytest.mark.parametrize(
     "state,folder,module_name,fn_name",
     STATE_CONFIGS,
     ids=[cfg[0] for cfg in STATE_CONFIGS],
 )
 def test__given_in_effect_true__then_factory_returns_reform_subclass(
-    state, folder, module_name, fn_name
+    state, folder, module_name, fn_name, parameters_all_in_effect
 ):
     # Given a parameters tree where the contrib in_effect flag is set true.
     reform_fn = _load_reform_fn(state, folder, module_name, fn_name)
-    parameters = copy.deepcopy(system.parameters)
-    _in_effect_parameter(parameters, state, folder).update(
-        period="year:2025:1", value=True
-    )
 
     # When the factory is invoked the way reforms.py invokes it.
-    result = reform_fn(parameters, PERIOD)
+    result = reform_fn(parameters_all_in_effect, PERIOD)
 
     # Then it activates the reform (the non-bypass branch), returning a Reform
     # subclass rather than None.
@@ -160,11 +174,11 @@ def test__given_in_effect_false_default__then_factory_returns_none(
     state, folder, module_name, fn_name
 ):
     # Given the default parameters tree (in_effect is false for every year).
+    # No copy needed: the factories only read in_effect and never mutate.
     reform_fn = _load_reform_fn(state, folder, module_name, fn_name)
-    parameters = copy.deepcopy(system.parameters)
 
     # When the factory is invoked.
-    result = reform_fn(parameters, PERIOD)
+    result = reform_fn(system.parameters, PERIOD)
 
     # Then no reform is applied (the no-op default branch).
     assert result is None, f"{state}: expected None, got {result!r}"
