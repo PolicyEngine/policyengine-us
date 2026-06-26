@@ -6,6 +6,7 @@ class is_snap_ineligible_student(Variable):
     entity = Person
     label = "Is an ineligible student for SNAP"
     definition_period = YEAR
+    defined_for = "is_snap_higher_ed_student"
     reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
 
     def formula(person, period, parameters):
