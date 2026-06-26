@@ -115,3 +115,38 @@
   # age 18 is not < 18: dependent is excluded and falls back to the personal
   # count. Personal = parent + over-age dependent = 2 * 1,144 = 2,288.
   output: {hi_regular_exemptions: 2_288}
+
+- name: HI dependent exemption reform - default flows through to income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  # End-to-end: with the default (no-op) amount the dependent exemption is
+  # preserved (3 * 1,144 = 3,432 regular exemptions), so HI income tax matches
+  # the unreformed baseline.
+  output: {hi_income_tax: 2855.97}
+
+- name: HI dependent exemption reform - amount zero raises income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.hi.dependent_exemption.hi_dependent_exemption_reform.hi_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.hi.dependent_exemption.in_effect: true
+    gov.contrib.states.hi.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: HI}}
+  # End-to-end: removing the dependent portion (amount 0) drops regular
+  # exemptions from 3,432 to 1,144, widening taxable income and raising HI
+  # income tax from 2,855.97 to 3,029.86 (about +173.89).
+  output: {hi_income_tax: 3029.86}

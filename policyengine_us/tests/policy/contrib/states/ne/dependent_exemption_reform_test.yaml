@@ -102,3 +102,37 @@
   # age 18 is not < 18: dependent is excluded and falls back to the personal
   # count. Personal = parent + over-age dependent = 2 * 171 = 342.
   output: {ne_exemptions: 342}
+
+- name: NE dependent exemption reform - default flows through to income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ne.dependent_exemption.ne_dependent_exemption_reform.ne_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ne.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: NE}}
+  # End-to-end: with the default (no-op) amount the exemption credit is
+  # preserved (3 * 171 = 513), so NE income tax matches the unreformed baseline.
+  output: {ne_income_tax: 1681.83}
+
+- name: NE dependent exemption reform - amount zero raises income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ne.dependent_exemption.ne_dependent_exemption_reform.ne_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.ne.dependent_exemption.in_effect: true
+    gov.contrib.states.ne.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: NE}}
+  # End-to-end: removing the dependent portion (amount 0) drops the exemption
+  # credit from 513 to 171 (the two $171 dependent credits are lost), raising NE
+  # income tax by 342, from 1,681.83 to 2,023.83.
+  output: {ne_income_tax: 2023.83}
