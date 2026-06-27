@@ -1,3 +1,10 @@
+## [1.746.0] - 2026-06-27
+
+### Added
+
+- Add FY2027 HHS State Median Income (SMI) values, effective October 1, 2026.
+
+
 ## [1.745.0] - 2026-06-25
 
 ### Added
