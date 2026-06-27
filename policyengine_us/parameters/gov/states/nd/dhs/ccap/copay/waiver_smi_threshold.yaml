@@ -1,6 +1,10 @@
 description: North Dakota waives the family co-payment for families with income at or below this share of the state median income under the Child Care Assistance Program.
+
+# Dated to the current co-pay matrix (2024-07-01, ML #3827), which incorporates
+# this waiver. The standalone 30% SMI waiver was first added 2023-07-01 (ML
+# #3732); earlier periods are approximated by back-extrapolation.
 values:
-  2022-10-01: 0.3
+  2024-07-01: 0.3
 
 metadata:
   unit: /1
@@ -9,3 +13,5 @@ metadata:
   reference:
     - title: North Dakota CCAP Policy Manual, Co-pay Waived 400-28-90-20
       href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: North Dakota HHS Individual Worksheet for Calculating Co-pay
+      href: https://app.powerbigov.us/view?r=eyJrIjoiOGI5NDY4NzctM2QzOS00NWY4LWJjNTAtMDA5N2IxMmE5NTMyIiwidCI6IjJkZWEwNDY0LWRhNTEtNGE4OC1iYWUyLWIzZGI5NGJjMGM1NCJ9

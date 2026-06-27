@@ -13,7 +13,7 @@
     people:
       person1:
         age: 30
-        employment_income: 48_000  # 4,000/mo, ratio 0.515 -> copay 280
+        employment_income: 48_000  # 4,000/mo, ratio 0.543 -> copay 159.01
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
@@ -27,9 +27,10 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # rate 1,240 < expenses 2,000, so capped at 1,240; copay 280.
-    # base = 1,240 - 280 = 960.
-    nd_ccap_base_subsidy: 960
+    # rate 1,240 < expenses 2,000, so capped at 1,240; copay 159.01 (HHS
+    # worksheet share for the 54-56% SMI band x monthly SMI).
+    # base = 1,240 - 159.01 = 1,080.99.
+    nd_ccap_base_subsidy: 1_080.99
 
 - name: Case 2, expense-limited base, co-payment waived.
   period: 2026-01
@@ -63,7 +64,7 @@
     people:
       person1:
         age: 30
-        employment_income: 60_000  # 5,000/mo, ratio 0.644 -> copay 350
+        employment_income: 72_000  # 6,000/mo, ratio 0.815 -> copay 357.78
       person2:
         age: 8
         is_in_k12_school: true
@@ -73,12 +74,13 @@
       spm_unit:
         members: [person1, person2]
         spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
-        is_nd_ccap_enrolled: true  # 5,000/mo passes the 85% tier
+        is_nd_ccap_enrolled: true  # 6,000/mo passes the 85% tier
     households:
       household:
         members: [person1, person2]
         state_code: ND
   output:
-    # approved-relative school-age full-time rate 348; copay 5,000 * 0.07 = 350.
-    # base = max(min(2,000, 348) - 350, 0) = max(-2, 0) = 0.
+    # approved-relative school-age full-time rate 348; copay 357.78 (81-83% SMI
+    # band share x monthly SMI) exceeds the capped rate.
+    # base = max(min(2,000, 348) - 357.78, 0) = max(-9.78, 0) = 0.
     nd_ccap_base_subsidy: 0

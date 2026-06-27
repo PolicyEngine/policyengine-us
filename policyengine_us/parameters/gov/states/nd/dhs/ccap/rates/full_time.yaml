@@ -1,9 +1,15 @@
 description: North Dakota provides these full-time monthly maximum reimbursement rates by provider type and age group under the Child Care Assistance Program.
 
-# Statewide flat full-time (25+ hours/week) monthly maximums effective
-# January 1, 2026, from the 2025 Market Rate Survey. Infant and toddler rates
-# are set at the 75th percentile of market rate; preschool and school-age rates
-# at the 50th percentile.
+# Statewide flat full-time (25+ hours/week) monthly maximums.
+#
+# 2022-10-01: DN 241 (10-2022) Sliding Fee Schedule, "State Provider Rates"
+# (Allowable Monthly Maximums for Full Time Care, Category One). Listed amounts
+# are rounded down to whole dollars per the schedule note "State provider rates
+# will be rounded down when the rate is not a full dollar amount".
+#
+# 2026-01-01: 2025 Market Rate Survey. Infant and toddler rates are set at the
+# 75th percentile of market rate; preschool and school-age rates at the 50th
+# percentile.
 
 metadata:
   period: month
@@ -15,42 +21,60 @@ metadata:
   reference:
     - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
       href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: DN 241 (10-2022) Sliding Fee Schedule, Child Care Assistance Program
+      href: https://ndlegis.gov/assembly/68-2023/testimony/SHUMSER-2190-20230118-13895-F-HOGAN_KATHY.pdf
     - title: North Dakota HHS Child Care Assistance Program provider rates
       href: https://www.hhs.nd.gov/human-services/providers/ccap
 
 CENTER:
   INFANT:
+    2022-10-01: 913
     2026-01-01: 1_240
   TODDLER:
+    2022-10-01: 888
     2026-01-01: 1_124
   PRESCHOOL:
+    2022-10-01: 811
     2026-01-01: 940
   SCHOOL_AGE:
+    2022-10-01: 760
     2026-01-01: 800
 LICENSED_FAMILY:
   INFANT:
+    2022-10-01: 700
     2026-01-01: 900
   TODDLER:
+    2022-10-01: 700
     2026-01-01: 880
   PRESCHOOL:
+    2022-10-01: 680
     2026-01-01: 740
   SCHOOL_AGE:
+    2022-10-01: 660
     2026-01-01: 700
 SELF_DECLARED_TRIBAL:
   INFANT:
+    2022-10-01: 462
     2026-01-01: 646
   TODDLER:
+    2022-10-01: 429
     2026-01-01: 600
   PRESCHOOL:
+    2022-10-01: 420
     2026-01-01: 531
   SCHOOL_AGE:
+    2022-10-01: 407
     2026-01-01: 529
 APPROVED_RELATIVE:
   INFANT:
+    2022-10-01: 367
     2026-01-01: 422
   TODDLER:
+    2022-10-01: 346
     2026-01-01: 398
   PRESCHOOL:
+    2022-10-01: 338
     2026-01-01: 351
   SCHOOL_AGE:
+    2022-10-01: 325
     2026-01-01: 348

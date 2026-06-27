@@ -1,13 +1,18 @@
 description: North Dakota caps the family monthly co-payment at this share of countable monthly income under the Child Care Assistance Program.
+
+# Federal family-share ceiling under 45 CFR 98.45(k); the current HHS co-pay
+# worksheet schedule tops out at a 6% band rate, so this 7% cap does not bind.
+# Dated to the current co-pay matrix (2024-07-01, ML #3827); earlier periods are
+# approximated by back-extrapolation.
 values:
-  2022-10-01: 0.07
+  2024-07-01: 0.07
 
 metadata:
   unit: /1
   period: year
   label: North Dakota CCAP family co-payment maximum rate
   reference:
-    - title: DN 241 (10-2022) Sliding Fee Schedule, Child Care Assistance Program
-      href: https://ndlegis.gov/assembly/68-2023/testimony/SHUMSER-2190-20230118-13895-F-HOGAN_KATHY.pdf
     - title: 45 CFR 98.45(k)
       href: https://www.ecfr.gov/current/title-45/section-98.45#p-98.45(k)
+    - title: North Dakota HHS Individual Worksheet for Calculating Co-pay
+      href: https://app.powerbigov.us/view?r=eyJrIjoiOGI5NDY4NzctM2QzOS00NWY4LWJjNTAtMDA5N2IxMmE5NTMyIiwidCI6IjJkZWEwNDY0LWRhNTEtNGE4OC1iYWUyLWIzZGI5NGJjMGM1NCJ9
