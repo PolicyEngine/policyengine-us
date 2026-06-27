@@ -6,11 +6,11 @@
 # child_care_subsidies total.
 #
 # All monetary rates are the statewide flat monthly maximums effective
-# 2026-01-01. 2-person ND monthly SMI for 2026 = $7,762.97 (75% = $5,822.23,
-# 85% = $6,598.53, 30% = $2,328.89, 40% = $3,105.19). The co-pay bracket
-# percentages (6% in the 30-40% band, 7% above 40%) are PENDING validation
-# against the HHS Power BI worksheet; update these expectations together with
-# the copay/rate.yaml parameter.
+# 2026-01-01. 2-person ND monthly SMI for 2026 = $7,361.62 (75% = $5,521.22,
+# 85% = $6,257.38, 30% = $2,208.49, 40% = $2,944.65). The co-pay follows the
+# HHS worksheet band schedule: a flat amount per 2-point SMI band equal to the
+# band rate (2% in 30-50% SMI, 4% in 50-60%, 6% in 60-85%) times the band's
+# lower SMI bound times monthly SMI; waived at or below 30% SMI.
 
 - name: Case 1, single working parent, infant in a step-3 center, positive subsidy.
   period: 2026-01
@@ -35,16 +35,17 @@
         state_code: ND
   output:
     nd_ccap_eligible: true
-    # countable income 2,500/mo; ratio 0.322 -> 6% band; copay 2,500 * 0.06 = 150.
+    # countable income 2,500/mo; ratio 0.340 -> 32-34% SMI band, share 0.0064;
+    # copay 0.0064 * 7,361.62 = 47.11.
     # CENTER infant full-time rate 1,240; expenses 2,000 capped at 1,240.
-    # base = 1,240 - 150 = 1,090.
+    # base = 1,240 - 47.11 = 1,192.89.
     # QRIS step 3 (2026) bonus 1,240 * 0.05 = 62; infant bonus 200.
-    # nd_ccap = 1,090 + 62 + 200 = 1,352.
-    nd_ccap: 1_352
+    # nd_ccap = 1,192.89 + 62 + 200 = 1,454.89.
+    nd_ccap: 1_454.89
     # nd_child_care_subsidies is the YEAR aggregator (adds nd_ccap); read at a
-    # month period it reports the monthly value 1,352, confirming nd_ccap flows
-    # into the federal child_care_subsidies total.
-    nd_child_care_subsidies: 1_352
+    # month period it reports the monthly value 1,454.89, confirming nd_ccap
+    # flows into the federal child_care_subsidies total.
+    nd_child_care_subsidies: 1_454.89
 
 - name: Case 2, applicant over 75% SMI is ineligible but the same family enrolled qualifies.
   period: 2026-01
@@ -68,7 +69,7 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # 6,200/mo > 75% SMI (5,822.23), so an applicant fails the income test.
+    # 6,200/mo > 75% SMI (5,521.22), so an applicant fails the income test.
     nd_ccap_income_eligible: false
     nd_ccap_eligible: false
     nd_ccap: 0
@@ -80,7 +81,7 @@
     people:
       person1:
         age: 30
-        employment_income: 74_400  # 6,200/mo, below 85% SMI (6,598.53)
+        employment_income: 74_400  # 6,200/mo, below 85% SMI (6,257.38)
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
@@ -98,11 +99,11 @@
   output:
     nd_ccap_income_eligible: true
     nd_ccap_eligible: true
-    # ratio 0.799 > 40% -> copay capped at 7%: 6,200 * 0.07 = 434.
-    # CENTER infant full-time 1,240; expenses 2,000 capped at 1,240.
-    # base = 1,240 - 434 = 806. Step 2 carries no QRIS bonus in 2026 but
-    # unlocks the infant bonus 200; nd_ccap = 806 + 200 = 1,006.
-    nd_ccap: 1_006
+    # ratio 0.842 -> 83-85% SMI band, share 0.0498; copay 0.0498 * 7,361.62 =
+    # 366.61. CENTER infant full-time 1,240; expenses 2,000 capped at 1,240.
+    # base = 1,240 - 366.61 = 873.39. Step 2 carries no QRIS bonus in 2026 but
+    # unlocks the infant bonus 200; nd_ccap = 873.39 + 200 = 1,073.39.
+    nd_ccap: 1_073.39
 
 - name: Case 4, family at or below 30% SMI has the co-payment waived.
   period: 2026-01
@@ -111,7 +112,7 @@
     people:
       person1:
         age: 30
-        employment_income: 24_000  # 2,000/mo, ratio 0.258 at or below 30% SMI
+        employment_income: 24_000  # 2,000/mo, ratio 0.272 at or below 30% SMI
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
@@ -133,14 +134,14 @@
     nd_ccap_base_subsidy: 600
     nd_ccap: 800
 
-- name: Case 5, family above 40% SMI is capped at a 7% co-payment.
+- name: Case 5, family in the 50-60% SMI band pays a worksheet co-payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        employment_income: 48_000  # 4,000/mo, ratio 0.515 above 40% SMI
+        employment_income: 48_000  # 4,000/mo, ratio 0.543 in the 54-56% band
       person2:
         age: 0.5
         nd_ccap_provider_type: CENTER
@@ -156,10 +157,10 @@
         state_code: ND
   output:
     nd_ccap_eligible: true
-    # copay capped at 7%: 4,000 * 0.07 = 280.
-    nd_ccap_copay: 280
-    # base = 1,240 - 280 = 960; infant bonus 200; nd_ccap = 1,160.
-    nd_ccap: 1_160
+    # ratio 0.543 -> 54-56% SMI band, share 0.0216; copay 0.0216 * 7,361.62 = 159.01.
+    nd_ccap_copay: 159.01
+    # base = 1,240 - 159.01 = 1,080.99; infant bonus 200; nd_ccap = 1,280.99.
+    nd_ccap: 1_280.99
 
 - name: Case 6, special-needs +10% raises the rate ceiling above the base case.
   period: 2026-01

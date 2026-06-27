@@ -3,8 +3,8 @@
 # the monthly state median income; enrolled recipients (is_nd_ccap_enrolled =
 # true) are tested against 85% (400-28-25-15). Countable income is set
 # directly to isolate the two-tier comparison.
-# 2-person ND monthly SMI for 2026 (uprated) = $7,762.97/mo:
-#   75% = $5,822.23/mo, 85% = $6,598.53/mo.
+# 2-person ND monthly SMI for 2026 = $7,361.62/mo:
+#   75% = $5,521.22/mo, 85% = $6,257.38/mo.
 # nd_ccap_countable_income is a MONTH variable, so values are monthly.
 
 - name: Case 1, applicant just below 75% SMI, income eligible.
@@ -18,7 +18,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 5_800  # below 5,822.23 (75% SMI)
+        nd_ccap_countable_income: 5_500  # below 5,521.22 (75% SMI)
         is_nd_ccap_enrolled: false
     households:
       household:
@@ -38,7 +38,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 5_900  # above 5,822.23 (75% SMI)
+        nd_ccap_countable_income: 5_900  # above 5,521.22 (75% SMI)
         is_nd_ccap_enrolled: false
     households:
       household:
@@ -58,7 +58,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 5_900  # above 75% but below 6,598.53 (85% SMI)
+        nd_ccap_countable_income: 5_900  # above 75% but below 6,257.38 (85% SMI)
         is_nd_ccap_enrolled: true
     households:
       household:
@@ -78,7 +78,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 6_700  # above 6,598.53 (85% SMI)
+        nd_ccap_countable_income: 6_700  # above 6,257.38 (85% SMI)
         is_nd_ccap_enrolled: true
     households:
       household:
@@ -98,7 +98,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 5_822.22  # at 75% SMI (5,822.23)
+        nd_ccap_countable_income: 5_521.21  # at 75% SMI (5,521.22)
         is_nd_ccap_enrolled: false
     households:
       household:
@@ -118,7 +118,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 6_598.525  # exactly 85% SMI; <= passes
+        nd_ccap_countable_income: 6_257.37  # at 85% SMI (6,257.38); <= passes
         is_nd_ccap_enrolled: true
     households:
       household:
@@ -138,7 +138,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        nd_ccap_countable_income: 6_598.53  # just above 85% SMI (6,598.525)
+        nd_ccap_countable_income: 6_598.53  # above 85% SMI (6,257.38)
         is_nd_ccap_enrolled: true
     households:
       household:

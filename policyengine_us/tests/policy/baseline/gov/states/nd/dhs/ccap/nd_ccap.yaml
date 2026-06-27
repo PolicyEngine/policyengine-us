@@ -29,11 +29,11 @@
         members: [person1, person2]
         state_code: ND
   output:
-    # copay: ratio 0.322 -> 6% band; 2,500 * 0.06 = 150.
-    # base = min(1,240, 2,000) - 150 = 1,090.
+    # copay: ratio 0.340 -> 32-34% SMI band, share 0.0064; 0.0064 * 7,361.62 = 47.11.
+    # base = min(1,240, 2,000) - 47.11 = 1,192.89.
     # QRIS step 3 (2026) bonus 1,240 * 0.05 = 62; infant bonus 200.
-    # nd_ccap = 1,090 + 62 + 200 = 1,352.
-    nd_ccap: 1_352
+    # nd_ccap = 1,192.89 + 62 + 200 = 1,454.89.
+    nd_ccap: 1_454.89
 
 - name: Case 2, infant at a step-2 center with the co-payment waived.
   period: 2026-01
