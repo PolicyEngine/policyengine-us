@@ -6,10 +6,60 @@
   output:
     sc_dependent_exemption: 4_430
 
-- name: Case 2, family with 3 dependents, get 3 dependent exemptions. 
+- name: Case 2, family with 3 dependents, get 3 dependent exemptions.
   period: 2022
   input:
     state_code: SC
-    tax_unit_dependents: 3 
+    tax_unit_dependents: 3
   output:
     sc_dependent_exemption: 13_290
+
+# Case 3, repoint pin: prove sc_dependent_exemption reads the dedicated
+# dependent_exemption parameter, NOT the young_child parameter. Override both
+# to distinct values; the variable must reflect dependent_exemption and ignore
+# young_child. Without the repoint this case would fail.
+- name: Case 3, repoint pin - variable reads dependent_exemption, not young_child.
+  period: 2025
+  input:
+    state_code: SC
+    tax_unit_dependents: 2
+    # Distinct override values so the two parameters cannot be confused.
+    gov.states.sc.tax.income.deductions.dependent_exemption.amount: 9_000
+    gov.states.sc.tax.income.deductions.young_child.amount: 1_000
+  output:
+    # 2 dependents * $9,000 (dependent_exemption) = $18,000.
+    # If the variable still read young_child it would be 2 * $1,000 = $2,000.
+    sc_dependent_exemption: 18_000
+
+# Case 4, stacking: an under-6 dependent qualifies for BOTH the dependent
+# exemption (12-6-1140) and the young child deduction (12-6-1160). They are
+# separate provisions and must stack - check each independently.
+- name: Case 4, under-6 dependent stacks dependent exemption and young child deduction.
+  period: 2025
+  input:
+    people:
+      person1: {}
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # 2025 amount is $4,930; 1 dependent.
+    sc_dependent_exemption: 4_930
+    # Same child is under 6, so the young child deduction also applies.
+    sc_young_child_deduction: 4_930
+
+# Case 5, per-year symmetry: 2025 dependent exemption at the baseline amount.
+- name: Case 5, 3 dependents in 2025 get 3 dependent exemptions.
+  period: 2025
+  input:
+    state_code: SC
+    tax_unit_dependents: 3
+  output:
+    # 2025 dependent exemption amount is $4,930; 3 * $4,930 = $14,790.
+    sc_dependent_exemption: 14_790

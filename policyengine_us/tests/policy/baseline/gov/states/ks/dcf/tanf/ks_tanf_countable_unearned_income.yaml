@@ -1,0 +1,43 @@
+# Kansas TANF countable unearned income test
+# Sums assistance-unit members' unearned income. SSI recipients are excluded
+# from the assistance unit (KEESM 4113), so their unearned income is not
+# counted, even though it is real unearned income.
+
+- name: Case 1, no SSI member, all unearned income counts.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 300
+      person2:
+        tanf_gross_unearned_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 300 + 100 = 400 (both members)
+    ks_tanf_countable_unearned_income: 400
+
+- name: Case 2, SSI member's unearned income excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        tanf_gross_unearned_income: 300
+      person2:
+        tanf_gross_unearned_income: 100
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2's 100 is masked out; only person1's 300 counts
+    ks_tanf_countable_unearned_income: 300

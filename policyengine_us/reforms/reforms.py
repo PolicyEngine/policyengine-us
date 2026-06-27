@@ -263,6 +263,9 @@ from .states.oh.eitc import (
 from .states.ut.child_poverty_eitc import (
     create_ut_fully_refundable_eitc_reform,
 )
+from .states.sc.child_poverty_eitc import (
+    create_sc_fully_refundable_eitc_reform,
+)
 from policyengine_core.reforms import Reform
 import warnings
 
@@ -455,6 +458,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     ut_fully_refundable_eitc = create_ut_fully_refundable_eitc_reform(
         parameters, period
     )
+    sc_fully_refundable_eitc = create_sc_fully_refundable_eitc_reform(
+        parameters, period
+    )
     nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
     nj_anchor = create_nj_anchor_reform(parameters, period)
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
@@ -570,6 +576,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         mo_refundable_eitc,
         oh_refundable_eitc,
         ut_fully_refundable_eitc,
+        sc_fully_refundable_eitc,
         nj_stay_nj,
         nj_anchor,
         working_parents_tax_relief_act,

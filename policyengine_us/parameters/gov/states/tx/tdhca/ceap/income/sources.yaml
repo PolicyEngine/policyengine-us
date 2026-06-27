@@ -15,7 +15,9 @@ values:
     # Counted excluding the Medicare deduction; we don't track
     # Medicare premium withholding at the moment
     - social_security
-    - ssi
+    # applicable_ssi is calculated ssi by default, or ssi_reported when an
+    # API partner sets use_reported_ssi to True
+    - applicable_ssi
     - pension_income
     - retirement_distributions
     - general_assistance

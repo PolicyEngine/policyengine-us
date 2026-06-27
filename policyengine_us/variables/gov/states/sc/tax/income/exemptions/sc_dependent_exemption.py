@@ -15,8 +15,8 @@ class sc_dependent_exemption(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        # Get relevant parameter subtree. The amount for dependent exemption is the same amount as the the young_child's.
-        p = parameters(period).gov.states.sc.tax.income.deductions.young_child
+        # Section 12-6-1140(13): a dependent exemption for every dependent.
+        p = parameters(period).gov.states.sc.tax.income.deductions.dependent_exemption
         # every dependent is eligible
         dependents = tax_unit("tax_unit_dependents", period)
         # Multiply by the amount per exemption.
