@@ -579,7 +579,9 @@ metadata:
     - state_code
   unit: currency-USD
   period: year
-  uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
+  uprating:
+    parameter: calibration.gov.cbo.income_by_source.adjusted_gross_income
+    start_instant: 2027-01-01
   reference:
   - title: 60 percent of estimated State Median Income adjusted for family size, by state, FFY 2018 (Attachment 1, LIHEAP-IM-2017-03)
     href: https://acf.gov/sites/default/files/documents/ocs/im_17_03_liheap_smi_fy18.pdf#page=4
