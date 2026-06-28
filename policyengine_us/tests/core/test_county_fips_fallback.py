@@ -76,3 +76,19 @@ def test_county_with_mixed_fips_preserves_known_rows_and_falls_back():
         "ALAMEDA_COUNTY_CA",
     ]
     assert simulation.tracer.get_nb_requests("first_county_in_state") == 1
+
+
+def test_county_with_invalid_fips_uses_first_county_fallback():
+    situation = _two_household_situation()
+    situation["households"]["household_1"]["county_fips"] = {"2026": "99999"}
+    situation["households"]["household_2"]["county_fips"] = {"2026": "88888"}
+    simulation = Simulation(situation=situation)
+    simulation.trace = True
+
+    county_str = simulation.calculate("county_str", 2026)
+
+    assert county_str.tolist() == [
+        "ALBANY_COUNTY_NY",
+        "ALAMEDA_COUNTY_CA",
+    ]
+    assert simulation.tracer.get_nb_requests("first_county_in_state") == 1
