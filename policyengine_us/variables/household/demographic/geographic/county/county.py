@@ -5,20 +5,8 @@ from policyengine_us.variables.household.demographic.geographic.county.county_en
 )
 from policyengine_us.tools.geography.county_helpers import (
     load_county_fips_dataset,
+    map_county_string_to_enum,
 )
-
-
-def _county_enum_names(counties: "pd.DataFrame") -> "np.ndarray":
-    county_key = (
-        counties["county_name"]
-        .str.replace(" ", "_", regex=False)
-        .str.replace("-", "_", regex=False)
-        .str.replace(".", "", regex=False)
-        .str.replace("'", "_", regex=False)
-        .str.strip()
-        .str.upper()
-    )
-    return county_key.str.cat(counties["state"], sep="_").to_numpy(dtype=object)
 
 
 class county(Variable):
@@ -60,7 +48,10 @@ class county(Variable):
         )
         valid_fips = counties["county_name"].notna().to_numpy()
         if known_fips.all() and valid_fips.all():
-            return County.encode(_county_enum_names(counties))
+            return map_county_string_to_enum(
+                counties["county_name"],
+                counties["state"],
+            ).to_numpy()
 
         result = household("first_county_in_state", period)
         if not valid_fips.any():
@@ -68,7 +59,10 @@ class county(Variable):
 
         known_indices = np.where(known_fips)[0]
         result = np.array(result, copy=True)
-        result[known_indices[valid_fips]] = np.asarray(
-            County.encode(_county_enum_names(counties.loc[valid_fips]))
-        )
+        county_name = counties.loc[valid_fips, "county_name"]
+        state_code = counties.loc[valid_fips, "state"]
+        result[known_indices[valid_fips]] = map_county_string_to_enum(
+            county_name,
+            state_code,
+        ).to_numpy()
         return result
