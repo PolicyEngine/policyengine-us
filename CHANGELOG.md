@@ -1,3 +1,10 @@
+## [1.747.7] - 2026-06-29
+
+### Changed
+
+- Update New Jersey Stay NJ property tax relief baseline calculations.
+
+
 ## [1.747.6] - 2026-06-29
 
 ### Fixed
