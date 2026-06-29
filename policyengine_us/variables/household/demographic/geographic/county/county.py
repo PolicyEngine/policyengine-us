@@ -1,13 +1,11 @@
 from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
-from policyengine_us.tools.geography.county_helpers import (
-    map_county_string_to_enum,
-)
 from policyengine_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
 from policyengine_us.tools.geography.county_helpers import (
     load_county_fips_dataset,
+    map_county_string_to_enum,
 )
 
 
@@ -36,26 +34,35 @@ class county(Variable):
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)
 
-        result = household("first_county_in_state", period)
         county_fips = np.asarray(county_fips).astype(str)
         known_fips = county_fips != ""
-        if known_fips.any():
-            COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
-            counties = pd.merge(
-                pd.DataFrame({"county_fips": county_fips[known_fips]}),
-                COUNTY_FIPS_DATASET,
-                on="county_fips",
-                how="left",
-            )
-            valid_fips = counties["county_name"].notna().to_numpy()
-            if not valid_fips.any():
-                return result
-            known_indices = np.where(known_fips)[0]
-            county_name = counties.loc[valid_fips, "county_name"]
-            state_code = counties.loc[valid_fips, "state"]
-            result = np.array(result, copy=True)
-            result[known_indices[valid_fips]] = map_county_string_to_enum(
-                county_name,
-                state_code,
+        if not known_fips.any():
+            return household("first_county_in_state", period)
+
+        COUNTY_FIPS_DATASET: "pd.DataFrame" = load_county_fips_dataset()
+        counties = pd.merge(
+            pd.DataFrame({"county_fips": county_fips[known_fips]}),
+            COUNTY_FIPS_DATASET,
+            on="county_fips",
+            how="left",
+        )
+        valid_fips = counties["county_name"].notna().to_numpy()
+        if known_fips.all() and valid_fips.all():
+            return map_county_string_to_enum(
+                counties["county_name"],
+                counties["state"],
             ).to_numpy()
+
+        result = household("first_county_in_state", period)
+        if not valid_fips.any():
+            return result
+
+        known_indices = np.where(known_fips)[0]
+        result = np.array(result, copy=True)
+        county_name = counties.loc[valid_fips, "county_name"]
+        state_code = counties.loc[valid_fips, "state"]
+        result[known_indices[valid_fips]] = map_county_string_to_enum(
+            county_name,
+            state_code,
+        ).to_numpy()
         return result
