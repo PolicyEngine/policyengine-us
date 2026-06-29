@@ -1,0 +1,34 @@
+description: South Carolina provides a dependent exemption of this amount per dependent. The young child deduction (Section 12-6-1160) is set equal to this amount.
+values:
+  2019-01-01: 4_100 # Value in the legal code, last updated in 2019.
+  2021-01-01: 4_300
+  2022-01-01: 4_430
+  2023-01-01: 4_610
+  2024-01-01: 4_790
+  2025-01-01: 4_930
+
+metadata:
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  rounding:
+    type: downwards
+    interval: 10
+  label: South Carolina dependent exemption amount
+  reference:
+    # 12-6-1140(13) defines the dependent exemption amount; 12-6-1160 sets the
+    # young child deduction equal to it.
+    - title: SC Legal Code | SECTION 12-6-1140
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC Legal Code | SECTION 12-6-1160
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form instructions (2025)
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=16
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=19
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
+    - title: SC 1040 tax form instructions (2023)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2023.pdf#page=29
+    - title: SC 1040 tax form instructions (2024)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040Instr_2024.pdf#page=16

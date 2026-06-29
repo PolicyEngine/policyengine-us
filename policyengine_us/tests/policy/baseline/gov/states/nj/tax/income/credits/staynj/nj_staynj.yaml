@@ -525,8 +525,8 @@
         state_fips: 34
   output:
     # min($100 * 50%, $6,500) = min($50, $6,500) = $50
-    # ANCHOR = $1,750
-    # max($50 - $1,750, 0) = $0
+    # ANCHOR is capped at property taxes paid = $100
+    # max($50 - $100, 0) = $0
     nj_staynj: 0
 
 - name: Edge case 10, couple where only spouse is 65 plus.
@@ -630,8 +630,8 @@
         state_fips: 34
   output:
     # min($1 * 50%, $6,500) = $0.50
-    # ANCHOR = $1,750
-    # max($0.50 - $1,750, 0) = $0
+    # ANCHOR is capped at property taxes paid = $1
+    # max($0.50 - $1, 0) = $0
     nj_staynj: 0
 
 - name: Edge case 14, senior who neither owns nor rents is ineligible.
@@ -655,4 +655,32 @@
         state_fips: 34
   output:
     # Not homeowner - ineligible
+    nj_staynj: 0
+
+- name: Edge case 15, Senior Freeze fully absorbs Stay NJ with non-binding property tax cap.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Stay NJ target = 50% of $12,000 = $6,000.
+    # ANCHOR + capped Senior Freeze exceed the target, while total relief stays below property taxes.
+    nj_anchor: 1_750
+    nj_capped_senior_freeze: 6_000
     nj_staynj: 0

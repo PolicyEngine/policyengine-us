@@ -138,8 +138,8 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI for WA family of 3 (based on Oct 2025 SMI) = $58,511.
-    # $55,000 < $58,511, so income-eligible under the 2030-08-01 50% SMI threshold.
+    # 50% SMI for WA family of 3 in 2031 (after uprating) = $70,405.39.
+    # $55,000 < $70,405.39, so income-eligible under the 2030-08-01 50% SMI threshold.
     wa_eceap_income_eligible: [true, true, true]
 
 - name: 2031 SMI era, family of 3 at $75,000, above 50% SMI threshold.
@@ -167,7 +167,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI family of 3 in 2031 ~= $73,057.41; $75,000 > threshold.
+    # 50% SMI family of 3 in 2031 = $70,405.39; $75,000 > threshold.
     wa_eceap_income_eligible: [false, false, false]
 
 - name: Oregon family, income below threshold, not eligible due to residency.
@@ -419,7 +419,7 @@
     people:
       parent:
         age: 30
-        employment_income: 44_425
+        employment_income: 42_127
       child:
         age: 4
         employment_income: 0
@@ -438,7 +438,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 36% SMI family of 3 in 2026 ~= $44,425.03 (after uprating). At $44,425 <= threshold.
+    # 36% SMI family of 3 in 2026 = $42,128.25. $42,127 <= threshold.
     wa_eceap_income_eligible: [true, true, true]
 
 - name: 2026 family of 3 at $44,426, one dollar above 36% SMI floor, not eligible.
@@ -447,7 +447,7 @@
     people:
       parent:
         age: 30
-        employment_income: 44_426
+        employment_income: 42_129
       child:
         age: 4
         employment_income: 0
@@ -466,7 +466,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 36% SMI family of 3 in 2026 ~= $44,425.03; $44,426 > threshold.
+    # 36% SMI family of 3 in 2026 = $42,128.25; $42,129 > threshold.
     wa_eceap_income_eligible: [false, false, false]
 
 - name: 2031 family of 3 at $73,057, one dollar below 50% SMI floor, eligible.
@@ -475,7 +475,7 @@
     people:
       parent:
         age: 30
-        employment_income: 73_057
+        employment_income: 70_404
       child:
         age: 4
         employment_income: 0
@@ -494,7 +494,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI family of 3 in 2031 ~= $73,057.41 (after uprating). $73,057 <= threshold.
+    # 50% SMI family of 3 in 2031 = $70,405.39. $70,404 <= threshold.
     wa_eceap_income_eligible: [true, true, true]
 
 - name: 2031 family of 3 at $73,058, one dollar above 50% SMI floor, not eligible.
@@ -503,7 +503,7 @@
     people:
       parent:
         age: 30
-        employment_income: 73_058
+        employment_income: 70_406
       child:
         age: 4
         employment_income: 0
@@ -637,7 +637,7 @@
     people:
       parent1:
         age: 30
-        employment_income: 72_983
+        employment_income: 69_209
       parent2:
         age: 30
         employment_income: 0
@@ -671,7 +671,7 @@
         members: [parent1, parent2, c1, c2, c3, c4, c5, c6]
         state_code: WA
   output:
-    # 36% SMI family of 8 in 2026 ~= $72,983.98. Income $72,983 <= threshold.
+    # 36% SMI family of 8 in 2026 = $69,210.70. Income $69,209 <= threshold.
     wa_eceap_income_eligible: [true, true, true, true, true, true, true, true]
 
 - name: 2026 large family of 8 at $72,984, one dollar above 36% SMI floor, not eligible.
@@ -680,7 +680,7 @@
     people:
       parent1:
         age: 30
-        employment_income: 72_984
+        employment_income: 69_211
       parent2:
         age: 30
         employment_income: 0
