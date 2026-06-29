@@ -1,3 +1,16 @@
+## [1.749.0] - 2026-06-29
+
+### Added
+
+- Added Medicaid community engagement activity-hour pathways for community service, work programs, and mixed less-than-half-time education hours.
+- Added a seasonal-worker six-month average income pathway for Medicaid community engagement.
+- Added a Medicaid community engagement treatment-program exclusion input.
+
+### Fixed
+
+- Fixed the Medicaid community engagement income safe harbor to use Medicaid MAGI household income.
+
+
 ## [1.748.0] - 2026-06-29
 
 ### Added
