@@ -11,8 +11,8 @@ class is_snap_ineligible_student(Variable):
 
     def formula(person, period, parameters):
         # Base rule: Students enrolled at least half-time in higher education
-        # are ineligible (K-12 students are not affected by this rule)
-        is_higher_ed_student = person("is_snap_higher_ed_student", period)
+        # are ineligible (K-12 students are not affected by this rule).
+        # This is guarded by defined_for = "is_snap_higher_ed_student".
 
         # Eight statutory exceptions that make students eligible:
 
@@ -46,14 +46,12 @@ class is_snap_ineligible_student(Variable):
         # program under title IV (TANF work programs) or successor programs
         # Not modeled
 
-        # Student is INELIGIBLE if they are a higher ed student AND
-        # they do NOT meet ANY of the eight exceptions
-        meets_any_exception = (
+        # A higher education student is INELIGIBLE if they do NOT meet ANY
+        # of the eight exceptions
+        return ~(
             meets_age_exception
             | meets_disability_exception
             | meets_work_hours_exception
             | meets_parent_exception
             | receives_tanf
         )
-
-        return is_higher_ed_student & ~meets_any_exception
