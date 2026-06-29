@@ -1,0 +1,279 @@
+# KY CCAP income eligibility: monthly countable income <= 85% Kentucky SMI
+# by family size (DCC-113, effective 2023-10-01).
+# Size 2 limit = $4,217/mo; size 3 = $5,210/mo; size 4 = $6,202/mo.
+
+- name: Case 1, two-person family below the size-2 SMI limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 48_000
+        # 48_000 / 12 = 4_000/month < 4_217 -> eligible
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 2, two-person family above the size-2 SMI limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 60_000
+        # 60_000 / 12 = 5_000/month > 4_217 -> ineligible
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: false
+
+- name: Case 3, two-person family just below the limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # Monthly limit 4_217; use 4_216.99/mo to stay just under after
+        # float round-trip (annual input = monthly x 12).
+        employment_income: 50_603.88
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 4, two-person family just above the limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 4_217.01/mo x 12 = 50_604.12/yr -> just over the limit.
+        employment_income: 50_604.12
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: false
+
+- name: Case 5, three-person family uses the larger size-3 limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 60_000
+        # 5_000/month < 5_210 size-3 limit -> eligible
+      person2:
+        age: 30
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 6, three-person family just above the size-3 limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # size-3 limit 5_210/mo; 5_210.01/mo x 12 = 62_520.12/yr -> just over.
+        employment_income: 62_520.12
+      person2:
+        age: 30
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: false
+
+- name: Case 7, four-person family just below the size-4 limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # size-4 limit 6_202/mo; 6_201/mo x 12 = 74_412/yr -> just under.
+        employment_income: 74_412
+      person2:
+        age: 30
+      person3:
+        age: 6
+      person4:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 8, zero income is income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 9, Kentucky Works enrollment passes income test above the SMI limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        # 10_000/month > every SMI limit, but K-TAP enrollment bypasses the test.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 10, nine-person family adds one per-member amount above size eight.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # size-9 limit = 8_559 + 1 x 186 = 8_745/mo. 8_745/mo x 12 = 104_940/yr.
+        # Use 104_928/yr = 8_744/mo -> just under -> eligible.
+        employment_income: 104_928
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 8
+      person7:
+        age: 6
+      person8:
+        age: 4
+      person9:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 11, single-person unit uses the size-2 floor for the income limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # Size-1 family clips to the size-2 limit (4_217/mo). 4_000/mo < 4_217.
+        employment_income: 48_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 12, Protection and Permanency child bypasses the income test above the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        # 10_000/month > every SMI limit, but a foster-care child is eligible
+        # without regard to income (Section 8(3)).
+      person2:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 13, child receiving protective services bypasses the income test without a foster placement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        # 10_000/month > every SMI limit, but a child receiving or needing
+        # child protective or preventive services is eligible without regard
+        # to income (Section 8(3)), even with no foster-care placement.
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true

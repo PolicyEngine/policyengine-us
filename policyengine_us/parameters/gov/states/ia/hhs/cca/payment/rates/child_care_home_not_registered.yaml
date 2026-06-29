@@ -1,0 +1,23 @@
+description: Iowa provides these maximum half-day-unit rates for a nonregistered child care home (Table 4) under the Child Care Assistance program. This provider type has no quality rating dimension.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Iowa CCA nonregistered child care home half-day-unit rates
+  breakdown:
+    - ia_cca_age_group
+  reference:
+    - title: IAC 441-170.4(7) — Table 4, Child Care Home (not registered) (effective July 1, 2024)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=15
+
+INFANT_TODDLER:
+  2024-07-01: 16.63
+INFANT_TODDLER_SN:
+  2024-07-01: 24.95
+PRESCHOOL:
+  2024-07-01: 15.00
+PRESCHOOL_SN:
+  2024-07-01: 22.50
+SCHOOL_AGE:
+  2024-07-01: 15.00
+SCHOOL_AGE_SN:
+  2024-07-01: 22.50

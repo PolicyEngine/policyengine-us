@@ -1,0 +1,15 @@
+description: Idaho counts these earned income sources under the Idaho Child Care Program.
+values:
+  2022-03-17:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho Child Care Program countable earned income sources
+  reference:
+    - title: IDAPA 16.06.12.071-072.01, Countable Income (p. 7) and Earned Income of a Dependent Child (p. 8)
+      href: https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=7

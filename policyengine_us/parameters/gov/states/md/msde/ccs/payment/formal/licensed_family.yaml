@@ -1,0 +1,64 @@
+description: Maryland provides these weekly full-time reimbursement rates for licensed family child care homes under the Child Care Scholarship program.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Maryland CCS licensed family weekly UNIT_3 rates
+  breakdown:
+    - md_ccs_region
+    - md_ccs_age_group
+  reference:
+    - title: Maryland CCS Scholarship Rates as of 3/1/26
+      href: https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
+    - title: Maryland CCS Scholarship Rates as of 5/23/22 (Wayback Machine snapshot)
+      href: https://web.archive.org/web/20220616202551/https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
+
+REGION_U:
+  REGULAR:
+    2022-05-23: 176
+    2026-03-01: 200
+  INFANT:
+    2022-05-23: 200
+    2026-03-01: 225
+REGION_V:
+  REGULAR:
+    2022-05-23: 142
+    2026-03-01: 175
+  INFANT:
+    2022-05-23: 175
+    2026-03-01: 200
+REGION_W:
+  REGULAR:
+    2022-05-23: 230
+    2026-03-01: 262
+  INFANT:
+    2022-05-23: 270
+    2026-03-01: 300
+REGION_X:
+  REGULAR:
+    2022-05-23: 300
+    2026-03-01: 325
+  INFANT:
+    2022-05-23: 325
+    2026-03-01: 350
+REGION_Y:
+  REGULAR:
+    2022-05-23: 220
+    2026-03-01: 250
+  INFANT:
+    2022-05-23: 250
+    2026-03-01: 288
+REGION_Z:
+  REGULAR:
+    2022-05-23: 150
+    2026-03-01: 170
+  INFANT:
+    2022-05-23: 168
+    2026-03-01: 185
+REGION_BC:
+  REGULAR:
+    2022-05-23: 182
+    2026-03-01: 225
+  INFANT:
+    2022-05-23: 210
+    2026-03-01: 252

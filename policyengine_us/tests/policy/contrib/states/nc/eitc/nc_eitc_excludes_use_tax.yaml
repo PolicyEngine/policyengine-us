@@ -1,0 +1,35 @@
+# Regression test for #8775: the NC EITC reform's nc_income_tax override must
+# mirror baseline (nc_income_tax_before_credits minus credits) and must NOT add
+# nc_use_tax. Use tax is already counted at the household level via
+# state_use_tax; adding it here would raise tax for every NC filer (even with
+# no EITC) and double-count it.
+- name: NC reform does not add use tax to income tax when EITC is 0
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    state_code: NC
+    eitc: 0
+    nc_income_tax_before_credits: 600
+    nc_use_tax: 100
+    nc_non_refundable_credits: 0
+  output:
+    nc_eitc: 0
+    # Mirrors baseline: 600 before credits, no use tax added (would be 700 if
+    # the reform re-added nc_use_tax).
+    nc_income_tax: 600
+
+- name: NC reform reduces income tax by the refundable EITC, still no use tax
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.eitc.nc_eitc
+  input:
+    gov.contrib.states.nc.eitc.match: 0.1
+    state_code: NC
+    eitc: 1_000
+    nc_income_tax_before_credits: 600
+    nc_use_tax: 100
+    nc_non_refundable_credits: 0
+  output:
+    nc_eitc: 100
+    # 600 - 100 EITC = 500 (would be 600 if use tax were wrongly added)
+    nc_income_tax: 500

@@ -24,9 +24,9 @@
   output:
     flat_refundable_credit: 1_000  # only the 5yo is CTC-qualifying
 
-- name: Per-other-dependent credit counts EITC kids who fail the CTC test
+- name: Per-other-dependent credit counts non-CTC dependent children
   # Same family — with only the other-dependent toggle on, only the
-  # 17-year-old (EITC-qualifying but not CTC-qualifying) should count.
+  # 17-year-old dependent child past the CTC age cutoff should count.
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
@@ -47,9 +47,9 @@
         members: [filer, spouse, young_child, older_child]
         filing_status: JOINT
   output:
-    flat_refundable_credit: 500  # only the 17yo, EITC-eligible but not CTC
+    flat_refundable_credit: 500  # only the 17yo, dependent but not CTC
 
-- name: Both per-dependent toggles split the credit by kid age
+- name: Both per-dependent toggles split the credit by CTC eligibility
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
@@ -116,8 +116,9 @@
 
 - name: Set-difference clamp — CTC kid failing EITC ID requirements does not net negative
   # If a single child is CTC-qualifying but fails the EITC identification
-  # requirements (e.g., ITIN-only), then ctc_count = 1 and eitc_count = 0.
-  # The other-dependent count = max_(0 - 1, 0) = 0; we never net negative.
+  # requirements (e.g., ITIN-only), the other-dependent count is still
+  # max_(dependent_count - ctc_count, 0) = max_(1 - 1, 0) = 0; we never
+  # net negative.
   period: 2026
   reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
   input:
@@ -136,7 +137,7 @@
         members: [filer, child]
         filing_status: SINGLE
   output:
-    flat_refundable_credit: 0  # max_(eitc_count - ctc_count, 0) = max_(-1, 0) = 0
+    flat_refundable_credit: 0  # max_(dependent_count - ctc_count, 0) = 0
 
 - name: Per-dependent toggles off — amounts ignored even with kids present
   period: 2026
@@ -158,3 +159,52 @@
         filing_status: SINGLE
   output:
     flat_refundable_credit: 0
+
+- name: Per-other-dependent credit counts adult dependents
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 45
+      adult_parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, adult_parent]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 500
+
+- name: Taxpayer and dependent credits can cover every tax-unit member once
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 500
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 250
+    people:
+      filer:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      adult_parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child, adult_parent]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 2_750  # 2 taxpayers + 1 CTC child + 1 other dependent

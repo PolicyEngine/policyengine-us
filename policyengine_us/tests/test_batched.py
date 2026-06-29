@@ -11,6 +11,7 @@ import gc
 import time
 import argparse
 import re
+import select
 from pathlib import Path
 from typing import List, Dict
 
@@ -88,17 +89,10 @@ def split_into_batches(
             "eitc",
             "crfb",
             "congress",
-            # refundable_credit_conversion's override of
-            # income_tax_refundable_credits pulls every federal
-            # refundable credit (eitc / refundable_ctc / aotc /
-            # recovery rebate / refundable payroll tax credit /
-            # cdcc-in-2021) into the subprocess's variable graph when
-            # integration.yaml asserts on it. Bundled with the catch-all
-            # this pushes peak memory past the runner cap, surfacing as
-            # "shutdown signal" mid-batch. Its own batch keeps the
-            # light batch under the cap.
-            "refundable_credit_conversion",
         }
+        # Some folders contain individual YAMLs that are each expensive
+        # enough to need their own subprocess.
+        PER_FILE = {"refundable_credit_conversion"}
 
         subdirs = sorted(
             item
@@ -107,14 +101,23 @@ def split_into_batches(
         )
         root_files = sorted(base_path.glob("*.yaml"))
 
-        # One batch per heavy subdir (if present).
-        batches = [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
+        # One batch per file for per-file folders, then one batch per
+        # heavy subdir (if present).
+        batches = [
+            [str(file)]
+            for subdir in subdirs
+            if subdir.name in PER_FILE
+            for file in sorted(subdir.rglob("*.yaml"))
+        ]
+        batches += [[str(subdir)] for subdir in subdirs if subdir.name in HEAVY]
 
         # Catch-all batch for everything else — light subdirs and root
         # yaml files. Auto-collects any newly added folders/files so
         # they're exercised without extra config.
         light_paths = [
-            str(subdir) for subdir in subdirs if subdir.name not in HEAVY
+            str(subdir)
+            for subdir in subdirs
+            if subdir.name not in HEAVY and subdir.name not in PER_FILE
         ] + [str(f) for f in root_files]
         if light_paths:
             batches.append(light_paths)
@@ -126,9 +129,25 @@ def split_into_batches(
     # Memory usage per state varies significantly (1.3 GB - 5.2 GB measured)
     # Note: contrib/congress runs all together (~6.3 GB total, under 7 GB limit)
     if str(base_path).endswith("contrib/states"):
+        # States whose reform YAMLs are heavy enough that running the folder's
+        # files together in one subprocess stacks their peaks past the 16 GB
+        # runner cap → OOM ("runner received a shutdown signal"). Each
+        # force-applied reform deepcopies the full parameter tree (~4-5 GB
+        # peak/case, see #8559); isolating per-file frees each peak between
+        # files. RI is the worst offender — its ctc_reform_test.yaml sweeps
+        # ~66 reform combinations and previously OOMed shard-2 mid-run when it
+        # shared a subprocess with exemption_reform_test.yaml.
+        PER_FILE_STATES = {"ri"}
+
         subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
-        # Each state folder becomes its own batch
-        batches = [[str(subdir)] for subdir in subdirs]
+        batches = []
+        for subdir in subdirs:
+            if subdir.name in PER_FILE_STATES:
+                # One batch per YAML so each file gets a fresh subprocess.
+                batches.extend([str(f)] for f in sorted(subdir.rglob("*.yaml")))
+            else:
+                # Each state folder becomes its own batch.
+                batches.append([str(subdir)])
 
         # Also include any root-level YAML files as a separate batch
         root_files = sorted(list(base_path.glob("*.yaml")))
@@ -137,9 +156,14 @@ def split_into_batches(
 
         return batches if batches else [[str(base_path)]]
 
-    # Special handling for reform tests - run all together in one batch
+    # Special handling for reform tests - one batch per file. Reforms are
+    # force-applied and deepcopy the full parameter tree (~5.5 GB peak/file
+    # for ctc_linear_phase_out and winship, measured); running all files in
+    # one subprocess stacks past the 16 GB runner cap → "runner received a
+    # shutdown signal". A fresh subprocess per file frees each peak between
+    # files.
     if "reform" in str(base_path):
-        return [[str(base_path)]]
+        return [[str(f)] for f in sorted(base_path.rglob("*.yaml"))]
 
     # Special handling for states directory - support excluding specific states
     # and splitting into multiple sequential batches for memory management
@@ -285,6 +309,9 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
     python_exe = sys.executable
 
     start_time = time.time()
+    last_output_time = start_time
+    last_heartbeat_time = start_time
+    heartbeat_interval = 30
 
     # Build command - direct policyengine-core with timeout protection
     cmd = (
@@ -307,39 +334,62 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,  # Line buffered
+        bufsize=0,
     )
 
     try:
         test_completed = False
         test_passed = False
         output_lines = []
+        output_text = ""
 
         # Monitor output line by line
         while True:
-            line = process.stdout.readline()
-            if not line:
-                # No more output, check if process is done
+            ready, _, _ = select.select([process.stdout], [], [], 0.1)
+            if not ready:
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
                     break
+                now = time.time()
+                if now - last_heartbeat_time >= heartbeat_interval:
+                    elapsed = now - start_time
+                    quiet_for = now - last_output_time
+                    print(
+                        f"    Still running {batch_name} after "
+                        f"{elapsed:.0f}s ({quiet_for:.0f}s since last output)...",
+                        flush=True,
+                    )
+                    last_heartbeat_time = now
                 # Process still running but no output
                 time.sleep(0.1)
                 continue
 
-            # Print line in real-time
-            print(line, end="")
+            chunk = os.read(process.stdout.fileno(), 4096)
+            if not chunk:
+                if process.poll() is not None:
+                    break
+                continue
+
+            # Print output in real-time, including partial pytest progress
+            # lines such as dots that do not end with newlines.
+            line = chunk.decode(errors="replace")
+            print(line, end="", flush=True)
+            last_output_time = time.time()
+            last_heartbeat_time = last_output_time
             output_lines.append(line)
+            output_text += line
 
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
             # or "====== 2 failed, 5636 passed in 500s ======"
-            if re.search(r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+", line):
+            if re.search(
+                r"=+.*\d+\s+(passed|failed).*in\s+[\d.]+s.*=+",
+                output_text,
+            ):
                 test_completed = True
                 # Check if tests passed by parsing actual failure count
-                failed_match = re.search(r"(\d+) failed", line)
+                failed_match = re.search(r"(\d+) failed", output_text)
                 if failed_match:
                     failed_count = int(failed_match.group(1))
                     test_passed = failed_count == 0
@@ -497,7 +547,33 @@ def main():
     # position rather than requiring manual re-assignment per runner.
     if shard_count is not None:
         all_batch_count = len(batches)
+        is_states = str(test_path).endswith("contrib/states")
+
+        def _is_ri(batch):
+            # A batch belongs to RI if its path's state component (the segment
+            # right after contrib/states) is "ri". Works for both the per-file
+            # RI batches (.../states/ri/ctc_reform_test.yaml) and any folder
+            # batch (.../states/ri).
+            parts = Path(batch[0]).parts
+            if "states" not in parts:
+                return False
+            i = parts.index("states")
+            return len(parts) > i + 1 and parts[i + 1] == "ri"
+
+        ri_batches = [b for b in batches if _is_ri(b)] if is_states else []
         batches = batches[shard_idx - 1 :: shard_count]
+        if ri_batches:
+            # RI's CTC reform sweeps ~66 parameter combinations, each cloning
+            # the full tax-benefit system — far heavier than any other state,
+            # and its files are isolated per-file above. In the plain
+            # alphabetical stride RI lands on a shard with other heavy states
+            # (ny, ct, ut), unbalancing the contrib stage. Relocate all RI
+            # batches to the last shard; every other state keeps its
+            # positional assignment. (Same spirit as the NY split in the
+            # Makefile.)
+            batches = [b for b in batches if not _is_ri(b)]
+            if shard_idx == shard_count:
+                batches = batches + ri_batches
         print(
             f"Sharding: running shard {shard_idx}/{shard_count} "
             f"({len(batches)} of {all_batch_count} batches)"

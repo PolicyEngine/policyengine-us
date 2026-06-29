@@ -89,3 +89,18 @@
     dividend_income: 3_600
   output:
     in_eitc_eligible: false
+
+- name: in_eitc_eligible unit test 8
+  period: 2025
+  input:
+    state_code: IN
+    eitc: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc_child_count: 1
+    filer_adjusted_earnings: 10_000
+    adjusted_gross_income: 10_000
+    filer_meets_eitc_identification_requirements: true
+    would_file_taxes_voluntarily: true
+    takes_up_eitc: true
+  output:
+    in_eitc_eligible: true

@@ -1,0 +1,33 @@
+description: Kansas assigns children to child care center age groups by age in months under the Child Care Assistance Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Kansas CCAP center age group by months
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule (center age columns)
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+brackets:
+  # Infant: 0-11 months
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  # Toddler: 12-35 months
+  - threshold:
+      2024-10-01: 12
+    amount:
+      2024-10-01: 1
+  # Preschool: 36-59 months
+  - threshold:
+      2024-10-01: 36
+    amount:
+      2024-10-01: 2
+  # School-Age: 60 months and older
+  - threshold:
+      2024-10-01: 60
+    amount:
+      2024-10-01: 3

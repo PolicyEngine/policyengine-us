@@ -1,0 +1,121 @@
+- name: Case 1, five-year-old citizen in Louisiana is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true
+
+- name: Case 2, twelve-year-old is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true
+
+- name: Case 3, thirteen-year-old without a disability is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: false
+
+- name: Case 4, thirteen-year-old with a disability is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true
+
+- name: Case 5, seventeen-year-old with a disability is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true
+
+- name: Case 5a, eighteen-year-old with a disability is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: false
+
+- name: Case 6, undocumented child is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: false
+
+- name: Case 7, child outside Louisiana is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    la_ccap_eligible_child: false
+
+- name: Case 8, thirteen-year-old receiving SSI is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        ssi: 600  # Receipt of SSI satisfies the §503.A.2 13-17 route.
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true

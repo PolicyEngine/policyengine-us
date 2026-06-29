@@ -1,0 +1,115 @@
+description: Hawaii provides these monthly maximum payment rates under the Child Care Subsidy program, by provider category, child age group, and hours tier.
+metadata:
+  period: month
+  unit: currency-USD
+  label: Hawaii CCAP monthly maximum payment rates
+  breakdown:
+    - hi_ccap_provider_category
+    - hi_ccap_age_group
+    - hi_ccap_hours_tier
+  reference:
+    - title: Hawaii Administrative Rules 17-798.3 Child Care Payments, Exhibit I (effective 2020-01-02)
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=71
+
+# Rates are statewide (no island/county variation). Exhibit I (eff 2020-01-02)
+# uses two tiers: Full-Time (87+ monthly hours) and Part-Time (1-86). The
+# before/after-school rows use a 45+/1-44 band scheme (see hours_tier params).
+# The infant/toddler vs older split (under 36 months, HAR 17-798.3-2) is the
+# age_group dimension; categories with no age-specific rate (accredited
+# center, school-age settings) carry the same value for both age groups.
+
+LICENSED_CENTER_OR_GROUP_HOME:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 1_733
+    PART_TIME:
+      2020-01-02: 1_733
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 795
+    PART_TIME:
+      2020-01-02: 795
+
+ACCREDITED_CENTER:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 980
+    PART_TIME:
+      2020-01-02: 980
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 980
+    PART_TIME:
+      2020-01-02: 980
+
+NAFCC_ACCREDITED_FAMILY:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 750
+    PART_TIME:
+      2020-01-02: 750
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 700
+    PART_TIME:
+      2020-01-02: 700
+
+REGISTERED_FAMILY:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 650
+    PART_TIME:
+      2020-01-02: 362
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 600
+    PART_TIME:
+      2020-01-02: 334
+
+LEGALLY_EXEMPT:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 400
+    PART_TIME:
+      2020-01-02: 223
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 350
+    PART_TIME:
+      2020-01-02: 195
+
+LICENSED_SCHOOL_AGE_INTERSESSION_SUMMER:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 450
+    PART_TIME:
+      2020-01-02: 350
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 450
+    PART_TIME:
+      2020-01-02: 350
+
+LICENSED_BEFORE_AFTER_SCHOOL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 155
+    PART_TIME:
+      2020-01-02: 86
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 155
+    PART_TIME:
+      2020-01-02: 86
+
+EXEMPT_BEFORE_AFTER_SCHOOL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2020-01-02: 120
+    PART_TIME:
+      2020-01-02: 61
+  OLDER:
+    FULL_TIME:
+      2020-01-02: 120
+    PART_TIME:
+      2020-01-02: 61
