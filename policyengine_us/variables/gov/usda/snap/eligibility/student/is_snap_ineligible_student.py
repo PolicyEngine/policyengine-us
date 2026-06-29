@@ -19,7 +19,9 @@ class is_snap_ineligible_student(Variable):
         # Exception 1: Under 18 or age 50 or older
         age = person("age", period)
         p = parameters(period).gov.usda.snap.student
-        meets_age_exception = p.age_threshold.calc(age)
+        # Cast to bool: single_amount bool brackets return int (0/1), which
+        # would make the ~ below a bitwise negation instead of a logical one.
+        meets_age_exception = p.age_threshold.calc(age).astype(bool)
 
         # Exception 2: Not physically or mentally fit (disabled)
         meets_disability_exception = person("is_disabled", period)
