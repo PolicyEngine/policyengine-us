@@ -1,0 +1,197 @@
+- name: Case 1, S4531 provides $1,250 per young child at or below $30,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc: 1_250
+
+- name: Case 2, S4531 provides $1,000 per young child above $30,000 and at or below $40,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        nj_taxable_income: 40_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_ctc: 2_000
+
+- name: Case 3, S4531 provides $750 per young child above $40,000 and at or below $50,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc: 750
+
+- name: Case 4, S4531 provides $500 per young child above $50,000 and at or below $60,000.
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc: 500
+
+- name: Case 5, S4531 provides $250 per young child above $60,000 and at or below $80,000.
+  period: 2028
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 80_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc: 250
+
+- name: Case 6, S4531 expires after taxable year 2028.
+  period: 2029
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 70_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # Baseline amount for this bracket resumes after 2028.
+    nj_ctc: 200
+
+- name: Case 7, S4531 does not change the child age limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_taxable_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc: 0
+
+- name: Case 8, S4531 does not change married filing separately ineligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.nj.s4531.nj_s4531_reform
+  input:
+    gov.contrib.states.nj.s4531.in_effect: true
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        nj_taxable_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_ctc_eligible: false
+    nj_ctc: 0

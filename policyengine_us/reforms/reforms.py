@@ -236,6 +236,9 @@ from .states.nj.stay_nj import (
 from .states.nj.anchor import (
     create_nj_anchor_reform,
 )
+from .states.nj.s4531 import (
+    create_nj_s4531_reform,
+)
 from .refundable_credit_conversion import (
     create_refundable_credit_conversion_reform,
 )
@@ -512,6 +515,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
     nj_anchor = create_nj_anchor_reform(parameters, period)
+    nj_s4531 = create_nj_s4531_reform(parameters, period)
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
         parameters, period
     )
@@ -639,6 +643,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         sc_fully_refundable_eitc,
         nj_stay_nj,
         nj_anchor,
+        nj_s4531,
         working_parents_tax_relief_act,
         refundable_credit_conversion,
     ]
