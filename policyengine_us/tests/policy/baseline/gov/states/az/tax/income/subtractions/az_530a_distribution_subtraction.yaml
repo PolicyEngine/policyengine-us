@@ -1,0 +1,57 @@
+# HB 4168 (2026): A.R.S. 43-1022(33) subtracts distributions from an
+# IRC 530A account. The tax-unit subtraction sums the person-level
+# az_530a_distribution amounts.
+
+- name: Case 1, single filer with a 530A distribution.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        az_530a_distribution: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_530a_distribution_subtraction: 1_500
+
+- name: Case 2, joint filers with two 530A distributions.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        az_530a_distribution: 1_000
+      person2:
+        az_530a_distribution: 800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $1,000 + $800 = $1,800
+    az_530a_distribution_subtraction: 1_800
+
+- name: Case 3, no 530A distribution.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        az_530a_distribution: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_530a_distribution_subtraction: 0

@@ -1,8 +1,8 @@
-# Arkansas SMI for FFY 2026 is uprated automatically in PolicyEngine.
-# AR base amount at 2026-01-01 (after uprating): $95,201.95
+# Period 2026 resolves to the 2025-10-01 (FFY 2026) hhs_smi entry.
+# AR base amount = $90,280
 # Household-size adjustment for 2 persons: 0.52 + 0.16 = 0.68
-# SMI(2) annual = 95,201.95 * 0.68 = $64,737.33
-# 85% income limit annual = $64,737.33 * 0.85 = $55,026.73
+# SMI(2) annual = 90,280 * 0.68 = $61,390.40
+# 85% income limit annual = $61,390.40 * 0.85 = $52,181.84
 
 - name: Case 1, family income at 84.9 percent SMI is income-eligible.
   period: 2026-01
@@ -10,8 +10,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.849 = $54,961.99 (below 85% SMI)
-        employment_income: 54_961
+        # 61,390.40 * 0.849 = $52,120.45 (below 85% SMI)
+        employment_income: 52_120
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -36,9 +36,9 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.85 = $55,026.73; use 55,026.72 to avoid float32
-        # round-trip precision loss during MONTH/YEAR conversion.
-        employment_income: 55_026.72
+        # 61,390.40 * 0.85 = $52,181.84; use the whole dollar just below to
+        # avoid float32 round-trip precision loss during MONTH/YEAR conversion.
+        employment_income: 52_181
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -63,8 +63,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.851 = $55,091.46 (above 85% SMI)
-        employment_income: 55_092
+        # 61,390.40 * 0.851 = $52,243.23 (above 85% SMI)
+        employment_income: 52_243
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -113,8 +113,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.85 = $55,026.73; just-below boundary at $55,025.
-        employment_income: 55_025
+        # 61,390.40 * 0.85 = $52,181.84; just-below boundary at $52,180.
+        employment_income: 52_180
         immigration_status: CITIZEN
       person2:
         age: 4

@@ -1,0 +1,253 @@
+- name: IN dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: IN
+  output:
+    # 1 personal + 2 dependents, all at $1,000 = $3,000 (matches baseline)
+    in_base_exemptions: 3_000
+
+- name: IN dependent exemption reform - amount zero removes dependent portion only
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: IN
+  output:
+    # Personal exemption kept ($1,000), dependent portion removed
+    in_base_exemptions: 1_000
+
+- name: IN dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent]
+        state_name: IN
+  output:
+    in_base_exemptions: 1_000
+
+- name: IN dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    gov.contrib.states.in.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.in.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: IN
+  output:
+    # Over-age dependent (20) falls back to personal count: 2 personal units * $1,000
+    # Eligible dependent (10) gets $0 dependent exemption
+    in_base_exemptions: 2_000
+
+- name: IN dependent exemption reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    people:
+      parent1:
+        age: 40
+        employment_income: 60_000
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_name: IN
+  output:
+    # 2 head/spouse personal units (size 4 - 2 dependents) * $1,000 = $2,000.
+    # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
+    in_base_exemptions: 2_000
+
+- name: IN dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    gov.contrib.states.in.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.in.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: IN
+  output:
+    # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+    # is removed from the personal count. Personal = parent only = 1 * $1,000.
+    in_base_exemptions: 1_000
+
+- name: IN dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    gov.contrib.states.in.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.in.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: IN
+  output:
+    # age 18 is not < 18: dependent is excluded and falls back to the personal
+    # count. Personal = parent + over-age dependent = 2 * $1,000.
+    in_base_exemptions: 2_000
+
+- name: IN dependent exemption reform - default flows through to income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: IN
+  # End-to-end: with the default (no-op) amount the base exemptions stay at
+  # $3,000 (1 personal + 2 dependents), so IN income tax matches baseline.
+  output:
+    in_income_tax: 1620.00
+
+- name: IN dependent exemption reform - amount zero raises income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.in.dependent_exemption.in_dependent_exemption_reform.in_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.in.dependent_exemption.in_effect: true
+    gov.contrib.states.in.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: IN
+  # End-to-end: removing the dependent portion (amount 0) drops base exemptions
+  # from $3,000 to $1,000 ($2,000 of taxable income added). At IN's 3.00% flat
+  # rate this raises IN income tax by $60, from 1,620.00 to 1,680.00.
+  output:
+    in_income_tax: 1680.00
