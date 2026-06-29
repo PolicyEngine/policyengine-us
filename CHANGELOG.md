@@ -1,3 +1,10 @@
+## [1.747.4] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating TANF when SNAP student ineligibility is evaluated for people who are not higher-education students.
+
+
 ## [1.747.3] - 2026-06-29
 
 ### Changed
