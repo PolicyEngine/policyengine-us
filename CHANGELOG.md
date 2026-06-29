@@ -1,3 +1,10 @@
+## [1.747.1] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating the default county fallback when county FIPS inputs fully determine household counties.
+
+
 ## [1.747.0] - 2026-06-29
 
 ### Added
