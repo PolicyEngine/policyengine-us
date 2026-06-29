@@ -1,3 +1,6 @@
+# id_refundable_credits = the new EITC PLUS Idaho's baseline refundable
+# credits (the $120 grocery credit every resident receives). The reform must
+# ADD to the baseline list, not replace it. See #8775.
 - name: Case 1 - ID EITC with 10% match
   period: 2024
   reforms: policyengine_us.reforms.states.id.eitc.id_eitc
@@ -7,7 +10,7 @@
     eitc: 1_000
   output:
     id_eitc: 100
-    id_refundable_credits: 100
+    id_refundable_credits: 220  # 100 EITC + 120 grocery credit
 
 - name: Case 2 - ID EITC with 20% match
   period: 2024
@@ -18,7 +21,7 @@
     eitc: 2_500
   output:
     id_eitc: 500
-    id_refundable_credits: 500
+    id_refundable_credits: 620  # 500 EITC + 120 grocery credit
 
 - name: Case 3 - ID EITC is 0 when match is 0
   period: 2024
@@ -29,7 +32,7 @@
     eitc: 1_000
   output:
     id_eitc: 0
-    id_refundable_credits: 0
+    id_refundable_credits: 120  # baseline grocery credit preserved when EITC is 0
 
 - name: Case 4 - ID EITC is 0 when federal EITC is 0
   period: 2024
@@ -40,7 +43,7 @@
     eitc: 0
   output:
     id_eitc: 0
-    id_refundable_credits: 0
+    id_refundable_credits: 120  # baseline grocery credit preserved when EITC is 0
 
 - name: Case 5 - ID EITC is 0 for non-ID residents
   period: 2024
