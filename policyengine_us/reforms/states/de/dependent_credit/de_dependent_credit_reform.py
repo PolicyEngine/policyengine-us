@@ -145,6 +145,18 @@ def create_de_dependent_credit_reform() -> Reform:
             self.update_variable(de_dependent_credit_phaseout)
             self.update_variable(de_dependent_credit)
             self.update_variable(de_older_dependents_count)
+            # Known limitation (follow-up): the dependent credit is
+            # delivered by overriding the tax-unit de_personal_credit,
+            # which only the joint (single-column) path consumes. The
+            # combined-separate (Filing Status 4) path instead reads the
+            # per-column de_personal_credit_indv, which this reform does
+            # not override, so a couple electing FS4 does not yet receive
+            # the dependent credit on the separate path. The
+            # de_files_separately election therefore compares a joint
+            # liability that includes the credit against a separate one
+            # that does not. Delivering it on both paths would require
+            # also overriding de_personal_credit_indv to allocate the
+            # dependent credit per column.
             self.update_variable(de_personal_credit)
 
     return reform

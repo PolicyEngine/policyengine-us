@@ -5,7 +5,6 @@ class de_files_separately(Variable):
     value_type = bool
     entity = TaxUnit
     label = "married couple files separately on the Delaware tax return"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"

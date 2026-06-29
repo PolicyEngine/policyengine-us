@@ -7,10 +7,7 @@ class de_income_tax_before_refundable_credits(Variable):
     label = "Delaware personal income tax before refundable credits"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=5",
-        "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=10",
-    )
+    reference = "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=5"
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):

@@ -3,7 +3,6 @@
 # available to single or head-of-household filers.
 - name: Married couple elects separate filing when it lowers post-credit tax
   period: 2022
-  absolute_error_margin: 2
   input:
     people:
       person1:
@@ -27,7 +26,6 @@
 
 - name: Married couple stays joint when separate filing would waste credits
   period: 2022
-  absolute_error_margin: 2
   input:
     people:
       person1:
