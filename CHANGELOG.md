@@ -1,3 +1,10 @@
+## [1.747.3] - 2026-06-29
+
+### Changed
+
+- Documented the certified PolicyEngine bundle install path for US users.
+
+
 ## [1.747.2] - 2026-06-29
 
 ### Fixed
