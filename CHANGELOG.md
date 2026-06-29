@@ -1,3 +1,10 @@
+## [1.748.0] - 2026-06-29
+
+### Added
+
+- Add Medicaid MAGI claimant tax unit links and missing-claimant fallback diagnostics.
+
+
 ## [1.747.7] - 2026-06-29
 
 ### Changed
