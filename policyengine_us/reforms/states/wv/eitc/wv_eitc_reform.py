@@ -19,17 +19,29 @@ def create_wv_eitc() -> Reform:
             return federal_eitc * p.match
 
     class wv_refundable_credits(Variable):
-        # NOTE: WV currently has no baseline refundable credits.
-        # If WV adds refundable credits in baseline, this formula must be updated.
         value_type = float
         entity = TaxUnit
         label = "West Virginia refundable tax credits"
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.WV
+        # Baseline computes this via `adds`; replacing it with a
+        # formula requires clearing the inherited computation mode
+        # (the core engine rejects `formula` + `adds`/`subtracts`).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
-            return tax_unit("wv_eitc", period)
+            # Preserve the state's existing baseline refundable
+            # credits and ADD the new EITC. Returning only the EITC
+            # deletes the baseline refundable credits (this state
+            # has them), flipping the reform's sign. See #8775.
+            baseline_credits = parameters(
+                period
+            ).gov.states.wv.tax.income.credits.refundable
+            return add(tax_unit, period, list(baseline_credits)) + tax_unit(
+                "wv_eitc", period
+            )
 
     class reform(Reform):
         def apply(self):
