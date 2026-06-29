@@ -13,13 +13,17 @@ This module covers both outcomes for all eleven states in the PR, mirroring how
 Indiana dynamic-import special case (its package directory ``in`` is a Python
 keyword and cannot be imported with a dotted path).
 
-The parameter tree is deep-copied once (module-scoped fixture) rather than per
-test: deep-copying it 22 times made this module run for ~10 minutes and pushed
-the Python suite past its CI time budget.
+Only the ``gov.contrib.states`` subtree is cloned (module-scoped fixture), and
+the copied root's ``parent`` back-reference is cleared so later parameter
+updates stay contained. Deep-copying ``system.parameters`` wholesale — or any
+subtree without severing ``parent`` — walks the whole tree via that
+back-reference (~1 GB peak). Stacked onto the already-large Python suite, that
+copy OOM-killed the CI "Rest" runner; the cloned subtree peaks at a few MB
+instead.
 """
 
-import copy
 import importlib
+from types import SimpleNamespace
 
 import pytest
 
@@ -131,11 +135,22 @@ def _in_effect_parameter(parameters, state, folder):
 
 @pytest.fixture(scope="module")
 def parameters_all_in_effect():
-    # Deep-copy the parameter tree ONCE and turn every state's contrib reform
-    # on. Each factory reads only its own state's in_effect flag and the
-    # factories do not mutate the tree, so a single shared copy is safe and
-    # keeps this module fast.
-    parameters = copy.deepcopy(system.parameters)
+    # Clone ONLY the gov.contrib.states subtree and turn every state's contrib
+    # reform on. We must NOT deep-copy system.parameters (or any subtree as-is):
+    # every ParameterNode/Parameter holds a ``parent`` back-reference, so the
+    # copy escapes upward and duplicates the whole tree (~1 GB peak), which
+    # OOM-killed the CI runner. Clearing the cloned root's parent keeps updates
+    # contained without mutating the global parameter tree.
+    # The factories only read their own state's in_effect flag under
+    # gov.contrib.states and never touch the parent, so a thin namespace
+    # exposing the copied subtree is sufficient.
+    states_node = system.parameters.gov.contrib.states
+    states_copy = states_node.clone()
+    states_copy.parent = None
+
+    parameters = SimpleNamespace(
+        gov=SimpleNamespace(contrib=SimpleNamespace(states=states_copy))
+    )
     for state, folder, _module, _fn in STATE_CONFIGS:
         _in_effect_parameter(parameters, state, folder).update(
             period="year:2025:1", value=True
