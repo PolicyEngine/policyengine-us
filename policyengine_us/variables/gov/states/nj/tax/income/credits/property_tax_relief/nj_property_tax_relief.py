@@ -7,6 +7,7 @@ class nj_property_tax_relief(Variable):
     label = "New Jersey property tax relief benefits"
     unit = USD
     definition_period = YEAR
+    documentation = "Combined New Jersey property tax relief, including Stay NJ and Senior Freeze/PTR relief under N.J.S.A. 54:4-8.67 et seq."
     reference = (
         "https://pub.njleg.state.nj.us/Bills/2022/PL23/75_.PDF#page=3",
         "https://pub.njleg.state.nj.us/Bills/2024/PL24/88_.PDF",

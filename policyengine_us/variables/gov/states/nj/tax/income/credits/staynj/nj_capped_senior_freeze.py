@@ -7,6 +7,7 @@ class nj_capped_senior_freeze(Variable):
     label = "New Jersey capped Senior Freeze benefit"
     unit = USD
     definition_period = YEAR
+    documentation = "Senior Freeze/PTR relief capped within New Jersey property tax relief under N.J.S.A. 54:4-8.67 et seq."
     reference = (
         "https://pub.njleg.state.nj.us/Bills/2022/PL23/75_.PDF#page=3",
         "https://pub.njleg.state.nj.us/Bills/2024/PL24/88_.PDF",
