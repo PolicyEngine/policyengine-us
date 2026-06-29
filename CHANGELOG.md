@@ -1,3 +1,10 @@
+## [1.747.6] - 2026-06-29
+
+### Fixed
+
+- Fixed create-state EITC contrib reforms (ID, AZ, WV) that replaced each state's refundable-credits list with only the new EITC, deleting baseline refundable credits, and the NC reform that double-counted use tax in income tax.
+
+
 ## [1.747.5] - 2026-06-29
 
 ### Changed
