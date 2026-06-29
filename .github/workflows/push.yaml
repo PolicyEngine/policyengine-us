@@ -167,6 +167,11 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
         run: uv run make ${{ matrix.target }}
+      - name: Run Contrib Python tests
+        if: ${{ matrix.group == 'other-shard-1' }}
+        env:
+          PYTHONUNBUFFERED: 1
+        run: uv run make test-policy-contrib-python
   Rest:
     name: Full Suite - Rest (Python + variables/ YAMLs)
     runs-on: ubuntu-latest
