@@ -1,3 +1,45 @@
+## [1.747.1] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating the default county fallback when county FIPS inputs fully determine household counties.
+
+
+## [1.747.0] - 2026-06-29
+
+### Added
+
+- Added contributed reforms that separate the dependent portion of the personal exemption (or credit) for 11 states (AR, HI, IN, MD, MI, NE, OH, OK, VT, WI, WV), so the per-dependent amount can be adjusted or eliminated independently of the head/spouse exemption.
+
+
+## [1.746.0] - 2026-06-27
+
+### Added
+
+- Add FY2027 HHS State Median Income (SMI) values, effective October 1, 2026.
+
+
+## [1.745.0] - 2026-06-25
+
+### Added
+
+- Added a CBO source-aligned net business income variable for calibration target matching, and made ordinary dividend income the canonical variable while keeping dividend income as a legacy compatibility alias.
+
+
+## [1.744.0] - 2026-06-24
+
+### Added
+
+- Added shared-living and county-group payment standards to Kansas TANF, excluded SSI recipients from the assistance unit (its size and countable income, requiring at least one remaining member for eligibility), and excluded assigned child support from the benefit amount while still counting it for income eligibility.
+
+
+## [1.743.0] - 2026-06-24
+
+### Added
+
+- Added Arizona HB 4168 (2026) individual income tax changes: $125 under-17 dependent credit, capped full-amount charitable standard deduction add-on, $10,000 itemized SALT cap, and new dependent care and IRC 530A distribution subtractions (all effective 2026).
+
+
 ## [1.742.0] - 2026-06-23
 
 ### Added
