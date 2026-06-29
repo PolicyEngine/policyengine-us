@@ -42,9 +42,7 @@ def create_nj_s4531() -> Reform:
 
             taxable_income = tax_unit("nj_taxable_income", period)
             if p_reform.in_effect and p_reform.temporary_increase.in_effect:
-                amount_per_qualifying_child = s4531_amount(
-                    taxable_income, p_reform
-                )
+                amount_per_qualifying_child = s4531_amount(taxable_income, p_reform)
             else:
                 amount_per_qualifying_child = p_baseline.amount.calc(taxable_income)
 
