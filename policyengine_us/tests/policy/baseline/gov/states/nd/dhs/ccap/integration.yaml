@@ -1,0 +1,524 @@
+# Integration tests for North Dakota CCAP (Child Care Assistance Program).
+# End-to-end scenarios verifying the eligibility chain, the two-tier income
+# test, the state maximum rate lookup, the co-payment, the special-needs +10%
+# raise inside the expense cap, and the additive QRIS step and infant/toddler
+# provider bonuses that flow into the final nd_ccap and into the federal
+# child_care_subsidies total.
+#
+# All monetary rates are the statewide flat monthly maximums effective
+# 2026-01-01. 2-person ND monthly SMI for 2026 = $7,361.62 (75% = $5,521.22,
+# 85% = $6,257.38, 30% = $2,208.49, 40% = $2,944.65). The co-pay follows the
+# HHS worksheet band schedule: a flat amount per 2-point SMI band equal to the
+# band rate (2% in 30-50% SMI, 4% in 50-60%, 6% in 60-85%) times the band's
+# lower SMI bound times monthly SMI; waived at or below 30% SMI.
+
+- name: Case 1, single working parent, infant in a step-3 center, positive subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/mo
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # countable income 2,500/mo; ratio 0.340 -> 32-34% SMI band, share 0.0064;
+    # copay 0.0064 * 7,361.62 = 47.11.
+    # CENTER infant full-time rate 1,240; expenses 2,000 capped at 1,240.
+    # base = 1,240 - 47.11 = 1,192.89.
+    # QRIS step 3 (2026) bonus 1,240 * 0.05 = 62; infant bonus 200.
+    # nd_ccap = 1,192.89 + 62 + 200 = 1,454.89.
+    nd_ccap: 1_454.89
+    # nd_child_care_subsidies is the YEAR aggregator (adds nd_ccap); read at a
+    # month period it reports the monthly value 1,454.89, confirming nd_ccap
+    # flows into the federal child_care_subsidies total.
+    nd_child_care_subsidies: 1_454.89
+
+- name: Case 2, applicant over 75% SMI is ineligible but the same family enrolled qualifies.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 74_400  # 6,200/mo, between 75% and 85% SMI
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # 6,200/mo > 75% SMI (5,521.22), so an applicant fails the income test.
+    nd_ccap_income_eligible: false
+    nd_ccap_eligible: false
+    nd_ccap: 0
+
+- name: Case 3, same family enrolled qualifies under the 85% tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 74_400  # 6,200/mo, below 85% SMI (6,257.38)
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+    nd_ccap_eligible: true
+    # ratio 0.842 -> 83-85% SMI band, share 0.0498; copay 0.0498 * 7,361.62 =
+    # 366.61. CENTER infant full-time 1,240; expenses 2,000 capped at 1,240.
+    # base = 1,240 - 366.61 = 873.39. Step 2 carries no QRIS bonus in 2026 but
+    # unlocks the infant bonus 200; nd_ccap = 873.39 + 200 = 1,073.39.
+    nd_ccap: 1_073.39
+
+- name: Case 4, family at or below 30% SMI has the co-payment waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, ratio 0.272 at or below 30% SMI
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 7_200  # 600/mo, below the max rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    nd_ccap_copay: 0
+    # base is capped at the family's billed expenses 600 (< max rate 1,240),
+    # copay 0; infant bonus 200; nd_ccap = 600 + 200 = 800.
+    nd_ccap_base_subsidy: 600
+    nd_ccap: 800
+
+- name: Case 5, family in the 50-60% SMI band pays a worksheet co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/mo, ratio 0.543 in the 54-56% band
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # ratio 0.543 -> 54-56% SMI band, share 0.0216; copay 0.0216 * 7,361.62 = 159.01.
+    nd_ccap_copay: 159.01
+    # base = 1,240 - 159.01 = 1,080.99; infant bonus 200; nd_ccap = 1,280.99.
+    nd_ccap: 1_280.99
+
+- name: Case 6, special-needs +10% raises the rate ceiling above the base case.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2,000/mo, copay waived (<= 30% SMI)
+      person2:
+        age: 0.5
+        is_disabled: true
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_600  # 1,300/mo, between 1,240 and 1,364
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # disabled child at QRIS step 2: state max rate 1,240 * 1.10 = 1,364.
+    # expenses 1,300 cap the rate, so base = min(1,364, 1,300) - 0 = 1,300.
+    # QRIS step 2 bonus is 0 in 2026; infant bonus 200; nd_ccap = 1,500.
+    nd_ccap_state_max_rate: [0, 1_364]
+    nd_ccap: 1_500
+
+- name: Case 7, the same family without special needs receives a smaller subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2,000/mo, copay waived
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_600  # 1,300/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # no +10%: state max rate 1,240; expenses 1,300 do not bind; base = 1,240.
+    # infant bonus 200; nd_ccap = 1,440 (less than the 1,500 special-needs case).
+    nd_ccap: 1_440
+
+- name: Case 8, QRIS step-4 bonus and toddler bonus add on top of an expense-capped base.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived
+      person2:
+        age: 2
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/mo, well below the rates
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # CENTER toddler full-time rate 1,124; expenses 500 cap the base at 500.
+    # base = 500 - 0 = 500.
+    nd_ccap_base_subsidy: 500
+    # bonuses are NOT capped at expenses and NOT reduced by copay:
+    # QRIS step 4 (2026) 1,124 * 0.10 = 112.4; toddler bonus 115.
+    # nd_ccap = 500 + 112.4 + 115 = 727.4 (exceeds the 500 expense cap).
+    nd_ccap: 727.4
+
+- name: Case 9, ineligible family with income above 85% SMI receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000  # 7,500/mo, above 85% SMI
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: false
+    nd_ccap_eligible: false
+    nd_ccap: 0
+
+- name: Case 10, family with no eligible child (only adults) receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 25
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: false
+    nd_ccap: 0
+
+- name: Case 11, negative self-employment income does not inflate the subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -120_000  # -10,000/mo loss; still an eligible activity
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # countable income floored at 0, so copay 0 and income eligible.
+    nd_ccap_countable_income: 0
+    nd_ccap_copay: 0
+    # base = min(1,240, 2,000) - 0 = 1,240; infant bonus 200; nd_ccap = 1,440.
+    nd_ccap: 1_440
+
+- name: Case 12, otherwise-eligible family outside North Dakota receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # defined_for = StateCode.ND zeroes the benefit and eligibility outside ND.
+    nd_ccap_eligible: false
+    nd_ccap: 0
+
+- name: Case 13, zero billed expenses, base subsidy is zero but the bonuses still pay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived (<= 30% SMI)
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0  # no billed expenses
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # base = min(rate 1,240, expenses 0) - 0 = 0; the expense cap zeroes it.
+    nd_ccap_base_subsidy: 0
+    # the provider bonuses are NOT capped at expenses: QRIS step 3 (2026)
+    # 1,240 * 0.05 = 62; infant bonus 200. nd_ccap = 0 + 62 + 200 = 262.
+    nd_ccap: 262
+
+- name: Case 14, large eight-person family with two infants and a toddler in care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2,500/mo
+      person2:
+        age: 33
+        employment_income: 18_000  # 1,500/mo
+      person3:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+      person4:
+        age: 1.0
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the infant bonus (step 2+)
+        childcare_hours_per_week: 40
+      person5:
+        age: 2.0
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2  # unlocks the toddler bonus (step 2+)
+        childcare_hours_per_week: 40
+      person6:
+        age: 6.0
+        is_in_k12_school: true
+      person7:
+        age: 8.0
+        is_in_k12_school: true
+      person8:
+        age: 10.0
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+        spm_unit_pre_subsidy_childcare_expenses: 120_000  # 10,000/mo, does not bind
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # countable income 4,000/mo; an eight-person family has a much higher SMI,
+    # so the ratio is well below 30% and the co-payment is waived.
+    nd_ccap_copay: 0
+    # in-care rates: two infants 1,240 + one toddler 1,124 = 3,604. The three
+    # school-age children carry the default Center part-time rate 416 each
+    # (no "not in care" flag), so the pooled cap is 3,604 + 3 * 416 = 4,852;
+    # expenses 10,000 do not bind. base = 4,852 - 0 = 4,852.
+    nd_ccap_base_subsidy: 4_852
+    # all three children in care are at a step-2 provider, which unlocks the
+    # infant/toddler bonuses (200 + 200 + 115 = 515) but carries no QRIS step
+    # bonus in 2026. nd_ccap = 4,852 + 515 = 5,367.
+    nd_ccap: 5_367
+
+- name: Case 15, disabled infant at a QRIS step-4 center stacks special needs and bonuses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, copay waived
+      person2:
+        age: 0.5
+        is_disabled: true
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, does not bind
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+    # special-needs +10% raises the rate ceiling: 1,240 * 1.10 = 1,364.
+    nd_ccap_state_max_rate: [0, 1_364]
+    # base = min(1,364, 2,000) - 0 = 1,364.
+    nd_ccap_base_subsidy: 1_364
+    # the QRIS bonus uses the base rate excluding the +10%, so it does not
+    # compound: 1,240 * 0.10 = 124 (not 1,364 * 0.10); infant bonus 200.
+    # nd_ccap = 1,364 + 124 + 200 = 1,688.
+    nd_ccap: 1_688
+
+- name: Case 16, single adult with no child is ineligible (no eligible child).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # A one-person unit has no eligible child, so the unit is ineligible.
+    nd_ccap_eligible: false
+    nd_ccap: 0
+
+- name: Case 17, very high income family far above 85% SMI receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 600_000  # 50,000/mo, far above 85% SMI
+      person2:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        is_nd_ccap_enrolled: true  # even the enrolled 85% tier fails
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: false
+    nd_ccap_eligible: false
+    # no subsidy and no provider bonuses flow when the unit is ineligible.
+    nd_ccap: 0

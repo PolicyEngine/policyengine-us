@@ -1,0 +1,14 @@
+description: North Dakota classifies children at or above this age in months as preschool age, until they reach school age, for reimbursement rates under the Child Care Assistance Program.
+
+# The rate-table column "Preschool" starts at three years (36 months) and runs
+# until the child reaches school age (400-28-100-30).
+values:
+  2026-01-01: 36
+
+metadata:
+  unit: month
+  period: year
+  label: North Dakota CCAP preschool minimum age in months
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm

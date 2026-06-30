@@ -1,0 +1,95 @@
+description: North Dakota counts these income sources as countable income under the Child Care Assistance Program.
+values:
+  2024-07-01:
+    # Earned income
+    - employment_income
+    - self_employment_income
+    # Unearned income
+    - rental_income
+    # social_security already includes the disability, retirement, survivors,
+    # and dependents components, so social_security_disability is not listed
+    # separately to avoid double-counting Social Security Disability Insurance.
+    - social_security
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    # Regular periodic withdrawals from annuities, pensions, and other
+    # retirement plans are countable income (exclusion #8 exception).
+    - pension_income
+    - alimony_income
+    - child_support_received
+
+    # ----------------------------------------------------------------------
+    # The 46 income types excluded by 400-28-65-15 (NDAC 75-02-01.3-07) are
+    # listed here as comments. Most have no corresponding PolicyEngine income
+    # variable; those that do are deliberately omitted from the counted list.
+    #   #1  Non-recurring lump-sum unearned payments (retroactive SSA/SSI/UI/
+    #       TANF/RRB/VA/WSI, inheritance, gambling winnings, settlements,
+    #       mineral leasing bonuses, severance, trust income).
+    #   #2  Earned income received as a non-recurring lump sum (bonuses,
+    #       re-enlistment bonuses).
+    #   #3  Tribal payments and Individual Indian Monies (IIM) accounts.
+    #   #4  Reimbursements / third-party payments (HUD, HAP, ERAP, Tribal
+    #       LIHEAP, General Assistance, TANF supportive services, medical,
+    #       child care, employment/training, adoption assistance subsidies).
+    #   #5  Child or spousal support of a TANF recipient assigned to the Child
+    #       Support Division.
+    #   #6  Children's earned income (excluded in the formula, not here).
+    #   #7  In-kind income (goods, commodities, store credits, services).
+    #   #8  Dividends and interest from savings, checking, and investments
+    #       (so interest_income and dividend_income are NOT counted). The
+    #       interest portion of regular annuity/pension/retirement withdrawals
+    #       is counted and is captured by pension_income above.
+    #   #9  Deposits where the client is only a signatory without ownership.
+    #   #10 Cooperative distributions (patronage dividends).
+    #   #11 Withdrawals from medical savings, HRA, and FSA accounts.
+    #   #12 Foster care payments.
+    #   #13 Subsidized guardianship payments.
+    #   #14 Benefit / fundraiser money disbursed by a third party.
+    #   #15 Federal benefits received as a representative payee for a
+    #       non-household member.
+    #   #16 Job Corps income, allowances, and bonuses.
+    #   #17 Refunds of rental, storage, utility, or provider deposits.
+    #   #18 Homestead Tax Credit refunds.
+    #   #19 Property tax relief.
+    #   #20 Loans that require repayment (written agreement).
+    #   #21 Monies used for care of a non-household member.
+    #   #22 Census income.
+    #   #23 Trade Adjustment Assistance (TAA) payments.
+    #   #24 PASS set-aside income (Title XVI / SSI).
+    #   #25 Monetary gifts for special occasions.
+    #   #26 Infrequent or irregular income (earned and unearned).
+    #   #27 Gift cards and gift certificates.
+    #   #28 National School Lunch Act programs (school lunch, summer food,
+    #       commodity distribution, CACFP).
+    #   #29 Child Nutrition Act programs (school breakfast, special milk, WIC).
+    #   #30 Uniform Relocation Assistance payments.
+    #   #31 National and Community Service Act volunteer payments (AmeriCorps,
+    #       VISTA, NCCC, RSVP, Foster Grandparents, Senior Companion).
+    #   #32 Disaster Relief Act assistance (FEMA, Red Cross, Salvation Army).
+    #   #33 WIOA / Youthbuild allowances (counted only for those 19+).
+    #   #34 LIHEAP payments.
+    #   #35 SNAP benefits.
+    #   #36 Child Care Assistance Program payments (provider receipts are
+    #       self-employment income, already counted above).
+    #   #37 Federally funded student financial assistance (Pell, SEOG,
+    #       Stafford, Perkins, federal work-study, BIA grants); work-required
+    #       internship/stipend income is counted as earned income.
+    #   #38 Reduction in basic pay for veteran's educational assistance (MGIB).
+    #   #39 Older Americans Act programs (Experience Works, etc.).
+    #   #40-46 Remaining federally required disregards, including state/federal
+    #       tax refunds and the Earned Income Tax Credit (#42) and combat pay
+    #       (#46).
+    # TANF cash assistance is countable per the manual but is omitted here to
+    # avoid the Child Care Assistance Program to Temporary Assistance for Needy
+    # Families circular dependency through the dependent care deduction.
+
+metadata:
+  unit: list
+  period: year
+  label: North Dakota CCAP countable income sources
+  reference:
+    - title: North Dakota CCAP Policy Manual, Income Exclusions 400-28-65-15
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: NDAC 75-02-01.3-07
+      href: https://ndlegis.gov/prod/acdata/pdf/75-02-01.3.pdf

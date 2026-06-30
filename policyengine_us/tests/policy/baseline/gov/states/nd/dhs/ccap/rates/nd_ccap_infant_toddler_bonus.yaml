@@ -1,0 +1,147 @@
+# Tests for nd_ccap_infant_toddler_bonus (Person, MONTH, USD).
+# A flat per-child provider payment of $200 for an infant or $115 for a toddler
+# at a provider rated QRIS step 2 or higher, paid to providers other than
+# approved relatives (400-28-100-30; HHS 2026 update). Effective 2026-01-01.
+# The HHS source states the bonus "applies to all infants and toddlers in the
+# provider's care," so there is no minimum-hours condition. Preschool and
+# school-age children receive no bonus. Unrated and step-1 providers receive no
+# bonus. defined_for = nd_ccap_eligible_child.
+
+- name: Case 1, infant at a step-2 provider, $200 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 200
+
+- name: Case 2, toddler at a step-3 provider, $115 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 115
+
+- name: Case 3, infant at a step-4 provider with low hours still gets the bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 5  # the bonus has no minimum-hours condition
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 200
+
+- name: Case 4, infant at a step-1 provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_1
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Step 1 fails the step-2-or-higher provider gate.
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 5, infant at an unrated provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # An unrated provider fails the step-2-or-higher provider gate.
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 6, infant at a step-2 approved-relative provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Approved relatives are not eligible for the licensed-provider bonus.
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 7, preschool child at a step-3 provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 0
+
+- name: Case 8, school-age child at a step-3 provider, no bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_infant_toddler_bonus: 0
