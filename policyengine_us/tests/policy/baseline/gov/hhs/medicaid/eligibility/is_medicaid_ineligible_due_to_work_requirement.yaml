@@ -1,0 +1,51 @@
+- name: Federal applicable adult is barred when work requirements apply and are unmet
+  period: 2027
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    monthly_hours_worked: 0
+    employment_income: 0
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_ineligible_due_to_work_requirement: true
+
+- name: Federal applicable adult is not barred when work requirements are met
+  period: 2027
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    monthly_hours_worked: 80
+  output:
+    medicaid_work_requirement_eligible: true
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_ineligible_due_to_work_requirement: false
+
+- name: Arkansas expansion adult is barred when state work requirements apply and are unmet
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: false
+    is_medicaid_ineligible_due_to_work_requirement: true
+
+- name: Arkansas expansion adult is not barred when state work requirements are met
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 80
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: true
+    is_medicaid_ineligible_due_to_work_requirement: false

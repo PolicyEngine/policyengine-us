@@ -24,6 +24,46 @@
     pays_aca_premium: false
     is_aca_ptc_eligible: false
 
+- name: Failing Medicaid work requirements prevents ACA premium payment
+  period: 2027
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    monthly_hours_worked: 0
+    employment_income: 0
+    medicaid_community_engagement_pass_through_eligible: false
+    is_aca_eshi_eligible: false
+    is_chip_eligible: false
+    is_medicare_eligible: false
+    aca_magi_fraction: 2.5
+  output:
+    medicaid_work_requirement_eligible: false
+    is_medicaid_eligible: false
+    is_medicaid_ineligible_due_to_work_requirement: true
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: Non-Medicaid adult who fails work hours can still pay ACA premium
+  period: 2027
+  input:
+    age: 40
+    medicaid_category: NONE
+    immigration_status: CITIZEN
+    monthly_hours_worked: 0
+    employment_income: 0
+    medicaid_community_engagement_pass_through_eligible: false
+    is_aca_eshi_eligible: false
+    is_chip_eligible: false
+    is_medicare_eligible: false
+    aca_magi_fraction: 2.5
+  output:
+    medicaid_work_requirement_eligible: false
+    is_medicaid_eligible: false
+    is_medicaid_ineligible_due_to_work_requirement: false
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
 - name: Married filing separately can pay ACA premium without PTC
   period: 2026
   input:
