@@ -1,0 +1,40 @@
+description: Missouri funds this share of the base reimbursement rate by federal poverty guideline ratio under the Child Care Subsidy program.
+# Traditional families (at or below 150% FPL) are funded at the full base rate.
+# Transitional Child Care families are funded at a reduced share:
+# Level 1 (above 150% up to 185%) = 80%, Level 2 (above 185% up to 215%) = 60%,
+# Level 3 (above 215% up to 242%) = 50%.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Missouri Child Care Subsidy transitional funding rate
+  reference:
+    # The live DESE manual page returns HTTP 403 to automated access; this is
+    # the current page text recovered via the Wayback Machine.
+    # The 80/60/50% phase-out shares are stated in the Manual; 5 CSR
+    # 25-200.060(4)(C) authorizes the gradual phase out of Transitional Child
+    # Care "in accordance with the Manual" but does not itself list the
+    # percentages.
+    - title: Missouri Child Care Subsidy Eligibility Policy Manual 2010.045.00 Income Eligibility Guidelines
+      href: https://web.archive.org/web/20250831220820id_/https://dese.mo.gov/childhood/quality-programs/child-care-subsidy/child-care-manual/2010/045/00
+    - title: 5 CSR 25-200.060(4)(C) Eligibility and Authorization for Child Care Subsidy (Transitional Child Care)
+      href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-060
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 1.5001
+    amount:
+      2025-10-01: 0.8
+  - threshold:
+      2025-10-01: 1.8501
+    amount:
+      2025-10-01: 0.6
+  - threshold:
+      2025-10-01: 2.1501
+    amount:
+      2025-10-01: 0.5
