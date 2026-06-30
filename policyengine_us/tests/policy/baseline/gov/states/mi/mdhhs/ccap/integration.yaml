@@ -10,6 +10,8 @@
 # converted to monthly. There are 26 two-week pay periods per year, so the
 # monthly conversion factor is 52/2/12 = 2.16667. Billed hours are not tracked
 # separately from authorized hours, so the block is keyed to authorized hours.
+# Authorized hours = caretaker weekly activity x 2 + 10 travel hours per pay
+# period, rounded up to the next whole hour, then mapped to a tier (BEM 710).
 #
 # Rates (RFT 270 Table 2, eff 2024-09-22):
 #   Center STAR_1: Inf/Tod 7.15, Preschool 5.05, School 4.90
@@ -29,7 +31,7 @@
       person1:
         age: 30
         employment_income: 42_000  # 3,500/mo
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -54,11 +56,11 @@
     # 3,500 <= 3,526 entry limit -> income eligible
     mi_ccap_income_eligible: true
     mi_ccap_eligible: true
-    # 40 hrs/week x 2 = 80 biweekly need -> tier 80
-    mi_ccap_authorized_hours: 80
+    # 40 hrs/week x 2 = 80 + 10 travel = 90 biweekly need -> tier 90
+    mi_ccap_authorized_hours: 90
     # Center STAR_1 infant/toddler hourly rate
     mi_ccap_hourly_rate: [0, 7.15]
-    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
     mi_ccap_block_payment: [0, 643.50]
     # 3,500/mo -> size 2 band 1, per-child FC 15, 1 paying child, cap 45 -> 15/pp
     mi_ccap_family_contribution: 15
@@ -75,7 +77,7 @@
       person1:
         age: 34
         employment_income: 60_000  # 5,000/mo
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 32
         weekly_hours_worked_before_lsr: 20
@@ -109,9 +111,9 @@
     # Size 4, 5,000 <= 5,358 entry -> income eligible
     mi_ccap_income_eligible: true
     mi_ccap_eligible: true
-    # Both parents work; highest need = 80 biweekly -> tier 80
-    mi_ccap_authorized_hours: 80
-    # Authorized 80 -> 61+ block tier 90; person3 infant 7.15 x 90 = 643.50,
+    # Both parents work; highest need = 80 + 10 = 90 biweekly -> tier 90
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; person3 infant 7.15 x 90 = 643.50,
     # person4 preschool 5.05 x 90 = 454.50
     mi_ccap_block_payment: [0, 0, 643.50, 454.50]
     # 5,000/mo -> size 4 band 1, per-child FC 15, 2 paying children = 30, cap 45 -> 30/pp
@@ -129,7 +131,7 @@
       person1:
         age: 30
         employment_income: 36_000  # 3,000/mo
-        weekly_hours_worked_before_lsr: 30  # authorized 60
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 travel = 70 -> authorized 80
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -150,14 +152,14 @@
         state_code: MI
   output:
     mi_ccap_eligible: true
-    # 30 hrs/week x 2 = 60 biweekly -> tier 60
-    mi_ccap_authorized_hours: 60
-    # Family home STAR_3 school age rate 6.00
-    mi_ccap_block_payment: [0, 360.00]
+    # 30 hrs/week x 2 = 60 + 10 travel = 70 biweekly -> tier 80
+    mi_ccap_authorized_hours: 80
+    # Family home STAR_3 school age 6.00 x 90 (61+ block) = 540.00
+    mi_ccap_block_payment: [0, 540.00]
     # 3 Star provider waives the contribution for the child
     mi_ccap_family_contribution: 0
-    # monthly = 360.00 x 2.16667 = 780.00; FC 0 -> benefit 780.00
-    mi_ccap: 780.00
+    # monthly = 540.00 x 2.16667 = 1,170.00; FC 0 -> benefit 1,170.00
+    mi_ccap: 1_170.00
 
 - name: Case 4, license-exempt provider, family contribution applies.
   period: 2026-01
@@ -167,7 +169,7 @@
       person1:
         age: 30
         employment_income: 42_000  # 3,500/mo
-        weekly_hours_worked_before_lsr: 20  # authorized 40
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 travel = 50 -> authorized 60
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -188,15 +190,15 @@
         state_code: MI
   output:
     mi_ccap_eligible: true
-    # 20 hrs/week x 2 = 40 biweekly -> tier 40
-    mi_ccap_authorized_hours: 40
-    # License-exempt Level 1 rate 2.95, paid hourly x authorized 40 = 118.00/pp
-    mi_ccap_block_payment: [0, 118.00]
+    # 20 hrs/week x 2 = 40 + 10 travel = 50 biweekly -> tier 60
+    mi_ccap_authorized_hours: 60
+    # License-exempt Level 1 rate 2.95, paid hourly x authorized 60 = 177.00/pp
+    mi_ccap_block_payment: [0, 177.00]
     # 3,500/mo -> size 2 band 1, per-child FC 15; license-exempt never star-waived
     mi_ccap_family_contribution: 15
-    # monthly payment = 118.00 x 2.16667 = 255.67; monthly FC = 32.50
-    # benefit = 255.67 - 32.50 = 223.17
-    mi_ccap: 223.17
+    # monthly payment = 177.00 x 2.16667 = 383.50; monthly FC = 32.50
+    # benefit = 383.50 - 32.50 = 351.00
+    mi_ccap: 351.00
 
 - name: Case 5, subsidy capped at the child's actual child care charge.
   period: 2026-01
@@ -243,7 +245,7 @@
       person1:
         age: 30
         employment_income: 90_000  # 7,500/mo, far above any income limit
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -266,8 +268,8 @@
     # Income-waived (foster care) -> bypasses the income test
     mi_ccap_income_waived: true
     mi_ccap_eligible: true
-    mi_ccap_authorized_hours: 80
-    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
     mi_ccap_block_payment: [0, 643.50]
     # Income-waived group -> family contribution 0
     mi_ccap_family_contribution: 0
@@ -350,7 +352,7 @@
       person1:
         age: 30
         self_employment_income: -60_000  # -5,000/mo loss
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -373,8 +375,8 @@
     # Negative countable income is below the entry limit -> income eligible
     mi_ccap_income_eligible: true
     mi_ccap_eligible: true
-    mi_ccap_authorized_hours: 80
-    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
     mi_ccap_block_payment: [0, 643.50]
     # Negative income maps to the lowest band -> family contribution 0,
     # not a negative amount that would inflate the benefit
@@ -390,7 +392,7 @@
       person1:
         age: 30
         employment_income: 18_000  # 1,500/mo -> size 2 band 0, no FC
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -411,8 +413,8 @@
         state_code: MI
   output:
     mi_ccap_eligible: true
-    mi_ccap_authorized_hours: 80
-    # Authorized 80 -> 61+ block tier 90; 7.15 x 90 = 643.50/pp -> monthly 1,394.25
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50/pp -> monthly 1,394.25
     mi_ccap_block_payment: [0, 643.50]
     mi_ccap_family_contribution: 0
     # Monthly charge is only 250.00, below the uncapped subsidy -> capped at 250.00
@@ -429,7 +431,7 @@
         weekly_hours_worked_before_lsr: 45  # authorized 90
       person2:
         age: 32
-        weekly_hours_worked_before_lsr: 30  # 60 biweekly
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 = 70 -> tier 80 (not the basis)
       person3:
         age: 1
         is_tax_unit_dependent: true
@@ -460,7 +462,7 @@
     # Size 4, 5,000 <= 5,358 entry -> income eligible
     mi_ccap_income_eligible: true
     mi_ccap_eligible: true
-    # Highest need = person1's 90 biweekly -> tier 90
+    # Highest need = person1's 100 biweekly (90 + 10) -> tier 90
     mi_ccap_authorized_hours: 90
     # 2 Star center: infant 7.55, preschool 5.45; x 90 authorized hours
     # person3: 7.55 x 90 = 679.50; person4: 5.45 x 90 = 490.50

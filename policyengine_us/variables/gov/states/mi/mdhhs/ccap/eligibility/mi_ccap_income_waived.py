@@ -8,11 +8,11 @@ class mi_ccap_income_waived(Variable):
     definition_period = MONTH
     defined_for = StateCode.MI
     reference = (
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=14"
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/703.pdf#page=15"
     )
 
     def formula(spm_unit, period, parameters):
-        # BEM 703 p.14-18: five groups qualify without an income test and have
+        # BEM 703 p.15-16: five groups qualify without an income test and have
         # their family contribution waived. We model Children's Protective
         # Services, Foster Care, FIP/SSI-related, and Homeless. The migrant
         # farmworker group is not modeled at the moment (no migrant status is

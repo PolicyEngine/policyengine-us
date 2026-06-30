@@ -10,11 +10,12 @@ class mi_ccap_countable_income(Variable):
     defined_for = StateCode.MI
     reference = (
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/503.pdf#page=31",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/504.pdf#page=1",
         "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/502.pdf#page=3",
-        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/500.pdf#page=9",
+        "https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/500.pdf#page=3",
     )
 
-    # BEM 500/502/503: counts gross monthly income of the program group. We
+    # BEM 500/502/503/504: counts gross monthly income of the program group. We
     # don't track each adult's relationship to the child at the moment, so all
     # program group income is counted.
     adds = "gov.states.mi.mdhhs.ccap.income.countable_income.sources"

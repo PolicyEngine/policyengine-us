@@ -7,7 +7,8 @@
 # the block tier is looked up from the authorized hours: payment is
 # hourly_rate x block_hours(authorized) per pay period. License-exempt
 # providers are paid hourly with no block: hourly_rate x authorized_hours.
-# Authorized hours come from the parent's activity: 40 hrs/week -> 80 biweekly.
+# Authorized hours come from the parent's activity plus 10 hours travel time
+# per pay period: e.g. 40 hrs/week -> 80 + 10 = 90 biweekly -> tier 90.
 
 - name: Case 1, center 1 Star infant, parent 40 hrs/week.
   period: 2026-01
@@ -16,7 +17,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 40  # authorized 80
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -34,7 +35,7 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Authorized 80 -> 61+ block tier 90; center STAR_1 infant 7.15 x 90 = 643.50
+    # Authorized 90 -> 61+ block tier 90; center STAR_1 infant 7.15 x 90 = 643.50
     mi_ccap_block_payment: [0, 643.50]
 
 - name: Case 2, group and family home 1 Star infant, parent 30 hrs/week.
@@ -44,7 +45,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 30  # authorized 60
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 travel = 70 -> authorized 80
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -62,8 +63,8 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Authorized 60 -> 31-60 block tier 60; family home STAR_1 infant 5.70 x 60 = 342.00
-    mi_ccap_block_payment: [0, 342.00]
+    # Authorized 80 -> 61+ block tier 90; family home STAR_1 infant 5.70 x 90 = 513.00
+    mi_ccap_block_payment: [0, 513.00]
 
 - name: Case 3, license-exempt Level 1 school age, parent 20 hrs/week.
   period: 2026-01
@@ -72,7 +73,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 20  # authorized 40
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 travel = 50 -> authorized 60
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -90,8 +91,8 @@
         members: [person1, person2]
         state_code: MI
   output:
-    # Child: 2.95 hourly x 40 authorized = 118.00 per pay period
-    mi_ccap_block_payment: [0, 118.00]
+    # Child: 2.95 hourly x 60 authorized = 177.00 per pay period
+    mi_ccap_block_payment: [0, 177.00]
 
 - name: Case 4, center 5 Star infant, parent 45 hrs/week reaches the 90-hour max.
   period: 2026-01
@@ -100,7 +101,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 45  # authorized 90 (max)
+        weekly_hours_worked_before_lsr: 45  # 90 + 10 travel = 100 -> authorized 90 (max)
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -128,7 +129,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 0  # authorized 0
+        weekly_hours_worked_before_lsr: 0  # no need reason -> no travel -> authorized 0
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -151,14 +152,14 @@
 
 # Edge cases.
 
-- name: Case 6, family home at the 31-60 block tier, parent 30 hrs/week.
+- name: Case 6, family home at the 31-60 block tier, parent 20 hrs/week.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 30  # authorized 60
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 travel = 50 -> authorized 60
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -187,7 +188,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 45  # authorized 90 (max)
+        weekly_hours_worked_before_lsr: 45  # 90 + 10 travel = 100 -> authorized 90 (max)
       person2:
         age: 1
         is_tax_unit_dependent: true
@@ -215,7 +216,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 10  # authorized 20
+        weekly_hours_worked_before_lsr: 5  # 10 + 10 travel = 20 -> authorized 20
       person2:
         age: 4
         is_tax_unit_dependent: true

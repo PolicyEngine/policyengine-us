@@ -1,83 +1,19 @@
 # Authorized hours per child per two-week pay period.
-# Biweekly need hours = caretaker weekly activity hours x 2 weeks (base model;
-# meal/study/travel add-ons not tracked). Mapped to a tier 20/40/60/80/90;
-# max 90. Two-parent household authorizes on the parent with the HIGHEST need
-# hours (eff 2024-11-03). Uses weekly_hours_worked_before_lsr (default 40) to
-# avoid the labor-supply circular dependency (BEM 710 p.1-2; BEM 706 p.2).
+# Biweekly need hours = caretaker weekly activity hours x 2 weeks + 10 hours
+# travel time per pay period for each parent with a need reason, rounded up to
+# the next whole hour (meal/study add-ons and multiple need reasons per parent
+# not tracked). Mapped to a tier 20/40/60/80/90; max 90. Two-parent household
+# authorizes on the parent with the HIGHEST need hours (eff 2024-11-03), the
+# fewest before. Uses weekly_hours_worked_before_lsr (default 40) to avoid the
+# labor-supply circular dependency (BEM 710 p.1-2; BEM 706 p.2).
 
-- name: Case 1, parent working 40 hours per week reaches the 80-hour tier.
+- name: Case 1, parent working 40 hours per week reaches the 90-hour tier.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 40  # 40 x 2 = 80 biweekly need
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 80
-
-- name: Case 2, parent working 10 hours per week reaches the 20-hour tier.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 10  # 10 x 2 = 20 biweekly need
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 20
-
-- name: Case 3, parent working 30 hours per week reaches the 60-hour tier.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 30  # 30 x 2 = 60 biweekly need
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 60
-
-- name: Case 4, parent working 45 hours per week is capped at the 90-hour tier.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 45  # 45 x 2 = 90 biweekly need
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel = 90 -> tier 90
       person2:
         age: 4
     tax_units:
@@ -93,108 +29,13 @@
   output:
     mi_ccap_authorized_hours: 90
 
-- name: Case 5, parent working 60 hours per week stays at the 90-hour maximum.
+- name: Case 2, parent working 10 hours per week reaches the 40-hour tier.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 60  # 60 x 2 = 120 biweekly need, capped at 90
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 90
-
-- name: Case 6, two parents authorize on the parent with the highest hours.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 32
-        weekly_hours_worked_before_lsr: 40  # 80 biweekly
-      person2:
-        age: 30
-        weekly_hours_worked_before_lsr: 20  # 40 biweekly
-      person3:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: MI
-  output:
-    # Highest need = person1's 80 biweekly -> tier 80
-    mi_ccap_authorized_hours: 80
-
-- name: Case 7, parent with no activity hours gives zero authorized hours.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 0
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 0
-
-# Edge cases: tier boundaries. Biweekly need = weekly hours x 2; the tiers are
-# (0, 20] -> 20, (20, 40] -> 40, (40, 60] -> 60, (60, 80] -> 80, (80+) -> 90.
-
-- name: Case 8, any positive activity lands in the lowest 20-hour tier.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 1  # 2 biweekly, just above 0 -> tier 20
-      person2:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MI
-  output:
-    mi_ccap_authorized_hours: 20
-
-- name: Case 9, biweekly need just above 20 moves up to the 40-hour tier.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 11  # 22 biweekly, above 20 -> tier 40
+        weekly_hours_worked_before_lsr: 10  # 20 + 10 travel = 30 -> tier 40
       person2:
         age: 4
     tax_units:
@@ -210,13 +51,35 @@
   output:
     mi_ccap_authorized_hours: 40
 
-- name: Case 10, biweekly need just above 60 moves up to the 80-hour tier.
+- name: Case 3, biweekly need of exactly 60 stays in the 60-hour tier.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 31  # 62 biweekly, above 60 -> tier 80
+        weekly_hours_worked_before_lsr: 25  # 50 + 10 travel = 60 -> tier 60
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_authorized_hours: 60
+
+- name: Case 4, parent working 30 hours per week reaches the 80-hour tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 travel = 70 -> tier 80
       person2:
         age: 4
     tax_units:
@@ -232,16 +95,106 @@
   output:
     mi_ccap_authorized_hours: 80
 
-- name: Case 11, two-parent household authorizes on highest hours even when one parent is idle.
+- name: Case 5, parent working 45 hours per week is capped at the 90-hour tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 45  # 90 + 10 = 100, capped at tier 90
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_authorized_hours: 90
+
+- name: Case 6, parent with no activity hours gives zero authorized hours.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # no need reason -> no travel -> 0
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_authorized_hours: 0
+
+- name: Case 7, any positive activity lands in the lowest 20-hour tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 1  # 2 + 10 travel = 12 -> tier 20
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_authorized_hours: 20
+
+# BEM 710 p.2 worked example (Sally): 25.5 weekly hours x 2 = 51 biweekly
+# + 10 travel = 61 -> tier 80.
+- name: Case 8, BEM 710 single-parent example reaches the 80-hour tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 25.5  # 51 + 10 travel = 61 -> tier 80
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_authorized_hours: 80
+
+- name: Case 9, two parents authorize on the parent with the highest hours.
   period: 2026-01
   input:
     people:
       person1:
         age: 32
-        weekly_hours_worked_before_lsr: 40  # 80 biweekly
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 = 90
       person2:
         age: 30
-        weekly_hours_worked_before_lsr: 0  # idle parent does not lower authorization
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 = 50
       person3:
         age: 4
     tax_units:
@@ -255,5 +208,89 @@
         members: [person1, person2, person3]
         state_code: MI
   output:
-    # Highest need = person1's 80 biweekly -> tier 80 (eff 2024-11-03 rule)
-    mi_ccap_authorized_hours: 80
+    # Highest need = person1's 90 biweekly -> tier 90
+    mi_ccap_authorized_hours: 90
+
+- name: Case 10, two-parent household ignores an idle parent who gets no travel.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 = 90
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # idle: no need reason, no travel -> 0
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Highest need = person1's 90 biweekly -> tier 90 (eff 2024-11-03 rule)
+    mi_ccap_authorized_hours: 90
+
+# BEM 710 p.2 worked example (Sandy and Jeff): Sandy 72 biweekly + 10 = 82;
+# Jeff 37.5 biweekly + 10 = 47.5 rounded up to 48. Authorize on Sandy's higher
+# 82 -> tier 90.
+- name: Case 11, BEM 710 two-parent example authorizes on the higher parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 36  # 72 + 10 travel = 82
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 18.75  # 37.5 + 10 = 47.5 -> round up to 48
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Highest need = Sandy's 82 biweekly -> tier 90
+    mi_ccap_authorized_hours: 90
+
+# Before 2024-11-03 the prior rule authorized on the parent with the FEWEST
+# need hours. Same household as Case 9, but in 2024 the two-parent rule picks
+# the lower-hours parent (person2's 50 biweekly -> tier 60).
+- name: Case 12, two parents before 2024-11-03 authorize on the fewest hours.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 = 90
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 = 50
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Fewest need = person2's 50 biweekly -> tier 60 (prior rule)
+    mi_ccap_authorized_hours: 60
