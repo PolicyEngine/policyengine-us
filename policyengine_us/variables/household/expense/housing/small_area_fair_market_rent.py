@@ -37,6 +37,7 @@ class small_area_fair_market_rent(Variable):
             ].astype({"zip_code": str, "bedrooms": int}),
             on=["zip_code", "bedrooms", "year"],
             how="left",
+            validate="many_to_one",
         )
         monthly_safmr = matched["value"].fillna(0).to_numpy()
         bedroom_adjustment = 1 + EXTRA_BEDROOM_SAFMR_INCREMENT * extra_bedrooms

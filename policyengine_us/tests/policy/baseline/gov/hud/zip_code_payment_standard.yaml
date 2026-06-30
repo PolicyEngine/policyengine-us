@@ -39,6 +39,22 @@
   output:
     zip_code_payment_standard: 16_284 # HHA Tier D 1,357/mo * 12
 
+- name: Houston HHA Tier A ZIP 77407 uses its adopted standard, not the county FMR
+  period: 2025
+  input:
+    zip_code: "77407"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 19_536 # HHA Tier A-1 1,628/mo * 12
+
+- name: Houston HHA Tier D ZIP 77587 uses its adopted standard, not the county FMR
+  period: 2025
+  input:
+    zip_code: "77587"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 16_284 # HHA Tier D 1,357/mo * 12
+
 - name: ZIP without a published standard returns zero
   period: 2025
   input:

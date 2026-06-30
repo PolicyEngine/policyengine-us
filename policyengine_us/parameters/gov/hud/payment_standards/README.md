@@ -24,7 +24,7 @@ maximum add 15 percent of the top value per additional bedroom.
   metro, so HHA sets its own SAFMR-informed tiered schedule (effective
   2025-01-01). ZIP codes map to five tiers (A-1, A-2, B, C, D); in this edition
   the two A tiers share one set of amounts (e.g. 2BR $1,628) and B/C/D share a
-  lower set (2BR $1,357). The bundled schedule covers 144 Houston ZIPs; 8 ZIPs
+  lower set (2BR $1,357). The bundled schedule covers 146 Houston ZIPs; 9 ZIPs
   that HHA only partially covers are already in the TDHCA rows and keep their
   TDHCA values.
 

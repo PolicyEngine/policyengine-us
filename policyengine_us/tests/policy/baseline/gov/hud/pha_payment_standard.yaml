@@ -74,3 +74,23 @@
   output:
     # Houston is not a mandatory-SAFMR metro; HHA's adopted Tier A-1 standard applies.
     pha_payment_standard: 19_536 # HHA 1,628 * 12
+
+- name: Houston HHA ZIP 77407 resolves to the adopted standard end-to-end
+  period: 2025
+  input:
+    zip_code: "77407"
+    bedrooms: 2
+  output:
+    # Houston is not a mandatory-SAFMR metro; HHA's adopted Tier A-1 standard
+    # applies instead of the county FMR (1,529/mo).
+    pha_payment_standard: 19_536 # HHA Tier A-1 1,628 * 12
+
+- name: Dallas overlap ZIP uses the published TDHCA standard over the higher SAFMR
+  period: 2025
+  input:
+    zip_code: "75010"
+    bedrooms: 2
+  output:
+    # 75010 is in both the TDHCA published schedule (2,150) and the Dallas SAFMR
+    # (2,220); the published standard wins even though it is the lower value.
+    pha_payment_standard: 25_800 # TDHCA 2,150 * 12 (beats SAFMR 2,220)

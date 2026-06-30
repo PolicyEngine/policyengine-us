@@ -42,9 +42,10 @@ class pha_payment_standard(Variable):
         la_payment_standard = la_amount * MONTHS_IN_YEAR
         county_or_la = where(in_la, la_payment_standard, hud_fair_market_rent)
         # Use the metro SAFMR only where it is the designated HCV basis (the
-        # mandatory-SAFMR metros), not merely wherever a SAFMR value exists.
+        # mandatory-SAFMR metros) and a SAFMR value is actually present; a
+        # missing value falls back to the county FMR rather than collapsing to 0.
         metro_or_county = where(
-            safmr_used_for_hcv,
+            safmr_used_for_hcv & (small_area_fair_market_rent > 0),
             small_area_fair_market_rent,
             county_or_la,
         )

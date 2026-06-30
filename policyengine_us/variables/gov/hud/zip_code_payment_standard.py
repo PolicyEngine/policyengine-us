@@ -19,7 +19,10 @@ class zip_code_payment_standard(Variable):
         "household's ZIP code, where one is encoded. Zero otherwise."
     )
     definition_period = YEAR
-    reference = "https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program"
+    reference = [
+        "https://www.tdhca.texas.gov/section-8-housing-choice-voucher-program",
+        "https://housingforhouston.com/residents/housing-choice-voucher/payment-standards/",
+    ]
 
     def formula(household, period, parameters):
         zip_code = household("zip_code", period)
@@ -41,6 +44,7 @@ class zip_code_payment_standard(Variable):
             ].astype({"zip_code": str, "bedrooms": int}),
             on=["zip_code", "bedrooms", "year"],
             how="left",
+            validate="many_to_one",
         )
         monthly_standard = matched["value"].fillna(0).to_numpy()
         bedroom_adjustment = 1 + EXTRA_BEDROOM_INCREMENT * extra_bedrooms

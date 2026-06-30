@@ -5,8 +5,10 @@ from policyengine_us.parameters.gov.hud.fmr import small_area_fair_market_rents
 # payment standards (HUD Notice PIH 2023-32 Appendix A; 24 CFR 888.113) — the
 # Texas members: Dallas, Fort Worth-Arlington, and San Antonio (2018 cohort)
 # plus Beaumont-Port Arthur (2024 cohort). Houston is NOT designated, so its
-# SAFMR is not its HCV basis. A ZIP's SAFMR is its payment-standard basis only
-# if its metro is listed here, so raw SAFMR data never leaks into HCV.
+# SAFMR is not its HCV basis. The names below are the short `hud_area_name`
+# values used in small_area_fair_market_rents.csv ("Fort Worth", "San Antonio").
+# A ZIP's SAFMR is its payment-standard basis only if its metro is listed here,
+# so raw SAFMR data never leaks into HCV.
 SAFMR_HCV_DESIGNATED_METROS = [
     "Beaumont-Port Arthur",
     "Dallas",
@@ -25,7 +27,13 @@ class safmr_used_for_hcv(Variable):
     value_type = bool
     entity = Household
     label = "Small area fair market rent used for purposes of the Housing Choice Voucher Program"
+    documentation = (
+        "Whether the household's ZIP code falls in a metropolitan area where HUD "
+        "mandates Small Area FMR use as the Housing Choice Voucher payment "
+        "standard basis."
+    )
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/cfr/text/24/888.113"
 
     def formula(household, period, parameters):
         zip_code = household("zip_code", period)
