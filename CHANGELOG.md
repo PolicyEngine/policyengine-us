@@ -1,3 +1,10 @@
+## [1.749.2] - 2026-06-30
+
+### Fixed
+
+- Use separate CHIP spending and enrollment to calculate per-capita CHIP values.
+
+
 ## [1.749.1] - 2026-06-30
 
 ### Changed
