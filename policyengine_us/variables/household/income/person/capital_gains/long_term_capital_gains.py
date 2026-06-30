@@ -12,7 +12,11 @@ class long_term_capital_gains(Variable):
         title="26 U.S. Code § 1222(3)",
         href="https://www.law.cornell.edu/uscode/text/26/1222#3",
     )
-    adds = [
-        "long_term_capital_gains_before_response",
-        "capital_gains_behavioral_response",
-    ]
+
+    def formula(person, period, parameters):
+        gains = person("long_term_capital_gains_before_response", period)
+        response = person("capital_gains_behavioral_response", period)
+        indexation_adjustment = person(
+            "long_term_capital_gains_indexation_adjustment", period
+        )
+        return gains + response - indexation_adjustment
