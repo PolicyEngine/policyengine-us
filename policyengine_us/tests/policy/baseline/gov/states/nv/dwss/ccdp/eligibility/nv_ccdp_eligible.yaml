@@ -1,0 +1,219 @@
+# nv_ccdp_eligible: SPMUnit, bool, MONTH
+# AND of: has eligible child, income-eligible, CCDF asset-eligible, activity-eligible.
+# MS 218 residency enforced by defined_for = StateCode.NV.
+# Family of 3, period 2025-01; intake monthly SMI limit = 2_755.95.
+# Each AND component is failed in isolation to catch an AND-to-OR flip.
+
+- name: All four conditions met -> eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    nv_ccdp_eligible: true
+
+- name: No eligible child -> ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 14
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # Only child is 14 (>= 13, no special need) -> no eligible child
+    nv_ccdp_eligible: false
+
+- name: Income over the intake limit -> ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 50_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 50_000 / 12 = 4_167/mo > 2_755.95 intake limit -> income-ineligible
+    nv_ccdp_eligible: false
+
+- name: No qualifying activity -> ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+        is_tanf_enrolled: false
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+        is_homeless: false
+  output:
+    # No approved activity -> activity-ineligible
+    nv_ccdp_eligible: false
+
+- name: Assets over the CCDF ceiling -> ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 2_000_000 > 1_000_000 CCDF asset ceiling -> asset-ineligible
+    nv_ccdp_eligible: false
+
+# Edge cases: income just at the intake boundary, special-needs child pathway,
+# and an immigration-ineligible-only child.
+
+- name: Income just at the 41% intake limit -> eligible (inclusive boundary).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 33_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 33_000 / 12 = 2_750/mo <= 2_755.95 intake limit -> income-eligible -> eligible
+    nv_ccdp_eligible: true
+
+- name: Special-needs child age 13 keeps the unit eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+      person2:
+        age: 38
+      person3:
+        age: 13
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 13 < 19 special-needs limit -> eligible child present -> unit eligible
+    nv_ccdp_eligible: true
+
+- name: Only child fails the immigration test -> ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # Child fails is_ccdf_immigration_eligible_child -> no eligible child -> ineligible
+    nv_ccdp_eligible: false

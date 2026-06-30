@@ -1,0 +1,36 @@
+description: Nevada sets the monthly family copayment at this amount based on income as a share of state median income under the Child Care and Development Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Nevada CCDP monthly family copayment
+  reference:
+    - title: Nevada CCDF State Plan FFY 2025-2027, Section 2.5.5.v — Flat rate copayments during graduated phase-out
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=36
+    - title: Nevada DWSS Policy Transmittal CC PT 06-25 (Oct 2, 2025) — Annual Income Changes
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1
+
+# The flat $0/$90/$150 copay and two-tier copay structure took effect
+# Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
+# income-chart refresh that restates the same percentages and bands.
+# Income up to 32.99% SMI -> $0; 33%-42% SMI -> $90; above 42% SMI -> $150.
+# The State Plan summary prose ("33%-42% -> $90, 43%-49% -> $150") leaves an
+# undefined 42%-43% gap; the operational CC PT 06-25 fee chart resolves it, with
+# the $90 band topping out at 42% SMI and the $150 band beginning just above it.
+# The scale is at-or-above, so 0.33 belongs to the $90 band and 0.4201 to the
+# $150 band (a family at exactly 42% SMI stays in the $90 band, per the chart).
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 0.33
+    amount:
+      2024-10-01: 90
+  - threshold:
+      2024-10-01: 0.4201
+    amount:
+      2024-10-01: 150

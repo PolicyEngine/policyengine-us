@@ -1,0 +1,22 @@
+description: Nevada bills child care for this number of days per month when converting daily rates to a monthly maximum under the Child Care and Development Program.
+values:
+  2024-10-01: 21.67
+
+metadata:
+  unit: day
+  period: year
+  label: Nevada CCDP monthly billed days
+  reference:
+    - title: Nevada Child Care Policy Manual, MS 163 — Subsidy Amount
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=29
+
+# Full-time-month proxy used to convert the per-day base rate to a monthly
+# maximum. Nevada does not publish an explicit daily-to-monthly billing factor,
+# so this value is NOT transcribed from the manual: it is derived from the
+# weekly-attendance convention of up to 5 billed days per week as
+# 52 weeks * 5 days / 12 months = 21.67, applied when a household's actual
+# attended days per month are not available. It is a conservative modeling
+# assumption (PR Verification TODO — confirm against an operational rate sheet).
+# Note: MS 311 sets income-conversion factors (weekly x 4.3); that 4.3 is an
+# income multiplier, not a billing-day factor, but a 4.3-week month would imply
+# 5 * 4.3 = 21.5 billed days if a sourced figure is preferred over this proxy.

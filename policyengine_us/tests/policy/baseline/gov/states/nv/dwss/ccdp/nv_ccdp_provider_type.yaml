@@ -1,0 +1,31 @@
+# nv_ccdp_provider_type: Person, Enum (NVCCDPProviderType), MONTH — input variable.
+# No formula; confirm the enum input parses and defaults to CENTER.
+
+- name: Provider type defaults to a child care center.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    nv_ccdp_provider_type: CENTER
+
+- name: Family child care provider type is read from input.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+        nv_ccdp_provider_type: FCC
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    nv_ccdp_provider_type: FCC

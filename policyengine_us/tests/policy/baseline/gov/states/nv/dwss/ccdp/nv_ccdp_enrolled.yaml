@@ -1,0 +1,37 @@
+# nv_ccdp_enrolled: SPMUnit, bool, MONTH — input variable.
+# No formula; confirm the boolean input parses and defaults to false.
+
+- name: Enrollment defaults to false (new applicant).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    nv_ccdp_enrolled: false
+
+- name: Enrolled flag is read from input.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person]
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    nv_ccdp_enrolled: true

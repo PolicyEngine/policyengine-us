@@ -1,0 +1,80 @@
+# nv_ccdp_region: Person, Enum (NVCCDPRegion), MONTH
+# Clark County -> MOST_POPULOUS; every other county -> LOWEST_PERCENTILE.
+# `county` is a Household-level input enum.
+
+- name: Clark County maps to the most populous region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    nv_ccdp_region: MOST_POPULOUS
+
+- name: Washoe County maps to the lowest-percentile region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    nv_ccdp_region: LOWEST_PERCENTILE
+
+# Edge cases: additional non-Clark ("rest of state") counties all map to the
+# lowest-percentile region; only Clark County maps to the most populous region.
+
+- name: Rural Elko County maps to the lowest-percentile region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: ELKO_COUNTY_NV
+  output:
+    nv_ccdp_region: LOWEST_PERCENTILE
+
+- name: Carson City maps to the lowest-percentile region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CARSON_CITY_NV
+  output:
+    nv_ccdp_region: LOWEST_PERCENTILE
+
+- name: Default (no county set) falls back to the lowest-percentile region.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    nv_ccdp_region: LOWEST_PERCENTILE

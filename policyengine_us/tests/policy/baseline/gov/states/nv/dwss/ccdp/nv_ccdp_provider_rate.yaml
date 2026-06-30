@@ -1,0 +1,292 @@
+# nv_ccdp_provider_rate: Person, float (USD/day), MONTH
+# defined_for = nv_ccdp_eligible_child, so the child must be NV-resident,
+# under the age limit, and immigration-eligible for a non-zero rate.
+# Age brackets (MS 631/633.1): INFANT <12mo, TODDLER 12-36mo, PRESCHOOL 36-72mo,
+# SCHOOL_AGE >=72mo. rates/center.yaml and rates/fcc.yaml are keyed by
+# region x age x QRIS star rating; each star above STAR_1 adds $1.00/day.
+# STAR_1 (base) rates by region x age (star rating defaults to STAR_1):
+#   center MOST_POPULOUS:      INFANT 62.50, TODDLER 57, PRESCHOOL 51.50, SCHOOL_AGE 48
+#   center LOWEST_PERCENTILE:  INFANT 53.50, TODDLER 52.50, PRESCHOOL 47.50, SCHOOL_AGE 42.50
+#   fcc    MOST_POPULOUS:      INFANT 45, TODDLER 45, PRESCHOOL 46.50, SCHOOL_AGE 46
+#   fcc    LOWEST_PERCENTILE:  INFANT 40.50, TODDLER 40, PRESCHOOL 40, SCHOOL_AGE 40
+
+- name: Center, Clark County, infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 0
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 0 months -> INFANT; MOST_POPULOUS x CENTER x INFANT = 62.50
+    nv_ccdp_provider_rate: 62.50
+
+- name: Center, lowest-percentile region, toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 2
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # 24 months -> TODDLER; LOWEST_PERCENTILE x CENTER x TODDLER = 52.50
+    nv_ccdp_provider_rate: 52.50
+
+- name: Center, Clark County, preschool (age 5 is preschool, not school age).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 5
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 60 months in [36, 72) -> PRESCHOOL; MOST_POPULOUS x CENTER x PRESCHOOL = 51.50
+    nv_ccdp_provider_rate: 51.50
+
+- name: Family child care, Clark County, preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 48 months -> PRESCHOOL; MOST_POPULOUS x FCC x PRESCHOOL = 46.50
+    nv_ccdp_provider_rate: 46.50
+
+- name: Family child care, lowest-percentile region, school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 6
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # 72 months -> SCHOOL_AGE; LOWEST_PERCENTILE x FCC x SCHOOL_AGE = 40
+    nv_ccdp_provider_rate: 40
+
+- name: Center, Clark County, school age (default provider type is CENTER).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 6
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 72 months -> SCHOOL_AGE; MOST_POPULOUS x CENTER x SCHOOL_AGE = 48
+    nv_ccdp_provider_rate: 48
+
+- name: Ineligible child (age 14) gets no rate via defined_for.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 14
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # Not an eligible child (>= 13, no special need) -> defined_for zeroes the rate.
+    nv_ccdp_provider_rate: 0
+
+# Edge cases: complete the FCC age-group coverage (infant, toddler) and add a
+# lowest-percentile center infant case.
+
+- name: Family child care, Clark County, infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 0
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # 0 months -> INFANT; MOST_POPULOUS x FCC x INFANT = 45
+    nv_ccdp_provider_rate: 45
+
+- name: Family child care, lowest-percentile region, toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 2
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # 24 months -> TODDLER; LOWEST_PERCENTILE x FCC x TODDLER = 40
+    nv_ccdp_provider_rate: 40
+
+- name: Center, lowest-percentile region, infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 0
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: ELKO_COUNTY_NV
+  output:
+    # 0 months -> INFANT; LOWEST_PERCENTILE x CENTER x INFANT = 53.50
+    nv_ccdp_provider_rate: 53.50
+
+# Star-rating tier coverage: each star above STAR_1 adds $1.00/day. The cases
+# above (no star input) confirm the STAR_1 base default; the cases below
+# exercise stars 2-5 across center/fcc and both regions.
+
+- name: Center, Clark County, school age, 3-Star provider.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 6
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+        nv_ccdp_provider_star_rating: STAR_3
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # MOST_POPULOUS x CENTER x SCHOOL_AGE x STAR_3 = 48 + 2 = 50
+    nv_ccdp_provider_rate: 50
+
+- name: Center, Clark County, school age, 5-Star provider.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 6
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+        nv_ccdp_provider_star_rating: STAR_5
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # MOST_POPULOUS x CENTER x SCHOOL_AGE x STAR_5 = 48 + 4 = 52
+    nv_ccdp_provider_rate: 52
+
+- name: Center, lowest-percentile region, infant, 2-Star provider.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 0
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: CENTER
+        nv_ccdp_provider_star_rating: STAR_2
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # LOWEST_PERCENTILE x CENTER x INFANT x STAR_2 = 53.50 + 1 = 54.50
+    nv_ccdp_provider_rate: 54.50
+
+- name: Family child care, Clark County, preschool, 5-Star provider.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 4
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+        nv_ccdp_provider_star_rating: STAR_5
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # MOST_POPULOUS x FCC x PRESCHOOL x STAR_5 = 46.50 + 4 = 50.50
+    nv_ccdp_provider_rate: 50.50
+
+- name: Family child care, lowest-percentile region, toddler, 4-Star provider.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 2
+        immigration_status: CITIZEN
+        nv_ccdp_provider_type: FCC
+        nv_ccdp_provider_star_rating: STAR_4
+    households:
+      household:
+        members: [person]
+        state_code: NV
+        county: WASHOE_COUNTY_NV
+  output:
+    # LOWEST_PERCENTILE x FCC x TODDLER x STAR_4 = 40 + 3 = 43
+    nv_ccdp_provider_rate: 43
