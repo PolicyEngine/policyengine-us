@@ -1,21 +1,6 @@
 from policyengine_us.model_api import *
 
 
-CHIP_DISQUALIFYING_HEALTH_COVERAGE_VARIABLES = [
-    "has_esi",
-    "medicaid_enrolled",
-    "receives_medicaid",
-    "has_medicaid_health_coverage_at_interview",
-    "medicare_enrolled",
-    "has_marketplace_health_coverage_at_interview",
-    "has_non_marketplace_direct_purchase_health_coverage_at_interview",
-    "has_other_means_tested_health_coverage_at_interview",
-    "has_tricare_health_coverage_at_interview",
-    "has_champva_health_coverage_at_interview",
-    "has_va_health_coverage_at_interview",
-]
-
-
 class has_chip_disqualifying_health_coverage(Variable):
     value_type = bool
     entity = Person
@@ -28,4 +13,5 @@ class has_chip_disqualifying_health_coverage(Variable):
     )
 
     def formula(person, period, parameters):
-        return add(person, period, CHIP_DISQUALIFYING_HEALTH_COVERAGE_VARIABLES) > 0
+        p = parameters(period).gov.hhs.chip
+        return add(person, period, p.disqualifying_health_coverage) > 0

@@ -116,3 +116,14 @@
         receives_medicaid: true
   output:
     has_chip_disqualifying_health_coverage: true
+
+- name: Case 12, child has partner-reported health coverage other than CHIP.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_health_coverage_other_than_chip: true
+  output:
+    has_chip_disqualifying_health_coverage: true

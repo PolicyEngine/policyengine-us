@@ -53,3 +53,12 @@
     has_va_health_coverage_at_interview: false
   output:
     has_qualifying_non_marketplace_health_coverage_at_interview: false
+
+- name: Case 6, current Medicaid receipt counts as qualifying non-Marketplace coverage.
+  period: 2025
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    receives_medicaid: true
+  output:
+    has_qualifying_non_marketplace_health_coverage_at_interview: true
