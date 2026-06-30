@@ -1,0 +1,61 @@
+description: New Mexico provides these full-time monthly reimbursement rates for licensed family homes under the Child Care Assistance Program.
+# Full-time base rates for licensed family homes (capacity 6 or fewer
+# children). Part-time rates are these multiplied by the service-unit
+# fractions in rates/service_unit_fraction.yaml. The 2+Star FOCUS and 3-Star
+# FOCUS rates are identical in the published flyer.
+metadata:
+  period: month
+  unit: currency-USD
+  label: New Mexico CCAP licensed family home monthly rates
+  breakdown:
+    - nm_ccap_focus_level
+    - nm_ccap_age_group
+  reference:
+    - title: ECECD Child Care Assistance Rates, Licensed Family Home Monthly Rates (Effective August 2023)
+      href: https://www.nmececd.org/wp-content/uploads/2024/05/Cost-Model-Reimbursement-Rate-Flyer-English-and-Spanish-Revised-May-2024.pdf#page=4
+
+TWO_STAR:
+  INFANT:
+    2023-08-01: 1_100
+  TODDLER:
+    2023-08-01: 1_075
+  PRESCHOOL:
+    2023-08-01: 870
+  SCHOOL_AGE:
+    2023-08-01: 530
+TWO_PLUS_STAR:
+  INFANT:
+    2023-08-01: 1_175
+  TODDLER:
+    2023-08-01: 1_125
+  PRESCHOOL:
+    2023-08-01: 950
+  SCHOOL_AGE:
+    2023-08-01: 600
+THREE_STAR:
+  INFANT:
+    2023-08-01: 1_175
+  TODDLER:
+    2023-08-01: 1_125
+  PRESCHOOL:
+    2023-08-01: 950
+  SCHOOL_AGE:
+    2023-08-01: 600
+FOUR_STAR:
+  INFANT:
+    2023-08-01: 1_275
+  TODDLER:
+    2023-08-01: 1_250
+  PRESCHOOL:
+    2023-08-01: 1_075
+  SCHOOL_AGE:
+    2023-08-01: 680
+FIVE_STAR:
+  INFANT:
+    2023-08-01: 1_375
+  TODDLER:
+    2023-08-01: 1_325
+  PRESCHOOL:
+    2023-08-01: 1_160
+  SCHOOL_AGE:
+    2023-08-01: 725

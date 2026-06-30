@@ -1,0 +1,160 @@
+# NM CCAP overall eligibility: an eligible child AND income-eligible AND
+# asset-eligible AND activity-eligible, all within New Mexico.
+# 2025 FPG family of 2 = 21_150/yr; 200% = 42_300/yr.
+
+- name: Case 1, family meeting all requirements is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Child 4 < 13 and citizen; 24_000 < 200% FPL; assets < 1M; parent works.
+    nm_ccap_eligible: true
+
+- name: Case 2, no eligible child means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        # Age 14, no developmental delay -> not an eligible child.
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: false
+
+- name: Case 3, income too high means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 100_000/yr is far above the 200% FPL initial cap (42_300/yr).
+        employment_income: 100_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: false
+
+- name: Case 4, excess assets means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        # Above the $1,000,000 asset limit.
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: false
+
+- name: Case 5, no activity means not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: false
+
+- name: Case 6, non New Mexico family is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        # Texas, not New Mexico -> defined_for zeroes the output.
+        state_code: TX
+  output:
+    nm_ccap_eligible: false

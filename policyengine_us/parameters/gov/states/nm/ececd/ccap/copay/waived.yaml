@@ -1,0 +1,19 @@
+description: New Mexico uses this indicator to determine whether child care assistance copayments are waived under the Child Care Assistance Program.
+# Beginning May 1, 2022, ECECD waives copayments for any family that qualifies
+# for child care assistance; the waiver remains in effect under Universal
+# Child Care. At least three months' notice is required before reinstatement.
+# The pre-2022 copayment formula (8.15.2.13.B) is not modeled at the moment, so
+# the copayment is treated as zero for all periods.
+values:
+  2016-10-01: false
+  2022-05-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: New Mexico CCAP copayment waived
+  reference:
+    - title: ECECD Child Care Co-payments Waived (Effective May 1, 2022)
+      href: https://www.nmececd.org/wp-content/uploads/2024/09/CCA-Co-payments-waived_rev1l.pdf#page=1
+    - title: 8.15.2.13.B NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.015.0002.html

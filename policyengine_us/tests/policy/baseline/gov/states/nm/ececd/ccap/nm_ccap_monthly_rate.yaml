@@ -1,0 +1,464 @@
+# NM CCAP monthly provider reimbursement rate lookup (rate flyer, effective
+# August 2023; 8.15.2.13.C NMAC). Rate = provider type x FOCUS level x age
+# group, scaled by the service-unit fraction (FT 100% / PT1 75% / PT2 50% /
+# PT3 25%) and a non-traditional-hours supplement when applicable.
+#
+# Every case below uses FULL_TIME care (childcare_hours_per_week >= 30, so the
+# service-unit fraction is 1.0) and zero non-traditional hours (no supplement),
+# so the rate equals the full-time base table value. All cases run in 2025
+# (rates effective 2023-08-01). state_code: NM so defined_for does not zero the
+# rate, and immigration/age make each child eligible.
+#
+# Base full-time monthly rates:
+#   Center:   2-Star Infant 1_075, Toddler 775, Preschool 700, School Age 500
+#             5-Star Infant 1_925; 4-Star Toddler 1_100; 2+/3-Star Preschool 800
+#   Group:    2-Star Infant 1_040; 5-Star School Age 670
+#   Family:   2-Star Infant 1_100; 4-Star Toddler 1_250
+#   Registered (no stars): Infant 425, Toddler 425, Preschool 375, School Age 350
+
+# ============================================================
+# Licensed Center, all FOCUS levels (Toddler unless noted)
+# ============================================================
+
+- name: Case 1, center two star infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # 6 months -> INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_monthly_rate: 1_075
+
+- name: Case 2, center two plus star toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2.5  # 30 months -> TODDLER
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_PLUS_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 2+Star Toddler = 865
+    nm_ccap_monthly_rate: 865
+
+- name: Case 3, center three star preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3.5  # 42 months -> PRESCHOOL
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: THREE_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 3-Star Preschool = 800 (identical to 2+Star in the flyer)
+    nm_ccap_monthly_rate: 800
+
+- name: Case 4, center four star toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2.5  # TODDLER
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: FOUR_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 4-Star Toddler = 1_100
+    nm_ccap_monthly_rate: 1_100
+
+- name: Case 5, center five star infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: FIVE_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 5-Star Infant = 1_925
+    nm_ccap_monthly_rate: 1_925
+
+# ============================================================
+# Licensed Group Home and Licensed Family Home
+# ============================================================
+
+- name: Case 6, group home two star infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: GROUP_HOME
+        nm_ccap_focus_level: TWO_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Group Home 2-Star Infant = 1_040
+    nm_ccap_monthly_rate: 1_040
+
+- name: Case 7, group home five star school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7  # 84 months -> SCHOOL_AGE
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: GROUP_HOME
+        nm_ccap_focus_level: FIVE_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Group Home 5-Star School Age = 670
+    nm_ccap_monthly_rate: 670
+
+- name: Case 8, family home two star infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: FAMILY_HOME
+        nm_ccap_focus_level: TWO_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Family Home 2-Star Infant = 1_100
+    nm_ccap_monthly_rate: 1_100
+
+- name: Case 9, family home four star toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2.5  # TODDLER
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: FAMILY_HOME
+        nm_ccap_focus_level: FOUR_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Family Home 4-Star Toddler = 1_250
+    nm_ccap_monthly_rate: 1_250
+
+# ============================================================
+# Registered / In-Home: single rate, no FOCUS levels.
+# All four age groups.
+# ============================================================
+
+- name: Case 10, registered home infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: REGISTERED_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Registered Home Infant = 425 (no star levels)
+    nm_ccap_monthly_rate: 425
+
+- name: Case 11, registered home toddler.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2.5  # TODDLER
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: REGISTERED_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Registered Home Toddler = 425
+    nm_ccap_monthly_rate: 425
+
+- name: Case 12, registered home preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3.5  # PRESCHOOL
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: REGISTERED_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Registered Home Preschool = 375
+    nm_ccap_monthly_rate: 375
+
+- name: Case 13, registered home school age.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7  # SCHOOL_AGE
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: REGISTERED_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Registered Home School Age = 350
+    nm_ccap_monthly_rate: 350
+
+# ============================================================
+# Part-time service-unit fractions applied to the base rate
+# ============================================================
+
+- name: Case 14, part time one applies seventy five percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        # 20 hours/week -> PART_TIME_1 (75%)
+        childcare_hours_per_week: 20
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 2-Star Infant 1_075 x 0.75 = 806.25
+    nm_ccap_monthly_rate: 806.25
+
+- name: Case 15, part time three applies twenty five percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        # 5 hours/week -> PART_TIME_3 (25%)
+        childcare_hours_per_week: 5
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 2-Star Infant 1_075 x 0.25 = 268.75
+    nm_ccap_monthly_rate: 268.75
+
+- name: Case 16, part time two split custody applies fifty percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        # PART_TIME_2 is only reachable via explicit input (split custody).
+        nm_ccap_service_unit: PART_TIME_2
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # Center 2-Star Infant 1_075 x 0.50 = 537.50
+    nm_ccap_monthly_rate: 537.5
+
+# ============================================================
+# Non-traditional-hours supplement bracket boundaries
+# (supplements/non_traditional_hours.yaml): 0 hrs -> +0%,
+# 1-10 hrs -> +5%, 11-20 hrs -> +10%, 21+ hrs -> +15%.
+# Base full-time Center 2-Star Infant = 1_075 in every case below.
+# ============================================================
+
+- name: Case 17, zero non traditional hours adds no supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 0  # below the 1-hour threshold -> +0%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x (1 + 0) = 1_075
+    nm_ccap_monthly_rate: 1_075
+
+- name: Case 18, one non traditional hour applies the five percent tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 1  # at the 1-hour threshold -> +5%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x 1.05 = 1_128.75
+    nm_ccap_monthly_rate: 1_128.75
+
+- name: Case 19, ten non traditional hours is the top of the five percent tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 10  # 10 < 11 -> still +5%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x 1.05 = 1_128.75
+    nm_ccap_monthly_rate: 1_128.75
+
+- name: Case 20, eleven non traditional hours applies the ten percent tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 11  # at the 11-hour threshold -> +10%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x 1.10 = 1_182.50
+    nm_ccap_monthly_rate: 1_182.5
+
+- name: Case 21, twenty non traditional hours is the top of the ten percent tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 20  # 20 < 21 -> still +10%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x 1.10 = 1_182.50
+    nm_ccap_monthly_rate: 1_182.5
+
+- name: Case 22, twenty one non traditional hours applies the fifteen percent tier.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5  # INFANT
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        nm_ccap_non_traditional_hours: 21  # at the 21-hour threshold -> +15%
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # 1_075 x 1.15 = 1_236.25
+    nm_ccap_monthly_rate: 1_236.25

@@ -1,0 +1,289 @@
+# NM CCAP income eligibility (8.15.2.9, 8.15.2.12 NMAC).
+# Dual threshold: initial applicants (nm_ccap_enrolled = false) capped at
+# 200% FPL; enrolled recipients (nm_ccap_enrolled = true) capped at 250% FPL.
+# TANF-enrolled families (is_tanf_enrolled) are categorically income-eligible
+# (Priority 2 bypass). Universal Child Care removes the income limit entirely
+# from 2025-11-01 (income_limit_in_effect turns off), so families are
+# income-eligible regardless of income from that date forward.
+#
+# 2025 FPG (CONTIGUOUS_US): family of 2 = 15_650 + 5_500 = 21_150/yr.
+#   200% = 42_300/yr; 250% = 52_875/yr.
+# 2024 FPG: family of 2 = 15_060 + 5_380 = 20_440/yr.
+#   200% = 40_880/yr; 250% = 51_100/yr.
+
+# ============================================================
+# Initial applicant: 200% FPL cap
+# ============================================================
+
+- name: Case 1, initial applicant below 200% FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 40_000/yr < 200% FPL family of 2 (42_300/yr)
+        employment_income: 40_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_income_eligible: true
+
+- name: Case 2, initial applicant above 200% FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 45_000/yr > 200% FPL family of 2 (42_300/yr), but below 250% (52_875)
+        employment_income: 45_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Above the initial 200% cap and not yet enrolled -> ineligible
+    nm_ccap_income_eligible: false
+
+# ============================================================
+# Enrolled recipient: 250% FPL cap
+# ============================================================
+
+- name: Case 3, enrolled recipient between 200 and 250 percent FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 45_000/yr is above 200% (42_300) but below 250% (52_875) FPL
+        employment_income: 45_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Enrolled recipient uses the higher 250% continuing cap -> eligible
+    nm_ccap_income_eligible: true
+
+- name: Case 4, enrolled recipient above 250 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 55_000/yr > 250% FPL family of 2 (52_875/yr)
+        employment_income: 55_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_income_eligible: false
+
+# ============================================================
+# TANF Priority 2 categorical bypass
+# ============================================================
+
+- name: Case 5, TANF enrolled family is categorically income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Well above 250% FPL, but TANF enrollment bypasses the income test.
+        employment_income: 100_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # is_tanf_enrolled -> Priority 2 categorical income eligibility.
+    nm_ccap_income_eligible: true
+
+# ============================================================
+# Universal Child Care: no income limit from 2025-11-01
+# ============================================================
+
+- name: Case 6, before UCC a high income initial applicant is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Far above 200% FPL; pre-UCC the income limit still applies.
+        employment_income: 100_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # income_limit_in_effect is true in 2025-01 -> 200% cap applies -> ineligible
+    nm_ccap_income_eligible: false
+
+- name: Case 7, after UCC a high income family is eligible with no income limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Far above any FPL threshold; UCC removes the income limit entirely.
+        employment_income: 250_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # income_limit_in_effect turned off 2025-11-01 -> eligible regardless of income.
+    nm_ccap_income_eligible: true
+
+# ============================================================
+# Threshold boundaries (income test uses <=, so income AT the
+# limit is eligible). 2025 FPG family of 2 = 21_150/yr.
+#   200% = 42_300/yr -> 3_525/month (initial cap).
+#   250% = 52_875/yr -> 4_406.25/month (continuing cap).
+# nm_ccap_countable_income is monthly (annual employment_income / 12),
+# and the FPG limit auto-divides to monthly, so the comparison is monthly.
+# ============================================================
+
+- name: Case 8, initial applicant exactly at 200 percent FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 42_300/yr / 12 = 3_525/month = exactly 200% FPL (family of 2).
+        employment_income: 42_300
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Countable income (3_525) <= 200% limit (3_525) -> eligible.
+    nm_ccap_income_eligible: true
+
+- name: Case 9, initial applicant just above 200 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 42_360/yr / 12 = 3_530/month, just above the 3_525 cap.
+        employment_income: 42_360
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Countable income (3_530) > 200% limit (3_525) -> ineligible.
+    nm_ccap_income_eligible: false
+
+- name: Case 10, enrolled recipient exactly at 250 percent FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 52_875/yr / 12 = 4_406.25/month = exactly 250% FPL (family of 2).
+        employment_income: 52_875
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: true  # continuing recipient -> 250% cap
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Countable income (4_406.25) <= 250% limit (4_406.25) -> eligible.
+    nm_ccap_income_eligible: true
+
+- name: Case 11, enrolled recipient just above 250 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 52_920/yr / 12 = 4_410/month, just above the 4_406.25 cap.
+        employment_income: 52_920
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Countable income (4_410) > 250% limit (4_406.25) -> ineligible.
+    nm_ccap_income_eligible: false
