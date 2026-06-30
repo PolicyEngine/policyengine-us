@@ -1,3 +1,10 @@
+## [1.750.0] - 2026-06-30
+
+### Added
+
+- Add Michigan Child Development and Care (CDC) program.
+
+
 ## [1.749.2] - 2026-06-30
 
 ### Fixed
