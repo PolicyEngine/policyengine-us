@@ -276,7 +276,7 @@
         is_blind: true
         employment_income: 9_600  # $800 monthly
         ssi_reported: 0  # Person not receiving federal SSI
-        il_aabd_use_reported_ssi: true  # Use reported SSI for AABD
+        use_reported_ssi: true  # Use reported SSI for AABD
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -295,7 +295,7 @@
     # Shows federal SSI entitlement (what they COULD get)
     ssi: 585.5  # Calculated SSI - person could receive this
     # Shows IL AABD (using ssi_reported: 0)
-    il_aabd_ssi_income: 0  # Uses reported value
+    applicable_ssi: 0  # Uses reported value
     il_aabd_countable_unearned_income: 0  # No SSI counted
     il_aabd_countable_income: 306.12  # Only earned income
     il_aabd_financial_eligible_person: true
@@ -313,7 +313,7 @@
         is_blind: true
         employment_income: 9_600  # $800 monthly
         ssi_reported: 3_600  # $300/month reported SSI
-        il_aabd_use_reported_ssi: true
+        use_reported_ssi: true
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -332,7 +332,7 @@
     # Shows federal SSI entitlement
     ssi: 585.5  # Calculated - what they could get
     # Shows IL AABD with partial SSI
-    il_aabd_ssi_income: 300  # Uses reported $300/month
+    applicable_ssi: 300  # Uses reported $300/month
     il_aabd_countable_unearned_income: 275  # 300 - 25 flat exemption
     il_aabd_countable_income: 593.62  # earned (318.62) + unearned (275)
     il_aabd_financial_eligible_person: true  # 593.62 < 827.33
@@ -350,7 +350,7 @@
         is_blind: true
         employment_income: 9_600  # $800 monthly
         ssi_reported: 0  # Not receiving federal SSI
-        il_aabd_use_reported_ssi: true
+        use_reported_ssi: true
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
       child:
@@ -377,7 +377,7 @@
     # Shows federal SSI entitlement for parent
     ssi: [585.5, 0]  # Parent could get SSI, child not eligible
     # Shows IL AABD (using ssi_reported: 0 for parent)
-    il_aabd_ssi_income: [0, 0]  # Uses reported value
+    applicable_ssi: [0, 0]  # Uses reported value
     il_aabd_countable_unearned_income: [0, 0]
     il_aabd_non_financial_eligible_person: [true, false]  # Parent eligible, child not
     il_aabd_eligible_person: [true, false]
@@ -393,7 +393,7 @@
         age: 68
         employment_income: 6_000  # $500 monthly
         ssi_reported: 0
-        il_aabd_use_reported_ssi: true
+        use_reported_ssi: true
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
       person2:
@@ -401,7 +401,7 @@
         is_blind: true
         employment_income: 0
         ssi_reported: 0
-        il_aabd_use_reported_ssi: true
+        use_reported_ssi: true
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -423,7 +423,7 @@
     # Shows federal SSI entitlement for both (couple rate split)
     ssi: [603.75, 603.75]  # Both get couple rate / 2
     # Shows IL AABD (using ssi_reported: 0)
-    il_aabd_ssi_income: [0, 0]  # Uses reported value
+    applicable_ssi: [0, 0]  # Uses reported value
     il_aabd_non_financial_eligible_person: [true, true]  # Both aged/blind
     il_aabd_eligible_person: [true, true]  # Both eligible for AABD
     il_aabd_person: [441.45, 822.15]  # Both get AABD
