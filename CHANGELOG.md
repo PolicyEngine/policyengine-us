@@ -1,3 +1,10 @@
+## [1.751.0] - 2026-06-30
+
+### Added
+
+- Add Missouri Child Care Subsidy program.
+
+
 ## [1.750.1] - 2026-06-30
 
 ### Fixed
