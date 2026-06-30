@@ -1,0 +1,107 @@
+- name: Case 1, child has no disqualifying health coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+  output:
+    has_chip_disqualifying_health_coverage: false
+
+- name: Case 2, child has employer-sponsored insurance.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_esi: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 3, child has Marketplace coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_marketplace_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 4, child has direct-purchase coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 5, child has Medicaid coverage reported at interview.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_medicaid_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 6, person has Medicare coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 65
+        is_medicaid_eligible: false
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 7, child has TRICARE coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_tricare_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 8, child has CHAMPVA coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_champva_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 9, child has VA health coverage.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_va_health_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: true
+
+- name: Case 10, child has Indian Health Service coverage only.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        has_indian_health_service_coverage_at_interview: true
+  output:
+    has_chip_disqualifying_health_coverage: false
