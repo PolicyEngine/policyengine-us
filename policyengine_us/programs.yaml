@@ -461,6 +461,7 @@ programs:
     agency: HHS
     status: partial
     coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MN, MO, MS, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MS, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -573,6 +574,12 @@ programs:
         full_name: Missouri Child Care Subsidy
         variable: mo_ccs
         parameter_prefix: gov.states.mo.dese.ccs
+      - state: MI
+        status: complete
+        name: Michigan CDC
+        full_name: Child Development and Care program
+        variable: mi_child_care_subsidies
+        parameter_prefix: gov.states.mi.mdhhs.ccap
       - state: MS
         status: complete
         name: CCPP
