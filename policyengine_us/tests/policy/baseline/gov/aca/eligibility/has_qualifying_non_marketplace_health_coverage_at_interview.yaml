@@ -16,12 +16,16 @@
   output:
     has_qualifying_non_marketplace_health_coverage_at_interview: false
 
-- name: Case 3, off-exchange coverage counts as qualifying non-Marketplace coverage.
+- name: Case 3, off-Marketplace direct-purchase coverage does not count as qualifying non-Marketplace coverage.
   period: 2025
   input:
+    age: 40
+    medicaid_enrolled: false
+    is_chip_eligible: false
+    has_esi: false
     has_non_marketplace_direct_purchase_health_coverage_at_interview: true
   output:
-    has_qualifying_non_marketplace_health_coverage_at_interview: true
+    has_qualifying_non_marketplace_health_coverage_at_interview: false
 
 - name: Case 4, Medicare enrollment counts as qualifying non-Marketplace coverage.
   period: 2025
