@@ -15,23 +15,12 @@ class mo_ccs_eligible_child(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mo.dese.ccs.eligibility
         age = person("age", period.this_year)
-        # "Child with special needs" (5 CSR 25-200.050(11)) covers six criteria:
-        # (A) SSI receipt, (B) Missouri Department of Mental Health services,
-        # (C) verified disability, (D) protective services, (E) adoption subsidy,
-        # or (F) court supervision. We model (A) via SSI receipt, (C) via
-        # is_disabled, and (D) via the protective-services category below.
-        # (B), (E), and (F) have no PolicyEngine input and are not tracked at the
-        # moment. Special-needs status also selects the special-needs rate column
-        # (mo_ccs_maximum_daily_benefit) and waives the sliding fee (mo_ccs_copay).
-        is_disabled = person("is_disabled", period.this_year)
-        # A child receiving SSI is a child with special needs
-        # (5 CSR 25-200.050(11)(A)).
-        receives_ssi = person("ssi", period) > 0
-        # A protective-services child is a child with special needs
-        # (5 CSR 25-200.050(11)(D)) and is an eligible child up to under 19
-        # regardless of school enrollment (Manual sec. 4.5(4)).
+        # A "child with special needs" (5 CSR 25-200.050(11)) gets the extended
+        # age ceiling. The same shared mo_ccs_special_needs variable also selects
+        # the +25% special-needs rate column (mo_ccs_maximum_daily_benefit) and
+        # waives the sliding fee (mo_ccs_copay), keeping the three consistent.
+        is_special_needs = person("mo_ccs_special_needs", period)
         is_protective = person("mo_ccs_protective_services", period)
-        is_special_needs = is_disabled | receives_ssi | is_protective
         # Being in elementary or secondary school extends the special-needs
         # ceiling by one year (to under 19; Manual sec. 4.5(3)). is_in_k12_school
         # only fires through age 17, so an 18-year-old still in secondary school

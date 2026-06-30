@@ -56,15 +56,15 @@ class mo_ccs_copay(Variable):
             ],
         )
 
-        # Children with a special need or in protective services are not charged
-        # a sliding fee (Manual 2025.010; 5 CSR 25-200.060(3)(C)4). A Protective
-        # Service Child is a child with special needs per 5 CSR 25-200.050(11),
-        # so foster / protective-services children are also waived.
+        # A child with special needs is not charged a sliding fee (Manual
+        # 2025.010; 5 CSR 25-200.060(3)(C)4). "Child with special needs"
+        # (5 CSR 25-200.050(11)) includes SSI recipients, children with a
+        # verified disability, and protective-services / foster children, so all
+        # are waived via the shared mo_ccs_special_needs variable.
         is_eligible_child = person("mo_ccs_eligible_child", period)
-        is_disabled = person("is_disabled", period.this_year)
-        is_protective = person("mo_ccs_protective_services", period)
+        is_special_needs = person("mo_ccs_special_needs", period)
         days = person("childcare_attending_days_per_month", period.this_year)
-        in_care = is_eligible_child & ~is_disabled & ~is_protective & (days > 0)
+        in_care = is_eligible_child & ~is_special_needs & (days > 0)
         monthly_fee = spm_unit.sum(daily_fee * days * in_care)
 
         # Households whose only income is Temporary Assistance, or whose gross

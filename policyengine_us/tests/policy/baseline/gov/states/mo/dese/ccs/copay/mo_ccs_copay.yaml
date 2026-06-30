@@ -819,3 +819,35 @@
     # Adjusted = 2,000 - 900 = 1,100, in (1090, 1199] -> tier 6.
     # Full unit fee tier 6 = $4.00/day. $4.00 * 20 * 1 = $80/mo.
     mo_ccs_copay: 80
+
+- name: Case 22, SSI-only special-needs child is not charged a fee (criterion A).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 800
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # SSI is excluded from countable income (Manual 5.6.1(14)), so gross =
+    # 24,000 / 12 = 2,000/mo > SMI floor 1,499.19 (not the $1/yr minimum). A
+    # non-special-needs child would pay $5 * 20 = $100, but an SSI recipient is a
+    # child with special needs (5 CSR 25-200.050(11)(A)) and is waived.
+    mo_ccs_copay: 0

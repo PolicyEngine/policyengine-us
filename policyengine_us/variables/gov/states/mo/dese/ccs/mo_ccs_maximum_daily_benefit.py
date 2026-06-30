@@ -24,18 +24,18 @@ class mo_ccs_maximum_daily_benefit(Variable):
         # We model only Missouri's daytime rate schedule (the rates workbook's
         # "Daytime Rates 2025" sheet). The separate evening/weekend (EW) rate
         # schedule for nontraditional-hours care is not modeled at the moment.
-        # A child with special needs is reimbursed at the special-needs rate
-        # (special_needs column); all other children use the base column. Per
-        # the CCDF State Plan FFY 2025-2027 (secs. 2.3.2(d), 4.3.3), special-
-        # needs children receive the market rate plus a 25% rate differential.
-        # The non-traditional-hours (+15%), accreditation (+20%), and
-        # high-subsidy-enrollment (+30%) differentials are not modeled.
-        is_disabled = person("is_disabled", period.this_year)
+        # A child with special needs (5 CSR 25-200.050(11)) is reimbursed at the
+        # special-needs rate (special_needs column); all other children use the
+        # base column. Per the CCDF State Plan FFY 2025-2027 (secs. 2.3.2(d),
+        # 4.3.3), special-needs children receive the market rate plus a 25% rate
+        # differential. The non-traditional-hours (+15%), accreditation (+20%),
+        # and high-subsidy-enrollment (+30%) differentials are not modeled.
+        is_special_needs = person("mo_ccs_special_needs", period)
 
         def provider_rate(provider):
             base = provider.base[region][age_group][time_category]
             special_needs = provider.special_needs[region][age_group][time_category]
-            return where(is_disabled, special_needs, base)
+            return where(is_special_needs, special_needs, base)
 
         return select(
             [

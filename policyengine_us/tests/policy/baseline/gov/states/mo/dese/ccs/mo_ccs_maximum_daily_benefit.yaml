@@ -966,3 +966,71 @@
     # special-needs = $47.625/day (registered_center/special_needs.yaml RURAL/
     # PRESCHOOL/FULL_TIME).
     mo_ccs_maximum_daily_benefit: [0, 47.625]
+
+# === Special-needs criteria other than verified disability also use the
+#     special-needs (+25%) rate column (5 CSR 25-200.050(11)). Same provider/
+#     region/age/time as Case 13, so the special-needs rate is the same
+#     $89.4625/day. ===
+- name: Case 32, SSI-only child uses the special-needs rate column (criterion A).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 800
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # SSI receipt (is_disabled unset) -> child with special needs -> special-
+    # needs column. Licensed center, dense urban, preschool, full time =
+    # $89.4625/day, matching Case 13.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
+
+- name: Case 33, foster (protective-services) child uses the special-needs rate column (criterion D).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Protective-services / foster child -> child with special needs -> special-
+    # needs column. Licensed center, dense urban, preschool, full time =
+    # $89.4625/day, matching Case 13.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
