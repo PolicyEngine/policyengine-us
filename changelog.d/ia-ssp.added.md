@@ -1,0 +1,1 @@
+Added Iowa State Supplementary Assistance (SSA), covering the Blind, Dependent Person, Family-Life Home, In-Home Health-Related Care, Residential Care Facility, and Supplement for Medicare and Medicaid Eligibles supplements.

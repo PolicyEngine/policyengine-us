@@ -1,0 +1,120 @@
+- name: Case 1, single person with resources at 2,000 limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 2_000
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_resources_eligible: [true]
+
+- name: Case 2, single person with resources 1 dollar above 2,000 limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 2_001
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_resources_eligible: [false]
+
+- name: Case 3, single person with resources 1,500 dollars is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_500
+        ssi_claim_is_joint: false
+    households:
+      household:
+        members: [person1]
+        state_code: IA
+  output:
+    ia_ssa_resources_eligible: [true]
+
+- name: Case 4, joint SSI couple at combined 3,000 dollar limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 1_500
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        ssi_countable_resources: 1_500
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Federal SSI counts couple resources against the couple limit. Combined
+    # $3,000 equals the limit -> both eligible.
+    ia_ssa_resources_eligible: [true, true]
+
+- name: Case 5, joint SSI couple with 2,000 dollars each (combined 4,000 dollars) is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_countable_resources: 2_000
+        ssi_claim_is_joint: true
+      person2:
+        age: 68
+        ssi_countable_resources: 2_000
+        ssi_claim_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Combined $4,000 exceeds the couple limit $3,000 -> both ineligible, even
+    # though each individual is below the single limit.
+    ia_ssa_resources_eligible: [false, false]
+
+- name: Case 6, aged recipient with non-disabled co-resident spouse uses couple limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: false
+        ssi_countable_resources: 1_500
+      person2:
+        age: 50
+        is_disabled: false
+        ssi_countable_resources: 1_500
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Spouse is not categorically SSI-eligible (under 65, not disabled), so
+    # ssi_claim_is_joint is false. Per IAC 441—51.5(2) Iowa still applies the
+    # $3,000 couple limit when there is a dependent spouse (51.5(4) covers
+    # ineligible-but-financially-dependent spouses). Combined $3,000 -> both
+    # eligible. Without this fix the recipient would be tested individually
+    # at $2,000 and lose eligibility despite Iowa's rule.
+    ia_ssa_resources_eligible: [true, true]

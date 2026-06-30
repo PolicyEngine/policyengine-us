@@ -784,9 +784,11 @@ programs:
         name: Hawaii OSS
         full_name: Hawaii Optional State Supplementation
       - state: IA
-        status: in_progress
-        name: Iowa SSP
-        full_name: Iowa State Supplemental Payment
+        status: complete
+        name: Iowa SSA
+        full_name: Iowa State Supplementary Assistance
+        variable: ia_ssa
+        parameter_prefix: gov.states.ia.hhs.ssa
       - state: ID
         status: complete
         name: Idaho AABD
