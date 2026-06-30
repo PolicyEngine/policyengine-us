@@ -66,7 +66,7 @@ test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 1
 	$(BATCH) $(TESTS)/policy/baseline/contrib --batches 1
-	$(BATCH) $(TESTS)/policy/reform --batches 1
+	$(BATCH) $(TESTS)/policy/reform --mode per-file
 test-yaml-no-structural-other-irs:
 	# One subprocess per irs subfolder + trailing batch for loose yamls.
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir
@@ -79,7 +79,12 @@ test-yaml-no-structural-other-contrib:
 	$(BATCH) $(TESTS)/policy/baseline/contrib/ubi_center --mode per-file
 	$(BATCH) $(TESTS)/policy/baseline/contrib --exclude ubi_center --mode per-subdir
 test-yaml-reform:
-	$(BATCH) $(TESTS)/policy/reform --batches 1
+	# Reforms are force-applied and deepcopy the full parameter tree
+	# (~5.5 GB peak/file for ctc_linear_phase_out and winship, measured).
+	# Running all files in one subprocess stacks past the 16 GB runner cap
+	# → "runner received a shutdown signal". One batch per file frees each
+	# peak between files; new reform files auto-route.
+	$(BATCH) $(TESTS)/policy/reform --mode per-file
 test-yaml-no-structural-other-ssa:
 	# revenue is heavy enough to need its own 2-batch split; others auto-fan.
 	$(BATCH) $(TESTS)/policy/baseline/gov/ssa/revenue --batches 2
@@ -95,7 +100,9 @@ test-yaml-no-structural-other-partners:
 	# One subprocess per partner; new partners auto-route.
 	$(BATCH) $(TESTS)/policy/baseline/partners --mode per-subdir
 test-other:
-	pytest policyengine_us/tests/ --maxfail=0
+	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib
+test-policy-contrib-python:
+	pytest $$(find $(TESTS)/policy/contrib -name 'test*.py' -print) --maxfail=0
 coverage:
 	coverage combine
 	coverage xml -i

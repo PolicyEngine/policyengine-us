@@ -1,3 +1,142 @@
+## [1.749.0] - 2026-06-29
+
+### Added
+
+- Added Medicaid community engagement activity-hour pathways for community service, work programs, and mixed less-than-half-time education hours.
+- Added a seasonal-worker six-month average income pathway for Medicaid community engagement.
+- Added a Medicaid community engagement treatment-program exclusion input.
+
+### Fixed
+
+- Fixed the Medicaid community engagement income safe harbor to use Medicaid MAGI household income.
+
+
+## [1.748.0] - 2026-06-29
+
+### Added
+
+- Add Medicaid MAGI claimant tax unit links and missing-claimant fallback diagnostics.
+
+
+## [1.747.7] - 2026-06-29
+
+### Changed
+
+- Update New Jersey Stay NJ property tax relief baseline calculations.
+
+
+## [1.747.6] - 2026-06-29
+
+### Fixed
+
+- Fixed create-state EITC contrib reforms (ID, AZ, WV) that replaced each state's refundable-credits list with only the new EITC, deleting baseline refundable credits, and the NC reform that double-counted use tax in income tax.
+
+
+## [1.747.5] - 2026-06-29
+
+### Changed
+
+- Updated the Vermont renter credit for 2026 Act 169 (H.949): the fair market rent rate rises to 12.5% and the cap to $3,250 for claim year 2027, reverting to 10% and $2,500 for claim year 2028.
+
+
+## [1.747.4] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating TANF when SNAP student ineligibility is evaluated for people who are not higher-education students.
+
+
+## [1.747.3] - 2026-06-29
+
+### Changed
+
+- Documented the certified PolicyEngine bundle install path for US users.
+
+
+## [1.747.2] - 2026-06-29
+
+### Fixed
+
+- Fixed an out-of-memory failure in the Rest CI runner by copying only the gov.contrib.states subtree (with its parent reference severed) in the dependent-exemption reform-activation test, instead of deep-copying the entire parameter tree.
+
+
+## [1.747.1] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating the default county fallback when county FIPS inputs fully determine household counties.
+
+
+## [1.747.0] - 2026-06-29
+
+### Added
+
+- Added contributed reforms that separate the dependent portion of the personal exemption (or credit) for 11 states (AR, HI, IN, MD, MI, NE, OH, OK, VT, WI, WV), so the per-dependent amount can be adjusted or eliminated independently of the head/spouse exemption.
+
+
+## [1.746.0] - 2026-06-27
+
+### Added
+
+- Add FY2027 HHS State Median Income (SMI) values, effective October 1, 2026.
+
+
+## [1.745.0] - 2026-06-25
+
+### Added
+
+- Added a CBO source-aligned net business income variable for calibration target matching, and made ordinary dividend income the canonical variable while keeping dividend income as a legacy compatibility alias.
+
+
+## [1.744.0] - 2026-06-24
+
+### Added
+
+- Added shared-living and county-group payment standards to Kansas TANF, excluded SSI recipients from the assistance unit (its size and countable income, requiring at least one remaining member for eligibility), and excluded assigned child support from the benefit amount while still counting it for income eligibility.
+
+
+## [1.743.0] - 2026-06-24
+
+### Added
+
+- Added Arizona HB 4168 (2026) individual income tax changes: $125 under-17 dependent credit, capped full-amount charitable standard deduction add-on, $10,000 itemized SALT cap, and new dependent care and IRC 530A distribution subtractions (all effective 2026).
+
+
+## [1.742.0] - 2026-06-23
+
+### Added
+
+- Add use_reported_ssi toggle and applicable_ssi variable, letting API partners count reported SSI instead of calculated SSI in Texas CEAP income.
+
+
+## [1.741.2] - 2026-06-23
+
+### Fixed
+
+- Run reform YAML tests one file per subprocess in a dedicated CI job to fix out-of-memory failures.
+
+
+## [1.741.1] - 2026-06-23
+
+### Changed
+
+- Updated Hawaii TANF Standard of Assistance rate from 48% to 62% of the standard of need, effective March 1, 2025.
+
+
+## [1.741.0] - 2026-06-23
+
+### Added
+
+- Added a South Carolina fully refundable EITC contrib reform for the Child Poverty Impact Dashboard.
+
+
+## [1.740.0] - 2026-06-23
+
+### Added
+
+- Added a dedicated South Carolina dependent exemption parameter (Section 12-6-1140), with the young child deduction (Section 12-6-1160) set equal to it; no change to calculated values.
+
+
 ## [1.739.4] - 2026-06-21
 
 ### Fixed

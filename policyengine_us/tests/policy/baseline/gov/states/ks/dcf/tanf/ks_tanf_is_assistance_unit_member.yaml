@@ -1,0 +1,29 @@
+# Kansas TANF assistance unit membership test
+# Per KEESM 4113: SSI recipients are excluded from the TAF assistance unit.
+
+- name: Case 1, non-SSI person is an assistance unit member.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_tanf_is_assistance_unit_member: true
+
+- name: Case 2, SSI recipient is not an assistance unit member.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 900
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_tanf_is_assistance_unit_member: false
