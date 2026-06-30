@@ -105,3 +105,14 @@
         has_indian_health_service_coverage_at_interview: true
   output:
     has_chip_disqualifying_health_coverage: false
+
+- name: Case 11, child currently receives Medicaid.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 10
+        is_medicaid_eligible: false
+        receives_medicaid: true
+  output:
+    has_chip_disqualifying_health_coverage: true

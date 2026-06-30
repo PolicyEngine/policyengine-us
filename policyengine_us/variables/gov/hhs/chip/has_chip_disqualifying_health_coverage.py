@@ -4,6 +4,7 @@ from policyengine_us.model_api import *
 CHIP_DISQUALIFYING_HEALTH_COVERAGE_VARIABLES = [
     "has_esi",
     "medicaid_enrolled",
+    "receives_medicaid",
     "has_medicaid_health_coverage_at_interview",
     "medicare_enrolled",
     "has_marketplace_health_coverage_at_interview",

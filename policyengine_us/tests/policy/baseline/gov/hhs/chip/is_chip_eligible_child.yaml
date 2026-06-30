@@ -131,3 +131,21 @@
         members: [head]
   output:
     is_chip_eligible_child: False
+
+- name: TX child receiving Medicaid is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        receives_medicaid: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    has_chip_disqualifying_health_coverage: True
+    is_chip_eligible_child: False
