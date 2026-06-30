@@ -1,8 +1,9 @@
 # Kansas TANF gross income eligibility test
-# Gross income must be less than 30% of Federal Poverty Level
+# Gross income must be less than 30% of the Federal Poverty Level, sized to the
+# assistance unit (SSI recipients excluded, KEESM 4113).
 # Source: K.S.A. 39-709, Kansas TANF State Plan FFY 2024-2026
-# 2025 FPL (contiguous US): $15,650 first person + $5,580 per additional
-# 30% monthly thresholds: 1=$391, 2=$530, 3=$670, 4=$809
+# 2025 FPL (contiguous US): $15,650 first person + $5,500 per additional.
+# 30% monthly thresholds: 1=$391.25, 2=$528.75, 3=$666.25, 4=$803.75.
 
 - name: Case 1, no income, eligible.
   period: 2025-01
@@ -10,7 +11,7 @@
     state_code: KS
     tanf_gross_earned_income: 0
     tanf_gross_unearned_income: 0
-    spm_unit_size: 3
+    ks_tanf_assistance_unit_size: 3
   output:
     ks_tanf_gross_income_eligible: true
 
@@ -20,9 +21,9 @@
     state_code: KS
     tanf_gross_earned_income: 400
     tanf_gross_unearned_income: 100
-    spm_unit_size: 3
+    ks_tanf_assistance_unit_size: 3
   output:
-    # Gross: $500, threshold ~$670 (30% of $26,810/12)
+    # Gross: $500 < size-3 threshold $666.25
     ks_tanf_gross_income_eligible: true
 
 - name: Case 3, income above 30% FPL for family of 3.
@@ -31,9 +32,9 @@
     state_code: KS
     tanf_gross_earned_income: 600
     tanf_gross_unearned_income: 200
-    spm_unit_size: 3
+    ks_tanf_assistance_unit_size: 3
   output:
-    # Gross: $800 > threshold ~$670
+    # Gross: $800 > size-3 threshold $666.25
     ks_tanf_gross_income_eligible: false
 
 - name: Case 4, single person low income.
@@ -42,9 +43,9 @@
     state_code: KS
     tanf_gross_earned_income: 300
     tanf_gross_unearned_income: 0
-    spm_unit_size: 1
+    ks_tanf_assistance_unit_size: 1
   output:
-    # Gross: $300, threshold ~$391 (30% of $15,650/12)
+    # Gross: $300 < size-1 threshold $391.25
     ks_tanf_gross_income_eligible: true
 
 - name: Case 5, single person at threshold.
@@ -53,9 +54,9 @@
     state_code: KS
     tanf_gross_earned_income: 400
     tanf_gross_unearned_income: 0
-    spm_unit_size: 1
+    ks_tanf_assistance_unit_size: 1
   output:
-    # Gross: $400 > threshold ~$391
+    # Gross: $400 > size-1 threshold $391.25
     ks_tanf_gross_income_eligible: false
 
 - name: Case 6, family of 4 below threshold.
@@ -64,7 +65,59 @@
     state_code: KS
     tanf_gross_earned_income: 500
     tanf_gross_unearned_income: 200
-    spm_unit_size: 4
+    ks_tanf_assistance_unit_size: 4
   output:
-    # Gross: $700, threshold ~$809 (30% of $32,390/12)
+    # Gross: $700 < size-4 threshold $803.75
     ks_tanf_gross_income_eligible: true
+
+- name: Case 7, SSI member's income and household size both excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 500
+      person2:
+        age: 8
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+        tanf_gross_unearned_income: 600
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Assistance unit size = 2 (person2 SSI-excluded). Counted gross = $500
+    # (person2's $600 masked out) < size-2 threshold $528.75 -> eligible.
+    ks_tanf_gross_income_eligible: true
+
+- name: Case 8, FPL threshold sized to the assistance unit, not the full SPM unit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 750
+      person2:
+        age: 8
+      person3:
+        age: 5
+      person4:
+        age: 10
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    # Assistance unit size = 3 (person4 SSI-excluded). Counted gross = $750 >
+    # size-3 threshold $666.25 -> ineligible. The full 4-person SPM size would
+    # give $803.75 and wrongly pass.
+    ks_tanf_gross_income_eligible: false

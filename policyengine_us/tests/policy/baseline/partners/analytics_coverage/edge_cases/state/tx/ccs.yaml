@@ -65,9 +65,11 @@
   output:
     # Expense $1,000/month capped at max rate $600/month, then copay deducted.
     # Exercises the post-cap copay deduction path (bug fix in #8510).
+    # FY2027 SMI update anchored period-2026 TX SMI to the raw FY2026 value
+    # (no longer uprated), raising the SMI-based copay (5847.79 -> 5805.69).
     spm_units:
       spm_unit:
-        tx_ccs: 5847.79
+        tx_ccs: 5805.69
 - name: tx_ccs_above_85pct_smi (tx)
   period: 2026
   absolute_error_margin: 0.1

@@ -1,0 +1,20 @@
+description: Arizona provides this amount as the daily reimbursement rate under the Child Care Assistance Program.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Arizona CCAP child care center daily reimbursement rate
+  breakdown:
+    - az_ccap_age_group
+  reference:
+    - title: Arizona DES Maximum Reimbursement Rates for Child Care
+      href: https://des.az.gov/sites/default/files/dl/CCA-1227A.pdf
+INFANT:
+  2025-11-01: 64.15
+TODDLER:
+  2025-11-01: 48.7
+PRESCHOOL:
+  2025-11-01: 42
+SCHOOL_AGE_SUMMER:
+  2025-11-01: 35
+SCHOOL_AGE_SCHOOL_YEAR:
+  2025-11-01: 25

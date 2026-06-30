@@ -1,0 +1,320 @@
+# Tests MN CCAP income eligibility against the SMI limits (manual section 6.3,
+# DHS-6413N p.5). Limits reuse federal hhs_smi x {47% / 67% / 85%}. For a
+# 3-person household, FFY2026 hhs_smi = 120,958.32, so:
+#   47% (non-MFIP entrance) = 56,850.41
+#   67% (MFIP/DWP entrance) = 81,042.07
+#   85% (exit during period) = 102,814.57
+# A new applicant (not enrolled) and not on MFIP/DWP uses the 47% limit.
+# Annual income inputs (employment_income is annual) are compared against the
+# annual SMI limit; the monthly variable annualizes income before the test.
+- name: Case 1, non-MFIP applicant just below the 47 percent entrance limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 56,000 < 56,850.41 -> eligible.
+    mn_ccap_income_eligible: true
+
+- name: Case 2, non-MFIP applicant above the 47 percent entrance limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 60,000 > 56,850.41 -> ineligible at the 47% entrance limit.
+    mn_ccap_income_eligible: false
+
+- name: Case 3, MFIP applicant qualifies under the higher 67 percent entrance limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: true  # MFIP/DWP path -> 67% entrance limit
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 60,000 < 81,042.07 -> eligible under the MFIP/DWP 67% entrance limit.
+    mn_ccap_income_eligible: true
+
+- name: Case 4, enrolled family stays eligible up to the 85 percent exit limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 95_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: true  # already enrolled -> 85% during-period exit limit
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 95,000 < 102,814.57 -> still eligible during the 12-month period.
+    mn_ccap_income_eligible: true
+
+- name: Case 5, enrolled family above the 85 percent exit limit loses eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 110_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: true
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 110,000 > 102,814.57 -> ineligible.
+    mn_ccap_income_eligible: false
+
+# Edge cases.
+# The income test uses inclusive <= (income at or below the limit is eligible).
+# Limits reuse the FFY2026 federal hhs_smi, computed live, so boundary income
+# values straddle the actual computed limit, not the header's illustrative
+# numbers. 2026 hhs_smi: size 2 = 97,918.64; size 3 = 120,958.32.
+#   size 2 47% = 46,021.76; size 3 67% = 81,042.07; size 3 85% = 102,814.57.
+- name: Case 6, size-2 non-MFIP applicant one dollar below the 47 percent limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_021  # below 46,021.76 (size-2 47% limit)
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 46,021 <= 46,021.76 -> eligible.
+    mn_ccap_income_eligible: true
+
+- name: Case 7, size-2 non-MFIP applicant one dollar above the 47 percent limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_022  # above 46,021.76 (size-2 47% limit)
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 46,022 > 46,021.76 -> ineligible.
+    mn_ccap_income_eligible: false
+
+- name: Case 8, size-3 MFIP applicant one dollar below the 67 percent limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_042  # below 81,042.07 (size-3 67% limit)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: true  # MFIP/DWP -> 67% entrance limit
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 81,042 <= 81,042.07 -> eligible.
+    mn_ccap_income_eligible: true
+
+- name: Case 9, size-3 MFIP applicant one dollar above the 67 percent limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_043  # above 81,042.07 (size-3 67% limit)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 81,043 > 81,042.07 -> ineligible.
+    mn_ccap_income_eligible: false
+
+- name: Case 10, size-3 enrolled family one dollar below the 85 percent exit limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 102_814  # below 102,814.57 (size-3 85% exit limit)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: true  # 85% during-period exit limit
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 102,814 <= 102,814.57 -> still eligible during the period.
+    mn_ccap_income_eligible: true
+
+- name: Case 11, size-3 enrolled family one dollar above the 85 percent exit limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 102_815  # above 102,814.57 (size-3 85% exit limit)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: true
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 102,815 > 102,814.57 -> ineligible.
+    mn_ccap_income_eligible: false
+
+- name: Case 12, zero income is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mn_ccap_enrolled: false
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 0 <= any positive limit -> eligible.
+    mn_ccap_income_eligible: true
+
+- name: Case 13, MFIP enrolled family uses the 85 percent exit limit, not the 67 percent entrance limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 95_000  # above 81,042.07 (67% entrance) but below 102,814.57 (85% exit)
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        mn_ccap_enrolled: true  # enrollment overrides the entrance limit
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Enrolled families test against 85% regardless of MFIP/DWP status.
+    # 95,000 <= 102,814.57 -> eligible.
+    mn_ccap_income_eligible: true

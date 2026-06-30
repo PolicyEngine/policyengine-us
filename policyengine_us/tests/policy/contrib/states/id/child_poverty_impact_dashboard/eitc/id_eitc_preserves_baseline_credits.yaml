@@ -1,0 +1,30 @@
+# Regression test for #8775: the ID EITC reform must ADD the new refundable
+# EITC to Idaho's baseline refundable credits (grocery credit, aged/disabled
+# credit), not replace the baseline list. Baseline credits are supplied as
+# inputs for a deterministic expected value.
+- name: ID reform preserves baseline refundable credits and adds the EITC
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ID
+    eitc: 1_000
+    id_grocery_credit: 200
+    id_aged_or_disabled_credit: 50
+  output:
+    id_eitc: 100
+    # 100 EITC + 200 grocery + 50 aged/disabled
+    id_refundable_credits: 350
+
+- name: ID baseline refundable credits remain when the EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.id.eitc.id_eitc
+  input:
+    gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: ID
+    eitc: 0
+    id_grocery_credit: 200
+    id_aged_or_disabled_credit: 50
+  output:
+    id_eitc: 0
+    id_refundable_credits: 250  # baseline credits not deleted
