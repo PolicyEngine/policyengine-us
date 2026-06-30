@@ -1,0 +1,390 @@
+# End-to-end integration tests for the Ohio CCAP (Publicly Funded Child Care)
+# pipeline: eligibility -> per-child base rate -> add-ons (capped at the
+# customary charge) -> sum across children -> subtract the family copay.
+#
+# Federal poverty guidelines (CONTIGUOUS_US, 2026): annual 100% FPG =
+#   15,960 + 5,680 * (size - 1). Monthly = annual / 12.
+#   Size 2 = 21,640/yr (1,803.33/mo); size 3 = 27,320/yr (2,276.67/mo);
+#   size 4 = 33,000/yr (2,750/mo).
+# Income and rate parameters take effect in late 2025, so all cases use 2026-01.
+# Tests query oh_child_care_subsidies (a YEAR aggregator of the monthly oh_ccap);
+# in a MONTH-period test its output equals the monthly oh_ccap value.
+
+- name: Case 1, basic eligible family, one toddler in a category 3 center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 2  # toddler
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40  # full-time
+        pre_subsidy_childcare_expenses: 30_000  # 2,500/month customary charge
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    oh_ccap_eligible_child: [false, true]
+    # Income 2,000/month <= 145% of 1,803.33 = 2,614.83.
+    oh_ccap_income_eligible: true
+    oh_ccap_eligible: true
+    # The age-group formula runs for everyone; the 30-year-old parent maps to
+    # the School-Age band (oldest), and the child is a toddler.
+    oh_ccap_child_age_group: [SCHOOL_AGE, TODDLER]
+    oh_ccap_county_rate_category: CATEGORY_3
+    # Base = 292.15/week * 52 / 12 = 1,265.98; no add-ons; under the 2,500 cap.
+    oh_ccap_base_rate: [0, 1_265.98]
+    oh_ccap_rate_with_addons: [0, 1_265.98]
+    # Copay (size 2): ratio = 2,000*12/21,640 = 1.109, which rounds up to the
+    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074; multiplier 0.077;
+    # weekly = round(2,074*0.077) = round(159.7) = 160; monthly copay = 160.
+    oh_ccap_copay: 160
+    # 1,265.98 - 160 = 1,105.98.
+    oh_ccap: 1_105.98
+    oh_child_care_subsidies: 1_105.98
+
+- name: Case 2, Gold-rated center with a copay, family of three.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # 1,500/month
+      person2:
+        age: 28
+        employment_income: 18_000  # 1,500/month — total 3,000/month
+      person3:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000  # 5,000/month, no cap
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    oh_ccap_income_eligible: true  # 3,000/month <= 145% of 2,276.67 = 3,301.17
+    oh_ccap_eligible: true
+    # Both parents map to the School-Age band; the child is preschool.
+    oh_ccap_child_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL]
+    oh_ccap_county_rate_category: CATEGORY_2
+    # Base = 190/week * 52 / 12 = 823.33; Gold +25% = 1,029.17.
+    oh_ccap_rate_with_addons: [0, 0, 1_029.17]
+    # Copay: ratio 1.318 -> 1.35; band max = ceil(1.35*27,320/12) = 3,074;
+    #   multiplier 0.0875; weekly = round(3,074*0.0875) = round(268.98) = 269;
+    # monthly copay = 269.
+    oh_ccap_copay: 269
+    # 1,029.17 - 269 = 760.17.
+    oh_ccap: 760.17
+
+- name: Case 3, single parent with two children, copay waived below 100% FPG.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 0.5  # infant
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+      person3:
+        age: 9  # school-age (school year in January)
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    oh_ccap_eligible_child: [false, true, true]
+    oh_ccap_eligible: true  # 2,000/month <= 145% of 2,276.67 = 3,301.17 (size 3)
+    # The parent maps to the School-Age band; the children are infant and
+    # school-age (school year in January).
+    oh_ccap_child_age_group: [SCHOOL_AGE, INFANT, SCHOOL_AGE]
+    # Infant base = 325/week * 52 / 12 = 1,408.33;
+    # School-age base = 165/week * 52 / 12 = 715.
+    oh_ccap_rate_with_addons: [0, 1_408.33, 715]
+    # Copay: ratio 2,000*12/27,320 = 0.879 (below 100% FPG) -> $0.
+    oh_ccap_copay: 0
+    # 1,408.33 + 715 - 0 = 2,123.33.
+    oh_ccap: 2_123.33
+
+- name: Case 4, homeless family keeps eligibility and pays no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month, would otherwise owe a copay
+      person2:
+        age: 28
+      person3:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+        is_homeless: true
+  output:
+    oh_ccap_eligible: true
+    # Base = 258/week * 52 / 12 = 1,118; copay waived for homeless families.
+    oh_ccap_rate_with_addons: [0, 0, 1_118]
+    oh_ccap_copay: 0
+    oh_ccap: 1_118
+
+- name: Case 5, SSI recipient's earnings are excluded from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 800  # monthly; person1 receives SSI
+        employment_income: 12_000  # 1,000/month — excluded because of SSI
+      person2:
+        age: 33
+        employment_income: 24_000  # 2,000/month — counted
+      person3:
+        age: 2  # toddler
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    # Sources sum both parents' earnings (3,000/month); person1's 1,000/month is
+    # subtracted because person1 receives SSI -> countable 2,000/month.
+    oh_ccap_countable_income: 2_000
+    oh_ccap_income_eligible: true  # 2,000 <= 145% of 2,276.67 = 3,301.17
+    oh_ccap_eligible: true
+    # Base = 220/week * 52 / 12 = 953.33; copay: ratio 0.879 (below 100%) -> $0.
+    oh_ccap_rate_with_addons: [0, 0, 953.33]
+    oh_ccap_copay: 0
+    oh_ccap: 953.33
+
+- name: Case 6, out-of-Ohio family receives no subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+        county_str: CAMPBELL_COUNTY_KY
+  output:
+    oh_ccap_eligible: false
+    oh_ccap: 0
+    oh_child_care_subsidies: 0
+
+- name: Case 7, income above the intake limit yields no subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000  # 10,000/month, far above 145% FPG
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH
+  output:
+    oh_ccap_income_eligible: false
+    oh_ccap_eligible: false
+    oh_ccap: 0
+
+# Edge cases.
+# Negative self-employment income floors at zero in the copay formula, so the
+# family is income-eligible, owes no copay, and receives the full reimbursement.
+- name: Case 8, self-employment loss yields full subsidy with no negative copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/month, no other income
+      person2:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    # Countable income floors at 0 for the copay; family is below 100% FPG.
+    oh_ccap_countable_income: -5_000
+    oh_ccap_income_eligible: true
+    oh_ccap_eligible: true
+    oh_ccap_copay: 0
+    # Preschool category 3 center full-time = 258/week * 52 / 12 = 1,118; no copay.
+    oh_ccap: 1_118
+
+# Large family with two eligible children and a copay in the 110% band.
+- name: Case 9, large family of six with two eligible children in licensed homes.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2,500/month
+      person2:
+        age: 33
+        employment_income: 18_000  # 1,500/month — total 4,000/month
+      person3:
+        age: 1  # infant
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+      person4:
+        age: 8  # school-age (school year in January)
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+      person5:
+        age: 15  # over age 13, not an eligible child
+        immigration_status: CITIZEN
+      person6:
+        age: 17  # over age 13, not an eligible child
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    oh_ccap_eligible_child: [false, false, true, true, false, false]
+    # Size 6: monthly 100% FPG = 3,696.67; 145% intake limit = 5,360.17;
+    # income 4,000/month is below the limit.
+    oh_ccap_eligible: true
+    # Home infant category 2 full-time = 200/week * 52 / 12 = 866.67;
+    # home school-age category 2 full-time = 160/week * 52 / 12 = 693.33.
+    oh_ccap_rate_with_addons: [0, 0, 866.67, 693.33, 0, 0]
+    # Copay: ratio 4,000*12/44,360 = 1.082 -> rounds up to 1.10 band; band max
+    #   = ceil(1.10 * 44,360 / 12) = ceil(4,066.33) = 4,067; multiplier 0.0735;
+    #   weekly = round(4,067 * 0.0735) = round(298.92) = 299; monthly copay = 299.
+    oh_ccap_copay: 299
+    # 866.67 + 693.33 - 299 = 1,261.
+    oh_ccap: 1_261
+
+# Category 1 licensed home with a Gold quality bonus.
+- name: Case 10, category 1 licensed home Gold-rated toddler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 2  # toddler
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        oh_ccap_quality_tier: GOLD
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: BROWN_COUNTY_OH  # category 1
+  output:
+    oh_ccap_eligible: true
+    # Home toddler category 1 full-time = 162.71/week * 52 / 12 = 705.08;
+    # Gold +25% = 881.35.
+    oh_ccap_rate_with_addons: [0, 881.35]
+    # Copay (size 2): ratio = 2,000*12/21,640 = 1.109, which rounds up to the
+    # 1.15 band; band max = ceil(1.15*21,640/12) = 2,074; multiplier 0.077;
+    # weekly = round(2,074*0.077) = round(159.7) = 160; monthly copay = 160.
+    oh_ccap_copay: 160
+    # 881.35 - 160 = 721.35.
+    oh_ccap: 721.35

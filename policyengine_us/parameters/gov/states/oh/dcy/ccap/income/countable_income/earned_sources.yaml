@@ -1,0 +1,14 @@
+description: Ohio treats these income sources as earned income under the Publicly Funded Child Care program.
+values:
+  2022-02-27:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Ohio PFCC earned income sources
+  reference:
+    - title: OAC 5180:2-16-03(C),(D) — Income eligibility requirements (earned income)
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03

@@ -1,0 +1,114 @@
+# Tests for oh_ccap_countable_income (SPMUnit, MONTH).
+# 5180:2-16-03: countable income is gross earned plus gross unearned income,
+# minus the enumerated exclusions. SSI is excluded (omitted from the sources
+# list), and the earned income of any person receiving SSI is also excluded
+# (subtracted person-level, since a list omission cannot zero one earner's
+# wages). Income variables are YEAR-defined (input annual, output monthly);
+# ssi is MONTH-defined (input monthly).
+- name: Case 1, earned plus unearned income with no SSI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2,000/month
+        social_security: 6_000  # 500/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 2,000 employment + 500 social security = 2,500/month
+    oh_ccap_countable_income: 2_500
+
+- name: Case 2, SSI recipient earnings are excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 800  # monthly; person1 is an SSI recipient
+        employment_income: 12_000  # 1,000/month — excluded because of SSI
+      person2:
+        age: 35
+        employment_income: 24_000  # 2,000/month — counted
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Sources sum the earnings of both parents (3,000/month); SSI itself is not
+    # in the sources list. Person1's 1,000/month earnings are then subtracted
+    # because person1 receives SSI. 3,000 - 1,000 = 2,000.
+    oh_ccap_countable_income: 2_000
+
+- name: Case 3, SSI recipient with only SSI income has zero countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 900  # monthly
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # SSI is not in the sources list, so countable income is 0.
+    oh_ccap_countable_income: 0
+
+# Edge cases.
+- name: Case 4, zero income across the family has zero countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: 0
+
+# This variable itself does not floor at zero; a self-employment loss flows
+# through as negative countable income. The zero floor is applied downstream
+# in oh_ccap_copay (max_(income, 0)) so the loss cannot create a negative copay.
+- name: Case 5, negative self-employment income produces negative countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: -60_000  # -5,000/month, no other income
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: -5_000
