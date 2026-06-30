@@ -6,7 +6,7 @@
 - name: Otherwise sums components.
   period: 2022
   input:
-    market_income: 1
+    employment_income: 1
   output:
     hud_annual_income: 1
 
@@ -15,9 +15,9 @@
   input:
     people:
       p1:
-        market_income: 1
+        employment_income: 1
       p2:
-        market_income: 2
+        interest_income: 2
     spm_units:
       spm_unit:
         members: [p1, p2]
@@ -45,22 +45,91 @@
   output:
     hud_annual_income: 2_000
 
+- name: Counts disability benefits (24 CFR 5.609).
+  period: 2022
+  input:
+    disability_benefits: 4_000
+  output:
+    hud_annual_income: 4_000
+
+- name: Does not count market income, retirement distributions, or capital gains.
+  period: 2022
+  input:
+    market_income: 1_000
+    retirement_distributions: 2_000
+    capital_gains: 3_000
+  output:
+    hud_annual_income: 0
+
+- name: Excludes earned income of children under 18 but counts unearned income.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 16
+        employment_income: 2_000
+        interest_income: 1_000
+        social_security_dependents: 0
+        social_security_disability: 0
+        social_security_retirement: 0
+        social_security_survivors: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        takes_up_tanf_if_eligible: false
+  output:
+    hud_annual_income: 1_000
+
+- name: Counts only the dependent deduction amount of earned income for full-time student dependents.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 2_000
+        interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # min(2_000, 480) + 100
+    hud_annual_income: 580
+
 - name: Sums all counted sources across the unit.
   period: 2022
   input:
     people:
       p1:
-        market_income: 10_000
+        employment_income: 10_000
         social_security: 6_000
         ssi: 3_000
         unemployment_compensation: 5_000
       p2:
         child_support_received: 3_000
         veterans_benefits: 2_000
+        disability_benefits: 4_000
     spm_units:
       spm_unit:
         members: [p1, p2]
         tanf: 1_000
   output:
-    # 10_000 + 6_000 + 3_000 + 5_000 + 3_000 + 2_000 + 1_000
-    hud_annual_income: 30_000
+    # 10_000 + 6_000 + 3_000 + 5_000 + 3_000 + 2_000 + 4_000 + 1_000
+    hud_annual_income: 34_000
+
+- name: Does not count debt relief or the Alaska Permanent Fund dividend.
+  period: 2022
+  input:
+    debt_relief: 5_000
+    ak_permanent_fund_dividend: 1_000
+  output:
+    hud_annual_income: 0

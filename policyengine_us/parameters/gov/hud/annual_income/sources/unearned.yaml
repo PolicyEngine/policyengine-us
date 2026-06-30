@@ -1,0 +1,31 @@
+description: HUD counts these income sources as unearned income under its assisted housing programs.
+values:
+  2024-01-01:
+    - pension_income
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - rental_income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - illicit_income
+    - miscellaneous_income
+    - alimony_income
+    - strike_benefits
+    - social_security
+    - ssi
+    - tanf
+    - general_assistance
+    - unemployment_compensation
+    - child_support_received
+    - veterans_benefits
+    - disability_benefits
+    - survivor_benefits
+    - financial_assistance
+metadata:
+  unit: list
+  period: year
+  label: HUD unearned income sources
+  reference:
+    - title: 24 CFR § 5.609(a)(1), (a)(2)
+      href: https://www.law.cornell.edu/cfr/text/24/5.609
