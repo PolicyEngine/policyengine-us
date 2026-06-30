@@ -23,3 +23,44 @@
         members: [p1, p2]
   output:
     hud_annual_income: 3
+
+- name: Counts unemployment compensation (24 CFR 5.609).
+  period: 2022
+  input:
+    unemployment_compensation: 5_000
+  output:
+    hud_annual_income: 5_000
+
+- name: Counts child support received (24 CFR 5.609).
+  period: 2022
+  input:
+    child_support_received: 3_000
+  output:
+    hud_annual_income: 3_000
+
+- name: Counts veterans' benefits (24 CFR 5.609).
+  period: 2022
+  input:
+    veterans_benefits: 2_000
+  output:
+    hud_annual_income: 2_000
+
+- name: Sums all counted sources across the unit.
+  period: 2022
+  input:
+    people:
+      p1:
+        market_income: 10_000
+        social_security: 6_000
+        ssi: 3_000
+        unemployment_compensation: 5_000
+      p2:
+        child_support_received: 3_000
+        veterans_benefits: 2_000
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+        tanf: 1_000
+  output:
+    # 10_000 + 6_000 + 3_000 + 5_000 + 3_000 + 2_000 + 1_000
+    hud_annual_income: 30_000

@@ -10,4 +10,12 @@ class hud_annual_income(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.609"
 
-    adds = ["market_income", "social_security", "ssi", "tanf"]
+    adds = [
+        "market_income",
+        "social_security",
+        "ssi",
+        "tanf",
+        "unemployment_compensation",
+        "child_support_received",
+        "veterans_benefits",
+    ]
