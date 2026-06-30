@@ -236,7 +236,8 @@
         age: 30
         is_blind: true
         employment_income: 9_600 # $800 monthly
-        ssi: 0
+        ssi_reported: 0  # Report $0 SSI, e.g. API partner scenario
+        use_reported_ssi: true  # Count reported ($0) SSI in the AABD income test
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
