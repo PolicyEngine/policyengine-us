@@ -5,7 +5,7 @@
     state_code: AL
     is_chip_eligible: true
   output:
-    per_capita_chip: 2_228.77
+    per_capita_chip: 2_550.51
 
 - name: Ineligible - integration test
   period: 2023
@@ -25,20 +25,29 @@
   output:
     per_capita_chip: 0
 
-- name: Case 4, Alabama uses aligned FY2024 spending and enrollment.
+- name: Case 4, Alabama uses aligned FY2024 separate CHIP spending and enrollment.
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: AL
     is_chip_eligible: true
   output:
-    per_capita_chip: 2_209.43
+    per_capita_chip: 2_619.02
 
-- name: Case 5, Maryland avoids the incompatible FY2024 child-enrollment denominator.
+- name: Case 5, Maryland has no separate CHIP child enrollment denominator.
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: MD
     is_chip_eligible: true
   output:
-    per_capita_chip: 4_913.29
+    per_capita_chip: 0
+
+- name: Case 6, Kansas uses MACPAC separate CHIP spending and enrollment.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: KS
+    is_chip_eligible: true
+  output:
+    per_capita_chip: 1_896.49
