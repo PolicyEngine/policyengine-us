@@ -59,3 +59,19 @@
     state_code: KS
   output:
     per_capita_chip_gross: 1_962.06
+
+- name: Case 8, Oklahoma negative 2023 gross separate CHIP spending does not reduce benefits.
+  period: 2023
+  input:
+    is_chip_eligible: true
+    state_code: OK
+  output:
+    per_capita_chip_gross: 0
+
+- name: Case 9, Oklahoma negative 2024 gross separate CHIP spending does not reduce benefits.
+  period: 2024
+  input:
+    is_chip_eligible: true
+    state_code: OK
+  output:
+    per_capita_chip_gross: 0

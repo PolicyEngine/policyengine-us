@@ -19,7 +19,7 @@ class per_capita_chip(Variable):
         state_code = person.household("state_code", period)
         p = parameters(period).calibration.gov.hhs.cms.chip
 
-        spending = p.spending.separate_chip.total[state_code]
+        spending = max_(p.spending.separate_chip.total[state_code], 0)
         enrollment = p.enrollment.separate_chip[state_code]
 
         per_capita = np.zeros_like(enrollment, dtype=float)

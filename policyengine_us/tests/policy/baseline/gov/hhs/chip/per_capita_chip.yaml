@@ -51,3 +51,19 @@
     is_chip_eligible: true
   output:
     per_capita_chip: 1_896.49
+
+- name: Case 7, Oklahoma negative 2023 separate CHIP spending does not reduce benefits.
+  period: 2023
+  input:
+    state_code: OK
+    is_chip_eligible: true
+  output:
+    per_capita_chip: 0
+
+- name: Case 8, Oklahoma negative 2024 separate CHIP spending does not reduce benefits.
+  period: 2024
+  input:
+    state_code: OK
+    is_chip_eligible: true
+  output:
+    per_capita_chip: 0

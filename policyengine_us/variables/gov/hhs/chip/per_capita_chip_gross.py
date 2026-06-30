@@ -28,7 +28,7 @@ class per_capita_chip_gross(Variable):
 
         net_spending = p.spending.separate_chip.total[state_code]
         offsets = p.cost_sharing_offsets.separate_chip[state_code]
-        gross_spending = net_spending + offsets
+        gross_spending = max_(net_spending + offsets, 0)
         enrollment = p.enrollment.separate_chip[state_code]
 
         per_capita = np.zeros_like(enrollment, dtype=float)
