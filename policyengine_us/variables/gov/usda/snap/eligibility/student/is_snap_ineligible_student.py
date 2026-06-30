@@ -6,19 +6,22 @@ class is_snap_ineligible_student(Variable):
     entity = Person
     label = "Is an ineligible student for SNAP"
     definition_period = YEAR
+    defined_for = "is_snap_higher_ed_student"
     reference = "https://www.law.cornell.edu/uscode/text/7/2015#e"
 
     def formula(person, period, parameters):
         # Base rule: Students enrolled at least half-time in higher education
-        # are ineligible (K-12 students are not affected by this rule)
-        is_higher_ed_student = person("is_snap_higher_ed_student", period)
+        # are ineligible (K-12 students are not affected by this rule).
+        # This is guarded by defined_for = "is_snap_higher_ed_student".
 
         # Eight statutory exceptions that make students eligible:
 
         # Exception 1: Under 18 or age 50 or older
         age = person("age", period)
         p = parameters(period).gov.usda.snap.student
-        meets_age_exception = p.age_threshold.calc(age)
+        # Cast to bool: single_amount bool brackets return int (0/1), which
+        # would make the ~ below a bitwise negation instead of a logical one.
+        meets_age_exception = p.age_threshold.calc(age).astype(bool)
 
         # Exception 2: Not physically or mentally fit (disabled)
         meets_disability_exception = person("is_disabled", period)
@@ -45,14 +48,12 @@ class is_snap_ineligible_student(Variable):
         # program under title IV (TANF work programs) or successor programs
         # Not modeled
 
-        # Student is INELIGIBLE if they are a higher ed student AND
-        # they do NOT meet ANY of the eight exceptions
-        meets_any_exception = (
+        # A higher education student is INELIGIBLE if they do NOT meet ANY
+        # of the eight exceptions
+        return ~(
             meets_age_exception
             | meets_disability_exception
             | meets_work_hours_exception
             | meets_parent_exception
             | receives_tanf
         )
-
-        return is_higher_ed_student & ~meets_any_exception

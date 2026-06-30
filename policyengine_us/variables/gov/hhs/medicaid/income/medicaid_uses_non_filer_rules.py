@@ -11,9 +11,6 @@ class medicaid_uses_non_filer_rules(Variable):
     def formula(person, period, parameters):
         is_tax_dependent = person("medicaid_is_tax_dependent", period)
         is_tax_filer = person.tax_unit("tax_unit_is_filer", period) & ~is_tax_dependent
-        claimed_by_another_return = person(
-            "claimed_as_dependent_on_another_return", period
-        )
         dependent_exception = (
             person(
                 "medicaid_tax_dependent_exception_other_than_spouse_or_child",
@@ -31,9 +28,6 @@ class medicaid_uses_non_filer_rules(Variable):
 
         return (
             (~is_tax_filer & ~is_tax_dependent)
-            # The model records that the person is claimed elsewhere, but not
-            # which return claims them, so we conservatively fall back to the
-            # non-filer household until claimant links exist.
-            | claimed_by_another_return
+            | person("medicaid_uses_missing_claimant_fallback", period)
             | dependent_exception
         )
