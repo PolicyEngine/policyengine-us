@@ -1,3 +1,10 @@
+## [1.751.1] - 2026-06-30
+
+### Fixed
+
+- Correct child care program coverage metadata in programs.yaml (remove duplicate coverage key; mark Alabama, New Jersey, South Carolina, and Virginia child care programs as complete).
+
+
 ## [1.751.0] - 2026-06-30
 
 ### Added
