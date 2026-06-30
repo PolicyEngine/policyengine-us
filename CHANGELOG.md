@@ -1,3 +1,10 @@
+## [1.749.1] - 2026-06-30
+
+### Changed
+
+- Replaced IL AABD-specific SSI override variables with the generic applicable_ssi variable and kept applicable SSI monthly for IL AABD income tests.
+
+
 ## [1.749.0] - 2026-06-29
 
 ### Added
