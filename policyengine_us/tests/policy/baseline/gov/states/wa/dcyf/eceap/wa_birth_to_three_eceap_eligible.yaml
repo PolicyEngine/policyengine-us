@@ -52,13 +52,13 @@
     # $50,000 well above 130% FPL family of 2, no SNAP — not eligible.
     wa_birth_to_three_eceap_eligible: [false, false]
 
-- name: 2027 family with 2-year-old at $50,000, BT3 SMI era — eligible.
+- name: 2027 family with 2-year-old at $49,000, BT3 SMI era — eligible.
   period: 2027
   input:
     people:
       parent:
         age: 30
-        employment_income: 50_000
+        employment_income: 49_000
       child:
         age: 2
         employment_income: 0
@@ -74,7 +74,7 @@
         members: [parent, child]
         state_code: WA
   output:
-    # By 2027 the toggle has flipped — BT3 uses 50% SMI. $50,000 < 50% SMI family of 2.
+    # By 2027 the toggle has flipped — BT3 uses 50% SMI. $49,000 < 50% SMI family of 2 ($49,917).
     wa_birth_to_three_eceap_eligible: [false, true]
 
 - name: Family with 3-year-old at low income, not BT3 eligible (age 3 is ECEAP, not BT3).

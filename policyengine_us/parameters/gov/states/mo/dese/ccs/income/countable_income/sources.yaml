@@ -1,0 +1,50 @@
+description: Missouri counts these income sources toward monthly gross income under the Child Care Subsidy program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    # Regular monthly survivor / RSDI benefits are counted; only death and
+    # burial lump sums are excluded (Manual sec. 5.6.1).
+    - social_security
+    - pension_income
+    # PolicyEngine records military retirement separately from pension_income.
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    - interest_income
+    - dividend_income
+    - rental_income
+    # Estate income is an enumerated gross income type (5 CSR 25-200.050(20)(F)).
+    - estate_income
+    # The student/education-maintenance portion of veterans benefits is excluded
+    # (Manual sec. 5.6.1(8)) but we don't track that split at the moment, so the
+    # gross amount is counted.
+    - veterans_benefits
+    #
+    # The Manual lists the excluded income types in secs. 5.6.1-5.6.6; they are
+    # modeled by omission (anything not listed above is not counted). Excluded
+    # types that DO have a PolicyEngine variable are deliberately left out:
+    # - ssi (Manual sec. 5.6.1(14))
+    # - tanf (the Manual sec. 9.1 sliding fee treats Temporary Assistance as the
+    #   family's only income under the $1/year rule; also omitted to avoid the
+    #   Child Care Subsidy -> TANF circular dependency, handled via
+    #   is_tanf_enrolled in mo_ccs_copay)
+    # - capital_gains (Manual sec. 5.6.2(3) — treated as a resource, not income)
+    # Excluded types with no PolicyEngine variable (foster care, adoption
+    # subsidy, LIHEAP, SNAP value, HUD allowances, tribal funds, restitution
+    # payments, educational grants/loans, etc.) are excluded automatically.
+    #
+    # Provisions we don't model at the moment:
+    # - Manual sec. 5.6.3(2) exclusion of a school-attending child's earnings —
+    #   we don't filter income sources by the age of the earner.
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri Child Care Subsidy countable income sources
+  reference:
+    - title: 5 CSR 25-200.050(20) Definitions (Gross Income)
+      href: https://www.law.cornell.edu/regulations/missouri/5-CSR-25-200-050

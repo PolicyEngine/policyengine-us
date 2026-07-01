@@ -90,3 +90,84 @@
         members: [parent1, parent2, child]
   output:
     is_snap_ineligible_student: [false, false, false]
+
+- name: Full-time college student placed in school through an employment and training program is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 20
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    is_parent: false
+    is_snap_employment_training_student: true
+  output:
+    is_snap_ineligible_student: false
+
+- name: Half-time college student placed in school through an employment and training program is exempt
+  period: 2022
+  input:
+    is_part_time_college_student: true
+    age: 20
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    is_parent: false
+    is_snap_employment_training_student: true
+  output:
+    is_snap_ineligible_student: false
+
+- name: College student age 50 or older is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 50
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    is_parent: false
+  output:
+    is_snap_ineligible_student: false
+
+- name: Disabled college student is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 25
+    is_disabled: true
+    weekly_hours_worked_before_lsr: 0
+    is_parent: false
+  output:
+    is_snap_ineligible_student: false
+
+- name: College student working at least 20 hours per week is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 25
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 20
+    is_parent: false
+  output:
+    is_snap_ineligible_student: false
+
+- name: College student participating in federal work study is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 25
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    is_federal_work_study_participant: true
+    is_parent: false
+  output:
+    is_snap_ineligible_student: false
+
+- name: College student enrolled through a work incentive program is exempt
+  period: 2022
+  input:
+    is_full_time_college_student: true
+    age: 25
+    is_disabled: false
+    weekly_hours_worked_before_lsr: 0
+    is_parent: false
+    is_snap_work_incentive_student: true
+  output:
+    is_snap_ineligible_student: false

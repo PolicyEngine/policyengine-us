@@ -10,3 +10,10 @@
 PolicyEngine US is a microsimulation model of the US state and federal tax and benefit system.
 
 To install, run `pip install policyengine-us`.
+
+To install PolicyEngine US as part of a certified PolicyEngine bundle, use the
+bundle installer published by `policyengine`, for example:
+
+```bash
+uvx --from policyengine policyengine bundle install --country us --venv .venv
+```

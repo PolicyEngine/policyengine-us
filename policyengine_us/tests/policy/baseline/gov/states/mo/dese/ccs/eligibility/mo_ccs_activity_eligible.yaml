@@ -1,0 +1,190 @@
+# MO CCS activity (need for care) eligibility tests
+# mo_ccs_activity_eligible is SPMUnit, MONTH.
+# Requires at least one tax-unit head/spouse, and every head/spouse to have a
+# qualifying activity: employment (weekly_hours_worked > 0), full-time study,
+# or being an incapacitated parent (modeled as is_disabled; Manual sec. 6.5).
+# We don't track activity-hours verification at the moment, so any positive
+# activity is treated as meeting the need (Manual secs. 6.1-6.5).
+
+- name: Case 1, working parent meets activity requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_activity_eligible: true
+
+- name: Case 2, parent with no activity fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_activity_eligible: false
+
+- name: Case 3, full-time student parent meets requirement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_activity_eligible: true
+
+- name: Case 4, two-parent unit where one parent has no activity fails.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # Every head/spouse must have an activity; the non-working spouse fails it.
+    mo_ccs_activity_eligible: false
+
+- name: Case 5, unit with only dependents does not vacuously pass.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # No head/spouse present -> not eligible.
+    mo_ccs_activity_eligible: false
+
+- name: Case 6, two-parent unit with one working and one incapacitated parent passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    # An incapacitated parent is itself a valid need for care (Manual
+    # sec. 6.5), so the disabled non-working spouse satisfies the per-parent
+    # activity requirement and the unit passes.
+    mo_ccs_activity_eligible: true
+
+- name: Case 7, homeless family with no other activity meets need for care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    # The head has no employment, is not a student, and is not disabled, but the
+    # family is homeless. Homelessness is a valid need for care for the whole
+    # family (Manual sec. 6.8), so the activity requirement is satisfied.
+    mo_ccs_activity_eligible: true

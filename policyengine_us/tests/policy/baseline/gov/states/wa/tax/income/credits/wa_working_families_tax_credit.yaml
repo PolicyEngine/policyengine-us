@@ -150,6 +150,60 @@
   output:
     wa_working_families_tax_credit: 640
 
+- name: Case 6b, phase-out keys off federal phase-out income (max of earned income and AGI), not earnings alone.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        unemployment_compensation: 16_000
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child1:
+        age: 8
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+      child3:
+        age: 12
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: WA
+  output:
+    # Earned income ($40,000) is below the 3-child phase-out start (~$54,190),
+    # but AGI ($56,000, incl. $16,000 unemployment) lands inside the phase-out
+    # band. RCW 82.08.0206(3)(b) measures the reduction against the federal
+    # phase-out income = max(earned income, AGI) = $56,000, so the $1,330
+    # maximum tapers at 25.6% over the ~$1,810 of excess to ~$866.57 rather
+    # than paying the full $1,330. See policyengine-taxsim#986.
+    wa_working_families_tax_credit: 866.57
+
 # ESSB 6346 Sec. 901 - WFTC Age Expansion tests (effective 2029)
 
 - name: Case 7, age 18+ without EITC gets WFTC under 2029 age expansion.

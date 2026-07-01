@@ -1,0 +1,476 @@
+# Michigan CDC (CCAP) integration tests.
+#
+# Subsidy model (BEM 706): per child per two-week pay period,
+#   reimbursement = hourly_rate x block_hours(authorized),
+# where the authorized hours pick the full block they fall into (1-30 -> 30,
+# 31-60 -> 60, 61+ -> 90; the authorization is a ceiling on billable hours,
+# not a downward cap on the block, BEM 706 p.9-13). License-exempt providers
+# are paid hourly with no block. The reimbursement is capped at the child's
+# monthly charge, less the flat family contribution, floored at zero, then
+# converted to monthly. There are 26 two-week pay periods per year, so the
+# monthly conversion factor is 52/2/12 = 2.16667. Billed hours are not tracked
+# separately from authorized hours, so the block is keyed to authorized hours.
+# Authorized hours = caretaker weekly activity x 2 + 10 travel hours per pay
+# period, rounded up to the next whole hour, then mapped to a tier (BEM 710).
+#
+# Rates (RFT 270 Table 2, eff 2024-09-22):
+#   Center STAR_1: Inf/Tod 7.15, Preschool 5.05, School 4.90
+#   Center STAR_5: Inf/Tod 9.60
+#   Family home STAR_3: School 6.00
+#   License-exempt Level 1: 2.95 all ages
+# Income scale (RFT 270 Table 1, eff 2025-09-21):
+#   Size 2 entry (col 2) 3,526; band floors 0/1,763/3,526/...
+#   Size 4 entry 5,358; band floors 0/2,679/5,358/...
+# FC per child by band: 0/15/30/45/60/69/78; family limit 0/45/83/121/...
+
+- name: Case 1, single working parent, infant at a 1 Star center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 3,500/mo
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000  # 2,500/mo, above the subsidy so the cap does not bind
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Child age 1 < 13, citizen, dependent -> eligible child
+    mi_ccap_eligible_child: [false, true]
+    # 3,500 <= 3,526 entry limit -> income eligible
+    mi_ccap_income_eligible: true
+    mi_ccap_eligible: true
+    # 40 hrs/week x 2 = 80 + 10 travel = 90 biweekly need -> tier 90
+    mi_ccap_authorized_hours: 90
+    # Center STAR_1 infant/toddler hourly rate
+    mi_ccap_hourly_rate: [0, 7.15]
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
+    # 3,500/mo -> size 2 band 1, per-child FC 15, 1 paying child, cap 45 -> 15/pp
+    mi_ccap_family_contribution: 15
+    # monthly payment = 643.50 x 2.16667 = 1,394.25
+    # monthly FC = 15 x 2.16667 = 32.50
+    # benefit = 1,394.25 - 32.50 = 1,361.75
+    mi_ccap: 1_361.75
+
+- name: Case 2, two working parents, two children at a 1 Star center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
+      person2:
+        age: 32
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    mi_ccap_eligible_child: [false, false, true, true]
+    # Size 4, 5,000 <= 5,358 entry -> income eligible
+    mi_ccap_income_eligible: true
+    mi_ccap_eligible: true
+    # Both parents work; highest need = 80 + 10 = 90 biweekly -> tier 90
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; person3 infant 7.15 x 90 = 643.50,
+    # person4 preschool 5.05 x 90 = 454.50
+    mi_ccap_block_payment: [0, 0, 643.50, 454.50]
+    # 5,000/mo -> size 4 band 1, per-child FC 15, 2 paying children = 30, cap 45 -> 30/pp
+    mi_ccap_family_contribution: 30
+    # monthly: person3 643.50 x 2.16667 = 1,394.25; person4 454.50 x 2.16667 = 984.75
+    # total = 2,379.00; monthly FC = 30 x 2.16667 = 65.00
+    # benefit = 2,379.00 - 65.00 = 2,314.00
+    mi_ccap: 2_314.00
+
+- name: Case 3, family contribution waived at a 3 Star provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 travel = 70 -> authorized 80
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: FAMILY_HOME
+        mi_ccap_star_rating: STAR_3
+        pre_subsidy_childcare_expenses: 15_000  # 1,250/mo, cap does not bind
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+    # 30 hrs/week x 2 = 60 + 10 travel = 70 biweekly -> tier 80
+    mi_ccap_authorized_hours: 80
+    # Family home STAR_3 school age 6.00 x 90 (61+ block) = 540.00
+    mi_ccap_block_payment: [0, 540.00]
+    # 3 Star provider waives the contribution for the child
+    mi_ccap_family_contribution: 0
+    # monthly = 540.00 x 2.16667 = 1,170.00; FC 0 -> benefit 1,170.00
+    mi_ccap: 1_170.00
+
+- name: Case 4, license-exempt provider, family contribution applies.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 3,500/mo
+        weekly_hours_worked_before_lsr: 20  # 40 + 10 travel = 50 -> authorized 60
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: LICENSE_EXEMPT
+        mi_ccap_exempt_level: LEVEL_1
+        pre_subsidy_childcare_expenses: 10_000  # 833/mo, cap does not bind
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+    # 20 hrs/week x 2 = 40 + 10 travel = 50 biweekly -> tier 60
+    mi_ccap_authorized_hours: 60
+    # License-exempt Level 1 rate 2.95, paid hourly x authorized 60 = 177.00/pp
+    mi_ccap_block_payment: [0, 177.00]
+    # 3,500/mo -> size 2 band 1, per-child FC 15; license-exempt never star-waived
+    mi_ccap_family_contribution: 15
+    # monthly payment = 177.00 x 2.16667 = 383.50; monthly FC = 32.50
+    # benefit = 383.50 - 32.50 = 351.00
+    mi_ccap: 351.00
+
+- name: Case 5, subsidy capped at the child's actual child care charge.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # 1,500/mo -> size 2 band 0, no FC
+        weekly_hours_worked_before_lsr: 45  # authorized 90
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_5
+        pre_subsidy_childcare_expenses: 12_000  # 1,000/mo, below the subsidy so the cap binds
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+    mi_ccap_authorized_hours: 90
+    # Center STAR_5 infant 9.60 x 90 = 864.00/pp -> monthly 864 x 2.16667 = 1,872.00
+    mi_ccap_block_payment: [0, 864.00]
+    # Band 0 -> family contribution 0
+    mi_ccap_family_contribution: 0
+    # Uncapped monthly 1,872.00 exceeds the 1,000/mo charge -> capped at 1,000.00
+    mi_ccap: 1_000.00
+
+- name: Case 6, foster care family is income-waived with no family contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000  # 7,500/mo, far above any income limit
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Income-waived (foster care) -> bypasses the income test
+    mi_ccap_income_waived: true
+    mi_ccap_eligible: true
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
+    # Income-waived group -> family contribution 0
+    mi_ccap_family_contribution: 0
+    # monthly = 643.50 x 2.16667 = 1,394.25; FC 0 -> benefit 1,394.25
+    mi_ccap: 1_394.25
+
+- name: Case 7, applicant income above the entry limit is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_400  # 5,700/mo, above size 2 entry 3,526
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_eligible: false
+    mi_ccap_income_waived: false
+    mi_ccap_eligible: false
+    mi_ccap: 0
+
+- name: Case 8, annual subsidy flows to the federal child care subsidies total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 3,500/mo
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Same monthly benefit as Case 1 (1,361.75) summed over 12 months
+    # = 16,341.00 annually.
+    mi_child_care_subsidies: 16_341.00
+    child_care_subsidies: 16_341.00
+
+# Edge cases.
+
+- name: Case 9, self-employment loss does not inflate the subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/mo loss
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 30_000  # 2,500/mo, cap does not bind
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Negative countable income is below the entry limit -> income eligible
+    mi_ccap_income_eligible: true
+    mi_ccap_eligible: true
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50 per pay period
+    mi_ccap_block_payment: [0, 643.50]
+    # Negative income maps to the lowest band -> family contribution 0,
+    # not a negative amount that would inflate the benefit
+    mi_ccap_family_contribution: 0
+    # benefit = 643.50 x 2.16667 = 1,394.25 (block payment only, FC 0)
+    mi_ccap: 1_394.25
+
+- name: Case 10, subsidy capped tightly at a low actual child care charge.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # 1,500/mo -> size 2 band 0, no FC
+        weekly_hours_worked_before_lsr: 40  # 80 + 10 travel -> authorized 90
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 3_000  # 250/mo, well below the block payment
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+    mi_ccap_authorized_hours: 90
+    # Authorized 90 -> 61+ block tier 90; 7.15 x 90 = 643.50/pp -> monthly 1,394.25
+    mi_ccap_block_payment: [0, 643.50]
+    mi_ccap_family_contribution: 0
+    # Monthly charge is only 250.00, below the uncapped subsidy -> capped at 250.00
+    mi_ccap: 250.00
+
+- name: Case 11, two parents at a 5 Star center, family contribution at the cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 45  # authorized 90
+      person2:
+        age: 32
+        weekly_hours_worked_before_lsr: 30  # 60 + 10 = 70 -> tier 80 (not the basis)
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_2
+        pre_subsidy_childcare_expenses: 30_000
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        mi_ccap_provider_type: CENTER
+        mi_ccap_star_rating: STAR_2
+        pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MI
+  output:
+    mi_ccap_eligible_child: [false, false, true, true]
+    # Size 4, 5,000 <= 5,358 entry -> income eligible
+    mi_ccap_income_eligible: true
+    mi_ccap_eligible: true
+    # Highest need = person1's 100 biweekly (90 + 10) -> tier 90
+    mi_ccap_authorized_hours: 90
+    # 2 Star center: infant 7.55, preschool 5.45; x 90 authorized hours
+    # person3: 7.55 x 90 = 679.50; person4: 5.45 x 90 = 490.50
+    mi_ccap_block_payment: [0, 0, 679.50, 490.50]
+    # 5,000/mo -> size 4 band 1; STAR_2 is below the 3-star waiver, so both pay.
+    # per-child FC 15 x 2 = 30, family cap 45 -> 30/pp
+    mi_ccap_family_contribution: 30
+    # monthly: person3 679.50 x 2.16667 = 1,472.25; person4 490.50 x 2.16667 = 1,062.75
+    # total = 2,535.00; monthly FC = 30 x 2.16667 = 65.00
+    # benefit = 2,535.00 - 65.00 = 2,470.00
+    mi_ccap: 2_470.00
