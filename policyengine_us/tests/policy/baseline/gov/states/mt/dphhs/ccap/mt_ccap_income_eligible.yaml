@@ -1,0 +1,303 @@
+# Unit tests for mt_ccap_income_eligible (SPMUnit, MONTH).
+# ARM 37.80.202(1): first-time applicants eligible below 150% FPG.
+# ARM 37.80.202(2): non-TANF continuing recipients (mt_ccap_enrolled) eligible at
+# annual redetermination up to 185% FPG. TANF families are categorically eligible.
+# An 85% SMI overlay applies to all non-TANF families (rarely binds).
+# 2026 (contiguous), size 3 (1 parent + 2 children): FPG = 27,320 annual;
+#   150% FPG = 40,980; 185% FPG = 50,542; 85% SMI = 81,374 (does not bind at size 3).
+# Income inputs are annual; the MONTH formula compares monthly portions.
+- name: Case 1, applicant well below 150% FPG is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        employment_income: 30_000  # ~110% FPG
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 2, applicant just below the 150% FPG limit is eligible.
+  period: 2026-01
+  # 40,500 annual (148.2% FPG) -> below the 150% initial limit.
+  input:
+    people:
+      person1:
+        employment_income: 40_500
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 3, applicant just above the 150% FPG limit is ineligible.
+  period: 2026-01
+  # 41,500 annual (151.9% FPG) -> above the 150% initial limit; not enrolled.
+  input:
+    people:
+      person1:
+        employment_income: 41_500
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: false
+
+- name: Case 4, continuing recipient between 150% and 185% FPG is eligible (graduated).
+  period: 2026-01
+  # 44,000 annual (161% FPG): over the 150% applicant limit but under 185%; enrolled.
+  input:
+    people:
+      person1:
+        employment_income: 44_000
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 5, continuing recipient just below the 185% FPG limit is eligible.
+  period: 2026-01
+  # 50,000 annual (183% FPG) -> below the 185% graduated limit; enrolled.
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 6, continuing recipient just above the 185% FPG limit is ineligible.
+  period: 2026-01
+  # 51,500 annual (188.5% FPG) -> above the 185% graduated limit; enrolled.
+  input:
+    people:
+      person1:
+        employment_income: 51_500
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: false
+
+- name: Case 7, TANF recipient over the 185% FPG limit is still income-eligible.
+  period: 2026-01
+  # 52,000 annual (190% FPG): over the non-TANF limits, but categorically eligible.
+  input:
+    people:
+      person1:
+        employment_income: 52_000
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+        mt_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 8, zero income is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        employment_income: 0
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true
+
+- name: Case 9, very high income is ineligible (both FPG and SMI ceilings).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        employment_income: 500_000
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: false
+
+# --- 85% SMI overlay isolation (large household where 0.85*SMI < 1.85*FPG).
+# Size 13 (2 parents + 11 children) 2026, contiguous: 185% FPG = 155,622 annual
+# (12,968.50/mo); 85% SMI = 148,217 annual (12,351.42/mo). Between these two the SMI
+# overlay rejects an otherwise FPG-eligible continuing recipient. ---
+- name: Case 10, continuing recipient above 85% SMI but below 185% FPG is ineligible (SMI overlay).
+  period: 2026-01
+  # 152,000 annual = 12,666.67/mo: above 0.85 SMI (12,351.42) yet below 1.85 FPG (12,968.50).
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 152_000
+      person2:
+        age: 34
+      person3:
+        age: 3
+      person4:
+        age: 4
+      person5:
+        age: 5
+      person6:
+        age: 6
+      person7:
+        age: 7
+      person8:
+        age: 8
+      person9:
+        age: 9
+      person10:
+        age: 10
+      person11:
+        age: 11
+      person12:
+        age: 12
+      person13:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: false
+
+- name: Case 11, continuing recipient below 85% SMI is eligible (companion to Case 10).
+  period: 2026-01
+  # 146,000 annual = 12,166.67/mo: below both 0.85 SMI (12,351.42) and 1.85 FPG (12,968.50).
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 146_000
+      person2:
+        age: 34
+      person3:
+        age: 3
+      person4:
+        age: 4
+      person5:
+        age: 5
+      person6:
+        age: 6
+      person7:
+        age: 7
+      person8:
+        age: 8
+      person9:
+        age: 9
+      person10:
+        age: 10
+      person11:
+        age: 11
+      person12:
+        age: 12
+      person13:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: MT
+  output:
+    mt_ccap_income_eligible: true

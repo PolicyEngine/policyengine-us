@@ -1,0 +1,287 @@
+# Unit tests for mt_ccap_copay (SPMUnit, MONTH).
+# Non-TANF: copay = max(gross_monthly_income * copay_rate.calc(fpg_ratio), $10).
+# TANF (is_tanf_enrolled): flat $10.
+# fpg_ratio = countable monthly income / monthly FPG.
+# 2026 FPG (contiguous), size 3 (1 parent + 2 children): 27,320 annual = 2,276.67/mo.
+# Income inputs are annual; the MONTH formula reads the monthly portion.
+- name: Case 1, low income copay floors at the $10 minimum.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 20_490  # 75% FPG; 0.5% of 1,707.50 = 8.54 < 10
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 10  # max(8.54, 10)
+
+- name: Case 2, 100% FPG copay (0.5% bracket, just above the floor).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 27_320  # 100% FPG, ratio 1.0 -> 0.5%
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 11.38  # 2,276.67 * 0.005 = 11.38
+
+- name: Case 3, continuing recipient at 152% FPG pays the 3.5% copay.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # 41,520 annual (152% FPG) -> 3.5% tier; enrolled (eligible up to 185% FPG).
+  input:
+    people:
+      person1:
+        employment_income: 41_520  # 3,460/mo, 152% of size-3 FPG
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 121.1  # 3,460.00 * 0.035
+
+- name: Case 4, continuing recipient at 182% FPG pays the 6.5% copay.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # 49,716 annual (182% FPG) -> 6.5% tier; enrolled (eligible up to 185% FPG).
+  input:
+    people:
+      person1:
+        employment_income: 49_716  # 4,143/mo, 182% of size-3 FPG
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 269.3  # 4,143.00 * 0.065
+
+- name: Case 5, continuing recipient at 172% FPG pays the 5.5% copay.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # 46,992 annual (172% FPG) -> 5.5% tier; enrolled (eligible up to 185% FPG).
+  input:
+    people:
+      person1:
+        employment_income: 46_992  # 3,916/mo, 172% of size-3 FPG
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        mt_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 215.38  # 3,916.00 * 0.055
+
+- name: Case 6, TANF recipient pays the flat $10 copay regardless of income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        employment_income: 40_980  # would be 119.53 on the scale
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 10  # flat $10 for TANF, not the 119.53 scale amount
+
+# --- Edge cases: $10 floor exactly, zero income, and FPG-step bracket boundaries.
+# Size 3 monthly FPG = 27,320 / 12 = 2,276.67. Per the sliding scale footnote, each
+# labeled % is the FLOOR of its tier: a family AT a step enters the higher tier and
+# just below stays in the lower tier (single_amount is "at or above threshold"). ---
+- name: Case 7, zero income copay floors at the $10 minimum.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # GMI 0 -> scale gives 0; max(0, 10) = 10.
+  input:
+    people:
+      person1:
+        employment_income: 0
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 10  # max(0, 10)
+
+- name: Case 8, copay exactly at the $10 floor (scale amount equals the minimum).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # GMI 2,000/mo (24,000 annual, ~87.8% FPG) -> 0.5% bracket; 2,000 * 0.005 = 10 = minimum.
+  input:
+    people:
+      person1:
+        employment_income: 24_000  # 2,000/mo; 0.5% of 2,000 = 10 exactly
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 10  # max(10, 10) = 10 exactly at the floor
+
+- name: Case 9, just above 100% FPG stays in the 0.5% bracket (floor reading).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # ratio 28,140/27,320 = 1.03; floor keeps income below 105% in the 0.5% tier
+  # (a ceiling reading of the scale would instead charge 1.0% here).
+  input:
+    people:
+      person1:
+        employment_income: 28_140  # 103% of size-3 FPG (2,345/mo)
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 11.73  # 2,345.00/mo * 0.005
+
+- name: Case 10, above 105% FPG is in the 1.0% bracket.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # ratio 29,520/27,320 = 1.08; floor 1.0% tier runs 105% up to 115%.
+  input:
+    people:
+      person1:
+        employment_income: 29_520  # 108% of size-3 FPG (2,460/mo)
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 24.6  # 2,460.00/mo * 0.01
+
+- name: Case 11, just above 110% FPG stays in the 1.0% bracket (floor reading).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # ratio 30,600/27,320 = 1.12; floor keeps 110-115% in the 1.0% tier
+  # (a ceiling reading of the scale would instead charge 1.5% here).
+  input:
+    people:
+      person1:
+        employment_income: 30_600  # 112% of size-3 FPG (2,550/mo)
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 25.5  # 2,550.00/mo * 0.01
+
+- name: Case 12, above 115% FPG is in the 1.5% bracket.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  # ratio 32,280/27,320 = 1.18; floor 1.5% tier runs 115% up to 125%.
+  input:
+    people:
+      person1:
+        employment_income: 32_280  # 118% of size-3 FPG (2,690/mo)
+      person2:
+        age: 4
+      person3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_ccap_copay: 40.35  # 2,690.00/mo * 0.015

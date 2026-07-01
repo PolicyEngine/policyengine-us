@@ -1,0 +1,112 @@
+description: Montana provides these maximum monthly reimbursement rates under the Best Beginnings Child Care Scholarship program.
+# Rates vary by provider type, age group, and care time.
+metadata:
+  period: month
+  unit: currency-USD
+  label: Montana CCAP maximum monthly provider rates
+  breakdown:
+    - mt_ccap_provider_type
+    - mt_ccap_child_age_category
+    - mt_ccap_care_time
+  reference:
+    - title: Best Beginnings Scholarship Half-Time & Full-Time Monthly Rates
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/documentsandresources/BBSProviderRatesMonthly.pdf
+
+CENTER:
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 638
+    FULL_TIME:
+      2025-07-01: 1_276
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 605
+    FULL_TIME:
+      2025-07-01: 1_210
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 550
+    FULL_TIME:
+      2025-07-01: 1_100
+GROUP_HOME:
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 528
+    FULL_TIME:
+      2025-07-01: 1_056
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 495
+    FULL_TIME:
+      2025-07-01: 990
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 495
+    FULL_TIME:
+      2025-07-01: 990
+FAMILY_HOME:
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 495
+    FULL_TIME:
+      2025-07-01: 990
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 440
+    FULL_TIME:
+      2025-07-01: 880
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 440
+    FULL_TIME:
+      2025-07-01: 880
+FFN:
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 423.5
+    FULL_TIME:
+      2025-07-01: 841.5
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 374
+    FULL_TIME:
+      2025-07-01: 748
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 374
+    FULL_TIME:
+      2025-07-01: 748
+RELATIVE_EXEMPT:
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 374
+    FULL_TIME:
+      2025-07-01: 742.5
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 330
+    FULL_TIME:
+      2025-07-01: 660
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 330
+    FULL_TIME:
+      2025-07-01: 660
+SCHOOL_AGE_PROVIDER:
+  # School Age Provider does not serve infants/toddlers; these cells are NA on the
+  # published rate table and are encoded as 0 (not payable).
+  INFANT_TODDLER:
+    HALF_TIME:
+      2025-07-01: 0
+    FULL_TIME:
+      2025-07-01: 0
+  PRESCHOOL:
+    HALF_TIME:
+      2025-07-01: 286
+    FULL_TIME:
+      2025-07-01: 572
+  SCHOOL_AGE:
+    HALF_TIME:
+      2025-07-01: 286
+    FULL_TIME:
+      2025-07-01: 572

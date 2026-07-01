@@ -585,6 +585,12 @@ programs:
         full_name: Mississippi Child Care Payment Program
         variable: ms_ccpp
         parameter_prefix: gov.states.ms.dhs.ccpp
+      - state: MT
+        status: complete
+        name: Montana BBCCS
+        full_name: Montana Best Beginnings Child Care Scholarship
+        variable: mt_child_care_subsidies
+        parameter_prefix: gov.states.mt.dphhs.ccap
       - state: IA
         status: complete
         name: Iowa CCA

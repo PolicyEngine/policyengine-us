@@ -1,0 +1,328 @@
+# Unit tests for mt_ccap_max_rate (Person, MONTH).
+# 3-D lookup: p.rates.provider_rates[provider_type][age_category][care_time].
+# Values from the BBS Provider Reimbursement Monthly Rates table (effective 07-01-2025).
+# Covers every provider type, both age-group endpoints, both care times, and the
+# RCE / School-Age-Provider NA (= 0) cells.
+# Each case has person1 = parent and person2 = the child whose rate is asserted, so
+# the child is unambiguously an eligible dependent child.
+# Age sets the age group: age 1 (12 mo) INFANT_TODDLER, age 4 (48 mo) PRESCHOOL,
+# age 8 (96 mo) SCHOOL_AGE. care_time defaults to FULL_TIME.
+
+# --- Child Care Center ---
+- name: Case 1, center infant/toddler full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 1_276]
+
+- name: Case 2, center infant/toddler half-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: HALF_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 638]
+
+- name: Case 3, center school age full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 1_100]
+
+# --- Group Home ---
+- name: Case 4, group home preschool full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        mt_ccap_provider_type: GROUP_HOME
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 990]
+
+- name: Case 5, group home infant/toddler half-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: GROUP_HOME
+        mt_ccap_care_time: HALF_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 528]
+
+# --- Family Home ---
+- name: Case 6, family home preschool full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        mt_ccap_provider_type: FAMILY_HOME
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 880]
+
+# --- Family, Friend & Neighbor (FFN) ---
+- name: Case 7, FFN infant/toddler full-time (fractional rate).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: FFN
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 841.5]
+
+- name: Case 8, FFN infant/toddler half-time (fractional rate).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: FFN
+        mt_ccap_care_time: HALF_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 423.5]
+
+# --- Relative Care Exempt (RCE) ---
+- name: Case 9, RCE infant/toddler full-time (fractional rate).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: RELATIVE_EXEMPT
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 742.5]
+
+- name: Case 10, RCE preschool full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        mt_ccap_provider_type: RELATIVE_EXEMPT
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 660]
+
+# --- School Age Provider ---
+- name: Case 11, school age provider school age full-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        mt_ccap_provider_type: SCHOOL_AGE_PROVIDER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 572]
+
+- name: Case 12, school age provider infant/toddler is NA (encoded 0, not payable).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: SCHOOL_AGE_PROVIDER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 0]
+
+# --- Edge cases: half-time as a direct input (no care_time formula exists), plus
+# the remaining NA / fractional / school-age cells to round out dimension coverage. ---
+- name: Case 13, RCE infant/toddler half-time (fractional rate, direct HALF_TIME input).
+  period: 2026-01
+  # care_time is a bare input (no formula); HALF_TIME selects the half-time RCE infant/toddler rate 374.
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        mt_ccap_provider_type: RELATIVE_EXEMPT
+        mt_ccap_care_time: HALF_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 374]
+
+- name: Case 14, school age provider school age half-time.
+  period: 2026-01
+  # HALF_TIME direct input; school age provider school age half-time = 286.
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        mt_ccap_provider_type: SCHOOL_AGE_PROVIDER
+        mt_ccap_care_time: HALF_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 286]
+
+- name: Case 15, school age provider preschool full-time (the only non-zero SAP preschool cell).
+  period: 2026-01
+  # School age providers may serve preschoolers; preschool full-time = 572.
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        mt_ccap_provider_type: SCHOOL_AGE_PROVIDER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 572]
+
+- name: Case 16, group home school age full-time (highest age group, group home).
+  period: 2026-01
+  # Group home school age full-time = 990 (same as preschool for group home).
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        mt_ccap_provider_type: GROUP_HOME
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 990]
+
+- name: Case 17, default provider type and care time (no inputs) uses CENTER full-time.
+  period: 2026-01
+  # provider_type defaults to CENTER and care_time defaults to FULL_TIME; preschool child -> 1,210.
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4  # preschool, no provider/care inputs -> CENTER FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 1_210]
+
+- name: Case 18, center five-year-old (60 months) full-time uses preschool rate, not school-age.
+  period: 2026-01
+  # ARM 37.80.102 boundary: school-age starts at 72 months, so a 60-month child is
+  # preschool. CENTER preschool full-time = 1,210 (NOT school-age full-time 1,100).
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5  # 60 months, still preschool under the 72-month boundary
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_max_rate: [0, 1_210]
