@@ -1,6 +1,34 @@
 from policyengine_us.model_api import *
 
 
+def wi_standard_deduction_for_income(income, filing_status, parameters, period):
+    # Wisconsin standard deduction (Form 1 line 8) as a function of WI income.
+    # Factored out of the variable below so the retirement-income-exclusion
+    # path can look the deduction up on income reduced by the Schedule SB
+    # line-16 subtraction (the phaseout otherwise stays keyed to the higher
+    # pre-subtraction income).
+    deduction = parameters(period).gov.states.wi.tax.income.deductions
+    statuses = filing_status.possible_values
+    max_amount = deduction.standard.max[filing_status]
+    phase_out_amount = select(
+        [
+            filing_status == statuses.SINGLE,
+            filing_status == statuses.JOINT,
+            filing_status == statuses.SURVIVING_SPOUSE,
+            filing_status == statuses.SEPARATE,
+            filing_status == statuses.HEAD_OF_HOUSEHOLD,
+        ],
+        [
+            deduction.standard.phase_out.single.calc(income),
+            deduction.standard.phase_out.joint.calc(income),
+            deduction.standard.phase_out.joint.calc(income),
+            deduction.standard.phase_out.separate.calc(income),
+            deduction.standard.phase_out.head_of_household.calc(income),
+        ],
+    )
+    return max_(0, max_amount - phase_out_amount)
+
+
 class wi_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -18,23 +46,5 @@ class wi_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         fstatus = tax_unit("filing_status", period)
-        deduction = parameters(period).gov.states.wi.tax.income.deductions
-        max_amount = deduction.standard.max[fstatus]
         agi = tax_unit("wi_agi", period)
-        phase_out_amount = select(
-            [
-                fstatus == fstatus.possible_values.SINGLE,
-                fstatus == fstatus.possible_values.JOINT,
-                fstatus == fstatus.possible_values.SURVIVING_SPOUSE,
-                fstatus == fstatus.possible_values.SEPARATE,
-                fstatus == fstatus.possible_values.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                deduction.standard.phase_out.single.calc(agi),
-                deduction.standard.phase_out.joint.calc(agi),
-                deduction.standard.phase_out.joint.calc(agi),
-                deduction.standard.phase_out.separate.calc(agi),
-                deduction.standard.phase_out.head_of_household.calc(agi),
-            ],
-        )
-        return max_(0, max_amount - phase_out_amount)
+        return wi_standard_deduction_for_income(agi, fstatus, parameters, period)
