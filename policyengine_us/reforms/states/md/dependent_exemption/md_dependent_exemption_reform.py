@@ -32,11 +32,31 @@ def create_md_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.md.dependent_exemption
             count = tax_unit("md_eligible_dependents_count", period)
-            # Negative amount is a sentinel meaning "use the baseline per-person
-            # AGI-stepped amount" (so in_effect=true at default is a no-op). A
-            # value >= 0 applies a flat per-dependent amount instead.
-            baseline_per = tax_unit("md_personal_exemption", period)
-            per_dependent = where(p.amount < 0, baseline_per, p.amount)
+            # Negative amount is a sentinel meaning "use the discrete AGI-stepped
+            # per-filing-status schedule" (so in_effect=true at default is a
+            # no-op, since the contrib schedule mirrors the baseline). A value
+            # >= 0 applies a flat per-dependent amount instead.
+            filing_status = tax_unit("filing_status", period)
+            filing_statuses = filing_status.possible_values
+            agi = tax_unit("adjusted_gross_income", period)
+            schedule = p.schedule
+            stepped_per = select(
+                [
+                    filing_status == filing_statuses.SINGLE,
+                    filing_status == filing_statuses.SEPARATE,
+                    filing_status == filing_statuses.JOINT,
+                    filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
+                    filing_status == filing_statuses.SURVIVING_SPOUSE,
+                ],
+                [
+                    schedule.single.calc(agi, right=True),
+                    schedule.separate.calc(agi, right=True),
+                    schedule.joint.calc(agi, right=True),
+                    schedule.head.calc(agi, right=True),
+                    schedule.surviving_spouse.calc(agi, right=True),
+                ],
+            )
+            per_dependent = where(p.amount < 0, stepped_per, p.amount)
             return count * per_dependent
 
     class md_dependent_exemption_phaseout(Variable):
