@@ -95,3 +95,36 @@
   output:  # expected results from patched TAXSIM35 2023-01-13 version
     taxsim_tfica: 11_130.24
     income_tax: 24_507.2
+
+- name: Disabled adult dependent's care expenses reach the CDCC via care_expenses
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_head: true
+      person2:  # earning spouse: the earned-income test passes without deemed income
+        age: 38
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+      person3:  # disabled adult dependent: care billed as adult care, not childcare
+        age: 18
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+        pre_subsidy_care_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # The childcare pipeline is untouched (no children under 13); the adult-care
+    # expense enters the CDCC base via care_expenses.
+    tax_unit_childcare_expenses: 0
+    care_expenses: [0, 0, 6_000]
+    cdcc_relevant_expenses: 3_000  # min(6_000, $3,000 cap for one individual, earnings)
+    cdcc: 600  # 20% x 3_000 at $70,000 joint AGI
