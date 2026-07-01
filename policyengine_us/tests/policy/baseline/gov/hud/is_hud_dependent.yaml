@@ -1,0 +1,106 @@
+- name: Default value is false (single adult, no household head).
+  period: 2022
+  output:
+    is_hud_dependent: false
+
+- name: A non-head child is a HUD dependent (24 CFR 5.603).
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, true]
+
+- name: A non-head disabled adult (not a student) is a HUD dependent.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 40
+        is_disabled: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, true]
+
+- name: A non-head full-time student adult is a HUD dependent.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 20
+        is_full_time_college_student: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, true]
+
+- name: A non-head adult who is not a child, disabled, or a student is not a HUD dependent.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 30
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, false]
+
+- name: A disabled household head is not a HUD dependent (head/spouse override).
+  period: 2022
+  input:
+    age: 45
+    is_household_head: true
+    is_disabled: true
+  output:
+    is_hud_dependent: false
+
+- name: A foster child is not a HUD dependent (foster carve-out, 24 CFR 5.603).
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 10
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [head, person]
+  output:
+    is_hud_dependent: [false, false]
