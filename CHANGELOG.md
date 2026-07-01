@@ -1,3 +1,10 @@
+## [1.753.2] - 2026-07-01
+
+### Fixed
+
+- Updated 2026 Medicare Part B and Part D IRMAA schedules and fixed the married-filing-separately Part B IRMAA bracket lookup.
+
+
 ## [1.753.1] - 2026-07-01
 
 ### Changed
