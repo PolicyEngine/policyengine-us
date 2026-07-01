@@ -1,0 +1,83 @@
+# MO CCS protective services pathway tests
+# mo_ccs_protective_services is Person, MONTH.
+# True for a foster child or a child receiving/needing protective
+# services. Homelessness is NOT a (7)(A) protective category; it is a separate
+# valid need for care handled in mo_ccs_activity_eligible (Manual sec. 6.8).
+
+- name: Case 1, foster child triggers protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: [false, true]
+
+- name: Case 2, homelessness alone does not trigger protective services.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        is_homeless: true
+  output:
+    # Homelessness is not a (7)(A) protective category; it is a need for care
+    # handled in mo_ccs_activity_eligible (Manual sec. 6.8), so the protective
+    # pathway is not triggered by homelessness alone.
+    mo_ccs_protective_services: [false, false]
+
+- name: Case 3, child needing protective services triggers pathway.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: [false, true]
+
+- name: Case 4, no protective services indicators.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_protective_services: [false, false]

@@ -1,0 +1,211 @@
+- name: MD dependent exemption reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # No-op guard: at the default amount sentinel (-1) the reform reproduces
+  # current law. 9,600 = 3 units * 3,200 is the baseline md_total_personal_exemptions
+  # for this household (1 personal + 2 dependents at the AGI-stepped per-person amount).
+  output: {md_total_personal_exemptions: 9_600}
+
+- name: MD dependent exemption reform - amount zero removes dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people: {parent: {age: 40, employment_income: 40_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - positive flat per-dependent amount
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 1_000
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Personal portion: 1 personal unit * 3,200 (single, AGI 40,000) = 3,200.
+  # Dependent portion (flat): 2 deps * 1,000 = 2,000; phaseout rate defaults to 0.
+  # Total = 3,200 + 2,000 = 5,200.
+  output: {md_total_personal_exemptions: 5_200}
+
+- name: MD dependent exemption reform - phaseout reduces dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 2_000
+    gov.contrib.states.md.dependent_exemption.phaseout.threshold.SINGLE: 40_000
+    gov.contrib.states.md.dependent_exemption.phaseout.rate: 0.1
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Personal portion: 1 personal unit * 3,200 (single, AGI 50,000) = 3,200.
+  # Dependent maximum (flat): 2 deps * 2,000 = 4,000.
+  # Phaseout: (50,000 - 40,000) * 0.1 = 1,000; max_(4,000 - 1,000, 0) = 3,000.
+  # Total = 3,200 + 3,000 = 6,200.
+  output: {md_total_personal_exemptions: 6_200}
+
+- name: MD dependent exemption reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people:
+      parent1: {age: 40, employment_income: 40_000}
+      parent2: {age: 38}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent1, parent2, child1, child2], filing_status: JOINT}}
+    households: {household: {members: [parent1, parent2, child1, child2], state_name: MD}}
+  # 2 head/spouse personal units (size 4 - 2 dependents) * 3,200 (joint, AGI 40,000) = 6,400.
+  # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - default flows through to MD exemptions (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Downstream: md_exemptions = md_total_personal_exemptions + md_aged_blind_exemptions.
+  # No aged/blind here, so md_exemptions = md_total_personal_exemptions = 9,600.
+  # md_exemptions is the value subtracted in md_taxable_income, so the separated
+  # dependent portion flows into the MD tax base.
+  output: {md_exemptions: 9_600}
+
+- name: MD dependent exemption reform - amount zero reduces MD exemptions (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Downstream: removing the dependent portion drops md_exemptions to 3,200
+  # (personal only). The 6,400 reduction raises MD taxable income and tax.
+  output: {md_exemptions: 3_200}
+
+- name: MD dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 17, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MD}}
+  # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+  # is removed from the personal count. Personal = parent only = 1 * 3,200.
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: MD dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.amount: 0
+    gov.contrib.states.md.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.md.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 18, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MD}}
+  # age 18 is not < 18: dependent is excluded and falls back to the personal
+  # count. Personal = parent + over-age dependent = 2 * 3,200 = 6,400.
+  output: {md_total_personal_exemptions: 6_400}
+
+- name: MD dependent exemption reform - default schedule reproduces the AGI step-down
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 130_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # At default (amount sentinel -1) the contrib schedule mirrors the baseline.
+  # Single AGI 130,000 is in the (125k, 150k] step, so each exemption is $800.
+  # Personal (1) + dependents (2) = 3 * 800 = 2,400. Confirms the discrete
+  # step-down is driven through the contrib schedule, not just a flat amount.
+  output: {md_total_personal_exemptions: 2_400}
+
+- name: MD dependent exemption reform - schedule per-dependent amount is adjustable
+  period: 2025
+  reforms: policyengine_us.reforms.states.md.dependent_exemption.md_dependent_exemption_reform.md_dependent_exemption_reform
+  input:
+    gov.contrib.states.md.dependent_exemption.in_effect: true
+    gov.contrib.states.md.dependent_exemption.schedule.single[0].amount: 5_000
+    people:
+      parent: {age: 40, employment_income: 40_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MD}}
+  # Raising the single first-bracket schedule amount to 5,000 drives the
+  # dependent portion only: 2 deps * 5,000 = 10,000. The personal portion keeps
+  # the baseline per-person amount (1 * 3,200). Total = 3,200 + 10,000 = 13,200.
+  output: {md_total_personal_exemptions: 13_200}

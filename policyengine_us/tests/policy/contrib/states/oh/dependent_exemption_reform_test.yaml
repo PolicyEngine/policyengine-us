@@ -1,0 +1,212 @@
+- name: OH dependent exemption reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # No-op guard: at the default amount sentinel (-1) the reform reproduces
+  # current law. 7,200 = 3 units * 2,400 is the baseline oh_personal_exemptions
+  # for this household (1 personal + 2 dependents at the AGI-stepped per-person amount).
+  output: {oh_personal_exemptions: 7_200}
+
+- name: OH dependent exemption reform - amount zero removes dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  output: {oh_personal_exemptions: 2_400}
+
+- name: OH dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    people: {parent: {age: 40, employment_income: 30_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: OH}}
+  output: {oh_personal_exemptions: 2_400}
+
+- name: OH dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    gov.contrib.states.oh.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  output: {oh_personal_exemptions: 4_800}
+
+- name: OH dependent exemption reform - positive flat per-dependent amount
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 1_000
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # Personal portion: 1 personal unit * 2,400 (oh_agi 30,000) = 2,400.
+  # Dependent portion (flat): 2 deps * 1,000 = 2,000; phaseout rate defaults to 0.
+  # Total = 2,400 + 2,000 = 4,400.
+  output: {oh_personal_exemptions: 4_400}
+
+- name: OH dependent exemption reform - phaseout reduces dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 2_000
+    gov.contrib.states.oh.dependent_exemption.phaseout.threshold.SINGLE: 20_000
+    gov.contrib.states.oh.dependent_exemption.phaseout.rate: 0.05
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # Personal portion: 1 personal unit * 2,400 (oh_agi 30,000) = 2,400.
+  # Dependent maximum (flat): 2 deps * 2,000 = 4,000.
+  # Phaseout: (30,000 - 20,000) * 0.05 = 500; max_(4,000 - 500, 0) = 3,500.
+  # Total = 2,400 + 3,500 = 5,900.
+  output: {oh_personal_exemptions: 5_900}
+
+- name: OH dependent exemption reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    people:
+      parent1: {age: 40, employment_income: 30_000}
+      parent2: {age: 38}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent1, parent2, child1, child2], filing_status: JOINT}}
+    households: {household: {members: [parent1, parent2, child1, child2], state_name: OH}}
+  # 2 head/spouse personal units (4 eligible persons - 2 eligible dependents) * 2,400 = 4,800.
+  # Dependent portion removed (amount 0). Confirms no off-by-one in a 2-adult unit.
+  output: {oh_personal_exemptions: 4_800}
+
+- name: OH dependent exemption reform - default flows through to taxable income (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # Downstream: oh_taxable_income = max(0, oh_agi - oh_personal_exemptions).
+  # Plain wages: oh_agi = 30,000 (no OH additions/deductions apply).
+  # Exemptions = 3 * 2,400 = 7,200 (default no-op). 30,000 - 7,200 = 22,800.
+  output: {oh_taxable_income: 22_800}
+
+- name: OH dependent exemption reform - amount zero raises taxable income (downstream)
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # Downstream: removing the dependent portion drops exemptions to 2,400
+  # (personal only), so taxable income rises: 30,000 - 2,400 = 27,600.
+  # The 4,800 taxable-income increase raises OH income tax.
+  output: {oh_taxable_income: 27_600}
+
+- name: OH dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    gov.contrib.states.oh.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 17, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: OH}}
+  # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption and
+  # is removed from the personal count. Personal = parent only = 1 * 2,400.
+  output: {oh_personal_exemptions: 2_400}
+
+- name: OH dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.amount: 0
+    gov.contrib.states.oh.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 18, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: OH}}
+  # age 18 is not < 18: dependent is excluded and falls back to the personal
+  # count. Personal = parent + over-age dependent = 2 * 2,400 = 4,800.
+  output: {oh_personal_exemptions: 4_800}
+
+- name: OH dependent exemption reform - default schedule reproduces the MAGI step-down
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # At default (amount sentinel -1) the contrib schedule mirrors the baseline.
+  # MAGI 50,000 is in the (40,000, 80,000] step, so each exemption is $2,150.
+  # Personal (1) + dependents (2) = 3 * 2,150 = 6,450. Confirms the discrete
+  # step-down is driven through the contrib schedule, not just a flat amount.
+  output: {oh_personal_exemptions: 6_450}
+
+- name: OH dependent exemption reform - schedule per-dependent amount is adjustable
+  period: 2025
+  reforms: policyengine_us.reforms.states.oh.dependent_exemption.oh_dependent_exemption_reform.oh_dependent_exemption_reform
+  input:
+    gov.contrib.states.oh.dependent_exemption.in_effect: true
+    gov.contrib.states.oh.dependent_exemption.schedule.amount[0].amount: 3_000
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: OH}}
+  # Raising the first-bracket schedule amount to 3,000 drives the dependent
+  # portion only: 2 deps * 3,000 = 6,000 (MAGI 30,000 is in the first step).
+  # The personal portion keeps the baseline per-person amount (1 * 2,400).
+  # Total = 2,400 + 6,000 = 8,400.
+  output: {oh_personal_exemptions: 8_400}

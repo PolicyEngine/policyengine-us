@@ -1,0 +1,125 @@
+description: Missouri provides these daily base reimbursement rates to a license-exempt provider caring for six or fewer children under the Child Care Subsidy program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Missouri Child Care Subsidy six or fewer daily rates
+  breakdown:
+    - mo_ccs_region
+    - mo_ccs_age_group
+    - mo_ccs_time_category
+  reference:
+    - title: 2025 Rates Held Harmless 2.0, Daytime Rates 2025
+      href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx
+    - title: FFY 2025-2027 CCDF State Plan, Amendment 2, Section 4.3.2 Base payment rates
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=49
+
+DENSE_URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 49.66
+    HALF_TIME:
+      2025-10-01: 37.245
+    PART_TIME:
+      2025-10-01: 24.83
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 28
+    HALF_TIME:
+      2025-10-01: 21
+    PART_TIME:
+      2025-10-01: 14
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 25.45
+    HALF_TIME:
+      2025-10-01: 19.0875
+    PART_TIME:
+      2025-10-01: 12.725
+METRO:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 41.36
+    HALF_TIME:
+      2025-10-01: 31.02
+    PART_TIME:
+      2025-10-01: 20.68
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 21
+    HALF_TIME:
+      2025-10-01: 15.75
+    PART_TIME:
+      2025-10-01: 10.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 20.2
+    HALF_TIME:
+      2025-10-01: 15.15
+    PART_TIME:
+      2025-10-01: 10.1
+URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 36.96
+    HALF_TIME:
+      2025-10-01: 27.72
+    PART_TIME:
+      2025-10-01: 18.48
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 24.02
+    HALF_TIME:
+      2025-10-01: 18.015
+    PART_TIME:
+      2025-10-01: 12.01
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 22.75
+    HALF_TIME:
+      2025-10-01: 17.0625
+    PART_TIME:
+      2025-10-01: 11.375
+MICROPOLITAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 35
+    HALF_TIME:
+      2025-10-01: 26.25
+    PART_TIME:
+      2025-10-01: 17.5
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 19.6
+    HALF_TIME:
+      2025-10-01: 14.7
+    PART_TIME:
+      2025-10-01: 9.8
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 16.35
+    HALF_TIME:
+      2025-10-01: 12.2625
+    PART_TIME:
+      2025-10-01: 8.175
+RURAL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 41.6
+    HALF_TIME:
+      2025-10-01: 31.2
+    PART_TIME:
+      2025-10-01: 20.8
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 19.78
+    HALF_TIME:
+      2025-10-01: 14.835
+    PART_TIME:
+      2025-10-01: 9.89
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 16.8
+    HALF_TIME:
+      2025-10-01: 12.6
+    PART_TIME:
+      2025-10-01: 8.4

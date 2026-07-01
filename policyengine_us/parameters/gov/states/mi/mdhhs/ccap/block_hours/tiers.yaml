@@ -1,0 +1,29 @@
+description: Michigan reimburses licensed centers and group and family homes at these block hour amounts per child per two-week pay period under the Child Development and Care program.
+
+brackets:
+  - threshold:
+      2022-10-09: 0
+    amount:
+      2022-10-09: 0
+  - threshold:
+      2022-10-09: 0.0001
+    amount:
+      2022-10-09: 30  # billing 1-30 hours pays 30 hours
+  - threshold:
+      2022-10-09: 30.0001
+    amount:
+      2022-10-09: 60  # billing 31-60 hours pays 60 hours
+  - threshold:
+      2022-10-09: 60.0001
+    amount:
+      2022-10-09: 90  # billing 61 or more hours pays 90 hours
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: hour
+  period: year
+  label: Michigan CDC block reimbursement hours
+  reference:
+    - title: BEM 706, Block Reimbursement
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/706.pdf#page=9

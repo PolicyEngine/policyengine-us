@@ -1,0 +1,18 @@
+description: Vermont caps the renter credit at this amount.
+# 2026 Vt. Acts No. 169 (H.949) temporarily raises the cap to $3,250 for claim
+# year 2027 (Secs. 8-9), then reverts it to $2,500 for claim year 2028+ (Secs. 10-11).
+values:
+  2021-01-01: 2_500
+  2027-01-01: 3_250
+  2028-01-01: 2_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: Vermont renter credit maximum
+  reference:
+    - title: 32 V.S.A. §6066(b)(1) (renter credit shall not exceed this amount)
+      href: https://legislature.vermont.gov/statutes/section/32/154/06066
+    - title: 2026 Vt. Acts No. 169 (H.949), Sec. 8 (claim year 2027 renter credit cap $3,250)
+      href: https://legislature.vermont.gov/Documents/2026/Docs/ACTS/ACT169/ACT169%20As%20Enacted.pdf#page=9
+    - title: 2026 Vt. Acts No. 169 (H.949), Sec. 10 (claim year 2028 cap reversion to $2,500)
+      href: https://legislature.vermont.gov/Documents/2026/Docs/ACTS/ACT169/ACT169%20As%20Enacted.pdf#page=13

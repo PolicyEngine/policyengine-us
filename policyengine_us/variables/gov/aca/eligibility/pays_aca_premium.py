@@ -12,17 +12,8 @@ class pays_aca_premium(Variable):
         taxpayer_has_tin = person.tax_unit("taxpayer_has_tin", period)
         is_status_eligible = taxpayer_has_tin & immigration_eligible
 
-        INELIGIBLE_COVERAGE = [
-            "is_medicaid_eligible",
-            "is_chip_eligible",
-            "is_basic_health_program_eligible",
-            "is_aca_eshi_eligible",
-            "is_medicare_eligible",
-            "or_healthier_oregon_eligible",
-        ]
-        is_coverage_eligible = add(person, period, INELIGIBLE_COVERAGE) == 0
-
         p = parameters(period).gov.aca
+        is_coverage_eligible = add(person, period, p.ineligible_coverage) == 0
         is_aca_adult = person("age", period) > p.slcsp.max_child_age
         child_pays = person("aca_child_index", period) <= p.max_child_count
         pays_age_based_premium = is_aca_adult | child_pays
