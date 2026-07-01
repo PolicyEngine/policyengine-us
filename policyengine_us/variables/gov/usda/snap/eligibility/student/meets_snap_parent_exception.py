@@ -7,8 +7,8 @@ class meets_snap_parent_exception(Variable):
     label = "Meets SNAP student parent exception"
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/7/2015#e_5, "
-        "https://www.law.cornell.edu/uscode/text/7/2015#e_8"
+        "https://www.law.cornell.edu/uscode/text/7/2015#e_5",
+        "https://www.law.cornell.edu/uscode/text/7/2015#e_8",
     )
 
     def formula(person, period, parameters):
