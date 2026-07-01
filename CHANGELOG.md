@@ -1,3 +1,15 @@
+## [1.754.0] - 2026-07-01
+
+### Added
+
+- Add ZIP code-level HUD Small Area FMR payment standards for the two mandatory-SAFMR Kansas metros (Kansas City, KS and Wichita, KS).
+- Add ZIP code-level Housing Choice Voucher payment standards for Texas, using TDHCA and Houston Housing Authority published standards plus HUD Small Area FMRs for the four mandatory-SAFMR metros.
+
+### Changed
+
+- Populate the previously stubbed small_area_fair_market_rent and safmr_used_for_hcv variables, activating the Harris Rent Relief Act contrib reform's SAFMR-based rent cap for the four mandatory-SAFMR Texas metros.
+
+
 ## [1.753.5] - 2026-07-01
 
 ### Fixed
