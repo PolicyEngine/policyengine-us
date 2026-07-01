@@ -1,3 +1,10 @@
+## [1.753.4] - 2026-07-01
+
+### Fixed
+
+- - Fixed CHIP FCEP eligibility so an undocumented pregnant parent is not denied the unborn-child CHIP option solely due to immigration status.
+
+
 ## [1.753.3] - 2026-07-01
 
 ### Changed
