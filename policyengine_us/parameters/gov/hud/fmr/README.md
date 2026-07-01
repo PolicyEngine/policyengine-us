@@ -22,17 +22,14 @@ loader uses the median FMR-area value as a lossy county-level fallback.
 - **Geography**: county-level lookup from HUD FMR areas (no SAFMR ZIP-level
   resolution here). Where HUD publishes one pseudo-area for a territory, that
   pseudo-area is expanded to the territory's county FIPS codes.
-- **Connecticut (known limitation)**: HUD's FY2026 file adopts Connecticut's
-  nine Census planning regions (FIPS `09110`–`09190`) in place of the eight
-  legacy counties (FIPS `09001`–`09015`); Connecticut abolished county
-  government in 1960 and the Census Bureau approved the planning regions as
-  county-equivalents in 2022. PolicyEngine's `County` enum still uses the
-  legacy counties, so a Connecticut household carries a `090xx` code that has
-  no FY2026 row — `hud_fair_market_rent` therefore returns 0 for Connecticut at
-  period 2026 (FY2025 is unaffected, and every other county carries both
-  years). Resolving this means migrating the model's county geography to the
-  planning regions, which is left as a follow-up beyond this data update
-  (tracked in issue #8803).
+- **Connecticut**: HUD's FY2026 file adopts Connecticut's nine Census planning
+  regions (FIPS `09110`–`09190`) in place of the eight legacy counties (FIPS
+  `09001`–`09015`); Connecticut abolished county government in 1960 and the
+  Census Bureau approved the planning regions as county-equivalents in 2022.
+  PolicyEngine's `County` enum still uses the legacy counties. When a queried
+  county/bedroom row is absent from the preferred fiscal year, such as legacy
+  Connecticut counties in FY2026, `hud_fair_market_rent` falls back to the most
+  recent earlier bundled year with a matching row rather than returning zero.
 - **Data**: full FY2025 and FY2026 county-level HUD files.
 
 ## Schema

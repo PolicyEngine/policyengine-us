@@ -97,6 +97,14 @@
   output:
     hud_fair_market_rent: 34_944
 
+- name: Fairfield County 2BR FY2026 falls back to FY2025 for legacy Connecticut county FIPS
+  period: 2026
+  input:
+    county_fips: "09001"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 26_844
+
 - name: American Samoa county 2BR FY2026 expands the territory pseudo-area
   period: 2026
   input:
