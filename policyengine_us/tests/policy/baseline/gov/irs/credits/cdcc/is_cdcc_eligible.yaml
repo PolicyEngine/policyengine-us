@@ -41,3 +41,16 @@
     is_tax_unit_head: [true, false]
     is_tax_unit_spouse: [false, true]
     is_cdcc_eligible: [true, false]
+
+# IRC 21(e)(5): a child of divorced or separated parents is the custodial
+# parent's qualifying individual even when the noncustodial parent claims
+# the dependent.
+- name: Case 5, non-dependent child under 13 in the custodial parent's unit qualifies.
+  period: 2024
+  input:
+    age: 5
+    is_tax_unit_dependent: false
+    is_tax_unit_head: false
+    is_tax_unit_spouse: false
+  output:
+    is_cdcc_eligible: true

@@ -21,10 +21,15 @@ class co_low_income_cdcc(Variable):
         age = tax_unit.members("age", period)
         eligible_kid = age < p.cdcc.low_income.child_age_threshold
         eligible_kids = tax_unit.sum(eligible_kid)
-        total_eligibles = tax_unit("count_cdcc_eligible", period)
-        eligible_kid_ratio = np.zeros_like(total_eligibles)
-        mask = total_eligibles > 0
-        eligible_kid_ratio[mask] = eligible_kids[mask] / total_eligibles[mask]
+        # tax_unit_childcare_expenses spreads the SPM unit's childcare
+        # expenses evenly across children, so apportion the under-age share
+        # over the number of children — not all CDCC qualifying individuals,
+        # which can include disabled adults whose care is funded by the
+        # separate care_expenses input.
+        total_children = add(tax_unit, period, ["is_child"])
+        eligible_kid_ratio = np.zeros_like(total_children, dtype=float)
+        mask = total_children > 0
+        eligible_kid_ratio[mask] = eligible_kids[mask] / total_children[mask]
         kid_expenses = care_expenses * eligible_kid_ratio
         capped_kid_expenses = min_(  # Line 3
             kid_expenses, tax_unit("min_head_spouse_earned", period)

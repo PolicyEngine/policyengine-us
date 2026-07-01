@@ -129,6 +129,37 @@
     cdcc_relevant_expenses: 3_000  # min(6_000, $3,000 cap for one individual, earnings)
     cdcc: 600  # 20% x 3_000 at $70,000 joint AGI
 
+# Treas. Reg. 1.21-2(c), Example 3: V is a full-time student, W (V's spouse)
+# is incapable of self-care, neither earns, and they pay $5,000 for W's care.
+# Earned income may be attributed to only one spouse (1.21-2(b)(4)(iii)), so
+# the lesser of their earned incomes is zero and no credit is allowed.
+- name: Both spouses without earnings get no credit despite the deemed income floor
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_full_time_student: true
+        is_tax_unit_head: true
+      person2:
+        age: 43
+        is_incapable_of_self_care: true
+        is_tax_unit_spouse: true
+        pre_subsidy_care_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 0
+    cdcc: 0
+
 - name: Both spouses incapable of self-care are one qualifying individual
   absolute_error_margin: 0.01
   period: 2024

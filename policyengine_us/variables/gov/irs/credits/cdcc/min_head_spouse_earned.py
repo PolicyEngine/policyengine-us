@@ -4,9 +4,10 @@ from policyengine_us.model_api import *
 class min_head_spouse_earned(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Less of head and spouse's earnings"
+    label = "Lesser of head and spouse's CDCC earned income"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/21#d"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.cdcc
@@ -25,6 +26,9 @@ class min_head_spouse_earned(Variable):
         # self-care is deemed to earn at least this floor, but only one spouse
         # may be deemed. Deem whichever eligible spouse yields the larger
         # lesser-of-earnings, leaving the other spouse's actual earnings.
+        # When both spouses are floor-eligible and neither earns, the
+        # non-deemed spouse's earnings stay zero, so the lesser of earnings
+        # is zero (Treas. Reg. 1.21-2(b)(4)(iii); (c), Example 3).
         qualifying_individuals = tax_unit("count_cdcc_eligible", period)
         floor = p.deemed_earned_income.calc(qualifying_individuals)
         no_deem = min_(head_earnings, spouse_earnings)
@@ -40,4 +44,4 @@ class min_head_spouse_earned(Variable):
         )
         joint_earnings = max_(no_deem, max_(deem_head, deem_spouse))
 
-        return where(is_joint, joint_earnings, tax_unit("head_earned", period))
+        return where(is_joint, joint_earnings, head_earnings)
