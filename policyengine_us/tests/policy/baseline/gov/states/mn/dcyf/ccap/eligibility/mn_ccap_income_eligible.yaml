@@ -129,17 +129,17 @@
 
 # Edge cases.
 # The income test uses inclusive <= (income at or below the limit is eligible).
-# Limits reuse the 2026 federal hhs_smi, computed live, so boundary income
+# Limits reuse the FFY2026 federal hhs_smi, computed live, so boundary income
 # values straddle the actual computed limit, not the header's illustrative
-# numbers. 2026 hhs_smi: size 2 = 103,257.04; size 3 = 127,552.81.
-#   size 2 47% = 48,530.81; size 3 67% = 85,460.38; size 3 85% = 108,419.89.
+# numbers. 2026 hhs_smi: size 2 = 97,918.64; size 3 = 120,958.32.
+#   size 2 47% = 46,021.76; size 3 67% = 81,042.07; size 3 85% = 102,814.57.
 - name: Case 6, size-2 non-MFIP applicant one dollar below the 47 percent limit.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        employment_income: 48_530  # below 48,530.81 (size-2 47% limit)
+        employment_income: 46_021  # below 46,021.76 (size-2 47% limit)
       person2:
         age: 4
     spm_units:
@@ -152,7 +152,7 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # 48,530 <= 48,530.81 -> eligible.
+    # 46,021 <= 46,021.76 -> eligible.
     mn_ccap_income_eligible: true
 
 - name: Case 7, size-2 non-MFIP applicant one dollar above the 47 percent limit.
@@ -161,7 +161,7 @@
     people:
       person1:
         age: 30
-        employment_income: 48_531  # above 48,530.81 (size-2 47% limit)
+        employment_income: 46_022  # above 46,021.76 (size-2 47% limit)
       person2:
         age: 4
     spm_units:
@@ -174,7 +174,7 @@
         members: [person1, person2]
         state_code: MN
   output:
-    # 48,531 > 48,530.81 -> ineligible.
+    # 46,022 > 46,021.76 -> ineligible.
     mn_ccap_income_eligible: false
 
 - name: Case 8, size-3 MFIP applicant one dollar below the 67 percent limit.
@@ -183,7 +183,7 @@
     people:
       person1:
         age: 30
-        employment_income: 85_460  # below 85,460.38 (size-3 67% limit)
+        employment_income: 81_042  # below 81,042.07 (size-3 67% limit)
       person2:
         age: 28
       person3:
@@ -198,7 +198,7 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # 85,460 <= 85,460.38 -> eligible.
+    # 81,042 <= 81,042.07 -> eligible.
     mn_ccap_income_eligible: true
 
 - name: Case 9, size-3 MFIP applicant one dollar above the 67 percent limit.
@@ -207,7 +207,7 @@
     people:
       person1:
         age: 30
-        employment_income: 85_461  # above 85,460.38 (size-3 67% limit)
+        employment_income: 81_043  # above 81,042.07 (size-3 67% limit)
       person2:
         age: 28
       person3:
@@ -222,7 +222,7 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # 85,461 > 85,460.38 -> ineligible.
+    # 81,043 > 81,042.07 -> ineligible.
     mn_ccap_income_eligible: false
 
 - name: Case 10, size-3 enrolled family one dollar below the 85 percent exit limit.
@@ -231,7 +231,7 @@
     people:
       person1:
         age: 30
-        employment_income: 108_419  # below 108,419.89 (size-3 85% exit limit)
+        employment_income: 102_814  # below 102,814.57 (size-3 85% exit limit)
       person2:
         age: 28
       person3:
@@ -246,7 +246,7 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # 108,419 <= 108,419.89 -> still eligible during the period.
+    # 102,814 <= 102,814.57 -> still eligible during the period.
     mn_ccap_income_eligible: true
 
 - name: Case 11, size-3 enrolled family one dollar above the 85 percent exit limit.
@@ -255,7 +255,7 @@
     people:
       person1:
         age: 30
-        employment_income: 108_420  # above 108,419.89 (size-3 85% exit limit)
+        employment_income: 102_815  # above 102,814.57 (size-3 85% exit limit)
       person2:
         age: 28
       person3:
@@ -270,7 +270,7 @@
         members: [person1, person2, person3]
         state_code: MN
   output:
-    # 108,420 > 108,419.89 -> ineligible.
+    # 102,815 > 102,814.57 -> ineligible.
     mn_ccap_income_eligible: false
 
 - name: Case 12, zero income is income eligible.
@@ -300,7 +300,7 @@
     people:
       person1:
         age: 30
-        employment_income: 95_000  # above 85,460.38 (67% entrance) but below 108,419.89 (85% exit)
+        employment_income: 95_000  # above 81,042.07 (67% entrance) but below 102,814.57 (85% exit)
       person2:
         age: 28
       person3:
@@ -316,5 +316,5 @@
         state_code: MN
   output:
     # Enrolled families test against 85% regardless of MFIP/DWP status.
-    # 95,000 <= 108,419.89 -> eligible.
+    # 95,000 <= 102,814.57 -> eligible.
     mn_ccap_income_eligible: true

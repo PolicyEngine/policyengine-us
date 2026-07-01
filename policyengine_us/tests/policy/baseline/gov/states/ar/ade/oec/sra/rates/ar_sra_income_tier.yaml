@@ -3,8 +3,8 @@
 #   GT_40_LE_60: > 40%, <= 60% SMI
 #   GT_60: > 60% SMI
 #
-# Arkansas SMI (uprated at 2026-01-01): $95,201.95
-# 2-person SPM (parent + child): SMI = 95,201.95 * 0.68 = $64,737.33 annual
+# Arkansas SMI (period 2026 -> 2025-10-01 entry): $90,280
+# 2-person SPM (parent + child): SMI = 90,280 * 0.68 = $61,390.40 annual
 
 - name: Case 1, family at 30 percent SMI is in the LE_40 tier.
   period: 2026-01
@@ -12,8 +12,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.30 = $19,421.20
-        employment_income: 19_421
+        # 61,390.40 * 0.30 = $18,417.12
+        employment_income: 18_417
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -38,8 +38,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.50 = $32,368.67
-        employment_income: 32_369
+        # 61,390.40 * 0.50 = $30,695.20
+        employment_income: 30_695
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -64,8 +64,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.75 = $48,553.00
-        employment_income: 48_553
+        # 61,390.40 * 0.75 = $46,042.80
+        employment_income: 46_043
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -90,8 +90,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.3985 = $25,798 (just under 40 percent)
-        employment_income: 25_800
+        # 61,390.40 * 0.40 = $24,556.16; just-under boundary at $24,555
+        employment_income: 24_555
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -116,8 +116,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.4016 = $26,000 (just above 40 percent)
-        employment_income: 26_000
+        # 61,390.40 * 0.40 = $24,556.16; just-above boundary at $24,557
+        employment_income: 24_557
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -142,8 +142,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.5978 = $38,700 (just under 60 percent)
-        employment_income: 38_700
+        # 61,390.40 * 0.60 = $36,834.24; just-under boundary at $36,833
+        employment_income: 36_833
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -168,8 +168,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.6025 = $39,000 (just above 60 percent)
-        employment_income: 39_000
+        # 61,390.40 * 0.60 = $36,834.24; just-above boundary at $36,835
+        employment_income: 36_835
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -194,8 +194,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.40 = $25,894.93
-        employment_income: 25_894.93
+        # 61,390.40 * 0.40 = $24,556.16; whole dollar below to stay inclusive
+        employment_income: 24_556
         immigration_status: CITIZEN
       person2:
         age: 4
@@ -220,8 +220,8 @@
     people:
       person1:
         age: 30
-        # 64,737.33 * 0.60 = $38,842.40
-        employment_income: 38_842.40
+        # 61,390.40 * 0.60 = $36,834.24; whole dollar below to stay inclusive
+        employment_income: 36_834
         immigration_status: CITIZEN
       person2:
         age: 4

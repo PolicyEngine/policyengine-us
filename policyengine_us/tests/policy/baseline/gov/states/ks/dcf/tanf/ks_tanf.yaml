@@ -77,3 +77,32 @@
   output:
     # Benefit: 386 - 100.50 = 285.50
     ks_tanf: 285.5
+
+# Per KEESM 6220 (Assigned Support Retained by CSS, TANF only): assigned
+# child support is counted for income
+# eligibility but excluded from the payment amount, so it does not reduce
+# the benefit.
+- name: Case 8, child support fully excluded from benefit amount.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 150  # entirely from assigned child support
+    child_support_received: 1_800  # $150/month
+  output:
+    # Child support excluded: 386 - (150 - 150) = 386
+    ks_tanf: 386
+
+- name: Case 9, child support excluded alongside other income.
+  period: 2025-01
+  input:
+    state_code: KS
+    ks_tanf_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_countable_income: 250  # $100 other income + $150 child support
+    child_support_received: 1_800  # $150/month
+  output:
+    # Only the non-child-support income reduces the benefit:
+    # 386 - (250 - 150) = 286
+    ks_tanf: 286

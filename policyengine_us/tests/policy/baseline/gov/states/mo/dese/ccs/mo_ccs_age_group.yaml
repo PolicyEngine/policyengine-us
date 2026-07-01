@@ -1,0 +1,84 @@
+# MO CCS age group tests
+# mo_ccs_age_group is Person, MONTH (enum: INFANT_TODDLER, PRESCHOOL,
+# SCHOOL_AGE). Age bracket: 0-<2 INFANT_TODDLER, 2-<5 PRESCHOOL,
+# 5+ SCHOOL_AGE.
+
+- name: Case 1, infant is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_age_group: INFANT_TODDLER
+
+- name: Case 2, one year old is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_age_group: INFANT_TODDLER
+
+- name: Case 3, two year old is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Threshold 2 (inclusive) -> PRESCHOOL.
+    mo_ccs_age_group: PRESCHOOL
+
+- name: Case 4, four year old is preschool.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_age_group: PRESCHOOL
+
+- name: Case 5, five year old is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Threshold 5 (inclusive) -> SCHOOL_AGE.
+    mo_ccs_age_group: SCHOOL_AGE
+
+- name: Case 6, eight year old is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 8
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ccs_age_group: SCHOOL_AGE

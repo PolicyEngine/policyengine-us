@@ -24,6 +24,34 @@
     pays_aca_premium: false
     is_aca_ptc_eligible: false
 
+- name: Current Medicaid receipt prevents ACA premium payment
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    receives_medicaid: true
+    aca_magi_fraction: 5
+  output:
+    pays_aca_premium: false
+    is_aca_ptc_eligible: false
+
+- name: Off-Marketplace direct-purchase coverage does not prevent ACA premium payment or PTC eligibility
+  period: 2026
+  input:
+    age: 40
+    is_medicaid_eligible: false
+    is_aca_eshi_eligible: false
+    is_medicare_eligible: false
+    is_chip_eligible: false
+    has_non_marketplace_direct_purchase_health_coverage_at_interview: true
+    aca_magi_fraction: 2.5
+  output:
+    pays_aca_premium: true
+    is_aca_ptc_eligible: true
+
 - name: Married filing separately can pay ACA premium without PTC
   period: 2026
   input:
