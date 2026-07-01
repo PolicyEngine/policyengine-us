@@ -1,0 +1,82 @@
+# Tests for Alabama UI maximum benefit weeks (Code of Alabama § 25-4-74(a)).
+# Bracket behavior is covered at the statutory floor, first increment, pre-cap,
+# and cap. Other benefit-flow tests exercise the natural 2024 ALUR baseline.
+
+- name: Case 1, UR at 6.5 percent gets 14 weeks.
+  period: 2024
+  input:
+    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.065
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 14
+
+- name: Case 2, UR just above 6.5 percent gets 15 weeks.
+  period: 2024
+  input:
+    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.0651
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 15
+
+- name: Case 3, UR at 9.0 percent gets 19 weeks.
+  period: 2024
+  input:
+    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.09
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 19
+
+- name: Case 4, UR at 9.5 percent reaches the 20-week cap.
+  period: 2024
+  input:
+    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.095
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 20
+
+- name: Case 5, natural 2024 ALUR baseline gets 14 weeks.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 14

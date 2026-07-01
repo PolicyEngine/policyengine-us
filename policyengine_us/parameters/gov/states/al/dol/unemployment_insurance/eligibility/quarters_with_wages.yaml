@@ -1,0 +1,16 @@
+description: Alabama sets this minimum number of calendar quarters of the base period in which wages must have been paid under the Unemployment Compensation program.
+
+values:
+  2020-01-01: 2
+
+metadata:
+  unit: int
+  period: year
+  label: Alabama UI required quarters with wages
+  reference:
+    - title: Code of Alabama § 25-4-77(a)(4)
+      href: https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-77/
+    - title: Alabama UC Benefit Rights and Responsibilities Handbook
+      href: https://labor.alabama.gov/docs/guides/uc_brr.pdf#page=7
+    - title: U.S. DOL Comparison of State UI Laws 2023, Table 3-2
+      href: https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf#page=5
