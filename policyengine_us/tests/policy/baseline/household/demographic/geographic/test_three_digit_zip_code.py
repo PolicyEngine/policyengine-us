@@ -42,6 +42,34 @@ def test_three_digit_zip_code_leading_zero():
     assert result[0] == "012"
 
 
+def test_three_digit_zip_code_missing_zip():
+    """UNKNOWN -> empty ZIP3"""
+    sim = _make_sim("UNKNOWN")
+    result = sim.calculate("three_digit_zip_code", 2026)
+    assert result[0] == ""
+
+
+def test_three_digit_zip_code_empty_zip():
+    """Empty ZIP -> empty ZIP3"""
+    sim = _make_sim("")
+    result = sim.calculate("three_digit_zip_code", 2026)
+    assert result[0] == ""
+
+
+def test_three_digit_zip_code_nonnumeric_zip():
+    """Nonnumeric ZIP -> empty ZIP3"""
+    sim = _make_sim("not-a-zip")
+    result = sim.calculate("three_digit_zip_code", 2026)
+    assert result[0] == ""
+
+
+def test_three_digit_zip_code_zip_plus_four():
+    """90019-1234 -> 900"""
+    sim = _make_sim("90019-1234")
+    result = sim.calculate("three_digit_zip_code", 2026)
+    assert result[0] == "900"
+
+
 def test_la_county_aca_ptc_nonzero_with_zip():
     """ACA PTC should be nonzero for an LA County household providing zip_code.
 
