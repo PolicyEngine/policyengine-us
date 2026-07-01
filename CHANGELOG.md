@@ -1,3 +1,10 @@
+## [1.753.1] - 2026-07-01
+
+### Changed
+
+- Remove unused contrib parameters (maryland_child_alliance, second_earner_reform).
+
+
 ## [1.753.0] - 2026-07-01
 
 ### Added
