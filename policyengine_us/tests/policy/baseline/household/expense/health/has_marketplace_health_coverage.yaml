@@ -1,0 +1,13 @@
+- name: Case 1, legacy Marketplace coverage follows reported interview coverage.
+  period: 2026
+  input:
+    has_marketplace_health_coverage_at_interview: true
+  output:
+    has_marketplace_health_coverage: true
+
+- name: Case 2, legacy Marketplace coverage defaults false without reported interview coverage.
+  period: 2026
+  input:
+    has_marketplace_health_coverage_at_interview: false
+  output:
+    has_marketplace_health_coverage: false

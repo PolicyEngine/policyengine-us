@@ -48,6 +48,18 @@ def test_input_variables_do_not_use_formulas_adds_or_subtracts():
     assert invalid == {}
 
 
+def test_legacy_marketplace_coverage_is_not_active_input_variable():
+    system = CountryTaxBenefitSystem()
+
+    legacy_variable = system.variables["has_marketplace_health_coverage"]
+    assert not legacy_variable.is_input_variable()
+    assert legacy_variable.formulas
+    assert system.variables[
+        "has_marketplace_health_coverage_at_interview"
+    ].is_input_variable()
+    assert system.variables["takes_up_aca_if_eligible"].is_input_variable()
+
+
 def test_state_input_variables_match_state_defined_for():
     system = CountryTaxBenefitSystem()
 

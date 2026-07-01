@@ -7,6 +7,11 @@ class healthcare_benefit_value(Variable):
     entity = Household
     definition_period = YEAR
     unit = USD
+    documentation = (
+        "Annual canonical household resource value of health coverage. This "
+        "uses annual health-value and government-cost proxy variables directly, "
+        "including assigned_aca_ptc for ACA premium tax credits."
+    )
     adds = [
         "medicaid_cost",
         "msp_cost",
