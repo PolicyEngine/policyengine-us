@@ -1,6 +1,6 @@
 # Kansas TANF countable earned income test
 # Sums person-level earned income after deductions,
-# then subtracts dependent care (no cap per KEESM 7224)
+# then subtracts dependent care (no cap per KEESM 7211)
 
 - name: Case 1, no earned income.
   period: 2025-01
@@ -148,4 +148,28 @@
     childcare_expenses: 0
   output:
     # K.A.R. 30-4-111(b)(3): $400 - $100 care expense = $300 (no cap)
+    ks_tanf_countable_earned_income: 300
+
+- name: Case 11, exempt child earner and care deduction combine.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 400
+        care_expenses: 1_200  # $100/month for care of an incapacitated person
+      person2:
+        age: 10
+        ks_tanf_earned_income_after_deductions: 150
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2 (age 10) is a child; earnings exempt (KEESM 6410). person1's
+    # $400 counts, less the $100 care expense (K.A.R. 30-4-111(b)(3)) = $300.
     ks_tanf_countable_earned_income: 300

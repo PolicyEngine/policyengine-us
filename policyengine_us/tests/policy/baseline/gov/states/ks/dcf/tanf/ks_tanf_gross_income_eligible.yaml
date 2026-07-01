@@ -121,3 +121,27 @@
     # size-3 threshold $666.25 -> ineligible. The full 4-person SPM size would
     # give $803.75 and wrongly pass.
     ks_tanf_gross_income_eligible: false
+
+- name: Case 9, exempt child's earnings excluded from the gross-income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 400
+      person2:
+        age: 10
+        tanf_gross_earned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Assistance unit size = 2 (threshold $528.75). person2 (age 10) is a
+    # child, so its $200 earned income is exempt (KEESM 6410): counted gross
+    # = $400 < $528.75 -> eligible. Counting the child's $200 would give $600
+    # and wrongly fail.
+    ks_tanf_gross_income_eligible: true
