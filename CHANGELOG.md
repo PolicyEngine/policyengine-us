@@ -1,3 +1,10 @@
+## [1.752.2] - 2026-07-01
+
+### Fixed
+
+- Base the Washington Working Families Tax Credit phase-out on federal phase-out income (greater of earned income or AGI) rather than earned income alone.
+
+
 ## [1.752.1] - 2026-07-01
 
 ### Fixed
