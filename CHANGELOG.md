@@ -1,3 +1,10 @@
+## [1.751.2] - 2026-07-01
+
+### Fixed
+
+- Apply the CHIP no-other-coverage rule to non-ESI health coverage.
+
+
 ## [1.751.1] - 2026-06-30
 
 ### Fixed
