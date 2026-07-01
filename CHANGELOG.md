@@ -1,3 +1,10 @@
+## [1.753.0] - 2026-07-01
+
+### Added
+
+- Add discrete per-filing-status AGI-stepped schedule parameters to the Maryland and Ohio dependent exemption contrib reforms.
+
+
 ## [1.752.3] - 2026-07-01
 
 ### Fixed
