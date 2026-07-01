@@ -611,3 +611,245 @@
     ks_tanf_eligible: true
     # Benefit: 349 - 164 = 185
     ks_tanf: 185
+
+- name: Case 17, working teenager's earned income is exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:
+        age: 16  # working teenager
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 3_600  # $300/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Per KEESM 6410: person3 (age 16) is a child, so their $300/month earnings
+    # are exempt as income -- excluded from both the gross-income test and
+    # countable income. Without the exemption, gross income ($800) would exceed
+    # 30% FPL for a family of 3 (~$670) and the family would be ineligible.
+    # person1: $500 - $90 = $410, * 0.40 = $164
+    # person3: $300 - $90 = $210, * 0.40 = $84 (computed, but exempt)
+    spm_unit_size: 3
+    ks_tanf_earned_income_after_deductions: [164, 0, 84]
+    ks_tanf_countable_earned_income: 164
+    ks_tanf_countable_income: 164
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 386 - 164 = 222
+    ks_tanf: 222
+
+- name: Case 18, incapacitated person care expenses reduce countable income.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:  # disabled adult dependent receiving the care
+        age: 60
+        is_disabled: true
+        is_tax_unit_dependent: true
+        care_expenses: 1_200  # $100/month, care of an incapacitated person
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Per K.A.R. 30-4-111(b)(3): care expenses for an incapacitated person in
+    # the family group (person3) are deducted after the $90 and 60%
+    # disregards, with no cap.
+    # person1: $500 - $90 = $410, * 0.40 = $164
+    # Care expenses: $100/month -> countable earned: $164 - $100 = $64
+    spm_unit_size: 3
+    ks_tanf_earned_income_after_deductions: [164, 0, 0]
+    ks_tanf_countable_earned_income: 64
+    ks_tanf_countable_income: 64
+    ks_tanf_maximum_benefit: 386  # Group I, size 3
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_income_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 386 - 64 = 322
+    ks_tanf: 322
+
+# Cases 19 and 20 are a matched pair: identical household and identical $400/month
+# earnings, differing only in whether the earner is a child. They isolate the
+# KEESM 6410 child earned income exemption -- the child earner's family keeps the
+# full benefit, while the non-student adult earner's family has that income counted.
+
+- name: Case 19, child's $400/month earnings are fully exempt, benefit unreduced.
+  period: 2025-01
+  input:
+    people:
+      person1:  # parent, no income
+        age: 35
+      person2:  # young child, keeps the family demographically eligible
+        age: 5
+        is_tax_unit_dependent: true
+      person3:  # working child (age 16)
+        age: 16
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # person3 (age 16) is a child, so their $400/month is exempt as income
+    # (KEESM 6410). The family has zero countable income and receives the full
+    # Group I size-3 payment standard -- exactly as if the child earned nothing.
+    spm_unit_size: 3
+    ks_tanf_countable_earned_income: 0
+    ks_tanf_countable_income: 0
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_eligible: true
+    ks_tanf: 386
+
+- name: Case 20, same earnings from a non-student adult are counted, benefit reduced.
+  period: 2025-01
+  input:
+    people:
+      person1:  # parent, no income
+        age: 35
+      person2:  # young child, keeps the family demographically eligible
+        age: 5
+        is_tax_unit_dependent: true
+      person3:  # 18-year-old, not in school -> not a child
+        age: 18
+        is_in_secondary_school: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 4_800  # $400/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # person3 (age 18, not in secondary school) is not a child, so their
+    # $400/month is counted. Only the earner's status differs from Case 19.
+    # person3: $400 - $90 = $310, * 0.40 = $124
+    spm_unit_size: 3
+    ks_tanf_countable_earned_income: 124
+    ks_tanf_countable_income: 124
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_eligible: true
+    # Benefit: 386 - 124 = 262 (vs the full 386 in Case 19)
+    ks_tanf: 262
+
+- name: Case 21, same household as Case 18 but with no care expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 6_000  # $500/month
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+      person3:  # same disabled adult dependent, but no care expenses claimed
+        age: 60
+        is_disabled: true
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Identical to Case 18 but with no care_expenses.
+    # person1: $500 - $90 = $410, * 0.40 = $164 countable earned (no deduction).
+    # Case 18's $100/month care deduction is exactly the $322 - $222 = $100
+    # benefit difference, proving care_expenses reduces countable income.
+    spm_unit_size: 3
+    ks_tanf_earned_income_after_deductions: [164, 0, 0]
+    ks_tanf_countable_earned_income: 164
+    ks_tanf_countable_income: 164
+    ks_tanf_maximum_benefit: 386
+    ks_tanf_eligible: true
+    # Benefit: 386 - 164 = 222 (vs 322 in Case 18; the $100 gap is the care deduction)
+    ks_tanf: 222
+
+- name: Case 22, 18-year-old student heading her own case has earnings counted.
+  period: 2025-01
+  input:
+    people:
+      person1:  # teen parent, 18, in secondary school, heads her own case
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 4_800  # $400/month
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person1 meets KEESM 6410's age/student test, but heads her own case
+    # rather than being a dependent child, so she is acting in her own
+    # behalf and her earnings are NOT exempt.
+    # person1: $400 - $90 = $310, * 0.40 = $124
+    spm_unit_size: 2
+    ks_tanf_child_earned_income_exempt: [false, true]
+    ks_tanf_countable_earned_income: 124
+    ks_tanf_countable_income: 124
+    ks_tanf_maximum_benefit: 309  # Group I, size 2
+    ks_tanf_gross_income_eligible: true
+    ks_tanf_eligible: true
+    # Benefit: 309 - 124 = 185
+    ks_tanf: 185
