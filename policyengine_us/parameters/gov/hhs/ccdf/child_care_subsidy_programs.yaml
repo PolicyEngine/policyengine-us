@@ -23,6 +23,7 @@ values:
     - me_child_care_subsidies  # Maine Child Care Affordability Program
     - mi_child_care_subsidies  # Michigan Child Development and Care program
     - mn_child_care_subsidies  # Minnesota Child Care Assistance Program
+    - mo_child_care_subsidies  # Missouri Child Care Subsidy
     - ms_child_care_subsidies  # Mississippi Child Care Payment Program (CCPP)
     - ne_child_care_subsidies  # Nebraska Child Care Subsidy
     - vt_child_care_subsidies  # Vermont Child Care Financial Assistance Program
@@ -39,3 +40,6 @@ metadata:
   unit: list
   period: year
   label: Child care subsidy programs
+  reference:
+    - title: ACF Approved Child Care and Development Fund Plans FY 2025-2027
+      href: https://www.acf.hhs.gov/occ/form/approved-ccdf-plans-fy-2025-2027
