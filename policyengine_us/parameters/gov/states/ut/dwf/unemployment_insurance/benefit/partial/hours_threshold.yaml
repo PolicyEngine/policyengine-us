@@ -1,0 +1,14 @@
+description: Utah limits weekly hours worked to less than this threshold for benefit eligibility under the Unemployment Insurance program.
+
+values:
+  2024-01-01: 40
+
+metadata:
+  unit: hour
+  period: week
+  label: Utah UI weekly hours threshold
+  reference:
+    - title: Utah Code § 35A-4-207
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S207.html
+    - title: Utah DWS Claimant Guide (Jan 2025)
+      href: https://jobs.utah.gov/ui/jobseeker/claimantguide.pdf#page=13
