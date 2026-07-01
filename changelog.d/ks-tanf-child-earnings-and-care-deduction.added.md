@@ -1,0 +1,2 @@
+- Excluded children's earned income from Kansas TANF gross-income and countable income per KEESM 6410.
+- Added a Kansas TANF earned income deduction for the care of an incapacitated person per K.A.R. 30-4-111(b)(3).

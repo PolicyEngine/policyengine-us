@@ -1,0 +1,55 @@
+# Kansas TANF child earned income exemption (KEESM 6410)
+# A child's earned income is exempt if the child is under age 18, or under
+# age 19 and working toward a high school diploma or its equivalent
+# (secondary school student).
+
+- name: Case 1, child under 18 is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 10
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 2, 17-year-old is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 17
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 3, 18-year-old not in secondary school is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 18
+    is_in_secondary_school: false
+  output:
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 4, 18-year-old in secondary school is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 18
+    is_in_secondary_school: true
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 5, 19-year-old in secondary school is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 19
+    is_in_secondary_school: true
+  output:
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 6, adult is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 40
+  output:
+    ks_tanf_child_earned_income_exempt: false
