@@ -1,59 +1,198 @@
-- name: Nine bedroom multi family home
+- name: LA County 2023 SRO uses the single-room-occupancy schedule
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    in_la: true
-    is_sro: false
-    bedrooms: 9 
-    tenant_pays_utilities: true
-  output:
-    hud_utility_allowance: 719 * 12
-
-- name: Single room occupancy
-  period: 2023
-  input:
-    in_la: true
+    county_fips: "06037"
     is_sro: true
-    bedrooms: 3 
+    bedrooms: 3
     tenant_pays_utilities: true
   output:
     hud_utility_allowance: 179 * 12
 
-- name: Not in LA
+- name: LA County 2023 zero bedroom
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    in_la: false
-    is_sro: false
-    bedrooms: 9 
-    tenant_pays_utilities: true
-  output:
-    hud_utility_allowance: 0
-
-- name: Four bedroom multi family home
-  period: 2023
-  input:
-    in_la: true
-    is_sro: false
-    bedrooms: 4
-    tenant_pays_utilities: true
-  output:
-    hud_utility_allowance: 452 * 12
-
-- name: Zero bedroom multi family home
-  period: 2023
-  input:
-    in_la: true
+    county_fips: "06037"
     is_sro: false
     bedrooms: 0
     tenant_pays_utilities: true
   output:
     hud_utility_allowance: 227 * 12
 
-- name: Tenant is not responsible for utility payments
+- name: LA County 2023 four bedroom
   period: 2023
+  absolute_error_margin: 0.01
   input:
-    in_la: true
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 4
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 452 * 12
+
+- name: LA County bedrooms above the schedule cap at the eight-bedroom value
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 9
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 719 * 12
+
+- name: LA County 2024 still uses the 2023 schedule (no 2024 update)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 3
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 375 * 12
+
+- name: LA County 2025 uses the updated FY2025 schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 3
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 389 * 12
+
+- name: LA County 2025 SRO
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: true
+    bedrooms: 0
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 194 * 12
+
+- name: Texas TDHCA county (Denton) 2026 zero bedroom
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48121"
     is_sro: false
     bedrooms: 0
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 238 * 12
+
+- name: Texas TDHCA county (Denton) 2026 five bedroom
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48121"
+    is_sro: false
+    bedrooms: 5
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 439 * 12
+
+- name: Texas county bedrooms above the schedule cap at the top bedroom value
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48121"
+    is_sro: false
+    bedrooms: 8
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 439 * 12
+
+- name: Kansas Wichita (Sedgwick County) 2025 zero bedroom
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20173"
+    is_sro: false
+    bedrooms: 0
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 210 * 12
+
+- name: Kansas Topeka (Shawnee County) 2025 seven bedroom
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20177"
+    is_sro: false
+    bedrooms: 7
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 543 * 12
+
+- name: County without an encoded schedule returns zero (Denver County, CO)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "08031"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 0
+
+- name: Tenant not responsible for utilities receives no allowance
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    is_sro: false
+    bedrooms: 3
     tenant_pays_utilities: false
   output:
     hud_utility_allowance: 0
+
+- name: Kansas KCKHA (Wyandotte County) 2026 three bedroom
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20209"
+    is_sro: false
+    bedrooms: 3
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 369 * 12
+
+- name: Kansas Johnson County 2026 three bedroom
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20091"
+    is_sro: false
+    bedrooms: 3
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 367 * 12
+
+- name: Texas county before its first schedule year uses the earliest (2026) schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48121"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 298 * 12
+
+- name: SRO in a county without a published SRO row gets 75 percent of the zero-bedroom value
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20173"
+    is_sro: true
+    bedrooms: 0
+    tenant_pays_utilities: true
+  output:
+    # 24 CFR 982.604(b): 0.75 * $210 (Wichita 0 BR) = $157.50/month.
+    hud_utility_allowance: 157.5 * 12
