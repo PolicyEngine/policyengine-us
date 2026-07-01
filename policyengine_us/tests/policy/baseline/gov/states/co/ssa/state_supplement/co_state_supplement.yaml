@@ -117,3 +117,13 @@
     ssi: 5_000
   output:
     co_state_supplement: 4_604
+
+- name: Case 13, 2026 grant standard of 994.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 0
+    ssi: 0
+  output:
+    co_state_supplement: 11_928
