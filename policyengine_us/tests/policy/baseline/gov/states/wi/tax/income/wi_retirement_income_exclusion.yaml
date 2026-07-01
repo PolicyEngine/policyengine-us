@@ -78,11 +78,15 @@
         members: [person1]
         state_code: WI
   output:
-    # AGI = $45k → Line 17 ineligible (> $15k), Line 16 = $20k
-    # Standard tax ≈ $1,377, exclusion tax ≈ $474
-    # min($1377, $474) = $474 → exclusion path wins
+    # AGI = $45k → Line 17 ineligible (> $15k), Line 16 = $20k.
+    # The $20k Line 16 subtraction lowers WI income to $25k, where the
+    # standard deduction phaseout is smaller, so the standard deduction is
+    # $12,906 (vs $10,506 at $45k) — $2,400 larger. Exclusion taxable income
+    # = ($45k - $10,506 - $950 exemption) - $20k - $2,400 = $11,144;
+    # exclusion tax = $11,144 * 0.035 = $390.
+    # Standard tax ≈ $1,344 → min($1,344, $390) = $390 → exclusion path wins.
     wi_retirement_income_exclusion_amount: 20_000
-    wi_income_tax: 474
+    wi_income_tax: 390
 
 - name: E2E - Joint both 68, large pension, exclusion zeroes out tax
   absolute_error_margin: 1

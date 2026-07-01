@@ -92,3 +92,37 @@
     # exclusion_taxinc = max(0, 18000 - 15000 + 0) = 3000
     # exclusion_tax = 3000 * 0.035 = 105
     wi_retirement_income_exclusion_tax: 105
+
+# Regression for issue #8817: the Line 16 subtraction must reduce WI income
+# BEFORE the standard-deduction phaseout, so a large exclusion recovers
+# standard deduction that the pre-subtraction income had phased out.
+- name: E2E - Joint 67+ with retirement income above the standard-deduction phaseout
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 90_000
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        taxable_pension_income: 30_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # WI income (line 7) = $120,000; Line 16 exclusion = min($48k, $120k) = $48k.
+    # Standard deduction at $120k = $6,956; at ($120k - $48k) = $72k it is
+    # $16,449 — $9,493 larger (the phaseout is 0.19778 * $48k). Exclusion
+    # taxable income = $72k - $16,449 - $1,900 exemption = $53,651; joint tax
+    # = 19,580*0.035 + (53,651-19,580)*0.044 = $2,184. Before the fix the
+    # phaseout stayed keyed to $120k, giving ~$2,602 and over-taxing the couple.
+    wi_retirement_income_exclusion_amount: 48_000
+    wi_retirement_income_exclusion_tax: 2_184
