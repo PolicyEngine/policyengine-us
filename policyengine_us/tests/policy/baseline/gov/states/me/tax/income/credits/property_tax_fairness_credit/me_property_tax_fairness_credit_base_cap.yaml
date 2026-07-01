@@ -109,3 +109,21 @@
     age_spouse: 0
   output:
     me_property_tax_fairness_credit_base_cap: 1_700
+
+# Regression for the senior benefit base at the exact age-65 threshold. The
+# senior scale must be a SingleAmountTaxScale (inclusive at the threshold) so it
+# returns $4,100 at age 65; a marginal scale returned $0 there, silently falling
+# back to the $2,550 non-senior single base (would give $150, not $1,700).
+- name: Age exactly 65 filer 2025 senior benefit base applies at the threshold
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+    me_property_tax_fairness_credit_countable_rent_property_tax: 5_000
+    age_head: 65
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_700

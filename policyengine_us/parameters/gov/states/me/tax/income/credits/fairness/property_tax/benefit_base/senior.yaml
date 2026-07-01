@@ -18,7 +18,9 @@ brackets:
         interval: 50
 
 metadata:
-  unit: currency-USD
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
   reference:
     # This senior benefit base takes effect in 2024 
     - title: §5219-KK. Property tax fairness credit for tax (1) (A-1) (4)
