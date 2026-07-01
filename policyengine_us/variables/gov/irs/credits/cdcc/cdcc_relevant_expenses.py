@@ -17,7 +17,7 @@ class cdcc_relevant_expenses(Variable):
         # individual: childcare for children under 13
         # (tax_unit_childcare_expenses) plus care for a disabled qualifying
         # individual of any age — a disabled adult dependent or spouse
-        # (care_expenses, a person-level monthly input summed to the year).
+        # (care_expenses, a person-level yearly input).
         childcare = tax_unit("tax_unit_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
