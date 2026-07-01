@@ -55,3 +55,31 @@
     selected_marketplace_plan_premium_proxy: 5_000
     used_aca_ptc: 3_000
     marketplace_net_premium: 2_000
+
+- name: Reported unsubsidized Marketplace buyer pays selected plan premium when simulated take-up is disabled.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        has_marketplace_health_coverage_at_interview: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5
+        slcsp: 10_000
+        selected_marketplace_plan_benchmark_ratio: 0.8
+        simulated_aca_take_up_if_eligible: false
+  output:
+    pays_aca_premium: [true]
+    takes_up_aca_if_eligible: true
+    is_aca_ptc_eligible: [false]
+    selected_marketplace_plan_premium_proxy: 8_000
+    used_aca_ptc: 0
+    marketplace_net_premium: 8_000
