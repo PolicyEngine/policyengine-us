@@ -1,3 +1,10 @@
+## [1.752.1] - 2026-07-01
+
+### Fixed
+
+- Base the Vermont Child Care Contribution on net self-employment earnings (Schedule SE Line 6) rather than gross self-employment income.
+
+
 ## [1.752.0] - 2026-07-01
 
 ### Added
