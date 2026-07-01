@@ -49,3 +49,66 @@
     bedrooms: 2
   output:
     pha_payment_standard: 2_666 * 12
+
+- name: Dallas mandatory-SAFMR metro ZIP 2BR uses the metro Small Area FMR
+  period: 2026
+  input:
+    zip_code: "75201"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 34_800 # SAFMR 2,900 * 12
+
+- name: TDHCA ZIP 2BR uses the published standard over the metro SAFMR
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 2
+  output:
+    pha_payment_standard: 16_320 # TDHCA 1,360 * 12 (beats SAFMR 1,330)
+
+- name: Houston ZIP 2BR uses HHA's adopted standard, not SAFMR
+  period: 2025
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    # Houston is not a mandatory-SAFMR metro; HHA's adopted Tier A-1 standard applies.
+    pha_payment_standard: 19_536 # HHA 1,628 * 12
+
+- name: Houston HHA ZIP 77407 resolves to the adopted standard end-to-end
+  period: 2025
+  input:
+    zip_code: "77407"
+    bedrooms: 2
+  output:
+    # Houston is not a mandatory-SAFMR metro; HHA's adopted Tier A-1 standard
+    # applies instead of the county FMR (1,529/mo).
+    pha_payment_standard: 19_536 # HHA Tier A-1 1,628 * 12
+
+- name: Dallas overlap ZIP uses the published TDHCA standard over the higher SAFMR
+  period: 2025
+  input:
+    zip_code: "75010"
+    bedrooms: 2
+  output:
+    # 75010 is in both the TDHCA published schedule (2,150) and the Dallas SAFMR
+    # (2,220); the published standard wins even though it is the lower value.
+    pha_payment_standard: 25_800 # TDHCA 2,150 * 12 (beats SAFMR 2,220)
+
+- name: Wichita KS metro ZIP resolves to the Small Area FMR
+  period: 2026
+  input:
+    zip_code: "67202"
+    bedrooms: 2
+  output:
+    # No Kansas PHA published schedule is encoded, so the mandatory Wichita SAFMR is the basis.
+    pha_payment_standard: 14_160 # SAFMR 1,180 * 12
+
+- name: Kansas City KS ZIP uses the ZIP-level SAFMR, not the flat county FMR
+  period: 2026
+  input:
+    zip_code: "66210"
+    bedrooms: 2
+  output:
+    # Overland Park (Johnson Co) SAFMR 1,730 exceeds the county FMR (1,346); SAFMR is the mandatory basis.
+    pha_payment_standard: 20_760 # SAFMR 1,730 * 12
