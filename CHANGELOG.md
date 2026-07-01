@@ -1,3 +1,17 @@
+## [1.752.3] - 2026-07-01
+
+### Fixed
+
+- Add care expenses for a disabled adult dependent or spouse to the Child and Dependent Care Credit base, via a new care_expenses input, so a disabled qualifying individual age 18 or older is no longer attributed $0 of care expenses; the federal credit and its state mirrors (e.g. Kansas) previously returned $0 in this case.
+
+
+## [1.752.2] - 2026-07-01
+
+### Fixed
+
+- Base the Washington Working Families Tax Credit phase-out on federal phase-out income (greater of earned income or AGI) rather than earned income alone.
+
+
 ## [1.752.1] - 2026-07-01
 
 ### Fixed
