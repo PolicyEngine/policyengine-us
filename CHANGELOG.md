@@ -1,3 +1,10 @@
+## [1.753.5] - 2026-07-01
+
+### Fixed
+
+- Fixed the Utah fully refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Utah tax liability.
+
+
 ## [1.753.4] - 2026-07-01
 
 ### Fixed
