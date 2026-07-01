@@ -37,8 +37,9 @@ class ks_tanf_countable_earned_income(Variable):
         # disregards, deduct reasonable expenses for child care or for the
         # care of an incapacitated person. Kansas applies no dollar cap.
         # KEESM 7211 also requires the cared-for dependent to be in the
-        # assistance unit; we don't enforce that, since these expenses are
-        # only tracked at the unit level at the moment.
+        # assistance unit; we don't enforce that at the moment. care_expenses
+        # is attributed to the person receiving care and is summed unit-wide
+        # here, mirroring the unit-level childcare_expenses input.
         childcare_expenses = spm_unit("childcare_expenses", period)
         incapacitated_care_expenses = add(spm_unit, period, ["care_expenses"])
         return max_(

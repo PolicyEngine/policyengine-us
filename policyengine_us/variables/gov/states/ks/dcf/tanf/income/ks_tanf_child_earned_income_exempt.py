@@ -16,11 +16,13 @@ class ks_tanf_child_earned_income_exempt(Variable):
         # federal TANF minor-child definition (45 CFR 260.30), so we reuse the
         # federal student and non-student age limits.
         #
-        # KEESM 6410 excludes emancipated minors (and minors acting in their
-        # own behalf); we don't track emancipation status at the moment, so
-        # that carve-out is not modeled.
+        # KEESM 6410 does not exempt a person acting in their own behalf
+        # (e.g., a teen parent heading their own case), so the exemption is
+        # limited to dependents. We don't track legal emancipation at the
+        # moment.
         age = person("age", period.this_year)
         is_student = person("is_in_secondary_school", period.this_year)
+        is_dependent = person("is_tax_unit_dependent", period.this_year)
         p = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
         age_limit = where(is_student, p.student, p.non_student)
-        return age < age_limit
+        return is_dependent & (age < age_limit)

@@ -80,6 +80,7 @@
         ks_tanf_earned_income_after_deductions: 200
       person2:
         age: 10
+        is_tax_unit_dependent: true
         ks_tanf_earned_income_after_deductions: 150
     spm_units:
       spm_unit:
@@ -103,6 +104,7 @@
       person2:
         age: 18
         is_in_secondary_school: true
+        is_tax_unit_dependent: true
         ks_tanf_earned_income_after_deductions: 150
     spm_units:
       spm_unit:
@@ -142,10 +144,22 @@
 - name: Case 10, incapacitated person care expense deduction.
   period: 2025-01
   input:
-    state_code: KS
-    ks_tanf_earned_income_after_deductions: 400
-    care_expenses: 1_200  # $100/month for the care of an incapacitated person
-    childcare_expenses: 0
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 400
+      person2:  # disabled adult dependent receiving the care
+        age: 60
+        is_disabled: true
+        care_expenses: 1_200  # $100/month for the care of an incapacitated person
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
   output:
     # K.A.R. 30-4-111(b)(3): $400 - $100 care expense = $300 (no cap)
     ks_tanf_countable_earned_income: 300
@@ -157,19 +171,24 @@
       person1:
         age: 30
         ks_tanf_earned_income_after_deductions: 400
-        care_expenses: 1_200  # $100/month for care of an incapacitated person
       person2:
         age: 10
+        is_tax_unit_dependent: true
         ks_tanf_earned_income_after_deductions: 150
+      person3:  # disabled adult dependent receiving the care
+        age: 60
+        is_disabled: true
+        care_expenses: 1_200  # $100/month for care of an incapacitated person
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         childcare_expenses: 0
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: KS
   output:
     # person2 (age 10) is a child; earnings exempt (KEESM 6410). person1's
-    # $400 counts, less the $100 care expense (K.A.R. 30-4-111(b)(3)) = $300.
+    # $400 counts, less the $100 care expense for person3
+    # (K.A.R. 30-4-111(b)(3)) = $300.
     ks_tanf_countable_earned_income: 300
