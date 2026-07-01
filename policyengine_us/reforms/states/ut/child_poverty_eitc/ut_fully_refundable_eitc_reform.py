@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
 from policyengine_core.periods import period as period_
+from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap import (
+    ordered_capped_state_non_refundable_credits,
+)
 
 
 def create_ut_fully_refundable_eitc() -> Reform:
@@ -21,7 +24,12 @@ def create_ut_fully_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
 
         def formula(tax_unit, period, parameters):
-            return tax_unit("ut_eitc", period)
+            # Use the potential (uncapped) UT EITC so the full credit is paid
+            # as a refund; `ut_eitc` is capped at tax liability and would zero
+            # out the credit for the low-liability filers refundability is
+            # meant to help. `ut_eitc_potential` still applies the W-2 wages
+            # cap mandated by Utah Code § 59-10-1044.
+            return tax_unit("ut_eitc_potential", period)
 
     class ut_non_refundable_eitc(Variable):
         value_type = float
@@ -44,18 +52,24 @@ def create_ut_fully_refundable_eitc() -> Reform:
         defined_for = StateCode.UT
 
         def formula(tax_unit, period, parameters):
-            # Use parameter-driven approach: get baseline non-refundable credits
-            # then subtract ut_eitc (now refundable) and add back ut_non_refundable_eitc (0)
-            baseline_non_refundable = add(
+            # Mirror the baseline's ordered-cap logic but drop ut_eitc from
+            # the non-refundable bucket — it's paid as refundable under this
+            # reform. A raw `sum - ut_eitc` instead of the ordered walk would
+            # overstate the non-refundable total whenever the bucket binds at
+            # liability (later credits in the ordered list would no longer
+            # see the EITC's slot freed correctly).
+            ordered_credits = parameters(
+                period
+            ).gov.states.ut.tax.income.credits.non_refundable
+            filtered_credits = [
+                credit for credit in list(ordered_credits) if credit != "ut_eitc"
+            ]
+            return ordered_capped_state_non_refundable_credits(
                 tax_unit,
                 period,
-                "gov.states.ut.tax.income.credits.non_refundable",
+                filtered_credits,
+                "ut_income_tax_before_non_refundable_credits",
             )
-            # Remove ut_eitc from non-refundable (it's now handled separately)
-            ut_eitc = tax_unit("ut_eitc", period)
-            # Add back nonrefundable EITC (0 when reform is in effect)
-            nonrefundable_eitc = tax_unit("ut_non_refundable_eitc", period)
-            return baseline_non_refundable - ut_eitc + nonrefundable_eitc
 
     class ut_refundable_credits(Variable):
         value_type = float
@@ -64,6 +78,11 @@ def create_ut_fully_refundable_eitc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.UT
+        # The baseline variable computes via `adds`. We replace it with a
+        # formula, so clear the inherited computation modes to avoid mixing
+        # `formula` with `adds`/`subtracts` (rejected by the core engine).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
             # Add the fully refundable EITC (positive when reform is in effect)

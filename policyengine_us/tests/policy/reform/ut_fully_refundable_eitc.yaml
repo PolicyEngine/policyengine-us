@@ -1,0 +1,78 @@
+# Tests for the Utah fully refundable EITC contrib reform.
+# Regression coverage for https://github.com/PolicyEngine/policyengine-us/issues/8644
+# (the reform previously crashed at calculation time and, once running, paid no
+# refundable credit to zero-liability filers).
+
+- name: Reform pays the full potential UT EITC as a refundable credit at zero liability
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc_reform.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    eitc: 5_000
+    # Pin UT tax liability to zero so the nonrefundable cap binds at $0 —
+    # the test is whether the reform pays the credit despite the cap.
+    ut_income_tax_before_non_refundable_credits: 0
+    # Set wages comfortably above the UT EITC potential so the W-2 wages cap
+    # (Utah Code § 59-10-1044) does not bind.
+    employment_income: 30_000
+  output:
+    # 2026 UT EITC rate is 20% of the federal EITC: 5,000 * 0.2 = 1,000.
+    ut_eitc_potential: 1_000
+    # The capped credit is 0 at zero liability; the fix pays the uncapped
+    # potential instead, so this contrast is the whole point of the reform.
+    ut_eitc: 0
+    # EITC is moved out of the nonrefundable bucket...
+    ut_non_refundable_eitc: 0
+    # ...and paid in full as refundable, even with no Utah tax liability.
+    ut_fully_refundable_eitc: 1_000
+    ut_refundable_credits: 1_000
+
+- name: Reform does not double count when liability already absorbs the EITC
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc_reform.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    eitc: 5_000
+    employment_income: 30_000
+    ut_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # Full potential paid as refundable; nonrefundable EITC portion stays zero.
+    ut_fully_refundable_eitc: 1_000
+    ut_non_refundable_eitc: 0
+    ut_refundable_credits: 1_000
+    # The $1,000 liability is offset exactly once by the refundable credit:
+    # 1,000 before refundable credits - 1,000 refundable = 0. If the credit
+    # were double counted this would go negative.
+    ut_income_tax: 0
+
+- name: W-2 wages cap (Utah Code § 59-10-1044) still binds under the reform
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc_reform.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    eitc: 5_000
+    # Wages below the 20%-of-federal-EITC potential, so the wages cap binds.
+    employment_income: 400
+    ut_income_tax_before_non_refundable_credits: 0
+  output:
+    # Potential = min(0.2 * 5,000, 400) = 400. Reform pays the wages-capped
+    # potential as refundable, NOT the full 1,000 — § 59-10-1044 still applies.
+    ut_eitc_potential: 400
+    ut_fully_refundable_eitc: 400
+    ut_refundable_credits: 400
+
+- name: Self-employment-only filer receives no refundable EITC (no W-2 wages)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc_reform.ut_fully_refundable_eitc
+  input:
+    state_code: UT
+    eitc: 5_000
+    employment_income: 0
+    self_employment_income: 30_000
+    ut_income_tax_before_non_refundable_credits: 0
+  output:
+    # § 59-10-1044 explicitly excludes self-employment earnings from the cap;
+    # zero W-2 wages → zero potential credit → zero refundable credit.
+    ut_eitc_potential: 0
+    ut_fully_refundable_eitc: 0
+    ut_refundable_credits: 0
