@@ -10,6 +10,7 @@ class care_expenses(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21#b_2"
 
     def formula(person, period, parameters):
-        # No public subsidy applies to adult dependent care, so this passes
-        # through the pre-subsidy amount (mirrors childcare_expenses).
+        # Unlike childcare_expenses, we don't track a CCDF-style subsidy
+        # program that reduces adult dependent/spousal care costs, so this
+        # passes through the pre-subsidy amount.
         return person("pre_subsidy_care_expenses", period)
