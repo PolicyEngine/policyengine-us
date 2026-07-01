@@ -1,1 +1,1 @@
-Add FY2026 county-level HUD Fair Market Rents so simulations at period 2026 use FY2026 values.
+Add FY2026 county-level HUD Fair Market Rents so simulations at period 2026 use FY2026 values, falling back to the nearest earlier bundled year for any county missing from the queried year (such as Connecticut's legacy counties, which HUD reports under new planning-region codes in FY2026).
