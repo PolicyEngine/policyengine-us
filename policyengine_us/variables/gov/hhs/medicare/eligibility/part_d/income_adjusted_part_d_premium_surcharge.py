@@ -14,10 +14,7 @@ class income_adjusted_part_d_premium_surcharge(Variable):
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
-        prior_period = period.offset(-2, "year")
-        agi = tax_unit("adjusted_gross_income", prior_period)
-        tax_exempt_interest = tax_unit("tax_exempt_interest_income", prior_period)
-        magi = agi + tax_exempt_interest
+        magi = tax_unit("medicare_irmaa_magi_two_years_prior", period)
 
         status = filing_status.possible_values
         statuses = [
