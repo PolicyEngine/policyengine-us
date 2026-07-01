@@ -55,3 +55,20 @@
     social_security_disability: 1
   output:
     meets_snap_categorical_eligibility: false
+
+- name: Cash TANF receipt creates eligibility without BBCE.
+  period: 2022-01
+  input:
+    is_tanf_non_cash_eligible: false
+    tanf: 3_000
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: Reported SSI creates eligibility when use_reported_ssi is true.
+  period: 2022
+  input:
+    is_tanf_non_cash_eligible: false
+    use_reported_ssi: true
+    ssi_reported: 1
+  output:
+    meets_snap_categorical_eligibility: true

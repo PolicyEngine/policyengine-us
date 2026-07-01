@@ -14,5 +14,5 @@ class ks_tanf_countable_income(Variable):
     defined_for = StateCode.KS
     adds = [
         "ks_tanf_countable_earned_income",
-        "tanf_gross_unearned_income",
+        "ks_tanf_countable_unearned_income",
     ]

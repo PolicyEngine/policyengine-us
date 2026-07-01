@@ -24,6 +24,6 @@ class nj_staynj(Variable):
 
         # Subtract ANCHOR and Senior Freeze benefits
         anchor_benefit = tax_unit("nj_anchor", period)
-        senior_freeze = tax_unit("nj_senior_freeze", period)
+        senior_freeze = tax_unit("nj_capped_senior_freeze", period)
 
         return max_(target_benefit - anchor_benefit - senior_freeze, 0)

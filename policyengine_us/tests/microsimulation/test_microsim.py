@@ -79,3 +79,25 @@ def test_county_persists_across_periods():
     assert not np.any(county_2025 == County.ALBANY_COUNTY_NY.index), (
         "Should not fall back to Albany county"
     )
+
+
+def test_default_dataset_loads_and_runs():
+    """The no-argument default (certified Populace build) resolves via the
+    hf://datasets/ path and entity-level interception, and produces sane
+    aggregates."""
+    import numpy as np
+    from policyengine_us import Microsimulation
+    from policyengine_us.system import DEFAULT_DATASET
+
+    assert "populace" in DEFAULT_DATASET, (
+        "Default dataset should be the certified Populace build."
+    )
+
+    sim = Microsimulation()  # no dataset -> DEFAULT_DATASET (hf://datasets/...)
+    sim.subsample(1_000)
+    for year in (2024, 2026):
+        hnet = sim.calc("household_net_income", period=year)
+        assert not hnet.isna().any(), f"NaN household net income in {year}."
+    assert sim.calc("adjusted_gross_income", period=2026).sum() > 0, (
+        "Total AGI should be positive on the default dataset."
+    )

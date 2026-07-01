@@ -1,0 +1,125 @@
+description: Missouri provides these daily base reimbursement rates to a registered center under the Child Care Subsidy program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Missouri Child Care Subsidy registered center daily rates
+  breakdown:
+    - mo_ccs_region
+    - mo_ccs_age_group
+    - mo_ccs_time_category
+  reference:
+    - title: 2025 Rates Held Harmless 2.0, Daytime Rates 2025
+      href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx
+    - title: FFY 2025-2027 CCDF State Plan, Amendment 2, Section 4.3.2 Base payment rates
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2026/04/ACF-118%20CCDF%20FFY%202025-2027%20For%20Missouri%20-%20Approved%203.26.2026.pdf#page=49
+
+DENSE_URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 84
+    HALF_TIME:
+      2025-10-01: 63
+    PART_TIME:
+      2025-10-01: 42
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 40.25
+    HALF_TIME:
+      2025-10-01: 30.1875
+    PART_TIME:
+      2025-10-01: 20.125
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 34.24
+    HALF_TIME:
+      2025-10-01: 25.68
+    PART_TIME:
+      2025-10-01: 17.12
+METRO:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 70
+    HALF_TIME:
+      2025-10-01: 52.5
+    PART_TIME:
+      2025-10-01: 35
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 30.27
+    HALF_TIME:
+      2025-10-01: 22.7025
+    PART_TIME:
+      2025-10-01: 15.135
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 26
+    HALF_TIME:
+      2025-10-01: 19.5
+    PART_TIME:
+      2025-10-01: 13
+URBAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 70
+    HALF_TIME:
+      2025-10-01: 52.5
+    PART_TIME:
+      2025-10-01: 35
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 36.45
+    HALF_TIME:
+      2025-10-01: 27.3375
+    PART_TIME:
+      2025-10-01: 18.225
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 26
+    HALF_TIME:
+      2025-10-01: 19.5
+    PART_TIME:
+      2025-10-01: 13
+MICROPOLITAN:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 70
+    HALF_TIME:
+      2025-10-01: 52.5
+    PART_TIME:
+      2025-10-01: 35
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 31.56
+    HALF_TIME:
+      2025-10-01: 23.67
+    PART_TIME:
+      2025-10-01: 15.78
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 31.25
+    HALF_TIME:
+      2025-10-01: 23.4375
+    PART_TIME:
+      2025-10-01: 15.625
+RURAL:
+  INFANT_TODDLER:
+    FULL_TIME:
+      2025-10-01: 70
+    HALF_TIME:
+      2025-10-01: 52.5
+    PART_TIME:
+      2025-10-01: 35
+  PRESCHOOL:
+    FULL_TIME:
+      2025-10-01: 30.27
+    HALF_TIME:
+      2025-10-01: 22.7025
+    PART_TIME:
+      2025-10-01: 15.135
+  SCHOOL_AGE:
+    FULL_TIME:
+      2025-10-01: 30.8
+    HALF_TIME:
+      2025-10-01: 23.1
+    PART_TIME:
+      2025-10-01: 15.4

@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, CA, CO, CT, DE, DC, FL, HI, IA, ID, IL, IN, KS, KY, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -475,11 +475,17 @@ programs:
         variable: ar_sra
         parameter_prefix: gov.states.ar.ade.oec.sra
       - state: AL
-        status: partial
+        status: complete
         name: Alabama CCSP
         full_name: Alabama Child Care Subsidy Program
         variable: al_ccsp
         parameter_prefix: gov.states.al.dhr.ccsp
+      - state: AZ
+        status: complete
+        name: CCAP
+        full_name: Arizona Child Care Assistance Program
+        variable: az_ccap
+        parameter_prefix: gov.states.az.hhs.ccap
       - state: CA
         status: complete
         name: CalWORKs childcare
@@ -540,35 +546,68 @@ programs:
         full_name: Kentucky Child Care Assistance Program
         variable: ky_ccap
         parameter_prefix: gov.states.ky.dcbs.ccap
+      - state: LA
+        status: complete
+        name: Louisiana CCAP
+        full_name: Louisiana Child Care Assistance Program
+        variable: la_ccap
+        parameter_prefix: gov.states.la.ldoe.ccap
       - state: MA
         status: complete
         name: Massachusetts CCFA
         full_name: Massachusetts Child Care Financial Assistance
         variable: ma_ccfa
       - state: MD
-        status: in_progress
+        status: complete
         name: Maryland CCS
         full_name: Maryland Child Care Scholarship
+        variable: md_child_care_subsidies
       - state: ME
         status: complete
         name: Maine CCAP
         full_name: Maine Child Care Affordability Program
         variable: me_ccap
+      - state: MO
+        status: complete
+        name: Missouri CCS
+        full_name: Missouri Child Care Subsidy
+        variable: mo_ccs
+        parameter_prefix: gov.states.mo.dese.ccs
+      - state: MI
+        status: complete
+        name: Michigan CDC
+        full_name: Michigan Child Development and Care Program
+        variable: mi_child_care_subsidies
+        parameter_prefix: gov.states.mi.mdhhs.ccap
+      - state: MS
+        status: complete
+        name: CCPP
+        full_name: Mississippi Child Care Payment Program
+        variable: ms_ccpp
+        parameter_prefix: gov.states.ms.dhs.ccpp
       - state: IA
         status: complete
         name: Iowa CCA
         full_name: Iowa Child Care Assistance
         variable: ia_cca
         parameter_prefix: gov.states.ia.hhs.cca
+      - state: MN
+        status: complete
+        name: Minnesota CCAP
+        full_name: Minnesota Child Care Assistance Program
+        variable: mn_ccap
+        parameter_prefix: gov.states.mn.dcyf.ccap
       - state: NH
         status: complete
         name: New Hampshire CCAP
         full_name: New Hampshire Child Care Scholarship Program
         variable: nh_ccap
       - state: NJ
-        status: in_progress
+        status: complete
         name: New Jersey CCAP
         full_name: New Jersey Child Care Assistance Program
+        variable: nj_ccap
+        parameter_prefix: gov.states.nj.njdhs.ccap
       - state: DC
         status: complete
         name: DC CCSP
@@ -595,18 +634,22 @@ programs:
         full_name: Rhode Island Child Care Assistance Program
         variable: ri_ccap
       - state: SC
-        status: in_progress
+        status: complete
         name: South Carolina CCAP
         full_name: South Carolina Child Care Assistance Program
+        variable: sc_ccap
+        parameter_prefix: gov.states.sc.dss.ccap
       - state: TX
         status: complete
         name: Texas CCS
         full_name: Texas Child Care Services
         variable: tx_ccs
       - state: VA
-        status: in_progress
+        status: complete
         name: Virginia CCSP
         full_name: Virginia Child Care Subsidy Program
+        variable: va_ccsp
+        parameter_prefix: gov.states.va.dss.ccsp
       - state: VT
         status: complete
         name: Vermont CCFAP
@@ -623,6 +666,12 @@ programs:
         full_name: West Virginia Child Care Assistance Program
         variable: wv_ccap
         parameter_prefix: gov.states.wv.dhhr.ccap
+      - state: GA
+        status: complete
+        name: Georgia CAPS
+        full_name: Georgia Childcare and Parent Services
+        variable: ga_caps
+        parameter_prefix: gov.states.ga.decal.caps
 
   - id: head_start
     name: Head Start

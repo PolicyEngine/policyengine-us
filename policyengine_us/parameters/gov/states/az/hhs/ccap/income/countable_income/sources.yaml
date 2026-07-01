@@ -1,0 +1,32 @@
+description: Arizona uses these income sources as countable income under the Child Care Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    - veterans_benefits
+    - pension_income
+    - retirement_distributions
+    - social_security
+    - ssi
+    - railroad_benefits
+    - general_assistance
+    - disability_benefits
+    - interest_income
+    - dividend_income
+    - rental_income
+    - financial_assistance
+    - gambling_winnings
+
+metadata:
+  unit: list
+  period: year
+  label: Arizona CCAP countable income sources
+  reference:
+    - title: Arizona Administrative Code R6-5-4914(F) Countable Income
+      href: https://apps.azsos.gov/public_services/Title_06/6-05.pdf#page=31

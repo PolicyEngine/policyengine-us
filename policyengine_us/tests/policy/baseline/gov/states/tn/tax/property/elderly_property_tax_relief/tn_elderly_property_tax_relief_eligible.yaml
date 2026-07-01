@@ -1,0 +1,170 @@
+- name: Case 1, senior homeowner at the 2026 income limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 38_470
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: true
+
+- name: Case 2, senior homeowner above the 2026 income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 38_471
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 3, homeowner below the age threshold is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 4, senior renter is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 5, senior homeowner outside Tennessee is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 6, senior homeowner at the 2025 income limit is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 37_530
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: true
+
+- name: Case 7, senior homeowner with no real estate taxes is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 8, senior homeowner with no assessed property value is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+        assessed_property_value: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false
+
+- name: Case 9, property value and taxes for a dependent do not create eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 17
+        real_estate_taxes: 1_000
+        assessed_property_value: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_elderly_property_tax_relief_eligible: false

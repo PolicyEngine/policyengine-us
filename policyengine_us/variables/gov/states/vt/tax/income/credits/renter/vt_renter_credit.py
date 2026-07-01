@@ -67,5 +67,8 @@ class vt_renter_credit(Variable):
             ],
             default=0,
         )
-        unrounded = credit_value * (1 - shared_residence_reduction)
+        # The renter credit may not exceed the statutory maximum (32 V.S.A.
+        # 6066(b)(1)); 2026 Vt. Act 169 raises this for claim year 2027 only.
+        capped_credit = min_(credit_value, p.max_credit)
+        unrounded = capped_credit * (1 - shared_residence_reduction)
         return np.round(unrounded)
