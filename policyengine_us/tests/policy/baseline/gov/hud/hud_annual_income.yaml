@@ -10,7 +10,7 @@
   output:
     hud_annual_income: 1
 
-- name: Default value is zero.
+- name: Sums income across multiple family members.
   period: 2022
   input:
     people:
@@ -103,6 +103,50 @@
     # min(2_000, 480) + 100
     hud_annual_income: 580
 
+- name: Full-time student dependent earned income below the dependent deduction counts in full.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 300
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # 300 is below the 480 dependent deduction, so it all counts.
+    hud_annual_income: 300
+
+- name: Full-time student dependent earned income exactly at the dependent deduction counts in full.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 480
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # min(480, 480) = 480
+    hud_annual_income: 480
+
 - name: Sums all counted sources across the unit.
   period: 2022
   input:
@@ -173,3 +217,44 @@
     # Foster children and adults are not family members (24 CFR 5.603), so
     # neither their earned nor unearned income counts.
     hud_annual_income: 0
+
+- name: Excludes all income of a foster child, but still counts family TANF.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        is_household_head: true
+      person2:
+        age: 10
+        is_in_foster_care: true
+        interest_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 1_000
+  output:
+    # The foster child's own unearned income is excluded, but TANF is a
+    # family-level benefit that counts in full regardless of foster members.
+    hud_annual_income: 1_000
+
+- name: A full-time student spouse is not a HUD dependent, so their earned income is not capped.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 20
+        is_full_time_college_student: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+  output:
+    # A spouse is head-or-spouse of the tax unit, so is_hud_dependent is
+    # false and the $480 dependent deduction cap does not apply.
+    hud_annual_income: 2_000

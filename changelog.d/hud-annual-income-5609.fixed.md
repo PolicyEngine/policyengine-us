@@ -1,1 +1,0 @@
-Align HUD annual income with 24 CFR 5.609: count additional sources (unemployment, child support, veterans', disability, and survivor benefits); exclude children's and full-time-student dependents' earned income and foster members' income; and stop counting capital gains and retirement-account distributions.

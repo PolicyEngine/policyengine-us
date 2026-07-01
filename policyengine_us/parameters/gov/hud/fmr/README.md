@@ -5,8 +5,8 @@
 `fair_market_rents.csv` holds HUD's published Fair Market Rents at the FMR-area
 level, indexed by `(state, hud_fmr_area_code, year, bedrooms)`. FMRs are the
 40th-percentile gross-rent estimates HUD uses to cap rents under the Housing
-Choice Voucher program, set Low-Income Housing Tax Credit rent limits, and
-size other federal housing subsidies (24 CFR Part 888).
+Choice Voucher program and size other federal housing subsidies (24 CFR Part
+888).
 
 The model variable `hud_fair_market_rent` reads from this CSV and normalizes
 HUD FMR-area codes to PolicyEngine's five-digit `county_fips` input. When
@@ -30,6 +30,10 @@ loader uses the median FMR-area value as a lossy county-level fallback.
   county/bedroom row is absent from the preferred fiscal year, such as legacy
   Connecticut counties in FY2026, `hud_fair_market_rent` falls back to the most
   recent earlier bundled year with a matching row rather than returning zero.
+  **TODO**: this fallback depends on FY2025 remaining in the bundle. Migrate
+  the `County` enum to Connecticut's planning regions (tracked in #8803)
+  before FY2025 rows are ever dropped, or legacy CT counties will silently
+  resolve to $0.
 - **Data**: full FY2025 and FY2026 county-level HUD files.
 
 ## Schema
@@ -68,6 +72,7 @@ python -m policyengine_us.tools.convert_hud_fmr_xlsx --input FY26_FMRs.xlsx \
 
 - HUD User FMR documentation: <https://www.huduser.gov/portal/datasets/fmr.html>
 - FY2025 Federal Register notice: <https://www.federalregister.gov/documents/2024/08/14/2024-18002>
-- FY2026 FMRs are effective 2025-10-01.
+- FY2026 Federal Register notice: <https://www.federalregister.gov/documents/2025/08/22/2025-16060>
+  (effective 2025-10-01).
 - Regulatory citation: 24 CFR §888 (FMR rules), 24 CFR §982.503 (HCV payment
   standards bound to 90-110 percent of FMR).
