@@ -39,3 +39,35 @@
     tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
     households: {household: {members: [parent, child1, child2], state_name: MS}}
   output: {ms_dependents_exemption: 1_500}  # only the under-13 child counts
+
+- name: MS dependent exemption reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.ms.dependent_exemption.ms_dependent_exemption_reform.ms_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ms.dependent_exemption.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 13, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MS}}
+  # Dependent at the age limit (13 == threshold) is excluded; over-age fallback is nothing.
+  output: {ms_dependents_exemption: 0}
+
+- name: MS dependent exemption reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.ms.dependent_exemption.ms_dependent_exemption_reform.ms_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ms.dependent_exemption.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MS}}
+  # Dependent one year under the limit (12 < 13) receives the exemption.
+  output: {ms_dependents_exemption: 1_500}

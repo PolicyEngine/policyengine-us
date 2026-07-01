@@ -1,4 +1,4 @@
-description: Iowa provides this dependent exemption credit amount per eligible dependent under the reform.
+description: Iowa provides this dependent exemption credit amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
 
 values:
   2021-01-01: 40
@@ -7,3 +7,16 @@ metadata:
   label: Iowa dependent credit amount
   period: year
   unit: currency-USD
+  reference:
+  - title: 2021 IA1040 Iowa Income Tax Return, Step 3
+    href: https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf#page=1
+  - title: 2021 IA1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=9
+  - title: 2022 IA1040 Iowa Income Tax Return, Step 3
+    href: https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf#page=1
+  - title: 2022 IA1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=8
+  - title: 2024 IA1040 Iowa Income Tax Return Instruction, Step 3
+    href: https://revenue.iowa.gov/media/4152/download?inline#page=8
+  - title: 2025 IA 1040 Expanded Instructions, Exemption Credits
+    href: https://revenue.iowa.gov/taxes/tax-guidance/individual-income-tax/1040-expanded-instructions/exemption-credits

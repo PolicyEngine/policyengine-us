@@ -95,3 +95,38 @@
   # Base = 0 (young) + 5,200 (over-age fallback) = 5,200; the same 50% AGI
   # phase-out that halves the baseline also halves the fallback: 5,200 -> 2,600.
   output: {mn_exemptions: 2_600}
+
+- name: MN dependent exemption reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.amount: 0
+    gov.contrib.states.mn.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 18, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MN}}
+  # Dependent at the age limit (18 == threshold) keeps the baseline 5,200
+  # (below phase-out at this AGI).
+  output: {mn_exemptions: 5_200}
+
+- name: MN dependent exemption reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.amount: 0
+    gov.contrib.states.mn.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 17, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: MN}}
+  # Dependent one year under the limit (17 < 18) is re-priced to the reform amount (0).
+  output: {mn_exemptions: 0}

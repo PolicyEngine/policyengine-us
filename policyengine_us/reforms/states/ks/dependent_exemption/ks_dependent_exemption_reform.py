@@ -40,22 +40,6 @@ def create_ks_dependent_exemption() -> Reform:
             dependents_count = tax_unit("ks_eligible_dependents_count", period)
             return dependents_count * p.amount
 
-    class ks_older_dependents_count(Variable):
-        value_type = int
-        entity = TaxUnit
-        label = "Kansas older dependents count"
-        definition_period = YEAR
-        defined_for = StateCode.KS
-
-        def formula(tax_unit, period, parameters):
-            person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
-            total_dependents = tax_unit.sum(is_dependent)
-            eligible_dependent_exemptions = tax_unit(
-                "ks_eligible_dependents_count", period
-            )
-            return max_(0, total_dependents - eligible_dependent_exemptions)
-
     class ks_exemptions(Variable):
         value_type = float
         entity = TaxUnit
@@ -117,7 +101,6 @@ def create_ks_dependent_exemption() -> Reform:
         def apply(self):
             self.update_variable(ks_eligible_dependents_count)
             self.update_variable(ks_dependent_exemption)
-            self.update_variable(ks_older_dependents_count)
             self.update_variable(ks_exemptions)
 
     return reform

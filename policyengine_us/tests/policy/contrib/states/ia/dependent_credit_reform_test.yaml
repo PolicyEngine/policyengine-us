@@ -52,3 +52,37 @@
     tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
     households: {household: {members: [parent], state_name: IA}}
   output: {ia_exemption_credit: 40}  # personal only, no dependents
+
+- name: IA dependent credit reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 100
+    gov.contrib.states.ia.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 13, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: IA}}
+  # Dependent at the age limit (13 == threshold) keeps the baseline older amount.
+  output: {ia_exemption_credit: 80}  # 40 personal + 40 baseline older
+
+- name: IA dependent credit reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 100
+    gov.contrib.states.ia.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: IA}}
+  # Dependent one year under the limit (12 < 13) is re-priced to the reform amount.
+  output: {ia_exemption_credit: 140}  # 40 personal + 100 young
