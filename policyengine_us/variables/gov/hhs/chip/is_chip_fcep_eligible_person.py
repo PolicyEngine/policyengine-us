@@ -13,6 +13,12 @@ class is_chip_fcep_eligible_person(Variable):
     )
     definition_period = YEAR
     reference = (
+        # CMS: the FCEP option covers the unborn child from conception to end of
+        # pregnancy "regardless of their parent's citizenship or immigration status."
+        "https://www.medicaid.gov/chip/chip-eligibility-enrollment",
+        # 42 CFR 457.10 defines "child" to include the period from conception to
+        # birth, so the unborn child (not the parent) is the CHIP beneficiary.
+        "https://www.law.cornell.edu/cfr/text/42/457.10",
         "https://www.kff.org/affordable-care-act/state-indicator/medicaid-and-chip-income-eligibility-limits-for-pregnant-women-as-a-percent-of-the-federal-poverty-level",
     )
 
@@ -28,6 +34,11 @@ class is_chip_fcep_eligible_person(Variable):
         income_limit = p.income_limit[state_code]
 
         state_has_fcep = income_limit > 0
+
+        # The parent's immigration status is not tested: under the FCEP option the
+        # unborn child is the CHIP beneficiary, and CMS provides prenatal and
+        # pregnancy-related benefits regardless of the parent's citizenship or
+        # immigration status (42 CFR 457.10).
 
         # Check income eligibility
         # CHIP is for pregnant women who make too much for Medicaid but below CHIP limits
