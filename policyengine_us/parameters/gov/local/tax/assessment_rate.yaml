@@ -1,0 +1,131 @@
+description: Assessed property value equals primary residence market value multiplied by this state-level ratio.
+metadata:
+  unit: /1
+  period: year
+  label: Assessed-to-market property value ratio
+  breakdown:
+    - state_code
+  reference:
+    - title: Michigan Compiled Laws Section 211.27a(1)
+      href: https://legislature.mi.gov/Laws/MCL?objectName=mcl-211-27a
+    - title: West Virginia State Tax Department, Ad Valorem Property Tax
+      href: https://tax.wv.gov/Business/PropertyTax/Pages/AdValoremPropertyTax.aspx
+# Default to 1 until state-specific assessed-to-market value ratios are modeled.
+AL:
+  0000-01-01: 1
+AK:
+  0000-01-01: 1
+AZ:
+  0000-01-01: 1
+AR:
+  0000-01-01: 1
+CA:
+  0000-01-01: 1
+CO:
+  0000-01-01: 1
+CT:
+  0000-01-01: 1
+DE:
+  0000-01-01: 1
+FL:
+  0000-01-01: 1
+GA:
+  0000-01-01: 1
+HI:
+  0000-01-01: 1
+ID:
+  0000-01-01: 1
+IL:
+  0000-01-01: 1
+IN:
+  0000-01-01: 1
+IA:
+  0000-01-01: 1
+KS:
+  0000-01-01: 1
+KY:
+  0000-01-01: 1
+LA:
+  0000-01-01: 1
+ME:
+  0000-01-01: 1
+MD:
+  0000-01-01: 1
+MA:
+  0000-01-01: 1
+MI:
+  0000-01-01: 0.5
+MN:
+  0000-01-01: 1
+MS:
+  0000-01-01: 1
+MO:
+  0000-01-01: 1
+MT:
+  0000-01-01: 1
+NE:
+  0000-01-01: 1
+NV:
+  0000-01-01: 1
+NH:
+  0000-01-01: 1
+NJ:
+  0000-01-01: 1
+NM:
+  0000-01-01: 1
+NY:
+  0000-01-01: 1
+NC:
+  0000-01-01: 1
+ND:
+  0000-01-01: 1
+OH:
+  0000-01-01: 1
+OK:
+  0000-01-01: 1
+OR:
+  0000-01-01: 1
+PA:
+  0000-01-01: 1
+RI:
+  0000-01-01: 1
+SC:
+  0000-01-01: 1
+SD:
+  0000-01-01: 1
+TN:
+  0000-01-01: 1
+TX:
+  0000-01-01: 1
+UT:
+  0000-01-01: 1
+VT:
+  0000-01-01: 1
+VA:
+  0000-01-01: 1
+WA:
+  0000-01-01: 1
+WV:
+  0000-01-01: 0.6
+WI:
+  0000-01-01: 1
+WY:
+  0000-01-01: 1
+DC:
+  0000-01-01: 1
+GU:
+  0000-01-01: 1
+MP:
+  0000-01-01: 1
+PW:
+  0000-01-01: 1
+PR:
+  0000-01-01: 1
+VI:
+  0000-01-01: 1
+AA:
+  0000-01-01: 1
+AE:
+  0000-01-01: 1
+AP:
+  0000-01-01: 1

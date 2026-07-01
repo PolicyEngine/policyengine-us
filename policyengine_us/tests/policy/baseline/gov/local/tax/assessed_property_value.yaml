@@ -1,0 +1,24 @@
+- name: Case 1, assessed property value defaults to primary residence value.
+  period: 2025
+  input:
+    primary_residence_value: 400_000
+    state_code: WA
+  output:
+    assessed_property_value: 400_000
+
+- name: Case 2, assessed property value applies the state assessment rate.
+  period: 2025
+  input:
+    primary_residence_value: 400_000
+    state_code: MI
+  output:
+    assessed_property_value: 200_000
+
+- name: Case 3, existing direct assessed property value input is still accepted.
+  period: 2025
+  input:
+    assessed_property_value: 300_000
+    primary_residence_value: 400_000
+    state_code: MI
+  output:
+    assessed_property_value: 300_000
