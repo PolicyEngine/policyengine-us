@@ -1,0 +1,57 @@
+- name: SC dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: SC}}
+  output: {sc_dependent_exemption: 9_860}  # 2 * 4,930
+
+- name: SC dependent exemption reform - amount zero eliminates the exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: SC}}
+  output: {sc_dependent_exemption: 0}
+
+- name: SC dependent exemption reform - age limit re-prices only young dependents; older keep baseline
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.amount: 0
+    gov.contrib.states.sc.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: SC}}
+  output: {sc_dependent_exemption: 4_930}  # under-13 child eliminated; age-15 child keeps baseline 4,930
+
+- name: SC dependent exemption reform - young child deduction is unchanged
+  period: 2025
+  reforms: policyengine_us.reforms.states.sc.dependent_exemption.sc_dependent_exemption_reform.sc_dependent_exemption_reform
+  input:
+    gov.contrib.states.sc.dependent_exemption.in_effect: true
+    gov.contrib.states.sc.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: SC}}
+  output:
+    sc_dependent_exemption: 0  # dependent exemption eliminated
+    sc_young_child_deduction: 4_930  # stacked young-child deduction untouched

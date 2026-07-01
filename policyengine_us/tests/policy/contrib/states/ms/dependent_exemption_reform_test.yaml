@@ -1,0 +1,41 @@
+- name: MS dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ms.dependent_exemption.ms_dependent_exemption_reform.ms_dependent_exemption_reform
+  input:
+    gov.contrib.states.ms.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MS}}
+  output: {ms_dependents_exemption: 3_000}  # 2 * 1,500
+
+- name: MS dependent exemption reform - amount zero eliminates the exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.ms.dependent_exemption.ms_dependent_exemption_reform.ms_dependent_exemption_reform
+  input:
+    gov.contrib.states.ms.dependent_exemption.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MS}}
+  output: {ms_dependents_exemption: 0}
+
+- name: MS dependent exemption reform - age limit excludes dependents at or over the age
+  period: 2025
+  reforms: policyengine_us.reforms.states.ms.dependent_exemption.ms_dependent_exemption_reform.ms_dependent_exemption_reform
+  input:
+    gov.contrib.states.ms.dependent_exemption.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ms.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MS}}
+  output: {ms_dependents_exemption: 1_500}  # only the under-13 child counts

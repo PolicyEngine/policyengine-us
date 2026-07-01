@@ -1,0 +1,97 @@
+- name: MN dependent exemption reform - default amount reproduces baseline below phase-out (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # AGI (~63k) is below the SINGLE phase-out threshold (239,050), so the full
+  # per-dependent exemption applies: 2 * 5,200 = 10,400, matching baseline.
+  output: {mn_exemptions: 10_400}
+
+- name: MN dependent exemption reform - default amount reproduces baseline within phase-out (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 300_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # AGI is above the SINGLE threshold; the stepped AGI phase-out reduces the
+  # 10,400 base by exactly 50% to 5,200, matching the unreformed baseline.
+  output: {mn_exemptions: 5_200}
+
+- name: MN dependent exemption reform - amount zero removes the dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # Re-pricing the per-dependent amount to 0 eliminates the entire exemption.
+  output: {mn_exemptions: 0}
+
+- name: MN dependent exemption reform - age limit excludes over-age dependent who keeps baseline
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.amount: 0
+    gov.contrib.states.mn.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # Young dependent (age 10 < 18) gets the re-priced amount (0); the over-age
+  # dependent (age 20) keeps the baseline 5,200. Below phase-out: 0 + 5,200.
+  output: {mn_exemptions: 5_200}
+
+- name: MN dependent exemption reform - age limit at default amount reproduces baseline
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # Young dependent priced at default 5,200 and over-age dependent kept at
+  # baseline 5,200 both equal the current-law amount: 2 * 5,200 = 10,400.
+  output: {mn_exemptions: 10_400}
+
+- name: MN dependent exemption reform - over-age fallback still subject to phase-out
+  period: 2025
+  reforms: policyengine_us.reforms.states.mn.dependent_exemption.mn_dependent_exemption_reform.mn_dependent_exemption_reform
+  input:
+    gov.contrib.states.mn.dependent_exemption.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.amount: 0
+    gov.contrib.states.mn.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.mn.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 300_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: MN}}
+  # Base = 0 (young) + 5,200 (over-age fallback) = 5,200; the same 50% AGI
+  # phase-out that halves the baseline also halves the fallback: 5,200 -> 2,600.
+  output: {mn_exemptions: 2_600}

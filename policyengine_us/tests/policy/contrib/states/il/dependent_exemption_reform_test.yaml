@@ -1,0 +1,41 @@
+- name: IL dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.il.dependent_exemption.il_dependent_exemption_reform.il_dependent_exemption_reform
+  input:
+    gov.contrib.states.il.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IL}}
+  output: {il_dependent_exemption: 5_700}  # 2 * 2,850
+
+- name: IL dependent exemption reform - amount zero eliminates the exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.il.dependent_exemption.il_dependent_exemption_reform.il_dependent_exemption_reform
+  input:
+    gov.contrib.states.il.dependent_exemption.in_effect: true
+    gov.contrib.states.il.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IL}}
+  output: {il_dependent_exemption: 0}
+
+- name: IL dependent exemption reform - age limit excludes dependents at or over the age
+  period: 2025
+  reforms: policyengine_us.reforms.states.il.dependent_exemption.il_dependent_exemption_reform.il_dependent_exemption_reform
+  input:
+    gov.contrib.states.il.dependent_exemption.in_effect: true
+    gov.contrib.states.il.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.il.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IL}}
+  output: {il_dependent_exemption: 2_850}  # only the under-13 child counts

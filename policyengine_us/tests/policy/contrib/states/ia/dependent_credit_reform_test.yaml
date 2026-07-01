@@ -1,0 +1,54 @@
+- name: IA dependent credit reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IA}}
+  output: {ia_exemption_credit: 120}  # 40 personal + 2 * 40 dependent
+
+- name: IA dependent credit reform - amount zero removes only the dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IA}}
+  output: {ia_exemption_credit: 40}  # 40 personal, dependent portion eliminated
+
+- name: IA dependent credit reform - age limit re-prices young and keeps baseline for older
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 100
+    gov.contrib.states.ia.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: IA}}
+  output: {ia_exemption_credit: 180}  # 40 personal + 100 young + 40 baseline older
+
+- name: IA dependent credit reform - childless filer unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: IA}}
+  output: {ia_exemption_credit: 40}  # personal only, no dependents

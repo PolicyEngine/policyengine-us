@@ -136,3 +136,18 @@
   # credit from 87 to 29, raising AR income tax by exactly 58 (1346.67 -> 1404.67).
   # Confirms the dependent-credit -> tax wiring under the shared-base-redirect pattern.
   output: {ar_income_tax: 1404.67}
+
+- name: AR dependent credit reform - age limit excludes dependents at or over the age
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ar.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 50_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AR}}
+  output: {ar_personal_credits: 58}

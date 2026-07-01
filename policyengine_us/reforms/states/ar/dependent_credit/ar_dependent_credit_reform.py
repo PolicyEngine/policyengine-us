@@ -12,15 +12,19 @@ def create_ar_dependent_credit() -> Reform:
         defined_for = StateCode.AR
 
         def formula(person, period, parameters):
-            # Separate the dependent portion of Arkansas's personal tax credit
-            # so its per-dependent amount can be set independently of the
-            # head/spouse credit (which keeps reading personal.amount.base).
-            # No age limit: this person-level credit is consumed via ``adds``
-            # in ar_personal_credits_potential, which only reflects uniform
-            # per-dependent amounts, so a per-dependent age gate is not exposed.
+            # Separate the dependent portion of the personal tax credit so its
+            # per-dependent amount can be set independently. An optional age
+            # limit zeroes the credit for dependents at or over the threshold
+            # age; this person-level amount is summed via adds in
+            # ar_personal_credits_potential, so the age gate composes.
             p = parameters(period).gov.contrib.states.ar.dependent_credit
             is_dependent = person("is_tax_unit_dependent", period)
-            return is_dependent * p.amount
+            if p.age_limit.in_effect:
+                age = person("age", period)
+                eligible = is_dependent & (age < p.age_limit.threshold)
+            else:
+                eligible = is_dependent
+            return eligible * p.amount
 
     class reform(Reform):
         def apply(self):

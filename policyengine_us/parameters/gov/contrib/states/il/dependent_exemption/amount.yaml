@@ -1,0 +1,10 @@
+description: Illinois provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  2021-01-01: 2_850
+metadata:
+  unit: currency-USD
+  period: year
+  label: Illinois dependent exemption reform amount
+  reference:
+    - title: 2025 Schedule IL-E/EIC - Illinois Exemption and Earned Income Credit
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-schedule-il-e-eic.pdf#page=1

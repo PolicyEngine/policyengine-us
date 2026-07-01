@@ -1,0 +1,55 @@
+- name: GA dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ga.dependent_exemption.ga_dependent_exemption_reform.ga_dependent_exemption_reform
+  input:
+    gov.contrib.states.ga.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: GA}}
+  # 2 dependents * 4,000 = 8,000 (matches baseline; GA has no personal exemption in 2025).
+  output: {ga_exemptions: 8_000}
+
+- name: GA dependent exemption reform - amount zero removes dependent portion only
+  period: 2025
+  reforms: policyengine_us.reforms.states.ga.dependent_exemption.ga_dependent_exemption_reform.ga_dependent_exemption_reform
+  input:
+    gov.contrib.states.ga.dependent_exemption.in_effect: true
+    gov.contrib.states.ga.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: GA}}
+  # Dependent portion removed; personal portion preserved (0 in 2025, GA has no personal exemption).
+  output: {ga_exemptions: 0}
+
+- name: GA dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.ga.dependent_exemption.ga_dependent_exemption_reform.ga_dependent_exemption_reform
+  input:
+    gov.contrib.states.ga.dependent_exemption.in_effect: true
+    people: {parent: {age: 40, employment_income: 60_000}}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: GA}}
+  output: {ga_exemptions: 0}
+
+- name: GA dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.ga.dependent_exemption.ga_dependent_exemption_reform.ga_dependent_exemption_reform
+  input:
+    gov.contrib.states.ga.dependent_exemption.in_effect: true
+    gov.contrib.states.ga.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.ga.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 10, is_tax_unit_dependent: true}
+      child2: {age: 20, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: GA}}
+  # Only the under-18 dependent gets the exemption (1 * 4,000). The over-age
+  # dependent falls back to the personal treatment, which is nothing in GA.
+  output: {ga_exemptions: 4_000}

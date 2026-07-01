@@ -1,0 +1,10 @@
+description: New York provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  2021-01-01: 1_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York dependent exemption reform amount
+  reference:
+    - title: 2025 Form IT-201-I Instructions Line 36
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=11

@@ -1,0 +1,10 @@
+description: Mississippi provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  2021-01-01: 1_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: Mississippi dependent exemption reform amount
+  reference:
+    - title: Mississippi Income Tax Instructions 2025
+      href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=6
