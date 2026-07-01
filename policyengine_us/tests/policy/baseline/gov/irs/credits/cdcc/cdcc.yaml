@@ -51,7 +51,7 @@
   output:
     cdcc: 1_000
 
-- name: Married filing separately with a child and care expenses gets zero
+- name: Married filing separately with a qualifying child but not separated gets zero
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -62,6 +62,8 @@
         is_tax_unit_head: true
       person2:
         age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -69,3 +71,50 @@
         tax_unit_childcare_expenses: 3_000
   output:
     cdcc: 0
+
+# IRC 21(e)(4): a separated taxpayer who maintains a home for a qualifying
+# individual is treated as unmarried, so 21(e)(2)'s joint-return requirement
+# does not exclude them. Unlike the general "considered unmarried" test for
+# head-of-household (7703(b), qualifying child only), 21(e)(4) uses 21(b)(1)'s
+# own broader qualifying-individual definition, which also covers a disabled
+# dependent who is not a qualifying child.
+- name: Married filing separately maintaining a home for a qualifying child keeps the credit
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_separated: true
+      person2:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        cdcc_credit_limit: 1_000
+        cdcc_potential: 1_000
+  output:
+    cdcc: 1_000
+
+- name: Married filing separately caring for a disabled adult dependent keeps the credit
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_separated: true
+      person2:
+        age: 70
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        cdcc_credit_limit: 1_000
+        cdcc_potential: 1_000
+  output:
+    cdcc: 1_000
