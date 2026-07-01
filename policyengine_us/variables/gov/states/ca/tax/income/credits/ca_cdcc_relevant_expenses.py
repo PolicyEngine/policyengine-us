@@ -17,8 +17,13 @@ class ca_cdcc_relevant_expenses(Variable):
         else:
             period_adjusted = f"{year}-01-01"
 
+        # Qualifying expenses cover childcare plus care for a disabled
+        # qualifying individual of any age (FTB 3506 instructions,
+        # Section D).
+        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        adult_care = add(tax_unit, period, ["care_expenses"])
+        expenses = childcare + adult_care
         # First, cap based on the number of eligible care receivers
-        expenses = tax_unit("tax_unit_childcare_expenses", period)
         cdcc = parameters(period_adjusted).gov.irs.credits.cdcc
         count_eligible = min_(
             cdcc.eligibility.max, tax_unit("count_cdcc_eligible", period)
