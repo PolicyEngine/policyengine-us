@@ -9,5 +9,4 @@ class hud_annual_income(Variable):
     documentation = "Annual income for HUD programs"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.609"
-
-    adds = ["market_income", "social_security", "ssi", "tanf"]
+    adds = ["hud_countable_earned_income", "hud_countable_unearned_income"]

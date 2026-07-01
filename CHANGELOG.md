@@ -1,3 +1,58 @@
+## [1.754.0] - 2026-07-01
+
+### Added
+
+- Add ZIP code-level HUD Small Area FMR payment standards for the two mandatory-SAFMR Kansas metros (Kansas City, KS and Wichita, KS).
+- Add ZIP code-level Housing Choice Voucher payment standards for Texas, using TDHCA and Houston Housing Authority published standards plus HUD Small Area FMRs for the four mandatory-SAFMR metros.
+
+### Changed
+
+- Populate the previously stubbed small_area_fair_market_rent and safmr_used_for_hcv variables, activating the Harris Rent Relief Act contrib reform's SAFMR-based rent cap for the four mandatory-SAFMR Texas metros.
+
+
+## [1.753.5] - 2026-07-01
+
+### Fixed
+
+- Fixed the Utah fully refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Utah tax liability.
+
+
+## [1.753.4] - 2026-07-01
+
+### Fixed
+
+- - Fixed CHIP FCEP eligibility so an undocumented pregnant parent is not denied the unborn-child CHIP option solely due to immigration status.
+
+
+## [1.753.3] - 2026-07-01
+
+### Changed
+
+- - Add FY2026 county-level HUD Fair Market Rents so simulations at period 2026 use FY2026 values, falling back to the nearest earlier bundled year for any county missing from the queried year.
+  - Align HUD annual income with 24 CFR 5.609 by counting additional sources, excluding children's and full-time-student dependents' earned income and foster members' income, and no longer counting capital gains or retirement-account distributions.
+
+
+## [1.753.2] - 2026-07-01
+
+### Fixed
+
+- Updated 2026 Medicare Part B and Part D IRMAA schedules and fixed the married-filing-separately Part B IRMAA bracket lookup.
+
+
+## [1.753.1] - 2026-07-01
+
+### Changed
+
+- Remove unused contrib parameters (maryland_child_alliance, second_earner_reform).
+
+
+## [1.753.0] - 2026-07-01
+
+### Added
+
+- Add discrete per-filing-status AGI-stepped schedule parameters to the Maryland and Ohio dependent exemption contrib reforms.
+
+
 ## [1.752.3] - 2026-07-01
 
 ### Fixed
