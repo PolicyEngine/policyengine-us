@@ -1,0 +1,19 @@
+- name: MSP Part A coverage pays the base premium for QMB enrollees.
+  period: 2025
+  input:
+    medicare_enrolled: true
+    is_qmb_eligible: true
+    base_part_a_premium: 6_216
+  output:
+    msp_part_a_premium_coverage: 6_216
+    medicare_part_a_premium: 0
+
+- name: MSP Part A coverage is zero for non-QMB enrollees.
+  period: 2025
+  input:
+    medicare_enrolled: true
+    is_qmb_eligible: false
+    base_part_a_premium: 6_216
+  output:
+    msp_part_a_premium_coverage: 0
+    medicare_part_a_premium: 6_216
