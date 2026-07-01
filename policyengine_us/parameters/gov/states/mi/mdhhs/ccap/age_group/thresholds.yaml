@@ -1,0 +1,25 @@
+description: Michigan assigns children to these Child Development and Care rate age groups by age in years.
+
+brackets:
+  - threshold:
+      2024-09-22: 0
+    amount:
+      2024-09-22: 0  # INFANT_TODDLER (birth up to age 2 1/2)
+  - threshold:
+      2024-09-22: 2.5
+    amount:
+      2024-09-22: 1  # PRESCHOOL (age 2 1/2 up to age 5)
+  - threshold:
+      2024-09-22: 5
+    amount:
+      2024-09-22: 2  # SCHOOL_AGE (age 5 and over)
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Michigan CDC rate age group thresholds
+  reference:
+    - title: RFT 270, Department Hourly Rates (effective September 22, 2024)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=4

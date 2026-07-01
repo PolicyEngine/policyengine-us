@@ -1,0 +1,60 @@
+description: Kansas provides this combined payment standard for non-shared living arrangements under the Temporary Assistance for Needy Families program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - ks_tanf_county_group
+    - range(0, 5)
+  breakdown_labels:
+    - County group
+    - Assistance unit size
+  label: Kansas TANF non-shared living payment standard
+  reference:
+    - title: Kansas TANF State Plan FFY 2024-2026, Benefit Structure
+      href: https://www.dcf.ks.gov/services/ees/Documents/Reports/TANF%20State%20Plan%20FFY%202024%20-%202026.pdf#page=29
+
+GROUP_I:
+  0:
+    1997-03-01: 0
+  1:
+    1997-03-01: 224
+  2:
+    1997-03-01: 309
+  3:
+    1997-03-01: 386
+  4:
+    1997-03-01: 454
+GROUP_II:
+  0:
+    1997-03-01: 0
+  1:
+    1997-03-01: 229
+  2:
+    1997-03-01: 314
+  3:
+    1997-03-01: 391
+  4:
+    1997-03-01: 459
+GROUP_III:
+  0:
+    1997-03-01: 0
+  1:
+    1997-03-01: 241
+  2:
+    1997-03-01: 326
+  3:
+    1997-03-01: 403
+  4:
+    1997-03-01: 471
+GROUP_IV:
+  0:
+    1997-03-01: 0
+  1:
+    1997-03-01: 267
+  2:
+    1997-03-01: 352
+  3:
+    1997-03-01: 429
+  4:
+    1997-03-01: 497

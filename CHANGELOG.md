@@ -1,3 +1,163 @@
+## [1.752.0] - 2026-07-01
+
+### Added
+
+- - Modeled the SNAP student employment and training (7 CFR 273.5(b)(11)) and work incentive program (7 CFR 273.5(b)(4)) placement exemptions via the new `is_snap_employment_training_student` and `is_snap_work_incentive_student` inputs, combined as `is_snap_employment_training_or_work_incentive_student`.
+
+
+## [1.751.2] - 2026-07-01
+
+### Fixed
+
+- Apply the CHIP no-other-coverage rule to non-ESI health coverage.
+
+
+## [1.751.1] - 2026-06-30
+
+### Fixed
+
+- Correct child care program coverage metadata in programs.yaml (remove duplicate coverage key; mark Alabama, New Jersey, South Carolina, and Virginia child care programs as complete).
+
+
+## [1.751.0] - 2026-06-30
+
+### Added
+
+- Add Missouri Child Care Subsidy program.
+
+
+## [1.750.1] - 2026-06-30
+
+### Fixed
+
+- Confer SNAP categorical eligibility on households receiving cash TANF, bypassing the income and asset tests in non-BBCE states, and honor partner-reported SSI in the categorical eligibility SSI check.
+
+
+## [1.750.0] - 2026-06-30
+
+### Added
+
+- Add Michigan Child Development and Care (CDC) program.
+
+
+## [1.749.2] - 2026-06-30
+
+### Fixed
+
+- Use separate CHIP spending and enrollment to calculate per-capita CHIP values.
+
+
+## [1.749.1] - 2026-06-30
+
+### Changed
+
+- Replaced IL AABD-specific SSI override variables with the generic applicable_ssi variable and kept applicable SSI monthly for IL AABD income tests.
+
+
+## [1.749.0] - 2026-06-29
+
+### Added
+
+- Added Medicaid community engagement activity-hour pathways for community service, work programs, and mixed less-than-half-time education hours.
+- Added a seasonal-worker six-month average income pathway for Medicaid community engagement.
+- Added a Medicaid community engagement treatment-program exclusion input.
+
+### Fixed
+
+- Fixed the Medicaid community engagement income safe harbor to use Medicaid MAGI household income.
+
+
+## [1.748.0] - 2026-06-29
+
+### Added
+
+- Add Medicaid MAGI claimant tax unit links and missing-claimant fallback diagnostics.
+
+
+## [1.747.7] - 2026-06-29
+
+### Changed
+
+- Update New Jersey Stay NJ property tax relief baseline calculations.
+
+
+## [1.747.6] - 2026-06-29
+
+### Fixed
+
+- Fixed create-state EITC contrib reforms (ID, AZ, WV) that replaced each state's refundable-credits list with only the new EITC, deleting baseline refundable credits, and the NC reform that double-counted use tax in income tax.
+
+
+## [1.747.5] - 2026-06-29
+
+### Changed
+
+- Updated the Vermont renter credit for 2026 Act 169 (H.949): the fair market rent rate rises to 12.5% and the cap to $3,250 for claim year 2027, reverting to 10% and $2,500 for claim year 2028.
+
+
+## [1.747.4] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating TANF when SNAP student ineligibility is evaluated for people who are not higher-education students.
+
+
+## [1.747.3] - 2026-06-29
+
+### Changed
+
+- Documented the certified PolicyEngine bundle install path for US users.
+
+
+## [1.747.2] - 2026-06-29
+
+### Fixed
+
+- Fixed an out-of-memory failure in the Rest CI runner by copying only the gov.contrib.states subtree (with its parent reference severed) in the dependent-exemption reform-activation test, instead of deep-copying the entire parameter tree.
+
+
+## [1.747.1] - 2026-06-29
+
+### Fixed
+
+- Avoid calculating the default county fallback when county FIPS inputs fully determine household counties.
+
+
+## [1.747.0] - 2026-06-29
+
+### Added
+
+- Added contributed reforms that separate the dependent portion of the personal exemption (or credit) for 11 states (AR, HI, IN, MD, MI, NE, OH, OK, VT, WI, WV), so the per-dependent amount can be adjusted or eliminated independently of the head/spouse exemption.
+
+
+## [1.746.0] - 2026-06-27
+
+### Added
+
+- Add FY2027 HHS State Median Income (SMI) values, effective October 1, 2026.
+
+
+## [1.745.0] - 2026-06-25
+
+### Added
+
+- Added a CBO source-aligned net business income variable for calibration target matching, and made ordinary dividend income the canonical variable while keeping dividend income as a legacy compatibility alias.
+
+
+## [1.744.0] - 2026-06-24
+
+### Added
+
+- Added shared-living and county-group payment standards to Kansas TANF, excluded SSI recipients from the assistance unit (its size and countable income, requiring at least one remaining member for eligibility), and excluded assigned child support from the benefit amount while still counting it for income eligibility.
+
+
+## [1.743.0] - 2026-06-24
+
+### Added
+
+- Added Arizona HB 4168 (2026) individual income tax changes: $125 under-17 dependent credit, capped full-amount charitable standard deduction add-on, $10,000 itemized SALT cap, and new dependent care and IRC 530A distribution subtractions (all effective 2026).
+
+
 ## [1.742.0] - 2026-06-23
 
 ### Added

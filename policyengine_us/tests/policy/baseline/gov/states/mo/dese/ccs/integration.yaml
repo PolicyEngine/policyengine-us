@@ -1,0 +1,311 @@
+# MO Child Care Subsidy integration tests
+# End-to-end scenarios exercising eligibility, region/time classification,
+# the daily rate, the sliding fee, the transitional funding multiplier
+# (applied in mo_ccs to the post-fee remainder), and the final monthly benefit.
+#
+# Test period is 2025-01: this uses the 2025 federal poverty guidelines, which
+# match the dollar income bands on the Nov-2025 DESE Income/Sliding-Fee chart
+# and the 2025-10-01 rate and copay schedules these cases are calibrated to.
+# (2025-01 is the same calendar year as the 2025-10-01 parameter start, so it
+# does not raise ParameterNotFoundError.)
+#
+# 2025 reference values (test period 2025-01):
+#   FPG (contiguous US): family of 2 = 21,150/yr -> 1,762.50/mo.
+#     150% FPL (size 2) = 2,643.75/mo; 242% FPL = 4,265.25/mo.
+#   MO SMI base 2025 = 105,825; size 2 = * 0.68 = 71,961/yr;
+#     25% / 12 floor = $1,499.19/mo.
+#   Licensed center, dense urban (Jackson County), infant/toddler, full time
+#     base rate = $96/day; preschool special-needs rate (PS market + 25%) = $89.4625/day.
+#   Size 2 sliding fee tier 7 full fee = $5/day; tier 8 (TCC1) full fee = $7.50/day.
+
+- name: Case 1, eligible working family with an infant in a licensed center.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # === Classification ===
+    mo_ccs_region: DENSE_URBAN
+    mo_ccs_age_group: [SCHOOL_AGE, INFANT_TODDLER]
+    mo_ccs_time_category: [PART_TIME, FULL_TIME]
+
+    # === Eligibility ===
+    # Infant < 13, citizen, dependent -> eligible child.
+    mo_ccs_eligible_child: [false, true]
+    # Income 24,000/yr = 2,000/mo <= 2,643.75 (150% FPL size 2) -> eligible.
+    mo_ccs_income_eligible: true
+    mo_ccs_eligible: true
+
+    # === Daily rate ===
+    # Licensed center, dense urban, infant/toddler, full time = $96/day
+    # (funding rate 1.0 for a traditional family).
+    mo_ccs_maximum_daily_benefit: [0, 96]
+
+    # === Copay ===
+    # Income 2,000 > SMI floor 1,499.19; size 2 tier 7 full fee $5/day.
+    # $5 * 20 days * 1 child = $100/mo.
+    mo_ccs_copay: 100
+
+    # === Benefit ===
+    # Reimbursement = min($96 * 20, $2,500 monthly expenses) = $1,920.
+    # Benefit = max(1,920 - 100, 0) = $1,820/mo.
+    mo_ccs: 1_820
+
+- name: Case 2, family with income exactly at the 150 percent FPL threshold.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_725
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 31,725/yr = 2,643.75/mo = 150% FPL exactly -> <= -> eligible.
+    mo_ccs_income_eligible: true
+    mo_ccs_eligible: true
+    # FPL ratio 1.50 -> traditional funding 1.0; preschool dense urban FT = $50/day.
+    mo_ccs_maximum_daily_benefit: [0, 50]
+
+- name: Case 3, transitional family in TCC1 funded at 80 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_840
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 33,840/yr = 2,820/mo. Enrolled -> transitional limit 4,265.25.
+    # 2,820 <= 4,265.25 -> income eligible.
+    mo_ccs_income_eligible: true
+    mo_ccs_eligible: true
+    # FPL ratio = 2,820 / 1,762.50 = 1.60 -> TCC1 funding 0.80.
+    # Daily benefit returns the gross base $96/day (funding applied in mo_ccs).
+    mo_ccs_maximum_daily_benefit: [0, 96]
+    # Size 2 income 2,820 > 2,644 -> tier 8 (TCC1) full fee $7.50/day.
+    # $7.50 * 20 = $150/mo copay.
+    mo_ccs_copay: 150
+    # Reimbursement = min($96 * 20, $2,500) = $1,920.
+    # TCC: benefit = funding 0.80 * max(1,920 - 150, 0) = 0.80 * 1,770 = $1,416/mo.
+    mo_ccs: 1_416
+
+- name: Case 4, special-needs child with no sliding fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Disabled preschooler -> eligible child; PS rate used.
+    mo_ccs_eligible_child: [false, true]
+    # Special-needs rate (PS market + 25% differential), dense urban,
+    # preschool, full time = $89.4625/day.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
+    # Special-needs child not charged -> copay $0.
+    mo_ccs_copay: 0
+    # Reimbursement = min($89.4625 * 20, $2,500) = $1,789.25; benefit = $1,789.25.
+    mo_ccs: 1_789.25
+
+- name: Case 5, low-income family pays only the minimum fee.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_eligible: true
+    # Income 12,000/yr = 1,000/mo < SMI floor 1,499.19 -> $1/year min copay.
+    mo_ccs_copay: 0.0833
+    # Daily benefit $96 * 20 = $1,920; expenses cap $2,500 not binding.
+    # Benefit = max(1,920 - 0.0833, 0) = $1,919.92.
+    mo_ccs: 1_919.92
+
+- name: Case 6, ineligible family above 150 percent FPL.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # 60,000/yr = 5,000/mo > 2,643.75 (150% FPL size 2), new applicant.
+    mo_ccs_income_eligible: false
+    mo_ccs_eligible: false
+    mo_ccs: 0
+
+- name: Case 7, benefit capped at pre-subsidy expenses with negative income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 35
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Negative countable income -> adjusted income floored at 0, eligible,
+    # funding rate 1.0 (no transitional inflation).
+    mo_ccs_eligible: true
+    mo_ccs_maximum_daily_benefit: [0, 96]
+    # Income below SMI floor -> $1/year minimum copay $0.0833/mo.
+    mo_ccs_copay: 0.0833
+    # Reimbursement bounded by expenses: per-child monthly = 12,000 / 12 =
+    # $1,000 (< rate*days $1,920). Benefit = max(1,000 - 0.0833, 0) = $999.92.
+    # Negative income does not inflate the benefit.
+    mo_ccs: 999.92

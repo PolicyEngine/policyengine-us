@@ -1,0 +1,22 @@
+description: Qualifying non-Marketplace health coverage sources reported at interview.
+values:
+  2014-01-01:
+    - has_esi
+    - medicaid_enrolled
+    - receives_medicaid
+    - has_medicaid_health_coverage_at_interview
+    - is_chip_eligible
+    - medicare_enrolled
+    - has_other_means_tested_health_coverage_at_interview
+    - has_tricare_health_coverage_at_interview
+    - has_champva_health_coverage_at_interview
+    - has_va_health_coverage_at_interview
+metadata:
+  unit: list
+  period: year
+  label: ACA qualifying non-Marketplace health coverage sources
+  reference:
+    - title: 26 U.S. Code § 5000A(f)(1) - Minimum essential coverage
+      href: https://www.law.cornell.edu/uscode/text/26/5000A#f_1
+    - title: 26 CFR § 1.36B-2(c)(2) - Minimum essential coverage
+      href: https://www.law.cornell.edu/cfr/text/26/1.36B-2#c_2

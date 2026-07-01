@@ -49,3 +49,24 @@
   output:
     # $400 - $300 = $100
     ks_tanf_countable_earned_income: 100
+
+- name: Case 6, SSI member's earned income excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ks_tanf_earned_income_after_deductions: 200
+      person2:
+        ks_tanf_earned_income_after_deductions: 150
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2's 150 is masked out; only person1's 200 counts
+    ks_tanf_countable_earned_income: 200

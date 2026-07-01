@@ -1,0 +1,83 @@
+# MO CCS "child with special needs" tests (5 CSR 25-200.050(11)).
+# mo_ccs_special_needs is Person, MONTH. True for the modeled criteria:
+# (A) SSI receipt, (C) verified disability, (D) protective services. Criteria
+# (B) DMH services, (E) adoption subsidy, and (F) court-ordered supervision are
+# not tracked. The same variable drives the extended age ceiling, the +25% rate
+# column, and the sliding-fee waiver.
+
+- name: Case 1, disabled child is a child with special needs (criterion C).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_special_needs: [false, true]
+
+- name: Case 2, child receiving SSI is a child with special needs (criterion A).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ssi: 800
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # SSI receipt alone makes the child a child with special needs, even with
+    # is_disabled unset (5 CSR 25-200.050(11)(A)).
+    mo_ccs_special_needs: [false, true]
+
+- name: Case 3, foster (protective-services) child is a child with special needs (criterion D).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_special_needs: [false, true]
+
+- name: Case 4, child with no special-needs indicator.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_special_needs: [false, false]

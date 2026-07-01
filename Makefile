@@ -100,7 +100,9 @@ test-yaml-no-structural-other-partners:
 	# One subprocess per partner; new partners auto-route.
 	$(BATCH) $(TESTS)/policy/baseline/partners --mode per-subdir
 test-other:
-	pytest policyengine_us/tests/ --maxfail=0
+	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib
+test-policy-contrib-python:
+	pytest $$(find $(TESTS)/policy/contrib -name 'test*.py' -print) --maxfail=0
 coverage:
 	coverage combine
 	coverage xml -i
