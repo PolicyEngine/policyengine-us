@@ -1,0 +1,83 @@
+# Tests for Oklahoma UI annual benefit (top-level variable).
+# Annual benefit = min(partial_weekly_benefit * weeks_unemployed, MBA).
+# Gated by ok_ui_monetarily_eligible (defined_for) and StateCode.OK.
+# Reference: 40 O.S. §2-105, §2-106.
+
+- name: Case 1, eligible claimant - 10 weeks unemployed yields partial of MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> WBA = $400 (within 2025 [$16, $541] range).
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 10
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $9,200 >= $1,500 AND total $30,000 >= 1.5 * $9,200 = $13,800 -> passes.
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 400
+        ok_ui_weekly_payable: 400
+        # MBA = $400 * 16 weeks = $6,400.
+        ok_ui_maximum_benefit_amount: 6_400
+        # Annual = min($400 * 10, $6,400) = min($4,000, $6,400) = $4,000.
+        ok_ui: 4_000
+
+- name: Case 2, eligible claimant - weeks exceed max_weeks - capped at MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 20
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 400
+        ok_ui_maximum_benefit_amount: 6_400
+        # Annual = min($400 * 20, $6,400) = min($8,000, $6,400) = $6,400 (capped at MBA).
+        ok_ui: 6_400
+
+- name: Case 3, monetarily ineligible - zero benefit regardless of weeks.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_000
+        ok_ui_base_period_total_wages: 12_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $1,000 < $1,500 -> fails.
+        # Test B: total $12,000 < $28,200 (2025 wage base) -> fails.
+        ok_ui_monetarily_eligible: false
+        # defined_for gate -> $0.
+        ok_ui: 0

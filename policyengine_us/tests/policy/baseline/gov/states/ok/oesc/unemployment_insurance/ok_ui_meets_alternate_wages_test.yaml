@@ -1,0 +1,65 @@
+# Tests for Oklahoma UI monetary eligibility Test B (40 O.S. §2-207(B)).
+# Both conditions must be met:
+#   1. Base-period taxable wages > 0.
+#   2. Total base-period wages >= annual taxable wage base for the claim year.
+# 2025 taxable wage base = $28,200 (gov.states.ok.tax.payroll.unemployment.taxable_wage_base).
+# Reference: 40 O.S. §2-207(B); 40 O.S. §1-223.
+
+- name: Case 1, both prongs pass with minimal taxable and total at wage base.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 7_050
+        ok_ui_base_period_taxable_wages: 1
+        ok_ui_base_period_total_wages: 28_200
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $1 > $0 (passes prong 1).
+        # Total $28,200 >= $28,200 (2025 wage base) -> passes prong 2.
+        ok_ui_meets_alternate_wages_test: true
+
+- name: Case 2, fails taxable wages prong - zero taxable wages.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 0
+        ok_ui_base_period_taxable_wages: 0
+        ok_ui_base_period_total_wages: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $0 is not > $0 -> fails prong 1.
+        ok_ui_meets_alternate_wages_test: false
+
+- name: Case 3, fails total-wages prong by one dollar below 2025 wage base.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 7_000
+        ok_ui_base_period_taxable_wages: 1_000
+        ok_ui_base_period_total_wages: 28_199
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Taxable $1,000 > 0 (passes prong 1).
+        # Total $28,199 < $28,200 (2025 wage base) -> fails prong 2.
+        ok_ui_meets_alternate_wages_test: false
