@@ -94,3 +94,21 @@
     # 75010 is in both the TDHCA published schedule (2,150) and the Dallas SAFMR
     # (2,220); the published standard wins even though it is the lower value.
     pha_payment_standard: 25_800 # TDHCA 2,150 * 12 (beats SAFMR 2,220)
+
+- name: Wichita KS metro ZIP resolves to the Small Area FMR
+  period: 2026
+  input:
+    zip_code: "67202"
+    bedrooms: 2
+  output:
+    # No Kansas PHA published schedule is encoded, so the mandatory Wichita SAFMR is the basis.
+    pha_payment_standard: 14_160 # SAFMR 1,180 * 12
+
+- name: Kansas City KS ZIP uses the ZIP-level SAFMR, not the flat county FMR
+  period: 2026
+  input:
+    zip_code: "66210"
+    bedrooms: 2
+  output:
+    # Overland Park (Johnson Co) SAFMR 1,730 exceeds the county FMR (1,346); SAFMR is the mandatory basis.
+    pha_payment_standard: 20_760 # SAFMR 1,730 * 12

@@ -28,3 +28,35 @@
     bedrooms: 2
   output:
     safmr_used_for_hcv: false
+
+- name: Wichita KS metro ZIP uses SAFMR
+  period: 2026
+  input:
+    zip_code: "67202"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: true
+
+- name: Kansas City KS-side ZIP uses SAFMR
+  period: 2026
+  input:
+    zip_code: "66210"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: true
+
+- name: Kansas City MO-side ZIP does not use SAFMR (only the KS side is designated)
+  period: 2026
+  input:
+    zip_code: "64108"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: false
+
+- name: Topeka KS ZIP does not use SAFMR (not a mandatory-SAFMR metro)
+  period: 2026
+  input:
+    zip_code: "66604"
+    bedrooms: 2
+  output:
+    safmr_used_for_hcv: false

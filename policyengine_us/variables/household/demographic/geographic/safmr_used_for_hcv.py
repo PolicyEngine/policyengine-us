@@ -4,16 +4,21 @@ from policyengine_us.parameters.gov.hud.fmr import small_area_fair_market_rents
 # Metros where HUD mandates Small Area FMR use for Housing Choice Voucher
 # payment standards (HUD Notice PIH 2023-32 Appendix A; 24 CFR 888.113) — the
 # Texas members: Dallas, Fort Worth-Arlington, and San Antonio (2018 cohort)
-# plus Beaumont-Port Arthur (2024 cohort). Houston is NOT designated, so its
-# SAFMR is not its HCV basis. The names below are the short `hud_area_name`
-# values used in small_area_fair_market_rents.csv ("Fort Worth", "San Antonio").
-# A ZIP's SAFMR is its payment-standard basis only if its metro is listed here,
-# so raw SAFMR data never leaks into HCV.
+# plus Beaumont-Port Arthur (2023 expansion). Kansas members: Kansas City,
+# MO-KS and Wichita, KS (2023 expansion, effective 2025-01-01). Houston is NOT
+# designated, so its SAFMR is not its HCV basis. The names below match the
+# `hud_area_name` column in small_area_fair_market_rents.csv, which suffixes
+# each metro with its 2-letter state (e.g. "Dallas, TX", "Wichita, KS"). A
+# ZIP's SAFMR is its payment-
+# standard basis only if its metro is listed here, so raw SAFMR data never
+# leaks into HCV.
 SAFMR_HCV_DESIGNATED_METROS = [
-    "Beaumont-Port Arthur",
-    "Dallas",
-    "Fort Worth",
-    "San Antonio",
+    "Beaumont-Port Arthur, TX",
+    "Dallas, TX",
+    "Fort Worth, TX",
+    "Kansas City, KS",
+    "San Antonio, TX",
+    "Wichita, KS",
 ]
 SAFMR_HCV_ZIPS = frozenset(
     small_area_fair_market_rents.loc[
