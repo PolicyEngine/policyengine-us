@@ -42,6 +42,24 @@ def test_three_digit_zip_code_leading_zero():
     assert result[0] == "012"
 
 
+def test_three_digit_zip_code_passes_non_numeric_values_through():
+    """zip_code defaults to "UNKNOWN" when no zip code is stored; the
+    three-digit derivation must pass it through instead of crashing."""
+    sim = Simulation(
+        tax_benefit_system=system,
+        situation={
+            "people": {"person": {"age": {"2026": 30}}},
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+    result = sim.calculate("three_digit_zip_code", 2026)
+    assert result[0] == "UNKNOWN"
+
+
 def test_la_county_aca_ptc_nonzero_with_zip():
     """ACA PTC should be nonzero for an LA County household providing zip_code.
 
