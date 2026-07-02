@@ -461,3 +461,60 @@
     state_code: CA
   output:
     meets_snap_abawd_work_requirements: false
+
+# =====================================================
+# 273.24(c)(9): Former foster youth aged 24 or younger
+# (pre-HR1 only — added by FRA 2023, removed by
+# P.L. 119-21 effective 2025-07-04)
+# =====================================================
+
+- name: Case 33, pre-HR1 former foster youth aged 24 exempt.
+  period: 2025-05
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 24
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 34, pre-HR1 former foster youth aged 25 NOT exempt.
+  period: 2025-05
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 25
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 35, post-HR1 former foster youth aged 24 NOT exempt.
+  period: 2025-08
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 24
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: false
