@@ -35,7 +35,11 @@ class wi_childcare_expense_credit_potential(Variable):
                 tax_unit("min_head_spouse_earned", period),
             )
             cdcc_rate = tax_unit("cdcc_rate", period)
-            return wi_relevant_expenses * cdcc_rate * p_wi.fraction
+            # §71.07(9g)(c)4.: a claimant is subject to the special rules in
+            # IRC §21(e)(2) and (4), so a married claimant must file jointly
+            # unless treated as unmarried.
+            eligible = tax_unit("cdcc_filing_status_eligible", period)
+            return eligible * wi_relevant_expenses * cdcc_rate * p_wi.fraction
         else:
             # Pre-2024: Wisconsin matches the potential federal credit
             us_cdcc = tax_unit("cdcc_potential", period)
