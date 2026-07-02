@@ -26,14 +26,14 @@ class ok_child_care_child_tax_credit(Variable):
 
     Calculation steps:
     1. Check AGI eligibility (federal AGI <= $100,000)
-    2. Calculate OK CDCC: federal_cdcc_potential * 20%
+    2. Calculate OK CDCC: federal CDCC allowed (cdcc) * 20%
     3. Calculate OK CTC: federal CTC allowed * 5%
     4. Take the greater of OK CDCC or OK CTC
     5. Prorate by (OK AGI / Federal AGI)
 
     Example 1 - CDCC is greater:
     - Federal AGI: $60,000 (eligible)
-    - Federal CDCC potential: $2,000
+    - Federal CDCC allowed: $2,000
     - Federal CTC: $4,000
     - OK CDCC: $2,000 * 20% = $400
     - OK CTC: $4,000 * 5% = $200
@@ -41,14 +41,18 @@ class ok_child_care_child_tax_credit(Variable):
 
     Example 2 - CTC is greater:
     - Federal AGI: $60,000 (eligible)
-    - Federal CDCC potential: $500
+    - Federal CDCC allowed: $500
     - Federal CTC: $6,000
     - OK CDCC: $500 * 20% = $100
     - OK CTC: $6,000 * 5% = $300
     - Credit (before proration): max($100, $300) = $300
 
-    Note: Uses cdcc_potential (not actual CDCC) because Oklahoma matches
-    the potential credit amount regardless of federal tax liability.
+    Note: Uses the federal child care credit AS ALLOWED (cdcc, Form 2441
+    line 11 / the credit after the federal tax-liability limitation), per
+    the 2025 Form 511 instructions ("20% of the credit for child care
+    expenses allowed by the IRC") and the Schedule 511-F worksheet
+    ("Enter your federal child care credit"). The "greater of 20% CDCC or
+    5% CTC" structure already protects low-tax filers via the CTC path.
     """
 
     def formula(tax_unit, period, parameters):
@@ -56,8 +60,9 @@ class ok_child_care_child_tax_credit(Variable):
         # Step 1: Determine AGI eligibility (must be <= $100,000)
         us_agi = tax_unit("adjusted_gross_income", period)
         agi_eligible = us_agi <= p.child.agi_limit
-        # Step 2: Calculate OK CDCC amount (20% of federal potential)
-        us_cdcc = tax_unit("cdcc_potential", period)
+        # Step 2: Calculate OK CDCC amount (20% of the federal child care
+        # credit ALLOWED, i.e. after the federal tax-liability limit).
+        us_cdcc = tax_unit("cdcc", period)
         ok_cdcc = us_cdcc * p.child.cdcc_fraction
         # Step 3: Calculate OK CTC amount (5% of federal CTC allowed)
         us_ctc = tax_unit("ok_federal_ctc", period)
