@@ -1,3 +1,10 @@
+## [1.755.4] - 2026-07-02
+
+### Fixed
+
+- Include 5-year-olds in the Head Start age range, matching 45 CFR 1302.12(b), which covers children from age 3 up to compulsory school age.
+
+
 ## [1.755.3] - 2026-07-02
 
 ### Fixed
