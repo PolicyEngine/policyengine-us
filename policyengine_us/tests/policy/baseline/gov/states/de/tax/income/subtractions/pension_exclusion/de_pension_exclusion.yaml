@@ -68,11 +68,13 @@
   output:
     de_pension_exclusion: 0
 
-- name: 60+ filer with net capital loss exceeding interest income gets zero exclusion
+- name: 60+ filer with large capital loss keeps full exclusion (interest > cap)
   # PIT-RES 2025 Line 6 defines eligible retirement income as "capital gains
-  # net of capital losses, interest, ..." — losses net against gains within the
-  # basket. Here interest $42,896 + net cap gains -$1,374,932 = -$1,332,036.
-  # The exclusion is min($12,500, max(0, -$1.33M)) = $0, not $12,500.
+  # net of capital losses, interest, ...". The capital-gains figure is the one
+  # that appears on the return, i.e. the federally loss-limited net capital gain
+  # (IRC 1211(b) caps a single filer's net loss at -$3,000; the raw -$1.37M loss
+  # cannot appear on a DE return). Basket = $42,896 interest - $3,000 = $39,896,
+  # well above the $12,500 cap, so the exclusion is $12,500, not $0.
   period: 2025
   input:
     age: 75
@@ -82,4 +84,30 @@
     long_term_capital_gains: 49_197
     state_code: DE
   output:
-    de_pension_exclusion: 0
+    de_pension_exclusion: 12_500
+
+- name: DE 60+ filer with large capital loss keeps full pension exclusion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        is_tax_unit_head: true
+        taxable_interest_income: 85_793
+        short_term_capital_gains: -2_848_258
+        long_term_capital_gains: 98_394
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # Federal 1211 limits the joint net capital loss to -$3,000, allocated to the
+    # head; basket = $85,793 interest - $3,000 = $82,793 >> $12,500 cap.
+    de_pension_exclusion: [12_500, 0]
