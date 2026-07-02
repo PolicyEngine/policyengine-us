@@ -1,3 +1,10 @@
+## [1.755.1] - 2026-07-02
+
+### Fixed
+
+- Fixed the Oklahoma Child Care/Child Tax Credit to use the allowed federal child care credit (cdcc, after the federal tax-liability limit) instead of the pre-limit potential (cdcc_potential), which overstated the credit for filers whose federal CDCC is limited by federal tax.
+
+
 ## [1.755.0] - 2026-07-01
 
 ### Added
