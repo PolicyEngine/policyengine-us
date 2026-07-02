@@ -26,11 +26,10 @@
   output:
     ny_yonkers_income_tax: 0
 
-# A Yonkers resident pays only the resident surcharge; the nonresident
-# earnings tax is gated off for residents, so the nonresident-earnings input
-# is ignored. NOTE: depends on the variable change that gates the nonresident
-# term on non-residence (made concurrently by a separate agent); expected
-# value reflects the intended post-fix behavior.
+# A Yonkers resident pays only the resident surcharge; the nonresident earnings
+# tax is gated off for residents by ny_yonkers_income_tax.py
+# (`where(resident, 0, nonresident_tax)`), so the nonresident-earnings input is
+# ignored for residents.
 - name: Yonkers resident with nonresident earnings pays only the resident surcharge
   period: 2025
   input:
