@@ -66,3 +66,16 @@
   output:
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
+
+- name: Case 6, after the Alaska waiver approval end date the area waiver no longer applies.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02090"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
