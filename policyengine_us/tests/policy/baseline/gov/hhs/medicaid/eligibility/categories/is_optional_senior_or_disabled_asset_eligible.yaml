@@ -22,3 +22,65 @@
     state_code: CA
   output:
     is_optional_senior_or_disabled_asset_eligible: true
+
+- name: high assets, still eligible for Medicaid in CA in 2025
+  period: 2025
+  input:
+    ssi_countable_resources: 1_000_000
+    state_code: CA
+  output:
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: assets below the reinstated CA limit in 2026, eligible
+  period: 2026
+  input:
+    ssi_countable_resources: 100_000
+    state_code: CA
+  output:
+    is_optional_senior_or_disabled_asset_eligible: true
+
+- name: assets above the reinstated CA limit in 2026, ineligible
+  period: 2026
+  input:
+    ssi_countable_resources: 150_000
+    state_code: CA
+  output:
+    is_optional_senior_or_disabled_asset_eligible: false
+
+- name: joint filers below the reinstated CA couple limit in 2026, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 90_000
+      person2:
+        ssi_countable_resources: 90_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [true, true]
+
+- name: joint filers above the reinstated CA couple limit in 2026, ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 100_000
+      person2:
+        ssi_countable_resources: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+  output:
+    is_optional_senior_or_disabled_asset_eligible: [false, false]
