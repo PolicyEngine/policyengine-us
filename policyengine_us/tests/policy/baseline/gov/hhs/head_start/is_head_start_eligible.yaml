@@ -19,7 +19,7 @@
 - name: Not Head Start eligible 3
   period: 2021
   input:
-    age: 5
+    age: 6
     is_head_start_categorically_eligible: false
     is_head_start_income_eligible: true
   output:
@@ -48,6 +48,15 @@
   input:
     age: 4
     is_head_start_categorically_eligible: true
+    is_head_start_income_eligible: true
+  output:
+    is_head_start_eligible: true
+
+- name: Head Start eligible 4
+  period: 2021
+  input:
+    age: 5
+    is_head_start_categorically_eligible: false
     is_head_start_income_eligible: true
   output:
     is_head_start_eligible: true
