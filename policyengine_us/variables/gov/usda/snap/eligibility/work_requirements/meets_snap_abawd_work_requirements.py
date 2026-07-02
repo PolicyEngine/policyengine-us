@@ -35,7 +35,9 @@ class meets_snap_abawd_work_requirements(Variable):
         # (iv) participate in and comply with a workfare program under
         # 7 CFR 273.7(m), which satisfies the requirement regardless of
         # hours.
-        is_workfare_participant = person("is_snap_workfare_participant", period)
+        is_workfare_participant = person(
+            "is_snap_workfare_participant", period.this_year
+        )
         is_working = meets_hours_threshold | is_workfare_participant
         # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
