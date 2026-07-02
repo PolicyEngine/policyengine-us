@@ -1,0 +1,59 @@
+- name: Case 1, capital gain distributions total both reporting routes.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        long_term_capital_gains: 8_000
+        schedule_d_capital_gain_distributions: 3_000
+        non_sch_d_capital_gains: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capital_gain_distributions: 3_000
+
+- name: Case 2, Schedule D distributions are a memo and do not double count in AGI.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        employment_income: 60_000
+        long_term_capital_gains: 8_000
+        schedule_d_capital_gain_distributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 60,000 wages + 8,000 LTCG; the 3,000 memo component adds nothing.
+    adjusted_gross_income: 68_000
+
+- name: Case 3, non-Schedule-D route only.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        non_sch_d_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    capital_gain_distributions: 2_000
