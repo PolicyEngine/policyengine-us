@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, NC, NE, NH, NJ, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -597,6 +597,12 @@ programs:
         full_name: Minnesota Child Care Assistance Program
         variable: mn_ccap
         parameter_prefix: gov.states.mn.dcyf.ccap
+      - state: NE
+        status: complete
+        name: Nebraska CCS
+        full_name: Nebraska Child Care Subsidy
+        variable: ne_child_care_subsidy
+        parameter_prefix: gov.states.ne.dhhs.child_care_subsidy
       - state: NH
         status: complete
         name: New Hampshire CCAP
@@ -1250,16 +1256,6 @@ programs:
     variable: ne_aabd
     parameter_prefix: gov.states.ne.dhhs.aabd
     verified_years: "2015-2025"
-
-  - id: ne_childcare
-    name: Nebraska child care subsidy
-    full_name: Nebraska Child Care Subsidy
-    category: Benefits
-    agency: State
-    status: complete
-    coverage: NE
-    variable: ne_child_care_subsidy
-    parameter_prefix: gov.states.ne.dhhs.child_care_subsidy
 
   - id: mbta_reduced_fare
     name: MBTA reduced fare
