@@ -1,4 +1,4 @@
-description: Maine allows for this property tax fairness credit benefit base for seniors.
+description: Maine provides this property tax fairness credit benefit base for seniors.
 
 brackets:
   - threshold:
@@ -12,10 +12,11 @@ brackets:
       2024-01-01: 4_000
       2025-01-01: 4_100
     metadata:
-      uprating: gov.irs.uprating
-      rounding:
-        type: downwards
-        interval: 50
+      uprating:
+        parameter: gov.irs.uprating
+        rounding:
+          type: downwards
+          interval: 50
 
 metadata:
   type: single_amount
@@ -34,7 +35,7 @@ metadata:
     - title: 2023 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 7
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2
     - title: 2024 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit Line 7
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=2
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form%201040ME_Sch%20PTFC_ff.pdf#page=2
     - title: 2025 Form 1040ME Schedule PTFC/STFC Line 7-8 (senior benefit base)
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=2
   period: year

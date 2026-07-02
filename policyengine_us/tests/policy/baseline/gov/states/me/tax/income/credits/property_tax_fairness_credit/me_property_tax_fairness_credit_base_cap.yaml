@@ -1,5 +1,6 @@
 - name: Case 1, filing single with no dependent and no income 
   period: 2022
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     filing_status: SINGLE
@@ -13,6 +14,7 @@
 
 - name: Case 2, filing single with 3 dependnet and high income
   period: 2022
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     filing_status: SINGLE
@@ -26,6 +28,7 @@
 
 - name: Case 3, filing single with 3 dependnet and some income
   period: 2022
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     filing_status: SINGLE
@@ -39,6 +42,7 @@
   
 - name: Case 4, in 2024, filing single with no dependent and no income
   period: 2024
+  absolute_error_margin: 0.1
   input:
     state_code: ME
     filing_status: SINGLE
@@ -125,5 +129,33 @@
     me_property_tax_fairness_credit_countable_rent_property_tax: 5_000
     age_head: 65
     age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 1_700
+
+- name: Age exactly 64 filer in 2025 does not receive the senior benefit base (discriminating mirror of the age-65 case)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+    me_property_tax_fairness_credit_countable_rent_property_tax: 5_000
+    age_head: 64
+    age_spouse: 0
+  output:
+    me_property_tax_fairness_credit_base_cap: 150
+
+- name: MFJ with one spouse age 67 receives the senior benefit base via greater_age_head_spouse
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    state_code: ME
+    filing_status: JOINT
+    ctc_qualifying_children: 0
+    me_sales_and_property_tax_fairness_credit_income: 60_000
+    me_property_tax_fairness_credit_countable_rent_property_tax: 5_000
+    age_head: 60
+    age_spouse: 67
   output:
     me_property_tax_fairness_credit_base_cap: 1_700
