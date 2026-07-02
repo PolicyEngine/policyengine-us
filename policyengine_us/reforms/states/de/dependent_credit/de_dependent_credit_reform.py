@@ -156,7 +156,11 @@ def create_de_dependent_credit_reform() -> Reform:
             # liability that includes the credit against a separate one
             # that does not. Delivering it on both paths would require
             # also overriding de_personal_credit_indv to allocate the
-            # dependent credit per column.
+            # dependent credit per column, for which the (hypothetical)
+            # credit has no Delaware per-column allocation rule. This
+            # limitation is pinned by the guard test "FS4 election forgoes
+            # the dependent credit" in
+            # tests/policy/contrib/states/de/dependent_credit_reform_test.yaml.
             self.update_variable(de_personal_credit)
 
     return reform
