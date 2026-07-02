@@ -41,3 +41,14 @@
     ca_income_tax_before_credits: 55_000
   output:
     ca_amt: 0
+
+- name: CA AMT does not add back acquisition home mortgage interest
+  period: 2025
+  input:
+    people:
+      head: {age: 45, taxable_interest_income: 168_340.64, deductible_mortgage_interest: 50_000}
+      spouse: {age: 45}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: CA}}
+  output:
+    ca_amt: 0

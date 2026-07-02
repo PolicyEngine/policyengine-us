@@ -3,7 +3,10 @@ values:
    2021-01-01:
      - medical_expense_deduction # line 2 Medical and dental expenses
      - real_estate_taxes # line 3 Personal property taxes and real property taxes
-     - mortgage_interest # line 4 Certain interest on a home mortgage
+     # Line 4 (certain interest on a home mortgage) adds back only non-acquisition
+     # (home-equity) mortgage interest not used to buy, build, or improve the home,
+     # mirroring federal Form 6251. PolicyEngine's deductible_mortgage_interest is
+     # entirely acquisition interest, so there is no line 4 add-back.
      - misc_deduction # line 5 Miscellaneous itemized deductions
 
 
