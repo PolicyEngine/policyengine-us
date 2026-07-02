@@ -1,0 +1,188 @@
+# Tests for New York UI partial benefit hours tier rate (effective 2021-08-16).
+# Hours-based reduction bracket:
+#   0-10 hours   -> 100% (rate 1.00)
+#   11-16 hours  -> 75%  (rate 0.75)
+#   17-21 hours  -> 50%  (rate 0.50)
+#   22-30 hours  -> 25%  (rate 0.25)
+#   31+ hours    -> 0%   (rate 0.00)
+# Reference: NY Lab. Law § 590(5)(c); NYSDOL P803 (Oct 2025).
+
+- name: Case 1, 5 hours worked - tier 1 (0-10), full weekly benefit.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 5
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 5 hours falls in the 0-10 tier -> 100% of WBR.
+        ny_ui_hours_tier_rate: 1.0
+
+- name: Case 2, 13 hours worked - tier 2 (11-16), 75 percent of WBR.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 13
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 13 hours falls in the 11-16 tier -> 75% of WBR.
+        ny_ui_hours_tier_rate: 0.75
+
+- name: Case 3, 19 hours worked - tier 3 (17-21), 50 percent of WBR.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 19
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 19 hours falls in the 17-21 tier -> 50% of WBR.
+        ny_ui_hours_tier_rate: 0.5
+
+- name: Case 4, 25 hours worked - tier 4 (22-30), 25 percent of WBR.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 25
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 25 hours falls in the 22-30 tier -> 25% of WBR.
+        ny_ui_hours_tier_rate: 0.25
+
+- name: Case 5, 35 hours worked - tier 5 (31+), no weekly benefit.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 35
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 35 hours falls in the 31+ tier -> 0% of WBR.
+        ny_ui_hours_tier_rate: 0.0
+
+- name: Case 6, boundary - 10 hours is the top of tier 1, full rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 10
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 10 hours is below the tier-2 threshold of 11 -> full rate 1.0.
+        ny_ui_hours_tier_rate: 1.0
+
+- name: Case 7, boundary - 11 hours is the bottom of tier 2, 75 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 11
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 11 hours meets tier-2 threshold -> 0.75 rate.
+        ny_ui_hours_tier_rate: 0.75
+
+- name: Case 8, boundary - 30 hours is the top of tier 4, 25 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 30 hours is below the tier-5 threshold of 31 -> 0.25 rate.
+        ny_ui_hours_tier_rate: 0.25
+
+- name: Case 9, boundary - 31 hours is the bottom of tier 5, no rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 31
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 31 hours meets tier-5 threshold -> 0.0 rate.
+        ny_ui_hours_tier_rate: 0.0
+
+- name: Case 10, boundary - zero hours worked, full rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 0 hours falls in tier 1 (0-10) -> full rate 1.0.
+        ny_ui_hours_tier_rate: 1.0

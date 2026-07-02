@@ -1303,6 +1303,17 @@ programs:
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
 
+  - id: ny_ui
+    name: New York Unemployment Insurance
+    full_name: New York Unemployment Insurance
+    category: Benefits
+    agency: New York State Department of Labor
+    status: complete
+    coverage: NY
+    variable: ny_ui
+    parameter_prefix: gov.states.ny.dol.unemployment_insurance
+    verified_years: "2025-2026"
+
   - id: tx_fpp_benefit
     name: Texas FPP
     full_name: Texas Family Planning Program

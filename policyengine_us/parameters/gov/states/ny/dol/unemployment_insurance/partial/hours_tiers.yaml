@@ -1,0 +1,36 @@
+description: New York pays this share of the weekly benefit rate based on hours worked in a week under the Unemployment Insurance program.
+
+brackets:
+  - threshold:
+      2021-08-16: 0
+    amount:
+      2021-08-16: 1.0
+  - threshold:
+      2021-08-16: 11
+    amount:
+      2021-08-16: 0.75
+  - threshold:
+      2021-08-16: 17
+    amount:
+      2021-08-16: 0.5
+  - threshold:
+      2021-08-16: 22
+    amount:
+      2021-08-16: 0.25
+  - threshold:
+      2021-08-16: 31
+    amount:
+      2021-08-16: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  threshold_period: week
+  period: week
+  label: New York UI partial benefit hours tier rates
+  reference:
+    - title: NY Labor Law § 590(5)(c) — Benefit for partial unemployment
+      href: https://www.nysenate.gov/legislation/laws/LAB/590
+    - title: NYSDOL P803 (Oct 2025), Partial Unemployment FAQs
+      href: https://dol.ny.gov/system/files/documents/2025/10/p803-partial-ui-faqs-10-3-25.pdf#page=1
