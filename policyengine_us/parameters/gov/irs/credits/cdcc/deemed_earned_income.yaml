@@ -1,0 +1,30 @@
+description: The IRS deems a spouse who is a full-time student or incapable of self-care to have at least this earned income for the Child and Dependent Care Credit, depending on the number of qualifying individuals.
+# The statute defines monthly amounts ($250 for one qualifying individual,
+# $500 for two or more, effective for taxable years after 2002); we annualize
+# them, approximating a spouse who is a student or incapable of self-care for
+# the full year. IRC 21(d)(2) deems income only when the 21(c) dollar limits
+# apply, so the floor is zero with no qualifying individuals.
+brackets:
+  - threshold:
+      2003-01-01: 0
+    amount:
+      2003-01-01: 0
+  - threshold:
+      2003-01-01: 1
+    amount:
+      2003-01-01: 3_000
+  - threshold:
+      2003-01-01: 2
+    amount:
+      2003-01-01: 6_000
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  label: CDCC deemed earned income for student or disabled spouse
+  reference:
+    - title: 26 U.S. Code § 21(d)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/21#d_2
+    - title: 26 CFR § 1.21-2(b)(4)
+      href: https://www.law.cornell.edu/cfr/text/26/1.21-2

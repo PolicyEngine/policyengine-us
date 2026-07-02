@@ -14,7 +14,12 @@ class co_low_income_cdcc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         no_fed_cdcc = tax_unit("capped_cdcc", period) <= 0
+        # The credit backstops filers whose federal CDCC is zeroed out by
+        # their income tax liability; a separate filer excluded from the
+        # federal credit by the IRC 21(e)(2) joint-return requirement
+        # remains ineligible.
+        filing_status_eligible = tax_unit("cdcc_filing_status_eligible", period)
         p = parameters(period).gov.states.co.tax.income.credits
         fed_agi = tax_unit("adjusted_gross_income", period)
         agi_eligible = fed_agi <= p.cdcc.low_income.federal_agi_threshold
-        return no_fed_cdcc & agi_eligible
+        return no_fed_cdcc & agi_eligible & filing_status_eligible

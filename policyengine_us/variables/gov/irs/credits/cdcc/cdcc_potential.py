@@ -12,4 +12,8 @@ class cdcc_potential(Variable):
     def formula(tax_unit, period, parameters):
         expenses = tax_unit("cdcc_relevant_expenses", period)
         rate = tax_unit("cdcc_rate", period)
-        return expenses * rate
+        # The IRC 21(e)(2) joint-return requirement applies here, before the
+        # tax liability cap, so state credits computed from this pre-cap
+        # amount (rather than from cdcc) also exclude separate filers.
+        eligible = tax_unit("cdcc_filing_status_eligible", period)
+        return eligible * expenses * rate
