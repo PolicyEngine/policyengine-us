@@ -1,3 +1,10 @@
+## [1.755.5] - 2026-07-02
+
+### Fixed
+
+- Fix county computation over datasets and complete the County enum. Households storing county_fips (but no county) now map counties from FIPS instead of collapsing to first_county_in_state, restoring in_nyc and NYC income tax in microsimulation. The County enum gains 61 missing entries (31 state counties and independent cities including O'Brien County IA and nine Virginia cities, plus 30 territory rows), appended at the end because datasets persist county as enum indices. Unmappable county names return UNKNOWN instead of raising, and three_digit_zip_code no longer crashes on non-numeric zip codes.
+
+
 ## [1.755.4] - 2026-07-02
 
 ### Fixed
