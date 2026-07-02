@@ -36,6 +36,9 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # (v) Receiving unemployment compensation — 7 CFR 273.7(b)(1)(v)
         # also exempts applicants who have applied but not yet received
         # UI; we are not tracking that yet.
+        # Simplification: any UC receipt during the year exempts the person
+        # in all months of that year, since survey data lack monthly UC
+        # receipt histories.
         receiving_ui = person("unemployment_compensation", period.this_year) > 0
         return (
             is_disabled
