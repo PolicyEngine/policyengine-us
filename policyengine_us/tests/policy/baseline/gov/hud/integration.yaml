@@ -86,3 +86,23 @@
     hud_gross_rent: 24_000
     hud_hap: 20_400
     housing_assistance: 20_400
+
+- name: Outside LA, a tenant who pays utilities gets a utility allowance in gross rent (Denton County, TX).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        county_fips: "48121"
+        bedrooms: 2
+        tenant_pays_utilities: true
+        members: [person1]
+  output:
+    # Denton County TDHCA multi-family, all-electric schedule (2 BR): $298/month.
+    hud_utility_allowance: 298 * 12
+    # Gross rent adds the utility allowance to the tenant-paid rent.
+    hud_gross_rent: 12_000 + 298 * 12

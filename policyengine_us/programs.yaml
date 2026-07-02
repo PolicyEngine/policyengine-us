@@ -935,7 +935,7 @@ programs:
     status: in_progress
     variable: hud_hap
     parameter_prefix: gov.hud
-    notes: "National rules; only have AMI for Los Angeles County and Colorado. Illinois, Massachusetts in progress"
+    notes: "National rules with county-level income limits and fair market rents; utility allowance schedules encoded for Los Angeles County, the Texas TDHCA service area (28 counties), and four Kansas PHAs (Sedgwick, Shawnee, Wyandotte, and Johnson counties)"
 
   # --- FCC programs ---
   - id: lifeline

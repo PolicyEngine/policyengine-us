@@ -1,4 +1,9 @@
 from policyengine_us.model_api import *
+from policyengine_us.parameters.gov.hud.utility_allowance import (
+    MAX_BEDROOMS,
+    SRO_BEDROOMS,
+    utility_allowance_schedule,
+)
 
 
 class hud_utility_allowance(Variable):
@@ -6,43 +11,55 @@ class hud_utility_allowance(Variable):
     entity = Household
     label = "HUD utility allowance"
     unit = USD
-    documentation = "Utility allowance for HUD programs"
+    documentation = (
+        "Monthly utility allowance for HUD programs, annualized. Set per public "
+        "housing agency by bedroom size; encoded for the counties PolicyEngine "
+        "models (LA County, the Texas TDHCA service area, and four Kansas PHAs). "
+        "Each schedule is summed over all tenant-paid utilities assuming a "
+        "Multi-Family, all-electric unit. SRO units use the published SRO row "
+        "where one exists, otherwise 75% of the zero-bedroom value per 24 CFR "
+        "982.604(b). Returns 0 for counties without an encoded schedule."
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/cfr/text/24/982.517",
-        # LA County, only one for now. As of 2023-07-01.
-        "https://www.lacda.org/docs/librariesprovider25/public-documents/utility-allowance/utility-allownce-2022.pdf",
+        # SRO allowance = 75% of the zero-bedroom allowance.
+        "https://www.law.cornell.edu/cfr/text/24/982.604",
+        # LA County (LACDA), effective 2025-07-01. The 2023-vintage values came
+        # from LACDA's prior schedule (utility-allownce-2022.pdf, "as of
+        # 2023-07-01"), which is no longer online.
+        "https://www.lacda.org/docs/librariesprovider25/shared-content---documents/utility-allowance/lacda-utility-allowance-schedule-7-1-2025.pdf",
+        # Texas (TDHCA service area), effective 2026-01-01.
+        "https://www.tdhca.texas.gov/section-8-resources",
+        # Wichita Housing Authority (Sedgwick County), effective 2025-07-01.
+        "https://www.wichita.gov/DocumentCenter/View/31965/2025-Utility-Allowances",
+        # Topeka Housing Authority (Shawnee County), effective 2025.
+        "https://www.tha.gov/wp-content/uploads/2025/04/All-Utility-Allowances.pdf",
+        # Kansas City Kansas Housing Authority (Wyandotte County), 2026.
+        "https://www.kckha.org/Documents/Housing/HCV/2026%20Utility%20Schedules-Kansas%20City%20KS-HUD%2052667-2026%20(0-5%20BR).pdf",
+        # Johnson County Housing Authority (Johnson County), effective 2026-03-01.
+        "https://www.jocogov.org/sites/default/files/files/2026-03/2026%20Utility%20Allowances-R.pdf",
     )
     defined_for = "tenant_pays_utilities"
 
     def formula(household, period, parameters):
-        household_bedrooms = household("bedrooms", period)
+        county_fips = household("county_fips", period)
+        bedrooms = household("bedrooms", period)
         is_sro = household("is_sro", period)
-        in_la = household("in_la", period)
-        la_amount = select(
-            [
-                is_sro,
-                household_bedrooms == 0,
-                household_bedrooms == 1,
-                household_bedrooms == 2,
-                household_bedrooms == 3,
-                household_bedrooms == 4,
-                household_bedrooms == 5,
-                household_bedrooms == 6,
-                household_bedrooms == 7,
-            ],
-            # For LA County, assume all utilities are included.
-            [
-                179,  # SRO: 9 + 15 + 4 + 6 + 6 + 12 + 20 + 55 + 32 + 7 + 13
-                227,  # 0bd: 9 + 16 + 5 + 8 + 8 + 16 + 27 + 73 + 42 + 10 + 13
-                271,  # 1bd: 13 + 22 + 7 + 11 + 11 + 22 + 33 + 82 + 42 + 15 + 13
-                318,  # 2bd: 16 + 29 + 9 + 15 + 15 + 29 + 40 + 91 + 42 + 19 + 13
-                375,  # 3bd: 20 + 37 + 11 + 18 + 18 + 35 + 48 + 109 + 42 + 24 + 13
-                452,  # 4bd: 27 + 50 + 14 + 23 + 25 + 44 + 55 + 127 + 42 + 32 + 13
-                517,  # 5bd: 31 + 58 + 16 + 26 + 31 + 51 + 66 + 145 + 42 + 38 + 13
-                580,  # 6bd: 37 + 65 + 18 + 29 + 36 + 58 + 75 + 163 + 42 + 44 + 13
-                647,  # 7bd: 42 + 74 + 20 + 33 + 42 + 65 + 85 + 181 + 42 + 50 + 13
-            ],
-            default=719,  # 8bd: 47 + 86 + 24 + 36 + 47 + 73 + 96 + 199 + 42 + 56 + 13
+        # SRO units use a dedicated schedule row; other units clip to the
+        # published bedroom range (larger units reuse the top bedroom value).
+        lookup_bedrooms = where(
+            is_sro,
+            SRO_BEDROOMS,
+            np.clip(bedrooms.astype(int), 0, MAX_BEDROOMS),
         )
-        return in_la * la_amount * MONTHS_IN_YEAR
+        schedule = utility_allowance_schedule(period.start.year)
+        df = pd.DataFrame(
+            {
+                "county_fips": pd.Series(county_fips).astype(str).str.zfill(5),
+                "bedrooms": lookup_bedrooms,
+            }
+        )
+        matched = df.merge(schedule, on=["county_fips", "bedrooms"], how="left")
+        monthly = matched["monthly_value"].fillna(0).to_numpy()
+        return monthly * MONTHS_IN_YEAR
