@@ -8,7 +8,7 @@ class ky_jefferson_occupational_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
-    reference = "https://louisvilleky.gov/government/revenue-commission"
+    reference = "https://louisvilleky.gov/sites/default/files/2024-12/w-1kjc_instructions_2025.pdf"
 
     def formula(tax_unit, period, parameters):
         # Louisville Metro is consolidated with Jefferson County, so it is

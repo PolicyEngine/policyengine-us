@@ -20,6 +20,10 @@ class ny_yonkers_income_tax(Variable):
         )
         # Nonresident earnings tax: a flat rate on Yonkers-source wages,
         # only for nonresidents (residents pay the surcharge instead).
+        # The rate applies to gross Yonkers-source earnings (the input); it
+        # omits the Form Y-203 line-4 allowable exclusion and the Schedule A/C
+        # in/out-of-Yonkers allocation. Immaterial here since the input
+        # defaults to 0.
         person = tax_unit.members
         nonresident_earnings = person("ny_yonkers_nonresident_earnings", period)
         nonresident_tax = (

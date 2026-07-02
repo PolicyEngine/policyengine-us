@@ -8,7 +8,9 @@ class de_wilmington_earned_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
-    reference = "https://www.wilmingtonde.gov/government/city-departments/department-of-finance/earned-income-tax-wage-tax"
+    reference = (
+        "https://wilmdebudget.org/wp-content/uploads/2024/03/fy25-tax-rates.pdf#page=1"
+    )
 
     def formula(tax_unit, period, parameters):
         rate = parameters(period).gov.local.de.wilmington.tax.income.rate
