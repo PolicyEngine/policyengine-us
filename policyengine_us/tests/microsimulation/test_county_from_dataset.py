@@ -57,13 +57,18 @@ def _dataset_with_county_fips(
 
 
 def test_county_over_dataset_maps_stored_county_fips():
-    simulation = Microsimulation(dataset=_dataset_with_county_fips(["36047", "06037"]))
+    # 19141 is O'Brien County, IA — one of the counties that was missing
+    # from the County enum until this fix and crashed the FIPS mapping.
+    simulation = Microsimulation(
+        dataset=_dataset_with_county_fips(["36047", "06037", "19141"])
+    )
 
     county_str = simulation.calculate("county_str", YEAR)
 
     assert county_str.tolist() == [
         "KINGS_COUNTY_NY",
         "LOS_ANGELES_COUNTY_CA",
+        "O_BRIEN_COUNTY_IA",
     ]
 
 
