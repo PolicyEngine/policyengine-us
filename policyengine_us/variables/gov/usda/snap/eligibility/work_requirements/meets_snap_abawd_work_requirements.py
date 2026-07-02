@@ -55,11 +55,20 @@ class meets_snap_abawd_work_requirements(Variable):
             | work_reg_exempt
             | is_pregnant
         )
-        # Pre-HR1 exemptions: homeless, veteran
+        # Pre-HR1 exemptions: homeless, veteran, former foster youth
         is_homeless = person.household("is_homeless", period)
         is_veteran = person("is_veteran", period)
+        # 7 CFR 273.24(c)(9): aged 24 or younger and in foster care under
+        # State responsibility on their 18th birthday (added by the Fiscal
+        # Responsibility Act of 2023, removed by P.L. 119-21).
+        was_in_foster_care = person("was_in_foster_care", period)
+        former_foster_youth = was_in_foster_care & (
+            age <= p_pre.age_threshold.former_foster_care
+        )
         post_hr1_conditions = base_conditions | is_indian_exempt
-        pre_hr1_conditions = base_conditions | is_homeless | is_veteran
+        pre_hr1_conditions = (
+            base_conditions | is_homeless | is_veteran | former_foster_youth
+        )
         return where(
             hr1_in_effect,
             post_hr1_conditions,
