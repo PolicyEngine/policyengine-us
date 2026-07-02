@@ -2,6 +2,11 @@
 # From 2024-11-01, FNS waived the ABAWD time limit in every Alaska
 # borough and census area except the Municipality of Anchorage
 # (FIPS 02020).
+# From 2025-11-01 through 2026-10-31, FNS waived the time limit in seven
+# California counties (CDSS ACL 25-79 and ACL 26-15).
+# Statewide waivers (CA, DC, IL, NV) are modeled in waived_states,
+# including the period litigation kept them in effect (Rhode Island State
+# Council of Churches v. Rollins, D.R.I. No. 1:25-cv-00569).
 
 - name: Case 1, post-HR1 AK resident of waived borough (Fairbanks North Star) meets ABAWD requirements via area waiver.
   period: 2026-01
@@ -76,6 +81,185 @@
     is_disabled: false
     state_code: AK
     county_fips: "02090"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# California county waivers (CDSS ACL 25-79, ACL 26-15): Colusa, Imperial,
+# Tulare, Alpine, Merced, Monterey, and Plumas counties, 2025-11-01 through
+# 2026-10-31. California applies pre-HR1 ABAWD rules until 2026-06-01
+# (ACL 25-93), so the waiver is tested in both branches.
+
+- name: Case 7, CA resident of waived Tulare County (2026-03, after the statewide waiver expired) is exempt via the county waiver under pre-HR1 rules.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06107"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 8, CA resident of non-waived Los Angeles County (2026-03) is not exempt via any waiver.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06037"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 9, CA resident of waived Tulare County (2026-07, after CA adopts HR1 rules on 2026-06-01) remains exempt via the county waiver under the post-HR1 branch.
+  period: 2026-07
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06107"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 10, CA household without county geography (2025-12) is exempt via the litigation-reinstated statewide waiver under pre-HR1 rules.
+  period: 2025-12
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: CA
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Litigation-reinstated statewide waivers (Rhode Island State Council of
+# Churches v. Rollins; USDA February 26, 2026 guidance): CA, IL, and NV
+# through 2026-01-31; DC through 2025-12-31.
+
+- name: Case 11, NV resident (2026-01) is exempt via the statewide waiver under the post-HR1 branch.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: NV
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 12, NV resident (2026-02) is no longer exempt after the statewide waiver expires on 2026-01-31.
+  period: 2026-02
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: NV
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 13, DC resident (2025-12) is exempt via the districtwide waiver.
+  period: 2025-12
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: DC
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 14, DC resident (2026-01) is no longer exempt after the districtwide waiver expires on 2025-12-31.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: DC
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 15, IL resident (2025-06, before HR1 takes effect) is exempt via the statewide waiver under the pre-HR1 branch.
+  period: 2025-06
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: IL
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Documented limitation: 12 of the 16 litigation-reinstated waivers were
+# partial-state waivers (e.g., NY covered 61 of 62 counties) and are not
+# modeled; see waived_states.yaml.
+
+- name: Case 16, NY resident (2026-02) is not exempt because NY's litigation-reinstated waiver was partial-state and is not modeled.
+  period: 2026-02
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: NY
   output:
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
