@@ -1,0 +1,50 @@
+- name: Below the SINGLE filing threshold, pre-refundable-credit tax is zero
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 9_999
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: AGI exactly at the SINGLE filing threshold is still inside the no-tax zone
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_000
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: One dollar above the SINGLE filing threshold falls through to the schedule
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_001
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+    nj_non_refundable_credits: 40
+  output:
+    nj_income_tax_before_refundable_credits: 100
+
+- name: Below the JOINT filing threshold, pre-refundable-credit tax is zero
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 19_999
+    filing_status: JOINT
+    nj_main_income_tax: 280
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: Single filer with gross income below the threshold owes no tax end to end
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    self_employment_income: 5_800
+  output:
+    nj_income_tax_before_refundable_credits: 0
