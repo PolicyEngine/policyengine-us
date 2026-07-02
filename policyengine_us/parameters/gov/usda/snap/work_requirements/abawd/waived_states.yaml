@@ -1,0 +1,101 @@
+# State codes of states with an approved USDA FNS statewide waiver of the
+# SNAP ABAWD time limit under 7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f).
+#
+# Only waivers verified as STATEWIDE from FNS FY2025 waiver response letters
+# are encoded here:
+# - CA: statewide, 2024-11-01 through 2025-10-31 (FNS response,
+#   Aug 12, 2024), replaced by a statewide waiver effective 2025-02-01
+#   (FNS response, Jan 15, 2025).
+# - IL: statewide, 2024-11-01 through 2025-10-31 (FNS response,
+#   Aug 19, 2024), replaced by a statewide waiver effective 2025-02-01
+#   through 2026-01-31 (FNS response, partially approving 12 of the
+#   requested 24 months).
+# - NV: statewide since 2024-07-01; the FNS response of Mar 14, 2025,
+#   effective 2025-02-01 through 2026-01-31, replaced the prior statewide
+#   waiver (partially approving 12 of the requested 24 months). Modeled from
+#   2024-11-01, in line with this parameter's overall modeling start date.
+# - DC: districtwide, 2024-12-01 through 2025-11-30 (FNS response,
+#   Apr 26, 2024), replaced by a districtwide waiver effective 2025-01-01
+#   (FNS response, Jan 13, 2025).
+#
+# In November 2025, USDA terminated waivers approved under the
+# "lack of sufficient jobs" criterion, which P.L. 119-21 (OBBBA)
+# section 10102 repealed. After Rhode Island State Council of Churches v.
+# Rollins (D.R.I., No. 1:25-cv-00569, TRO issued 2025-10-31), USDA's
+# February 26, 2026 guidance kept the terminated waivers in effect through
+# their original expiration dates. Per that guidance's expiration table (as
+# reported by Ballotpedia's OBBBA implementation tracker; USDA has not
+# published the table on a stable public page): CT and KY through 2025-11-30;
+# DC, NM, and OR through 2025-12-31; CA, IL, NV, NJ, and WA through
+# 2026-01-31; MI, NY, and RI through 2026-02-28; MN, MT, and ND through
+# 2026-06-30.
+#
+# Known limitations:
+# - Twelve of the sixteen reinstated waivers were PARTIAL-state waivers per
+#   the FNS FY2025 response letters (CT: 68 towns; KY: 117 counties; MI: 80
+#   counties, 3 cities, 10 reservations; MN: 17 counties, 9 reservations;
+#   MT: 6 reservation areas; NJ: 20 counties; NM: 29 counties,
+#   18 reservations; NY: 61 counties; OR: 30 counties, 7 reservation areas;
+#   RI: 9 towns; WA: 38 counties, 1 reservation area; ND: partial per the
+#   FY2025 quarterly status reports). Sub-state coverage would require
+#   county FIPS (or sub-county) encoding and is not modeled here.
+# - The CA and DC FNS approval letters run through 2027-01-31 and 2026-12-31
+#   respectively, but the USDA February 26, 2026 guidance table lists their
+#   reinstated expirations as 2026-01-31 and 2025-12-31; this parameter
+#   follows the guidance table, which governs post-litigation administration
+#   (CDSS implemented the time limit statewide on 2026-06-01 per ACL 25-93).
+# - Statewide waivers in effect before 2024-11-01 are not modeled.
+# - Guam and the U.S. Virgin Islands held territory-wide waivers but are not
+#   modeled by PolicyEngine US.
+description: The Department of Agriculture waives the Able-Bodied Adult Without Dependents (ABAWD) time limit under the Supplemental Nutrition Assistance Program statewide in these states.
+
+values:
+  2018-01-01:
+    []
+  2024-11-01:
+    - CA
+    - IL
+    - NV
+  2024-12-01:
+    - CA
+    - DC
+    - IL
+    - NV
+  # DC districtwide waiver expired 2025-12-31.
+  2026-01-01:
+    - CA
+    - IL
+    - NV
+  # CA, IL, and NV statewide waivers expired 2026-01-31.
+  2026-02-01:
+    []
+
+metadata:
+  label: SNAP ABAWD time limit statewide waived states
+  period: month
+  unit: list
+  reference:
+    - title: 7 U.S.C. 2015(o)(4) - ABAWD Time Limit Waivers
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_4
+    - title: 7 CFR 273.24(f) - Waivers
+      href: https://www.law.cornell.edu/cfr/text/7/273.24#f
+    - title: USDA FNS California Statewide ABAWD Waiver Response, FY 2025 (effective 2024-11-01)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/ca-abawd-response-fy2025.pdf
+    - title: USDA FNS California Statewide ABAWD Waiver Response, January 15, 2025 (effective 2025-02-01)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/ca-abawd-response-fy2025-b.pdf
+    - title: USDA FNS Illinois Statewide ABAWD Waiver Response, FY 2025 (effective 2024-11-01)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/il-abawd-response-fy2025.pdf
+    - title: USDA FNS Illinois Statewide ABAWD Waiver Response (effective 2025-02-01 through 2026-01-31)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/il-abawd-response-fy2025-b.pdf
+    - title: USDA FNS Nevada Statewide ABAWD Waiver Response (effective 2025-02-01 through 2026-01-31)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/nv-abawd-response-fy2025.pdf
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, FY 2025 (effective 2024-12-01)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/dc-abawd-response-fy2025.pdf
+    - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, January 13, 2025 (effective 2025-01-01)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/dc-abawd-response-fy2025-b.pdf
+    - title: Rhode Island State Council of Churches v. Rollins, D.R.I. No. 1:25-cv-00569, Temporary Restraining Order (November 1, 2025)
+      href: https://democracyforward.org/wp-content/uploads/2025/11/RH-State-Council-of-Churchs-v.-Rollins-SNAP-TRO-11.1.25.pdf
+    - title: Ballotpedia, USDA guidance in response to litigation reinstates SNAP benefits for some ABAWDs (reporting the USDA February 26, 2026 guidance expiration table)
+      href: https://news.ballotpedia.org/2026/04/02/usda-guidance-in-response-to-litigation-reinstates-snap-benefits-for-some-abawds/
+    - title: USDA FNS FY 2025 Quarter 2 ABAWD Waiver Status Report (statewide vs. partial waiver classification)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY25-Quarter-2-ABAWD-Waiver-Status-Revised.pdf
