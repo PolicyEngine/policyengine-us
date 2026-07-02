@@ -33,6 +33,8 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
 - name: Case 4, pre-HR1 age 54 NOT exempt.
   period: 2024
   absolute_error_margin: 0.1
@@ -40,6 +42,7 @@
     age: 54
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
 
@@ -357,6 +360,8 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
 - name: Case 25, pre-HR1 Indian exemption input does not change ABAWD rules.
   period: 2024
   input:
@@ -364,6 +369,7 @@
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
     is_snap_abawd_indian_exempt: true
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
 
@@ -451,13 +457,19 @@
   output:
     meets_snap_abawd_work_requirements: [true, true]
 
-- name: Case 32, CA pre-HR1 non-exempt person fails.
-  period: 2026-01
+# In 2026-01 the litigation-reinstated CA statewide waiver still applies
+# (through 2026-01-31), so the non-exempt case is tested in 2026-03.
+- name: Case 32, CA pre-HR1 non-exempt person fails after the statewide waiver expires.
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: CA
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: false
