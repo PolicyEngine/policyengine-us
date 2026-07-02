@@ -5,6 +5,8 @@ values:
     - dividend_income
     - rental_income
     - loss_limited_net_capital_gains
+    - non_sch_d_capital_gains
+    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
 metadata:
   unit: currency-USD
   label: net investment income sources

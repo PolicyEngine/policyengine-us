@@ -65,3 +65,10 @@
   output:  # expected results from online TAXSIM35 10/24/22 version
     taxsim_tfica: 0.00
     income_tax: -1400.00
+
+- name: IRS gross income includes capital gain distributions not reported on Schedule D.
+  period: 2026
+  input:
+    non_sch_d_capital_gains: 5_000
+  output:
+    irs_gross_income: 5_000
