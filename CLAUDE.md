@@ -53,6 +53,12 @@ make documentation
 ```
 
 ## GitHub Workflow
+- **Default branch is `main`, NOT `master`.** Base new work on `main`:
+  `git fetch upstream main && git checkout -b <branch> upstream/main`. A personal
+  fork's `origin/master` is often stale or absent — `git checkout master` can
+  silently land you on an ancient commit (e.g. a 1.44.x-era tree missing recent
+  contribs), so always branch from `upstream/main` (or `origin/main` when the fork
+  is current). Note the upstream remote uses `main` and has no `master` ref.
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
 - View PR list: `gh pr list`
 - View PR details: `gh pr view [PR-NUMBER]`
@@ -84,7 +90,7 @@ changelog.d/medicaid-ce-exclusions.md
 
 ## Project Requirements
 - Python >= 3.11, < 3.15
-- Follow GitHub Flow with PRs targeting master branch
+- Follow GitHub Flow with PRs targeting the `main` branch (the default branch is `main`, **not** `master`)
 - Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
 
