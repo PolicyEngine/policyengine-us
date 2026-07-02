@@ -10,8 +10,8 @@
 # From 2025-11-01 through 2026-10-31, FNS approved Alaska's good faith
 # exemption waiver under P.L. 119-21 (OBBBA) section 10102, covering the same
 # 29 boroughs and census areas (all except the Municipality of Anchorage).
-# Waivers in effect before 2024-11-01 (in Alaska and elsewhere) are not
-# modeled.
+# Waivers in effect before 2024-11-01 (in Alaska and elsewhere), and after
+# the documented 2026-10-31 Alaska approval end date, are not modeled.
 description: The Department of Agriculture waives the Able-Bodied Adult Without Dependents (ABAWD) time limit under the Supplemental Nutrition Assistance Program for residents of areas with these county FIPS codes.
 
 values:
@@ -47,6 +47,8 @@ values:
     - "02275" # Wrangell City and Borough, AK
     - "02282" # Yakutat City and Borough, AK
     - "02290" # Yukon-Koyukuk Census Area, AK
+  2026-11-01:
+    []
 
 metadata:
   label: SNAP ABAWD time limit waived county FIPS codes
