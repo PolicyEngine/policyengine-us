@@ -1500,6 +1500,168 @@ programs:
     verified_start_year: 2022
     notes: Local income tax for NYC residents
 
+  - id: philadelphia_wage_tax
+    name: Philadelphia wage tax
+    full_name: Philadelphia Wage Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Philadelphia, PA
+    variable: pa_philadelphia_wage_tax
+    parameter_prefix: gov.local.pa.philadelphia.tax.income
+    verified_start_year: 2022
+    notes: Resident, nonresident, and reduced-rate wage tax (input-driven)
+
+  - id: kansas_city_earnings_tax
+    name: Kansas City earnings tax
+    full_name: Kansas City Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Kansas City, MO
+    variable: mo_kansas_city_earnings_tax
+    parameter_prefix: gov.local.mo.kansas_city.tax.income
+    notes: 1% earnings tax on wages and net profits (input-driven)
+
+  - id: st_louis_earnings_tax
+    name: St. Louis earnings tax
+    full_name: St. Louis Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: St. Louis, MO
+    variable: mo_st_louis_earnings_tax
+    parameter_prefix: gov.local.mo.st_louis.tax.income
+    notes: 1% earnings tax on wages and net profits (input-driven)
+
+  - id: in_county_income_tax
+    name: Indiana county income tax
+    full_name: Indiana County Local Income Tax (LIT)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: All 92 Indiana counties
+    variable: in_county_tax
+    parameter_prefix: gov.states.in.tax.income
+    verified_start_year: 2021
+    notes: Residence-based county income tax assigned via county
+
+  - id: md_county_income_tax
+    name: Maryland county income tax
+    full_name: Maryland County Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: All Maryland counties and Baltimore City
+    variable: md_local_income_tax_before_credits
+    parameter_prefix: gov.local.md
+    verified_start_year: 2021
+    notes: Residence-based county income tax (flat rate; Anne Arundel and Frederick use brackets)
+
+  - id: multnomah_pfa
+    name: Multnomah County Preschool for All tax
+    full_name: Multnomah County Preschool for All Personal Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Multnomah County, OR
+    variable: or_multnomah_pfa_tax
+    parameter_prefix: gov.local.or.multnomah_county.tax.income.pfa
+    verified_start_year: 2021
+    notes: High-income personal income tax assigned via county
+
+  - id: co_denver_occupational_privilege_tax
+    name: Denver occupational privilege tax
+    full_name: Denver Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Denver, CO
+    variable: co_denver_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.denver.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_glendale_occupational_privilege_tax
+    name: Glendale occupational privilege tax
+    full_name: Glendale Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Glendale, CO
+    variable: co_glendale_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.glendale.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_greenwood_village_occupational_privilege_tax
+    name: Greenwood Village occupational privilege tax
+    full_name: Greenwood Village Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Greenwood Village, CO
+    variable: co_greenwood_village_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.greenwood_village.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_sheridan_occupational_privilege_tax
+    name: Sheridan occupational privilege tax
+    full_name: Sheridan Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Sheridan, CO
+    variable: co_sheridan_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.sheridan.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: ky_jefferson_occupational_tax
+    name: Louisville/Jefferson County occupational tax
+    full_name: Louisville Metro Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Louisville/Jefferson County, KY
+    variable: ky_jefferson_occupational_tax
+    parameter_prefix: gov.local.ky.jefferson.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based at the 2.20% resident rate (1.25% Metro + 0.20% TARC + 0.75% JCPS school board included). The JCPS 0.75% wage cap is not modeled.
+
+  - id: ky_fayette_occupational_tax
+    name: Lexington/Fayette County occupational tax
+    full_name: Lexington-Fayette Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Lexington/Fayette County, KY
+    variable: ky_fayette_occupational_tax
+    parameter_prefix: gov.local.ky.fayette.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based. FCPS school occupational tax not yet modeled.
+
+  - id: yonkers_income_tax
+    name: Yonkers income tax
+    full_name: Yonkers Resident Surcharge and Nonresident Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Yonkers, NY
+    variable: ny_yonkers_income_tax
+    parameter_prefix: gov.local.ny.yonkers.tax.income
+    verified_start_year: 2021
+    notes: Resident surcharge on NY State tax plus nonresident earnings tax (input-driven)
+
+  - id: wilmington_earned_income_tax
+    name: Wilmington earned income tax
+    full_name: Wilmington Earned Income (Wage) Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Wilmington, DE
+    variable: de_wilmington_earned_income_tax
+    parameter_prefix: gov.local.de.wilmington.tax.income
+    verified_start_year: 2021
+    notes: 1.25% earned income tax on residents and nonresident Wilmington-source earnings (input-driven)
+
   - id: sf_wftc
     name: San Francisco WFTC
     full_name: San Francisco Working Families Tax Credit
