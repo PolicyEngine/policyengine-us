@@ -461,3 +461,42 @@
     state_code: CA
   output:
     meets_snap_abawd_work_requirements: false
+
+# =====================================================
+# State discretionary exemptions — 7 U.S.C. 2015(o)(6),
+# 7 CFR 273.24(g). Assigned at data-construction time.
+# =====================================================
+
+- name: Case 33, discretionary-exempt noncompliant ABAWD meets requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_discretionary_exempt: true
+    state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 34, identical non-exempt person does NOT meet requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_discretionary_exempt: false
+    state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 35, pre-HR1 discretionary exemption also applies.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_discretionary_exempt: true
+  output:
+    meets_snap_abawd_work_requirements: true
