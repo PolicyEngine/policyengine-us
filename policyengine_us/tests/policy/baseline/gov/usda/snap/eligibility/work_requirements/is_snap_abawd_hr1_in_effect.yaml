@@ -1,5 +1,6 @@
-# Federal HR1 effective date: 2025-07-01
+# Federal HR1 effective date: 2025-07-04
 # CA delays to 2026-06-01 per ACL 25-93
+# HI and AK delay to 2025-11-01
 
 - name: Case 1, non-CA after federal effective date.
   period: 2026-01
@@ -26,5 +27,75 @@
   period: 2027-01
   input:
     state_code: CA
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 5, HI before federal effective date.
+  period: 2025-06
+  input:
+    state_code:
+      2025: HI
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 6, AK before federal effective date.
+  period: 2025-06
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 7, default state in effect between federal and HI/AK adoption dates.
+  period: 2025-08
+  input:
+    state_code:
+      2025: TX
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 8, HI not in effect between federal and state adoption dates.
+  period: 2025-08
+  input:
+    state_code:
+      2025: HI
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 9, AK not in effect between federal and state adoption dates.
+  period: 2025-08
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 10, HI in effect at state adoption date.
+  period: 2025-11
+  input:
+    state_code:
+      2025: HI
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 11, AK in effect at state adoption date.
+  period: 2025-11
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 12, HI in effect in 2026 steady state.
+  period: 2026-01
+  input:
+    state_code: HI
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 13, AK in effect in 2026 steady state.
+  period: 2026-01
+  input:
+    state_code: AK
   output:
     is_snap_abawd_hr1_in_effect: true
