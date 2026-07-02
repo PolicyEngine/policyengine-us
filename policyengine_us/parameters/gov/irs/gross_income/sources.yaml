@@ -9,6 +9,8 @@ values:
     - farm_rent_income
     - other_net_gain_gross_income
     - capital_gains
+    - non_sch_d_capital_gains
+    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
     - taxable_interest_income
     - rental_income
     # Royalties included in rental income
