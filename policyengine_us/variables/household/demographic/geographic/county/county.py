@@ -29,7 +29,9 @@ class county(Variable):
             if len(known_periods) > 0:
                 last_known_period = sorted(known_periods)[-1]
                 return holder.get_array(last_known_period)
-            return household("first_county_in_state", period)
+            # No stored county: fall through to the county_fips mapping, so
+            # datasets that store county_fips compute counties from it
+            # instead of collapsing to first_county_in_state.
 
         # First look if county FIPS is provided; if so, map to county name
         county_fips: "pd.Series[str]" | None = household("county_fips", period)

@@ -60,4 +60,11 @@ def map_county_string_to_enum(
         np.arange(len(County._member_names_)),
         index=County._member_names_,
     )
-    return county_names[county_state]
+    # Names outside the enum (the FIPS dataset also covers territories the
+    # enum does not) map to UNKNOWN rather than raising.
+    unknown_index = County._member_names_.index("UNKNOWN")
+    return (
+        county_names.reindex(county_state)
+        .fillna(unknown_index)
+        .astype(county_names.dtype)
+    )
