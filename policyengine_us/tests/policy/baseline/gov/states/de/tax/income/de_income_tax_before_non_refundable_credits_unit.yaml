@@ -1,4 +1,7 @@
-- name: Tax unit files separately
+# The pooled pre-credit total always reflects the joint computation. Combined
+# separate filing (FS4) applies non-refundable credits per column instead, so
+# this variable no longer depends on the filing-status election.
+- name: Combined pre-credit total reflects the joint sum when a couple elects separate filing
   period: 2022
   input:
     people:
@@ -17,9 +20,9 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_income_tax_before_non_refundable_credits_unit: 100
+    de_income_tax_before_non_refundable_credits_unit: 600
 
-- name: Tax unit files jointly
+- name: Combined pre-credit total reflects the joint sum when a couple files jointly
   period: 2022
   input:
     people:

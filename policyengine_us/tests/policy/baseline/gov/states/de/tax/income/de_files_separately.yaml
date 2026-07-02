@@ -1,33 +1,69 @@
-- name: Tax unit files separately
+# Delaware married couples elect combined separate filing (FS4) only when it
+# lowers their tax AFTER non-refundable credits (issue #7931). FS4 is not
+# available to single or head-of-household filers.
+- name: Married couple elects separate filing when it lowers post-credit tax
   period: 2022
   input:
     people:
       person1:
-        de_income_tax_before_non_refundable_credits_indv: 1_000
-        de_income_tax_before_non_refundable_credits_joint: 100
+        age: 40
+        adjusted_gross_income_person: 20_000
+        is_tax_unit_head: true
       person2:
-        de_income_tax_before_non_refundable_credits_indv: 100
-        de_income_tax_before_non_refundable_credits_joint: 500
-    households:
-      household:
+        age: 40
+        adjusted_gross_income_person: 25_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
         members: [person1, person2]
-        state_code: DE
-  output:
-    de_files_separately: false
-
-- name: Tax unit files jointly
-  period: 2022
-  input:
-    people:
-      person1:
-        de_income_tax_before_non_refundable_credits_indv: 0
-        de_income_tax_before_non_refundable_credits_joint: 100
-      person2:
-        de_income_tax_before_non_refundable_credits_indv: 100
-        de_income_tax_before_non_refundable_credits_joint: 500
+        filing_status: SEPARATE
     households:
       household:
         members: [person1, person2]
         state_code: DE
   output:
     de_files_separately: true
+
+- name: Married couple stays joint when separate filing would waste credits
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 70
+        adjusted_gross_income_person: 500
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        adjusted_gross_income_person: 40_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head column tax is below the $110 aged credit, so FS4 wastes it and
+    # costs more than the joint path; the couple files jointly.
+    de_files_separately: false
+
+- name: Single filer never files separately
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        adjusted_gross_income_person: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_files_separately: false

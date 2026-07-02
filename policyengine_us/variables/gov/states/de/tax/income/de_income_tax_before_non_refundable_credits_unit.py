@@ -10,16 +10,14 @@ class de_income_tax_before_non_refundable_credits_unit(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        filing_separately = tax_unit("de_files_separately", period)
-        itax_indiv = add(
-            tax_unit,
-            period,
-            ["de_income_tax_before_non_refundable_credits_indv"],
-        )
-        itax_joint = add(
+        # The combined separate (FS4) path applies non-refundable credits
+        # per column (see de_income_tax_before_refundable_credits_separate),
+        # so this pooled pre-credit total only serves the joint/combined path
+        # and always reflects the joint computation. Keeping it independent of
+        # de_files_separately lets that election be made on post-credit
+        # liability without a circular dependency (issue #7931).
+        return add(
             tax_unit,
             period,
             ["de_income_tax_before_non_refundable_credits_joint"],
         )
-
-        return where(filing_separately, itax_indiv, itax_joint)
