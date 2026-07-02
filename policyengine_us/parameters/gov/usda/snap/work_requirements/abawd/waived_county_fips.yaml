@@ -1,0 +1,67 @@
+# County FIPS codes of areas with an approved USDA FNS waiver of the SNAP
+# ABAWD time limit under 7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f).
+#
+# From 2024-11-01 through 2025-10-31, FNS approved Alaska's request to waive
+# the ABAWD time limit in 29 boroughs and census areas — every Alaska
+# county-equivalent except the Municipality of Anchorage (FIPS 02020) — plus
+# the Eklutna Alaska Native Village Statistical Area, which lies within the
+# Anchorage municipality and is below county-level geography, so it is not
+# represented here.
+# From 2025-11-01 through 2026-10-31, FNS approved Alaska's good faith
+# exemption waiver under P.L. 119-21 (OBBBA) section 10102, covering the same
+# 29 boroughs and census areas (all except the Municipality of Anchorage).
+# Waivers in effect before 2024-11-01 (in Alaska and elsewhere) are not
+# modeled.
+description: The Department of Agriculture waives the Able-Bodied Adult Without Dependents (ABAWD) time limit under the Supplemental Nutrition Assistance Program for residents of areas with these county FIPS codes.
+
+values:
+  2018-01-01:
+    []
+  2024-11-01:
+    - "02013" # Aleutians East Borough, AK
+    - "02016" # Aleutians West Census Area, AK
+    - "02050" # Bethel Census Area, AK
+    - "02060" # Bristol Bay Borough, AK
+    - "02063" # Chugach Census Area, AK
+    - "02066" # Copper River Census Area, AK
+    - "02068" # Denali Borough, AK
+    - "02070" # Dillingham Census Area, AK
+    - "02090" # Fairbanks North Star Borough, AK
+    - "02100" # Haines Borough, AK
+    - "02105" # Hoonah-Angoon Census Area, AK
+    - "02110" # Juneau City and Borough, AK
+    - "02122" # Kenai Peninsula Borough, AK
+    - "02130" # Ketchikan Gateway Borough, AK
+    - "02150" # Kodiak Island Borough, AK
+    - "02158" # Kusilvak Census Area, AK
+    - "02164" # Lake and Peninsula Borough, AK
+    - "02170" # Matanuska-Susitna Borough, AK
+    - "02180" # Nome Census Area, AK
+    - "02185" # North Slope Borough, AK
+    - "02188" # Northwest Arctic Borough, AK
+    - "02195" # Petersburg Borough, AK
+    - "02198" # Prince of Wales-Hyder Census Area, AK
+    - "02220" # Sitka City and Borough, AK
+    - "02230" # Skagway Municipality, AK
+    - "02240" # Southeast Fairbanks Census Area, AK
+    - "02275" # Wrangell City and Borough, AK
+    - "02282" # Yakutat City and Borough, AK
+    - "02290" # Yukon-Koyukuk Census Area, AK
+
+metadata:
+  label: SNAP ABAWD time limit waived county FIPS codes
+  period: month
+  unit: list
+  reference:
+    - title: 7 U.S.C. 2015(o)(4) - ABAWD Time Limit Waivers
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_4
+    - title: 7 CFR 273.24(f) - Waivers
+      href: https://www.law.cornell.edu/cfr/text/7/273.24#f
+    - title: USDA FNS Alaska FY 2025 ABAWD Waiver Response (September 20, 2024)
+      href: https://www.fna.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf
+    - title: Public Law 119-21, Section 10102 - Modifications to SNAP ABAWD Requirements
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: USDA FNS ABAWD Waivers Implementation Memorandum (October 3, 2025)
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf
+    - title: State of Alaska Department of Health, H.R. 1 - AK Impacts (good faith exemption waiver, November 1, 2025 - October 31, 2026)
+      href: https://health.alaska.gov/en/education/hr-1-ak-impacts/

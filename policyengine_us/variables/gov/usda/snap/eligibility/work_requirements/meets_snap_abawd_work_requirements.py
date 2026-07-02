@@ -45,6 +45,9 @@ class meets_snap_abawd_work_requirements(Variable):
         is_pregnant = person("is_pregnant", period)
         # (F)-(G) Indian, Urban Indian, or California Indian.
         is_indian_exempt = person("is_snap_abawd_indian_exempt", period)
+        # Area waiver — 7 U.S.C. 2015(o)(4), 7 CFR 273.24(f). The time limit
+        # is waived for residents of areas with an approved FNS waiver.
+        in_waived_area = person("is_in_snap_abawd_waived_area", period)
         # TODO: HI/AK delayed adoption (2025-11-01) to be handled
         # in a follow-up PR via state-level hr1_in_effect parameters.
         base_conditions = (
@@ -54,6 +57,7 @@ class meets_snap_abawd_work_requirements(Variable):
             | exempt_parent
             | work_reg_exempt
             | is_pregnant
+            | in_waived_area
         )
         # Pre-HR1 exemptions: homeless, veteran
         is_homeless = person.household("is_homeless", period)
