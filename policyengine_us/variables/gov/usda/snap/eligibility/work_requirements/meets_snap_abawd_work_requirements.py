@@ -23,9 +23,22 @@ class meets_snap_abawd_work_requirements(Variable):
             p.age_threshold.exempted.calc(age),
             p_pre.age_threshold.exempted.calc(age),
         )
-        # Work activity
+        # Work activity — 7 U.S.C. 2015(o)(2); 7 CFR 273.24(a)(1):
+        # (i) work 20+ hours per week, (ii) participate in and comply
+        # with a qualifying work program 20+ hours per week, or
+        # (iii) any combination of work and work program participation
+        # totaling 20+ hours per week.
         weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
-        is_working = weekly_hours_worked >= p.weekly_hours_threshold
+        work_program_hours = person("weekly_snap_work_program_hours", period.this_year)
+        combined_weekly_hours = weekly_hours_worked + work_program_hours
+        meets_hours_threshold = combined_weekly_hours >= p.weekly_hours_threshold
+        # (iv) participate in and comply with a workfare program under
+        # 7 CFR 273.7(m), which satisfies the requirement regardless of
+        # hours.
+        is_workfare_participant = person(
+            "is_snap_workfare_participant", period.this_year
+        )
+        is_working = meets_hours_threshold | is_workfare_participant
         # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
         # (C) Parent with qualifying child — 7 U.S.C. 2015(o)(3)(C)
