@@ -19,8 +19,18 @@ class is_snap_abawd_hr1_in_effect(Variable):
         ca = parameters(
             period
         ).gov.states.ca.cdss.snap.work_requirements.abawd.hr1_in_effect
+        hi = parameters(
+            period
+        ).gov.states.hi.dhs.snap.work_requirements.abawd.hr1_in_effect
+        ak = parameters(
+            period
+        ).gov.states.ak.dpa.snap.work_requirements.abawd.hr1_in_effect
         return select(
-            [state_code == StateCode.CA],
-            [ca],
+            [
+                state_code == StateCode.CA,
+                state_code == StateCode.HI,
+                state_code == StateCode.AK,
+            ],
+            [ca, hi, ak],
             default=federal,
         )
