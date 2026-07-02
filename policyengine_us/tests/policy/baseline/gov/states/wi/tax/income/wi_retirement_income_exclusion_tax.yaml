@@ -92,3 +92,131 @@
     # exclusion_taxinc = max(0, 18000 - 15000 + 0) = 3000
     # exclusion_tax = 3000 * 0.035 = 105
     wi_retirement_income_exclusion_tax: 105
+
+# Regression for issue #8817: the Line 16 subtraction must reduce WI income
+# BEFORE the standard-deduction phaseout, so a large exclusion recovers
+# standard deduction that the pre-subtraction income had phased out.
+- name: E2E - Joint 67+ with retirement income above the standard-deduction phaseout
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 90_000
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        taxable_pension_income: 30_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # WI income (line 7) = $120,000; Line 16 exclusion = min($48k, $120k) = $48k.
+    # Standard deduction at $120k = $6,956; at ($120k - $48k) = $72k it is
+    # $16,449 — $9,493 larger (the phaseout is 0.19778 * $48k). Exclusion
+    # taxable income = $72k - $16,449 - $1,900 exemption = $53,651; joint tax
+    # = 19,580*0.035 + (53,651-19,580)*0.044 = $2,184. Before the fix the
+    # phaseout stayed keyed to $120k, giving ~$2,602 and over-taxing the couple.
+    wi_retirement_income_exclusion_amount: 48_000
+    wi_retirement_income_exclusion_tax: 2_184
+
+# --- Boundary tests for the #8817 standard-deduction-phaseout ordering fix ---
+
+# Below the single phaseout start ($19,550, 2025) the standard deduction is at
+# its max for both full and exclusion-reduced income, so the extra deduction the
+# fix unlocks is $0 (no regression vs. a plain taxinc - line16 subtraction).
+- name: Exclusion path - below phaseout start, extra standard deduction is zero (no regression)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 15_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 20_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # wi_agi = 15,000 < 19,550 -> SD at max ($13,560) for full and reduced; extra_SD = 0.
+    # line16 = min(24,000, 15,000) = 15,000. exclusion_taxinc = 20,000 - 15,000 = 5,000.
+    # tax = 5,000 * 0.035 = 175.
+    wi_retirement_income_exclusion_tax: 175
+
+# Fully phased-out top end (age 85, very high income): SD = $0 for both full and
+# reduced income, so extra_SD = 0 and the exclusion is a plain subtraction.
+- name: Exclusion path - fully phased-out top end, extra standard deduction is zero
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 85
+    taxable_pension_income: 200_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 34_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # wi_agi = 200,000 and reduced = 176,000 are both past the single full-phaseout
+    # point ($132,550) -> SD = 0 for both; extra_SD = 0. line16 = 24,000.
+    # exclusion_taxinc = 34,000 - 24,000 = 10,000. tax = 10,000 * 0.035 = 350.
+    wi_retirement_income_exclusion_tax: 350
+
+# Partial-unlock boundary: full income ($140k) is past the single full-phaseout
+# point (SD_full = 0) while reduced income ($116k) lands INSIDE the phaseout, so
+# the fix unlocks a positive partial deduction.
+- name: Exclusion path - partial unlock (full income past phaseout end, reduced income inside it)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    age: 68
+    taxable_pension_income: 140_000
+    is_tax_unit_head: true
+    filing_status: SINGLE
+    state_code: WI
+    wi_taxable_income: 40_000
+    wi_retirement_income_subtraction: 0
+  output:
+    # SD_full(140,000) = 0; line16 = 24,000; reduced = 116,000.
+    # SD_reduced(116,000) = 13,560 - 0.12*(116,000-19,550) = 1,986; extra_SD = 1,986.
+    # exclusion_taxinc = 40,000 - 24,000 - 1,986 = 14,014. tax = 14,014 * 0.035 = 490.49.
+    # (Without the fix extra_SD would be 0 -> 16,000 -> ~571.88.)
+    wi_retirement_income_exclusion_tax: 490.49
+
+# Joint with only ONE spouse age 67+: the exclusion uses the per-person single
+# cap ($24,000), NOT the $48,000 both-eligible joint pool.
+- name: Exclusion path - joint with one spouse 67+, uses the $24,000 per-person cap
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 24_000
+        is_tax_unit_head: true
+      person2:
+        age: 60
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        wi_taxable_income: 30_000
+        wi_retirement_income_subtraction: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Only person1 (68) is eligible -> line16 = min(24,000, 24,000) = 24,000 (single
+    # per-person cap), not the $48k joint pool. wi_agi = 24,000 < 28,210 joint
+    # phaseout start -> extra_SD = 0. exclusion_taxinc = 30,000 - 24,000 = 6,000.
+    # tax = 6,000 * 0.035 = 210.
+    wi_retirement_income_exclusion_amount: 24_000
+    wi_retirement_income_exclusion_tax: 210
