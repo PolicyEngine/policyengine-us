@@ -556,3 +556,64 @@
       2025: TX
   output:
     meets_snap_abawd_work_requirements: false
+
+# Work program and workfare participation —
+# 7 U.S.C. 2015(o)(2); 7 CFR 273.24(a)(1)
+# =====================================================
+
+# --- 273.24(a)(1)(ii): Work program participation 20+ hrs ---
+
+- name: Case 39, work program participation of 20 hrs meets requirement.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    weekly_snap_work_program_hours: 20
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# --- 273.24(a)(1)(iii): Combination of work and work program hours ---
+
+- name: Case 40, combined work and work program hours of 20 meet requirement.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 10
+    weekly_snap_work_program_hours: 10
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 41, combined work and work program hours below 20 fail.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 10
+    weekly_snap_work_program_hours: 9
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: false
+
+# --- 273.24(a)(1)(iv): Workfare participation ---
+
+- name: Case 42, workfare participant meets requirement regardless of hours.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_snap_workfare_participant: true
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 43, post-HR1 work program participation of 20 hrs meets requirement.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    weekly_snap_work_program_hours: 20
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
