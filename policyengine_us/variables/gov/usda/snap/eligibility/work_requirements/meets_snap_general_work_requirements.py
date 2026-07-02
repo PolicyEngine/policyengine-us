@@ -6,11 +6,21 @@ class meets_snap_general_work_requirements(Variable):
     entity = Person
     label = "Person is eligible for SNAP benefits via general work requirements"
     definition_period = MONTH
+    documentation = (
+        "Whether the person meets the SNAP general work requirements or is "
+        "exempt from them. Non-modeled provision: voluntary quit and reduced "
+        "work effort disqualifications (7 CFR 273.7(j)) are not modeled, "
+        "because job-separation events are unobservable in cross-sectional "
+        "survey data."
+    )
     reference = "https://www.law.cornell.edu/cfr/text/7/273.7"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
         age = person("monthly_age", period)
+        # 7 CFR 273.7(b)(1)(vii) exempts persons working 30 or more hours
+        # per week, determined monthly. Annual average weekly hours are
+        # used as a proxy since survey data lack monthly work histories.
         weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
         # Exemptions under 7 CFR 273.7(b)(1):
         # Under 16 or 60 years of age or older are exempted
