@@ -1,0 +1,1 @@
+Include capital gain distributions received without Schedule D (non_sch_d_capital_gains) in IRS gross income and net investment income.
