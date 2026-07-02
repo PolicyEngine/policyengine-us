@@ -36,11 +36,14 @@ class wi_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
-        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf",
+        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf",
+        # Standard Deduction Table (keyed to WI income, line 7) and the statute, corroborating the phaseout:
+        "https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=35",
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22",
     )
     defined_for = StateCode.WI
 
