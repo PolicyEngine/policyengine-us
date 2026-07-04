@@ -48,6 +48,18 @@
     ss_credit: 600
     income_tax_non_refundable_credits: 600
 
+- name: Credit remains in nonrefundable credit stack after 2035
+  period: 2036
+  reforms: policyengine_us.reforms.crfb.non_refundable_ss_credit.non_refundable_ss_credit_reform_object
+  input:
+    gov.contrib.crfb.ss_credit.in_effect: true
+    taxable_social_security: 30_000
+    taxable_income: 1_000_000
+    filing_status: SINGLE
+  output:
+    ss_credit: 600
+    income_tax_non_refundable_credits: 600
+
 - name: Baseline test
   period: 2026
   input:

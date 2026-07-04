@@ -1,6 +1,32 @@
 from policyengine_us.model_api import *
 
 
+def _nonzero(value):
+    return value != 0
+
+
+def _primary_substitution_elasticities(substitution):
+    primary = substitution.by_position_and_decile.primary
+    return [primary._children[str(decile)] for decile in range(1, 11)]
+
+
+def _labor_supply_elasticities_active(elasticities):
+    income_active = _nonzero(elasticities.income.all) or _nonzero(
+        elasticities.income.base
+    )
+    substitution_active = (
+        _nonzero(elasticities.substitution.all)
+        or _nonzero(elasticities.substitution.by_position_and_decile.secondary)
+        or any(
+            _nonzero(elasticity)
+            for elasticity in _primary_substitution_elasticities(
+                elasticities.substitution
+            )
+        )
+    )
+    return income_active or substitution_active
+
+
 class labor_supply_behavioral_response(Variable):
     value_type = float
     entity = Person
@@ -13,7 +39,7 @@ class labor_supply_behavioral_response(Variable):
         simulation = person.simulation
         if simulation.baseline is None:
             return 0  # No reform, no impact
-        if p.elasticities.income == 0 and p.elasticities.substitution.all == 0:
+        if not _labor_supply_elasticities_active(p.elasticities):
             return 0
 
         # Guard against re-entry (prevents recursion when branches calculate variables)
