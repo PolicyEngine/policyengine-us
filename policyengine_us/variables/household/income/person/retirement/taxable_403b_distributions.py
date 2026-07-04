@@ -8,3 +8,4 @@ class taxable_403b_distributions(Variable):
     unit = USD
     documentation = "Taxable distributions from 403b accounts (typically traditional)."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

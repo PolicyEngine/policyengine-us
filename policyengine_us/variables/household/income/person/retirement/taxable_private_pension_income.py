@@ -8,3 +8,4 @@ class taxable_private_pension_income(Variable):
     unit = USD
     documentation = "Taxable income from non-government employee pensions."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

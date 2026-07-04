@@ -8,3 +8,4 @@ class taxable_401k_distributions(Variable):
     unit = USD
     documentation = "Taxable distributions from 401k accounts (typically traditional)."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

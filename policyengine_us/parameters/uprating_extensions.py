@@ -6,6 +6,20 @@ from policyengine_us.model_api import *
 from policyengine_core.periods import instant
 
 
+LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
+    "adjusted_gross_income",
+    "employment_income",
+    "taxable_interest_and_ordinary_dividends",
+    "qualified_dividend_income",
+    "net_capital_gain",
+    "self_employment_income",
+    "taxable_pension_income",
+    "taxable_social_security",
+    "irs_other_income",
+    "above_the_line_deductions",
+)
+
+
 def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
     """Calculate IRS CPI based on Chained CPI-U average from Sep to Aug."""
     cpi = parameters.gov.bls.cpi.c_cpi_u
@@ -220,5 +234,27 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_month=1,
         period_day=1,
     )
+
+    # CMS per-capita out-of-pocket medical spending (January values, last
+    # projection year 2035). Health expense inputs use this as their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.moop_per_capita,
+        last_projected_year=2035,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # CBO income-by-source aggregates are used directly and as anchors for
+    # SOI-based income upraters. Extending them in the baseline path keeps
+    # long-run nominal data aging independent of scenario-specific reforms.
+    for parameter_name in LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS:
+        extend_parameter_values(
+            getattr(parameters.calibration.gov.cbo.income_by_source, parameter_name),
+            last_projected_year=2036,
+            end_year=END_YEAR,
+            period_month=1,
+            period_day=1,
+        )
 
     return parameters
