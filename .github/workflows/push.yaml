@@ -63,24 +63,25 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
         include:
-          - group: states-non-ny-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 1/2
-          - group: states-non-ny-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 2/2
-          - group: states-ny
-            cmd: make test-yaml-no-structural-states-ny
+          - group: states-shard-1
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 8 --workers 2 --shard 1/2
+          - group: states-shard-2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 8 --workers 2 --shard 2/2
           - group: irs-household
             cmd: make test-yaml-no-structural-other-irs-household
-          - group: ssa
-            cmd: make test-yaml-no-structural-other-ssa
+          - group: ssa-usda
+            cmd: make test-yaml-no-structural-other-ssa-usda
           - group: rest
             cmd: make test-yaml-no-structural-other-rest
-          - group: contrib
-            cmd: make test-yaml-no-structural-other-contrib
+          - group: contrib-reform-hhs
+            cmd: make test-yaml-contrib-reform-hhs
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -96,8 +97,6 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Baseline YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run ${{ matrix.cmd }}
   HouseholdAPIPartners:
     name: Household API Partners
@@ -106,6 +105,9 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -121,8 +123,6 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-yaml-no-structural-other-partners
   Contrib:
     name: Full Suite - Contrib (${{ matrix.group }})
@@ -131,6 +131,9 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
@@ -141,12 +144,10 @@ jobs:
             target: test-yaml-structural-heavy-shard-2
           - group: states-shard-3
             target: test-yaml-structural-heavy-shard-3
-          - group: other-shard-1
-            target: test-yaml-structural-other
+          - group: other-shards-1-3
+            target: test-yaml-structural-other-shards-1-3
           - group: other-shard-2
             target: test-yaml-structural-other-shard-2
-          - group: other-shard-3
-            target: test-yaml-structural-other-shard-3
           - group: congress
             target: test-yaml-structural-congress
     steps:
@@ -164,13 +165,9 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Contrib YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make ${{ matrix.target }}
       - name: Run Contrib Python tests
-        if: ${{ matrix.group == 'other-shard-1' }}
-        env:
-          PYTHONUNBUFFERED: 1
+        if: ${{ matrix.group == 'other-shards-1-3' }}
         run: uv run make test-policy-contrib-python
   Rest:
     name: Full Suite - Rest (Python + variables/ YAMLs)
@@ -179,6 +176,9 @@ jobs:
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -194,45 +194,16 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Python tests (code_health, core, microsimulation, utilities, top-level)
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-other
       - name: Run tests/variables YAML tests
         if: always()
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-yaml-variables
-  Reform:
-    name: Full Suite - Reform (per-file)
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    if: |
-      (github.repository == 'PolicyEngine/policyengine-us')
-      && (github.event.head_commit.message == 'Update PolicyEngine US')
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-      - name: Install dependencies
-        run: uv sync --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run tests/policy/reform YAML tests (one batch per file)
-        env:
-          PYTHONUNBUFFERED: 1
-        run: uv run make test-yaml-reform
   Publish:
     runs-on: ubuntu-latest
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
-    needs: [Baseline, HouseholdAPIPartners, Contrib, Rest, Reform]
+    needs: [Baseline, HouseholdAPIPartners, Contrib, Rest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6

@@ -23,21 +23,25 @@ test-yaml-structural:
 test-yaml-structural-heavy:
 	$(BATCH) $(TESTS)/policy/contrib/states --batches 1
 test-yaml-structural-heavy-shard-1:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/3
+	# --workers 2 runs two state batches concurrently (~5 GB worst-case each,
+	# well under the 16 GB runner) instead of leaving the 4-vCPU runner idle.
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 1/3 --workers 2
 test-yaml-structural-heavy-shard-2:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/3
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 2/3 --workers 2
 test-yaml-structural-heavy-shard-3:
-	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 3/3
+	$(BATCH) $(TESTS)/policy/contrib/states --batches 1 --shard 3/3 --workers 2
 test-yaml-structural-other:
 	# Per-subdir so every remaining contrib folder runs in its own subprocess,
 	# instead of stacking ~20 light files into one ~13-min catch-all batch that
 	# risked the 30-min per-batch timeout on slow runners. ssa is excluded (it
-	# has no YAML tests — only a pytest .py run elsewhere).
-	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir
+	# has no YAML tests — only a pytest .py run elsewhere). Light folders
+	# (~1-3 GB peaks) run two at a time.
+	$(BATCH) $(TESTS)/policy/contrib --exclude states,ctc,ubi_center,federal,harris,treasury,crfb,congress,refundable_credit_conversion,ssa --mode per-subdir --workers 2
 test-yaml-structural-other-shard-2:
-	# ctc + crfb are microsim-heavy: per-file isolation keeps RAM under the cap.
-	$(BATCH) $(TESTS)/policy/contrib/ctc --mode per-file
-	$(BATCH) $(TESTS)/policy/contrib/crfb --mode per-file
+	# ctc + crfb are microsim-heavy: per-file isolation keeps RAM under the
+	# cap; two ~5 GB per-file peaks fit side by side on the 16 GB runner.
+	$(BATCH) $(TESTS)/policy/contrib/ctc --mode per-file --workers 2
+	$(BATCH) $(TESTS)/policy/contrib/crfb --mode per-file --workers 2
 	$(BATCH) $(TESTS)/policy/contrib/ubi_center --batches 1
 	$(BATCH) $(TESTS)/policy/contrib/federal --batches 1
 	$(BATCH) $(TESTS)/policy/contrib/harris --batches 1
@@ -45,60 +49,90 @@ test-yaml-structural-other-shard-2:
 test-yaml-structural-other-shard-3:
 	# refundable_credit_conversion force-applies a reform per case; each distinct
 	# gov.contrib.* combination clones the full tax-benefit system (~5 GB peak/
-	# file). Per-file isolation frees each peak between files; run on its own
-	# shard so its ~27-min sweep no longer stacks onto other-shard-1.
-	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file
+	# file). Per-file isolation frees each peak between files; two ~5 GB peaks
+	# fit concurrently under the 16 GB runner.
+	$(BATCH) $(TESTS)/policy/contrib/refundable_credit_conversion --mode per-file --workers 2
+# other-shard-1 + other-shard-3 share one CI runner: with --workers 2 each
+# shard alone no longer fills a 60-min job, so merging frees a runner.
+test-yaml-structural-other-shards-1-3: test-yaml-structural-other test-yaml-structural-other-shard-3
 test-yaml-structural-congress:
-	# One subprocess per congress proposal; new proposals auto-route.
-	$(BATCH) $(TESTS)/policy/contrib/congress --mode per-subdir
+	# One subprocess per congress proposal; new proposals auto-route and run
+	# two at a time (~3-5 GB peaks).
+	$(BATCH) $(TESTS)/policy/contrib/congress --mode per-subdir --workers 2
 test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
-	$(BATCH) $(TESTS)/policy/baseline/gov/states --batches 4 --exclude ny
-	$(MAKE) test-yaml-no-structural-states-ny
-test-yaml-no-structural-states-ny:
-	# NY credits clone the tax_benefit_system per scenario (~12 GB) —
-	# split explicitly. Everything else under ny/ auto-fans out.
-	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income/credits --batches 3
-	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny/tax/income --exclude credits --mode per-subdir
-	$(BATCH) $(TESTS)/policy/baseline/gov/states/ny --exclude tax --mode per-subdir
+	# NY folds back in now that its credits reuse one cached pinned system
+	# (#8114) — it peaks ~3-5 GB like other big states. 8 batches (was 6)
+	# keep each batch small enough that two co-scheduled ones (--workers 2)
+	# stay well under the 16 GB runner.
+	$(BATCH) $(TESTS)/policy/baseline/gov/states --batches 8 --workers 2
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 1
 	$(BATCH) $(TESTS)/policy/baseline/contrib --batches 1
 	$(BATCH) $(TESTS)/policy/reform --mode per-file
 test-yaml-no-structural-other-irs:
-	# One subprocess per irs subfolder + trailing batch for loose yamls.
-	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir
+	# One subprocess per irs subfolder (run two at a time) + trailing batch
+	# for loose yamls.
+	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 2
 test-yaml-no-structural-other-household:
-	$(BATCH) $(TESTS)/policy/baseline/household --batches 2
+	# Two batches run concurrently instead of back to back.
+	$(BATCH) $(TESTS)/policy/baseline/household --batches 2 --workers 2
 test-yaml-no-structural-other-irs-household: test-yaml-no-structural-other-irs test-yaml-no-structural-other-household
 test-yaml-no-structural-other-contrib:
-	# ubi_center is microsim-heavy → per-file. Other contrib subdirs
-	# (biden, states, + any future folder) auto-fan out.
-	$(BATCH) $(TESTS)/policy/baseline/contrib/ubi_center --mode per-file
-	$(BATCH) $(TESTS)/policy/baseline/contrib --exclude ubi_center --mode per-subdir
+	# ubi_center is microsim-heavy → per-file, two ~4 GB peaks at a time.
+	# Other contrib subdirs (biden, states, + any future folder) auto-fan out.
+	$(BATCH) $(TESTS)/policy/baseline/contrib/ubi_center --mode per-file --workers 2
+	$(BATCH) $(TESTS)/policy/baseline/contrib --exclude ubi_center --mode per-subdir --workers 2
 test-yaml-reform:
 	# Reforms are force-applied and deepcopy the full parameter tree
 	# (~5.5 GB peak/file for ctc_linear_phase_out and winship, measured).
 	# Running all files in one subprocess stacks past the 16 GB runner cap
 	# → "runner received a shutdown signal". One batch per file frees each
-	# peak between files; new reform files auto-route.
-	$(BATCH) $(TESTS)/policy/reform --mode per-file
+	# peak between files (two ~5.5 GB peaks fit concurrently); new reform
+	# files auto-route.
+	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 2
+test-yaml-no-structural-other-hhs:
+	# hhs (~2.7 GB peak) moved out of the rest job to ride along with the
+	# baseline-contrib + reform runner, which has spare headroom.
+	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
+# baseline contrib + policy/reform + gov/hhs share one CI runner: each piece
+# alone is far below a full job, so merging frees two runners.
+test-yaml-contrib-reform-hhs: test-yaml-no-structural-other-contrib test-yaml-reform test-yaml-no-structural-other-hhs
 test-yaml-no-structural-other-ssa:
-	# revenue is heavy enough to need its own 2-batch split; others auto-fan.
-	$(BATCH) $(TESTS)/policy/baseline/gov/ssa/revenue --batches 2
-	$(BATCH) $(TESTS)/policy/baseline/gov/ssa --exclude revenue --mode per-subdir
+	# revenue is heavy enough to need its own 2-batch split (run both at
+	# once); other ssa subfolders auto-fan two at a time.
+	$(BATCH) $(TESTS)/policy/baseline/gov/ssa/revenue --batches 2 --workers 2
+	$(BATCH) $(TESTS)/policy/baseline/gov/ssa --exclude revenue --mode per-subdir --workers 2
+test-yaml-no-structural-other-usda:
+	# usda (~3 GB peak, ~7 min) moved out of the rest job to ride along
+	# with ssa, rebalancing the two runners.
+	$(BATCH) $(TESTS)/policy/baseline/gov/usda --batches 1
+test-yaml-no-structural-other-ssa-usda: test-yaml-no-structural-other-ssa test-yaml-no-structural-other-usda
 test-yaml-no-structural-other-rest:
-	# All remaining gov/ subdirs + any new ones auto-route here.
-	$(BATCH) $(TESTS)/policy/baseline/gov --exclude states,irs,ssa --mode per-subdir
-	# All top-level baseline/ subdirs except gov/household/contrib/partners
-	# (calcfunctions, income, parameters + any new folder) auto-route here.
-	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib,partners --mode per-subdir
+	# All remaining gov/ subdirs + any new ones auto-route here (usda and
+	# hhs moved to the ssa-usda and contrib-reform-hhs jobs). Every batch
+	# peaks <=3.6 GB, so three run concurrently.
+	$(BATCH) $(TESTS)/policy/baseline/gov --exclude states,irs,ssa,usda,hhs --mode per-subdir --workers 3
+	# calcfunctions, income, parameters + any new top-level baseline/ folder
+	# are all light (<2.3 GB peak) — group them into one subprocess instead
+	# of paying the ~33s interpreter+system-build startup per folder.
+	$(BATCH) $(TESTS)/policy/baseline --exclude gov,household,contrib,partners --batches 1
 test-yaml-no-structural-other-partners:
 	# Customer/API partner fixtures mirrored from policyengine-household-api.
-	# One subprocess per partner; new partners auto-route.
-	$(BATCH) $(TESTS)/policy/baseline/partners --mode per-subdir
+	# analytics_coverage/edge_cases is ~90% of this job's time as a single
+	# batch — fan it out per topic/state folder and run two at a time. Only
+	# the invocations change here; partner files themselves are untouched.
+	$(BATCH) $(TESTS)/policy/baseline/partners/analytics_coverage/edge_cases/federal --mode per-subdir --workers 2
+	$(BATCH) $(TESTS)/policy/baseline/partners/analytics_coverage/edge_cases/state --mode per-subdir --workers 2
+	# Safety net: anything added directly under edge_cases/ besides federal
+	# and state (currently produces zero batches).
+	$(BATCH) $(TESTS)/policy/baseline/partners/analytics_coverage/edge_cases --exclude federal,state --batches 1
+	# signatures + anything new under analytics_coverage/ as one batch.
+	$(BATCH) $(TESTS)/policy/baseline/partners/analytics_coverage --exclude edge_cases --batches 1
+	# amplifi + impactica + my_friend_ben (+ any new partner) in one light batch.
+	$(BATCH) $(TESTS)/policy/baseline/partners --exclude analytics_coverage --batches 1
 test-other:
 	pytest policyengine_us/tests/ --maxfail=0 --ignore=$(TESTS)/policy/contrib
 test-policy-contrib-python:
