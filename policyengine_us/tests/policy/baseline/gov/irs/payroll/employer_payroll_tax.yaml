@@ -1,0 +1,40 @@
+- name: Empty input
+  period: 2020
+  input:
+    people:
+      person:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: person
+  output:
+    employer_payroll_tax: 0
+
+- name: Sums employer-side Social Security and Medicare taxes
+  period: 2026
+  input:
+    people:
+      person:
+        age: 35
+        employment_income: 100_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: person
+    households:
+      household:
+        members: person
+        state_name: CA
+    families:
+      family:
+        members: person
+    marital_units:
+      marital_unit:
+        members: person
+    spm_units:
+      spm_unit:
+        members: person
+  output:
+    employer_social_security_tax: 6_200
+    employer_medicare_tax: 1_450
+    employer_payroll_tax: 7_650
