@@ -20,6 +20,14 @@ from policyengine_us.model_api import *
 
 TEST_YEAR = 2026
 DATE_RANGE = "2020-01-01.2100-12-31"
+# Subsample size for the default dataset. Larger than the 1,000 used in
+# test_microsim.py because the surtax and CG reforms here mostly affect
+# high-AGI / high-capital-gains households, which a smaller sample can
+# miss entirely. subsample() seeds from the dataset name, so every
+# simulation in this module draws the same households and the impacts
+# stay comparable; the assertions are ratio-based, so they are
+# subsample-scale-free.
+SUBSAMPLE_SIZE = 10_000
 
 
 def _make_structural_surtax_reform():
@@ -82,17 +90,18 @@ def _make_cg_reform():
     )
 
 
-def _tax_impact(reform_tuple):
-    sim_bl = Microsimulation()
-    sim_rf = Microsimulation(reform=reform_tuple)
-    t_bl = sim_bl.calculate("income_tax", period=TEST_YEAR, map_to="household")
-    t_rf = sim_rf.calculate("income_tax", period=TEST_YEAR, map_to="household")
-    return float((t_rf - t_bl).sum())
+def _tax(reform_tuple=None):
+    """Total federal income tax on a fixed subsample, optionally reformed."""
+    sim = Microsimulation(reform=reform_tuple)
+    sim.subsample(SUBSAMPLE_SIZE)
+    return float(
+        sim.calculate("income_tax", period=TEST_YEAR, map_to="household").sum()
+    )
 
 
 @pytest.mark.skipif(
     os.environ.get("RUN_HEAVY_TESTS") != "1",
-    reason="Requires ~80min; set RUN_HEAVY_TESTS=1",
+    reason="Heavy: builds 4 default-dataset microsimulations; set RUN_HEAVY_TESTS=1",
 )
 def test_structural_reform_with_lsr_and_cg():
     """Structural reform + LSR + CG should produce bounded results."""
@@ -100,9 +109,12 @@ def test_structural_reform_with_lsr_and_cg():
     lsr = _make_lsr_reform()
     cg = _make_cg_reform()
 
-    impact_lsr = _tax_impact(structural + (lsr,))
-    impact_cg = _tax_impact(structural + (cg,))
-    impact_both = _tax_impact(structural + (lsr, cg))
+    # The deterministic subsample makes the baseline identical for all
+    # three impacts, so compute it once.
+    tax_baseline = _tax()
+    impact_lsr = _tax(structural + (lsr,)) - tax_baseline
+    impact_cg = _tax(structural + (cg,)) - tax_baseline
+    impact_both = _tax(structural + (lsr, cg)) - tax_baseline
 
     individual_sum = abs(impact_lsr) + abs(impact_cg)
     assert abs(impact_both) < 3 * individual_sum, (
@@ -113,7 +125,7 @@ def test_structural_reform_with_lsr_and_cg():
 
 @pytest.mark.skipif(
     os.environ.get("RUN_HEAVY_TESTS") != "1",
-    reason="Requires ~40min; set RUN_HEAVY_TESTS=1",
+    reason="Heavy: builds a default-dataset microsimulation; set RUN_HEAVY_TESTS=1",
 )
 def test_structural_reform_cg_response_bounded():
     """CG response with structural reform should not produce extreme values.
@@ -125,6 +137,7 @@ def test_structural_reform_cg_response_bounded():
     cg = _make_cg_reform()
 
     sim = Microsimulation(reform=structural + (cg,))
+    sim.subsample(SUBSAMPLE_SIZE)
     cg_resp = np.array(
         sim.calculate("capital_gains_behavioral_response", period=TEST_YEAR)
     )

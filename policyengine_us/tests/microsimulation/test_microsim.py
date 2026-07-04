@@ -8,14 +8,22 @@ DATASETS = [
 YEARS = list(range(2024, 2026))
 
 
-@pytest.mark.parametrize("dataset", DATASETS)
-@pytest.mark.parametrize("year", YEARS)
-def test_microsim_runs(dataset: str, year: int):
-    import numpy as np
+@pytest.fixture(scope="module", params=DATASETS)
+def dataset_sim(request):
+    """One subsampled Microsimulation per dataset, shared across the
+    parametrized years (the tests only read via calc, so sharing is safe)."""
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation(dataset=dataset)
+    sim = Microsimulation(dataset=request.param)
     sim.subsample(1_000)
+    return sim
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_microsim_runs(dataset_sim, year: int):
+    import numpy as np
+
+    sim = dataset_sim
     hnet = sim.calc("household_net_income", period=year)
     assert not hnet.isna().any(), "Some households have NaN net income."
     # Deciles are 1-10, with -1 for negative income.
