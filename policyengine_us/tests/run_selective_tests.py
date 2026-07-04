@@ -476,7 +476,7 @@ class SelectiveTestRunner:
                         )
 
         if with_coverage:
-            pytest_args = [
+            base_cmd = [
                 sys.executable,
                 "-m",
                 "coverage",
@@ -488,9 +488,9 @@ class SelectiveTestRunner:
             # Add --include flag to only track relevant files
             if include_patterns:
                 include_pattern = ",".join(include_patterns)
-                pytest_args.extend(["--include", include_pattern])
+                base_cmd.extend(["--include", include_pattern])
 
-            pytest_args.extend(
+            base_cmd.extend(
                 [
                     "-m",
                     "policyengine_core.scripts.policyengine_command",
@@ -500,7 +500,7 @@ class SelectiveTestRunner:
                 ]
             )
         else:
-            pytest_args = [
+            base_cmd = [
                 sys.executable,
                 "-m",
                 "policyengine_core.scripts.policyengine_command",
@@ -509,15 +509,20 @@ class SelectiveTestRunner:
                 "policyengine_us",
             ]
 
-        # Add test paths
-        pytest_args.extend(sorted(test_paths))
+        # Run each location in its own subprocess: reformed tax-benefit
+        # systems and per-case simulations accumulate for the life of a
+        # process, so a single process running every selected location can
+        # exceed runner memory even when each location alone is fine.
+        # Coverage's -a flag appends results across the invocations.
+        worst_returncode = 0
+        for test_path in sorted(test_paths):
+            cmd = base_cmd + [test_path]
+            print(f"\nRunning command: {' '.join(cmd)}")
+            result = subprocess.run(cmd)
+            if result.returncode != 0:
+                worst_returncode = result.returncode
 
-        print(f"\nRunning command: {' '.join(pytest_args)}")
-
-        # Run pytest
-        result = subprocess.run(pytest_args)
-
-        return result.returncode
+        return worst_returncode
 
     def run_all_tests(self) -> int:
         """Run all tests (fallback option)."""
