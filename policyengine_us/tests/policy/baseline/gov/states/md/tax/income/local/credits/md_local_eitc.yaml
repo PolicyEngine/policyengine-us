@@ -1,0 +1,46 @@
+- name: Baltimore City filer, local EITC below local tax (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    eitc: 3_000
+    md_local_income_tax_before_credits: 2_000
+  output:
+    # 3,000 * 10 * 0.032 = 960
+    md_local_eitc: 960
+
+- name: Baltimore City filer, local EITC capped at local tax (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    eitc: 3_000
+    md_local_income_tax_before_credits: 500
+  output:
+    # min(3,000 * 10 * 0.032, 500) = 500
+    md_local_eitc: 500
+
+- name: Anne Arundel County filer uses the lowest marginal rate (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+    eitc: 1_000
+    md_local_income_tax_before_credits: 10_000
+  output:
+    # 1,000 * 10 * 0.027 = 270
+    md_local_eitc: 270
+
+- name: No federal EITC yields no local EITC (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    eitc: 0
+    md_local_income_tax_before_credits: 2_000
+  output:
+    md_local_eitc: 0

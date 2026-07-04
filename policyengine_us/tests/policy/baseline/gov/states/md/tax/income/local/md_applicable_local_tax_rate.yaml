@@ -1,0 +1,50 @@
+- name: Baltimore City uses its flat rate (2025)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+  output:
+    md_applicable_local_tax_rate: 0.032
+
+- name: Anne Arundel County uses its lowest marginal rate (2025)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code_str: MD
+    county_str: ANNE_ARUNDEL_COUNTY_MD
+  output:
+    md_applicable_local_tax_rate: 0.027
+
+- name: Frederick County single filer with $30,000 taxable income (2025)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code_str: MD
+    county_str: FREDERICK_COUNTY_MD
+    filing_status: SINGLE
+    md_taxable_income: 30_000
+  output:
+    md_applicable_local_tax_rate: 0.0275
+
+- name: Frederick County joint filers with $120,000 taxable income (2025)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        md_taxable_income: 120_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code_str: MD
+        county_str: FREDERICK_COUNTY_MD
+  output:
+    md_applicable_local_tax_rate: 0.0296

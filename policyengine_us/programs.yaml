@@ -1488,6 +1488,18 @@ programs:
     parameter_prefix: gov.local.ca.sf.caap
     notes: General Assistance and PAES grant tiers modeled; CALM/SSIP tiers and activity-qualification gates not yet modeled
 
+  - id: md_local_income_tax
+    name: MD local income tax
+    full_name: Maryland County and Baltimore City Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Maryland
+    variable: md_local_income_tax_before_refundable_credits
+    parameter_prefix: gov.local.md
+    verified_start_year: 2021
+    notes: County piggyback income tax on Maryland taxable income, less the local earned income credit and local poverty level credit; optional county refundable local EITCs are not modeled (Montgomery County's match is modeled separately as md_montgomery_eitc)
+
   - id: nyc_income_tax
     name: NYC income tax
     full_name: New York City Income Tax

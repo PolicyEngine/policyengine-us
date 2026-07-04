@@ -5,18 +5,24 @@
     adjusted_gross_income_person: 5_000
     filing_status: JOINT
     state_code: MD
+    county_str: BALTIMORE_CITY_MD
   output:
-    md_withheld_income_tax: 76
+    # State: single rates on (5,000 - 2,350 standard deduction) = 76
+    # Local: 3.2% Baltimore City rate * 2,650 = 84.80
+    md_withheld_income_tax: 160.8
 
-- name: Changing the filing status should not change the output 
+- name: Changing the filing status should not change the output
   period: 2021
   absolute_error_margin: 0.01
   input:
     adjusted_gross_income_person: 5_000
     filing_status: SURVIVING_SPOUSE
     state_code: MD
+    county_str: BALTIMORE_CITY_MD
   output:
-    md_withheld_income_tax: 76
+    # State: single rates on (5,000 - 2,350 standard deduction) = 76
+    # Local: 3.2% Baltimore City rate * 2,650 = 84.80
+    md_withheld_income_tax: 160.8
 
 - name: Capped at 0
   period: 2021
