@@ -167,8 +167,9 @@ def split_into_batches(
         # peak/case, see #8559); isolating per-file frees each peak between
         # files. RI is the worst offender — its ctc_reform_test.yaml sweeps
         # ~66 reform combinations and previously OOMed shard-2 mid-run when it
-        # shared a subprocess with exemption_reform_test.yaml.
-        PER_FILE_STATES = {"ri"}
+        # shared a subprocess with exemption_reform_test.yaml. OH's folder
+        # measured 12.4 GB as one batch on CI (run 28698452678).
+        PER_FILE_STATES = {"oh", "ri"}
 
         subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
         batches = []
