@@ -1,0 +1,35 @@
+description: Montana sets these child age group boundaries in months under the Best Beginnings Child Care Scholarship program.
+# The published rate table lists three age groups (Infant/Toddler, Preschool, School
+# Age) but states no month cutoffs. Both cutoffs are pinned to ARM 37.80.102, which
+# defines a preschool-age child as 36 months up to the sixth birthday and a school-age
+# child as six through the end of the 12th year. The 36-month Infant/Toddler->Preschool
+# boundary is therefore the lower edge of the ARM preschool definition (i.e. a child
+# under 36 months is not yet preschool-age, so falls in the Infant/Toddler band); the
+# 72-month Preschool->School-Age boundary is the ARM sixth-birthday cutoff:
+# 0-35 months = Infant/Toddler, 36-71 months = Preschool, 72+ months = School Age.
+# Amounts are enum indices: 0 = INFANT_TODDLER, 1 = PRESCHOOL, 2 = SCHOOL_AGE.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Montana CCAP child age group by months
+  reference:
+    - title: Best Beginnings Scholarship Half-Time & Full-Time Monthly Rates (single page)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/documentsandresources/BBSProviderRatesMonthly.pdf#page=1
+    - title: Mont. Admin. R. 37.80.102 (definitions of preschool-age and school-age child for payment purposes)
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.102
+
+brackets:
+  - threshold:
+      2025-07-01: 0
+    amount:
+      2025-07-01: 0
+  - threshold:
+      2025-07-01: 36
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 72
+    amount:
+      2025-07-01: 2

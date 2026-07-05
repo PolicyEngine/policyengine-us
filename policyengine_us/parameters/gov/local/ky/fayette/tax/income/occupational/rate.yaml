@@ -1,0 +1,12 @@
+description: Lexington-Fayette Urban County Government (Fayette County), Kentucky levies an occupational license fee on earnings at this rate.
+# Models the LFUCG occupational license fee. The separate Fayette County Public
+# Schools (FCPS) occupational tax (0.5%, subject to a wage cap) is not yet modeled.
+values:
+  2021-01-01: 0.0225
+metadata:
+  unit: /1
+  period: year
+  label: Lexington-Fayette occupational license fee rate
+  reference:
+    - title: LFUCG Division of Revenue — occupational license fee rates (2.25%)
+      href: https://www.lexingtonky.gov/working/business-licensing-taxes/occupational-license-fee-rates-current-forms

@@ -1,3 +1,28 @@
+## [1.757.0] - 2026-07-05
+
+### Added
+
+- Added local income taxes for Yonkers, NY (resident surcharge and nonresident earnings tax), Wilmington, DE (earned income tax), and the Louisville/Jefferson County and Lexington/Fayette County, KY occupational license fees.
+- Add Montana Child Care Assistance Program (Best Beginnings Child Care Scholarship).
+
+### Changed
+
+- Registered nine existing local taxes in the program coverage registry (programs.yaml): Philadelphia wage tax, Kansas City and St. Louis earnings taxes, Indiana county income tax, Multnomah County Preschool for All tax, and the Denver, Glendale, Greenwood Village, and Sheridan occupational privilege taxes.
+
+### Fixed
+
+- Limited Alabama CHIP From-Conception-to-End-of-Pregnancy eligibility to its phased-in counties before statewide coverage from October 1, 2024.
+- Fix Maine property tax fairness credit senior benefit base, which never applied at the age-65 threshold because its enhanced-base parameter was mistyped as a marginal scale, and which no longer inflation-adjusts for 2026 onward because its uprating block was misplaced on the bracket instead of the amount.
+- Fix Wisconsin Act 15 retirement income exclusion to reduce WI income before the standard-deduction phaseout, so elderly filers with retirement income are no longer over-taxed.
+
+
+## [1.756.10] - 2026-07-05
+
+### Fixed
+
+- Fix Delaware Filing Status 4 to allocate non-refundable credits per-column instead of pooling at the tax-unit level, and elect the filing status on post-credit liability so the joint path is chosen when combined separate filing would waste credits.
+
+
 ## [1.756.9] - 2026-07-05
 
 ### Fixed

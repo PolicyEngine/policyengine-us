@@ -1,0 +1,62 @@
+description: Alabama limits From-Conception-to-End-of-Pregnancy Children's Health Insurance Program ("ALL Babies") eligibility to these counties before extending coverage statewide (see al_statewide).
+values:
+  # ALL Babies launched as a three-county pilot under the Alabama Infant
+  # Mortality Reduction Initiative.
+  2018-10-01:
+    - MACON_COUNTY_AL
+    - MONTGOMERY_COUNTY_AL
+    - RUSSELL_COUNTY_AL
+  # SPA AL-23-0026 expanded ALL Babies to 36 counties. The enumeration below is
+  # read from the Alabama Department of Public Health "ALL Babies Eligible
+  # Counties, August 2023" map (green-shaded counties), archived on the Wayback
+  # Machine. From 2024-10-01 coverage is statewide (see al_statewide), so this
+  # list only governs the 2024-01-01 to 2024-09-30 window that Alabama FCEP is
+  # both active (income_limit > 0) and not yet statewide.
+  2023-05-01:
+    - AUTAUGA_COUNTY_AL
+    - BARBOUR_COUNTY_AL
+    - BIBB_COUNTY_AL
+    - BULLOCK_COUNTY_AL
+    - BUTLER_COUNTY_AL
+    - CHAMBERS_COUNTY_AL
+    - CHILTON_COUNTY_AL
+    - CHOCTAW_COUNTY_AL
+    - CLARKE_COUNTY_AL
+    - COFFEE_COUNTY_AL
+    - CONECUH_COUNTY_AL
+    - COOSA_COUNTY_AL
+    - COVINGTON_COUNTY_AL
+    - CRENSHAW_COUNTY_AL
+    - DALE_COUNTY_AL
+    - DALLAS_COUNTY_AL
+    - ELMORE_COUNTY_AL
+    - ESCAMBIA_COUNTY_AL
+    - GENEVA_COUNTY_AL
+    - GREENE_COUNTY_AL
+    - HALE_COUNTY_AL
+    - HENRY_COUNTY_AL
+    - HOUSTON_COUNTY_AL
+    - LEE_COUNTY_AL
+    - LOWNDES_COUNTY_AL
+    - MACON_COUNTY_AL
+    - MARENGO_COUNTY_AL
+    - MONROE_COUNTY_AL
+    - MONTGOMERY_COUNTY_AL
+    - PERRY_COUNTY_AL
+    - PIKE_COUNTY_AL
+    - RUSSELL_COUNTY_AL
+    - SUMTER_COUNTY_AL
+    - TALLAPOOSA_COUNTY_AL
+    - WASHINGTON_COUNTY_AL
+    - WILCOX_COUNTY_AL
+metadata:
+  unit: list
+  period: year
+  label: Alabama CHIP FCEP counties
+  reference:
+    - title: State of Alabama Infant Mortality Reduction Plan (ALL Babies pilot in Macon, Montgomery, and Russell counties, effective October 1, 2018)
+      href: https://www.alabamapublichealth.gov/perinatal/assets/al-im-reduction-plan.pdf
+    - title: CMS Alabama CHIP State Plan Amendment AL-23-0026-RIM2 (ALL Babies expansion to 36 counties, effective May 1, 2023)
+      href: https://www.medicaid.gov/sites/default/files/2023-04/AL-23-0026-RIM2.pdf
+    - title: Alabama Department of Public Health, "ALL Babies Eligible Counties, August 2023" county map (enumerates the 36 eligible counties; archived February 27, 2024)
+      href: https://web.archive.org/web/20240227134117if_/https://www.alabamapublichealth.gov/allbabies/assets/allbabies-map.pdf

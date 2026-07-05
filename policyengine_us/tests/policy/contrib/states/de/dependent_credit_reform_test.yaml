@@ -208,3 +208,58 @@
     #   - Dependent credit after phaseout: max($110 - $600, 0) = $0
     # Total: $110 + $110 + $0 = $220
     de_personal_credit: 220
+
+- name: >-
+    DE dependent credit reform - FS4 election forgoes the dependent credit
+    (documented known limitation)
+  # GUARD TEST for the known limitation documented in
+  # reforms/states/de/dependent_credit/de_dependent_credit_reform.py: the
+  # reform delivers the dependent credit by overriding the tax-unit
+  # de_personal_credit, which only the joint (single-column) path consumes.
+  # The combined-separate (Filing Status 4) path reads the per-column
+  # de_personal_credit_indv, which the reform does NOT override, so a couple
+  # that elects FS4 does not receive the dependent credit on that path.
+  # This case pins that behavior so any future change is caught: a two-earner
+  # couple whose FS4 bracket savings exceed the credit elects FS4 and forgoes
+  # the $110 credit. If the credit were ever delivered on the separate path,
+  # the elected liability would drop to 6,998 and this test would fail.
+  period: 2025
+  reforms: policyengine_us.reforms.states.de.dependent_credit.de_dependent_credit_reform.de_dependent_credit_reform
+  input:
+    gov.contrib.states.de.dependent_credit.in_effect: true
+    gov.contrib.states.de.dependent_credit.amount: 110
+    gov.contrib.states.de.dependent_credit.phaseout.threshold.JOINT: 1_000_000
+    gov.contrib.states.de.dependent_credit.phaseout.rate: 0.0
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+      spouse:
+        age: 38
+        employment_income: 70_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_name: DE
+  output:
+    # The couple elects combined separate (FS4): its bracket savings
+    # (8,124.50 joint - 7,108.00 separate = 1,016.50) far exceed the $110
+    # dependent credit.
+    de_files_separately: true
+    # Dependent credit is computed ($110, not phased out) and reaches the
+    # joint path via de_personal_credit (2 x $110 personal + $110 dependent
+    # = $330), which is why the JOINT liability already nets the credit.
+    de_dependent_credit: 110
+    de_personal_credit: 330
+    de_income_tax_before_refundable_credits_joint: 8_124.5
+    # The separate path does NOT include the dependent credit, and the
+    # elected liability equals it -> the credit is forgone under FS4.
+    de_income_tax_before_refundable_credits_separate: 7_108
+    de_income_tax_before_refundable_credits: 7_108
