@@ -1,0 +1,15 @@
+description: North Dakota limits eligibility to special-needs children below this age under the Child Care Assistance Program.
+
+# Children who are physically or mentally incapable of self-care, or in need of
+# supervised care under a court order, are eligible through the month of their
+# 19th birthday (under 19).
+values:
+  2020-01-01: 19
+
+metadata:
+  unit: year
+  period: year
+  label: North Dakota CCAP special-needs child age limit
+  reference:
+    - title: North Dakota CCAP Policy Manual, Eligible Children 400-28-35-02
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm

@@ -1,0 +1,304 @@
+# Tests for nd_ccap_state_max_rate (Person, MONTH, USD).
+# The monthly state maximum rate is looked up by provider type, age group, and
+# level of care (full-time vs part-time), then multiplied by 1.10 for a
+# disabled child at a QRIS step-2-or-higher provider (400-28-100-30). Rates are
+# the statewide flat monthly maximums effective 2026-01-01. defined_for =
+# nd_ccap_eligible_child, so each child is a citizen within the age limit.
+# Full-time requires 25+ child care hours per week; part-time is under 25.
+# Every provider type and age group is exercised at least once.
+
+# --- Full-time, every provider type and age group ---
+
+- name: Case 1, Center infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 1_240
+
+- name: Case 2, Center toddler full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 1_124
+
+- name: Case 3, Center preschool full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 940
+
+- name: Case 4, Center school-age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 800
+
+- name: Case 5, Licensed family infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: LICENSED_FAMILY
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 900
+
+- name: Case 6, Licensed family toddler full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        nd_ccap_provider_type: LICENSED_FAMILY
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 880
+
+- name: Case 7, Self-declared or tribal preschool full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        nd_ccap_provider_type: SELF_DECLARED_TRIBAL
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 531
+
+- name: Case 8, Self-declared or tribal school-age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: SELF_DECLARED_TRIBAL
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 529
+
+- name: Case 9, Approved relative infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 422
+
+- name: Case 10, Approved relative school-age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 348
+
+# --- Part-time rates ---
+
+- name: Case 11, Center infant part-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 20  # under 25, part-time
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 546
+
+- name: Case 12, Licensed family preschool part-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        nd_ccap_provider_type: LICENSED_FAMILY
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 385
+
+- name: Case 13, Approved relative toddler part-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        nd_ccap_provider_type: APPROVED_RELATIVE
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_state_max_rate: 187
+
+# --- Special-needs +10% (gated on disability AND QRIS step 2+) ---
+
+- name: Case 14, disabled child at QRIS step 2 gets the +10% raise.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_disabled: true
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_2
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Center infant full-time 1,240 * 1.10 = 1,364
+    nd_ccap_state_max_rate: 1_364
+
+- name: Case 15, disabled child at QRIS step 1 does not get the +10% raise.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_disabled: true
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_1
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Step 1 fails the step-2-or-higher gate, so no +10%: still 1,240
+    nd_ccap_state_max_rate: 1_240
+
+- name: Case 16, non-disabled child at QRIS step 4 does not get the +10% raise.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        nd_ccap_provider_qris_step: STEP_4
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Not disabled, so the special-needs gate fails: still 1,240
+    nd_ccap_state_max_rate: 1_240
+
+# --- Degenerate / edge inputs ---
+
+- name: Case 17, child with zero child care hours falls to the part-time rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        nd_ccap_provider_type: CENTER
+        childcare_hours_per_week: 0  # no hours in care
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # We do not track an explicit "not in care" flag, so a child with zero
+    # hours is classified part-time (hours < 25) and receives the Center infant
+    # part-time rate 546 rather than zero. Families with a child not in care
+    # would supply zero pre-subsidy expenses, so the expense cap in
+    # nd_ccap_base_subsidy keeps the benefit from counting unused capacity.
+    nd_ccap_state_max_rate: 546

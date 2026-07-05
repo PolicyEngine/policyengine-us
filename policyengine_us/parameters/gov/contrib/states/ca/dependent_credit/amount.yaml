@@ -1,0 +1,26 @@
+description: California provides this dependent exemption credit amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  1999-01-01: 227
+  2021-01-01: 400
+  2022-01-01: 433
+  2023-01-01: 446
+  2024-01-01: 461
+  2025-01-01: 475
+metadata:
+  label: California dependent credit amount
+  period: year
+  unit: currency-USD
+  uprating: gov.states.ca.cpi
+  reference:
+  - title: 2021 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf#page=2
+  - title: 2022 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2022/2022-540.pdf#page=2
+  - title: 2023 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2023/2023-540.pdf#page=2
+  - title: 2024 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2024/2024-540.pdf#page=2
+  - title: 2025 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2025/2025-540.pdf#page=2
+  - title: Cal. Rev. & Tax. Code § 17054
+    href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17054.&nodeTreePath=3.20.2&lawCode=RTC

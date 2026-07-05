@@ -12,6 +12,12 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
         "variables/gov/states/de/tax/income/credits/eitc/de_eitc.py",
         "variables/gov/states/de/tax/income/credits/eitc/refundability_calculation/de_income_tax_if_claiming_non_refundable_eitc.py",
     },
+    "ga_ctc": {
+        # Georgia refundable CTC contrib reform references "ga_ctc" only as the
+        # ordering key for state_non_refundable_credit_limit; it reads the
+        # pre-ordering ga_ctc_potential for the value, not the applied credit.
+        "reforms/states/ga/ctc/ga_ctc_reform.py",
+    },
     "ky_personal_tax_credits": {
         "variables/gov/states/ky/tax/income/credits/family_size_credit/ky_family_size_tax_credit_potential.py",
     },

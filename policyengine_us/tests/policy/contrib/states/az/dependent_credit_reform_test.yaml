@@ -1,0 +1,73 @@
+- name: AZ dependent credit reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.az.dependent_credit.az_dependent_credit_reform.az_dependent_credit_reform
+  input:
+    gov.contrib.states.az.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AZ}}
+  output: {az_dependent_tax_credit_potential: 200}
+
+- name: AZ dependent credit reform - amount zero eliminates the credit
+  period: 2025
+  reforms: policyengine_us.reforms.states.az.dependent_credit.az_dependent_credit_reform.az_dependent_credit_reform
+  input:
+    gov.contrib.states.az.dependent_credit.in_effect: true
+    gov.contrib.states.az.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AZ}}
+  output: {az_dependent_tax_credit_potential: 0}
+
+- name: AZ dependent credit reform - age limit excludes dependents at or over the age
+  period: 2025
+  reforms: policyengine_us.reforms.states.az.dependent_credit.az_dependent_credit_reform.az_dependent_credit_reform
+  input:
+    gov.contrib.states.az.dependent_credit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AZ}}
+  output: {az_dependent_tax_credit_potential: 100}
+
+- name: AZ dependent credit reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.az.dependent_credit.az_dependent_credit_reform.az_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.az.dependent_credit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 13, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: AZ}}
+  # Dependent at the age limit (13 == threshold) is excluded; over-age fallback is nothing.
+  output: {az_dependent_tax_credit_potential: 0}
+
+- name: AZ dependent credit reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.az.dependent_credit.az_dependent_credit_reform.az_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.az.dependent_credit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.az.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: AZ}}
+  # Dependent one year under the limit (12 < 13) receives the credit.
+  output: {az_dependent_tax_credit_potential: 100}

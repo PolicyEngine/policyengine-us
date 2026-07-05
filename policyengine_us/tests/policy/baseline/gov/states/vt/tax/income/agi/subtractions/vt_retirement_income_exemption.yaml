@@ -180,3 +180,54 @@
     state_code: VT
   output:
     vt_retirement_income_exemption: 500  # Partial qualified (halfway between $70k and $80k)
+
+# Integration tests: eligibility gate must use the Social Security phase-out
+# threshold (not the CSRS threshold) for Social Security filers in the 2025
+# partial band. Resolves policyengine-taxsim #999 (single) and #1000 (joint).
+- name: VT single SS filer in 2025 partial band gets partial exemption (taxsim #999)
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 74
+        employment_income: 29_333.33
+        taxable_interest_income: 3.64
+        social_security_retirement: 25_742.70
+        unemployment_compensation: 10_880
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: VT
+  output:
+    tax_unit_taxable_social_security: 20_725.08
+    vt_retirement_income_exemption_eligible: true
+    vt_retirement_income_exemption: 8_497.28
+    vt_income_tax: 1_281.20
+
+- name: VT joint SS filers in 2025 partial band get partial exemption (taxsim #1000)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 77
+        employment_income: 52_380.95
+        taxable_interest_income: 29.15
+        social_security_retirement: 27_581.46
+      person2:
+        age: 77
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: VT
+  output:
+    vt_retirement_income_exemption_eligible: true

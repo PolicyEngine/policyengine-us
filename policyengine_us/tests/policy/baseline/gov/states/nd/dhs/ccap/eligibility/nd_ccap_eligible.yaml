@@ -1,0 +1,131 @@
+# Tests for nd_ccap_eligible (SPMUnit, MONTH, bool).
+# The unit is eligible only when it has an eligible child AND is income
+# eligible AND asset eligible AND activity eligible. Upstream booleans are set
+# directly to truth-table each AND factor; the eligible child is driven by age.
+
+- name: Case 1, all four conditions met, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: true
+
+- name: Case 2, no eligible child (only adults), ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: false
+
+- name: Case 3, income ineligible, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: false
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: false
+
+- name: Case 4, over asset limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: false
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: false
+
+- name: Case 5, activity ineligible, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_eligible: false
+
+- name: Case 6, otherwise-eligible family outside North Dakota, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_income_eligible: true
+        is_ccdf_asset_eligible: true
+        nd_ccap_activity_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # defined_for = StateCode.ND zeroes eligibility outside North Dakota.
+    nd_ccap_eligible: false

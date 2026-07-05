@@ -51,7 +51,18 @@ class in_eitc(Variable):
                 eitc_parameters=frozen_eitc,
                 investment_income_eligible=investment_income_eligible,
             )
-            return frozen_federal_eitc * ip.earned_income.match_rate
+            # 2025 Schedule IN-EIC Section B (filers claiming one or more
+            # children) directs the taxpayer to take 10% of the earned income
+            # credit "from your federal income tax return" — i.e. the current-
+            # year federal EITC as claimed, not a frozen-IRC recomputation.
+            # Indiana's decoupling (Section A) targets the childless / ARPA
+            # expansion only, so the frozen federal EITC is retained solely for
+            # childless filers.
+            current_federal_eitc = tax_unit("eitc", period)
+            federal_eitc = where(
+                child_count > 0, current_federal_eitc, frozen_federal_eitc
+            )
+            return federal_eitc * ip.earned_income.match_rate
         # if Indiana EITC is decoupled from federal EITC
         fp = parameters(period).gov.irs.credits
         # ... cap child count
