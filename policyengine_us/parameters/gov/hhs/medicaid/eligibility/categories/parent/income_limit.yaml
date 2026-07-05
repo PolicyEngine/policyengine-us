@@ -5,6 +5,8 @@ metadata:
   breakdown:
   - state_code
   reference:
+    - title: MACPAC Exhibit 36, Medicaid Income Eligibility Levels as a Percentage of the FPL (July 2024) - Georgia parents/caretakers 28% + 5% MAGI disregard
+      href: https://www.macpac.gov/wp-content/uploads/2024/12/EXHIBIT-36.-Medicaid-Income-Eligibility-Levels-as-a-Percentage-of-the-FPL-for-Non-Aged-Non-Disabled-Non-Pregnant-Adults-July-2024.pdf
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=33
     - title: medicaidscreener.com
@@ -50,6 +52,8 @@ FL:
   2021-01-01: 0.32
 GA:
   2018-01-01: 0.39
+  # 28% FPL parent/caretaker standard + 5% MAGI disregard (MACPAC July 2024)
+  2024-01-01: 0.33
 HI:
   2018-01-01: 1.10
   2021-01-01: 1.10

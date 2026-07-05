@@ -79,3 +79,33 @@
   output:
     medicaid_parent_income_limit: 0.460322
   absolute_error_margin: 0.0001
+
+# Issue #8834: Georgia's dollar-based parent/caretaker standard is ~28% FPL,
+# or 0.33 including the 5% MAGI disregard (MACPAC July 2024).
+- name: Case 6, Georgia parent limit before the dollar-standard correction.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.39
+  absolute_error_margin: 0.0001
+
+- name: Case 7, Georgia parent limit is 0.33 FPL (28% + 5% MAGI disregard).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.33
+  absolute_error_margin: 0.0001
