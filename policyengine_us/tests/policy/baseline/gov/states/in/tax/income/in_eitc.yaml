@@ -33,19 +33,39 @@
   output:
     in_eitc: 0.09 * 5_980
 
-- name: in_eitc unit test 4
+- name: taxsim_1039_in_eitc_with_child_uses_current_federal_eitc
+  # 2025 Schedule IN-EIC Section B: a filer claiming one or more children takes
+  # 10% of the earned income credit "from your federal income tax return", i.e.
+  # the current-year federal EITC ($4,328 here), not a frozen-IRC recomputation.
+  # 10% x $4,328 = $432.80. Originating: PolicyEngine/policyengine-taxsim#1039.
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      parent: {age: 35, employment_income: 15_714}
+      child: {age: 10}
+    tax_units:
+      tax_unit: {members: [parent, child]}
+    households:
+      household: {members: [parent, child], state_fips: 18}
+  output:
+    in_eitc: 433
+
+- name: in_eitc childless 2025 stays on frozen 2023 IRC snapshot
+  # Schedule IN-EIC Section A / IC 6-3-1-11: childless filers remain decoupled
+  # from the federal (ARPA-expanded) EITC and use the frozen Jan 1, 2023 IRC.
+  # 10% x frozen $600 childless max = $60, NOT 10% x current federal $612 = $61.20.
   absolute_error_margin: 0.01
   period: 2025
   input:
-    state_code: IN
-    eitc: 0
-    in_eitc_eligible: true
-    filing_status: HEAD_OF_HOUSEHOLD
-    eitc_child_count: 1
-    filer_adjusted_earnings: 10_000
-    adjusted_gross_income: 10_000
+    people:
+      parent: {age: 30, employment_income: 8_000}
+    tax_units:
+      tax_unit: {members: [parent]}
+    households:
+      household: {members: [parent], state_fips: 18}
   output:
-    in_eitc: 340
+    in_eitc: 60
 
 - name: Indiana EITC TY 2026 uses the SEA 243 advanced January 1, 2026 IRC snapshot
   period: 2026
@@ -72,8 +92,22 @@
         state_code: IN
   output:
     # TY 2026 onwards Indiana SEA 243 (2025) advances the IRC reference to
-    # January 1, 2026. The static_conformity_in_effect parameter is true;
-    # the year-conditional snapshot logic picks "2026-01-01" instead of
-    # "2023-01-01". A positive credit confirms the post-SEA 243 frozen-IRC
-    # code path is exercised.
+    # January 1, 2026. This with-children filer takes 10% of the current-year
+    # federal EITC per Schedule IN-EIC Section B; under SEA 243 the current and
+    # frozen (2026-01-01) computations coincide, so the credit is $442.70.
     in_eitc: 442.70
+
+- name: in_eitc childless 2026 uses the SEA 243 January 1, 2026 IRC snapshot
+  # Childless filers stay on the frozen IRC snapshot; under SEA 243 the 2026
+  # snapshot equals the current federal childless EITC, so 10% x $612 = $61.20.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent: {age: 30, employment_income: 8_000}
+    tax_units:
+      tax_unit: {members: [parent]}
+    households:
+      household: {members: [parent], state_fips: 18}
+  output:
+    in_eitc: 61.20

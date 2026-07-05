@@ -1,0 +1,90 @@
+# Tests for nd_ccap_parent_in_eligible_activity (Person, MONTH, bool).
+# A parent is in an allowable activity with positive wages, nonzero
+# self-employment income, full-time student status, TANF enrollment, or a
+# disability; there is no minimum number of working hours (400-28-55-05).
+
+- name: Case 1, employed parent, in an eligible activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: true
+
+- name: Case 2, self-employed with a business loss, still in an eligible activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -6_000  # loss still evidences self-employment
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: true
+
+- name: Case 3, full-time student, in an eligible activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: true
+
+- name: Case 4, disabled parent, in an eligible activity (incapacity).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: true
+
+- name: Case 5, TANF-enrolled parent, in an eligible activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: true
+
+- name: Case 6, no earnings, school, TANF, or disability, not in an activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_parent_in_eligible_activity: false

@@ -69,3 +69,14 @@
     rent: 1_000
   output:
     az_property_tax_credit: 0
+
+- name: AZ property tax credit uses the cohabitating (Table 2) schedule for a married couple
+  period: 2025
+  input:
+    people:
+      head: {age: 75, taxable_interest_income: 3_637.87, rent: 9_059.32}
+      spouse: {age: 75}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: AZ}}
+  output:
+    az_property_tax_credit: 323

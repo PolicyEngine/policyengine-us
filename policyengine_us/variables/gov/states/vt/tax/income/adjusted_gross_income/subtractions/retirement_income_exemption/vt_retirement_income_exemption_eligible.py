@@ -21,9 +21,7 @@ class vt_retirement_income_exemption_eligible(Variable):
         # or other eligible retirement systems to determine eligibility
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.retirement_income_exemption.csrs.reduction
+        p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         # One of the retirement income should be greater than 0
         retirement_income = add(
             tax_unit,
@@ -35,8 +33,34 @@ class vt_retirement_income_exemption_eligible(Variable):
             ],
         )
         retirement_income_qualified = retirement_income > 0
+        # Determine which retirement system the filer uses, mirroring the
+        # main exemption formula, so the eligibility gate uses the matching
+        # phase-out threshold (Social Security thresholds differ from CSRS
+        # under 2025 law, S.51).
+        tax_unit_taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
+        vt_military_retirement_pay_exclusion = tax_unit(
+            "vt_military_retirement_pay_exclusion", period
+        )
+        vt_csrs_retirement_pay_exclusion = tax_unit(
+            "vt_csrs_retirement_pay_exclusion", period
+        )
+        larger_retirement_income = max_(
+            tax_unit_taxable_social_security,
+            vt_military_retirement_pay_exclusion,
+        )
+        chosen_retirement_income = max_(
+            larger_retirement_income, vt_csrs_retirement_pay_exclusion
+        )
+        use_ss = tax_unit_taxable_social_security == chosen_retirement_income
+        reduction_end = where(
+            use_ss,
+            p.social_security.reduction.end[filing_status],
+            p.csrs.reduction.end[filing_status],
+        )
         # The agi should below threshold
-        agi_qualified = agi < p.end[filing_status]
+        agi_qualified = agi < reduction_end
         # Both qualified then the filer is qualified for vermont retirement
         # income exemption
         return retirement_income_qualified & agi_qualified

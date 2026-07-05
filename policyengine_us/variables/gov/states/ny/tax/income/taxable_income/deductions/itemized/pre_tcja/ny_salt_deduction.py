@@ -16,14 +16,12 @@ class ny_salt_deduction(Variable):
     NY Tax Law § 615 requires itemized deductions to be computed using
     pre-TCJA federal rules. For SALT:
     - No $10,000 cap applies
-    - State and local income taxes are NOT deductible (add-back required per § 615(c))
-    - State and local sales taxes ARE deductible
+    - State and local income taxes are NOT deductible (add-back required per § 615(c)(1))
+    - State and local general sales taxes are NOT deductible (add-back required per § 615(c)(1))
     - Real estate taxes ARE deductible
     """
 
     def formula(tax_unit, period, parameters):
-        # NY allows sales tax and real estate taxes, but NOT income taxes
-        # Per Tax Law § 615(c), state/local income taxes must be subtracted
-        sales_tax = add(tax_unit, period, ["state_sales_tax", "local_sales_tax"])
-        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return sales_tax + real_estate_taxes
+        # NY Tax Law § 615(c)(1): state and local general sales taxes are added
+        # back (like income taxes). Only real estate taxes remain deductible.
+        return add(tax_unit, period, ["real_estate_taxes"])

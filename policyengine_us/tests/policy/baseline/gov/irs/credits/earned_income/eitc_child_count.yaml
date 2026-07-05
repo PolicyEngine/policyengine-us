@@ -51,3 +51,37 @@
         members: [person1, person2, person3]
   output:
     eitc_child_count: 1
+
+- name: Case 4, disabled adult dependent meets the EITC child count.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        meets_eitc_identification_requirements: true
+      person2:
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    eitc_child_count: 1
+
+- name: Case 5, disabled non-dependent does not meet the EITC child count.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        meets_eitc_identification_requirements: true
+      person2:
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_dependent: false
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    eitc_child_count: 0

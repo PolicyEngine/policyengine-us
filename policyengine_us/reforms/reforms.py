@@ -162,6 +162,42 @@ from .states.wi.dependent_exemption.wi_dependent_exemption_reform import (
 from .states.hi.dependent_exemption.hi_dependent_exemption_reform import (
     create_hi_dependent_exemption_reform_fn,
 )
+from .states.ny.dependent_exemption.ny_dependent_exemption_reform import (
+    create_ny_dependent_exemption_reform_fn,
+)
+from .states.il.dependent_exemption.il_dependent_exemption_reform import (
+    create_il_dependent_exemption_reform_fn,
+)
+from .states.ms.dependent_exemption.ms_dependent_exemption_reform import (
+    create_ms_dependent_exemption_reform_fn,
+)
+from .states.nj.dependent_exemption.nj_dependent_exemption_reform import (
+    create_nj_dependent_exemption_reform_fn,
+)
+from .states.sc.dependent_exemption.sc_dependent_exemption_reform import (
+    create_sc_dependent_exemption_reform_fn,
+)
+from .states.ks.dependent_exemption.ks_dependent_exemption_reform import (
+    create_ks_dependent_exemption_reform_fn,
+)
+from .states.ga.dependent_exemption.ga_dependent_exemption_reform import (
+    create_ga_dependent_exemption_reform_fn,
+)
+from .states.mn.dependent_exemption.mn_dependent_exemption_reform import (
+    create_mn_dependent_exemption_reform_fn,
+)
+from .states.al.dependent_exemption.al_dependent_exemption_reform import (
+    create_al_dependent_exemption_reform_fn,
+)
+from .states.ca.dependent_credit.ca_dependent_credit_reform import (
+    create_ca_dependent_credit_reform_fn,
+)
+from .states.ia.dependent_credit.ia_dependent_credit_reform import (
+    create_ia_dependent_credit_reform_fn,
+)
+from .states.az.dependent_credit.az_dependent_credit_reform import (
+    create_az_dependent_credit_reform_fn,
+)
 from .states.md.dependent_exemption.md_dependent_exemption_reform import (
     create_md_dependent_exemption_reform_fn,
 )
@@ -276,6 +312,12 @@ from .states.id.eitc import (
 )
 from .states.id.s1450 import (
     create_id_s1450_reform,
+)
+from .states.id.ctc import (
+    create_id_ctc_reform,
+)
+from .states.ga.ctc import (
+    create_ga_ctc_reform,
 )
 from .states.il.sb3567 import (
     create_il_sb3567_reform,
@@ -451,6 +493,18 @@ def create_structural_reforms_from_parameters(parameters, period):
     wv_dependent_exemption = create_wv_dependent_exemption_reform_fn(parameters, period)
     wi_dependent_exemption = create_wi_dependent_exemption_reform_fn(parameters, period)
     hi_dependent_exemption = create_hi_dependent_exemption_reform_fn(parameters, period)
+    ny_dependent_exemption = create_ny_dependent_exemption_reform_fn(parameters, period)
+    il_dependent_exemption = create_il_dependent_exemption_reform_fn(parameters, period)
+    ms_dependent_exemption = create_ms_dependent_exemption_reform_fn(parameters, period)
+    nj_dependent_exemption = create_nj_dependent_exemption_reform_fn(parameters, period)
+    sc_dependent_exemption = create_sc_dependent_exemption_reform_fn(parameters, period)
+    ks_dependent_exemption = create_ks_dependent_exemption_reform_fn(parameters, period)
+    ga_dependent_exemption = create_ga_dependent_exemption_reform_fn(parameters, period)
+    mn_dependent_exemption = create_mn_dependent_exemption_reform_fn(parameters, period)
+    al_dependent_exemption = create_al_dependent_exemption_reform_fn(parameters, period)
+    ca_dependent_credit = create_ca_dependent_credit_reform_fn(parameters, period)
+    ia_dependent_credit = create_ia_dependent_credit_reform_fn(parameters, period)
+    az_dependent_credit = create_az_dependent_credit_reform_fn(parameters, period)
     md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
     oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
     ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
@@ -497,6 +551,8 @@ def create_structural_reforms_from_parameters(parameters, period):
     ga_eitc = create_ga_eitc_reform(parameters, period)
     id_eitc = create_id_eitc_reform(parameters, period)
     id_s1450 = create_id_s1450_reform(parameters, period)
+    id_ctc = create_id_ctc_reform(parameters, period)
+    ga_ctc = create_ga_ctc_reform(parameters, period)
     il_sb3567 = create_il_sb3567_reform(parameters, period)
     ky_eitc = create_ky_eitc_reform(parameters, period)
     ms_eitc = create_ms_eitc_reform(parameters, period)
@@ -592,6 +648,18 @@ def create_structural_reforms_from_parameters(parameters, period):
         wv_dependent_exemption,
         wi_dependent_exemption,
         hi_dependent_exemption,
+        ny_dependent_exemption,
+        il_dependent_exemption,
+        ms_dependent_exemption,
+        nj_dependent_exemption,
+        sc_dependent_exemption,
+        ks_dependent_exemption,
+        ga_dependent_exemption,
+        mn_dependent_exemption,
+        al_dependent_exemption,
+        ca_dependent_credit,
+        ia_dependent_credit,
+        az_dependent_credit,
         md_dependent_exemption,
         oh_dependent_exemption,
         ar_dependent_credit,
@@ -628,6 +696,8 @@ def create_structural_reforms_from_parameters(parameters, period):
         ga_eitc,
         id_eitc,
         id_s1450,
+        id_ctc,
+        ga_ctc,
         il_sb3567,
         ky_eitc,
         ms_eitc,

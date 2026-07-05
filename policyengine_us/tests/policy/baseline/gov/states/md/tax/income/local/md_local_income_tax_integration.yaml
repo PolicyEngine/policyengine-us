@@ -1,0 +1,25 @@
+- name: Baltimore City county tax reaches the household tax aggregate (2026)
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 97_140
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code_str: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # 3.2% * 90,540 MD taxable income = 2,897.28, no local credits
+    md_local_income_tax_before_refundable_credits: 2_897.28
+    # 4,248.15 MD state income tax + 2,897.28 local income tax
+    household_state_tax_before_refundable_credits: 7_145.43
+    household_tax: 27_117.44

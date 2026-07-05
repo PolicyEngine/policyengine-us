@@ -1,0 +1,10 @@
+description: New Jersey provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  2021-01-01: 1_500
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Jersey dependent exemption reform amount
+  reference:
+    - title: 2025 NJ-1040 Instructions (Lines 10-11)
+      href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=8

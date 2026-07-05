@@ -62,10 +62,16 @@ jobs:
           fi
 
           file_count=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | wc -l | tr -d ' ')
-          file_list=$(printf '%s\n' "${CHANGED_FILES}" | sed '/^$/d' | head -20 | sed 's/^/- /')
+          # awk reads all input, so the producer never gets SIGPIPE (head -20
+          # exits after 20 lines, which fails the pipeline under pipefail
+          # whenever more than 20 partner files change).
+          file_list=$(printf '%s\n' "${CHANGED_FILES}" | awk 'NF && ++n <= 20 { print "- " $0 }')
 
           if [ "${file_count}" -gt 20 ]; then
+            files_heading="Showing first 20:"
             file_list=$(printf '%s\n- ...and %d more. See the PR file diff for the full list.' "${file_list}" $((file_count - 20)))
+          else
+            files_heading="Changed files:"
           fi
 
           payload=$(
@@ -73,6 +79,7 @@ jobs:
               --arg author "${PR_AUTHOR}" \
               --arg count "${file_count}" \
               --arg files "${file_list}" \
+              --arg heading "${files_heading}" \
               --arg number "${PR_NUMBER}" \
               --arg title "${PR_TITLE}" \
               --arg url "${PR_URL}" \
@@ -82,7 +89,7 @@ jobs:
                   "PR: <" + $url + "|#" + $number + " " + $title + ">\n" +
                   "Author: " + $author + "\n" +
                   "Changed partner files: " + $count + "\n" +
-                  "Showing first 20:\n" + $files + "\n\n" +
+                  $heading + "\n" + $files + "\n\n" +
                   "Please review whether this changes partner-facing API behavior before merge."
                 )
               }'

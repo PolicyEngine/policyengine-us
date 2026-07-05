@@ -1,0 +1,19 @@
+description: South Carolina provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline amount, so activating the reform at the default is a no-op.
+values:
+  2019-01-01: 4_100
+  2021-01-01: 4_300
+  2022-01-01: 4_430
+  2023-01-01: 4_610
+  2024-01-01: 4_790
+  2025-01-01: 4_930
+metadata:
+  unit: currency-USD
+  period: year
+  uprating: gov.irs.uprating
+  rounding:
+    type: downwards
+    interval: 10
+  label: South Carolina dependent exemption reform amount
+  reference:
+    - title: SC 1040 tax form instructions (2025)
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=16

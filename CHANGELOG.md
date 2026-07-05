@@ -1,3 +1,79 @@
+## [1.756.0] - 2026-07-05
+
+### Added
+
+- Added an Alabama dependent exemption contributed reform with an adjustable per-dependent amount and optional age limit.
+- Added an optional age limit to the Arkansas dependent tax credit contributed reform.
+- Added an Arizona dependent tax credit contributed reform with an adjustable per-dependent amount and optional age limit.
+- Add California dependent credit age-gate contributed reform.
+- Add Georgia refundable child tax credit contributed reform.
+- Added Georgia dependent exemption age-gate contributed reform.
+- Add Iowa dependent credit age-gate contributed reform.
+- Add Idaho child tax credit revival contributed reform, with an optional refundable top-up.
+- Added Illinois dependent exemption age-gate contributed reform.
+- Added Kansas dependent exemption age-gate contributed reform.
+- Wire Maryland county income tax into the household tax and SALT aggregates, adding the local earned income credit and local poverty level credit.
+- Add Minnesota dependent exemption age-gate contributed reform.
+- Added Mississippi dependent exemption age-gate contributed reform.
+- Implemented North Dakota Child Care Assistance Program (CCAP).
+- Add New Jersey dependent exemption age-gate contributed reform.
+- Added a New York dependent exemption contributed reform with an adjustable per-dependent amount and an optional age limit.
+- Add South Carolina dependent exemption age-gate contributed reform.
+- Add schedule_d_capital_gain_distributions (memo component of long_term_capital_gains for Schedule D line 13 amounts) and capital_gain_distributions (total across both reporting routes).
+
+### Changed
+
+- Consolidated Nebraska Child Care Subsidy under the CCDF program coverage metadata, removing the duplicate standalone program entry.
+- Restructured Virginia income tax subtractions to attribute each subtraction to the recipient spouse through a shared person-level subtractions list used by both the tax-unit and per-person totals, leaving all calculated values unchanged.
+
+### Fixed
+
+- Fixed the Arizona property tax credit (Form 140PTC) to use the Table 2 (cohabitating) schedule for married couples living together per ARS 43-1072(B)(2).
+- California AMT (Schedule P Line 4) no longer adds back acquisition home mortgage interest, matching the federal AMT treatment.
+- Use the federally loss-limited net capital gain in the Delaware pension exclusion eligible-income basket.
+- Corrected the Virginia per-person adjusted gross income used by the Spouse Tax Adjustment to attribute each Virginia subtraction (Social Security, railroad retirement, unemployment, US government interest, military and disability subtractions, and the age deduction) to the spouse who received the income, preventing the adjustment from being wrongly granted to couples where one spouse only has Virginia-exempt income.
+- - Fix the Vermont retirement-income exemption eligibility gate to use the Social Security phase-out threshold for Social Security filers.
+- Compute the Indiana EITC for filers with children from the current-year federal EITC, per Schedule IN-EIC Section B, instead of a frozen 2023 IRC snapshot.
+- Limited the Missouri state-income-tax add-back to the federal SALT deduction after the OBBBA cap phase-down.
+- Exclude general sales tax from the New York itemized deduction per NY Tax Law section 615(c)(1).
+
+
+## [1.755.7] - 2026-07-05
+
+### Fixed
+
+- Update Colorado OAP and AND-CS grant standards for 2026.
+
+
+## [1.755.6] - 2026-07-04
+
+### Fixed
+
+- Fix the partner API impact Slack notification job crashing on pull requests that change more than 20 partner test files.
+
+
+## [1.755.5] - 2026-07-02
+
+### Fixed
+
+- Fix county computation over datasets and complete the County enum. Households storing county_fips (but no county) now map counties from FIPS instead of collapsing to first_county_in_state, restoring in_nyc and NYC income tax in microsimulation. The County enum gains 61 missing entries (31 state counties and independent cities including O'Brien County IA and nine Virginia cities, plus 30 territory rows), appended at the end because datasets persist county as enum indices. Unmappable county names return UNKNOWN instead of raising, and three_digit_zip_code no longer crashes on non-numeric zip codes.
+
+
+## [1.755.4] - 2026-07-02
+
+### Fixed
+
+- Include 5-year-olds in the Head Start age range, matching 45 CFR 1302.12(b), which covers children from age 3 up to compulsory school age.
+
+
+## [1.755.3] - 2026-07-02
+
+### Fixed
+
+- Apply New Jersey's filing-threshold tax floor (N.J.S.A. 54A:2-4) to New Jersey income tax before refundable credits, which previously bypassed it.
+- Reinstate California's non-MAGI Medi-Cal asset limit effective January 1, 2026 ($130,000 for an individual, $195,000 for a couple), per DHCS ACWDL 25-14.
+
+
 ## [1.755.2] - 2026-07-02
 
 ### Fixed
