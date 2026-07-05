@@ -109,11 +109,15 @@
   output:
     ri_social_security_modification_eligible: false
 
-# 2027 income limits remain at 2025 levels because the uprating index is 1.0 through 2027.
+# The 2027 income limit is a gov.irs.uprating CPI projection from the 2025
+# explicit value (#8905 unfroze the sibling-of-values `uprating:` block that
+# had been silently ignored, freezing 2026/2027 at the 2025 figure). RI has
+# not yet published its own 2027 adjustment; the official figure supersedes
+# this projection once released (see #8905).
 - name: 2027 - Single filer just below income limit is eligible
   period: 2027
   input:
-    adjusted_gross_income: 106_999
+    adjusted_gross_income: 112_299
     filing_status: SINGLE
     older_spouse_birth_year: 1990
     state_code: RI
@@ -123,7 +127,7 @@
 - name: 2027 - Single filer at income limit is ineligible
   period: 2027
   input:
-    adjusted_gross_income: 107_000
+    adjusted_gross_income: 112_300
     filing_status: SINGLE
     older_spouse_birth_year: 1990
     state_code: RI
@@ -133,7 +137,7 @@
 - name: 2027 - Joint filer just below income limit is eligible
   period: 2027
   input:
-    adjusted_gross_income: 133_749
+    adjusted_gross_income: 140_349
     filing_status: JOINT
     older_spouse_birth_year: 1990
     state_code: RI
@@ -143,7 +147,7 @@
 - name: 2027 - Joint filer at income limit is ineligible
   period: 2027
   input:
-    adjusted_gross_income: 133_750
+    adjusted_gross_income: 140_350
     filing_status: JOINT
     older_spouse_birth_year: 1990
     state_code: RI

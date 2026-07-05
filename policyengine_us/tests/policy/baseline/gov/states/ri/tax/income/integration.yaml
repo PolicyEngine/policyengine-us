@@ -225,4 +225,10 @@
     ri_ctc: 330
     ri_high_earner_tax: 2_500
     ri_social_security_modification: 10_000
-    ri_income_tax: 73_993.54
+    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
+    # thresholds, gov.irs.uprating-projected for 2027 (#8905 unfroze this
+    # parameter's sibling-of-values `uprating:` block; RI's own rate-schedule
+    # references only cover through 2025, so this is a projection pending
+    # RI's 2027 publication): 71,672.44 before credits, + 2,500 surtax,
+    # - 330 CTC = 73,842.44
+    ri_income_tax: 73_842.44

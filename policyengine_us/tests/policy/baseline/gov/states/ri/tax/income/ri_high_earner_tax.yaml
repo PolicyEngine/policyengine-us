@@ -43,7 +43,16 @@
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
-    ri_income_tax_before_non_refundable_credits: 74_323.54
+    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
+    # thresholds, gov.irs.uprating-projected for 2027 (#8905 unfroze this
+    # parameter's sibling-of-values `uprating:` block; RI's own rate-schedule
+    # references only cover through 2025, so this is a projection pending
+    # RI's 2027 publication):
+    # .0375*83,850 + .0475*(190,650-83,850) + .0599*(1,250,000-190,650) = 71,672.44
+    # + 1% high-earner surtax on income above the (explicit, unaffected)
+    # $1,000,000 2027 threshold: (1,250,000 - 1,000,000) * 0.01 = 2,500
+    # Total: 71,672.44 + 2,500 = 74,172.44
+    ri_income_tax_before_non_refundable_credits: 74_172.44
 
 - name: Rhode Island high-income surtax does not apply at the threshold
   period: 2027
