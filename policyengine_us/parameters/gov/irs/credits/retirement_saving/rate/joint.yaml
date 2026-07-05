@@ -2,10 +2,10 @@ description: IRS multiplies the qualified contributions by the following rate fo
 metadata:
   type: single_amount
   threshold_unit: currency-USD
-  ramount_unit: /1
+  amount_unit: /1
   period: year
   label: Saver's Credit joint rate
-  reference: 
+  reference:
     - title: 26 U.S. Code § 25B(b)(1)
       href: https://www.law.cornell.edu/uscode/text/26/25B#b
     - title: IRS | Retirement Savings Contributions Credit (Saver's Credit)
@@ -14,6 +14,12 @@ metadata:
       href: https://www.irs.gov/pub/irs-pdf/f8880.pdf#page=1
     - title: 2018 Form 8880
       href: https://www.irs.gov/pub/irs-prior/f8880--2018.pdf#page=1
+    - title: IRS Notice 2023-75, 2024 Amounts Relating to Retirement Plans and IRAs (25B(b)(1)(A)-(D) joint amounts $46,000/$50,000/$76,500)
+      href: https://www.irs.gov/pub/irs-drop/n-23-75.pdf#page=3
+    - title: IRS Notice 2024-80, 2025 Amounts Relating to Retirement Plans and IRAs (25B(b)(1)(A)-(D) joint amounts $47,500/$51,000/$79,000)
+      href: https://www.irs.gov/pub/irs-drop/n-24-80.pdf#page=3
+    - title: IRS Notice 2025-67, 2026 Amounts Relating to Retirement Plans and IRAs (25B(b)(1)(A)-(D) joint amounts $48,500/$52,500/$80,500)
+      href: https://www.irs.gov/pub/irs-drop/n-25-67.pdf#page=3
 
 brackets:
   - threshold:
@@ -28,11 +34,9 @@ brackets:
         2021-01-01: 39_500
         2022-01-01: 41_000
         2023-01-01: 43_500
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 500
+        2024-01-01: 46_000
+        2025-01-01: 47_500
+        2026-01-01: 48_500
     amount:
       2018-01-01: 0.2
   - threshold:
@@ -43,11 +47,9 @@ brackets:
         2021-01-01: 43_000
         2022-01-01: 44_000
         2023-01-01: 47_500
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 500
+        2024-01-01: 50_000
+        2025-01-01: 51_000
+        2026-01-01: 52_500
     amount:
       2018-01-01: 0.1
   - threshold:
@@ -58,10 +60,8 @@ brackets:
         2021-01-01: 66_000
         2022-01-01: 68_000
         2023-01-01: 73_000
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 500
+        2024-01-01: 76_500
+        2025-01-01: 79_000
+        2026-01-01: 80_500
     amount:
       2018-01-01: 0
