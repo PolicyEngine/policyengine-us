@@ -24,3 +24,19 @@
     min_head_spouse_earned: 8_000
   output:
     cdcc_relevant_expenses: 5_000
+
+- name: Adult dependent care expenses add to the childcare base
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        pre_subsidy_care_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_childcare_expenses: 1_000
+        cdcc_limit: 6_000
+        min_head_spouse_earned: 10_000
+  output:
+    cdcc_relevant_expenses: 3_000  # 1_000 childcare + 2_000 adult care

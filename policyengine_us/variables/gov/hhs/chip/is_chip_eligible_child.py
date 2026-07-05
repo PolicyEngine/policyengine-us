@@ -44,7 +44,9 @@ class is_chip_eligible_child(Variable):
         income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
-        has_esi = person("has_esi", period)
+        has_disqualifying_coverage = person(
+            "has_chip_disqualifying_health_coverage", period
+        )
 
         return (
             is_age_eligible
@@ -52,5 +54,5 @@ class is_chip_eligible_child(Variable):
             & immigration_eligible
             & ~medicaid_eligible
             & income_eligible
-            & ~has_esi
+            & ~has_disqualifying_coverage
         )

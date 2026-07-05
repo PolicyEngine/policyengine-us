@@ -1,0 +1,49 @@
+description: Michigan reimburses group and family child care homes at these hourly rates under the Child Development and Care program, by star quality level and child age group.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan CDC group and family home hourly rates
+  breakdown:
+    - mi_ccap_star_rating
+    - mi_ccap_age_group
+  reference:
+    - title: RFT 270, Department Hourly Rates (effective September 22, 2024)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=4
+
+# The Base Rate (blank star) and 1 Star (Maintaining Health & Safety) rows
+# carry identical rates, so STAR_1 holds both.
+STAR_1:
+  INFANT_TODDLER:
+    2024-09-22: 5.70
+  PRESCHOOL:
+    2024-09-22: 4.90
+  SCHOOL_AGE:
+    2024-09-22: 4.80
+STAR_2:
+  INFANT_TODDLER:
+    2024-09-22: 6.15
+  PRESCHOOL:
+    2024-09-22: 5.35
+  SCHOOL_AGE:
+    2024-09-22: 5.20
+STAR_3:
+  INFANT_TODDLER:
+    2024-09-22: 7.00
+  PRESCHOOL:
+    2024-09-22: 6.15
+  SCHOOL_AGE:
+    2024-09-22: 6.00
+STAR_4:
+  INFANT_TODDLER:
+    2024-09-22: 7.35
+  PRESCHOOL:
+    2024-09-22: 6.55
+  SCHOOL_AGE:
+    2024-09-22: 6.45
+STAR_5:
+  INFANT_TODDLER:
+    2024-09-22: 8.20
+  PRESCHOOL:
+    2024-09-22: 7.35
+  SCHOOL_AGE:
+    2024-09-22: 7.25

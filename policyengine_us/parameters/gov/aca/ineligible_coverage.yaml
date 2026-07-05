@@ -1,0 +1,20 @@
+description: Coverage and program eligibility sources that prevent ACA Marketplace premium payment.
+values:
+  2014-01-01:
+    - is_medicaid_eligible
+    - is_medicaid_ineligible_due_to_work_requirement
+    - is_chip_eligible
+    - is_basic_health_program_eligible
+    - is_aca_eshi_eligible
+    - is_medicare_eligible
+    - or_healthier_oregon_eligible
+    - has_qualifying_non_marketplace_health_coverage_at_interview
+metadata:
+  unit: list
+  period: year
+  label: ACA ineligible coverage sources
+  reference:
+    - title: 26 U.S. Code § 36B(c)(2) - Coverage months
+      href: https://www.law.cornell.edu/uscode/text/26/36B#c_2
+    - title: 26 CFR § 1.36B-2 - Eligibility for premium tax credit
+      href: https://www.law.cornell.edu/cfr/text/26/1.36B-2

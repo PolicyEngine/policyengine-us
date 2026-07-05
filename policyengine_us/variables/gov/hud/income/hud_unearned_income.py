@@ -1,0 +1,11 @@
+from policyengine_us.model_api import *
+
+
+class hud_unearned_income(Variable):
+    value_type = float
+    entity = Person
+    label = "HUD unearned income"
+    unit = USD
+    definition_period = YEAR
+    reference = "https://www.law.cornell.edu/cfr/text/24/5.609"
+    adds = "gov.hud.annual_income.sources.unearned"

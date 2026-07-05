@@ -1,8 +1,9 @@
 # Oklahoma Child Care/Child Tax Credit Tests
-# Per Form 511-NR instructions page 11
+# Per Form 511 instructions ("20% of the credit for child care expenses
+# allowed by the IRC") and Schedule 511-F worksheet.
 # Credit = GREATER of:
 #   - 5% of federal CTC
-#   - 20% of federal CDCC
+#   - 20% of the federal CDCC ALLOWED (cdcc, after the federal tax limit)
 # AGI limit: $100,000 (MFJ)
 # Prorated for part-year residents by OK AGI / Federal AGI ratio
 
@@ -11,7 +12,7 @@
   input:
     adjusted_gross_income: 40_000
     ok_agi: 20_000
-    cdcc_potential: 2_000
+    cdcc: 2_000
     ok_federal_ctc: 3_000
     state_code: OK
   output:
@@ -29,7 +30,7 @@
   input:
     adjusted_gross_income: 50_000
     ok_agi: 50_000
-    cdcc_potential: 500
+    cdcc: 500
     ok_federal_ctc: 4_000
     state_code: OK
   output:
@@ -44,7 +45,7 @@
   input:
     adjusted_gross_income: 60_000
     ok_agi: 60_000
-    cdcc_potential: 3_000
+    cdcc: 3_000
     ok_federal_ctc: 2_000
     state_code: OK
   output:
@@ -58,7 +59,7 @@
   input:
     adjusted_gross_income: 120_000
     ok_agi: 120_000
-    cdcc_potential: 2_000
+    cdcc: 2_000
     ok_federal_ctc: 4_000
     state_code: OK
   output:
@@ -70,7 +71,7 @@
   input:
     adjusted_gross_income: 100_000
     ok_agi: 100_000
-    cdcc_potential: 1_500
+    cdcc: 1_500
     ok_federal_ctc: 3_000
     state_code: OK
   output:
@@ -85,7 +86,7 @@
   input:
     adjusted_gross_income: 45_000
     ok_agi: 45_000
-    cdcc_potential: 0
+    cdcc: 0
     ok_federal_ctc: 0
     state_code: OK
   output:
@@ -96,7 +97,7 @@
   input:
     adjusted_gross_income: 80_000
     ok_agi: 40_000
-    cdcc_potential: 2_000
+    cdcc: 2_000
     ok_federal_ctc: 4_000
     state_code: OK
   output:
@@ -106,6 +107,27 @@
     # Part-year ratio: 40,000 / 80,000 = 0.5
     # Final credit: $400 * 0.5 = $200
     ok_child_care_child_tax_credit: 200
+
+# Regression test for #8775/#8776: the OK credit must use the federal CDCC
+# ALLOWED (cdcc), not the pre-tax-limit potential (cdcc_potential). Here the
+# allowed credit (518.45) is far below the potential (1,680); using the
+# potential would overstate the credit to $336 instead of the correct $197.
+- name: OK CTC/CDCC - 2025 - uses allowed federal CDCC, not the potential
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    adjusted_gross_income: 28_810
+    ok_agi: 28_810
+    cdcc: 518.45
+    cdcc_potential: 1_680
+    ok_federal_ctc: 3_946.43
+    state_code: OK
+  output:
+    # 20% CDCC allowed: 518.45 * 0.20 = 103.69
+    # 5% CTC: 3,946.43 * 0.05 = 197.32
+    # Greater is CTC: 197.32 (would be 336 if it used cdcc_potential)
+    ok_child_care_child_tax_credit: 197.32
+    taxsim_ok_child_tax_credit_component: 197.32
 
 - name: OK CTC includes federal non-refundable CTC used against unearned-income tax
   period: 2025

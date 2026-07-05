@@ -14,7 +14,13 @@ class az_property_tax_credit(Variable):
         p = parameters(period).gov.states.az.tax.income.credits.property_tax
         income = tax_unit("az_property_tax_credit_income", period)
 
-        cohabitating = tax_unit("cohabitating_spouses", period)
+        # ARS 43-1072(A)(3): a claimant who "lived with a spouse or one or
+        # more persons" uses the Table 2 (cohabitating) schedule. A married
+        # couple filing jointly lives together, so treat them as cohabitating
+        # regardless of the (default-False) cohabitating_spouses input.
+        cohabitating = tax_unit("cohabitating_spouses", period) | tax_unit(
+            "tax_unit_married", period
+        )
 
         cap = where(
             cohabitating,

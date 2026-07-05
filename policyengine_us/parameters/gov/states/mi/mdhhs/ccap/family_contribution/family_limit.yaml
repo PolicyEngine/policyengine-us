@@ -1,0 +1,29 @@
+description: Michigan caps the total family contribution per two-week pay period at this amount under the Child Development and Care program, based on the family income band.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Michigan CDC family contribution family limit per two-week pay period
+  breakdown:
+    - range(0, 7)
+  breakdown_labels:
+    - Income band
+  reference:
+    - title: RFT 270, CDC Income Eligibility Scale (effective September 21, 2025)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=3
+
+# Band 0 charges no family contribution, so its cap is 0 (non-binding).
+0:
+  2025-09-21: 0
+1:
+  2025-09-21: 45
+2:
+  2025-09-21: 83
+3:
+  2025-09-21: 121
+4:
+  2025-09-21: 143
+5:
+  2025-09-21: 164
+6:
+  2025-09-21: 186

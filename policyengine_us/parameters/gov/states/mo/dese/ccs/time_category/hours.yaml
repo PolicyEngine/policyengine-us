@@ -1,0 +1,27 @@
+description: Missouri determines the care time unit from daily hours of care under the Child Care Subsidy program.
+# Amount is the MOCCSTimeCategory enum index: 0 = FULL_TIME, 1 = HALF_TIME,
+# 2 = PART_TIME. Part time is one half hour up to 3 hours of care, half time is
+# 3 up to 5 hours, and full time is 5 up to 12 hours (chart footnotes).
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Missouri Child Care Subsidy care time unit by hours
+  reference:
+    - title: November 2025 Child Care Eligibility Income Guidelines and Sliding Fee Chart
+      href: https://dese.mo.gov/sites/dese/files/media/pdf/2025/10/10.2025%20Income%20Eligibility%20Table%20%282%29.pdf#page=1
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 2
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 1
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 0

@@ -1,0 +1,26 @@
+description: Michigan reimburses license-exempt related and unrelated providers at these hourly rates under the Child Development and Care program, by quality level and child age group.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan CDC license-exempt hourly rates
+  breakdown:
+    - mi_ccap_exempt_level
+    - mi_ccap_age_group
+  reference:
+    - title: RFT 270, Department Hourly Rates (effective September 22, 2024)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=4
+
+LEVEL_1:
+  INFANT_TODDLER:
+    2024-09-22: 2.95
+  PRESCHOOL:
+    2024-09-22: 2.95
+  SCHOOL_AGE:
+    2024-09-22: 2.95
+LEVEL_2:
+  INFANT_TODDLER:
+    2024-09-22: 4.95
+  PRESCHOOL:
+    2024-09-22: 4.40
+  SCHOOL_AGE:
+    2024-09-22: 4.40

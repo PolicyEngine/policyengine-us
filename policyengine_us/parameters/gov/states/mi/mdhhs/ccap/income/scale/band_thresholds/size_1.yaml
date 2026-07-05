@@ -1,0 +1,42 @@
+description: Michigan assigns a program group of 1 person to a Child Development and Care family contribution band based on monthly gross income.
+
+brackets:
+  - threshold:
+      2025-09-21: 0
+    amount:
+      2025-09-21: 0  # band 0 ($0 family contribution)
+  - threshold:
+      2025-09-21: 1_304.0001
+    amount:
+      2025-09-21: 1
+  - threshold:
+      2025-09-21: 2_608.0001
+    amount:
+      2025-09-21: 2
+  - threshold:
+      2025-09-21: 2_949.0001
+    amount:
+      2025-09-21: 3
+  - threshold:
+      2025-09-21: 3_289.0001
+    amount:
+      2025-09-21: 4
+  - threshold:
+      2025-09-21: 3_630.0001
+    amount:
+      2025-09-21: 5
+  - threshold:
+      2025-09-21: 3_970.0001
+    amount:
+      2025-09-21: 6
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: month
+  period: year
+  label: Michigan CDC family contribution band for program group size 1
+  reference:
+    - title: RFT 270, CDC Income Eligibility Scale (effective September 21, 2025)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=3

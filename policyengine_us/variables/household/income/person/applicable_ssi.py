@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class applicable_ssi(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     unit = USD
     label = "Applicable SSI for program income tests"
     documentation = (
@@ -13,7 +13,7 @@ class applicable_ssi(Variable):
     )
 
     def formula(person, period, parameters):
-        use_reported = person("use_reported_ssi", period)
+        use_reported = person("use_reported_ssi", period.this_year)
         return where(
             use_reported,
             person("ssi_reported", period),

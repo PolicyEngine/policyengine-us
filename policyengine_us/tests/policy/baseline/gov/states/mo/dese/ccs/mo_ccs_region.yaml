@@ -1,0 +1,75 @@
+# MO CCS geographic region tests
+# mo_ccs_region is Household, YEAR (enum: DENSE_URBAN, METRO, URBAN,
+# MICROPOLITAN, RURAL). Derived from county via the region county lists;
+# any county not in Regions 1-4 defaults to RURAL (Region 5).
+
+- name: Case 1, Jackson County is dense urban (Region 1).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_ccs_region: DENSE_URBAN
+
+- name: Case 2, Franklin County is metro (Region 2).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county: FRANKLIN_COUNTY_MO
+  output:
+    mo_ccs_region: METRO
+
+- name: Case 3, Boone County is urban (Region 3).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    mo_ccs_region: URBAN
+
+- name: Case 4, Adair County is micropolitan (Region 4).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county: ADAIR_COUNTY_MO
+  output:
+    mo_ccs_region: MICROPOLITAN
+
+- name: Case 5, Barry County defaults to rural (Region 5).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        county: BARRY_COUNTY_MO
+  output:
+    # Barry County is not listed in Regions 1-4 -> default RURAL.
+    mo_ccs_region: RURAL

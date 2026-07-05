@@ -1,11 +1,22 @@
-- name: Case 1 - UT EITC is fully refundable when reform active
+# The reform makes the Utah EITC fully refundable. It pays the uncapped
+# potential credit (ut_eitc_potential), so these tests drive the credit from
+# the federal EITC rather than injecting the capped ut_eitc. The 2024 UT EITC
+# rate is 20% of the federal EITC; the credit is also capped at W-2 wages
+# (Utah Code § 59-10-1044), so the head's employment income is set high
+# enough not to bind.
+
+- name: Case 1 - UT EITC is fully refundable (uncapped) when reform active
   period: 2024
   reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
   input:
     state_code: UT
-    ut_eitc: 500
+    eitc: 2_500
+    ut_income_tax_before_non_refundable_credits: 0
+    employment_income: 30_000
   output:
-    ut_fully_refundable_eitc: 500
+    ut_eitc_potential: 500  # 2,500 * 0.2
+    ut_eitc: 0  # capped at zero tax liability
+    ut_fully_refundable_eitc: 500  # full potential paid as a refund
     ut_non_refundable_eitc: 0
 
 - name: Case 2 - UT refundable credits include EITC when reform active
@@ -13,7 +24,8 @@
   reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
   input:
     state_code: UT
-    ut_eitc: 1_000
+    eitc: 5_000
+    employment_income: 30_000
   output:
     ut_fully_refundable_eitc: 1_000
     ut_refundable_credits: 1_000
@@ -23,17 +35,18 @@
   reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
   input:
     state_code: UT
-    ut_eitc: 300
+    eitc: 1_500
+    employment_income: 30_000
   output:
     ut_fully_refundable_eitc: 300
     ut_refundable_credits: 300
 
-- name: Case 4 - UT EITC is 0 when EITC is 0
+- name: Case 4 - UT refundable EITC is 0 when the federal EITC is 0
   period: 2024
   reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
   input:
     state_code: UT
-    ut_eitc: 0
+    eitc: 0
   output:
     ut_fully_refundable_eitc: 0
     ut_refundable_credits: 0
@@ -43,6 +56,7 @@
   reforms: policyengine_us.reforms.states.ut.child_poverty_eitc.ut_fully_refundable_eitc
   input:
     state_code: CA
-    ut_eitc: 500
+    eitc: 2_500
+    employment_income: 30_000
   output:
     ut_fully_refundable_eitc: 0

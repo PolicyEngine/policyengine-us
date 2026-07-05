@@ -124,7 +124,11 @@ class wa_working_families_tax_credit(Variable):
         # amount is reached at the applicable maximum qualifying income.
         # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
         phase_out_rate = (max_amount - p.min_amount) / phase_out_start_reduction
-        excess = max_(0, earnings - phase_out_start)
+        # RCW 82.08.0206(3)(b) measures the reduction against the federal
+        # phase-out income (the greater of earned income or AGI) -- the same
+        # measure used for the maximum-qualifying-income ceiling above -- not
+        # earned income alone.
+        excess = max_(0, higher_income - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)
         phased_out_amount = max_amount - reduction
         # minimum benefit applies if calculated amount exceeds zero

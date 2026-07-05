@@ -97,3 +97,73 @@
         members: [head]
   output:
     is_chip_eligible_child: False
+
+- name: TX child with direct-purchase coverage is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    is_chip_eligible_child: False
+
+- name: TX child with VA health coverage is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_va_health_coverage_at_interview: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    is_chip_eligible_child: False
+
+- name: TX child receiving Medicaid is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        receives_medicaid: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    has_chip_disqualifying_health_coverage: True
+    is_chip_eligible_child: False
+
+- name: TX child with partner-reported health coverage other than CHIP is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_health_coverage_other_than_chip: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    has_chip_disqualifying_health_coverage: True
+    is_chip_eligible_child: False

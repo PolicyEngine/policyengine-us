@@ -1,0 +1,68 @@
+# MO CCS annual aggregator tests
+# mo_child_care_subsidies is SPMUnit, YEAR, adds = ["mo_ccs"].
+# At a YEAR period it sums the 12 monthly mo_ccs benefits.
+
+- name: Case 1, annual subsidy is twelve times the monthly benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Monthly benefit $1,820 (see mo_ccs Case 1) * 12 = $21,840.
+    mo_child_care_subsidies: 21_840
+
+- name: Case 2, ineligible family receives zero annually.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    mo_child_care_subsidies: 0

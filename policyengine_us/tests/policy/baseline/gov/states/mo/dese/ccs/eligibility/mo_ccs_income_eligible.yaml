@@ -1,0 +1,301 @@
+# MO CCS income eligibility tests
+# mo_ccs_income_eligible is SPMUnit, MONTH.
+# Compares mo_ccs_adjusted_income (monthly) to monthly_fpg * rate.
+#   Traditional (new applicants): rate = 1.50.
+#   Transitional (mo_ccs_enrolled): rate = 2.42.
+# 2025 FPG (contiguous US): family of 2 = $21,150.
+#   150% FPL = $31,725/yr = $2,643.75/mo.
+#   242% FPL = $51,183/yr = $4,265.25/mo.
+
+- name: Case 1, income below 150 percent FPL is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 30,000 / 12 = 2,500 <= 2,643.75 -> eligible.
+    mo_ccs_income_eligible: true
+
+- name: Case 2, income exactly at 150 percent FPL is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_725
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 31,725 / 12 = 2,643.75 = 150% FPL limit -> <= -> eligible.
+    mo_ccs_income_eligible: true
+
+- name: Case 3, income above 150 percent FPL ineligible for new applicant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 36,000 / 12 = 3,000 > 2,643.75 -> ineligible (traditional).
+    mo_ccs_income_eligible: false
+
+- name: Case 4, existing family above 150 percent but below 242 percent is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Enrolled -> transitional limit 2.42 * monthly_fpg = 4,265.25.
+    # Monthly income = 3,000 <= 4,265.25 -> eligible.
+    mo_ccs_income_eligible: true
+
+- name: Case 5, existing family above 242 percent FPL is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 54,000 / 12 = 4,500 > 4,265.25 -> ineligible.
+    mo_ccs_income_eligible: false
+
+- name: Case 6, health insurance premiums reduce adjusted income below the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        health_insurance_premiums: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Countable = 3,000/mo; premiums = 500/mo; adjusted = 2,500 <= 2,643.75
+    # -> eligible (only medical premiums are deducted).
+    mo_ccs_income_eligible: true
+
+- name: Case 7, zero income family eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_income_eligible: true
+
+- name: Case 8, new applicant just above 150 percent FPL is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_737
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 31,737 / 12 = 2,644.75 > 2,643.75 (150% FPL size 2)
+    # -> just over the traditional limit -> ineligible.
+    mo_ccs_income_eligible: false
+
+- name: Case 9, existing family exactly at 242 percent FPL is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 51_183
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 51,183 / 12 = 4,265.25 = 242% FPL limit -> <= -> eligible.
+    mo_ccs_income_eligible: true
+
+- name: Case 10, existing family just above 242 percent FPL is ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 51_195
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Monthly income = 51,195 / 12 = 4,266.25 > 4,265.25 (242% FPL size 2)
+    # -> just over the transitional limit -> ineligible.
+    mo_ccs_income_eligible: false
+
+# The eligibility ceiling is min(FPG limit, 85% of state median income). For
+# typical sizes the FPG limit binds; for very large households the 85% SMI cap
+# is lower and binds first (CCDF State Plan secs. 4.7 / 2.3.2).
+# Size 10: 85% SMI = 105,825 * 1.44 * 0.85 / 12 = $10,794.15/mo;
+#   242% FPL = 65,150 * 2.42 / 12 = $13,138.58/mo.
+- name: Case 11, large household below the 85 percent SMI cap is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 120_000
+      person2:
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 8
+      person8:
+        age: 6
+      person9:
+        age: 4
+      person10:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: MO
+  output:
+    # Income 120,000 / 12 = 10,000 <= 10,794.15 (85% SMI) and <= 13,138.58
+    # (242% FPL) -> eligible.
+    mo_ccs_income_eligible: true
+
+- name: Case 12, large household above the 85 percent SMI cap is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 144_000
+      person2:
+        age: 38
+      person3:
+        age: 16
+      person4:
+        age: 14
+      person5:
+        age: 12
+      person6:
+        age: 10
+      person7:
+        age: 8
+      person8:
+        age: 6
+      person9:
+        age: 4
+      person10:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: MO
+  output:
+    # Income 144,000 / 12 = 12,000 <= 13,138.58 (242% FPL) but > 10,794.15
+    # (85% SMI) -> the 85% SMI cap binds -> ineligible (would be eligible on the
+    # FPL limit alone).
+    mo_ccs_income_eligible: false

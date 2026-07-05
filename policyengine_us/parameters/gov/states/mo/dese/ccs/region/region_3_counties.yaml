@@ -1,0 +1,21 @@
+description: Missouri assigns these counties to Region 3 urban for provider payment rates under the Child Care Subsidy program.
+values:
+  2025-10-01:
+    - BOONE_COUNTY_MO
+    - BUCHANAN_COUNTY_MO
+    - CAPE_GIRARDEAU_COUNTY_MO
+    - CASS_COUNTY_MO
+    - CHRISTIAN_COUNTY_MO
+    - COLE_COUNTY_MO
+    - GREENE_COUNTY_MO
+    - JASPER_COUNTY_MO
+    - NEWTON_COUNTY_MO
+    - RAY_COUNTY_MO
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri Child Care Subsidy Region 3 urban counties
+  reference:
+    - title: 2025 Rates Held Harmless 2.0, Breakdown Of Counties
+      href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx

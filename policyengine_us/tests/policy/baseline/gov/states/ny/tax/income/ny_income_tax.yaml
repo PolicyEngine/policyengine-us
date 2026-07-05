@@ -48,3 +48,38 @@
         state_code: NY
   output:  # expected from TAXSIM35
     ny_income_tax: 15_125.54
+
+- name: NY MFJ high interest income - general sales tax not deductible (taxsim #974)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        taxable_interest_income: 210_165.44
+        deductible_mortgage_interest: 50_000
+      person2:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # General sales tax must be added back per NY Tax Law § 615(c)(1) /
+    # IT-196 line 41(A); NY itemized deduction = $50,000 mortgage − § 615(f)
+    # adjustment of $2,541.36.
+    ny_itemized_deductions: 47_458.64
+    ny_taxable_income: 162_706.80
+    ny_income_tax: 9_739.81
