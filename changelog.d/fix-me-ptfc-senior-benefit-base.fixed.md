@@ -1,1 +1,1 @@
-Fix Maine property tax fairness credit senior benefit base, which never applied at the age-65 threshold because its enhanced-base parameter was mistyped as a marginal scale.
+Fix Maine property tax fairness credit senior benefit base, which never applied at the age-65 threshold because its enhanced-base parameter was mistyped as a marginal scale, and which no longer inflation-adjusts for 2026 onward because its uprating block was misplaced on the bracket instead of the amount.
