@@ -177,7 +177,14 @@
     filing_status: SINGLE
     state_code: ME
   output:
-    me_income_tax_before_credits: 89_291.6
+    # .058*27,400 + .0675*(64,850-27,400) + .0715*(1,200,000-64,850) + 4,000 surcharge = 89,280.3
+    # Bracket thresholds are gov.irs.uprating projections of the 2025 explicit
+    # values (#8905 unfroze `uprating:` for this parameter, which had been a
+    # silently-ignored sibling of `values:`); they are not yet Maine's
+    # officially published 2026 thresholds. Update this pin, and drop this
+    # comment, once Maine Revenue Services publishes 2026 rate schedules and
+    # explicit values replace the projection.
+    me_income_tax_before_credits: 89_280.3
 
 - name: Joint filer 2026 me_income_tax_before_credits includes the surcharge.
   period: 2026

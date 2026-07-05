@@ -12,11 +12,12 @@ brackets:
         2023-01-01: 74_750
         2024-01-01: 78_775
         2025-01-01: 80_975
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 25
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 25
     rate:
       2021-01-01: 0.0204
       2023-01-01: 0.0195
@@ -27,11 +28,12 @@ brackets:
         2023-01-01: 275_100
         2024-01-01: 289_975
         2025-01-01: 298_075
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 25
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 25
     rate:
       2021-01-01: 0.0227
       2023-01-01: 0.025

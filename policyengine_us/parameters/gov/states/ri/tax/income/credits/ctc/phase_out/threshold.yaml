@@ -14,40 +14,45 @@ metadata:
 SINGLE:
   values:
     2027-01-01: 88_500
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5
 JOINT:
   values:
     2027-01-01: 110_640
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5
 SEPARATE:
   values:
     2027-01-01: 88_500
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5
 HEAD_OF_HOUSEHOLD:
   values:
     2027-01-01: 88_500
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5
 SURVIVING_SPOUSE:
   values:
     2027-01-01: 88_500
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 5
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 5

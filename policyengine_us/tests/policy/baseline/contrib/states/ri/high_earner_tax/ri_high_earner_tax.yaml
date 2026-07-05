@@ -1,5 +1,10 @@
 # Test RI H7317 Additional Tax on High-Income Filers
-# For 2027+: 3% additional tax on income above $640,000 (inflation-adjusted)
+# For 2027+: 3% additional tax on income above $640,000 (inflation-adjusted).
+# The $640,000 threshold has an explicit value only for 2026-01-01; #8905
+# unfroze its `uprating:` block (previously a silently-ignored sibling of
+# `values:`), so 2027 is now gov.irs.uprating(2027)/gov.irs.uprating(2026) *
+# 640,000, rounded down to the nearest 50 -- not yet an officially published
+# 2027 figure (none exists for this proposed reform).
 
 - name: RI high earner tax - income below threshold (no surtax)
   period: 2027
@@ -40,10 +45,11 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (41,873.54) + 3% surtax on income above $640k threshold
-    # Surtax: (750,000 - 640,000) * 0.03 = 110,000 * 0.03 = 3,300
-    # Total: 41,873.54 + 3,300 = 45,173.54
-    ri_income_tax_before_non_refundable_credits: 45_173.54
+    # Baseline tax (41,873.54) + 3% surtax on income above the 2027 threshold
+    # (gov.irs.uprating-projected from $640,000 @ 2026 to $656,850 @ 2027)
+    # Surtax: (750,000 - 656,850) * 0.03 = 93,150 * 0.03 = 2,794.5
+    # Total: 41,873.54 + 2,794.5 = 44,668.04
+    ri_income_tax_before_non_refundable_credits: 44_668.04
 
 - name: RI high earner tax - income well above threshold
   period: 2027
@@ -63,10 +69,11 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (56,848.54) + 3% surtax on income above $640k threshold
-    # Surtax: (1,000,000 - 640,000) * 0.03 = 360,000 * 0.03 = 10,800
-    # Total: 56,848.54 + 10,800 = 67,648.54
-    ri_income_tax_before_non_refundable_credits: 67_648.54
+    # Baseline tax (56,848.54) + 3% surtax on income above the 2027 threshold
+    # (gov.irs.uprating-projected from $640,000 @ 2026 to $656,850 @ 2027)
+    # Surtax: (1,000,000 - 656,850) * 0.03 = 343,150 * 0.03 = 10,294.5
+    # Total: 56,848.54 + 10,294.5 = 67,143.04
+    ri_income_tax_before_non_refundable_credits: 67_143.04
 
 - name: RI high earner tax - reform not in effect
   period: 2027
