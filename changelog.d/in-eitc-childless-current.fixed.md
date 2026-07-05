@@ -1,0 +1,1 @@
+- Fixed the Indiana EITC to use the current-year federal EITC for childless filers as well as filers with children, matching Schedule IN-EIC Section A, which applies the 10% match to all filers.
