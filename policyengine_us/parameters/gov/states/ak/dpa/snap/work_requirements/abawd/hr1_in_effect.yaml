@@ -1,0 +1,24 @@
+# P.L. 119-21 grants Alaska preferential waiver authority (150% of the
+# national average unemployment threshold and good-faith exemptions)
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Alaska implemented the
+# HR1 ABAWD work requirement changes effective 2025-11-01, alongside a
+# good-faith exemption waiver covering all census areas and boroughs
+# except the Municipality of Anchorage. Borough-level high-unemployment
+# waivers are not modeled here.
+description: Alaska implements the HR1 changes to Able-Bodied Adult Without Dependents work requirements under the Supplemental Nutrition Assistance Program when this is true.
+
+values:
+  0000-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Alaska SNAP HR1 ABAWD implementation status
+  reference:
+    - title: Alaska Department of Health, H.R. 1 - AK Impacts
+      href: https://health.alaska.gov/en/education/hr-1-ak-impacts/
+    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: USDA FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Waivers Implementation Memorandum (October 3, 2025)
+      href: https://www.fns.usda.gov/snap/obbb-ABAWD-Waivers-Implementation-Memo

@@ -12,8 +12,11 @@ import time
 import argparse
 import re
 import select
+import threading
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor
+from concurrent.futures import wait as futures_wait
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 def count_yaml_files(directory: Path) -> int:
@@ -21,6 +24,34 @@ def count_yaml_files(directory: Path) -> int:
     if not directory.exists():
         return 0
     return len(list(directory.rglob("*.yaml")))
+
+
+def batch_cost(batch_paths: List[str]) -> int:
+    """Estimated batch cost: total YAML files across the batch's paths."""
+    return sum(
+        count_yaml_files(Path(p)) if Path(p).is_dir() else 1 for p in batch_paths
+    )
+
+
+def _read_vm_hwm_mb(pid: int) -> Optional[float]:
+    """Peak RSS (VmHWM high-water mark) of a live process, in MB.
+
+    Linux-only: /proc does not exist on macOS, and the entry disappears
+    once the pid is reaped — both cases return None.
+    """
+    try:
+        with open(f"/proc/{pid}/status") as status_file:
+            for line in status_file:
+                if line.startswith("VmHWM:"):
+                    # Format: "VmHWM:    123456 kB"
+                    return int(line.split()[1]) / 1024
+    except (OSError, ValueError, IndexError):
+        return None
+    return None
+
+
+def _format_rss(peak_rss_mb: Optional[float]) -> str:
+    return f"{peak_rss_mb:.0f} MB" if peak_rss_mb is not None else "n/a"
 
 
 def split_into_batches(
@@ -136,8 +167,9 @@ def split_into_batches(
         # peak/case, see #8559); isolating per-file frees each peak between
         # files. RI is the worst offender — its ctc_reform_test.yaml sweeps
         # ~66 reform combinations and previously OOMed shard-2 mid-run when it
-        # shared a subprocess with exemption_reform_test.yaml.
-        PER_FILE_STATES = {"ri"}
+        # shared a subprocess with exemption_reform_test.yaml. OH's folder
+        # measured 12.4 GB as one batch on CI (run 28698452678).
+        PER_FILE_STATES = {"oh", "ri"}
 
         subdirs = sorted([item for item in base_path.iterdir() if item.is_dir()])
         batches = []
@@ -303,15 +335,31 @@ def split_into_batches(
     return batches
 
 
-def run_batch(test_paths: List[str], batch_name: str) -> Dict:
-    """Run a batch of tests in an isolated subprocess."""
+def run_batch(test_paths: List[str], batch_name: str, stream: bool = True) -> Dict:
+    """Run a batch of tests in an isolated subprocess.
+
+    With stream=True output is echoed to stdout in real time (sequential
+    mode). With stream=False output is buffered and returned under the
+    "output" key so a concurrent caller can print the whole batch
+    atomically once it finishes.
+    """
 
     python_exe = sys.executable
+
+    buf: List[str] = []
+
+    def emit(text: str, end: str = "\n") -> None:
+        if stream:
+            print(text, end=end, flush=True)
+        else:
+            buf.append(text + end)
 
     start_time = time.time()
     last_output_time = start_time
     last_heartbeat_time = start_time
     heartbeat_interval = 30
+    peak_rss_mb = None
+    last_rss_sample = 0.0
 
     # Build command - direct policyengine-core with timeout protection
     cmd = (
@@ -325,9 +373,9 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         + ["-c", "policyengine_us"]
     )
 
-    print(f"    Running {batch_name}...")
-    print(f"    Paths: {len(test_paths)} items")
-    print()
+    emit(f"    Running {batch_name}...")
+    emit(f"    Paths: {len(test_paths)} items")
+    emit("")
 
     # Use Popen for more control over process lifecycle
     process = subprocess.Popen(
@@ -336,6 +384,15 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         stderr=subprocess.STDOUT,
         bufsize=0,
     )
+
+    def sample_rss() -> None:
+        # VmHWM is monotonic, so keeping only the latest reading preserves
+        # the peak; readings stop (None) once the pid is reaped or off-Linux.
+        nonlocal peak_rss_mb, last_rss_sample
+        rss = _read_vm_hwm_mb(process.pid)
+        if rss is not None:
+            peak_rss_mb = rss
+        last_rss_sample = time.time()
 
     try:
         test_completed = False
@@ -347,12 +404,17 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         while True:
             ready, _, _ = select.select([process.stdout], [], [], 0.1)
             if not ready:
+                # Sample before poll(): poll() reaps the child, after which
+                # /proc/<pid>/status is gone.
+                sample_rss()
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
                     break
                 now = time.time()
-                if now - last_heartbeat_time >= heartbeat_interval:
+                # In buffered (concurrent) mode the shared heartbeat in
+                # run_batches_concurrently reports liveness instead.
+                if stream and now - last_heartbeat_time >= heartbeat_interval:
                     elapsed = now - start_time
                     quiet_for = now - last_output_time
                     print(
@@ -367,6 +429,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
 
             chunk = os.read(process.stdout.fileno(), 4096)
             if not chunk:
+                sample_rss()
                 if process.poll() is not None:
                     break
                 continue
@@ -374,11 +437,13 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
             # Print output in real-time, including partial pytest progress
             # lines such as dots that do not end with newlines.
             line = chunk.decode(errors="replace")
-            print(line, end="", flush=True)
+            emit(line, end="")
             last_output_time = time.time()
             last_heartbeat_time = last_output_time
             output_lines.append(line)
             output_text += line
+            if last_output_time - last_rss_sample >= 1.0:
+                sample_rss()
 
             # Detect pytest completion
             # Look for patterns like "====== 5638 passed in 491.24s ======"
@@ -397,10 +462,13 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                     # No "X failed" in line means all passed
                     test_passed = True
 
-                print(f"\n    Tests completed, terminating process...")
+                emit(f"\n    Tests completed, terminating process...")
 
-                # Give 5 seconds grace period for cleanup
-                time.sleep(5)
+                # Give 1 second grace period for cleanup
+                time.sleep(1)
+                # Final sample while the pid still exists — captures the
+                # end-of-run high-water mark.
+                sample_rss()
 
                 # Terminate the process
                 process.terminate()
@@ -408,7 +476,7 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
                     # Force kill if it won't terminate
-                    print(f"    Force killing process...")
+                    emit(f"    Force killing process...")
                     process.kill()
                     process.wait()
                 break
@@ -421,7 +489,8 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                 remaining_timeout = max(1800 - elapsed, 1)
                 process.wait(timeout=remaining_timeout)
             except subprocess.TimeoutExpired:
-                print(f"\n    ⏱️ Timeout - terminating process...")
+                emit(f"\n    ⏱️ Timeout - terminating process...")
+                sample_rss()
                 process.terminate()
                 try:
                     process.wait(timeout=5)
@@ -433,28 +502,40 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
                 return {
                     "elapsed": elapsed,
                     "status": "timeout",
+                    "peak_rss_mb": peak_rss_mb,
+                    "output": "".join(buf),
                 }
 
         elapsed = time.time() - start_time
 
         if test_completed:
-            print(f"\n    Batch completed in {elapsed:.1f}s")
+            emit(
+                f"\n    Batch completed in {elapsed:.1f}s "
+                f"(peak RSS: {_format_rss(peak_rss_mb)})"
+            )
             return {
                 "elapsed": elapsed,
                 "status": "passed" if test_passed else "failed",
+                "peak_rss_mb": peak_rss_mb,
+                "output": "".join(buf),
             }
         else:
             # Process ended without detecting test completion
             returncode = process.poll()
-            print(f"\n    Batch completed in {elapsed:.1f}s")
+            emit(
+                f"\n    Batch completed in {elapsed:.1f}s "
+                f"(peak RSS: {_format_rss(peak_rss_mb)})"
+            )
             return {
                 "elapsed": elapsed,
                 "status": "passed" if returncode == 0 else "failed",
+                "peak_rss_mb": peak_rss_mb,
+                "output": "".join(buf),
             }
 
     except Exception as e:
         elapsed = time.time() - start_time
-        print(f"\n    ❌ Error: {str(e)[:100]}")
+        emit(f"\n    ❌ Error: {str(e)[:100]}")
 
         # Clean up process if still running
         try:
@@ -470,7 +551,105 @@ def run_batch(test_paths: List[str], batch_name: str) -> Dict:
         return {
             "elapsed": elapsed,
             "status": "error",
+            "peak_rss_mb": peak_rss_mb,
+            "output": "".join(buf),
         }
+
+
+def run_batches_concurrently(batches: List[List[str]], workers: int) -> List:
+    """Run batches in a thread pool, longest-first.
+
+    Each batch is still its own policyengine_command subprocess; the
+    threads only monitor them. Output is buffered per batch and printed
+    atomically (header/body/footer) when the batch finishes — only this
+    (main) thread prints, so concurrent logs never interleave. A shared
+    heartbeat line reports in-flight batches every ~60s.
+
+    Returns [(batch_name, result_dict), ...] ordered by batch index.
+    """
+    total = len(batches)
+    # Longest-first (estimated by YAML file count) so the biggest batches
+    # start immediately and cannot serialize at the tail of the run.
+    order = sorted(
+        enumerate(batches, 1),
+        key=lambda indexed: batch_cost(indexed[1]),
+        reverse=True,
+    )
+
+    in_flight: Dict[str, float] = {}
+    in_flight_lock = threading.Lock()
+
+    def run_one(idx: int, batch_paths: List[str]) -> Dict:
+        name = f"Batch {idx}"
+        with in_flight_lock:
+            in_flight[name] = time.time()
+        try:
+            return run_batch(batch_paths, name, stream=False)
+        finally:
+            with in_flight_lock:
+                in_flight.pop(name, None)
+
+    print(
+        f"\nRunning {total} batches with {workers} workers "
+        f"(longest first; output buffered per batch)",
+        flush=True,
+    )
+
+    results: Dict[int, Dict] = {}
+    heartbeat_interval = 60
+    last_heartbeat = time.time()
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        future_info = {
+            executor.submit(run_one, idx, batch_paths): (idx, batch_paths)
+            for idx, batch_paths in order
+        }
+        pending = set(future_info)
+        while pending:
+            done, pending = futures_wait(
+                pending, timeout=5, return_when=FIRST_COMPLETED
+            )
+            for future in done:
+                idx, batch_paths = future_info[future]
+                try:
+                    result = future.result()
+                except Exception as e:
+                    # run_batch catches its own errors; this guards the
+                    # thin wrapper so one crashed worker cannot hang the
+                    # run or skip the summary.
+                    result = {
+                        "elapsed": 0.0,
+                        "status": "error",
+                        "peak_rss_mb": None,
+                        "output": f"Worker crashed: {str(e)[:200]}\n",
+                    }
+                results[idx] = result
+                print(f"\n[Batch {idx}/{total}] {' '.join(batch_paths)}")
+                print("-" * 60)
+                print(result.get("output", ""), end="")
+                print(
+                    f"\n[Batch {idx}/{total}] finished in "
+                    f"{result['elapsed']:.1f}s | peak RSS: "
+                    f"{_format_rss(result.get('peak_rss_mb'))} | "
+                    f"{result['status']}",
+                    flush=True,
+                )
+            now = time.time()
+            if pending and now - last_heartbeat >= heartbeat_interval:
+                with in_flight_lock:
+                    running = ", ".join(
+                        f"{name} ({now - started:.0f}s)"
+                        for name, started in sorted(
+                            in_flight.items(), key=lambda item: item[1]
+                        )
+                    )
+                print(
+                    f"[heartbeat] {len(pending)} batches outstanding; "
+                    f"in flight: {running or 'none'}",
+                    flush=True,
+                )
+                last_heartbeat = now
+
+    return [(f"Batch {idx}", results[idx]) for idx in sorted(results)]
 
 
 def main():
@@ -504,6 +683,12 @@ def main():
         default="auto",
         help="Batching mode. 'per-subdir' = each immediate subdir is its own batch; 'per-file' = each yaml is its own batch.",
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=1,
+        help="Number of batches to run concurrently (default: 1 = sequential)",
+    )
 
     args = parser.parse_args()
     exclude_list = [x.strip() for x in args.exclude.split(",") if x.strip()]
@@ -519,6 +704,10 @@ def main():
             print(f"Error: --shard I must satisfy 1 <= I <= N (got {args.shard!r})")
             sys.exit(1)
 
+    if args.workers < 1:
+        print(f"Error: --workers must be >= 1 (got {args.workers})")
+        sys.exit(1)
+
     if not os.path.exists("policyengine_us"):
         print("Error: Must run from PolicyEngine US root directory")
         sys.exit(1)
@@ -532,6 +721,8 @@ def main():
     print("=" * 60)
     print(f"Test path: {test_path}")
     print(f"Requested batches: {args.batches}")
+    if args.workers > 1:
+        print(f"Workers: {args.workers}")
     if exclude_list:
         print(f"Excluding: {', '.join(exclude_list)}")
 
@@ -586,35 +777,43 @@ def main():
     print("=" * 60)
 
     # Run batches
-    all_failed = False
-    total_elapsed = 0
+    run_start = time.time()
+    if args.workers > 1:
+        results = run_batches_concurrently(batches, args.workers)
+    else:
+        results = []
+        for i, batch_paths in enumerate(batches, 1):
+            print(f"\n[Batch {i}/{len(batches)}]")
 
-    for i, batch_paths in enumerate(batches, 1):
-        print(f"\n[Batch {i}/{len(batches)}]")
+            # Show what's in this batch
+            print(f"  Test files: ~{batch_cost(batch_paths)}")
+            print("-" * 60)
 
-        # Show what's in this batch
-        batch_test_count = sum(
-            count_yaml_files(Path(p)) if Path(p).is_dir() else 1 for p in batch_paths
-        )
-        print(f"  Test files: ~{batch_test_count}")
-        print("-" * 60)
+            result = run_batch(batch_paths, f"Batch {i}")
+            results.append((f"Batch {i}", result))
 
-        result = run_batch(batch_paths, f"Batch {i}")
-        total_elapsed += result["elapsed"]
+            # Memory cleanup after each batch
+            print("  Cleaning up memory...")
+            gc.collect()
 
-        if result["status"] != "passed":
-            all_failed = True
-
-        # Memory cleanup after each batch
-        print("  Cleaning up memory...")
-        gc.collect()
+    all_failed = any(result["status"] != "passed" for _, result in results)
+    total_elapsed = sum(result["elapsed"] for _, result in results)
 
     # Final summary
     print("\n" + "=" * 60)
     print("TEST SUMMARY")
     print("=" * 60)
     print(f"Total test files: {total_tests}")
+    for name, result in results:
+        print(
+            f"  {name}: {result['elapsed']:.1f}s | "
+            f"peak RSS: {_format_rss(result.get('peak_rss_mb'))} | "
+            f"{result['status']}"
+        )
+    print(f"Workers: {args.workers}")
     print(f"Total time: {total_elapsed:.1f}s")
+    if args.workers > 1:
+        print(f"Wall time: {time.time() - run_start:.1f}s")
 
     # Exit code
     sys.exit(1 if all_failed else 0)

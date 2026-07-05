@@ -102,7 +102,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SELECTIVE_TEST_MAX_TARGETS: 25
-      SELECTIVE_TEST_MAX_FILES: 250
+      # 100 (was 250): selective runs pack every matched yaml into ONE
+      # policyengine-core subprocess, and ~250 yaml files retained ~15 GB
+      # and OOM'd the 16 GB runner on run 28698452678. When the limit is
+      # exceeded run_selective_tests.py safely narrows to directly changed
+      # test files (or skips, deferring to the full suite jobs).
+      SELECTIVE_TEST_MAX_FILES: 100
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -174,24 +180,37 @@ jobs:
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
         include:
-          - group: states-non-ny-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 1/2
-          - group: states-non-ny-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 6 --exclude ny --shard 2/2
-          - group: states-ny
-            cmd: make test-yaml-no-structural-states-ny
-          - group: irs-household
-            cmd: make test-yaml-no-structural-other-irs-household
-          - group: ssa
-            cmd: make test-yaml-no-structural-other-ssa
-          - group: rest
-            cmd: make test-yaml-no-structural-other-rest
-          - group: contrib
-            cmd: make test-yaml-no-structural-other-contrib
+          # 16 batches / 4 shards / --workers 1: the 8-batch 2-wide shards
+          # OOM'd on run 28698452678; see the Makefile memory-layout notes.
+          - group: states-shard-1
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 1/4
+          - group: states-shard-2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 2/4
+          - group: states-shard-3
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 3/4
+          - group: states-shard-4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 4/4
+          - group: irs
+            cmd: make test-yaml-no-structural-other-irs
+          - group: household
+            cmd: make test-yaml-no-structural-other-household
+          - group: ssa-usda
+            cmd: make test-yaml-no-structural-other-ssa-usda
+          - group: rest-a
+            cmd: make test-yaml-no-structural-other-rest-a
+          - group: rest-b
+            cmd: make test-yaml-no-structural-other-rest-b
+          - group: contrib-hhs
+            cmd: make test-yaml-contrib-hhs
+          - group: reform
+            cmd: make test-yaml-reform
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -207,13 +226,14 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Baseline YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run ${{ matrix.cmd }}
   HouseholdAPIPartners:
     name: Household API Partners
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -229,13 +249,14 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Household API Partners YAML tests
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-yaml-no-structural-other-partners
   Contrib:
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
@@ -246,10 +267,14 @@ jobs:
             target: test-yaml-structural-heavy-shard-2
           - group: states-shard-3
             target: test-yaml-structural-heavy-shard-3
+          - group: states-shard-4
+            target: test-yaml-structural-heavy-shard-4
           - group: other-shard-1
             target: test-yaml-structural-other
-          - group: other-shard-2
-            target: test-yaml-structural-other-shard-2
+          - group: other-shard-2a
+            target: test-yaml-structural-other-shard-2a
+          - group: other-shard-2b
+            target: test-yaml-structural-other-shard-2b
           - group: other-shard-3
             target: test-yaml-structural-other-shard-3
           - group: congress
@@ -269,18 +294,17 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Contrib YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make ${{ matrix.target }}
       - name: Run Contrib Python tests
         if: ${{ matrix.group == 'other-shard-1' }}
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-policy-contrib-python
   Rest:
-    name: Full Suite - Rest (Python + variables/ YAMLs)
+    name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -295,19 +319,18 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Python tests (code_health, core, microsimulation, utilities, top-level)
-        env:
-          PYTHONUNBUFFERED: 1
-        run: uv run make test-other
+      - name: Run Python tests (code_health, core, utilities, top-level)
+        run: uv run make test-other-python
       - name: Run tests/variables YAML tests
         if: always()
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-yaml-variables
-  Reform:
-    name: Full Suite - Reform (per-file)
+  Microsimulation:
+    name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -322,7 +345,8 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run tests/policy/reform YAML tests (one batch per file)
-        env:
-          PYTHONUNBUFFERED: 1
-        run: uv run make test-yaml-reform
+      # Split out of the Rest job: the combined single-process pytest run
+      # was OOM-killed at ~94% on run 28698452678 once microsimulation
+      # peaks stacked on the accumulated python-test RSS.
+      - name: Run microsimulation tests
+        run: uv run make test-microsimulation

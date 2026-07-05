@@ -1,0 +1,23 @@
+# P.L. 119-21 grants Hawaii preferential waiver authority (150% of the
+# national average unemployment threshold and good-faith exemptions)
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Hawaii implemented the
+# HR1 ABAWD work requirement changes effective 2025-11-01.
+description: Hawaii implements the HR1 changes to Able-Bodied Adult Without Dependents work requirements under the Supplemental Nutrition Assistance Program when this is true.
+
+values:
+  0000-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Hawaii SNAP HR1 ABAWD implementation status
+  reference:
+    - title: Hawaii Department of Human Services news release, Federal SNAP Work Requirement Changes to Begin (October 17, 2025)
+      href: https://humanservices.hawaii.gov/federal-snap-work-requirement-changes-to-begin-department-of-human-services-offers-guidance-and-resources/
+    - title: Hawaii Department of Human Services, Changes to Able-Bodied Adult Work Requirements for SNAP - FAQs
+      href: https://humanservices.hawaii.gov/changes-to-able-bodied-adult-work-requirements-for-snap-faqs/
+    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: USDA FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Waivers Implementation Memorandum (October 3, 2025)
+      href: https://www.fns.usda.gov/snap/obbb-ABAWD-Waivers-Implementation-Memo

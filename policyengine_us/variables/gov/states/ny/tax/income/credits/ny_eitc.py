@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import instant
+from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
 
 
 class ny_eitc(Variable):
@@ -24,19 +24,9 @@ class ny_eitc(Variable):
             # pre-ARPA (2020) parameter values.
             simulation = tax_unit.simulation
             branch = simulation.get_branch("ny_pre_arpa_eitc")
-            branch.tax_benefit_system = simulation.tax_benefit_system.clone()
-            branch_params = branch.tax_benefit_system.parameters
-            pin_date = instant("2020-01-01")
-            start = instant("2021-01-01")
-            stop = instant("2021-12-31")
-            eitc_node = branch_params.gov.irs.credits.eitc
-            for param in eitc_node.get_descendants():
-                if isinstance(param, Parameter):
-                    try:
-                        value = param(pin_date)
-                        param.update(start=start, stop=stop, value=value)
-                    except Exception:
-                        pass
+            branch.tax_benefit_system = get_pre_arpa_eitc_tbs(
+                simulation.tax_benefit_system
+            )
             for variable in branch.tax_benefit_system.variables:
                 if "eitc" in variable:
                     branch.delete_arrays(variable)

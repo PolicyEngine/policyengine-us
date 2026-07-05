@@ -1,3 +1,10 @@
+## [1.758.0] - 2026-07-05
+
+### Added
+
+- Added SNAP ABAWD discretionary exemption hook: parameter for the exemption share of covered individuals under 7 U.S.C. 2015(o)(6) and a person-level input ORed into the ABAWD time limit exceptions.
+
+
 ## [1.757.0] - 2026-07-05
 
 ### Added

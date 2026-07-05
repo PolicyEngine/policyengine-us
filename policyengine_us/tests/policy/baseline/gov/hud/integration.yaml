@@ -86,3 +86,65 @@
     hud_gross_rent: 24_000
     hud_hap: 20_400
     housing_assistance: 20_400
+
+- name: Outside LA, a tenant who pays utilities gets a utility allowance that flows through gross rent into HAP (Denton County, TX).
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        county_fips: "48121"
+        bedrooms: 2
+        tenant_pays_utilities: true
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+  output:
+    # Denton County TDHCA multi-family, all-electric schedule (2 BR): $298/month.
+    hud_utility_allowance: 298 * 12
+    # Gross rent adds the utility allowance to the tenant-paid rent.
+    hud_gross_rent: 12_000 + 298 * 12  # 15,576
+    # Denton has no encoded local payment standard, so it falls back to FMR.
+    pha_payment_standard: 23_172
+    hud_ttp: 3_600  # 30% of $12,000 adjusted income
+    hud_max_subsidy: 19_572  # payment standard - TTP = 23,172 - 3,600
+    # HAP is bound here by (gross rent - TTP) = 15,576 - 3,600 = 11,976, which is
+    # below the max subsidy. Because gross rent includes the $3,576 utility
+    # allowance, HAP is $3,576 higher than it would be without it - this is the
+    # subsidy understatement this PR fixes for non-LA counties.
+    hud_hap: 11_976
+    housing_assistance: 11_976
+
+- name: Outside LA, a tenant who does not pay utilities gets no allowance, so HAP is $3,576 lower (Denton County, TX).
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        county_fips: "48121"
+        bedrooms: 2
+        tenant_pays_utilities: false
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_housing_assistance: true
+  output:
+    hud_utility_allowance: 0
+    hud_gross_rent: 12_000
+    # Same household as above minus the utility allowance: HAP drops by exactly
+    # the $3,576 allowance (11,976 - 3,576 = 8,400), confirming the flow-through.
+    hud_hap: 8_400
+    housing_assistance: 8_400
