@@ -8,7 +8,7 @@ class ky_fayette_occupational_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
-    reference = "https://www.lexingtonky.gov/departments/revenue"
+    reference = "https://www.lexingtonky.gov/working/business-licensing-taxes/occupational-license-fee-rates-current-forms"
 
     def formula(tax_unit, period, parameters):
         # Lexington is consolidated with Fayette County (LFUCG), so it is

@@ -1560,18 +1560,6 @@ programs:
     verified_start_year: 2021
     notes: Residence-based county income tax assigned via county
 
-  - id: md_county_income_tax
-    name: Maryland county income tax
-    full_name: Maryland County Income Tax
-    category: Taxes
-    agency: Local
-    status: complete
-    coverage: All Maryland counties and Baltimore City
-    variable: md_local_income_tax_before_credits
-    parameter_prefix: gov.local.md
-    verified_start_year: 2021
-    notes: Residence-based county income tax (flat rate; Anne Arundel and Frederick use brackets)
-
   - id: multnomah_pfa
     name: Multnomah County Preschool for All tax
     full_name: Multnomah County Preschool for All Personal Income Tax
