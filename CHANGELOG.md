@@ -1,3 +1,48 @@
+## [1.756.7] - 2026-07-05
+
+### Fixed
+
+- Fixed the residential clean energy credit, energy efficient home improvement credit, and new/used clean vehicle credits to reflect their termination under the One Big Beautiful Bill Act (Pub. L. 119-21).
+
+
+## [1.756.6] - 2026-07-05
+
+### Fixed
+
+- - Added Saver's Credit joint AGI rate thresholds for 2024, 2025, and 2026 from IRS Notices 2023-75, 2024-80, and 2025-67.
+- Fixed the 2020 unemployment compensation exclusion to require AGI strictly below $150,000.
+
+
+## [1.756.5] - 2026-07-05
+
+### Fixed
+
+- - Fixed the Indiana EITC to use the current-year federal EITC for childless filers as well as filers with children, matching Schedule IN-EIC Section A, which applies the 10% match to all filers.
+- Backfilled the `state_code` enum from a `state_code_str`-only household input so every state-dependent variable resolves the intended state instead of the California default.
+
+
+## [1.756.4] - 2026-07-05
+
+### Fixed
+
+- Counted permanently and totally disabled adult dependents as qualifying children in the California, DC, Illinois, Colorado, Washington, and Minnesota EITC-style credits that rebuild the qualifying-child count directly.
+
+
+## [1.756.3] - 2026-07-05
+
+### Fixed
+
+- Fixed CHIP health benefit value counting for CHIP-eligible people who do not enroll.
+
+
+## [1.756.2] - 2026-07-05
+
+### Fixed
+
+- Included non-Schedule-D capital gain distributions in gross income, the preferential-rate capital gains base, and net investment income.
+- - Treated people denied Medicaid by work requirements as ineligible for ACA marketplace premium payment and premium tax credits.
+
+
 ## [1.756.1] - 2026-07-05
 
 ### Fixed

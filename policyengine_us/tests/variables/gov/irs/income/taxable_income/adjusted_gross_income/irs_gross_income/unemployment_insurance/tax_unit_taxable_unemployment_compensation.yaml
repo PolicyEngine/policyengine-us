@@ -1,0 +1,62 @@
+# 26 USC 85(c)(1) excludes up to $10,200 of 2020 unemployment compensation
+# only if AGI (determined without regard to unemployment compensation) is
+# strictly less than $150,000.
+- name: No exclusion in 2020 when AGI over UC equals the $150,000 cutoff exactly
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 155_000
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    marital_units:
+      marital_unit:
+        members: [head]
+    families:
+      family:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # AGI over UC = 155,000 - 5,000 = 150,000, not below the cutoff,
+    # so all unemployment compensation is taxable.
+    tax_unit_taxable_unemployment_compensation: 5_000
+
+- name: Full exclusion in 2020 when AGI over UC is one dollar below the cutoff
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 154_999
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    marital_units:
+      marital_unit:
+        members: [head]
+    families:
+      family:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # AGI over UC = 154,999 - 5,000 = 149,999, below the $150,000 cutoff,
+    # so unemployment compensation up to $10,200 is excluded.
+    tax_unit_taxable_unemployment_compensation: 0

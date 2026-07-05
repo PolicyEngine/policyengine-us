@@ -34,9 +34,9 @@
     in_eitc: 0.09 * 5_980
 
 - name: taxsim_1039_in_eitc_with_child_uses_current_federal_eitc
-  # 2025 Schedule IN-EIC Section B: a filer claiming one or more children takes
-  # 10% of the earned income credit "from your federal income tax return", i.e.
-  # the current-year federal EITC ($4,328 here), not a frozen-IRC recomputation.
+  # 2025 Schedule IN-EIC Section A (applies to all filers): 10% of the earned
+  # income credit "from your federal income tax return", i.e. the current-year
+  # federal EITC ($4,328 here), not a frozen-IRC recomputation.
   # 10% x $4,328 = $432.80. Originating: PolicyEngine/policyengine-taxsim#1039.
   absolute_error_margin: 1
   period: 2025
@@ -51,10 +51,14 @@
   output:
     in_eitc: 433
 
-- name: in_eitc childless 2025 stays on frozen 2023 IRC snapshot
-  # Schedule IN-EIC Section A / IC 6-3-1-11: childless filers remain decoupled
-  # from the federal (ARPA-expanded) EITC and use the frozen Jan 1, 2023 IRC.
-  # 10% x frozen $600 childless max = $60, NOT 10% x current federal $612 = $61.20.
+- name: in_eitc childless 2025 uses current-year federal EITC
+  # Schedule IN-EIC Section A applies to all filers: 10% of "the earned income
+  # credit from your federal income tax return." At $8,000 earnings the 2025
+  # federal childless EITC is phase-in-limited to $612 (7.65% x $8,000), below
+  # the $649 max, so 10% x $612 = $61.20 -- not the frozen 2023 snapshot's
+  # 10% x $600 = $60 (IB92's Jan 1, 2023 freeze applies uniformly and its only
+  # post-2023 effect is inflation indexing, since the ARPA childless expansion
+  # already expired Jan 1, 2022).
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -65,7 +69,7 @@
     households:
       household: {members: [parent], state_fips: 18}
   output:
-    in_eitc: 60
+    in_eitc: 61.20
 
 - name: Indiana EITC TY 2026 uses the SEA 243 advanced January 1, 2026 IRC snapshot
   period: 2026
@@ -92,14 +96,15 @@
         state_code: IN
   output:
     # TY 2026 onwards Indiana SEA 243 (2025) advances the IRC reference to
-    # January 1, 2026. This with-children filer takes 10% of the current-year
-    # federal EITC per Schedule IN-EIC Section B; under SEA 243 the current and
-    # frozen (2026-01-01) computations coincide, so the credit is $442.70.
+    # January 1, 2026. All filers take 10% of the current-year federal EITC
+    # per Schedule IN-EIC Section A; under SEA 243 the current and frozen
+    # (2026-01-01) computations coincide, so the credit is $442.70.
     in_eitc: 442.70
 
-- name: in_eitc childless 2026 uses the SEA 243 January 1, 2026 IRC snapshot
-  # Childless filers stay on the frozen IRC snapshot; under SEA 243 the 2026
-  # snapshot equals the current federal childless EITC, so 10% x $612 = $61.20.
+- name: in_eitc childless 2026 uses the current-year federal EITC
+  # All filers use the current-year federal EITC (Schedule IN-EIC Section A);
+  # under SEA 243 the 2026 frozen-IRC snapshot equals the current federal
+  # childless EITC, so 10% x $612 = $61.20 either way.
   absolute_error_margin: 0.01
   period: 2026
   input:

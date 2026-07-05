@@ -38,9 +38,12 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         has_tin = person("has_tin", period)
         filers_have_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
-        child_count = tax_unit.sum(
-            person("is_qualifying_child_dependent", period) & has_tin
-        )
+        # ESSB 6346 Sec. 901(2)(a)(ii)(D) is the childless-by-age expansion
+        # path: it covers filers who would qualify for the EITC except for
+        # age. Because it does not depend on qualifying children, no child
+        # count (and therefore no IRC 152(c)(3)(B) disabled-dependent test) is
+        # needed here; the disabled-dependent handling lives in the main
+        # wa_working_families_tax_credit child_count.
         # RCW 82.08.0206(2)(d) pins WFTC to the federal EITC rules as in
         # effect on June 9, 2022; this snapshot date is a statutory literal.
         frozen_eitc = parameters.gov.irs.credits.eitc("2022-06-09")

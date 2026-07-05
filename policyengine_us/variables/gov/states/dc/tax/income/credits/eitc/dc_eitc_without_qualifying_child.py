@@ -12,7 +12,9 @@ class dc_eitc_without_qualifying_child(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04",  # (f)
+        # IRC 152(c)(3)(B) waives the qualifying-child age test for permanently and totally disabled individuals.
+        "https://www.law.cornell.edu/uscode/text/26/152#c_3_B",
     )
     defined_for = StateCode.DC
 
@@ -27,9 +29,16 @@ class dc_eitc_without_qualifying_child(Variable):
         min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         age_eligible = is_head_or_spouse & (age >= min_age) & (age <= max_age)
-        no_qualifying_child = (
-            tax_unit.sum(person("is_qualifying_child_dependent", period) & has_tin) == 0
+        # IRC 152(c)(3)(B) waives the age test for a permanently and totally
+        # disabled dependent, so such a dependent is a qualifying child and
+        # routes the unit to the with-children schedule.
+        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
+            "is_permanently_and_totally_disabled", period
         )
+        qualifying_child = (
+            person("is_qualifying_child_dependent", period) | is_disabled_dependent
+        ) & has_tin
+        no_qualifying_child = tax_unit.sum(qualifying_child) == 0
         us_eligible = (
             filer_has_tin
             & no_qualifying_child

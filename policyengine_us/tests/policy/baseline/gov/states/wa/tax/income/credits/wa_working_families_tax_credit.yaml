@@ -622,3 +622,39 @@
     # at $3,816; ESSB 6346 multiplies it by 12 for tax years 2029 onward.
     wa_working_families_tax_credit_maximum_qualifying_income: 45_792
     wa_working_families_tax_credit: 277.02
+
+- name: WA WFTC counts a disabled adult dependent as a qualifying child (IRC 152(c)(3)(B) via frozen 2022 EITC)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      disabled_adult:
+        age: 29
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, disabled_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, disabled_adult]
+    households:
+      household:
+        members: [head, disabled_adult]
+        state_code: WA
+  output:
+    # RCW 82.08.0206 pins the WFTC to the federal EITC rules as in effect on
+    # June 9, 2022, which include IRC 152(c)(3)(B). The disabled adult
+    # dependent is a qualifying child, so the WFTC pays the 1-child amount.
+    wa_working_families_tax_credit: 660

@@ -33,13 +33,25 @@ class mn_child_and_working_families_credits(Variable):
         earnings = tax_unit("filer_adjusted_earnings", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
-        qualifying_child = person("is_qualifying_child_dependent", period)
+        # Minn. Stat. 290.0671, subd. 1a defines a qualifying older child as
+        # an IRC 32(c) qualifying child that attained at least age 18; the
+        # IRC 32(c)(3) definition incorporates IRC 152(c)(3)(B), which waives
+        # the age (and student) test for permanently and totally disabled
+        # individuals. Schedule M1DQC step 4 routes a disabled dependent aged
+        # 18 or older directly to the qualifying-older-child row (row 11)
+        # without the full-time-student test.
+        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
+            "is_permanently_and_totally_disabled", period
+        )
+        qualifying_child = (
+            person("is_qualifying_child_dependent", period) | is_disabled_dependent
+        )
         age = person("age", period)
         full_time_student = person("is_full_time_student", period)
         qualifying_older_child = (
             qualifying_child
             & (age > p.wfc.additional.age_threshold)
-            & full_time_student
+            & (full_time_student | is_disabled_dependent)
         )
         qualifying_older_children = tax_unit.sum(qualifying_older_child)
         additional_wfc_credit = p.wfc.additional.amount.calc(qualifying_older_children)

@@ -13,6 +13,12 @@ class used_clean_vehicle_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.clean_vehicle.used
+        # One Big Beautiful Bill Act (Pub. L. 119-21 § 70501) terminates the
+        # credit for vehicles acquired after September 30, 2025. See
+        # eligibility/in_effect.yaml for the annual-resolution approximation
+        # of this intra-year cutoff.
+        if not p.eligibility.in_effect:
+            return False
         # Income eligibility based on lesser of MAGI in current and prior year.
         # Assume AGI in current year for now.
         agi = tax_unit("adjusted_gross_income", period)

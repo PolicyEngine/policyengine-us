@@ -22,3 +22,49 @@
     msp_cost: 2_434.8
   output:
     healthcare_benefit_value: 2_434.8
+
+- name: Case 3, enrolled CHIP value is included in healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: AL
+    is_chip_eligible: true
+    takes_up_chip_if_eligible: true
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    chip: 2_619.02
+    healthcare_benefit_value: 2_619.02
+
+- name: Case 4, CHIP-eligible non-enroller has no healthcare benefit value.
+  period: 2026
+  input:
+    state_code: AL
+    is_chip_eligible: true
+    takes_up_chip_if_eligible: false
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    chip: 0
+    healthcare_benefit_value: 0
+
+- name: Case 5, CHIP-ineligible person has no healthcare benefit value.
+  period: 2026
+  input:
+    state_code: AL
+    is_chip_eligible: false
+    takes_up_chip_if_eligible: true
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    chip: 0
+    healthcare_benefit_value: 0

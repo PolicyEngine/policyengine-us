@@ -133,3 +133,127 @@
         adjusted_gross_income: 39_000
   output:
     savers_credit_person: [0, 0]
+
+- name: Case 1, 2024 joint filer just below the 50%-to-20% rate bracket boundary.
+  # 2024 joint 50%/20% boundary is $46,000 (IRS Notice 2023-75).
+  # AGI of $45,999 is below the threshold, so the 50% rate applies.
+  # Credit: 0.5 * $2,000 = $1,000.
+  period: 2024
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 45_999
+  output:
+    savers_credit_person: [1_000]
+
+- name: Case 2, 2024 joint filer exactly at the 50%-to-20% rate bracket boundary.
+  # 2024 joint 50%/20% boundary is $46,000 (IRS Notice 2023-75).
+  # AGI of $46,000 is at-or-above the threshold, so the 20% rate applies.
+  # Credit: 0.2 * $2,000 = $400.
+  period: 2024
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 46_000
+  output:
+    savers_credit_person: [400]
+
+- name: Case 3, 2025 joint filer just below the 20%-to-10% rate bracket boundary.
+  # 2025 joint 20%/10% boundary is $51,000 (IRS Notice 2024-80).
+  # AGI of $50,999 is below the threshold, so the 20% rate applies.
+  # Credit: 0.2 * $2,000 = $400.
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 50_999
+  output:
+    savers_credit_person: [400]
+
+- name: Case 4, 2025 joint filer exactly at the 20%-to-10% rate bracket boundary.
+  # 2025 joint 20%/10% boundary is $51,000 (IRS Notice 2024-80).
+  # AGI of $51,000 is at-or-above the threshold, so the 10% rate applies.
+  # Credit: 0.1 * $2,000 = $200.
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 51_000
+  output:
+    savers_credit_person: [200]
+
+- name: Case 5, 2025 head of household filer at the credit phase-out limit.
+  # 2025 HoH full phase-out limit is $59,250 (0.75 x joint $79,000, IRS Notice 2024-80).
+  # AGI at-or-above this threshold receives a 0% rate (no credit).
+  period: 2025
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 59_250
+  output:
+    savers_credit_person: [0]
+
+- name: Case 6, 2026 joint filer just below the 10%-to-0% phase-out boundary.
+  # 2026 joint full phase-out limit is $80,500 (IRS Notice 2025-67).
+  # AGI of $80,499 is below the threshold, so the 10% rate still applies.
+  # Credit: 0.1 * $2,000 = $200.
+  period: 2026
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 80_499
+  output:
+    savers_credit_person: [200]
+
+- name: Case 7, 2026 joint filer at the full phase-out limit.
+  # 2026 joint full phase-out limit is $80,500 (IRS Notice 2025-67).
+  # AGI at-or-above this threshold receives a 0% rate (no credit).
+  period: 2026
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        adjusted_gross_income: 80_500
+  output:
+    savers_credit_person: [0]

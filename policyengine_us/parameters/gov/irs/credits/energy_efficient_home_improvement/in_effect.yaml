@@ -3,11 +3,17 @@ values:
   2006-01-01: true
   2008-01-01: false
   2009-01-01: true
-  2033-01-01: false
+  2026-01-01: false
   # Pre-Infation Reduction Act law terminated it on 2022-01-01.
   # However, the Inflation Reduction Act extended it retroactively.
+  # One Big Beautiful Bill Act terminates it again for property placed in
+  # service after December 31, 2025. Note: the 25C(h) requirement that
+  # qualified property display a product identification number (PIN) on the
+  # taxpayer's return is not modeled here (see #8703).
 metadata:
   label: Energy efficient home improvement tax credit in effect
   reference:
     - title: 26 U.S.C. § 25C(g)
       href: https://www.law.cornell.edu/uscode/text/26/25C#g
+    - title: One Big Beautiful Bill Act, Pub. L. No. 119-21, § 70505 (2025) # Terminates the credit for property placed in service after December 31, 2025.
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1
