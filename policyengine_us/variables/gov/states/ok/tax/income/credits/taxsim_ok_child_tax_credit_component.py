@@ -13,7 +13,9 @@ class taxsim_ok_child_tax_credit_component(Variable):
         # OK's combined credit is max(CDCC_portion, CTC_portion).
         # This extracts the CTC portion by checking if CTC > CDCC.
         p = parameters(period).gov.states.ok.tax.income.credits.child
-        us_cdcc = tax_unit("cdcc_potential", period)
+        # Federal child care credit AS ALLOWED (after the federal
+        # tax-liability limit), matching ok_child_care_child_tax_credit.
+        us_cdcc = tax_unit("cdcc", period)
         ok_cdcc = us_cdcc * p.cdcc_fraction
         us_ctc = tax_unit("ok_federal_ctc", period)
         ok_ctc = us_ctc * p.ctc_fraction

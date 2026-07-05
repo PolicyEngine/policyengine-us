@@ -9,6 +9,7 @@ class ks_tanf_gross_income_eligible(Variable):
     definition_period = MONTH
     reference = (
         "https://ksrevisor.gov/statutes/chapters/ch39/039_007_0009.html",
+        "https://content.dcf.ks.gov/ees/keesm/current/keesm6410.htm",
         "https://www.dcf.ks.gov/services/ees/Documents/Reports/TANF%20State%20Plan%20FFY%202024%20-%202026.pdf",
     )
     defined_for = StateCode.KS
@@ -19,9 +20,13 @@ class ks_tanf_gross_income_eligible(Variable):
         # recipients are excluded from the assistance unit (KEESM 4113), so
         # they are left out of both the counted income and the poverty-
         # guideline household size used for the threshold.
+        #
+        # Per KEESM 6410: a child's earned income is exempt as income, so it is
+        # excluded from the gross-income test.
         person = spm_unit.members
         is_member = person("ks_tanf_is_assistance_unit_member", period.this_year)
-        earned = person("tanf_gross_earned_income", period)
+        child_income_exempt = person("ks_tanf_child_earned_income_exempt", period)
+        earned = person("tanf_gross_earned_income", period) * ~child_income_exempt
         unearned = person("tanf_gross_unearned_income", period)
         gross_income = spm_unit.sum((earned + unearned) * is_member)
         size = spm_unit("ks_tanf_assistance_unit_size", period.this_year)

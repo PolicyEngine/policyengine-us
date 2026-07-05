@@ -7,9 +7,9 @@ class per_capita_chip(Variable):
     label = "Average CHIP payment"
     unit = USD
     documentation = (
-        "Per-capita net CHIP payment for this person's state. This variable "
-        "is eligibility-gated and does not model enrollment or take-up; use "
-        "`chip` for enrolled household resource accounting."
+        "Per-capita separate CHIP payment for this person's State. "
+        "PolicyEngine models Medicaid expansion CHIP children through "
+        "Medicaid, so this uses separate CHIP spending and enrollment."
     )
     definition_period = YEAR
     reference = "https://www.macpac.gov/publication/chip-spending-by-state/"
@@ -19,8 +19,8 @@ class per_capita_chip(Variable):
         state_code = person.household("state_code", period)
         p = parameters(period).calibration.gov.hhs.cms.chip
 
-        spending = p.spending.total.total[state_code]
-        enrollment = p.enrollment.total[state_code]
+        spending = max_(p.spending.separate_chip.total[state_code], 0)
+        enrollment = p.enrollment.separate_chip[state_code]
 
         per_capita = np.zeros_like(enrollment, dtype=float)
         mask = enrollment > 0

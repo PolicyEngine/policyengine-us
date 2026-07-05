@@ -1,0 +1,26 @@
+description: Health coverage sources that disqualify a child from CHIP eligibility.
+values:
+  0000-01-01:
+    - has_health_coverage_other_than_chip
+    - has_esi
+    - medicaid_enrolled
+    - receives_medicaid
+    - has_medicaid_health_coverage_at_interview
+    - medicare_enrolled
+    - has_marketplace_health_coverage_at_interview
+    - has_non_marketplace_direct_purchase_health_coverage_at_interview
+    - has_other_means_tested_health_coverage_at_interview
+    - has_tricare_health_coverage_at_interview
+    - has_champva_health_coverage_at_interview
+    - has_va_health_coverage_at_interview
+metadata:
+  unit: list
+  period: year
+  label: CHIP disqualifying health coverage sources
+  reference:
+    - title: 42 CFR § 457.310(b)(2) - Health benefits coverage
+      href: https://www.ecfr.gov/current/title-42/section-457.310#p-457.310(b)(2)
+    - title: 42 CFR § 457.320(b)(5) - Other eligibility standards
+      href: https://www.ecfr.gov/current/title-42/section-457.320#p-457.320(b)(5)
+    - title: 45 CFR § 146.113(a)(1) - Excepted benefits
+      href: https://www.ecfr.gov/current/title-45/section-146.113#p-146.113(a)(1)

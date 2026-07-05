@@ -1,0 +1,49 @@
+description: Michigan reimburses child care centers at these hourly rates under the Child Development and Care program, by star quality level and child age group.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Michigan CDC child care center hourly rates
+  breakdown:
+    - mi_ccap_star_rating
+    - mi_ccap_age_group
+  reference:
+    - title: RFT 270, Department Hourly Rates (effective September 22, 2024)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=4
+
+# The Base Rate (blank star) and 1 Star (Maintaining Health & Safety) rows
+# carry identical rates, so STAR_1 holds both.
+STAR_1:
+  INFANT_TODDLER:
+    2024-09-22: 7.15
+  PRESCHOOL:
+    2024-09-22: 5.05
+  SCHOOL_AGE:
+    2024-09-22: 4.90
+STAR_2:
+  INFANT_TODDLER:
+    2024-09-22: 7.55
+  PRESCHOOL:
+    2024-09-22: 5.45
+  SCHOOL_AGE:
+    2024-09-22: 5.35
+STAR_3:
+  INFANT_TODDLER:
+    2024-09-22: 8.40
+  PRESCHOOL:
+    2024-09-22: 6.30
+  SCHOOL_AGE:
+    2024-09-22: 6.15
+STAR_4:
+  INFANT_TODDLER:
+    2024-09-22: 8.75
+  PRESCHOOL:
+    2024-09-22: 6.75
+  SCHOOL_AGE:
+    2024-09-22: 6.55
+STAR_5:
+  INFANT_TODDLER:
+    2024-09-22: 9.60
+  PRESCHOOL:
+    2024-09-22: 7.55
+  SCHOOL_AGE:
+    2024-09-22: 7.35

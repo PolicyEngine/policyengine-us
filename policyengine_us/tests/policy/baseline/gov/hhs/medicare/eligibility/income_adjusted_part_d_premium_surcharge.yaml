@@ -46,3 +46,73 @@
     takes_up_medicare_if_eligible: false
   output:
     income_adjusted_part_d_premium_surcharge: 0
+
+- name: Case 5, 2026 single filer at the IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2024: 109_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 0
+
+- name: Case 6, 2026 single filer above the IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2024: 109_001
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 174
+
+- name: Case 7, 2026 joint filer in the third IRMAA tier.
+  period: 2026
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2024: 342_001
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 724.8
+
+- name: Case 8, 2026 separate filer in the middle IRMAA tier.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2024: 200_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 999.6
+
+- name: Case 9, 2026 separate filer at the top IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2024: 391_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    income_adjusted_part_d_premium_surcharge: 1_092

@@ -1,0 +1,73 @@
+# Tests for nd_ccap_provider_qris_step (Person, MONTH, Enum input).
+# This is an input with no formula; the cases confirm every QRIS step value
+# (STEP_1..STEP_4 and the UNRATED default) round-trips. The step drives the
+# QRIS bonus rate and gates the special-needs +10% (400-28-100-30).
+
+- name: Case 1, step 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        nd_ccap_provider_qris_step: STEP_1
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_provider_qris_step: STEP_1
+
+- name: Case 2, step 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        nd_ccap_provider_qris_step: STEP_2
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_provider_qris_step: STEP_2
+
+- name: Case 3, step 3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        nd_ccap_provider_qris_step: STEP_3
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_provider_qris_step: STEP_3
+
+- name: Case 4, step 4.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        nd_ccap_provider_qris_step: STEP_4
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_provider_qris_step: STEP_4
+
+- name: Case 5, unrated default when not set.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_provider_qris_step: UNRATED

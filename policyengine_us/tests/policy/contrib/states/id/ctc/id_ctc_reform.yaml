@@ -1,0 +1,75 @@
+# Idaho CTC revival contributed reform (gov.contrib.states.id.ctc).
+# The baseline $205/child credit (id_ctc) was dropped from the ordered
+# nonrefundable list as of 2026; the reform revives it and can add a
+# refundable top-up. Tests stub id_income_tax_before_non_refundable_credits
+# to isolate the credit math from the rest of the Idaho return.
+
+- name: 2026 baseline does not apply the expired Idaho CTC
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: ID
+    ctc_qualifying_children: 2
+    id_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # id_ctc still computes 2 * 205 = 410 as a worksheet amount, but it is not
+    # in the 2026 nonrefundable list, so no credit is applied.
+    id_non_refundable_credits: 0
+
+- name: Revival applies the nonrefundable CTC capped at liability
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.id.ctc.id_ctc_reform.id_ctc_reform
+  input:
+    gov.contrib.states.id.ctc.in_effect: true
+    state_code: ID
+    ctc_qualifying_children: 2
+    id_income_tax_before_non_refundable_credits: 1_000
+  output:
+    # Revived list is [id_ctc]; applied = min(410, 1000) = 410. Refundable off.
+    id_non_refundable_credits: 410
+    id_refundable_ctc: 0
+
+- name: Refundable option pays unused CTC to a no-liability family
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.id.ctc.id_ctc_reform.id_ctc_reform
+  input:
+    gov.contrib.states.id.ctc.in_effect: true
+    gov.contrib.states.id.ctc.refundable.in_effect: true
+    state_code: ID
+    ctc_qualifying_children: 2
+    id_income_tax_before_non_refundable_credits: 0
+  output:
+    # potential 410, nonrefundable 0 (no liability), unused 410,
+    # cap = 205 * 2 = 410 -> fully refundable.
+    id_refundable_ctc: 410
+
+- name: Refundable cap override composes
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.id.ctc.id_ctc_reform.id_ctc_reform
+  input:
+    gov.contrib.states.id.ctc.in_effect: true
+    gov.contrib.states.id.ctc.refundable.in_effect: true
+    gov.contrib.states.id.ctc.refundable.amount: 100
+    state_code: ID
+    ctc_qualifying_children: 2
+    id_income_tax_before_non_refundable_credits: 0
+  output:
+    # refund = min(410 unused, 100 * 2) = 200.
+    id_refundable_ctc: 200
+
+- name: Baseline CTC amount override composes with the revival
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.id.ctc.id_ctc_reform.id_ctc_reform
+  input:
+    gov.contrib.states.id.ctc.in_effect: true
+    gov.states.id.tax.income.credits.ctc.amount: 300
+    state_code: ID
+    ctc_qualifying_children: 2
+    id_income_tax_before_non_refundable_credits: 1_000
+  output:
+    id_ctc: 600
+    id_non_refundable_credits: 600

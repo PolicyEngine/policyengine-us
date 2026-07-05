@@ -71,3 +71,70 @@
     bedrooms: 5
   output:
     hud_fair_market_rent: 51_032.4
+
+- name: LA County 2BR FY2026 resolves to the FY2026 value, not FY2025
+  period: 2026
+  input:
+    county_fips: "06037"
+    bedrooms: 2
+  output:
+    # FY2026 CSV value $2,903/mo × 12 = $34,836 (FY2025 was $31,500).
+    hud_fair_market_rent: 34_836
+
+- name: LA County 0BR FY2026
+  period: 2026
+  input:
+    county_fips: "06037"
+    bedrooms: 0
+  output:
+    hud_fair_market_rent: 24_948
+
+- name: Alameda County 2BR FY2026 derives county FIPS from HUD FMR area code
+  period: 2026
+  input:
+    county_fips: "06001"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 34_944
+
+- name: Fairfield County 2BR FY2026 falls back to FY2025 for legacy Connecticut county FIPS
+  period: 2026
+  input:
+    county_fips: "09001"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 26_844
+
+- name: American Samoa county 2BR FY2026 expands the territory pseudo-area
+  period: 2026
+  input:
+    county_fips: "60010"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 11_028
+
+- name: Northern Mariana Islands county 2BR FY2026 expands the territory pseudo-area
+  period: 2026
+  input:
+    county_fips: "69110"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 11_580
+
+- name: LA County 5BR FY2026 adds 15 percent to 4BR FMR
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "06037"
+    bedrooms: 5
+  output:
+    # FY2026 4BR $4,098/mo × 1.15 × 12 = $56,552.40.
+    hud_fair_market_rent: 56_552.4
+
+- name: FY2027 falls back to the nearest bundled FMR year (FY2026)
+  period: 2027
+  input:
+    county_fips: "06037"
+    bedrooms: 2
+  output:
+    hud_fair_market_rent: 34_836

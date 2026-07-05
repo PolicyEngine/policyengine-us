@@ -31,12 +31,12 @@ def create_oh_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.oh.dependent_exemption
             count = tax_unit("oh_eligible_dependents_count", period)
-            # Negative amount sentinel = use the baseline per-person AGI-stepped
-            # amount (no-op default); a value >= 0 applies a flat amount.
-            p_base = parameters(period).gov.states.oh.tax.income.exemptions.personal
+            # Negative amount sentinel = use the discrete MAGI-stepped schedule
+            # (no-op default, since the contrib schedule mirrors the baseline);
+            # a value >= 0 applies a flat per-dependent amount instead.
             agi = tax_unit("oh_agi", period)
-            baseline_per = p_base.amount.calc(agi)
-            per_dependent = where(p.amount < 0, baseline_per, p.amount)
+            stepped_per = p.schedule.amount.calc(agi)
+            per_dependent = where(p.amount < 0, stepped_per, p.amount)
             return count * per_dependent
 
     class oh_dependent_exemption_phaseout(Variable):

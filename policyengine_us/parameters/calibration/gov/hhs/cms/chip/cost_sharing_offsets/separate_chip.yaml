@@ -1,4 +1,13 @@
-description: Household-paid premium and cost-sharing collections that offset gross separate-CHIP expenditures in each state. Primary source is the CMS-21 cost-sharing offset line items (Premiums Up To or Over 150 percent FPL, Cost Sharing Offset). For states where cost-sharing offset lines are zero but Line 49 Less Collection carries premium receipts (CT, DE, MA, MI, NY), the Line 49 FY2024 value is used with the caveat that this line can also include third-party liability recoveries.
+description: Household-paid premium and cost-sharing collections that offset gross separate-CHIP expenditures in each state.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Separate CHIP household-paid cost-sharing offsets by state
+  breakdown:
+    - state_code
+  reference:
+    - title: CMS Medicaid Financial Management Report - FY 2024 CHIP Net Expenditures (Separate CHIP sheets)
+      href: https://www.medicaid.gov/medicaid/financial-management/state-expenditure-reporting-for-medicaid-chip/expenditure-reports-mbescbes
 AL:
   2024-01-01: 5_483_226
 AK:

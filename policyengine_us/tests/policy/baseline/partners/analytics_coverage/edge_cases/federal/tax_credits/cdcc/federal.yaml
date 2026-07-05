@@ -363,3 +363,158 @@
         cdcc: 0.0
         adjusted_gross_income: 0.0
         income_tax: 0.0
+- name: cdcc_disabled_spouse_and_qualifying_child (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 90000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+        is_incapable_of_self_care: true
+        care_expenses: 4000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+        spm_unit_pre_subsidy_childcare_expenses: 4000
+        childcare_expenses: 4000
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4000
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2200.0
+        ctc_value: 2200.0
+        refundable_ctc: 0.0
+        cdcc: 2100.0
+        adjusted_gross_income: 90000.0
+        income_tax: 2140.0
+# Same household as above, but the spouse doesn't report care_expenses. Income
+# is high enough in both cases that cdcc_credit_limit (tax liability) isn't
+# the binding constraint, so cdcc itself is sensitive to care_expenses: 2100
+# with the $4,000 adult-care expense vs 1400 without it (childcare alone).
+# Without this pairing, a regression that stops reading care_expenses
+# wouldn't be caught by the test above alone.
+- name: cdcc_disabled_spouse_no_care_expenses (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 90000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+        is_incapable_of_self_care: true
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        - child1
+        state_code_str: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+        spm_unit_pre_subsidy_childcare_expenses: 4000
+        childcare_expenses: 4000
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4000
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2200.0
+        ctc_value: 2200.0
+        refundable_ctc: 0.0
+        cdcc: 1400.0
+        adjusted_gross_income: 90000.0
+        income_tax: 2840.0

@@ -15,10 +15,14 @@ class mo_net_state_income_taxes(Variable):
 
     def formula(tax_unit, period, parameters):
         # follows Form MO-A Part II and Part II worksheet logic:
-
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.irs.deductions.itemized
-        salt_cap = p.salt_and_real_estate.cap[filing_status]
+        # Missouri adds back the state and local income tax actually included
+        # in the federal itemized SALT deduction. The base is therefore the
+        # federal SALT cap *after* the OBBBA income-based phase-down (the
+        # salt_cap variable), not the static base cap
+        # p.salt_and_real_estate.cap, which would otherwise over-state the
+        # add-back for high earners whose federal SALT has phased down to the
+        # $10,000 floor.
+        salt_cap = tax_unit("salt_cap", period)
 
         uncapped_itax = max_(0, add(tax_unit, period, ["state_withheld_income_tax"]))
         uncapped_ptax = add(tax_unit, period, ["real_estate_taxes"])
@@ -28,4 +32,6 @@ class mo_net_state_income_taxes(Variable):
         mask = uncapped_salt != 0
         ratio[mask] = uncapped_itax[mask] / uncapped_salt[mask]
 
+        # Pro-rate the income-tax share against the SALT actually deducted
+        # federally after the phase-down (MO-A Part 2 worksheet).
         return where(uncapped_salt > salt_cap, salt_cap * ratio, uncapped_itax)

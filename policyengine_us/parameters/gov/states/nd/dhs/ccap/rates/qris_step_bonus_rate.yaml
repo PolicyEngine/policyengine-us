@@ -1,0 +1,33 @@
+description: North Dakota pays providers this additional share of the state maximum rate by quality rating step under the Child Care Assistance Program.
+
+# Quality Rating and Improvement System (QRIS) step bonus, paid to providers as
+# a separate payment on top of the service-month subsidy. Per 400-28-100-30
+# (revised 6/1/2023, ML #3819): step 2 = +5%, step 3 = +10%, step 4 = +15% of
+# the state maximum rate. Effective January 1, 2026 the step 2 bonus is
+# eliminated and steps 3 and 4 drop to +5% and +10%.
+
+metadata:
+  period: year
+  unit: /1
+  label: North Dakota CCAP QRIS step bonus rate
+  breakdown:
+    - nd_ccap_provider_qris_step
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: North Dakota HHS Child Care Assistance Program updates 2026
+      href: https://www.hhs.nd.gov/ec-news/child-care-assistance-program-ccap-updates-2026
+
+STEP_1:
+  2023-06-01: 0
+STEP_2:
+  2023-06-01: 0.05
+  2026-01-01: 0
+STEP_3:
+  2023-06-01: 0.1
+  2026-01-01: 0.05
+STEP_4:
+  2023-06-01: 0.15
+  2026-01-01: 0.1
+UNRATED:
+  2023-06-01: 0

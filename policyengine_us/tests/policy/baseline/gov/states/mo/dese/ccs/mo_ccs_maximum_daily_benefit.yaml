@@ -1,0 +1,1036 @@
+# MO CCS maximum daily benefit tests
+# mo_ccs_maximum_daily_benefit is Person, MONTH, defined_for mo_ccs_eligible_child.
+# = the gross daily base (or special-needs/PS) rate for the child's provider
+#   type x region x age group x time category. This variable returns the gross
+#   base rate; the transitional funding multiplier (80/60/50%) is applied
+#   downstream in mo_ccs, not here.
+# Rates from 2025 Rates Held Harmless 2.0 (Daytime Rates 2025), effective 2025-10-01.
+# Test period 2025-01 uses 2025 FPG, matching the Nov-2025 chart dollar bands.
+
+# === Provider type coverage (Region 1 dense urban, infant/toddler, full time) ===
+- name: Case 1, licensed center dense urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Licensed center, dense urban, infant/toddler, full time = $96/day.
+    mo_ccs_maximum_daily_benefit: [0, 96]
+
+- name: Case 2, registered center dense urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Registered center, dense urban, infant/toddler, full time = $84/day.
+    mo_ccs_maximum_daily_benefit: [0, 84]
+
+- name: Case 3, six-or-fewer license-exempt dense urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: SIX_OR_FEWER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Six or fewer, dense urban, infant/toddler, full time = $49.66/day.
+    mo_ccs_maximum_daily_benefit: [0, 49.66]
+
+- name: Case 4, licensed family home dense urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Licensed family home, dense urban, infant/toddler, full time = $70.91/day.
+    mo_ccs_maximum_daily_benefit: [0, 70.91]
+
+- name: Case 5, group home dense urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Group home, dense urban, infant/toddler, full time = $72/day.
+    mo_ccs_maximum_daily_benefit: [0, 72]
+
+# === Region coverage (licensed center, preschool, full time) ===
+- name: Case 6, licensed center metro preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: FRANKLIN_COUNTY_MO
+  output:
+    # Licensed center, metro (Region 2), preschool, full time = $37/day.
+    mo_ccs_maximum_daily_benefit: [0, 37]
+
+- name: Case 7, licensed center urban preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # Licensed center, urban (Region 3), preschool, full time = $40/day.
+    mo_ccs_maximum_daily_benefit: [0, 40]
+
+- name: Case 8, licensed center micropolitan preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: ADAIR_COUNTY_MO
+  output:
+    # Licensed center, micropolitan (Region 4), preschool, full time = $32.50/day.
+    mo_ccs_maximum_daily_benefit: [0, 32.5]
+
+- name: Case 9, licensed center rural preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BARRY_COUNTY_MO
+  output:
+    # Licensed center, rural (Region 5 default), preschool, full time = $31/day.
+    mo_ccs_maximum_daily_benefit: [0, 31]
+
+# === Time category coverage (licensed center, dense urban, infant/toddler) ===
+- name: Case 10, half time infant in licensed center dense urban.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # 4 hours/day -> half time. Licensed center, dense urban, infant/toddler,
+    # half time = $72/day.
+    mo_ccs_maximum_daily_benefit: [0, 72]
+
+- name: Case 11, part time infant in licensed center dense urban.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # 2 hours/day -> part time. Licensed center, dense urban, infant/toddler,
+    # part time = $48/day.
+    mo_ccs_maximum_daily_benefit: [0, 48]
+
+# === School age coverage ===
+- name: Case 12, school age child licensed center dense urban full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Licensed center, dense urban, school age, full time = $36/day.
+    mo_ccs_maximum_daily_benefit: [0, 36]
+
+# === Special-needs (PS) rate column ===
+- name: Case 13, special-needs child uses the PS rate column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Disabled -> special-needs column (PS market + 25% differential). Licensed
+    # center, dense urban, preschool, full time = $89.4625/day (base $50, PS
+    # market $71.57).
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
+
+# === Transitional families return the gross base rate (funding multiplier
+#     is applied downstream in mo_ccs, not here) ===
+- name: Case 14, TCC1 family returns the gross base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_840
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # FPG size 2 = 21,150/yr -> 1,762.50/mo. Income 33,840/yr = 2,820/mo.
+    # FPL ratio = 2,820 / 1,762.50 = 1.60 -> TCC1 (0.80 funding rate applied in
+    # mo_ccs). This variable returns the gross base $96/day.
+    mo_ccs_maximum_daily_benefit: [0, 96]
+
+- name: Case 15, TCC2 family returns the gross base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_300
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 42,300/yr = 3,525/mo. FPL ratio = 3,525 / 1,762.50 = 2.00
+    # -> TCC2 (1.85-2.15; 0.60 funding applied in mo_ccs).
+    # This variable returns the gross base $96/day.
+    mo_ccs_maximum_daily_benefit: [0, 96]
+
+- name: Case 16, TCC3 family returns the gross base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_645
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 48,645/yr = 4,053.75/mo. FPL ratio = 4,053.75 / 1,762.50 = 2.30
+    # -> TCC3 (2.15-2.42; 0.50 funding applied in mo_ccs).
+    # This variable returns the gross base $96/day.
+    mo_ccs_maximum_daily_benefit: [0, 96]
+
+# === FPL-ratio classification still works; the gross base rate is unchanged
+#     across the 150% boundary ===
+- name: Case 17, FPL ratio exactly 150 percent returns the gross base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_725
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 31,725/yr = 2,643.75/mo. FPL ratio = 2,643.75 / 1,762.50 = 1.50
+    # -> 1.50 not > 1.5001 -> traditional (funding 1.0).
+    # Preschool dense urban base $50/day.
+    mo_ccs_maximum_daily_benefit: [0, 50]
+
+- name: Case 18, FPL ratio just above 150 percent returns the gross base rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_940
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mo_ccs_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Income 31,940/yr = 2,661.67/mo. FPL ratio = 2,661.67 / 1,762.50 = 1.5101
+    # > 1.5001 -> TCC1 (0.80 funding applied in mo_ccs).
+    # This variable returns the gross preschool dense urban base $50/day.
+    mo_ccs_maximum_daily_benefit: [0, 50]
+
+# === Special-needs (PS) rate column for non-licensed-center providers ===
+# provider_rate() reads each provider's special_needs column independently, so
+# each provider type needs PS coverage (RI CCAP dimension-coverage lesson).
+- name: Case 19, registered center special-needs preschool uses the PS column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Registered center, dense urban, preschool, full time special-needs
+    # (PS market $68 + 25%) = $85/day (base would be $40.25).
+    mo_ccs_maximum_daily_benefit: [0, 85]
+
+- name: Case 20, six-or-fewer special-needs school age uses the PS column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: SIX_OR_FEWER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Six or fewer, dense urban, school age, full time special-needs
+    # (PS market $35 + 25%) = $43.75/day (base would be $25.45).
+    mo_ccs_maximum_daily_benefit: [0, 43.75]
+
+- name: Case 21, licensed family home special-needs preschool uses the PS column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Licensed family home, dense urban, preschool, full time special-needs
+    # (PS market $70 + 25%) = $87.5/day (base would be $40).
+    mo_ccs_maximum_daily_benefit: [0, 87.5]
+
+- name: Case 22, group home special-needs preschool uses the PS column.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Group home, dense urban, preschool, full time special-needs
+    # (PS market $66 + 25%) = $82.5/day (base would be $50).
+    mo_ccs_maximum_daily_benefit: [0, 82.5]
+
+# === Region x age rate-matrix cells outside Region 1 (school age and infant
+#     in Regions 2/3/5, which previously had no coverage) ===
+- name: Case 23, licensed center metro school age full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: FRANKLIN_COUNTY_MO
+  output:
+    # Licensed center, metro (Region 2), school age, full time = $34/day.
+    mo_ccs_maximum_daily_benefit: [0, 34]
+
+- name: Case 24, licensed center urban infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # Licensed center, urban (Region 3), infant/toddler, full time = $79/day.
+    mo_ccs_maximum_daily_benefit: [0, 79]
+
+- name: Case 25, licensed center rural school age full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BARRY_COUNTY_MO
+  output:
+    # Licensed center, rural (Region 5 default), school age, full time = $30.02/day.
+    mo_ccs_maximum_daily_benefit: [0, 30.02]
+
+# === Half/part time coverage on a second provider type and region ===
+- name: Case 26, registered center urban infant half time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # 4 hours/day -> half time. Registered center, urban (Region 3),
+    # infant/toddler, half time = $52.50/day.
+    mo_ccs_maximum_daily_benefit: [0, 52.5]
+
+- name: Case 27, registered center urban infant part time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # 2 hours/day -> part time. Registered center, urban (Region 3),
+    # infant/toddler, part time = $35/day.
+    mo_ccs_maximum_daily_benefit: [0, 35]
+
+# === Special-needs (PS) rate column in each region outside Region 1 ===
+# provider.special_needs is read per region, so each rate region (Metro/Urban/
+# Micropolitan/Rural) needs at least one special-needs check to catch a
+# transcription error in that region's special_needs.yaml column. Region 1
+# (dense urban) is already covered by Cases 13, 19-22.
+- name: Case 28, licensed center metro special-needs infant full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: FRANKLIN_COUNTY_MO
+  output:
+    # Licensed center, metro (Region 2), infant/toddler, full time special-needs
+    # = $89.50/day (licensed_center/special_needs.yaml METRO/INFANT_TODDLER/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 89.5]
+
+- name: Case 29, licensed family home urban special-needs preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BOONE_COUNTY_MO
+  output:
+    # Licensed family home, urban (Region 3), preschool, full time special-needs
+    # = $45/day (licensed_family_home/special_needs.yaml URBAN/PRESCHOOL/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 45]
+
+- name: Case 30, group home micropolitan special-needs school age full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: ADAIR_COUNTY_MO
+  output:
+    # Group home, micropolitan (Region 4), school age, full time special-needs
+    # = $50/day (group_home/special_needs.yaml MICROPOLITAN/SCHOOL_AGE/
+    # FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 50]
+
+- name: Case 31, registered center rural special-needs preschool full time.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: REGISTERED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: BARRY_COUNTY_MO
+  output:
+    # Registered center, rural (Region 5 default), preschool, full time
+    # special-needs = $47.625/day (registered_center/special_needs.yaml RURAL/
+    # PRESCHOOL/FULL_TIME).
+    mo_ccs_maximum_daily_benefit: [0, 47.625]
+
+# === Special-needs criteria other than verified disability also use the
+#     special-needs (+25%) rate column (5 CSR 25-200.050(11)). Same provider/
+#     region/age/time as Case 13, so the special-needs rate is the same
+#     $89.4625/day. ===
+- name: Case 32, SSI-only child uses the special-needs rate column (criterion A).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ssi: 800
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # SSI receipt (is_disabled unset) -> child with special needs -> special-
+    # needs column. Licensed center, dense urban, preschool, full time =
+    # $89.4625/day, matching Case 13.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]
+
+- name: Case 33, foster (protective-services) child uses the special-needs rate column (criterion D).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        childcare_hours_per_day: 8
+        mo_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+        county: JACKSON_COUNTY_MO
+  output:
+    # Protective-services / foster child -> child with special needs -> special-
+    # needs column. Licensed center, dense urban, preschool, full time =
+    # $89.4625/day, matching Case 13.
+    mo_ccs_maximum_daily_benefit: [0, 89.4625]

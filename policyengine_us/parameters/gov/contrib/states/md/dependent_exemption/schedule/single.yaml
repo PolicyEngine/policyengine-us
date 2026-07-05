@@ -1,0 +1,28 @@
+description: Under the Maryland dependent exemption reform, single filers receive this AGI-stepped per-dependent amount. Defaults mirror the baseline personal exemption schedule, so the reform is a no-op at default.
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 3_200
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 1_600
+  - threshold:
+      2021-01-01: 125_000
+    amount:
+      2021-01-01: 800
+  - threshold:
+      2021-01-01: 150_000
+    amount:
+      2021-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Maryland dependent exemption schedule for single filers
+  reference:
+    - title: Part III - Exemptions Section 10-211 Individuals Other Than Fiduciaries (c)(1)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries?searchWithin=true&listingIndexId=code-of-maryland.article-tax-general&q=blind&type=statute&sort=relevance&p=1
+    - title: Maryland 2025 Resident Tax Forms and Instructions - Exemption Amount Chart
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=12

@@ -1,0 +1,39 @@
+description: Michigan counts these income sources of the program group under the Child Development and Care program.
+values:
+  2024-09-22:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - social_security
+    # SSI (public assistance) is not counted: State Plan FFY 2025-2027 §2.2.4.c
+    # leaves "public assistance" unchecked. SSI recipients are income-waived
+    # anyway (see mi_ccap_income_waived), so this never affects the income test.
+    - dividend_income
+    - interest_income
+    - rental_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    # The following are counted under BEM 500/502/503 but have no matching
+    # variables at the moment:
+    # - adoption_subsidy
+    # - strike benefits
+    # - cash gifts and contributions
+
+metadata:
+  unit: list
+  period: year
+  label: Michigan CDC countable income sources
+  reference:
+    - title: BEM 503, Income, Unearned (countable determinations per program, pp.4-44)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/503.pdf#page=31
+    - title: BEM 504, Income from Rental/Room and Board (countable rental income, pp.1-6)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/504.pdf#page=1
+    - title: BEM 502, Income from Self-Employment (CDC countable self-employment, p.3)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/502.pdf#page=3
+    - title: BEM 500, Income Overview, Countable Income definition (p.3; inconsequential gift floor p.9)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/500.pdf#page=3

@@ -1,3 +1,186 @@
+## [1.755.7] - 2026-07-05
+
+### Fixed
+
+- Update Colorado OAP and AND-CS grant standards for 2026.
+
+
+## [1.755.6] - 2026-07-04
+
+### Fixed
+
+- Fix the partner API impact Slack notification job crashing on pull requests that change more than 20 partner test files.
+
+
+## [1.755.5] - 2026-07-02
+
+### Fixed
+
+- Fix county computation over datasets and complete the County enum. Households storing county_fips (but no county) now map counties from FIPS instead of collapsing to first_county_in_state, restoring in_nyc and NYC income tax in microsimulation. The County enum gains 61 missing entries (31 state counties and independent cities including O'Brien County IA and nine Virginia cities, plus 30 territory rows), appended at the end because datasets persist county as enum indices. Unmappable county names return UNKNOWN instead of raising, and three_digit_zip_code no longer crashes on non-numeric zip codes.
+
+
+## [1.755.4] - 2026-07-02
+
+### Fixed
+
+- Include 5-year-olds in the Head Start age range, matching 45 CFR 1302.12(b), which covers children from age 3 up to compulsory school age.
+
+
+## [1.755.3] - 2026-07-02
+
+### Fixed
+
+- Apply New Jersey's filing-threshold tax floor (N.J.S.A. 54A:2-4) to New Jersey income tax before refundable credits, which previously bypassed it.
+- Reinstate California's non-MAGI Medi-Cal asset limit effective January 1, 2026 ($130,000 for an individual, $195,000 for a couple), per DHCS ACWDL 25-14.
+
+
+## [1.755.2] - 2026-07-02
+
+### Fixed
+
+- Improve federal Child and Dependent Care Credit conformance with IRC section 21: count a disabled spouse modeled as the tax unit head and treat a couple's two incapacitated spouses as one qualifying individual, apply the section 21(d)(2) deemed earned income for a student or incapacitated spouse (zero without a qualifying individual), disallow the credit for married taxpayers filing separately in the pre-cap credit so state credits computed from it conform, preserve it for a separated taxpayer maintaining a home for a qualifying individual under section 21(e)(4), and keep a child of separated parents as the custodial parent's qualifying individual under section 21(e)(5); exclude separate filers from Colorado's low-income child care credit while apportioning its expenses over children only, and extend the disabled-adult care expense base and the section 21 filing-status rules to the Massachusetts dependent care credit and California's 2021 replicated credit.
+
+
+## [1.755.1] - 2026-07-02
+
+### Fixed
+
+- Fixed the Oklahoma Child Care/Child Tax Credit to use the allowed federal child care credit (cdcc, after the federal tax-liability limit) instead of the pre-limit potential (cdcc_potential), which overstated the credit for filers whose federal CDCC is limited by federal tax.
+
+
+## [1.755.0] - 2026-07-01
+
+### Added
+
+- - Excluded children's earned income from Kansas TANF gross-income and countable income per KEESM 6410.
+  - Added a Kansas TANF earned income deduction for the care of an incapacitated person per K.A.R. 30-4-111(b)(3).
+
+
+## [1.754.0] - 2026-07-01
+
+### Added
+
+- Add ZIP code-level HUD Small Area FMR payment standards for the two mandatory-SAFMR Kansas metros (Kansas City, KS and Wichita, KS).
+- Add ZIP code-level Housing Choice Voucher payment standards for Texas, using TDHCA and Houston Housing Authority published standards plus HUD Small Area FMRs for the four mandatory-SAFMR metros.
+
+### Changed
+
+- Populate the previously stubbed small_area_fair_market_rent and safmr_used_for_hcv variables, activating the Harris Rent Relief Act contrib reform's SAFMR-based rent cap for the four mandatory-SAFMR Texas metros.
+
+
+## [1.753.5] - 2026-07-01
+
+### Fixed
+
+- Fixed the Utah fully refundable EITC contrib reform, which crashed at calculation time and paid no refundable credit to filers with no Utah tax liability.
+
+
+## [1.753.4] - 2026-07-01
+
+### Fixed
+
+- - Fixed CHIP FCEP eligibility so an undocumented pregnant parent is not denied the unborn-child CHIP option solely due to immigration status.
+
+
+## [1.753.3] - 2026-07-01
+
+### Changed
+
+- - Add FY2026 county-level HUD Fair Market Rents so simulations at period 2026 use FY2026 values, falling back to the nearest earlier bundled year for any county missing from the queried year.
+  - Align HUD annual income with 24 CFR 5.609 by counting additional sources, excluding children's and full-time-student dependents' earned income and foster members' income, and no longer counting capital gains or retirement-account distributions.
+
+
+## [1.753.2] - 2026-07-01
+
+### Fixed
+
+- Updated 2026 Medicare Part B and Part D IRMAA schedules and fixed the married-filing-separately Part B IRMAA bracket lookup.
+
+
+## [1.753.1] - 2026-07-01
+
+### Changed
+
+- Remove unused contrib parameters (maryland_child_alliance, second_earner_reform).
+
+
+## [1.753.0] - 2026-07-01
+
+### Added
+
+- Add discrete per-filing-status AGI-stepped schedule parameters to the Maryland and Ohio dependent exemption contrib reforms.
+
+
+## [1.752.3] - 2026-07-01
+
+### Fixed
+
+- Add care expenses for a disabled adult dependent or spouse to the Child and Dependent Care Credit base, via a new care_expenses input, so a disabled qualifying individual age 18 or older is no longer attributed $0 of care expenses; the federal credit and its state mirrors (e.g. Kansas) previously returned $0 in this case.
+
+
+## [1.752.2] - 2026-07-01
+
+### Fixed
+
+- Base the Washington Working Families Tax Credit phase-out on federal phase-out income (greater of earned income or AGI) rather than earned income alone.
+
+
+## [1.752.1] - 2026-07-01
+
+### Fixed
+
+- Base the Vermont Child Care Contribution on net self-employment earnings (Schedule SE Line 6) rather than gross self-employment income.
+
+
+## [1.752.0] - 2026-07-01
+
+### Added
+
+- - Modeled the SNAP student employment and training (7 CFR 273.5(b)(11)) and work incentive program (7 CFR 273.5(b)(4)) placement exemptions via the new `is_snap_employment_training_student` and `is_snap_work_incentive_student` inputs, combined as `is_snap_employment_training_or_work_incentive_student`.
+
+
+## [1.751.2] - 2026-07-01
+
+### Fixed
+
+- Apply the CHIP no-other-coverage rule to non-ESI health coverage.
+
+
+## [1.751.1] - 2026-06-30
+
+### Fixed
+
+- Correct child care program coverage metadata in programs.yaml (remove duplicate coverage key; mark Alabama, New Jersey, South Carolina, and Virginia child care programs as complete).
+
+
+## [1.751.0] - 2026-06-30
+
+### Added
+
+- Add Missouri Child Care Subsidy program.
+
+
+## [1.750.1] - 2026-06-30
+
+### Fixed
+
+- Confer SNAP categorical eligibility on households receiving cash TANF, bypassing the income and asset tests in non-BBCE states, and honor partner-reported SSI in the categorical eligibility SSI check.
+
+
+## [1.750.0] - 2026-06-30
+
+### Added
+
+- Add Michigan Child Development and Care (CDC) program.
+
+
+## [1.749.2] - 2026-06-30
+
+### Fixed
+
+- Use separate CHIP spending and enrollment to calculate per-capita CHIP values.
+
+
 ## [1.749.1] - 2026-06-30
 
 ### Changed

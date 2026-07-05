@@ -26,9 +26,14 @@ class is_snap_ineligible_student(Variable):
         # Exception 2: Not physically or mentally fit (disabled)
         meets_disability_exception = person("is_disabled", period)
 
-        # Exception 3: Assignment through workforce/employment programs
-        # (WIOA, career/technical ed, remedial/basic education)
-        # Not modeled
+        # Exceptions 3 and 7: Placed in or enrolled in an institution of
+        # higher education through a qualifying program — an employment and
+        # training program (Exception 3: WIOA, SNAP E&T career/technical or
+        # remedial coursework, the Trade Act, or a state or local program) or
+        # a title IV work incentive / JOBS / TANF work program (Exception 7).
+        meets_program_placement_exception = person(
+            "is_snap_employment_training_or_work_incentive_student", period
+        )
 
         # Exception 4: Employed at least 20 hours per week or work-study
         meets_work_hours_exception = person("meets_snap_work_exception", period)
@@ -44,15 +49,15 @@ class is_snap_ineligible_student(Variable):
         tanf = person("tanf_person", period)
         receives_tanf = tanf > 0
 
-        # Exception 7: Enrolled as result of participation in work incentive
-        # program under title IV (TANF work programs) or successor programs
-        # Not modeled
+        # Exception 7 is combined with Exception 3 above via
+        # is_snap_employment_training_or_work_incentive_student.
 
         # A higher education student is INELIGIBLE if they do NOT meet ANY
         # of the eight exceptions
         return ~(
             meets_age_exception
             | meets_disability_exception
+            | meets_program_placement_exception
             | meets_work_hours_exception
             | meets_parent_exception
             | receives_tanf

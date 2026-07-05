@@ -1,0 +1,87 @@
+- name: Joint filers are filing status eligible
+  period: 2024
+  input:
+    filing_status: JOINT
+  output:
+    cdcc_filing_status_eligible: true
+
+- name: Single filer is filing status eligible
+  period: 2024
+  input:
+    filing_status: SINGLE
+  output:
+    cdcc_filing_status_eligible: true
+
+- name: Separate filer who is not separated is not filing status eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_filing_status_eligible: false
+
+- name: Separated filer maintaining a home for a qualifying individual is eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_separated: true
+      person2:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_filing_status_eligible: true
+
+# IRC 21(e)(5): the child remains the custodial parent's qualifying
+# individual when the noncustodial parent claims the dependent.
+- name: Separated custodial parent keeps eligibility when the other parent claims the child
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_separated: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_filing_status_eligible: true
+
+- name: Separated filer without a qualifying individual is not eligible
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_separated: true
+      person2:
+        age: 15
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_filing_status_eligible: false

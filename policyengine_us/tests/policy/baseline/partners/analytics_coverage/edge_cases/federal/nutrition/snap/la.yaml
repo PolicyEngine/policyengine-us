@@ -10,7 +10,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 54540
+        employment_income_before_lsr: 54540
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -18,7 +18,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -26,7 +26,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id001
@@ -72,7 +72,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 54640
+        employment_income_before_lsr: 54640
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -80,7 +80,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -88,7 +88,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id002
@@ -134,7 +134,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 54740
+        employment_income_before_lsr: 54740
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -142,7 +142,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -150,7 +150,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id003
@@ -196,7 +196,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -204,7 +204,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -212,7 +212,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id004
@@ -247,7 +247,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 3688.49
+        snap: 5796.29
         is_snap_eligible: true
 - name: snap_head_age_60_assets_4000_elderly (la)
   period: 2026
@@ -261,7 +261,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -269,7 +269,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -277,7 +277,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id005
@@ -312,7 +312,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 3688.49
+        snap: 5796.29
         is_snap_eligible: true
 - name: snap_head_disabled_assets_4000 (la)
   period: 2026
@@ -327,7 +327,7 @@
         is_disabled: true
         is_usda_disabled: true
         immigration_status_str: CITIZEN
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -335,7 +335,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -343,7 +343,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id006
@@ -378,7 +378,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 3688.49
+        snap: 5796.29
         is_snap_eligible: true
 - name: snap_head_immigration_lpr (la)
   period: 2026
@@ -392,7 +392,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: LEGAL_PERMANENT_RESIDENT
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -400,7 +400,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -408,7 +408,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id007
@@ -440,7 +440,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 3688.49
+        snap: 5796.29
         is_snap_eligible: true
 - name: snap_head_immigration_refugee (la)
   period: 2026
@@ -454,7 +454,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: REFUGEE
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -462,7 +462,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -470,7 +470,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id008
@@ -502,7 +502,7 @@
   output:
     spm_units:
       spm_unit:
-        snap: 804.42
+        snap: 2912.22
         is_snap_eligible: true
 - name: snap_head_immigration_undocumented (la)
   period: 2026
@@ -516,7 +516,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: UNDOCUMENTED
-        employment_income: 20000
+        employment_income_before_lsr: 20000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -524,7 +524,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -532,7 +532,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id009
@@ -564,5 +564,5 @@
   output:
     spm_units:
       spm_unit:
-        snap: 804.42
+        snap: 2912.22
         is_snap_eligible: true

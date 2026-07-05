@@ -1,0 +1,12 @@
+description: Maryland multiplies the federal earned income credit by this multiple of the applicable county income tax rate to compute the local earned income credit.
+values:
+  2021-01-01: 10
+metadata:
+  unit: /1
+  period: year
+  label: MD local EITC county rate multiplier
+  reference:
+    - title: Md. Code, Tax-Gen. § 10-704(d)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-704&enactments=false
+    - title: "Maryland 2025 Resident Tax Forms and Instructions - Local Earned Income Credit Worksheet (19B)"
+      href: "https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=26"
