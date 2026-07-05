@@ -10,6 +10,9 @@ metadata:
   reference:
   - title: Rhode Island RI-1040 Instructions 2025
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=4
+  # 2026 standard deduction amounts from RI Division of Taxation Advisory ADV 2025-22 (Nov. 3, 2025), page 1.
+  - title: Rhode Island Division of Taxation, ADV 2025-22 - Inflation-adjusted amounts set for Tax Year 2026
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/ADV_2025_22_Inflation_Adjustments.pdf#page=1
   - title: Rhode Island Department of Revenue, Division of Taxation, Inflation-adjusted amounts set for tax year 2023.
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf#page=1
   - title: Rhode Island tax rate schedule and worksheets 2021
@@ -22,6 +25,7 @@ SINGLE:
     2023-01-01: 10_000
     2024-01-01: 10_550
     2025-01-01: 10_900
+    2026-01-01: 11_200
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -34,6 +38,7 @@ JOINT:
     2023-01-01: 20_050
     2024-01-01: 21_150
     2025-01-01: 21_800
+    2026-01-01: 22_400
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -46,6 +51,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 15_050
     2024-01-01: 15_850
     2025-01-01: 16_350
+    2026-01-01: 16_800
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -58,6 +64,7 @@ SEPARATE:
     2023-01-01: 10_025
     2024-01-01: 10_575
     2025-01-01: 10_900
+    2026-01-01: 11_200
   uprating:
     parameter: gov.irs.uprating
     rounding:
@@ -70,6 +77,7 @@ SURVIVING_SPOUSE:
     2023-01-01: 20_050
     2024-01-01: 21_150
     2025-01-01: 21_800
+    2026-01-01: 22_400
   uprating:
     parameter: gov.irs.uprating
     rounding:

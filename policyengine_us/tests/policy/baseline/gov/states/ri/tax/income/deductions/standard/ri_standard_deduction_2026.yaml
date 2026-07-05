@@ -1,0 +1,42 @@
+# 2026 Rhode Island standard deduction amounts, from RI Division of Taxation
+# Advisory ADV 2025-22, "Inflation-adjusted amounts set for Tax Year 2026"
+# (November 3, 2025), page 1.
+# https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/ADV_2025_22_Inflation_Adjustments.pdf
+# AGI is kept well below the phase-out range ($261,000 for 2026) so the applicable
+# percentage is 1.0 and the standard deduction equals the full indexed amount.
+
+- name: RI 2026 single standard deduction pins the ADV 2025-22 amount
+  period: 2026
+  input:
+    filing_status: SINGLE
+    employment_income: 20_000
+    state_code: RI
+  output:
+    ri_standard_deduction: 11_200
+
+- name: RI 2026 joint standard deduction pins the ADV 2025-22 amount
+  period: 2026
+  input:
+    filing_status: JOINT
+    employment_income: 20_000
+    state_code: RI
+  output:
+    ri_standard_deduction: 22_400
+
+- name: RI 2026 head of household standard deduction pins the ADV 2025-22 amount
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    employment_income: 20_000
+    state_code: RI
+  output:
+    ri_standard_deduction: 16_800
+
+- name: RI 2026 separate standard deduction pins the ADV 2025-22 amount
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    employment_income: 20_000
+    state_code: RI
+  output:
+    ri_standard_deduction: 11_200
