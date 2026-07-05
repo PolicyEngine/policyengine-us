@@ -30,4 +30,9 @@ class net_capital_gain(Variable):
             lt_capital_gain - st_capital_loss - investment_income_election,
         )
         qual_div_income = add(tax_unit, period, ["qualified_dividend_income"])
-        return net_cap_gain + qual_div_income
+        # Capital gain distributions reported without Schedule D (Form 1040
+        # line 7 with the box checked) are long-term gains under IRC
+        # 852(b)(3)(B) and enter the preferential-rate base directly, with no
+        # Schedule D netting available on that filing path.
+        non_sch_d_capital_gains = add(tax_unit, period, ["non_sch_d_capital_gains"])
+        return net_cap_gain + qual_div_income + non_sch_d_capital_gains
