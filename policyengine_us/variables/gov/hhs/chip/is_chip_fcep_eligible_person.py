@@ -35,6 +35,19 @@ class is_chip_fcep_eligible_person(Variable):
 
         state_has_fcep = income_limit > 0
 
+        # Alabama phased in its FCEP coverage ("ALL Babies") by county before
+        # extending it statewide, so it is the only state whose FCEP coverage is
+        # geographically limited. Every other state that offers FCEP covers its
+        # whole territory, so the county gate only applies within Alabama.
+        in_alabama = state_code == StateCode.AL
+        alabama_statewide = p.al_statewide
+        county = person.household("county_str", period)
+        in_alabama_fcep_county = np.isin(county, p.al_counties)
+        # Households with an UNKNOWN county still qualify once coverage is
+        # statewide; before then they must fall in a covered county.
+        alabama_geographic_eligible = alabama_statewide | in_alabama_fcep_county
+        fcep_geographic_eligible = ~in_alabama | alabama_geographic_eligible
+
         # The parent's immigration status is not tested: under the FCEP option the
         # unborn child is the CHIP beneficiary, and CMS provides prenatal and
         # pregnancy-related benefits regardless of the parent's citizenship or
@@ -50,4 +63,10 @@ class is_chip_fcep_eligible_person(Variable):
         income_ratio = person("medicaid_income_level", period)
         income_eligible = income_ratio <= income_limit
 
-        return is_pregnant & state_has_fcep & ~medicaid_eligible & income_eligible
+        return (
+            is_pregnant
+            & state_has_fcep
+            & fcep_geographic_eligible
+            & ~medicaid_eligible
+            & income_eligible
+        )
