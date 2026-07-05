@@ -140,3 +140,37 @@
   output:
     # Below the IL childless minimum age of 18; not eligible.
     il_eitc: 0
+
+- name: Illinois EITC counts a disabled adult dependent as a qualifying child (IRC 152(c)(3)(B))
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      disabled_adult:
+        age: 29
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, disabled_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, disabled_adult]
+    households:
+      household:
+        members: [head, disabled_adult]
+        state_code: IL
+  output:
+    # The permanently and totally disabled adult dependent is a qualifying
+    # child under IRC 152(c)(3)(B), so the IL EIC reflects the 1-child federal
+    # EITC (rather than the childless schedule) times the IL match.
+    il_eitc: 680
