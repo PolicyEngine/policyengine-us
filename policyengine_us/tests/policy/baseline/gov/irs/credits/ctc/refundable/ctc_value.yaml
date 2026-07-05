@@ -82,3 +82,25 @@
     refundable_ctc: 4_000
     non_refundable_ctc: 0
     ctc_value: 4_000
+
+- name: Case 5, actual CTC value is capped by liability plus refundable credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ctc: 4_400
+    ctc_limiting_tax_liability: 853.67
+    ctc_phase_in: 5_735
+    refundable_ctc: 3_400
+  output:
+    ctc_value: 4_253.67
+
+- name: Case 6, other dependent credit is valuable even with no CTC phase-in.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ctc: 500
+    ctc_limiting_tax_liability: 10_133.92
+    ctc_phase_in: 0
+    refundable_ctc: 0
+  output:
+    ctc_value: 500
