@@ -12,6 +12,9 @@ from policyengine_core.simulations import (
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
+from policyengine_us.variables.household.demographic.geographic.state_code import (
+    StateCode,
+)
 from policyengine_us.tools.parameters import backdate_parameters
 from policyengine_us.reforms import create_structural_reforms_from_parameters
 from policyengine_core.parameters.operations.homogenize_parameters import (
@@ -118,6 +121,35 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 system = CountryTaxBenefitSystem()
 
 
+def _backfill_state_code_from_str(simulation):
+    """Backfill the ``state_code`` enum from a ``state_code_str`` input.
+
+    The geography variables derive one-directionally
+    (``state_fips`` -> ``state_name`` -> ``state_code`` -> ``state_code_str``),
+    so a situation that sets only ``state_code_str`` feeds no upstream reader:
+    every variable that reads the ``state_code`` enum silently falls back to
+    its default (``StateCode.CA``) while ``state_code_str`` readers see the
+    intended state (PolicyEngine/policyengine-us#8887).
+
+    Mirror the ``employment_income`` -> ``employment_income_before_lsr`` moves
+    above: when ``state_code`` has no known periods but ``state_code_str``
+    does, encode the strings into ``state_code`` and drop the
+    ``state_code_str`` arrays so derivation is canonical (``state_code_str``
+    re-derives from ``state_code``). An explicitly set ``state_code`` always
+    wins, and datasets are unaffected because they carry ``state_fips`` rather
+    than ``state_code_str``.
+    """
+    state_code = simulation.get_holder("state_code")
+    if state_code.get_known_periods():
+        # An explicit state_code (e.g. from a dataset or situation) wins.
+        return
+    state_code_str = simulation.get_holder("state_code_str")
+    for known_period in state_code_str.get_known_periods():
+        array = state_code_str.get_array(known_period)
+        simulation.set_input("state_code", known_period, StateCode.encode(array))
+        state_code_str.delete_arrays(known_period)
+
+
 class Simulation(CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
@@ -189,6 +221,9 @@ class Simulation(CoreSimulation):
                 "long_term_capital_gains_before_response", known_period, array
             )
             cg_holder.delete_arrays(known_period)
+
+        # Geography backfill: state_code_str-only input -> state_code enum.
+        _backfill_state_code_from_str(self)
 
 
 def _resolve_dataset_path(dataset_str):
@@ -358,6 +393,11 @@ class Microsimulation(CoreMicrosimulation):
                 "long_term_capital_gains_before_response", known_period, array
             )
             cg_holder.delete_arrays(known_period)
+
+        # Geography backfill: state_code_str-only input -> state_code enum.
+        # Datasets carry state_fips, so this only fires for situations that
+        # explicitly supply state_code_str.
+        _backfill_state_code_from_str(self)
 
         self.input_variables = [
             variable
