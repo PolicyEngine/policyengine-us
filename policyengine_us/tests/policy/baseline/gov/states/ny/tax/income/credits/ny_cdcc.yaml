@@ -7,3 +7,38 @@
     employment_income: 10_000
   output:
     ny_cdcc: 3_850 # From the tax form IT-216.
+
+- name: Separate filer with qualifying individuals gets no credit, IT-216 applies IRC 21(e)(2).
+  period: 2022
+  input:
+    count_cdcc_eligible: 3
+    cdcc_relevant_expenses: 10_000
+    state_code: NY
+    employment_income: 10_000
+    filing_status: SEPARATE
+  output:
+    ny_cdcc: 0
+
+- name: Separated filer maintaining a home for a qualifying child keeps the credit, IRC 21(e)(4).
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        is_separated: true
+        employment_income: 10_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        count_cdcc_eligible: 3
+        cdcc_relevant_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_cdcc: 3_850

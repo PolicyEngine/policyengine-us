@@ -30,3 +30,52 @@
     cdcc_potential: 1_000
   output:
     pa_cdcc: 1_000
+
+- name: Separate filer gets no credit because the federal potential credit is zero, IRC 21(e)(2)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 45_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    cdcc_potential: 0
+    pa_cdcc: 0
+
+- name: Separated filer maintaining a home for a qualifying child keeps the credit, IRC 21(e)(4)
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 45_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # cdcc_relevant_expenses = min(3000, 3000 cap, 45000 earned) = 3000
+    # cdcc_rate at 45k AGI = 20% floor; potential = 600; PA match 100% in 2023
+    cdcc_potential: 600
+    pa_cdcc: 600

@@ -4,13 +4,13 @@
     people:
       head:
         is_tax_unit_head: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         is_full_time_student: false
         earned_income: 20_000
         dependent_care_employer_benefits: 1_000
       spouse:
         is_tax_unit_spouse: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         is_full_time_student: false
         earned_income: 30_000
         dependent_care_employer_benefits: 2_000
@@ -37,7 +37,7 @@
     people:
       head:
         is_tax_unit_head: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         is_full_time_student: false
         earned_income: 20_000
         dependent_care_employer_benefits: 1_000
@@ -64,13 +64,13 @@
     people:
       head:
         is_tax_unit_head: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         is_full_time_student: false
         earned_income: 20_000
         dependent_care_employer_benefits: 1_000
       spouse:
         is_tax_unit_spouse: true
-        is_disabled: true
+        is_incapable_of_self_care: true
         is_full_time_student: false
         earned_income: 0
         dependent_care_employer_benefits: 0
@@ -97,13 +97,13 @@
     people:
       head:
         is_tax_unit_head: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         is_full_time_student: false
         earned_income: 20_000
         dependent_care_employer_benefits: 5_000
       spouse:
         is_tax_unit_spouse: true
-        is_disabled: true
+        is_incapable_of_self_care: true
         is_full_time_student: false
         earned_income: 0
         dependent_care_employer_benefits: 0
@@ -122,4 +122,27 @@
     hi_cdcc_income_floor_eligible: [false, true]
     hi_cdcc_min_head_spouse_earned: 2_400
     hi_dependent_care_benefits: 0
+    hi_cdcc: 0
+
+- name: integration test 5, separate filer is not eligible, HRS 235-55.6(e)(2)
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        earned_income: 20_000
+        dependent_care_employer_benefits: 1_000
+    tax_units:
+      tax_unit:
+        hi_agi: 19_000
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 4_000
+        members: [head]
+        count_cdcc_eligible: 2
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: false
     hi_cdcc: 0

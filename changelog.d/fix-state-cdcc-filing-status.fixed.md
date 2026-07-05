@@ -1,0 +1,1 @@
+Apply the IRC § 21(e)(2) joint-return rule and § 21(e)(4) separated-taxpayer exception to the Wisconsin childcare expense credit (2024+) and subtraction, the New York CDCC, and the Hawaii CDCC, and restrict Hawaii's deemed earned income floor to a spouse who is a student or incapable of self-care.
