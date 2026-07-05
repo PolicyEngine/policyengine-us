@@ -14,9 +14,15 @@ class new_clean_vehicle_credit_eligible(Variable):
     defined_for = "purchased_qualifying_new_clean_vehicle"
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.credits.clean_vehicle.new.eligibility
+        # One Big Beautiful Bill Act (Pub. L. 119-21 § 70502) terminates the
+        # credit for vehicles acquired after September 30, 2025. See
+        # in_effect.yaml for the annual-resolution approximation of this
+        # intra-year cutoff.
+        if not p.in_effect:
+            return False
         # Capacity limit applies with and without the Inflation Reduction Act.
         capacity = tax_unit("new_clean_vehicle_battery_capacity", period)
-        p = parameters(period).gov.irs.credits.clean_vehicle.new.eligibility
         meets_capacity_requirement = capacity >= p.min_kwh
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
