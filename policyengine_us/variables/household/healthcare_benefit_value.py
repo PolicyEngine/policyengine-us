@@ -16,6 +16,7 @@ class healthcare_benefit_value(Variable):
         "msp_cost",
         "chip",
         "assigned_aca_ptc",
+        "basic_health_program",
         "co_omnisalud",
         "or_healthier_oregon_cost",
     ]
