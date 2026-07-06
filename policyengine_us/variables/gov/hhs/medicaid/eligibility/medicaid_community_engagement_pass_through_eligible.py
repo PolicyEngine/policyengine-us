@@ -27,17 +27,19 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
         abawd_work_compliant = person("meets_snap_abawd_work_requirements", period)
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         pre_hr1_abawd = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
-        is_dependent = person("is_tax_unit_dependent", period)
         dependent_age_threshold = where(
             hr1_in_effect,
             snap_work.abawd.age_threshold.dependent,
             pre_hr1_abawd.age_threshold.dependent,
         )
-        has_dependent_child = person.spm_unit.any(
-            is_dependent & (age < dependent_age_threshold)
-        )
+        # Mirror the SNAP ABAWD child exception exactly: 7 CFR 273.24(c)(4)
+        # keys on any household member under the age threshold, regardless of
+        # tax-unit dependency (see meets_snap_work_requirements_person). The
+        # pass-through deems a person compliant because they satisfy SNAP's
+        # requirements, so it must apply SNAP's own exception semantics.
+        has_household_child = person.spm_unit.any(age < dependent_age_threshold)
         snap_work_compliant = where(
-            has_dependent_child,
+            has_household_child,
             general_work_compliant,
             general_work_compliant & abawd_work_compliant,
         )
