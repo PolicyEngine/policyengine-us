@@ -1,1 +1,2 @@
 - California AMT no longer double-adds disallowed itemized deductions; Schedule P (540) Part I now adds regular taxable income plus specific AMT adjustments minus the restored itemized deductions limitation (line 18), instead of adding the full pre-limitation itemized deductions.
+- Arizona property tax credit now selects the higher Table 2 credit schedule for any claimant living with one or more other persons (including a non-spouse cohabitant), matching ARS 43-1072(A)(3)(b), rather than only for married couples and cohabitating spouses.

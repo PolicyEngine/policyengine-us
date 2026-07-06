@@ -80,3 +80,34 @@
     households: {household: {members: [head, spouse], state_code: AZ}}
   output:
     az_property_tax_credit: 323
+
+# ARS 43-1072(A)(3)(b): a single claimant who "lived with a spouse or one or
+# more persons" uses the Table 2 (cohabitating) schedule. An elderly single
+# filer living with a non-dependent adult child lives with another person.
+- name: AZ property tax credit uses Table 2 for a single claimant living with an adult child
+  period: 2025
+  input:
+    people:
+      head: {age: 75, taxable_interest_income: 3_637.87, rent: 9_059.32}
+      # Adult child living in the same household (not a tax dependent).
+      child: {age: 40, is_tax_unit_dependent: false}
+    tax_units:
+      claimant: {members: [head]}
+      child_unit: {members: [child]}
+    households: {household: {members: [head, child], state_code: AZ}}
+  output:
+    # At $3,637.87 income the Table 2 (cohabitating) credit is $323, whereas the
+    # Table 1 (living-alone) schedule would give only $78. The adult child's
+    # own tax unit is not credit-eligible (under age 65, no SSI).
+    az_property_tax_credit: [323, 0]
+
+# A truly solitary elderly filer at the same income uses the Table 1 schedule.
+- name: AZ property tax credit uses Table 1 for a single claimant living alone
+  period: 2025
+  input:
+    people:
+      head: {age: 75, taxable_interest_income: 3_637.87, rent: 9_059.32}
+    tax_units: {tax_unit: {members: [head]}}
+    households: {household: {members: [head], state_code: AZ}}
+  output:
+    az_property_tax_credit: 78
