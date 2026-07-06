@@ -42,3 +42,41 @@
     filing_status: SURVIVING_SPOUSE
   output:
     co_qualified_business_income_deduction_addback_required: false
+
+# C.R.S. 39-22-104(3)(o): the addback does not apply to a taxpayer required
+# to file Schedule F (Profit or Loss From Farming).
+- name: Above AGI limit but files Schedule F, addback not required
+  period: 2026
+  input:
+    people:
+      person1:
+        farm_operations_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_qualified_business_income_deduction_addback_required: false
+
+- name: Above AGI limit with no farm income, addback required
+  period: 2026
+  input:
+    people:
+      person1:
+        farm_operations_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_qualified_business_income_deduction_addback_required: true

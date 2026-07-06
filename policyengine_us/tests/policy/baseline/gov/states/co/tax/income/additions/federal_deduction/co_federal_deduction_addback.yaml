@@ -324,3 +324,49 @@
     taxable_income_deductions: 20_000
   output:
     co_federal_deduction_addback: 1_850
+
+# C.R.S. 39-22-104(3)(p.7): for 2026+, the exemption drops to $1,000 (single)
+# and $2,000 (joint).
+- name: In 2026, single filer, deduction 1_500, exemption 1_000, addback 500.
+  period: 2026
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+    standard_deduction: 1_500
+  output:
+    co_federal_deduction_addback: 500
+
+- name: In 2026, joint filer, deduction 3_500, exemption 2_000, addback 1_500.
+  period: 2026
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    standard_deduction: 3_500
+  output:
+    co_federal_deduction_addback: 1_500
+
+- name: In 2026, single filer at the exemption, no addback.
+  period: 2026
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    tax_unit_itemizes: false
+    standard_deduction: 1_000
+  output:
+    co_federal_deduction_addback: 0
+
+- name: In 2026, head of household uses the single-return exemption of 1_000.
+  period: 2026
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: false
+    standard_deduction: 2_000
+  output:
+    co_federal_deduction_addback: 1_000

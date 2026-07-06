@@ -167,3 +167,55 @@
     # All $1,600 of childcare expenses belong to the only child:
     # min(500, 0.25 x min(1_600, 5_000)) = 400
     co_low_income_cdcc: 400
+
+# C.R.S. 39-22-119.5: the low-income credit is repealed for tax years
+# beginning on or after January 1, 2026. A filer who would otherwise qualify
+# (low income, no federal credit) receives nothing in 2026.
+- name: In 2025, a low-income filer with no federal credit receives the credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 12_000
+      spouse:
+        age: 34
+        employment_income: 12_000
+      child_1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1]
+  output:
+    # min(500, 0.25 x min(2_000, 12_000)) = 500
+    co_low_income_cdcc: 500
+
+- name: In 2026, the same filer receives nothing because the credit is repealed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 12_000
+      spouse:
+        age: 34
+        employment_income: 12_000
+      child_1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1]
+  output:
+    co_low_income_cdcc: 0
