@@ -1,3 +1,4 @@
 - California AMT no longer double-adds disallowed itemized deductions; Schedule P (540) Part I now adds regular taxable income plus specific AMT adjustments minus the restored itemized deductions limitation (line 18), instead of adding the full pre-limitation itemized deductions.
 - Arizona property tax credit now selects the higher Table 2 credit schedule for any claimant living with one or more other persons (including a non-spouse cohabitant), matching ARS 43-1072(A)(3)(b), rather than only for married couples and cohabitating spouses.
 - Louisiana FITAP now rounds the grant deficit down to a whole dollar and pays no grant when the rounded deficit is below $10, per DCFS manual B-641-1-FITAP.
+- Nevada TANF now rounds the monthly benefit down to a whole dollar and issues no regular benefit below $10, per Eligibility and Payments Manual A-660.12.

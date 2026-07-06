@@ -42,3 +42,50 @@
     nv_tanf_countable_income: 0
   output:
     nv_tanf: 0
+
+# E&P Manual A-660.12: "A benefit is always a whole dollar amount. Round all
+# amounts down to the nearest dollar."
+- name: Benefit is rounded down to a whole dollar
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 100.75
+  output:
+    # $386 - $100.75 = $285.25, rounded down to $285.
+    nv_tanf: 285
+
+# A-660.12: "The minimum benefit amount is $10." Regular benefits below $10
+# are not issued.
+- name: Benefit below the $10 minimum is not issued
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 379
+  output:
+    # $386 - $379 = $7 < $10, so no benefit is issued.
+    nv_tanf: 0
+
+- name: Benefit of exactly $10 is issued
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 376
+  output:
+    nv_tanf: 10
+
+- name: Deficit that rounds below $10 is not issued
+  period: 2025-01
+  input:
+    state_code: NV
+    nv_tanf_eligible: true
+    nv_tanf_payment_standard: 386
+    nv_tanf_countable_income: 376.50
+  output:
+    # $386 - $376.50 = $9.50, rounds down to $9 < $10, so no benefit.
+    nv_tanf: 0
