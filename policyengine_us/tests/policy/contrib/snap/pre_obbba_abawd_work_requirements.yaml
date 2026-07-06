@@ -127,6 +127,30 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+- name: Baseline contrast without the reform, post-OBBBA rules apply in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+  output:
+    is_snap_abawd_hr1_in_effect: true
+    meets_snap_abawd_work_requirements: false
+
+- name: Baseline contrast without the reform, California has not yet adopted HR1 in early 2026.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: CA
+  output:
+    is_snap_abawd_hr1_in_effect: false
+    meets_snap_abawd_work_requirements: true
+
 - name: With the reform applied but the toggle off, current law applies (period gating).
   period: 2026-01
   absolute_error_margin: 0.1
