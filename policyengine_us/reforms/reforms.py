@@ -79,6 +79,7 @@ from .ctc import (
 from .snap import (
     create_abolish_snap_deductions_reform,
     create_abolish_snap_net_income_test_reform,
+    create_pre_obbba_snap_abawd_work_requirements_reform,
 )
 from .states.dc.property_tax import create_dc_property_tax_credit_reform
 
@@ -427,6 +428,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     abolish_snap_net_income_test = create_abolish_snap_net_income_test_reform(
         parameters, period
     )
+    pre_obbba_snap_abawd_work_requirements = (
+        create_pre_obbba_snap_abawd_work_requirements_reform(parameters, period)
+    )
     dc_property_tax_credit = create_dc_property_tax_credit_reform(parameters, period)
     limit_salt_deduction_to_property_taxes = (
         create_limit_salt_deduction_to_property_taxes_reform(parameters, period)
@@ -611,6 +615,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_older_child_supplement,
         abolish_snap_deductions,
         abolish_snap_net_income_test,
+        pre_obbba_snap_abawd_work_requirements,
         dc_property_tax_credit,
         limit_salt_deduction_to_property_taxes,
         nyc_school_tax_credit_with_phase_out,
