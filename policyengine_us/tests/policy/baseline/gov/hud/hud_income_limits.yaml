@@ -28,3 +28,50 @@
     hud_extremely_low_income_limit: 0
     hud_very_low_income_limit: 0
     hud_low_income_limit: 0
+
+# Year-accurate resolution: the loader selects the latest bundled year <= the
+# requested period, so period 2025 uses FY2025 limits and period 2026 uses the
+# FY2026 limits (effective 2026-05-01). The same county/family size differs
+# between the two fiscal years.
+- name: LA County four-person HUD income limits use FY2025 Section 8 data at period 2025.
+  period: 2025
+  input:
+    county_fips: "06037"
+    spm_unit_size: 4
+  output:
+    ami: 106_600
+    hud_extremely_low_income_limit: 45_450
+    hud_very_low_income_limit: 75_750
+    hud_low_income_limit: 121_150
+
+- name: LA County four-person HUD income limits use FY2026 Section 8 data at period 2026.
+  period: 2026
+  input:
+    county_fips: "06037"
+    spm_unit_size: 4
+  output:
+    ami: 108_100
+    hud_extremely_low_income_limit: 50_000
+    hud_very_low_income_limit: 83_300
+    hud_low_income_limit: 133_250
+
+- name: Period 2027 falls back to the nearest bundled income-limit year (FY2026).
+  period: 2027
+  input:
+    county_fips: "06037"
+    spm_unit_size: 4
+  output:
+    ami: 108_100
+    hud_extremely_low_income_limit: 50_000
+    hud_very_low_income_limit: 83_300
+    hud_low_income_limit: 133_250
+
+- name: Family sizes above eight use HUD's largest FY2026 family-size column.
+  period: 2026
+  input:
+    county_fips: "01001"
+    spm_unit_size: 9
+  output:
+    hud_extremely_low_income_limit: 55_720
+    hud_very_low_income_limit: 58_650
+    hud_low_income_limit: 93_800
