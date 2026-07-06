@@ -134,3 +134,167 @@
     aca_magi_fraction: 5.0
   output:
     aca_required_contribution_percentage: 0
+
+# Eligibility exclusion regression tests (issue #8745): the reform must reuse
+# the baseline coverage/premium gate (gov.aca.ineligible_coverage via
+# pays_aca_premium) rather than a narrower hardcoded exclusion list.
+- name: Reform excludes Basic Health Program (NY Essential Plan) enrollee
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        medicaid_income_level: 2.3
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.3
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    is_basic_health_program_eligible: [true]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Reform excludes person with VA health coverage above the 400% cliff
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        has_va_health_coverage_at_interview: true
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Reform excludes Oregon Healthier Oregon enrollee within reform income range
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        medicaid_income_level: 1.3
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.3
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    or_healthier_oregon_eligible: [true]
+    pays_aca_premium: [false]
+    is_aca_ptc_eligible: [false]
+
+- name: Reform still extends PTC to uncovered filer above the 400% FPL cliff
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    pays_aca_premium: [true]
+    is_aca_ptc_eligible: [true]
+
+- name: Reform excludes married filing separately filer above the 400% FPL cliff
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    pays_aca_premium: [true]
+    is_aca_ptc_eligible: [false]
+
+- name: Reform preserves below-FPL immigration exception (2025)
+  period: 2025
+  reforms: policyengine_us.reforms.aca.aca_ptc_700_fpl_cliff.aca_ptc_700_fpl_cliff
+  input:
+    gov.contrib.aca.ptc_700_fpl_cliff.in_effect: true
+    people:
+      person1:
+        age: 40
+        immigration_status: TPS
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.75
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        state_fips: 48
+  output:
+    aca_ptc_below_fpl_immigration_exception: true
+    is_aca_ptc_eligible: [true]

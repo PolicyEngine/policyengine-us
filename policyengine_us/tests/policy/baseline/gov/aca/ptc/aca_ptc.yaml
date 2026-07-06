@@ -230,3 +230,29 @@
     tax_unit_is_filer: true
   output:
     aca_ptc: 1_200
+
+- name: VA health coverage yields no ACA PTC (issue #8805)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        has_va_health_coverage_at_interview: true
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_basic_health_program_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 25_000
+        aca_magi_fraction: 2.50
+        slcsp: 1_200
+        aca_required_contribution_percentage: 0.04
+        tax_unit_is_filer: true
+        filing_status: SINGLE
+  output:
+    is_aca_ptc_eligible: [false]
+    aca_ptc: 0
