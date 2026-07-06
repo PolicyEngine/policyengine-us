@@ -79,3 +79,60 @@
     sc_income_tax_before_non_refundable_credits: 1000000
   output:
     sc_cdcc: 210
+
+# S.C. Code § 12-6-3380 computes the credit "as provided in Internal Revenue
+# Code Section 21," importing § 21(e)(2)'s joint-return rule together with the
+# § 21(e)(4) separated-taxpayer exception. An ordinary married-separate filer
+# remains ineligible; a separated filer who lives apart while maintaining a home
+# for a qualifying individual qualifies, matching the federal treatment.
+- name: Ordinary married-filing-separately filer gets no SC CDCC
+  period: 2024
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 40_000
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        cdcc_relevant_expenses: 3_000
+        sc_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: SC
+  output:
+    sc_cdcc: 0
+
+- name: Separated MFS filer maintaining a home for a qualifying child gets the SC CDCC
+  period: 2024
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_separated: true
+        employment_income: 40_000
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        cdcc_relevant_expenses: 3_000
+        sc_income_tax_before_non_refundable_credits: 1_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: SC
+  output:
+    # 7% of min($3,000 spent, $3,000 one-person 2024 cap) = $210.
+    sc_cdcc: 210

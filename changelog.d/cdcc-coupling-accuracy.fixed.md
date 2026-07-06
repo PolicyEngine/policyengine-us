@@ -1,0 +1,2 @@
+- Honored the IRC § 21(e)(4) separated-taxpayer exception in the South Carolina child and dependent care credit.
+- Stopped the Idaho and Georgia contributed child tax credit reforms from applying in years before their in_effect activation date.
