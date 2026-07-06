@@ -1,0 +1,2 @@
+- Added the Maine EITC childless age expansion (36 M.R.S. Sec. 5219-S) so filers aged 18-24 without a qualifying child receive the credit.
+- Corrected the 2025 Maine sales tax fairness credit base amount to $215 for joint, head of household, and surviving spouse filers.

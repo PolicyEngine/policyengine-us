@@ -77,3 +77,69 @@
     me_sales_and_property_tax_fairness_credit_income: 52_630
   output:
     me_sales_tax_fairness_credit: 240
+
+# 2025 Schedule PTFC/STFC (line 17 table, page 4) pins the base amount
+# independently of the dependent add-ons for issue #8928.
+# https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=4
+- name: 2025 ME STFC MFJ no dependents lowest income band equals form base of 215
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 215
+
+- name: 2025 ME STFC head of household no dependents lowest income band equals form base of 215
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 215
+
+- name: 2025 ME STFC surviving spouse no dependents lowest income band equals form base of 215
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: SURVIVING_SPOUSE
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 215
+
+- name: 2025 ME STFC MFJ one dependent lowest income band equals form 250
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 1
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 250
+
+- name: 2025 ME STFC single no dependents lowest income band equals form 155
+  period: 2025
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: SINGLE
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 155
+
+# 2024 Schedule PTFC/STFC (line 17 table, page 4): MFJ no dependents = 210.
+# Confirms the base/add-on re-split for 2025 leaves 2024 untouched.
+# https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form%201040ME_Sch%20PTFC_ff.pdf#page=4
+- name: 2024 ME STFC MFJ no dependents lowest income band still equals form base of 210
+  period: 2024
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 0
+    filing_status: JOINT
+    me_sales_and_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 210
