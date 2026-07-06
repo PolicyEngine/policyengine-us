@@ -1,1 +1,1 @@
-Added pre-OBBBA SNAP ABAWD work requirements counterfactual reform, modeling 2026/2027 SNAP rules as if the P.L. 119-21 work requirement changes had not passed.
+Added pre-OBBBA SNAP ABAWD work requirements counterfactual reform, reverting the P.L. 119-21 Section 10102 exemption and age provisions for periods where the toggle is enabled.

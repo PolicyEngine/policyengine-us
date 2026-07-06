@@ -12,6 +12,12 @@ class is_snap_abawd_hr1_in_effect(Variable):
     )
 
     def formula(person, period, parameters):
+        # This variable must remain the sole access point for the federal
+        # abawd.in_effect and state hr1_in_effect parameters: the
+        # pre-OBBBA counterfactual reform
+        # (reforms/snap/pre_obbba_snap_abawd_work_requirements.py)
+        # overrides this variable, so formulas reading those parameters
+        # directly would bypass the reform.
         # States that delay HR1 adoption have their own hr1_in_effect
         # parameter with a later effective date. Add new states here.
         federal = parameters(period).gov.usda.snap.work_requirements.abawd.in_effect

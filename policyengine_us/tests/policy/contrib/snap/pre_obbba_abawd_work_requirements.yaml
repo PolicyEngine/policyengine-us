@@ -126,3 +126,43 @@
     state_code: CA
   output:
     meets_snap_abawd_work_requirements: true
+
+- name: With the reform applied but the toggle off, current law applies (period gating).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.snap.pre_obbba_snap_abawd_work_requirements.pre_obbba_snap_abawd_work_requirements
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+  output:
+    is_snap_abawd_hr1_in_effect: true
+    meets_snap_abawd_work_requirements: false
+
+- name: Medicaid community engagement pass-through follows pre-OBBBA SNAP rules under the reform.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.snap.pre_obbba_snap_abawd_work_requirements.pre_obbba_snap_abawd_work_requirements
+  input:
+    gov.contrib.snap.pre_obbba_abawd_work_requirements.in_effect: true
+    people:
+      person1:
+        # Age 57: subject to the post-OBBBA ABAWD time limit (exempt at
+        # 65) but age-exempt pre-OBBBA (55+); complies with general work
+        # requirements via work program participation with fewer than the
+        # 20 weekly hours the ABAWD requirement needs.
+        age: 57
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_program_participant: true
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
