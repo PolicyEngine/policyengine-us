@@ -21,6 +21,12 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         expenses = childcare + adult_care
         # In 2023 Idaho implemented an increased cap independent of the number of children
         limit = max_(tax_unit("id_cdcc_limit", period), p.cap)
+        # Form 39R Line 6 worksheet line 4: the operative cap is reduced by the
+        # IRC § 129 employer-provided dependent care benefits ("excluded
+        # benefits from Part III of Form 2441"), mirroring the § 21(c) reduction
+        # the federal credit's base applies.
+        exclusion = tax_unit("dependent_care_assistance_exclusion", period)
+        limit = max_(limit - exclusion, 0)
         eligible_capped_expenses = min_(expenses, limit)
         # cap further to the lowest earnings between the taxpayer and spouse
         return min_(

@@ -17,4 +17,9 @@ class id_cdcc_limit(Variable):
             instant_str = period
         p = parameters(instant_str).gov.irs.credits.cdcc
         capped_count_cdcc_eligible = tax_unit("capped_count_cdcc_eligible", period)
+        # This is the raw federal per-qualifying-individual dollar limit. The
+        # IRC § 129 employer-benefit reduction (Form 39R Line 6 worksheet line 4)
+        # is applied against the operative Idaho cap in
+        # id_household_and_dependent_care_expense_deduction, so it is not
+        # subtracted here.
         return p.max * capped_count_cdcc_eligible
