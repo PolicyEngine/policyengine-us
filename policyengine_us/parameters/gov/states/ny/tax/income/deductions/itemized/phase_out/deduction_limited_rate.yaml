@@ -1,0 +1,15 @@
+description: New York caps the pre-TCJA overall limitation on itemized deductions at this share of the deductions that are subject to the limitation.
+values:
+  2021-01-01: 0.80
+metadata:
+  unit: /1
+  period: year
+  label: New York itemized deduction phase-out limited-deduction cap rate
+  reference:
+    # Pre-TCJA IRC § 68(a)(2): the reduction cannot exceed 80% of the itemized
+    # deductions otherwise allowable (excluding medical, investment interest,
+    # casualty/theft, and wagering losses per § 68(c)). NY Tax Law § 615 conforms.
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/68#a_2
+    - title: 2025 NY Form IT-196 Instructions, Line 40 Total itemized deductions worksheet (line 4, multiply by 80%)
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it196i.pdf#page=19

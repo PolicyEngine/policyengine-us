@@ -1,0 +1,14 @@
+description: New York reduces itemized deductions by this share of federal adjusted gross income above the applicable amount, as one of the two limbs of the pre-TCJA federal overall limitation on itemized deductions.
+values:
+  2021-01-01: 0.03
+metadata:
+  unit: /1
+  period: year
+  label: New York itemized deduction phase-out AGI excess rate
+  reference:
+    # Pre-TCJA IRC § 68(a)(1): reduce itemized deductions by 3% of AGI over the
+    # applicable amount. NY Tax Law § 615 conforms to pre-TCJA federal rules.
+    - title: 26 U.S. Code § 68 - Overall limitation on itemized deductions (a)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/68#a_1
+    - title: 2025 NY Form IT-196 Instructions, Line 40 Total itemized deductions worksheet (line 8, multiply by 3%)
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it196i.pdf#page=19

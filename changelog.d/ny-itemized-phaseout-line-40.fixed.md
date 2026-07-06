@@ -1,0 +1,1 @@
+Wired New York's orphaned itemized-deduction phase-out parameter into the IT-196 Line 40 pre-TCJA overall limitation (26 U.S.C. 68 via NY Tax Law 615 conformity), reducing itemized deductions by the lesser of 3% of federal AGI over the applicable amount or 80% of the deductions subject to the limitation.

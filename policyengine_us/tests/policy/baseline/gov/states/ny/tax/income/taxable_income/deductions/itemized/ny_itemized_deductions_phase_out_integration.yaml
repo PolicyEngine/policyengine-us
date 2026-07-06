@@ -1,0 +1,81 @@
+# End-to-end wiring of the IT-196 Line 40 pre-TCJA limitation into
+# ny_itemized_deductions, computed from raw household inputs. Confirms the
+# Line 40 (federal-AGI-gated) reduction is applied in addition to the Line 46
+# (NY-AGI-gated) 615(f)/(g) reduction. Sales taxes are set to 0 so the NY SALT
+# deduction reduces to real estate taxes only.
+
+- name: JOINT 2025 high earner - Line 40 limitation applies (below Line 46 NY-AGI threshold).
+  period: 2025
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 45
+        taxable_interest_income: 420_000
+        deductible_mortgage_interest: 50_000
+        real_estate_taxes: 25_000
+        charitable_cash_donations: 10_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 0
+        local_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+  output:
+    # Federal AGI = 420,000 > 408,850 (JOINT applicable amount), so Line 40 applies.
+    # L1 = mortgage 50,000 + real estate 25,000 + charitable 10,000 = 85,000.
+    # L4 = 0.80 * 85,000 = 68,000. AGI excess = 11,150; L8 = 0.03 * 11,150 = 334.50.
+    # Line 40 reduction = min(68,000, 334.50) = 334.50.
+    ny_itemized_deductions_phase_out: 334.50
+
+- name: JOINT 2025 modest itemizer below the Line 40 applicable amount - no limitation.
+  period: 2025
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 45
+        taxable_interest_income: 300_000
+        deductible_mortgage_interest: 50_000
+        real_estate_taxes: 25_000
+        charitable_cash_donations: 10_000
+      spouse:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_sales_tax: 0
+        local_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+  output:
+    # Federal AGI = 300,000 < 408,850, so no Line 40 limitation.
+    ny_itemized_deductions_phase_out: 0
+    # ny_itemized_deductions_max = 50,000 + 25,000 + 10,000 = 85,000 passes
+    # through Line 40 untouched (Line 46 still applies on NY AGI 300,000).
+    ny_itemized_deductions_phase_out_applies: false
