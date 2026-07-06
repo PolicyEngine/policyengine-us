@@ -148,3 +148,86 @@
     cdcc_filing_status_eligible: true
     cdcc_potential: 600
     cdcc: 600
+
+# IRC section 21(c) / Form 2441 Part III: employer-provided dependent care
+# benefits excluded under section 129 reduce the CDCC dollar limit, preventing
+# a credit on the same dollars already excluded from income (issue #8737).
+- name: Section 129 employer benefits reduce the CDCC (no double-dipping)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 80_000
+        dependent_care_employer_benefits: 5_000
+      parent2:
+        age: 38
+        employment_income: 60_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+  output:
+    # Form 2441 Part III: $5,000 excluded under section 129.
+    dependent_care_assistance_exclusion: 5_000
+    # Section 21(c): $6,000 two-child limit reduced by $5,000 exclusion.
+    cdcc_limit: 1_000
+    cdcc_relevant_expenses: 1_000
+    # $1,000 x 20% applicable percentage.
+    cdcc: 200
+
+- name: Section 129 benefits at the cap fully eliminate a one-child CDCC
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 80_000
+        dependent_care_employer_benefits: 5_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_childcare_expenses: 6_000
+  output:
+    dependent_care_assistance_exclusion: 5_000
+    # max($3,000 one-child limit - $5,000 exclusion, 0) = $0.
+    cdcc_limit: 0
+    cdcc_relevant_expenses: 0
+    cdcc: 0
+
+- name: Without section 129 benefits the CDCC is unchanged
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 80_000
+      parent2:
+        age: 38
+        employment_income: 60_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+  output:
+    dependent_care_assistance_exclusion: 0
+    cdcc_limit: 6_000
+    cdcc_relevant_expenses: 6_000
+    # $6,000 x 20% = $1,200.
+    cdcc: 1_200
