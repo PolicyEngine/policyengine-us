@@ -7,13 +7,24 @@ class al_tanf_countable_earned_income(Variable):
     unit = USD
     label = "Alabama TANF countable earned income"
     definition_period = MONTH
-    reference = "https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37"
+    reference = "https://admincode.legislature.state.al.us/api/chapter/660-2-2"
     defined_for = StateCode.AL
 
     def formula(spm_unit, period, parameters):
+        # Per Ala. Admin. Code r. 660-2-2-.30(2) (effective 05/15/2022), earned
+        # income deductions are: (a) disregard all earnings from timely reported
+        # new employment for the first twelve months, then thereafter (b) deduct
+        # the first 30% of gross earnings, and (c) child care / incapacitated
+        # adult care costs.
+        #
+        # The 12-month new-employment disregard in (a) depends on how long each
+        # earner has held their current job, which is not available in the input
+        # data, so it is not modeled here; this assumes established (>12-month)
+        # employment, under which only the 30% work expense and care-cost
+        # deductions in (b) and (c) apply.
         p = parameters(period).gov.states.al.dhs.tanf.income
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         work_expense = gross_earned * p.work_expense_rate
-        # Child care is deducted from earned income per Section 3115.B
+        # Child care is deducted from earned income per r. 660-2-2-.30(2)(c).
         childcare_expenses = spm_unit("childcare_expenses", period)
         return max_(gross_earned - work_expense - childcare_expenses, 0)

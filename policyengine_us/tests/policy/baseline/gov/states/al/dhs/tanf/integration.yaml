@@ -1,8 +1,9 @@
 # Integration tests for Alabama TANF - full pipeline testing
 # Tests realistic family scenarios with complete eligibility and benefit calculations
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Reference: Ala. Admin. Code r. 660-2-2 (Income r. .30, effective 05/15/2022)
+# https://admincode.legislature.state.al.us/api/chapter/660-2-2
 # Key rules:
-# - Work expense deduction: 20% of earned income
+# - Work expense deduction: the first 30% of gross earnings
 # - Childcare is deducted directly from earned income
 # - No asset limit in Alabama
 
@@ -64,15 +65,15 @@
   output:
     # Family size: 2
     # Monthly gross earned income: $600
-    # Work expense deduction: $600 * 0.20 = $120
-    # Countable earned income: $600 - $120 = $480
-    # Countable income: $480
+    # Work expense deduction: $600 * 0.30 = $180
+    # Countable earned income: $600 - $180 = $420
+    # Countable income: $420
     # Payment standard (family of 2): $304
-    # Ineligible: $480 > $304
+    # Ineligible: $420 > $304
     # Benefit: $0
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_countable_earned_income: 480
-    al_tanf_countable_income: 480
+    al_tanf_countable_earned_income: 420
+    al_tanf_countable_income: 420
     al_tanf_income_eligible: false
     al_tanf_eligible: false
     al_tanf: 0
@@ -102,18 +103,18 @@
   output:
     # Family size: 3
     # Monthly gross earned income: $400
-    # Work expense deduction: $400 * 0.20 = $80
-    # Countable earned income: $400 - $80 = $320
-    # Countable income: $320
+    # Work expense deduction: $400 * 0.30 = $120
+    # Countable earned income: $400 - $120 = $280
+    # Countable income: $280
     # Payment standard (family of 3): $344
-    # $320 <= $344, eligible
-    # Benefit: $344 - $320 = $24
+    # $280 <= $344, eligible
+    # Benefit: $344 - $280 = $64
     is_person_demographic_tanf_eligible: [false, true, true]
-    al_tanf_countable_earned_income: 320
-    al_tanf_countable_income: 320
+    al_tanf_countable_earned_income: 280
+    al_tanf_countable_income: 280
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 24
+    al_tanf: 64
 
 - name: Scenario 4 - Family of 4 with self-employment income.
   period: 2024-01
@@ -142,18 +143,18 @@
   output:
     # Family size: 4
     # Monthly self-employment: $400
-    # Work expense deduction: $400 * 0.20 = $80
-    # Countable earned income: $400 - $80 = $320
-    # Countable income: $320
+    # Work expense deduction: $400 * 0.30 = $120
+    # Countable earned income: $400 - $120 = $280
+    # Countable income: $280
     # Payment standard (family of 4): $392
-    # $320 <= $392, eligible
-    # Benefit: $392 - $320 = $72
+    # $280 <= $392, eligible
+    # Benefit: $392 - $280 = $112
     is_person_demographic_tanf_eligible: [false, false, true, true]
-    al_tanf_countable_earned_income: 320
-    al_tanf_countable_income: 320
+    al_tanf_countable_earned_income: 280
+    al_tanf_countable_income: 280
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 72
+    al_tanf: 112
 
 - name: Scenario 5 - Family with combined earned and unearned income.
   period: 2024-01
@@ -179,19 +180,19 @@
   output:
     # Family size: 2
     # Monthly gross earned income: $300
-    # Work expense deduction: $300 * 0.20 = $60
-    # Countable earned: $300 - $60 = $240
+    # Work expense deduction: $300 * 0.30 = $90
+    # Countable earned: $300 - $90 = $210
     # Monthly unearned: $50
-    # Countable income: $240 + $50 = $290
+    # Countable income: $210 + $50 = $260
     # Payment standard (family of 2): $304
-    # $290 <= $304, eligible
-    # Benefit: $304 - $290 = $14
+    # $260 <= $304, eligible
+    # Benefit: $304 - $260 = $44
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_countable_earned_income: 240
-    al_tanf_countable_income: 290
+    al_tanf_countable_earned_income: 210
+    al_tanf_countable_income: 260
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 14
+    al_tanf: 44
 
 - name: Scenario 6 - Family of 5 with childcare expenses.
   period: 2024-01
@@ -223,20 +224,20 @@
   output:
     # Family size: 5
     # Monthly gross earned income: $600
-    # Work expense deduction: $600 * 0.20 = $120
-    # After work expense: $600 - $120 = $480
+    # Work expense deduction: $600 * 0.30 = $180
+    # After work expense: $600 - $180 = $420
     # Childcare: $200
-    # Countable earned: max($480 - $200, 0) = $280
-    # Countable income: $280
+    # Countable earned: max($420 - $200, 0) = $220
+    # Countable income: $220
     # Payment standard (family of 5): $440
-    # $280 <= $440, eligible
-    # Benefit: $440 - $280 = $160
+    # $220 <= $440, eligible
+    # Benefit: $440 - $220 = $220
     is_person_demographic_tanf_eligible: [false, false, true, true, true]
-    al_tanf_countable_earned_income: 280
-    al_tanf_countable_income: 280
+    al_tanf_countable_earned_income: 220
+    al_tanf_countable_income: 220
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 160
+    al_tanf: 220
 
 - name: Scenario 7 - Refugee family eligible.
   period: 2024-01
@@ -263,18 +264,18 @@
   output:
     # Family size: 2
     # Monthly gross earned income: $200
-    # Work expense deduction: $200 * 0.20 = $40
-    # Countable earned: $200 - $40 = $160
-    # Countable income: $160
+    # Work expense deduction: $200 * 0.30 = $60
+    # Countable earned: $200 - $60 = $140
+    # Countable income: $140
     # Payment standard (family of 2): $304
-    # $160 <= $304, eligible
-    # Benefit: $304 - $160 = $144
+    # $140 <= $304, eligible
+    # Benefit: $304 - $140 = $164
     is_person_demographic_tanf_eligible: [false, true]
-    al_tanf_countable_earned_income: 160
-    al_tanf_countable_income: 160
+    al_tanf_countable_earned_income: 140
+    al_tanf_countable_income: 140
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 144
+    al_tanf: 164
 
 # ============================================================================
 # Edge Case Tests
@@ -315,18 +316,18 @@
   output:
     # Family size: 8
     # Monthly gross earned income: $400
-    # Work expense deduction: $400 * 0.20 = $80
-    # Countable earned income: $400 - $80 = $320
-    # Countable income: $320
+    # Work expense deduction: $400 * 0.30 = $120
+    # Countable earned income: $400 - $120 = $280
+    # Countable income: $280
     # Payment standard (family of 8): $584
-    # $320 <= $584, eligible
-    # Benefit: $584 - $320 = $264
+    # $280 <= $584, eligible
+    # Benefit: $584 - $280 = $304
     is_person_demographic_tanf_eligible: [false, false, true, true, true, true, true, true]
-    al_tanf_countable_earned_income: 320
-    al_tanf_countable_income: 320
+    al_tanf_countable_earned_income: 280
+    al_tanf_countable_income: 280
     al_tanf_income_eligible: true
     al_tanf_eligible: true
-    al_tanf: 264
+    al_tanf: 304
 
 - name: Edge Case 2 - Childcare exceeds after-work-expense income.
   period: 2024-01
@@ -351,10 +352,10 @@
         state_code: AL
   output:
     # Monthly employment: $300
-    # Work expense deduction: $300 * 0.20 = $60
-    # After work expense: $240
+    # Work expense deduction: $300 * 0.30 = $90
+    # After work expense: $210
     # Childcare: $300
-    # Countable earned: max($240 - $300, 0) = max(-$60, 0) = $0
+    # Countable earned: max($210 - $300, 0) = max(-$90, 0) = $0
     # Payment standard (2 persons): $304
     # Benefit: $304 - $0 = $304
     is_person_demographic_tanf_eligible: [false, true]
