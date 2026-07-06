@@ -23,7 +23,34 @@ class fl_oss_eligible(Variable):
     reference = (
         "https://www.flrules.org/gateway/RuleNo.asp?title=PUBLIC%20ASSISTANCE&ID=65A-2.032",
         "https://www.flrules.org/gateway/RuleNo.asp?title=PUBLIC%20ASSISTANCE&ID=65A-2.033",
+        "https://ffic.myflfamilies.com/manual/200.pdf",
     )
+    documentation = """
+    Maps the DCF ESS Program Policy Manual 0240.0118 OSS eligibility criteria
+    to the inputs the model can represent:
+
+      1. Age 65+ or 18+ blind/disabled (Title XVI)  -> is_ssi_eligible
+      2. Living in Florida with intent to remain     -> defined_for StateCode.FL
+                                                        (state modeled; "intent
+                                                        to remain" not an input)
+      3. US citizen or qualified noncitizen          -> is_ssi_eligible
+                                                        (SSI immigration test)
+      4. Income within Department standards          -> income_within_standard
+      5. Assets within SSI standards                 -> is_ssi_eligible
+                                                        (SSI resource test)
+      6. Applies/pursues all other benefits          -> not modeled (behavioral;
+                                                        no input)
+      7. Lives in a licensed ALF/AFCH/MHRTF meeting  -> in_facility (facility
+         the individual's needs                         type; licensure and
+                                                        needs-match not modeled)
+      8. Certified by a counselor as in need         -> not modeled
+                                                        (administrative; no input)
+
+    Criteria 2, 6, and 8 are administrative or behavioral gates with no
+    representation in a static household snapshot; they are treated as met.
+    This over-includes only households that satisfy the financial, categorical,
+    and facility conditions but would fail an administrative gate.
+    """
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.fl.dcf.oss

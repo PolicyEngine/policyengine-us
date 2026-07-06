@@ -83,14 +83,16 @@
   output:
     fl_tca_payment_standard: 303
 
-- name: Case 10, size 14 caps at size 13.
+- name: Case 10, size 14 high shelter uses Appendix A-5 size-14 standard.
   period: 2024-01
   input:
     spm_unit_size: 14
     pre_subsidy_rent: 12_000
     state_code: FL
   output:
-    fl_tca_payment_standard: 919
+    fl_tca_payment_standard: 981
+    # Appendix A-5 tabulates payment standards through size 24; size 14 Tier I
+    # (>$50 shelter) = $981. Previously PE incorrectly capped this at size 13.
 
 - name: Case 11, shelter cost $1 (minimum low tier).
   period: 2024-01
@@ -101,3 +103,44 @@
   output:
     fl_tca_payment_standard: 205
     # $1 shelter is in $1-$50 tier, not zero tier
+
+- name: Case 12, size 24 high shelter uses Appendix A-5 size-24 standard.
+  period: 2024-01
+  input:
+    spm_unit_size: 24
+    pre_subsidy_rent: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 1_601
+    # Appendix A-5 size 24 Tier I (>$50 shelter) = $1,601.
+
+- name: Case 13, size above 24 caps at the size-24 standard.
+  period: 2024-01
+  input:
+    spm_unit_size: 26
+    pre_subsidy_rent: 12_000
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 1_601
+    # max_family_size = 24; sizes above 24 use the size-24 standard (the
+    # additional-person increment beyond 24 is not modeled).
+
+- name: Case 14, size 14 low shelter uses Appendix A-5 Tier II size-14 standard.
+  period: 2024-01
+  input:
+    spm_unit_size: 14
+    pre_subsidy_rent: 12  # $1/month -> $1-$50 tier
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 834
+    # Appendix A-5 size 14 Tier II (.01-$50 shelter) = $834.
+
+- name: Case 15, size 14 zero shelter uses Appendix A-5 Tier III size-14 standard.
+  period: 2024-01
+  input:
+    spm_unit_size: 14
+    pre_subsidy_rent: 0
+    state_code: FL
+  output:
+    fl_tca_payment_standard: 726
+    # Appendix A-5 size 14 Tier III (0 shelter) = $726.

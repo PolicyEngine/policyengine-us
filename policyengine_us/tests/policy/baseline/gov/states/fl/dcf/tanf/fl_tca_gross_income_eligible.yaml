@@ -1,7 +1,9 @@
 # Tests Florida TCA gross income test (185% of FPL)
-# Formula: Total Gross Income (earned + unearned) < 185% FPL
-# Per DCF 2620.0109.01: NO disregards applied in gross test
-# Source: FAC 65A-4.220, DCF Policy Manual 2620.0109.01
+# Formula: Total Gross Income (earned + unearned) <= 185% FPL
+# Per DCF 2620.0107 gross income "cannot exceed" the standard and 2620.0109.02
+# Step 2 treats an exact equal as meeting the requirements, so the boundary is
+# <= (gross exactly at the standard is eligible). NO disregards applied.
+# Source: FAC 65A-4.220, DCF Policy Manual 2620.0107 / 2620.0109.01-.02
 
 # 2024: 185% FPL for 2 people = $20,440 * 1.85 / 12 = $3,151.17/month
 
@@ -42,7 +44,7 @@
   output:
     fl_tca_gross_income_eligible: true
 
-- name: Case 3, at threshold ineligible.
+- name: Case 3, at threshold eligible (exact equal meets the requirements).
   period: 2024-01
   input:
     people:
@@ -59,7 +61,9 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_gross_income_eligible: false
+    # Gross income exactly at 185% FPL passes: 2620.0107 "cannot exceed" and
+    # 2620.0109.02 Step 2 "Exact Equal: Meets the Requirements."
+    fl_tca_gross_income_eligible: true
 
 - name: Case 4, one dollar above threshold ineligible.
   period: 2024-01
