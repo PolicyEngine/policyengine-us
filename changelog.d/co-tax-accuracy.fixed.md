@@ -1,0 +1,1 @@
+Corrected four Colorado income tax provisions: the section 199A addback Schedule F farming exception, the 2026 federal deduction addback exemptions ($1,000 single / $2,000 joint), the 2026 child and dependent care credit (70% of the federal credit before the section 26 liability limitation, AGI up to $60,000), and the low-income child care credit statutory sunset after 2025.

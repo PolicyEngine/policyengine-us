@@ -10,6 +10,9 @@ class co_federal_deduction_addback(Variable):
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)(p)
         "https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-upon-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal",
+        # C.R.S. 39-22-104(3)(p.5)(I) (2023-2025) and (3)(p.7)(I) (2026+),
+        # Colorado Revised Statutes 2025 official compilation, pp. 382-384
+        "https://olls.info/crs/crs2025-title-39.pdf",
         # 2022 Colorado Individual Income Tax Filing Guide - Additions - Line 4
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5",
         # Individual Income Tax Guide - Part 3 Additions to Taxable Income - Federal itemized or standard deductions
