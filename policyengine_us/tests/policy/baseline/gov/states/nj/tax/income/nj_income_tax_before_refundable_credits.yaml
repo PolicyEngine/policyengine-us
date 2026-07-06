@@ -67,3 +67,17 @@
     nj_agi: 10_500
     nj_529_deduction: 10_000
     nj_total_deductions: 10_000
+
+# P.L. 2021, c.419 § 1 applies to taxable years beginning on or after
+# January 1, 2022, so no 529 deduction exists in 2021.
+- name: No 529 deduction before the 2022 College Affordability Act effective date
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    employment_income: 50_000
+    investment_in_529_plan_indv: 5_000
+  output:
+    nj_529_deduction: 0
+    nj_total_deductions: 0
