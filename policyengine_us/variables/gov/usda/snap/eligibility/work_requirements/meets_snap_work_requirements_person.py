@@ -39,9 +39,7 @@ class meets_snap_work_requirements_person(Variable):
         dep_threshold = where(hr1_in_effect, p.dependent, p_pre.dependent)
         age = person("monthly_age", period)
         is_household_child = age < dep_threshold
-        no_household_child = (
-            person.spm_unit.sum(is_household_child) == 0
-        )
+        no_household_child = person.spm_unit.sum(is_household_child) == 0
         return where(
             no_household_child,
             abawd_work_requirements & general_work_requirements,
