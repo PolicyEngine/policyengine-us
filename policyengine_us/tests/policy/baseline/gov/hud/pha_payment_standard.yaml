@@ -64,7 +64,9 @@
     zip_code: "78002"
     bedrooms: 2
   output:
-    pha_payment_standard: 16_320 # TDHCA 1,360 * 12 (beats SAFMR 1,330)
+    # The published TDHCA standard is used whether or not it beats the SAFMR;
+    # at FY2025 both happen to be 1,360.
+    pha_payment_standard: 16_320 # TDHCA 1,360 * 12 (FY2025 SAFMR is also 1,360)
 
 - name: Houston ZIP 2BR uses HHA's adopted standard, not SAFMR
   period: 2025
@@ -85,15 +87,16 @@
     # applies instead of the county FMR (1,529/mo).
     pha_payment_standard: 19_536 # HHA Tier A-1 1,628 * 12
 
-- name: Dallas overlap ZIP uses the published TDHCA standard over the higher SAFMR
+- name: Dallas overlap ZIP uses the published TDHCA standard over the SAFMR
   period: 2025
   input:
     zip_code: "75010"
     bedrooms: 2
   output:
-    # 75010 is in both the TDHCA published schedule (2,150) and the Dallas SAFMR
-    # (2,220); the published standard wins even though it is the lower value.
-    pha_payment_standard: 25_800 # TDHCA 2,150 * 12 (beats SAFMR 2,220)
+    # 75010 is in both the TDHCA published schedule (2,150) and the Dallas
+    # FY2025 SAFMR (also 2,150); the published standard takes precedence. (The
+    # FY2026 SAFMR is higher at 2,220, so precedence still matters year to year.)
+    pha_payment_standard: 25_800 # TDHCA 2,150 * 12
 
 - name: Wichita KS metro ZIP resolves to the Small Area FMR
   period: 2026
