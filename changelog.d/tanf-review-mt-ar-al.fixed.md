@@ -1,0 +1,1 @@
+Fixed the Arkansas TEA below-trigger payment to pay the full flat grant per TEA Policy Manual 2362 and raised the Alabama TANF work expense deduction to the 30 percent promulgated in Ala. Admin. Code r. 660-2-2-.30.
