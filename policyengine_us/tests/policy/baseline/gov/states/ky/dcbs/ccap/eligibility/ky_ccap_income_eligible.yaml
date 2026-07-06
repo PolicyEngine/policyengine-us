@@ -1,6 +1,9 @@
 # KY CCAP income eligibility: monthly countable income <= 85% Kentucky SMI
 # by family size (DCC-113, effective 2023-10-01).
 # Size 2 limit = $4,217/mo; size 3 = $5,210/mo; size 4 = $6,202/mo.
+# DCC-113 R.12/24 raised the limits effective 2025-10-01:
+# size 2 = $4,862/mo; size 3 = $6,005/mo; size 4 = $7,149/mo;
+# over 8 add $215/mo per additional member. Cases 14-16 cover the new schedule.
 
 - name: Case 1, two-person family below the size-2 SMI limit is eligible.
   period: 2025-01
@@ -277,3 +280,70 @@
         state_code: KY
   output:
     ky_ccap_income_eligible: true
+
+# DCC-113 R.12/24 schedule, effective 2025-10-01. Evaluated at 2026-01 (a
+# month fully within the new regime) because a MONTH-defined variable with an
+# annual employment_income input can only be built at a January month.
+
+- name: Case 14, income above the 2023 size-2 limit but below the 2025 limit is eligible under R.12/24.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        # 4_500/mo x 12 = 54_000/yr. Above the old size-2 limit ($4,217) but
+        # below the R.12/24 size-2 limit ($4,862) -> eligible under the new
+        # schedule.
+        employment_income: 54_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: true
+
+- name: Case 15, the same income before 2025-10-01 is ineligible under the 2023 size-2 limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 4_500/mo exceeds the 2023 size-2 limit ($4,217) -> ineligible before
+        # the R.12/24 increase took effect.
+        employment_income: 54_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: false
+
+- name: Case 16, income just above the R.12/24 size-3 limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        # R.12/24 size-3 limit is $6,005/mo. 6_005.01/mo x 12 = 72_060.12/yr
+        # -> just over -> ineligible.
+        employment_income: 72_060.12
+      person2:
+        age: 30
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    ky_ccap_income_eligible: false

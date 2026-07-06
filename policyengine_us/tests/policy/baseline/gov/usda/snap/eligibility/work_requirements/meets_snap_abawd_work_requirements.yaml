@@ -219,9 +219,14 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-# --- 2015(o)(3)(C): Parent with dependent child under 14 ---
+# --- 2015(o)(3)(C): Parent/household with child under 14 ---
+# The child-under-threshold exemption is applied in
+# meets_snap_work_requirements_person (the single source of truth), not in
+# this ABAWD variable. See meets_snap_work_requirements.yaml for the cases
+# that verify the household-wide exemption, including the non-dependent
+# under-threshold member (teen-parent) edge case.
 
-- name: Case 17, post-HR1 parent with child age 6 exempt.
+- name: Case 17, post-HR1 non-working non-age-exempt parent is not ABAWD-exempt at this layer.
   period: 2027
   absolute_error_margin: 0.1
   input:
@@ -236,7 +241,11 @@
         is_disabled: false
         is_tax_unit_dependent: true
   output:
-    meets_snap_abawd_work_requirements: [true, true]
+    # person1 (age 55, post-HR1) is not age-exempt (threshold is 65+) and is
+    # not working. The child-based exemption is handled upstream in
+    # meets_snap_work_requirements_person, so at this variable person1 is
+    # non-exempt. person2 (age 6) is age-exempt.
+    meets_snap_abawd_work_requirements: [false, true]
 
 - name: Case 18, post-HR1 parent with child age 15 NOT exempt.
   period: 2027
@@ -430,7 +439,7 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 31, CA pre-HR1 parent with child under 18 exempt.
+- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -449,7 +458,11 @@
         members: [person1, person2]
         state_code: CA
   output:
-    meets_snap_abawd_work_requirements: [true, true]
+    # The child-under-18 exemption (CA pre-HR1) is applied upstream in
+    # meets_snap_work_requirements_person, not in this variable, so person1
+    # (age 30, non-working) is non-exempt here. person2 (age 15) is
+    # age-exempt (pre-HR1 threshold is under 18).
+    meets_snap_abawd_work_requirements: [false, true]
 
 - name: Case 32, CA pre-HR1 non-exempt person fails.
   period: 2026-01

@@ -204,3 +204,119 @@
     # failing to passing.
     meets_snap_general_work_requirements: [true, false]
     meets_snap_work_requirements: true
+
+# =====================================================
+# 7 CFR 273.24(c)(4): the household-child exemption keys on ANY household
+# member under the age threshold, "even if the household member who is under
+# 18 is not himself eligible for SNAP benefits" — no tax-unit dependency
+# requirement. Post-HR1 lowers the threshold to 14 (7 U.S.C. 2015(o)(3)(C)).
+# =====================================================
+
+- name: Case 13, pre-HR1 non-dependent under-18 member (teen parent) waives ABAWD for an adult.
+  period: 2024-01
+  input:
+    people:
+      # Adult who passes the general work requirement but fails the ABAWD
+      # test (not working, not otherwise ABAWD-exempt).
+      person1:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+      # A 16-year-old who is NOT a tax-unit dependent (e.g., a teen parent).
+      # Under 273.24(c)(4) this household member under 18 waives the ABAWD
+      # test for everyone in the household, even though they are not a
+      # dependent.
+      person2:
+        monthly_age: 16
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # person1 is routed around the ABAWD test by the under-18 household
+    # member and passes on the general requirement alone. person2 is
+    # age-exempt.
+    meets_snap_work_requirements: true
+
+- name: Case 14, pre-HR1 without any under-18 member the same adult is subject to ABAWD and fails.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+      person2:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # No household member under 18, so both adults must satisfy the ABAWD
+    # test, which they fail.
+    meets_snap_work_requirements: false
+
+- name: Case 15, post-HR1 non-dependent under-14 member waives ABAWD for an adult.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+      # A 10-year-old who is not a tax-unit dependent. Post-HR1 threshold is
+      # 14, so this member waives the ABAWD test household-wide.
+      person2:
+        monthly_age: 10
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 16, post-HR1 a member aged 15 is over the age-14 threshold and does not waive ABAWD.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+      # Age 15 is at/above the post-HR1 threshold of 14, so it does not
+      # trigger the household-child exemption. This member is also over the
+      # under-18 general-work-requirement age exemption, so is subject to
+      # the ABAWD test as well.
+      person2:
+        monthly_age: 15
+        is_tax_unit_dependent: true
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # No household member under 14, so person1 must satisfy the ABAWD test,
+    # which fails.
+    meets_snap_work_requirements: false
