@@ -1,0 +1,12 @@
+description: Illinois does not issue a regular monthly Temporary Assistance for Needy Families payment below this amount, and requires nonexempt income to fall below the payment level by at least this amount for cash eligibility to exist.
+
+values:
+  1975-01-01: 1
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Illinois TANF minimum monthly payment
+  reference:
+    - title: IDHS PM 10-01-02 Minimum Payment (WAG 10-01-02)
+      href: https://www.dhs.state.il.us/page.aspx?item=15820
