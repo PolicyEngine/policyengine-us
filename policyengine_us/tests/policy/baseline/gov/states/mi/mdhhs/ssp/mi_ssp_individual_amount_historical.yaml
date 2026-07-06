@@ -1,0 +1,60 @@
+# Historical (2017-2019) Michigan SSP individual living-independently rate.
+# The optional state supplement for a recipient living independently has been
+# $14.00/month continuously since at least January 2011 through 2026 (verified
+# against the SSA annual "State Assistance Programs for SSI Recipients" reports
+# and MDHHS RFT 248 archives). These cases pin the backdated oracle baseline.
+# Sources:
+#   SSA, State Assistance Programs for SSI Recipients, January 2017 - Michigan
+#     (POMS SI 01415.049) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049
+#   SSA, State Assistance Programs for SSI Recipients, January 2018 - Michigan
+#     (POMS SI 01415.050) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415050
+#   SSA, State Assistance Programs for SSI Recipients, January 2019 - Michigan
+#     (POMS SI 01415.051) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415051
+#   SSA, State Assistance Programs for SSI Recipients, January 2011 - Michigan,
+#     Table 1 (Living independently: individual $14.00)
+#     https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mi.html
+
+- name: 2017 Michigan SSP individual living-independently rate is $14.
+  absolute_error_margin: 0.01
+  period: 2017-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 14
+
+- name: 2018 Michigan SSP individual living-independently rate is $14.
+  absolute_error_margin: 0.01
+  period: 2018-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 14
+
+- name: 2019 Michigan SSP individual living-independently rate is $14.
+  absolute_error_margin: 0.01
+  period: 2019-01
+  input:
+    people:
+      person1:
+        is_ssi_eligible: true
+        mi_ssp_living_arrangement: INDEPENDENT_LIVING
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_individual_amount: 14
