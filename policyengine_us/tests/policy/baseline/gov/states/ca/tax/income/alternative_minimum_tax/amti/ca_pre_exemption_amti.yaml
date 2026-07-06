@@ -1,0 +1,64 @@
+# Schedule P (540) Part I, line 19 / line 21.
+# https://www.ftb.ca.gov/forms/2024/2024-540-p.pdf#page=1
+# AMTI = regular taxable income (line 15) + total adjustments/preferences
+# (line 14) - restored itemized deductions limitation (line 18).
+# Disallowed itemized deductions (property taxes, medical) are added back
+# once via ca_amti_adjustments; the full pre-limitation itemized deductions
+# must NOT be added again (issue #8742).
+
+- name: Property taxes are not double-added; AMTI equals AGI when no limitation applies
+  period: 2026
+  input:
+    state_code: CA
+    ca_agi: 199_500
+    ca_taxable_income: 154_500
+    # Single filer, $45,000 real property tax deducted (below the CA high-AGI
+    # itemized-deduction limitation threshold, so pre = post limitation).
+    ca_amti_adjustments: 45_000
+    ca_itemized_deductions_pre_limitation: 45_000
+    ca_itemized_deductions: 45_000
+  output:
+    # 154_500 + 45_000 - 0 = 199_500 (= AGI), flat regardless of property tax.
+    ca_pre_exemption_amti: 199_500
+
+- name: Higher property taxes keep AMTI flat at AGI (issue 8742 reproduction)
+  period: 2026
+  input:
+    state_code: CA
+    ca_agi: 199_500
+    ca_taxable_income: 99_500
+    ca_amti_adjustments: 100_000
+    ca_itemized_deductions_pre_limitation: 100_000
+    ca_itemized_deductions: 100_000
+  output:
+    # 99_500 + 100_000 - 0 = 199_500; property tax does not inflate AMTI.
+    ca_pre_exemption_amti: 199_500
+
+- name: High-AGI itemized-deduction limitation is restored for AMT (line 18)
+  period: 2026
+  input:
+    state_code: CA
+    ca_agi: 400_000
+    # Regular taxable income reflects post-limitation deductions.
+    ca_taxable_income: 350_867.81
+    # Only real property taxes ($10,000) are disallowed for AMT.
+    ca_amti_adjustments: 10_000
+    ca_itemized_deductions_pre_limitation: 58_000
+    ca_itemized_deductions: 49_132.18
+  output:
+    # 350_867.81 + 10_000 - (58_000 - 49_132.18) = 352_000.
+    ca_pre_exemption_amti: 352_000
+
+- name: Non-itemizer AMTI equals AGI (standard deduction added back on line 1)
+  period: 2026
+  input:
+    state_code: CA
+    ca_agi: 80_000
+    # Taxable income = AGI - standard deduction ($5,706 single, 2026).
+    ca_taxable_income: 74_294
+    # ca_amti_adjustments returns the standard deduction for non-itemizers.
+    ca_amti_adjustments: 5_706
+    ca_itemized_deductions_pre_limitation: 0
+    ca_itemized_deductions: 0
+  output:
+    ca_pre_exemption_amti: 80_000
