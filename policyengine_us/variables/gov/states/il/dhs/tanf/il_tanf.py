@@ -30,7 +30,5 @@ class il_tanf(Variable):
         # dollar.
         benefit = np.floor(benefit)
         # Payments below the minimum ($1) are not made.
-        minimum_payment = parameters(
-            period
-        ).gov.states.il.dhs.tanf.minimum_payment
+        minimum_payment = parameters(period).gov.states.il.dhs.tanf.minimum_payment
         return where(benefit >= minimum_payment, benefit, 0)

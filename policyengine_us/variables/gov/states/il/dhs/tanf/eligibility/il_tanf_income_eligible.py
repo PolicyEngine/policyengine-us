@@ -27,7 +27,5 @@ class il_tanf_income_eligible(Variable):
         # Nonexempt income must be at least the minimum payment ($1) below the
         # payment level; income equal to or above the payment level is
         # ineligible.
-        minimum_payment = parameters(
-            period
-        ).gov.states.il.dhs.tanf.minimum_payment
+        minimum_payment = parameters(period).gov.states.il.dhs.tanf.minimum_payment
         return (payment_level - countable_income) >= minimum_payment
