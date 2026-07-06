@@ -17,7 +17,11 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
         tanf = person.spm_unit("is_tanf_enrolled", period)
 
         age = person("monthly_age", period)
-        snap_age_exempt = snap_work.general.age_threshold.exempted.calc(age)
+        # Cast to bool: single_amount bool brackets return int (0/1), which
+        # would make the ~ below a bitwise negation instead of a logical one.
+        snap_age_exempt = snap_work.general.age_threshold.exempted.calc(age).astype(
+            bool
+        )
         snap_non_age_exempt = person("is_snap_work_registration_exempt_non_age", period)
         general_work_compliant = person("meets_snap_general_work_requirements", period)
         abawd_work_compliant = person("meets_snap_abawd_work_requirements", period)

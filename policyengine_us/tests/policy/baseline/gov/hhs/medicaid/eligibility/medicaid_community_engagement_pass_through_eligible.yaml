@@ -96,3 +96,80 @@
         state_code: TX
   output:
     medicaid_community_engagement_pass_through_eligible: [true, false]
+
+# The following cases lock the boundaries of the SNAP general work
+# requirements age exemption (gov.usda.snap.work_requirements.general.
+# age_threshold.exempted): under 16 or 60+ is exempt from work
+# requirements (regression test for a bitwise-NOT bug on the bool-bracket
+# .calc() result — see #8780).
+- name: Case 6, age 15 is under the exempt age threshold and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 7, age 16 is at the non-exempt age boundary and passes through when work compliant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 8, age 59 is just below the upper exempt age threshold and passes through when work compliant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 59
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 9, age 60 is at the upper exempt age threshold and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 60
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false

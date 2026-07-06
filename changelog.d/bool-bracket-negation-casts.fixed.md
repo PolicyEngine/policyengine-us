@@ -1,0 +1,1 @@
+Cast two bool-bracket `.calc()` results to `bool` before negating them with `~` — in the Medicaid community engagement pass-through SNAP age exemption check and the ACA required contribution percentage income-eligibility check — preventing a bitwise-NOT-on-int64 bug from becoming live if the surrounding combining logic is ever refactored.

@@ -53,8 +53,12 @@ class aca_required_contribution_percentage(Variable):
         final = final_rates[bracket_idx]
         applicable_figure = initial + position * (final - initial)
 
-        income_eligible = parameters(period).gov.aca.ptc_income_eligibility.calc(
-            magi_frac
+        # Cast to bool: single_amount bool brackets return int (0/1), which
+        # would make the ~ below a bitwise negation instead of a logical one.
+        income_eligible = (
+            parameters(period)
+            .gov.aca.ptc_income_eligibility.calc(magi_frac)
+            .astype(bool)
         )
         above_fpl_limit = magi_frac > thresholds[-1]
         capped_out = above_fpl_limit & ~income_eligible
