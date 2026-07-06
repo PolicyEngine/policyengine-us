@@ -1,0 +1,1 @@
+Update the Georgia parent/caretaker Medicaid income limit to 0.31 FPL from 2025, reflecting the frozen-dollar standard's drift to 26% of FPL (plus the 5% MAGI disregard) per MACPAC Exhibit 36 (July 2025).

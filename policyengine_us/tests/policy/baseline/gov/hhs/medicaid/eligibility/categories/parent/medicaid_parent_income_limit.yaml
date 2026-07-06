@@ -109,3 +109,31 @@
   output:
     medicaid_parent_income_limit: 0.33
   absolute_error_margin: 0.0001
+
+- name: Case 8, Georgia parent limit falls to 0.31 FPL in 2025 (26% + 5% MAGI disregard).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.31
+  absolute_error_margin: 0.0001
+
+- name: Case 9, Georgia frozen-dollar parent standard carries the 0.31 FPL level into 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.31
+  absolute_error_margin: 0.0001
