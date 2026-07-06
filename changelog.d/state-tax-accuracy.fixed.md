@@ -1,0 +1,2 @@
+- Exempted post-retirement-age distributions from eligible Pennsylvania employer retirement plans (401(k), 403(b), SEP, Keogh) from PA taxable compensation, matching the existing IRA treatment.
+- Moved the New Jersey 529 (NJBEST) contribution deduction from gross-income subtractions to taxable-income deductions so it no longer shifts the gross-income filing threshold.

@@ -1,3 +1,8 @@
+# 61 Pa. Code Sec. 101.6 treats IRAs, SEPs, Keogh plans and federally
+# qualified employee pension plans (401(k), 403(b)) alike: distributions made
+# on or after retirement after reaching the qualifying age are not taxable PA
+# compensation. See issue #8848.
+
 - name: Case 1, IRA distributions are excluded after Pennsylvania retirement age.
   period: 2026
   input:
@@ -26,7 +31,7 @@
   output:
     pa_nontaxable_retirement_distributions: 0
 
-- name: Case 3, employer-plan distributions are not broadly excluded by age alone.
+- name: Case 3, 401(k) distributions are excluded after Pennsylvania retirement age.
   period: 2026
   input:
     people:
@@ -38,4 +43,67 @@
         members: [person1]
         state_code: PA
   output:
+    pa_nontaxable_retirement_distributions: 30_000
+
+- name: Case 4, 401(k) distributions remain taxable before Pennsylvania retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        taxable_401k_distributions: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
     pa_nontaxable_retirement_distributions: 0
+
+- name: Case 5, 403(b), SEP and Keogh distributions are excluded after retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_403b_distributions: 10_000
+        taxable_sep_distributions: 5_000
+        keogh_distributions: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 19_000
+
+- name: Case 6, employer-plan distributions remain taxable before retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        taxable_403b_distributions: 10_000
+        taxable_sep_distributions: 5_000
+        keogh_distributions: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 0
+
+# Issue #8848 reported household (PolicyBench scenario_085): PA single filer,
+# age 67, retired, with $1,560 of 401(k) distributions. The 401(k) amount is
+# now excluded from PA taxable compensation.
+- name: Case 7, issue 8848 reported household - retired PA filer with 401(k) distribution.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_401k_distributions: 1_560
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_retirement_distributions: 1_560

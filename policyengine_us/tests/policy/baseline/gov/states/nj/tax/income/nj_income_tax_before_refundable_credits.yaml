@@ -48,3 +48,22 @@
     self_employment_income: 5_800
   output:
     nj_income_tax_before_refundable_credits: 0
+
+# Issue #8849: the NJBEST 529 deduction (N.J.S.A. 54A:3-13, Form NJ-1040 line
+# 37a) must not net into New Jersey gross income (line 29), which the filing
+# threshold keys on. A single filer with $10,500 of gross income and $10,000
+# of 529 contributions stays above the $10,000 gross-income threshold, so the
+# no-tax floor does not apply. nj_agi therefore equals gross income, unmoved
+# by the deduction, and the deduction instead lands in nj_total_deductions.
+- name: 529 contributions do not push a just-above-threshold filer below the gross-income floor
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    employment_income: 10_500
+    investment_in_529_plan_indv: 10_000
+  output:
+    nj_agi: 10_500
+    nj_529_deduction: 10_000
+    nj_total_deductions: 10_000

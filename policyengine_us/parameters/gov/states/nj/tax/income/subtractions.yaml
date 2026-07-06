@@ -6,8 +6,10 @@ metadata:
     - title: NJ-1040 Instructions (page 21)
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf
 values:
+  # New Jersey College Affordability Act deductions (including the NJBEST 529
+  # contribution deduction, nj_529_deduction) are N.J.S.A. 54A:3 deductions
+  # applied on Form NJ-1040 lines 37a-37c, after the gross-income line (line
+  # 29) that the filing-threshold test keys on. They therefore reduce taxable
+  # income (nj_total_deductions), not gross income (subtractions). See #8849.
   2021-01-01:
     - us_govt_interest_person
-  2022-01-01:
-    - us_govt_interest_person
-    - nj_529_deduction
