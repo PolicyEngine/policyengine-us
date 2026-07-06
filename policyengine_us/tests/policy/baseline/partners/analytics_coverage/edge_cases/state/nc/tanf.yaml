@@ -10,7 +10,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 5587
+        employment_income_before_lsr: 5587
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -18,7 +18,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -26,7 +26,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id001
@@ -71,7 +71,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 5687
+        employment_income_before_lsr: 5687
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -79,7 +79,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -87,7 +87,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id002
@@ -132,7 +132,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 5787
+        employment_income_before_lsr: 5787
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -140,7 +140,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 5
         is_tax_unit_head: false
@@ -148,7 +148,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id003
@@ -193,7 +193,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -201,7 +201,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id004
@@ -242,7 +242,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -250,7 +250,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 17
         is_tax_unit_head: false
@@ -258,7 +258,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id005
@@ -303,7 +303,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -311,7 +311,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 18
         is_tax_unit_head: false
@@ -319,7 +319,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id006
@@ -364,7 +364,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 6000
+        employment_income_before_lsr: 6000
     households:
       household:
         members: &id007
@@ -403,7 +403,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id008
@@ -442,7 +442,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 6000
+        employment_income_before_lsr: 6000
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -450,7 +450,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id009
@@ -491,7 +491,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 6000
+        employment_income_before_lsr: 6000
       child1:
         age: 5
         is_tax_unit_head: false
@@ -499,7 +499,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id010
@@ -542,7 +542,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 6000
+        employment_income_before_lsr: 6000
       child1:
         age: 8
         is_tax_unit_head: false
@@ -550,7 +550,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child2:
         age: 3
         is_tax_unit_head: false
@@ -558,7 +558,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id011
@@ -605,7 +605,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 6000
+        employment_income_before_lsr: 6000
       spouse:
         age: 33
         is_tax_unit_head: false
@@ -613,7 +613,7 @@
         is_tax_unit_dependent: false
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child1:
         age: 8
         is_tax_unit_head: false
@@ -621,7 +621,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
       child2:
         age: 3
         is_tax_unit_head: false
@@ -629,7 +629,7 @@
         is_tax_unit_dependent: true
         is_disabled: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
     households:
       household:
         members: &id012

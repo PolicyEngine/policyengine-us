@@ -13,7 +13,7 @@
         is_pregnant: false
         is_female: false
         immigration_status_str: CITIZEN
-        employment_income: 10000
+        employment_income_before_lsr: 10000
         has_bcc_qualifying_coverage: false
         is_full_time_student: false
         ca_calworks_child_care_time_category: MONTHLY
@@ -45,7 +45,7 @@
   output:
     spm_units:
       spm_unit:
-        ma_eaedc: 5293.2
+        ma_eaedc: 147.47
 - name: ma_eaedc_elderly_arrangement_a (ma)
   period: 2026
   absolute_error_margin: 0.1
@@ -61,7 +61,7 @@
         is_pregnant: false
         is_female: false
         immigration_status_str: CITIZEN
-        employment_income: 5000
+        employment_income_before_lsr: 5000
         has_bcc_qualifying_coverage: false
         is_full_time_student: false
         ca_calworks_child_care_time_category: MONTHLY
@@ -93,4 +93,4 @@
   output:
     spm_units:
       spm_unit:
-        ma_eaedc: 5293.2
+        ma_eaedc: 3299.6

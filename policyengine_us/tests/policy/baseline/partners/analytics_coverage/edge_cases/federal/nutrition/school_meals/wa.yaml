@@ -12,7 +12,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 50500
+        employment_income_before_lsr: 50500
         is_ccdf_reason_for_care_eligible: false
       spouse:
         age: 28
@@ -23,7 +23,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_ccdf_reason_for_care_eligible: false
       child1:
         age: 8
@@ -34,7 +34,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_ccdf_reason_for_care_eligible: false
     households:
       household:
@@ -66,8 +66,8 @@
   output:
     spm_units:
       spm_unit:
-        school_meal_daily_subsidy: 7.15
-        school_meal_tier: 0
+        school_meal_daily_subsidy: 6.45
+        school_meal_tier: 1
 - name: school_meals_just_above_reduced_threshold_paid_tier (wa)
   period: 2026
   absolute_error_margin: 0.1
@@ -82,7 +82,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 50700
+        employment_income_before_lsr: 50700
         is_ccdf_reason_for_care_eligible: false
       spouse:
         age: 28
@@ -93,7 +93,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_ccdf_reason_for_care_eligible: false
       child1:
         age: 8
@@ -104,7 +104,7 @@
         is_pregnant: false
         is_breastfeeding: false
         immigration_status_str: CITIZEN
-        employment_income: 0
+        employment_income_before_lsr: 0
         is_ccdf_reason_for_care_eligible: false
     households:
       household:
@@ -136,5 +136,5 @@
   output:
     spm_units:
       spm_unit:
-        school_meal_daily_subsidy: 7.15
-        school_meal_tier: 0
+        school_meal_daily_subsidy: 0.87
+        school_meal_tier: 2
