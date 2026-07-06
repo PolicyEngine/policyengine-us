@@ -20,3 +20,39 @@
     ky_tuition_tax_credit: 0
   output:
     ky_cdcc: 0
+
+# KRS 141.010(21) freezes Kentucky's IRC at December 31, 2024, so from 2026 the
+# credit uses the pre-OBBBA federal section 21 credit (20% of $1,200 = $240),
+# not the OBBBA-inflated live credit (which would give 20% of $1,780 = $356).
+- name: 2026 uses the pre-OBBBA federal credit under static conformity
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+      spouse:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+        ky_income_tax_before_non_refundable_credits_unit: 1_000_000
+        ky_personal_tax_credits: 0
+        ky_family_size_tax_credit: 0
+        ky_tuition_tax_credit: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: KY
+  output:
+    # 20% of the pre-OBBBA $1,200 federal credit.
+    ky_cdcc: 240

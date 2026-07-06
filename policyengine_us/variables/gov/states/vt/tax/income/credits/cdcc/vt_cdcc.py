@@ -17,8 +17,16 @@ class vt_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc
-        # The form refers to 2022 Form 2441 line 11, which caps the credit at tax liability.
-        federal_cdcc = tax_unit("capped_cdcc", period)
+        # The form refers to 2022 Form 2441 line 11, which caps the credit at tax
+        # liability. 32 V.S.A. § 5828c sets the credit at 72% of "the federal
+        # child and dependent care credit allowed to the taxpayer," and § 5824
+        # adopts the federal income tax laws as in effect on December 31, 2024.
+        # From 2026 that frozen Code excludes the OBBBA section 21 rate increase,
+        # so Vermont uses the pre-OBBBA federal credit.
+        if period.start.year >= 2026:
+            federal_cdcc = tax_unit("pre_obbba_capped_cdcc", period)
+        else:
+            federal_cdcc = tax_unit("capped_cdcc", period)
         # 2022 Act 138 raised the 5828c match to 72 percent but retained the
         # low-income adjusted gross income cap and the certified-facility
         # requirement for 2022; 2023 Act 72 removed them effective 2023. We

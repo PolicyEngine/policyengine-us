@@ -1,2 +1,3 @@
 - Honored the IRC § 21(e)(4) separated-taxpayer exception in the South Carolina child and dependent care credit.
 - Stopped the Idaho and Georgia contributed child tax credit reforms from applying in years before their in_effect activation date.
+- Computed the Kentucky, Maine, and Vermont child and dependent care credits from the pre-OBBBA federal IRC § 21 credit for 2026, matching each state's static conformity to the Internal Revenue Code as of December 31, 2024.
