@@ -72,3 +72,18 @@
     # One qualifying individual at the pre-ARPA $3,000 cap:
     # min(10_000 adult care, 3_000, 50_000) = 3_000.
     ca_cdcc_relevant_expenses: 3_000
+
+# FTB 3506 Part IV reduces the $3,000 / $6,000 dollar limit by the IRC § 129
+# employer-provided dependent care benefits excluded from income, matching the
+# federal § 21(c) reduction.
+- name: Section 129 employer benefits reduce the California base
+  period: 2024
+  input:
+    state_code: CA
+    tax_unit_childcare_expenses: 10_000
+    count_cdcc_eligible: 2
+    min_head_spouse_earned: 50_000
+    dependent_care_assistance_exclusion: 5_000
+  output:
+    # min(10_000 expenses, $6,000 two-child cap - $5,000 exclusion, 50_000) = 1_000.
+    ca_cdcc_relevant_expenses: 1_000

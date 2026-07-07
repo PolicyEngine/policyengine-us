@@ -40,7 +40,12 @@ def create_ga_ctc() -> Reform:
             ga_child_age_eligible = age < baseline.age_threshold
             eligible_children = tax_unit.sum(ctc_eligible_child & ga_child_age_eligible)
             refund_limit = p.refundable.amount * eligible_children
-            return min_(unused_credit, refund_limit)
+            refundable_credit = min_(unused_credit, refund_limit)
+            # Only pay the refund in periods where the reform is in effect. The
+            # reform is installed for the whole simulation whenever it activates
+            # in any of the next five years (see create_ga_ctc_reform), so this
+            # per-period gate prevents a refund leaking into pre-activation years.
+            return where(p.refundable.in_effect, refundable_credit, 0)
 
     class ga_refundable_credits(Variable):
         value_type = float

@@ -173,3 +173,69 @@
         state_code: TX
   output:
     medicaid_community_engagement_pass_through_eligible: false
+
+# Issue #8863 mirror: 7 CFR 273.24(c)(4) keys the ABAWD child exception on any
+# household member under the age threshold, regardless of tax-unit dependency.
+# The adult participates in a SNAP work program (general-compliant per 7 CFR
+# 273.7(a)(1)) but logs zero qualifying hours, so she fails the ABAWD 20-hour
+# test. A 13-year-old household member who is NOT her tax dependent still
+# routes her around the ABAWD test post-HR1 (threshold 14), so she passes
+# through on general compliance alone. The 13-year-old is under the general
+# work-rule age floor and does not pass through.
+- name: Case 10, non-dependent under-14 household member triggers the household-wide ABAWD exception.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_program_participant: true
+      teen:
+        age: 13
+        weekly_hours_worked_before_lsr: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit_a:
+        members: [adult]
+      tax_unit_b:
+        members: [teen]
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+        snap: 100
+    households:
+      household:
+        members: [adult, teen]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [true, false]
+
+# Same adult without an under-threshold household member: the ABAWD hours
+# test binds, and zero qualifying hours fail it.
+- name: Case 11, with no under-threshold household member the ABAWD hours test binds.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_program_participant: true
+      housemate:
+        age: 25
+        weekly_hours_worked_before_lsr: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit_a:
+        members: [adult]
+      tax_unit_b:
+        members: [housemate]
+    spm_units:
+      spm_unit:
+        members: [adult, housemate]
+        snap: 100
+    households:
+      household:
+        members: [adult, housemate]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [false, false]

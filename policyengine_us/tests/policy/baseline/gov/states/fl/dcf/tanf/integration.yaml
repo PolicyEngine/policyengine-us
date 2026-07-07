@@ -47,7 +47,7 @@
     fl_tca: 241
     # Benefit: 241 - 0 = $241
 
-- name: Case 2, single parent with earnings and child.
+- name: Case 2, single parent with earnings and child ineligible (disregard denied).
   period: 2024-01
   input:
     people:
@@ -66,23 +66,23 @@
         state_code: FL
   output:
     # Income calculations
-    fl_tca_countable_earned_income: 105
-    # Earned: $500/month
-    # After $90: 410, after $200: 210, * 0.5 = 105
-    fl_tca_countable_income: 105
-    # 105 + 0 = 105
+    fl_tca_countable_earned_income: 410
+    # Earned $500/month. Income after the $90 disregard = $410 >= payment
+    # standard $241, so the $200 and 1/2 disregard is denied (2420.0315); only
+    # the $90 is deducted.
+    fl_tca_countable_income: 410
 
     # Eligibility tests
     fl_tca_gross_income_eligible: true
     # Gross: $500 < $3,151 -> Pass
-    fl_tca_net_income_eligible: true
-    # Countable: 105 < 241 -> Pass
-    fl_tca_eligible: true
+    fl_tca_net_income_eligible: false
+    # Countable: 410 > 241 -> Fail
+    fl_tca_eligible: false
 
     # Benefit calculation
     fl_tca_payment_standard: 241
-    fl_tca: 136
-    # Benefit: 241 - 105 = $136
+    fl_tca: 0
+    # Over-income for TCA (income after $90 exceeds the payment standard).
 
 - name: Case 3, family of 3 with zero shelter obligation.
   period: 2024-01
@@ -184,15 +184,16 @@
         state_code: FL
   output:
     # Income calculations
-    fl_tca_countable_earned_income: 355
-    # After $90: 910, after $200: 710, * 0.5 = 355
-    fl_tca_countable_income: 355
+    fl_tca_countable_earned_income: 910
+    # Earned $1,000/month. Income after the $90 disregard = $910 >= payment
+    # standard $241, so the $200 and 1/2 disregard is denied; only $90 deducted.
+    fl_tca_countable_income: 910
 
     # Eligibility tests
     fl_tca_gross_income_eligible: true
     # Gross: $1,000 < $3,151 -> Pass
     fl_tca_net_income_eligible: false
-    # 355 > $241 -> Fail
+    # 910 > $241 -> Fail
     fl_tca_eligible: false
     # Failed net test
 
@@ -219,17 +220,18 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 1_855
-    # After $90: 3910, after $200: 3710, * 0.5 = 1,855
-    fl_tca_countable_income: 1_855
+    fl_tca_countable_earned_income: 3_910
+    # Earned $4,000/month. Income after the $90 disregard = $3,910 >> payment
+    # standard $241, so the $200 and 1/2 disregard is denied; only $90 deducted.
+    fl_tca_countable_income: 3_910
     fl_tca_gross_income_eligible: false
     # Gross: $4,000 > $3,151 -> Fail
     fl_tca_net_income_eligible: false
-    # 1,855 > $241 -> Also fails
+    # 3,910 > $241 -> Also fails
     fl_tca_eligible: false
     fl_tca: 0
 
-- name: Case 8, small benefit with unearned income.
+- name: Case 8, eligible but deficit below $10 minimum not issued.
   period: 2024-01
   input:
     people:
@@ -252,11 +254,12 @@
     fl_tca_gross_income_eligible: true
     # 235 < $3,151 -> Pass
     fl_tca_net_income_eligible: true
-    # 235 < $241 -> Pass
+    # 235 <= $241 -> Pass (the AG is eligible)
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 6
-    # Benefit: 241 - 235 = $6
+    fl_tca: 0
+    # Deficit = 241 - 235 = $6 < $10, so no benefit is issued
+    # (2620.0111.01 Step 6 and Note). Eligibility stands; the payment is $0.
 
 - name: Case 9, two parents with two children eligible.
   period: 2024-01
@@ -314,18 +317,21 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 55
-    # After $90: 310, after $200: 110, * 0.5 = 55
-    fl_tca_countable_income: 255
-    # 55 + 200 = 255
+    fl_tca_countable_earned_income: 310
+    # Earned $400/month; unearned $200/month. The $200 and 1/2 disregard test
+    # (2420.0315) compares income after the $90 disregard to the payment
+    # standard: ($400 - $90) + $200 = $510 >= $303, so the disregard is denied.
+    # Only the $90 is deducted from earnings: countable earned = $310.
+    fl_tca_countable_income: 510
+    # 310 earned + 200 unearned = 510
     fl_tca_gross_income_eligible: true
     # Gross: 400 + 200 = 600 < $3,981 -> Pass
-    fl_tca_net_income_eligible: true
-    # 255 < $303 -> Pass
-    fl_tca_eligible: true
+    fl_tca_net_income_eligible: false
+    # 510 > $303 -> Fail
+    fl_tca_eligible: false
     fl_tca_payment_standard: 303
-    fl_tca: 48
-    # Benefit: 303 - 255 = $48
+    fl_tca: 0
+    # Over-income for TCA once the $200 and 1/2 disregard is correctly denied.
 
 - name: Case 11, larger family size 5 zero income.
   period: 2024-01
@@ -470,7 +476,7 @@
     fl_tca: 10
     # Benefit: 241 - 231 = $10
 
-- name: Case 16, benefit of $9.
+- name: Case 16, deficit of $9 not issued (below $10 minimum).
   period: 2024-01
   input:
     people:
@@ -494,8 +500,8 @@
     fl_tca_net_income_eligible: true
     fl_tca_eligible: true
     fl_tca_payment_standard: 241
-    fl_tca: 9
-    # Benefit: 241 - 232 = $9
+    fl_tca: 0
+    # Deficit = 241 - 232 = $9 < $10 -> not issued (2620.0111.01 Step 6, Note).
 
 - name: Case 17, multiple earners with varying income.
   period: 2024-01
@@ -518,18 +524,19 @@
         members: [person1, person2, person3]
         state_code: FL
   output:
-    fl_tca_countable_earned_income: 105
-    # Combined: 300 + 200 = 500
-    # After $90: 410, after $200: 210, * 0.5 = 105
-    fl_tca_countable_income: 105
+    fl_tca_countable_earned_income: 410
+    # Combined earnings 300 + 200 = 500. Income after the $90 disregard = $410
+    # >= payment standard $303, so the $200 and 1/2 disregard is denied; only
+    # the $90 is deducted: countable earned = $410.
+    fl_tca_countable_income: 410
     fl_tca_gross_income_eligible: true
     # Gross: $500 < $3,981 -> Pass
-    fl_tca_net_income_eligible: true
-    # 105 < 303 -> Pass
-    fl_tca_eligible: true
+    fl_tca_net_income_eligible: false
+    # 410 > 303 -> Fail
+    fl_tca_eligible: false
     fl_tca_payment_standard: 303
-    fl_tca: 198
-    # 303 - 105 = $198
+    fl_tca: 0
+    # Over-income for TCA once the disregard is correctly denied.
 
 - name: Case 18, assets at limit with income.
   period: 2024-01

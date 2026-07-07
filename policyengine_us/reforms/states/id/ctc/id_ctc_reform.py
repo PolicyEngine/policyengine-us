@@ -6,6 +6,24 @@ from policyengine_us.variables.gov.states.tax.income.non_refundable_credit_cap i
 )
 
 
+def _first_true_instant(nodes, default):
+    """Earliest instant at which any of the boolean parameters is true.
+
+    Scans each parameter's ``values_list`` (which reflects user-supplied dated
+    overrides) for the earliest instant whose value is truthy, and returns the
+    minimum such instant across all nodes. Falls back to ``default`` when none
+    of the parameters is ever true.
+    """
+    candidates = []
+    for node in nodes:
+        for value_at_instant in node.values_list:
+            if value_at_instant.value:
+                candidates.append(instant(value_at_instant.instant_str))
+    if not candidates:
+        return default
+    return min(candidates)
+
+
 def create_id_ctc() -> Reform:
     class id_refundable_ctc(Variable):
         value_type = float
@@ -40,22 +58,38 @@ def create_id_ctc() -> Reform:
             return where(p.refundable.in_effect, refundable_credit, 0)
 
     def modify_parameters(parameters):
-        # Revive id_ctc in the ordered nonrefundable list (it was dropped as of
-        # 2026), so the baseline credit applies against liability again.
+        # The baseline id_ctc drops out of the ordered nonrefundable list as of
+        # 2026-01-01. Revive it only from the instant the reform actually turns
+        # on, so a delayed activation does not leak the credit into
+        # pre-activation years. The activation instant is the earliest date at
+        # which either in_effect toggle is true; default to 2026-01-01 (the
+        # baseline drop date) when neither carries a dated override.
+        p_id = parameters.gov.contrib.states.id.ctc
+        baseline_drop = instant("2026-01-01")
+        activation = _first_true_instant(
+            [p_id.in_effect, p_id.refundable.in_effect],
+            default=baseline_drop,
+        )
+        # Never revive before the baseline drop date: id_ctc is already in the
+        # list through 2025, so revival only matters from 2026 onward.
+        revival_start = max(activation, baseline_drop)
         non_refundable = parameters.gov.states.id.tax.income.credits.non_refundable
-        current_non_refundable = non_refundable(instant("2026-01-01"))
+        current_non_refundable = non_refundable(revival_start)
         if "id_ctc" not in current_non_refundable:
             non_refundable.update(
-                start=instant("2026-01-01"),
+                start=revival_start,
                 stop=instant("2100-12-31"),
                 value=list(current_non_refundable) + ["id_ctc"],
             )
-        # Register the refundable top-up in the refundable list.
+        # Register the refundable top-up in the refundable list. The
+        # id_refundable_ctc variable self-gates on refundable.in_effect, so it
+        # pays nothing before activation; registering it from the same revival
+        # instant keeps the list free of a dead entry in pre-activation years.
         refundable = parameters.gov.states.id.tax.income.credits.refundable
-        current_refundable = refundable(instant("2026-01-01"))
+        current_refundable = refundable(revival_start)
         if "id_refundable_ctc" not in current_refundable:
             refundable.update(
-                start=instant("2026-01-01"),
+                start=revival_start,
                 stop=instant("2100-12-31"),
                 value=list(current_refundable) + ["id_refundable_ctc"],
             )

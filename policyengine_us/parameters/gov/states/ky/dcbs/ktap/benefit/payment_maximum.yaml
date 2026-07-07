@@ -1,10 +1,16 @@
 description: Kentucky sets this payment maximum under the Kentucky Transitional Assistance Program.
-# NOTE: Nov 2025 values are sourced from the KY FACES state web application,
-# not a regulatory instrument (KAR amendment or administrative order).
-# The KY FACES table uses "Number of Children" while the KAR regulation uses
-# "Number of Eligible Persons." FACES "Number of Children" values are mapped
-# directly to assistance unit size (e.g., 1 child = size 1). This mapping
-# should be verified when the official regulatory source becomes available.
+# NOTE: The Nov 2025 reduction (to ~65% of the 2023 amounts) is confirmed by a
+# primary administrative source: the DCBS Division of Family Support Operation
+# Manual Volume III, MS 2820 (transmittal OMTL-682, revised 11/1/25), which
+# gives the "Maximum Payment Scale" by "Number of Eligible Persons" as
+# 1=$242, 2=$293, 3=$341, 4=$426, 5=$498, 6=$562, 7 or more=$627. The manual's
+# axis is "Number of Eligible Persons" (= assistance unit size), so the mapping
+# to assistance unit size is correct. (The KY FACES web app shows the same
+# dollar figures but labels the axis "Number of Children"; the operations
+# manual resolves that ambiguity in favor of eligible-persons/assistance-unit
+# size.) The reduction was implemented administratively via the operations
+# manual; 921 KAR 2:016 has not yet been amended and still shows the 2023
+# ($372-$964) schedule. Per MS 2810, the standard of need was not changed.
 
 metadata:
   unit: currency-USD
@@ -19,6 +25,8 @@ metadata:
       href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/
     - title: 921 KAR 2:016 Section 9(2)(a) (pre-2023 version)
       href: https://apps.legislature.ky.gov/law/kar/titles/921/002/016/10142/
+    - title: KY DCBS Division of Family Support Operation Manual Volume III, MS 2820 (OMTL-682, R. 11/1/25) — Maximum Payment Scale
+      href: https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf
     - title: KY FACES - Kentucky Transitional Assistance Program (KTAP)
       href: https://prd.webapps.chfs.ky.gov/kyfaces/Kinship/KTAP
 

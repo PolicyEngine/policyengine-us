@@ -28,7 +28,15 @@ class ca_cdcc_relevant_expenses(Variable):
         count_eligible = min_(
             cdcc.eligibility.max, tax_unit("count_cdcc_eligible", period)
         )
-        eligible_capped_expenses = min_(expenses, cdcc.max * count_eligible)
+        # FTB 3506 Part IV (lines 26-33) reduces the $3,000 / $6,000 dollar
+        # limit by the IRC § 129 employer-provided dependent care benefits
+        # excluded from income (line 30 subtracts the excluded benefits, and
+        # line 32 caps at the already-net federal Form 2441 line 31). Mirror the
+        # § 21(c) reduction the federal credit's base applies.
+        dollar_limit = cdcc.max * count_eligible
+        exclusion = tax_unit("dependent_care_assistance_exclusion", period)
+        dollar_limit_after_exclusion = max_(dollar_limit - exclusion, 0)
+        eligible_capped_expenses = min_(expenses, dollar_limit_after_exclusion)
         # Then, cap further to the lowest earnings between the taxpayer and spouse
         return min_(
             eligible_capped_expenses,

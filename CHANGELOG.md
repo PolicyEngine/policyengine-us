@@ -1,3 +1,30 @@
+## [1.766.5] - 2026-07-07
+
+### Fixed
+
+- - Honored the IRC § 21(e)(4) separated-taxpayer exception in the South Carolina child and dependent care credit.
+  - Stopped the Idaho and Georgia contributed child tax credit reforms from applying in years before their in_effect activation date.
+  - Computed the Kentucky, Maine, and Vermont child and dependent care credits from the pre-OBBBA federal IRC § 21 credit for 2026, matching each state's static conformity to the Internal Revenue Code as of December 31, 2024.
+  - Reduced the California, Idaho, and Virginia child and dependent care benefit bases by employer-provided dependent care benefits excluded under IRC § 129, matching each state's form treatment and the federal IRC § 21(c) reduction.
+
+
+## [1.766.4] - 2026-07-06
+
+### Fixed
+
+- - Corrected the Colorado age 55-64 Social Security subtraction to allow the full taxable Social Security amount when AGI is at or below the filing-status threshold, per HB24-1142 (effective 2025).
+  - Updated Kentucky CCAP 85% SMI income limits to DCC-113 R.12/24 (effective 2025-10-01).
+  - Fixed the SNAP ABAWD dependent-child gate to key on any household member under the age threshold, per 7 CFR 273.24(c)(4), and removed the duplicate dead exemption branch.
+- The NYC School Tax Credit now computes through a formula so household output shows only the final credit rather than its fixed and rate-reduction components.
+
+
+## [1.766.3] - 2026-07-06
+
+### Fixed
+
+- - Aligned Florida TCA payment standard, income tests, earned income disregard, and minimum issuance with the DCF ESS Program Policy Manual and Appendix A-5.
+
+
 ## [1.766.2] - 2026-07-06
 
 ### Fixed

@@ -28,7 +28,7 @@
     # Countable income: $230
     # Benefit: 241 - 230 = $11
 
-- name: Case 2, benefit of $1.
+- name: Case 2, deficit of $1 not issued (below $10 minimum).
   period: 2024-01
   input:
     people:
@@ -46,10 +46,53 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca: 1
-    # Payment standard: $241
-    # Countable income: $240
-    # Benefit: 241 - 240 = $1
+    fl_tca: 0
+    # Payment standard: $241; countable income: $240; deficit = $1.
+    # Per DCF 2620.0111.01 Step 6 and Note, cash benefits are not issued for
+    # amounts less than $10, so a $1 deficit produces $0.
+
+- name: Case 2b, deficit of exactly $10 is issued.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_772  # $231/month annual
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca: 10
+    # Payment standard: $241; countable income: $231; deficit = $10.
+    # 2620.0111.01 Step 6: "a deficit of at least $10" is issued.
+
+- name: Case 2c, deficit of $9 not issued (below $10 minimum).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 2_784  # $232/month annual
+        pre_subsidy_rent: 12_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_tca: 0
+    # Payment standard: $241; countable income: $232; deficit = $9 < $10 -> $0.
 
 - name: Case 3, maximum family size 13 full benefit.
   period: 2024-01

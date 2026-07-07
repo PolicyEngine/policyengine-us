@@ -109,3 +109,18 @@
     state_code: ID
   output:
     id_household_and_dependent_care_expense_deduction: 3_000
+
+# Idaho Form 39R Line 6 worksheet line 4 reduces the operative cap by the IRC
+# § 129 employer-provided dependent care benefits ("excluded benefits from Part
+# III of Form 2441"). Here the reduced $12,000 cap binds below the expenses.
+- name: Section 129 employer benefits reduce the Idaho deduction cap
+  period: 2023
+  input:
+    tax_unit_childcare_expenses: 10_000
+    id_cdcc_limit: 6_000
+    min_head_spouse_earned: 60_000
+    dependent_care_assistance_exclusion: 5_000
+    state_code: ID
+  output:
+    # min(10_000 expenses, max(6_000, 12_000) - 5_000 = 7_000, 60_000) = 7_000.
+    id_household_and_dependent_care_expense_deduction: 7_000

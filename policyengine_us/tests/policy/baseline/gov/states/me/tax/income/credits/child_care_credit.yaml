@@ -59,3 +59,21 @@
     me_child_care_credit: 750
     me_refundable_child_care_credit: 500
     me_non_refundable_child_care_credit: 250
+
+# 36 M.R.S. § 111(1-A) freezes Maine's "Code" at December 31, 2024, so from 2026
+# the credit is 25% of the pre-OBBBA federal credit (pre_obbba_cdcc), not the
+# OBBBA-inflated live cdcc. Inject both to confirm the pin reads the frozen
+# variable.
+- name: 2026 uses the pre-OBBBA federal credit under static conformity
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    cdcc: 4_000
+    pre_obbba_cdcc: 1_000
+    me_step_4_share_of_child_care_expenses: 0
+    me_income_tax_before_credits: 1_000_000
+  output:
+    # 25% of the frozen $1,000, ignoring the $4,000 live credit.
+    me_child_care_credit: 250

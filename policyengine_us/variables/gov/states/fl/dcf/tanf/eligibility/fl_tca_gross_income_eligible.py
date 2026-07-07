@@ -16,6 +16,11 @@ class fl_tca_gross_income_eligible(Variable):
         # Per DCF 2620.0109.01: Gross income test - NO disregards applied
         # "The standard earned income disregard, 200 and 1/2 which includes
         # the standard earned income disregard of $90, is not deducted in this test."
+        # Per DCF 2620.0107: total gross income "cannot exceed" the appropriate
+        # Eligibility Standard, and 2620.0109.02 Step 2 counts an exact equal as
+        # meeting the requirements (deficit or exact equal passes; only a surplus
+        # is ineligible). The boundary is therefore <= (gross at exactly the
+        # standard is eligible), not strict <.
         p = parameters(period).gov.states.fl.dcf.tanf.income.gross_test
 
         gross_income = spm_unit("fl_tca_gross_income", period)
@@ -24,4 +29,4 @@ class fl_tca_gross_income_eligible(Variable):
         fpg = spm_unit("spm_unit_fpg", period)
         gross_income_limit = fpg * p.gross_income_limit_rate
 
-        return gross_income < gross_income_limit
+        return gross_income <= gross_income_limit
