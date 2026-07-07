@@ -59,6 +59,9 @@
         age: 15
         is_disabled: false
         is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
@@ -91,6 +94,7 @@
     is_parent: [true, false]
     is_tax_unit_dependent: [false, true]
     monthly_age: [40, 13]
+    spm_unit_size: 2
     meets_snap_abawd_work_requirements: [true, true]
 
 - name: Homeless exemption is restored under the reform.
