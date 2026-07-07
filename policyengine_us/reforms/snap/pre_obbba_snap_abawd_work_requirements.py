@@ -21,6 +21,11 @@ Scope and limitations:
   the baseline formulas, so scheduled pre-OBBBA law changes (the Fiscal
   Responsibility Act sunset on 2030-10-01) are not modeled; the reform
   is intended for analysis windows before then (e.g., 2026/2027).
+- The OBBBA-created Indian, Urban Indian, and California Indian
+  exemption (7 U.S.C. 2015(o)(3)(F)-(G)) does not exist under the
+  counterfactual, so individuals exempt only through it become subject
+  to the pre-OBBBA rules. This is the sole case where the reform
+  tightens rather than loosens the requirement.
 - Medicaid community engagement pass-through eligibility
   (medicaid_community_engagement_pass_through_eligible) evaluates SNAP
   work compliance under whichever SNAP rules are in force, so it also

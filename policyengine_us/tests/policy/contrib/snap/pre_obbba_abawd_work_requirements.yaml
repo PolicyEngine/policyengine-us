@@ -127,6 +127,61 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+- name: Hawaii follows pre-OBBBA rules under the reform after its delayed adoption date.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.snap.pre_obbba_snap_abawd_work_requirements.pre_obbba_snap_abawd_work_requirements
+  input:
+    gov.contrib.snap.pre_obbba_abawd_work_requirements.in_effect: true
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: HI
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: End to end, an age-exempt non-worker with no income becomes SNAP eligible under the reform.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.snap.pre_obbba_snap_abawd_work_requirements.pre_obbba_snap_abawd_work_requirements
+  input:
+    gov.contrib.snap.pre_obbba_abawd_work_requirements.in_effect: true
+    people:
+      person1:
+        age: 60
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_work_requirements: true
+    is_snap_eligible: true
+
+- name: End to end baseline contrast, the same person is SNAP ineligible under current law.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_work_requirements: false
+    is_snap_eligible: false
+
 - name: Baseline contrast without the reform, post-OBBBA rules apply in 2026.
   period: 2026-01
   absolute_error_margin: 0.1
