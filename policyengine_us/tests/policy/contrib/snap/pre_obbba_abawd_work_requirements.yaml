@@ -70,6 +70,7 @@
         members: [person1, person2]
         state_code: TX
   output:
+    is_snap_abawd_hr1_in_effect: [false, false]
     meets_snap_abawd_work_requirements: [true, true]
 
 - name: Homeless exemption is restored under the reform.
