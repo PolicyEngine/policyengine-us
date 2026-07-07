@@ -67,6 +67,29 @@
     is_snap_abawd_hr1_in_effect: [false, false]
     meets_snap_abawd_work_requirements: [true, true]
 
+- name: Diagnostic, parent of a 13-year-old is exempt under both dependent thresholds.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  reforms: policyengine_us.reforms.snap.pre_obbba_snap_abawd_work_requirements.pre_obbba_snap_abawd_work_requirements
+  input:
+    gov.contrib.snap.pre_obbba_abawd_work_requirements.in_effect: true
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        is_parent: true
+      person2:
+        age: 13
+        is_disabled: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: [true, true]
+
 - name: Homeless exemption is restored under the reform.
   period: 2026-01
   absolute_error_margin: 0.1
