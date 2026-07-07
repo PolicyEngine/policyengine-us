@@ -3,7 +3,7 @@
 When gov.contrib.snap.pre_obbba_abawd_work_requirements.in_effect is true
 for a period, the ABAWD work requirement reverts to pre-OBBBA
 (P.L. 119-21, Section 10102) rules for that period in every state:
-exempt ages (55+ instead of 65+), the dependent-child age threshold
+exempt ages (55+ instead of 65+), the household-child age threshold
 (18 instead of 14), and the homeless, veteran, and former foster youth
 exemptions.
 
