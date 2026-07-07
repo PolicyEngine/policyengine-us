@@ -88,6 +88,9 @@
         members: [person1, person2]
         state_code: TX
   output:
+    is_parent: [true, false]
+    is_tax_unit_dependent: [false, true]
+    monthly_age: [40, 13]
     meets_snap_abawd_work_requirements: [true, true]
 
 - name: Homeless exemption is restored under the reform.
