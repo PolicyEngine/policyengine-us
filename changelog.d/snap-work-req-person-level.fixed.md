@@ -1,1 +1,1 @@
-Make SNAP work requirement disqualification person-level instead of household-level, per 7 CFR 273.24(b)(1) and 7 CFR 273.11(c).
+Assume baseline compliance with SNAP work registration for non-exempt registrants per 7 CFR 273.7, adding an `is_snap_work_registration_noncompliant` input as a sanction-modeling hook, so that work-requirement disqualification applies to individuals (ABAWD time limits, explicit sanctions) rather than zeroing entire households.

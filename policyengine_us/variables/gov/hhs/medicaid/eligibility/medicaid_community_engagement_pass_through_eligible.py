@@ -23,7 +23,10 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
             bool
         )
         snap_non_age_exempt = person("is_snap_work_registration_exempt_non_age", period)
-        general_work_compliant = person("meets_snap_general_work_requirements", period)
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        general_work_compliant = (
+            weekly_hours_worked >= snap_work.general.weekly_hours_threshold
+        )
         abawd_work_compliant = person("meets_snap_abawd_work_requirements", period)
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
         pre_hr1_abawd = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
