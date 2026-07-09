@@ -1,0 +1,1 @@
+Correct Alaska's SNAP ABAWD HR1 implementation date from 2025-11-01 to 2026-11-01: FNS approved Alaska's good-faith exemption under 7 U.S.C. 2015(o)(7) effective 2025-11-01 through 2026-10-31, deferring the HR1 rules in all areas except Anchorage (modeled as a statewide approximation).

@@ -668,3 +668,35 @@
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
+
+# =====================================================
+# Alaska good-faith exemption through 2026-10-31 -
+# 7 U.S.C. 2015(o)(7)
+# =====================================================
+
+- name: Case 44, AK age 60 still exempt during good-faith exemption window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# Non-January month periods require year-keyed inputs for year-defined
+# variables (age, hours, state_code), to avoid a period-parsing error in
+# policyengine-core's input storage.
+- name: Case 45, AK age 60 in extended band fails after exemption expires.
+  period: 2026-12
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 60
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    state_code:
+      2026: AK
+  output:
+    meets_snap_abawd_work_requirements: false

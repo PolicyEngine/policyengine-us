@@ -1,6 +1,8 @@
 # Federal HR1 effective date: 2025-07-04
 # CA delays to 2026-06-01 per ACL 25-93
-# HI and AK delay to 2025-11-01
+# HI delays to 2025-11-01
+# AK is exempt through 2026-10-31 under the 7 U.S.C. 2015(o)(7) good-faith
+# exemption (statewide approximation; Anchorage applies HR1 from 2025-11-01)
 
 - name: Case 1, non-CA after federal effective date.
   period: 2026-01
@@ -62,7 +64,7 @@
   output:
     is_snap_abawd_hr1_in_effect: false
 
-- name: Case 9, AK not in effect between federal and state adoption dates.
+- name: Case 9, AK not in effect between federal effective date and exemption window.
   period: 2025-08
   input:
     state_code:
@@ -78,13 +80,13 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 11, AK in effect at state adoption date.
+- name: Case 11, AK not in effect at start of good-faith exemption window.
   period: 2025-11
   input:
     state_code:
       2025: AK
   output:
-    is_snap_abawd_hr1_in_effect: true
+    is_snap_abawd_hr1_in_effect: false
 
 - name: Case 12, HI in effect in 2026 steady state.
   period: 2026-01
@@ -93,8 +95,23 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 13, AK in effect in 2026 steady state.
+- name: Case 13, AK not in effect during good-faith exemption window.
   period: 2026-01
+  input:
+    state_code: AK
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Case 14, AK in effect when good-faith exemption expires.
+  period: 2026-11
+  input:
+    state_code:
+      2026: AK
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 15, AK in effect in 2027 steady state.
+  period: 2027-01
   input:
     state_code: AK
   output:
