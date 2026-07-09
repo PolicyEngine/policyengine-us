@@ -92,7 +92,6 @@
 
 - name: Case 7, CA resident of waived Tulare County (2026-03, after the statewide waiver expired) is exempt via the county waiver under pre-HR1 rules.
   period: 2026-03
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -110,7 +109,6 @@
 
 - name: Case 8, CA resident of non-waived Los Angeles County (2026-03) is not exempt via any waiver.
   period: 2026-03
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -128,7 +126,6 @@
 
 - name: Case 9, CA resident of waived Tulare County (2026-07, after CA adopts HR1 rules on 2026-06-01) remains exempt via the county waiver under the post-HR1 branch.
   period: 2026-07
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -146,7 +143,6 @@
 
 - name: Case 10, CA household without county geography (2025-12) is exempt via the litigation-reinstated statewide waiver under pre-HR1 rules.
   period: 2025-12
-  absolute_error_margin: 0.1
   input:
     age:
       2025: 30
@@ -166,7 +162,6 @@
 
 - name: Case 11, NV resident (2026-01) is exempt via the statewide waiver under the post-HR1 branch.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -182,7 +177,6 @@
 
 - name: Case 12, NV resident (2026-02) is no longer exempt after the statewide waiver expires on 2026-01-31.
   period: 2026-02
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -198,7 +192,6 @@
 
 - name: Case 13, DC resident (2025-12) is exempt via the districtwide waiver.
   period: 2025-12
-  absolute_error_margin: 0.1
   input:
     age:
       2025: 30
@@ -214,7 +207,6 @@
 
 - name: Case 14, DC resident (2026-01) is no longer exempt after the districtwide waiver expires on 2025-12-31.
   period: 2026-01
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
@@ -230,7 +222,6 @@
 
 - name: Case 15, IL resident (2025-06, before HR1 takes effect) is exempt via the statewide waiver under the pre-HR1 branch.
   period: 2025-06
-  absolute_error_margin: 0.1
   input:
     age:
       2025: 30
@@ -250,7 +241,6 @@
 
 - name: Case 16, NY resident (2026-02) is not exempt because NY's litigation-reinstated waiver was partial-state and is not modeled.
   period: 2026-02
-  absolute_error_margin: 0.1
   input:
     age:
       2026: 30
