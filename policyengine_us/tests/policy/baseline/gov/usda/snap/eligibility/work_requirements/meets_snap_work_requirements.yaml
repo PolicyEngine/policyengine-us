@@ -12,7 +12,10 @@
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: true
-    monthly_age: 17
+    # age (YEAR) rather than monthly_age: setting monthly_age at a year
+    # period divides the value across months, which would make the person
+    # read as a household child under the 273.24(c)(4) any-member exception.
+    age: 17
     is_tax_unit_dependent: true
   output:
     meets_snap_work_requirements: true
@@ -22,7 +25,10 @@
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: false
-    monthly_age: 17
+    # age (YEAR) rather than monthly_age: setting monthly_age at a year
+    # period divides the value across months, which would make the person
+    # read as a household child under the 273.24(c)(4) any-member exception.
+    age: 17
     is_tax_unit_dependent: true
   output:
     # With a dependent child in the unit, ABAWD is not tested; the general
@@ -35,7 +41,7 @@
     # No dependent child: ABAWD applies. General met (baseline) but ABAWD failed.
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: false
-    monthly_age: 18
+    age: 18
     is_tax_unit_dependent: false
   output:
     meets_snap_work_requirements: false
@@ -45,7 +51,7 @@
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: true
-    monthly_age: 18
+    age: 18
     is_tax_unit_dependent: false
   output:
     meets_snap_work_requirements: true
