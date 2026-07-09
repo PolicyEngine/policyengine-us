@@ -445,24 +445,32 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer.
-  period: 2026-01
+- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer after the statewide waiver expires.
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
     people:
       person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 1
-        is_disabled: false
-        is_parent: true
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 1
+        is_disabled:
+          2026: false
+        is_parent:
+          2026: true
       person2:
-        age: 15
-        is_disabled: false
-        is_tax_unit_dependent: true
+        age:
+          2026: 15
+        is_disabled:
+          2026: false
+        is_tax_unit_dependent:
+          2026: true
     households:
       household:
         members: [person1, person2]
-        state_code: CA
+        state_code:
+          2026: CA
   output:
     # The child-under-18 exemption (CA pre-HR1) is applied upstream in
     # meets_snap_work_requirements_person, not in this variable, so person1
@@ -471,7 +479,7 @@
     meets_snap_abawd_work_requirements: [false, true]
 
 # In 2026-01 the litigation-reinstated CA statewide waiver still applies
-# (through 2026-01-31), so the non-exempt case is tested in 2026-03.
+# (through 2026-01-31), so non-exempt cases are tested in 2026-03.
 - name: Case 32, CA pre-HR1 non-exempt person fails after the statewide waiver expires.
   period: 2026-03
   absolute_error_margin: 0.1
