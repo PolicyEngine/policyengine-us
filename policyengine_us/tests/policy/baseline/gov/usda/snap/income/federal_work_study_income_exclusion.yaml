@@ -23,7 +23,7 @@
   output:
     meets_snap_work_exception: true
 
-- name: Case 4, ABAWD-time-limit-ineligible adult earned income is prorated.
+- name: Case 4, ABAWD-time-limit-ineligible adult earned income counts in full.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -58,5 +58,4 @@
         members: [person1, person2]
         state_code: TX
   output:
-    snap_work_requirement_income_proration_fraction: [1, 0.5]
-    snap_earned_income: 500
+    snap_earned_income: 1_000

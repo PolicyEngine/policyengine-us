@@ -6,20 +6,9 @@ class snap_earned_income(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "SNAP earned income"
-    documentation = "Earned income for calculating the SNAP earned income deduction"
+    documentation = "Earned income for calculating the SNAP earned income deduction. Work-requirement-ineligible members' earned income counts in full (the 7 CFR 273.11(c)(1) treatment): their needs already leave the unit via snap_unit_size, and counting income in full guarantees a work-requirement disqualification can only reduce eligibility and benefits (7 U.S.C. 2015(o) is an eligibility limitation). The prior 273.11(c)(2) proration let households over the income limits at full composition qualify at the reduced size on the disqualified member's halved income, inverting the sign of ABAWD reforms at population scale."
     reference = "https://www.law.cornell.edu/cfr/text/7/273.9#b_1"
     unit = USD
 
     def formula(spm_unit, period):
-        person = spm_unit.members
-        income = spm_unit("snap_earned_income_person", period)
-        countable_earner = person("snap_countable_earner", period)
-        employment_income = person("employment_income", period)
-        full_employment_income = spm_unit.sum(
-            where(countable_earner, employment_income, 0)
-        )
-        fraction = person("snap_work_requirement_income_proration_fraction", period)
-        prorated_employment_income = spm_unit.sum(
-            where(countable_earner, employment_income * fraction, 0)
-        )
-        return income - full_employment_income + prorated_employment_income
+        return spm_unit("snap_earned_income_person", period)

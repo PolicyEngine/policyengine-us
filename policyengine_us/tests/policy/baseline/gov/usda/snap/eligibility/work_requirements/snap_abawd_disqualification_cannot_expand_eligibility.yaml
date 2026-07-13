@@ -1,21 +1,18 @@
 # ABAWD disqualification is an eligibility LIMITATION (7 U.S.C. 2015(o)); it
 # must never make an otherwise-ineligible household eligible or raise its
-# benefit. The current implementation violates this: excluding the
-# noncompliant member shrinks snap_unit_size AND prorates the member's income
-# (snap_work_requirement_income_proration_fraction, 7 CFR 273.11(c)(2)), so a
-# household over the income limits at full size can pass the smaller unit's
-# limits on half the earner's income — failing the work requirement CREATES
-# a benefit. 7 CFR 273.11(c) governs the treatment of a disqualified member
-# WITHIN a participating household; it is not a pathway for a household that
-# does not qualify to begin with. At population scale this inverts the sign
-# of ABAWD reforms (first release-scale run: switching the time limit ON
-# raised SNAP spending +$0.12B and added taker households).
+# benefit. The model excludes a work-requirement-ineligible member's needs
+# (snap_unit_size) while counting the member's income in full (the
+# 7 CFR 273.11(c)(1) treatment), so disqualification can only reduce
+# eligibility and benefits. A prior 273.11(c)(2) proration of the member's
+# income let households over the limits at full composition qualify at the
+# reduced size on the disqualified earner's halved income — failing a work
+# requirement CREATED a ~$288/yr benefit in Case 2 and inverted the sign of
+# ABAWD reforms at population scale (switching the time limit ON raised
+# SNAP spending +$0.12B on the first release-scale run).
 #
-# Case 1 (passes today) pins the correct behavior when the noncompliant
-# member has no income: benefits fall to the 1-person calculation.
-# Cases 2-3 (FAIL today) pin the invariant for an earning noncompliant
-# member: the household was ineligible when he complied, and his failing
-# the time limit must not qualify it.
+# Case 1 pins the loss direction for a zero-income noncompliant member;
+# Cases 2-3 jointly pin the no-gain invariant for an earning noncompliant
+# member (2 = failing, 3 = the compliant counterfactual).
 
 - name: Case 1, noncompliant zero-income ABAWD shrinks the unit and lowers the benefit.
   period: 2026
