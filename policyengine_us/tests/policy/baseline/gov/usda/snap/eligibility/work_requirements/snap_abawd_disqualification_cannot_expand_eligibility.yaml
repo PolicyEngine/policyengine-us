@@ -1,0 +1,100 @@
+# ABAWD disqualification is an eligibility LIMITATION (7 U.S.C. 2015(o)); it
+# must never make an otherwise-ineligible household eligible or raise its
+# benefit. The current implementation violates this: excluding the
+# noncompliant member shrinks snap_unit_size AND prorates the member's income
+# (snap_work_requirement_income_proration_fraction, 7 CFR 273.11(c)(2)), so a
+# household over the income limits at full size can pass the smaller unit's
+# limits on half the earner's income — failing the work requirement CREATES
+# a benefit. 7 CFR 273.11(c) governs the treatment of a disqualified member
+# WITHIN a participating household; it is not a pathway for a household that
+# does not qualify to begin with. At population scale this inverts the sign
+# of ABAWD reforms (first release-scale run: switching the time limit ON
+# raised SNAP spending +$0.12B and added taker households).
+#
+# Case 1 (passes today) pins the correct behavior when the noncompliant
+# member has no income: benefits fall to the 1-person calculation.
+# Cases 2-3 (FAIL today) pin the invariant for an earning noncompliant
+# member: the household was ineligible when he complied, and his failing
+# the time limit must not qualify it.
+
+- name: Case 1, noncompliant zero-income ABAWD shrinks the unit and lowers the benefit.
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      worker:
+        # age (YEAR) rather than monthly_age: setting monthly_age at a year
+        # period divides the value across months (273.24(c)(4) gotcha).
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      abawd:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      unit:
+        members: [worker, abawd]
+    households:
+      household:
+        members: [worker, abawd]
+        state_code: TX
+  output:
+    snap_unit_size: 1
+    is_snap_eligible: true
+    # 1-person allotment on the compliant worker's full income; strictly
+    # below the ~4,466 the unit receives when both members comply.
+    snap: 1_473
+
+- name: Case 2, household over-income at full size stays ineligible when the earner fails the time limit.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      elder:
+        age: 66
+        social_security_retirement: 9_600
+      abawd:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      unit:
+        members: [elder, abawd]
+    households:
+      household:
+        members: [elder, abawd]
+        state_code: TX
+  output:
+    # The same household with the earner COMPLYING (25h/week) is ineligible:
+    # $30,000 wages + $9,600 Social Security exceed the 2-person limits.
+    # His failing the ABAWD time limit cannot qualify it. Current
+    # implementation: is_snap_eligible flips true and snap = ~288.
+    is_snap_eligible: false
+    snap: 0
+
+- name: Case 3, benefit with a noncompliant earning member never exceeds the compliant counterfactual.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      elder:
+        age: 66
+        social_security_retirement: 9_600
+      abawd:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 25
+    spm_units:
+      unit:
+        members: [elder, abawd]
+    households:
+      household:
+        members: [elder, abawd]
+        state_code: TX
+  output:
+    # Compliant counterfactual for Case 2: same unit, earner works 25h/week.
+    # Pinned so Cases 2 and 3 together assert the no-gain invariant
+    # (snap[noncompliant] <= snap[compliant]).
+    is_snap_eligible: false
+    snap: 0
