@@ -1,0 +1,15 @@
+description: Oregon provides its Child Tax Credit when this is true.
+values:
+  2023-01-01: true
+  # HB 3235 (2023) Section 11 limits the credit to tax years beginning
+  # on or after January 1, 2023, and before January 1, 2029.
+  2029-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Oregon Child Tax Credit in effect
+  reference:
+    - title: 2023R1 House Bill 3235 Section 11
+      href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=9
+    - title: Oregon Revised Statutes Section 315.273 (2023 c.538 §2)
+      href: https://oregon.public.law/statutes/ors_315.273

@@ -4,7 +4,15 @@ values:
   2024-01-01: 25_750
   2025-01-01: 26_550
 metadata:
-  uprating: gov.irs.uprating #CPI-U
+  # ORS 315.273(5) adjusts the phase-out start annually for inflation
+  # (unchained U.S. City Average CPI-U; gov.irs.uprating is the closest
+  # projection series), rounding each increase down to the next lower
+  # multiple of $50.
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
   unit: currency-USD
   period: year
   label: Oregon Child Tax Credit phase-out start
