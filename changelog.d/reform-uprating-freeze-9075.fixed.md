@@ -1,0 +1,1 @@
+Reforms starting at a future date no longer freeze uprating of the reformed parameter for the years before the reform starts: the reform set is now applied after the parameter processing pipeline (uprating included) instead of before it, so pre-start years keep their baseline uprated values.
