@@ -7,10 +7,13 @@ stays in the refundable-credits list), so a single parameter switch models
 renewal scenarios.
 """
 
+import math
+
 from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
+from policyengine_us.parameters.uprating_extensions import get_or_ctc_cola
 from policyengine_us.system import system
 
 
@@ -81,11 +84,34 @@ def test_in_effect_reform_restores_the_credit_from_2029():
     assert sim.calculate("or_refundable_credits", 2029)[0] == expected
 
 
-def test_amount_and_phase_out_start_uprate_beyond_last_known_values():
-    """ORS 315.273(5) indexes both dollar amounts, flooring to $50 multiples."""
-    amount_2028 = OR_CTC_PARAMS.amount("2028-01-01")
-    start_2028 = OR_CTC_PARAMS.reduction.start("2028-01-01")
-    assert amount_2028 > 1_050
-    assert amount_2028 % 50 == 0
-    assert start_2028 > 26_550
-    assert start_2028 % 50 == 0
+def test_statutory_cola_matches_published_and_determined_values():
+    """ORS 315.273(5) values for published and CPI-determined years.
+
+    2024 and 2025 are Department of Revenue published values (OR-40
+    instructions). Tax year 2026 is already determined by published CPI-U:
+    the window ending August 2025 averages 319.24, a 9.114% COLA over the
+    2022 Q2 base of 292.572, so the $91.14 amount increase floors to $50
+    (no change at the $50 grid: $1,000 base + $50 = $1,050) and the
+    $2,278.47 threshold increase floors to $2,250.
+    """
+    assert OR_CTC_PARAMS.amount("2024-01-01") == 1_000
+    assert OR_CTC_PARAMS.reduction.start("2024-01-01") == 25_750
+    assert OR_CTC_PARAMS.amount("2025-01-01") == 1_050
+    assert OR_CTC_PARAMS.reduction.start("2025-01-01") == 26_550
+    assert OR_CTC_PARAMS.amount("2026-01-01") == 1_050
+    assert OR_CTC_PARAMS.reduction.start("2026-01-01") == 27_250
+
+
+def test_projections_compute_from_statutory_bases_not_chained():
+    """Projected years recompute from the $1,000 / $25,000 bases.
+
+    ORS 315.273(5) applies the COLA to the statutory base amounts each year;
+    chaining from a later rounded value would permanently discard rounding
+    residue and drift low by $50 steps.
+    """
+    for year in (2027, 2028, 2040):
+        cola = get_or_ctc_cola(system.parameters, year)
+        expected_amount = 1_000 + math.floor(1_000 * cola / 50) * 50
+        expected_start = 25_000 + math.floor(25_000 * cola / 50) * 50
+        assert OR_CTC_PARAMS.amount(f"{year}-01-01") == expected_amount
+        assert OR_CTC_PARAMS.reduction.start(f"{year}-01-01") == expected_start

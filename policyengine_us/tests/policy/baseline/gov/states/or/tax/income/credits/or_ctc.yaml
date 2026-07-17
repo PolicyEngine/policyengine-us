@@ -128,6 +128,31 @@
   output:
     or_ctc: 0
 
+# Tax year 2026 values are already determined by ORS 315.273(5) and published
+# CPI-U: the COLA window (September 2024 - August 2025, averaging 319.24) is
+# 9.114% over the 2022 Q2 base (292.572). The $91.14 amount increase floors
+# to $50 (amount $1,050) and the $2,278.47 threshold increase floors to
+# $2,250 (phase-out start $27,250).
+- name: 2026 - full credit exactly at the $27,250 phase-out start.
+  period: 2026
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 27_250
+  output:
+    or_ctc: 1_050
+
+- name: 2026 - fully phased out at $32,250.
+  period: 2026
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 32_250
+  output:
+    or_ctc: 0
+
 # The credit sunsets after tax year 2028 (HB 3235 Section 11): it applies to
 # tax years beginning on or after January 1, 2023, and before January 1, 2029.
 - name: 2029 - no credit after the sunset.
