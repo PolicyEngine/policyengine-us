@@ -39,29 +39,38 @@ def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
     ending August 31 of the prior calendar year exceeds the monthly averaged
     index for the second quarter of calendar year 2022.
 
-    While monthly CPI-U observations cover the full window, this averages
-    them exactly. Once the window extends past the last monthly observation,
-    it instead uses the annual projection point for the tax year, which the
-    CPI-U file stores at the February instant of the prior calendar year;
-    averaging synthetic months over that step function would blend the last
-    stale monthly actual into the window and understate the adjustment.
+    The CPI-U series holds monthly observations through the latest BLS
+    release, then annual projection points at February instants; a monthly
+    refresh that reaches a February replaces that instant's projection with
+    the observed value. Windows with observed months average them, carrying
+    the last observation flat through any unobserved tail; windows with no
+    observed month read the tax year's annual projection point, whose
+    February instant necessarily lies beyond the last observation and so
+    can only hold a projection. No branch reads an instant a refresh could
+    have turned from projection into observation.
     """
     cpi = parameters.gov.bls.cpi.cpi_u
     base = sum(cpi(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
-    last_monthly_observation = max(
+    # February instants can hold annual projections, so only non-February
+    # instants identify the end of the observed monthly series (one month
+    # conservative when observations end exactly on a February).
+    last_observation = max(
         instant(value.instant_str)
         for value in cpi.values_list
         if not value.instant_str.endswith("-02-01")
     )
-    window_end = instant(f"{tax_year - 1}-08-01")
-    if window_end <= last_monthly_observation:
-        start = instant(f"{tax_year - 2}-09-01")
-        window = (
-            sum(cpi(start.offset(month, MONTH)) for month in range(MONTHS_IN_YEAR))
-            / MONTHS_IN_YEAR
-        )
-    else:
+    window_start = instant(f"{tax_year - 2}-09-01")
+    window_months = [
+        window_start.offset(month, MONTH) for month in range(MONTHS_IN_YEAR)
+    ]
+    observed = [month for month in window_months if month <= last_observation]
+    if not observed:
         window = cpi(f"{tax_year - 1}-02-01")
+    else:
+        unobserved_tail = MONTHS_IN_YEAR - len(observed)
+        window = (
+            sum(cpi(month) for month in observed) + cpi(observed[-1]) * unobserved_tail
+        ) / MONTHS_IN_YEAR
     return max(window / base - 1, 0)
 
 
