@@ -164,14 +164,18 @@ def test_cola_unobserved_window_uses_annual_projection_point():
 
 
 def test_cola_partial_window_ignores_overwritten_february_projection():
-    # A monthly refresh lands observations for September 2025 - June 2026 at
-    # 337, overwriting the February 2026 instant (formerly the 347
-    # projection) with the observed value. The tax year 2027 window is now
-    # partially observed: ten observed months at 337 plus a flat two-month
-    # tail gives COLA = 337 / 300 - 1 — the stale 347 projection must not
-    # be read from the overwritten instant.
+    # A monthly refresh lands observations for September 2025 - June 2026,
+    # overwriting the February 2026 instant (formerly the 347 projection)
+    # with the observed 342. The levels are chosen so every algorithm
+    # disagrees: the tax year 2027 window averages the ten observed months
+    # (five at 330, five at 342) with a flat two-month tail at the last
+    # observation (342), giving (5 * 330 + 5 * 342 + 2 * 342) / 12 = 337 and
+    # COLA = 37 / 300. Reading the overwritten February instant as an
+    # annual projection would instead give 42 / 300 — so this assertion
+    # fails against the raw-February-read regression it guards against.
     values = _base_series()
-    _monthly(values, 2025, 9, 2026, 6, 337)
+    _monthly(values, 2025, 9, 2026, 1, 330)
+    _monthly(values, 2026, 2, 2026, 6, 342)
     assert _cola_on_series(values, 2027) == pytest.approx(37 / 300)
     # Later, fully unobserved windows still read their own projection
     # points: tax year 2028 uses February 2027 (361).
@@ -179,13 +183,17 @@ def test_cola_partial_window_ignores_overwritten_february_projection():
 
 
 def test_cola_observations_ending_on_a_february_stay_conservative():
-    # Observations end exactly on February 2026. February instants cannot
-    # be distinguished from projections, so detection conservatively treats
-    # January 2026 as the last observation; the tax year 2027 window
-    # averages the five observed months at 337 with a flat tail at the
-    # January level (337), and the completed tax year 2026 window is
+    # Observations end exactly on February 2026, with the February actual
+    # (348) different from the January level (330). February instants
+    # cannot be distinguished from projections, so detection conservatively
+    # treats January 2026 as the last observation: the tax year 2027 window
+    # averages the five observed months at 330 with a flat tail at the
+    # January level, giving COLA = 30 / 300. Reading the February instant
+    # would instead give 48 / 300, so this assertion proves the February
+    # value is not consulted. The completed tax year 2026 window is
     # unaffected.
     values = _base_series()
-    _monthly(values, 2025, 9, 2026, 2, 337)
-    assert _cola_on_series(values, 2027) == pytest.approx(37 / 300)
+    _monthly(values, 2025, 9, 2026, 1, 330)
+    values["2026-02-01"] = 348
+    assert _cola_on_series(values, 2027) == pytest.approx(30 / 300)
     assert _cola_on_series(values, 2026) == pytest.approx(31 / 300)
