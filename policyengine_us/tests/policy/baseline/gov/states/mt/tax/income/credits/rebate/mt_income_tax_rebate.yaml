@@ -1,23 +1,98 @@
-- name: Single filer
-  period: 2023
+- name: Single filer with liability above the rebate amount
+  period: 2021
   input:
-    filing_status: SINGLE
-    state_code: MT
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
   output:
     mt_income_tax_rebate: 1_250
 
-- name: Joint filers
-  period: 2023
+- name: Joint filers with liability above the rebate amount
+  period: 2021
   input:
-    filing_status: JOINT
-    state_code: MT
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:
     mt_income_tax_rebate: 2_500
 
-- name: Not in Montana
-  period: 2023
+- name: Rebate is capped at the income tax liability (MCA 15-30-2191(2)(b))
+  absolute_error_margin: 1
+  period: 2021
   input:
-    filing_status: JOINT
-    state_code: AR
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+      person2:
+        age: 45
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Lesser of $2,500 or the pre-credit liability, not the flat amount.
+    # (Montana's credit application already floors the applied credit, so
+    # this fixes the variable's reported value, not the tax outcome.)
+    mt_income_tax_rebate: 252.40
+
+- name: No rebate outside Montana
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    mt_income_tax_rebate: 0
+
+- name: No rebate in 2022
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
   output:
     mt_income_tax_rebate: 0

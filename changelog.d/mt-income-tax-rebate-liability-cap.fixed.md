@@ -1,0 +1,1 @@
+Cap the Montana 2021 income tax rebate at the taxpayer's pre-credit liability per MCA 15-30-2191(2)(b) and zero the amounts from 2022, fixing the variable's reported value; Montana income tax results are unchanged because the credit application already floored the applied amount.
