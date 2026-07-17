@@ -13,7 +13,6 @@ from policyengine_core.periods import instant
 from policyengine_core.reforms import Reform
 
 from policyengine_us import Simulation
-from policyengine_us.parameters.uprating_extensions import get_or_ctc_cola
 from policyengine_us.system import system
 
 
@@ -107,10 +106,15 @@ def test_projections_compute_from_statutory_bases_not_chained():
 
     ORS 315.273(5) applies the COLA to the statutory base amounts each year;
     chaining from a later rounded value would permanently discard rounding
-    residue and drift low by $50 steps.
+    residue and drift low by $50 steps. Expected values are derived from the
+    raw CPI-U parameter directly — the annual projection point stored at the
+    February instant ahead of each tax year — independently of the COLA
+    helper, so a window bug in the helper cannot hide here.
     """
+    cpi = system.parameters.gov.bls.cpi.cpi_u
+    q2_2022 = sum(cpi(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
     for year in (2027, 2028, 2040):
-        cola = get_or_ctc_cola(system.parameters, year)
+        cola = max(cpi(f"{year - 1}-02-01") / q2_2022 - 1, 0)
         expected_amount = 1_000 + math.floor(1_000 * cola / 50) * 50
         expected_start = 25_000 + math.floor(25_000 * cola / 50) * 50
         assert OR_CTC_PARAMS.amount(f"{year}-01-01") == expected_amount
