@@ -1,14 +1,16 @@
 """Regression tests for the spm_unit_spm_threshold formula.
 
 Verifies that:
-1. Historical published years (2015-2024) match the Census Bureau's
-   published Betson reference thresholds exactly (via spm-calculator).
+1. Historical published years (2005-2024) match the corrected BLS
+   reference thresholds exactly (via spm-calculator >= 0.4.0, which
+   packages the full-precision series BLS reissued on 2026-07-17).
 2. Post-published years uprate via PolicyEngine's ``gov.bls.cpi.cpi_u``
    parameter.
 3. Composition and tenure changes between periods flow through to the
    threshold while applying the unit-specific geographic adjustment.
 4. The Betson three-parameter equivalence scale is applied (a 2A2C
-   reference family at the renter national base equals 39430 in 2024).
+   reference family at the renter national base equals 39,219.89 in
+   2024 under the corrected series).
 """
 
 import numpy as np
