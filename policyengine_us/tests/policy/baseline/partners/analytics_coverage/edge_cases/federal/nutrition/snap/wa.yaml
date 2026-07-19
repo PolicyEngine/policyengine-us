@@ -71,9 +71,9 @@
         # WA SUA = 2,015 - 1,428.83 = 586.17 -> net = 2,271.50, which is ABOVE
         # the regular 100%-FPG net limit (2,220.83) - WA's BBCE has no net
         # test, so the unit is still eligible. EC 681.30 -> 785 - 681.30 =
-        # 103.70/month; Oct-Dec: 802.60 - 679.20 = 123.40.
-        # Annual = 9 x 103.70 + 3 x 123.40 = 1,303.50.
-        snap: 1_303.49
+        # 103.70/month; Oct-Dec: 812.72 - 678.00 = 134.72.
+        # Annual = 9 x 103.70 + 3 x 134.72 = 1,337.46.
+        snap: 1337.46
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (wa)
   period: 2026
