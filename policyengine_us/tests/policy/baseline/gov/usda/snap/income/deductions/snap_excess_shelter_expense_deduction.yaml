@@ -85,3 +85,24 @@
   output:
     # cap at 701, 
     snap_excess_shelter_expense_deduction: 700
+
+- name: FY2027 shelter cap uprates the FY2026 value by June 2026 over June 2025 CPI-U actuals.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    housing_cost:
+      2027: 12_000
+  output:
+    # 744 * 333.952 / 322.561
+    snap_excess_shelter_expense_deduction: 770.27
+
+- name: FY2027 homeless shelter deduction uprates the FY2026 value by June 2026 over June 2025 CPI-U actuals.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    is_homeless: true
+    housing_cost: 1
+  output:
+    # 198.99 * 333.952 / 322.561
+    snap_excess_shelter_expense_deduction: 206.02
