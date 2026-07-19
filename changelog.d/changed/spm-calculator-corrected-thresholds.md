@@ -1,0 +1,1 @@
+Adopt the corrected SPM thresholds BLS published on July 17, 2026 via spm-calculator 0.4.0: full-precision 2005-2024 reference thresholds replace the pre-correction values (which contained hand-entry errors of up to 8% for 2019-2023), shifting SPM threshold, poverty, and poverty-gap levels for all modeled years; reform-impact deltas are largely unaffected.
