@@ -1,0 +1,1 @@
+Add published BLS monthly CPI values (CPI-U, Chained CPI-U, and CPI-W) from September 2025 through June 2026 — October 2025 was never published — replacing the CBO projection points those months cover, and update the HHS uprating index's 2025 entry to the published calendar-2025 CPI-U average.

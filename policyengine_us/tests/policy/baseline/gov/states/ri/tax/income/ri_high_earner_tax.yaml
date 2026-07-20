@@ -23,8 +23,8 @@
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
-    # 2% of ($1,250,000 - $1,020,750).
-    ri_high_earner_tax: 4_585
+    # 2% of ($1,250,000 - $1,022,600).
+    ri_high_earner_tax: 4_548
 
 - name: Rhode Island high-income surtax applies at 3 percent in 2029
   period: 2029
@@ -33,8 +33,8 @@
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
-    # 3% of ($1,250,000 - $1,042,800).
-    ri_high_earner_tax: 6_216
+    # 3% of ($1,250,000 - $1,039,400).
+    ri_high_earner_tax: 6_318
 
 - name: Rhode Island high-income surtax is added before non-refundable credits
   period: 2027
@@ -48,11 +48,11 @@
     # parameter's sibling-of-values `uprating:` block; RI's own rate-schedule
     # references only cover through 2025, so this is a projection pending
     # RI's 2027 publication):
-    # .0375*83,850 + .0475*(190,650-83,850) + .0599*(1,250,000-190,650) = 71,672.44
+    # .0375*84,100 + .0475*(191,300-84,100) + .0599*(1,250,000-191,300) = 71,661.88
     # + 1% high-earner surtax on income above the (explicit, unaffected)
     # $1,000,000 2027 threshold: (1,250,000 - 1,000,000) * 0.01 = 2,500
-    # Total: 71,672.44 + 2,500 = 74,172.44
-    ri_income_tax_before_non_refundable_credits: 74_172.44
+    # Total: 71,661.88 + 2,500 = 74,161.88
+    ri_income_tax_before_non_refundable_credits: 74_161.88
 
 - name: Rhode Island high-income surtax does not apply at the threshold
   period: 2027

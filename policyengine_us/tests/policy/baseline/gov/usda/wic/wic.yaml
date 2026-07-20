@@ -71,3 +71,13 @@
   output:
     # Food Package V-B uses the breastfeeding/partially breastfeeding CVB amount.
     wic: 39.12 * 309.794 / 247.867 - 11 * 309.794 / 247.867 + 52
+
+- name: June 2026 child package value uses the observed CPI-U for the month.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: CHILD_24_59_MONTHS
+    is_wic_eligible: true
+    would_claim_wic: true
+  output:
+    wic: 60.42
