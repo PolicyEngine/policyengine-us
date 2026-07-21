@@ -32,4 +32,6 @@ class co_income_qualified_senior_housing_credit_eligible(Variable):
             tax_unit("co_property_tax_exemption", period) > 0
         )
 
-        return age_eligible & agi_eligible & ~property_tax_exemption_claimed
+        return (
+            p.in_effect & age_eligible & agi_eligible & ~property_tax_exemption_claimed
+        )
