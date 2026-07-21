@@ -583,7 +583,7 @@
         # Non-breastfeeding mother of an infant under 6 months ->
         # POSTPARTUM category (the previously untested enum value) with the
         # POSTPARTUM_NON_BREASTFEEDING package:
-        # (32.27 - 11) x ~16.05 + 48 x 12 CVB = ~340.95 + 576 = ~916.95.
+        # (32.27 - 11) x ~16.05 + 48 x 12 CVB = ~341.42 + 576 = ~917.42.
         wic: 917.42
         is_wic_eligible: true
       child1:
@@ -711,7 +711,7 @@
         is_wic_eligible: false
       child1:
         # INFANT_0_3_FULLY_FORMULA_FED package (age 0 months < 4):
-        # 175.27 x ~16.05 uprating sum = ~2,809.5 (no CVB for infants) -
+        # 175.27 x ~16.05 uprating sum = ~2,813.4 (no CVB for infants) -
         # the most expensive package in the program.
         wic: 2813.39
         is_wic_eligible: true
@@ -769,7 +769,7 @@
         is_wic_eligible: false
       child1:
         # First eligible child year, CHILD_12_23_MONTHS package:
-        # (33.64 - 8) x ~16.05 + 26 x 12 CVB = ~410.99 + 312 = ~722.99
+        # (33.64 - 8) x ~16.05 + 26 x 12 CVB = ~411.57 + 312 = ~723.57
         # (differs from the age-4 CHILD_24_59_MONTHS value by the 0.01
         # base-cost split in the 2018 package data).
         wic: 723.57
