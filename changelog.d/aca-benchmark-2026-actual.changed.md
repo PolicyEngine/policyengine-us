@@ -1,0 +1,1 @@
+Add the published KFF 2026 national average benchmark premium ($625) to the ACA benchmark uprating index, keeping the long-run extension on the pre-2026 growth trend so the one-off jump does not compound.
