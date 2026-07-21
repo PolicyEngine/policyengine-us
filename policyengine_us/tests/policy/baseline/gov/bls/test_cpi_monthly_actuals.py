@@ -30,3 +30,5 @@ def test_c_cpi_u_monthly_actuals():
     c_cpi_u = _cpi("c_cpi_u")
     assert c_cpi_u("2026-06-01") == 184.992
     assert c_cpi_u("2025-10-01") == 180.196
+    # The observed February replaces the annual projection point (183.1).
+    assert c_cpi_u("2026-02-01") == 181.080
