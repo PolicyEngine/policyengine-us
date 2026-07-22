@@ -1,0 +1,1 @@
+Corrected the Arkansas low-income tax table thresholds for 2021-2024, which were keyed one dollar low (at the row upper bound), so exact-hundred incomes now use the published row and the cutoff to the regular table applies at the correct income.
