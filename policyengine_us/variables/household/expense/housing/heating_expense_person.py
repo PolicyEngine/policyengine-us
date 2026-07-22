@@ -24,4 +24,4 @@ class heating_expense_person(Variable):
         per_person = np.zeros_like(total)
         mask = spm_size > 0
         per_person[mask] = total[mask] / spm_size[mask]
-        return spm_unit.project(per_person)
+        return per_person

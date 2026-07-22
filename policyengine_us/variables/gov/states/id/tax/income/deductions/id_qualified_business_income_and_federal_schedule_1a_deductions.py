@@ -13,10 +13,7 @@ class id_qualified_business_income_and_federal_schedule_1a_deductions(Variable):
         "https://tax.idaho.gov/pressrelease/update-on-filing-2025-idaho-income-taxes-now-that-conformity-is-law/",
     )
 
-    adds = [
-        "qualified_business_income_deduction",
-        "id_additional_senior_deduction",
-        "tip_income_deduction",
-        "overtime_income_deduction",
-        "auto_loan_interest_deduction",
-    ]
+    adds = (
+        "gov.states.id.tax.income.deductions"
+        ".qualified_business_income_and_federal_schedule_1a_deductions"
+    )

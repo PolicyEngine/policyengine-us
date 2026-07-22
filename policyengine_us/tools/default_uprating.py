@@ -83,7 +83,6 @@ INPUT_VARIABLES = [
     "self_employed_pension_contribution_ald",
     "spm_unit_wic_reported",
     "unrecaptured_section_1250_gain",
-    "snap_reported",
     "long_term_capital_gains_on_collectibles",
     "self_employment_income_last_year",
     "tax_exempt_pension_income",

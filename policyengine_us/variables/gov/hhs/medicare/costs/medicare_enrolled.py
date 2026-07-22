@@ -9,4 +9,4 @@ class medicare_enrolled(Variable):
     definition_period = YEAR
     reference = "https://www.cms.gov/medicare"
     defined_for = "is_medicare_eligible"
-    default_value = True  # Most Medicare-eligible people are enrolled
+    adds = ["takes_up_medicare_if_eligible"]

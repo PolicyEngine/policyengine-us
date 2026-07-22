@@ -21,8 +21,6 @@ class snap(Variable):
         is_in_microsim = hasattr(spm_unit.simulation, "dataset")
         if parameters(period).gov.usda.snap.abolish_snap:
             return 0
-        elif parameters(period).gov.simulation.reported_snap:
-            return spm_unit("snap_reported", period)
         else:
             value = add(
                 spm_unit,

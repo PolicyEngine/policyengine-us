@@ -2974,7 +2974,11 @@ wheels = [
 
 [[package]]
 name = "policyengine-us"
+<<<<<<< Updated upstream
 version = "1.690.0"
+=======
+version = "1.667.0"
+>>>>>>> Stashed changes
 source = { editable = "." }
 dependencies = [
     { name = "microdf-python" },
