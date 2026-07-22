@@ -36,7 +36,7 @@ from policyengine_us.data.dataset_schema import (
     USMultiYearDataset,
 )
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -78,7 +78,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
     def __init__(
         self,
-        reform: Optional[tuple] = None,
+        reform: tuple | None = None,
         start_instant: Annotated[
             str, "ISO date format YYYY-MM-DD"
         ] = DEFAULT_START_DATE,

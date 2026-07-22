@@ -1,5 +1,3 @@
-from typing import Optional
-
 import yaml
 
 from policyengine_us.data.dataset_schema import (
@@ -76,7 +74,7 @@ def _get_default_end_year(system) -> int:
 
 def extend_single_year_dataset(
     dataset: USSingleYearDataset,
-    end_year: Optional[int] = None,
+    end_year: int | None = None,
     system=None,
 ) -> USMultiYearDataset:
     """Extend a single-year US dataset to multiple years via uprating.

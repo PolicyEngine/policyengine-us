@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 import pandas as pd
 from pathlib import Path
 
@@ -180,7 +178,7 @@ class USMultiYearDataset:
     def __init__(
         self,
         file_path: str = None,
-        datasets: Optional[List[USSingleYearDataset]] = None,
+        datasets: list[USSingleYearDataset] | None = None,
     ):
         if datasets is not None and file_path is not None:
             raise ValueError("Provide either datasets or file_path, not both.")
