@@ -61,6 +61,15 @@ class vt_retirement_income_exemption_eligible(Variable):
         )
         # The agi should below threshold
         agi_qualified = agi < reduction_end
+        # The 2025 income-based military exclusion (32 V.S.A. 5830e(d)) carries its
+        # own $125k-$175k phase-out, so it does not use the CSRS-end AGI gate; a
+        # high-AGI military retiree stays eligible (the exclusion itself returns 0
+        # above $175k).
+        use_military = ~use_ss & (
+            vt_military_retirement_pay_exclusion == chosen_retirement_income
+        )
+        military_income_based = p.military_retirement.income_based_structure.in_effect
+        agi_qualified = where(use_military & military_income_based, True, agi_qualified)
         # Both qualified then the filer is qualified for vermont retirement
         # income exemption
         return retirement_income_qualified & agi_qualified

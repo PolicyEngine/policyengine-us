@@ -272,3 +272,70 @@
   output:
     # AGI 70,000 = new full-exclusion threshold (was 65,000 pre-Act 51): full 10,000
     vt_retirement_income_exemption: 10_000
+
+# Act 51 (2025) 32 V.S.A. 5830e(d): income-based military pension exemption with
+# its own $125k-$175k phase-out. When the military exclusion is the chosen one it
+# must NOT also run through the CSRS $55k-$65k single phase-out band, and must not
+# be zeroed by the CSRS-end ($65k) AGI eligibility gate (issue pe-us #9069).
+- name: VT 2025 single military retiree fully excluded at 60k AGI (below 125k full-exemption threshold, no double-phase)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 60_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 60,000 < 125,000 -> FULL military exclusion (was 30,000 x 0.50 CSRS ratio before the fix)
+    vt_military_retirement_income_based_exemption: 30_000
+    vt_retirement_income_exemption: 30_000
+
+- name: VT 2025 single military retiree fully excluded at 100k AGI (above CSRS-end gate but below 125k threshold)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 100_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 100,000 > CSRS-end $65k gate but < 125,000 -> FULL military exclusion (was $0 before the fix)
+    vt_military_retirement_income_based_exemption: 30_000
+    vt_retirement_income_exemption: 30_000
+
+- name: VT 2025 single military retiree half excluded at 150k AGI (midpoint of 125k-175k phase-out band)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 150_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 150,000: ratio (175,000 - 150,000) / 50,000 = 0.50 -> 30,000 x 0.50 = 15,000
+    vt_military_retirement_income_based_exemption: 15_000
+    vt_retirement_income_exemption: 15_000
