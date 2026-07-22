@@ -115,3 +115,16 @@
   output:
     snap_limited_utility_allowance: 0
     # AZ had no LUA in FY2019 (main.yaml = 0, not in by_household_size states list)
+
+- name: FY2027 Texas limited utility allowance uprates the FY2026 value by June 2026 over June 2025 CPI-U actuals.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: TX
+    spm_unit_size: 1
+    electricity_expense: 20
+    phone_expense: 20
+  output:
+    # 400 * 333.952 / 322.561
+    snap_limited_utility_allowance: 414.13

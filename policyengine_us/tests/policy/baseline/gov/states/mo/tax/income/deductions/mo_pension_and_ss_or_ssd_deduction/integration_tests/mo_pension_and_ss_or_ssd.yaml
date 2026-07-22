@@ -391,8 +391,13 @@
       household:
         members: [person1, person2, person3, person4, person5, person6]
         state_code: MO
-  output:  # expected results from patched TAXSIM35 2023-02-13 version
-    mo_income_tax: 3095.77
+  output:
+    # Patched TAXSIM35 2023-02-13 gave 3095.77, netting the fully refundable
+    # 2021 CTC out of the MO federal income tax deduction base. The MO-1040
+    # Line 9 worksheet bases the deduction on 1040 Line 22, which Line 28
+    # refundable credits never reduce (issue 9094, taxsim issue 1104), so
+    # the deduction is larger and the tax lower.
+    mo_income_tax: 3071.82
 
 - name: Tax unit with taxsimid 94115 in f21.its.csv and f21.ots.csv
   absolute_error_margin: 0.01

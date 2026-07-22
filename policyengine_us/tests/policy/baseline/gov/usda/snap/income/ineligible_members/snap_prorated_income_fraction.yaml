@@ -1,0 +1,80 @@
+- name: Case 1, one ineligible member of three household members.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # 2 eligible members / 3 household members
+    snap_prorated_income_fraction: 0.6667
+
+- name: Case 2, ineligible students are excluded from the division.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 20
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 1 eligible member / 1 household member (student is a nonhousehold member)
+    snap_prorated_income_fraction: 1
+
+- name: Case 3, no ineligible members.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_prorated_income_fraction: 1
+
+- name: Case 4, student-only household has no members among whom to divide income.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 20
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_prorated_income_fraction: 0

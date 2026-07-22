@@ -3,6 +3,13 @@ from typing import List, Optional
 import pandas as pd
 from pathlib import Path
 
+# pandas copy-on-write (always on in pandas >= 3) makes shallow DataFrame
+# copies safe to hand out: buffers are shared until a column is reassigned,
+# and modifying one frame never touches the other. Without CoW (pandas 2.x,
+# kept for Python 3.9/3.10), shallow copies alias mutably, so ``copy``
+# falls back to deep copies there.
+PANDAS_HAS_COW = int(pd.__version__.split(".", 1)[0]) >= 3
+
 US_ENTITIES = [
     "person",
     "household",
@@ -157,14 +164,27 @@ class USSingleYearDataset:
                 data[col] = df[col].values
         return data
 
-    def copy(self):
+    def copy(self, deep: bool = True) -> "USSingleYearDataset":
+        """Return a copy of the dataset.
+
+        Isolation from the original is guaranteed either way. With
+        ``deep=False``, entity DataFrames share column buffers with the
+        original as an optimization when pandas copy-on-write is active
+        (always on in pandas >= 3); without CoW the call falls back to a
+        deep copy, so pandas 2.x callers never get mutable aliasing.
+        Under CoW, callers must modify columns via whole-column
+        assignment (``df[col] = value``), never in place
+        (``df[col] *= x``, ``.loc``/``.iloc`` writes).
+        """
+        if not deep and not PANDAS_HAS_COW:
+            deep = True
         return USSingleYearDataset(
-            person=self.person.copy(),
-            household=self.household.copy(),
-            tax_unit=self.tax_unit.copy(),
-            spm_unit=self.spm_unit.copy(),
-            family=self.family.copy(),
-            marital_unit=self.marital_unit.copy(),
+            person=self.person.copy(deep=deep),
+            household=self.household.copy(deep=deep),
+            tax_unit=self.tax_unit.copy(deep=deep),
+            spm_unit=self.spm_unit.copy(deep=deep),
+            family=self.family.copy(deep=deep),
+            marital_unit=self.marital_unit.copy(deep=deep),
             time_period=int(self.time_period),
         )
 
@@ -258,8 +278,13 @@ class USMultiYearDataset:
                     data_columns=True,
                 )
 
-    def copy(self):
-        new_datasets = {year: dataset.copy() for year, dataset in self.datasets.items()}
+    def copy(self, deep: bool = True) -> "USMultiYearDataset":
+        """Return a copy of the dataset. ``deep=False`` shares buffers
+        only when pandas copy-on-write is active; see
+        ``USSingleYearDataset.copy``."""
+        new_datasets = {
+            year: dataset.copy(deep=deep) for year, dataset in self.datasets.items()
+        }
         return USMultiYearDataset(datasets=list(new_datasets.values()))
 
     def load(self):

@@ -23,39 +23,27 @@
   output:
     meets_snap_work_exception: true
 
-- name: Case 4, ABAWD-time-limit-ineligible adult earned income counts in full.
+- name: Case 4, ABAWD time-limit-ineligible adult earned income is prorated.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Works 40 hours: exempt from ABAWD via hours; general met in baseline.
         monthly_age: 35
-        age:
-          2024: 35
         is_tax_unit_dependent: false
-        weekly_hours_worked_before_lsr: 40
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
       person2:
-        # In-band, no dependent child, not working, not exempt: fails ABAWD.
         monthly_age: 30
-        age:
-          2024: 30
         is_tax_unit_dependent: false
         employment_income:
           2024: 12_000
-        weekly_hours_worked_before_lsr: 0
-        is_disabled: false
-        is_pregnant: false
-        is_veteran: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
     spm_units:
       spm_unit:
         members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: TX
   output:
-    snap_earned_income: 1_000
+    snap_prorated_income_fraction: 0.5
+    snap_income_counted_share: [1, 0.5]
+    snap_earned_income: 500

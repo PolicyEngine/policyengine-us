@@ -231,3 +231,44 @@
         state_name: VT
   output:
     vt_retirement_income_exemption_eligible: true
+- name: VT 2025 single CSRS elector in the S.51 band gets a phased exemption (Act 51 Sec. 3, pe-us 9020)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        csrs_retirement_pay: 12_000
+        employment_income: 62_000  # csrs_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 62,000 -> ratio (65,000 - 62,000) / 10,000 = 0.30
+    # exemption = min(10,000, 12,000) x 0.30 = 3,000 (0 before Act 51 thresholds)
+    vt_retirement_income_exemption: 3_000
+- name: VT 2025 joint CSRS elector fully excluded at 70k AGI under the raised full-exclusion threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 67
+        csrs_retirement_pay: 10_000
+        employment_income: 70_000  # csrs_retirement_pay is not itself wired into AGI
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+  output:
+    # AGI 70,000 = new full-exclusion threshold (was 65,000 pre-Act 51): full 10,000
+    vt_retirement_income_exemption: 10_000

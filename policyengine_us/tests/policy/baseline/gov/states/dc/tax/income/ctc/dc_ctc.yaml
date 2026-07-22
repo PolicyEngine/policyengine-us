@@ -150,6 +150,58 @@
     # $45,000 excess = 45 increments * $50 = $2,250 phase-out exceeds $1,000 base
     dc_ctc: 0
 
+- name: 2026 non-DC household with otherwise-qualifying children gets no DC CTC
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+  output:
+    dc_ctc: 0
+    # No state CTC component applies to this household, so the
+    # umbrella must be zero (guards against ungated components).
+    taxsim_state_ctc: 0
+
+- name: 2026 DC household credit flows through the state CTC umbrella
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 14
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: DC
+  output:
+    dc_ctc: 2_000
+    taxsim_state_ctc: 2_000
+
 - name: 2026 child over 18 not eligible
   period: 2026
   input:

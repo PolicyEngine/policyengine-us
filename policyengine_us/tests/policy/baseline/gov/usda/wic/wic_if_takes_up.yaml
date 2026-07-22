@@ -1,0 +1,31 @@
+- name: Case 1, not claiming zeroes WIC but preserves the potential benefit.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: PREGNANT_SINGLETON
+    is_wic_eligible: true
+    takes_up_wic_if_eligible: false
+  output:
+    wic_if_takes_up: 39.12
+    wic: 0
+
+- name: Case 2, claiming passes the potential benefit through.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: PREGNANT_SINGLETON
+    is_wic_eligible: true
+    takes_up_wic_if_eligible: true
+  output:
+    wic_if_takes_up: 39.12
+    wic: 39.12
+
+- name: Case 3, ineligible person has zero potential benefit.
+  period: 2022-01
+  input:
+    wic_food_package_str: INFANT_AVERAGE
+    is_wic_eligible: false
+    takes_up_wic_if_eligible: true
+  output:
+    wic_if_takes_up: 0
+    wic: 0

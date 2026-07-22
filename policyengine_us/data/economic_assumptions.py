@@ -81,9 +81,11 @@ def extend_single_year_dataset(
 ) -> USMultiYearDataset:
     """Extend a single-year US dataset to multiple years via uprating.
 
-    Copies the base-year DataFrames for each year from the base year through
-    ``end_year``, then applies multiplicative uprating using growth factors
-    derived from the policyengine-us parameter tree.
+    Builds a frame set for each year from the base year through
+    ``end_year`` (shallow copies sharing base-year buffers under pandas
+    copy-on-write; deep copies on pandas 2.x), then applies
+    multiplicative uprating using growth factors derived from the
+    policyengine-us parameter tree.
 
     If ``end_year`` is not provided, it defaults to the latest year
     covered by the CPI-U parameter (gov.bls.cpi.cpi_u).
@@ -103,24 +105,38 @@ def extend_single_year_dataset(
         raise ValueError(
             f"end_year ({end_year}) must be >= dataset base year ({start_year})."
         )
-    datasets = [dataset]
+    # Copy the base year too, so the returned multi-year dataset never
+    # holds the caller's DataFrames directly. ``deep=False`` shares
+    # base-year buffers under pandas copy-on-write and falls back to
+    # deep copies on pandas 2.x — uprating's whole-column assignments
+    # then materialize only the columns they replace.
+    datasets = [dataset.copy(deep=False)]
     for year in range(start_year + 1, end_year + 1):
-        next_year = dataset.copy()
+        next_year = dataset.copy(deep=False)
         next_year.time_period = str(year)
         datasets.append(next_year)
 
     multi_year_dataset = USMultiYearDataset(datasets=datasets)
-    return _apply_uprating(multi_year_dataset, system=system)
+    # Every year above is a private copy; no defensive copy needed.
+    return _apply_uprating(multi_year_dataset, system=system, copy=False)
 
 
-def _apply_uprating(dataset: USMultiYearDataset, system=None) -> USMultiYearDataset:
-    """Apply year-over-year uprating to all years in a multi-year dataset."""
+def _apply_uprating(
+    dataset: USMultiYearDataset, system=None, copy: bool = True
+) -> USMultiYearDataset:
+    """Apply year-over-year uprating to all years in a multi-year dataset.
+
+    With ``copy=False`` the input dataset is modified in place; callers
+    passing datasets they own privately (like ``extend_single_year_dataset``)
+    use this to skip a full defensive copy.
+    """
     if system is None:
         from policyengine_us.system import system as _system
 
         system = _system
 
-    dataset = dataset.copy()
+    if copy:
+        dataset = dataset.copy()
 
     years = sorted(dataset.datasets.keys())
     for year in years:
@@ -142,8 +158,9 @@ def _apply_single_year_uprating(current, previous, system):
     upraters live in ``MICRODATA_UPRATING_OVERRIDES`` instead.
 
     Variables without an uprating parameter (or whose uprating parameter
-    evaluates to 0 for the previous year) are left unchanged — they were
-    already copied forward by ``dataset.copy()``.
+    evaluates to 0 for the previous year) are left unchanged — they carry
+    the base-year values forward (sharing base-year buffers under pandas
+    copy-on-write; as independent deep copies on pandas 2.x).
     """
     current_year = int(current.time_period)
     previous_year = int(previous.time_period)
@@ -173,6 +190,10 @@ def _apply_single_year_uprating(current, previous, system):
                 continue
 
             factor = curr_val / prev_val
+            # Whole-column assignment is load-bearing: the year frames may
+            # be shallow copies sharing base-year buffers (pandas
+            # copy-on-write), and assignment replaces just this column in
+            # just this year's frame, leaving the shared buffers intact.
             current_df[col] = prev_df[col] * factor
 
 

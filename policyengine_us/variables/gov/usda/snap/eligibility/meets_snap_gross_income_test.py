@@ -13,9 +13,13 @@ class meets_snap_gross_income_test(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        limit = parameters(period).gov.usda.snap.income.limit.gross
-        income = spm_unit("snap_gross_income_fpg_ratio", period)
-        # Households with elderly and disabled people are exempt from the
-        # gross income test.
-        has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
-        return has_elderly_disabled | (income <= limit)
+        p = parameters(period).gov.usda.snap.income.limit
+        # The gross test uses state-specific income counting for certain
+        # ineligible aliens (7 CFR 273.11(c)(3)(i)).
+        ratio = spm_unit("snap_gross_test_income_fpg_ratio", period)
+        # Households with an elderly or disabled unit member are exempt
+        # from the gross income test; excluded members are not household
+        # members under the 7 CFR 271.2 definition, so they do not confer
+        # this status.
+        has_elderly_disabled = spm_unit("has_snap_elderly_disabled_member", period)
+        return has_elderly_disabled | (ratio <= p.gross)

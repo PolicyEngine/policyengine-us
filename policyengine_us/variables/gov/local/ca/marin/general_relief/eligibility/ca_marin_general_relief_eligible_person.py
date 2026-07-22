@@ -20,5 +20,5 @@ class ca_marin_general_relief_eligible_person(Variable):
         # implies SSI receipt. CAPI (California's SSI-equivalent cash for
         # immigrants) needs no separate bar: CAPI recipients are non-qualified
         # noncitizens who fail the immigration check.
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         return immigration_eligible & ~receives_ssi

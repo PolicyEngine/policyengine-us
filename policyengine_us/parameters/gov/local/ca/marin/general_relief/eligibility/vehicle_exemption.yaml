@@ -1,0 +1,14 @@
+description: Marin County exempts this number of transportation vehicles from personal property under the General Relief program.
+# Dated 2025-01-01 (rather than the program's 2025-07 era) so the year-defined
+# ca_marin_general_relief_countable_vehicle_value formula, which resolves
+# parameters at January 1, can compute for the Jul-Dec 2025 months in which
+# the program is in effect.
+values:
+  2025-01-01: 1
+metadata:
+  label: Marin County General Relief exempt transportation vehicle count
+  unit: int
+  period: year
+  reference:
+    - title: Marin County General Relief Program Policies and Standards, Section II.G (Personal Property)
+      href: https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11

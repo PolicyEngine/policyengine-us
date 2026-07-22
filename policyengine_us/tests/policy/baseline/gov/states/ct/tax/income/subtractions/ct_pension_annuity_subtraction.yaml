@@ -107,3 +107,36 @@
     taxable_pension_income: 10_000
   output:
     ct_pension_annuity_subtraction: 0
+
+- name: Joint household with $112,804 AGI in 2021 is above the cliff and gets no subtraction
+  period: 2021
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 112_804
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 0
+
+- name: Single household with $85,000 AGI in 2021 is above the cliff and gets no subtraction
+  period: 2021
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: SINGLE
+    adjusted_gross_income: 85_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 0
+
+- name: Joint household with $99,000 AGI in 2021 is below the cliff and gets the 42 percent subtraction
+  period: 2021
+  input:
+    state_code: CT
+    is_tax_unit_head_or_spouse: true
+    filing_status: JOINT
+    adjusted_gross_income: 99_000
+    taxable_pension_income: 10_000
+  output:
+    ct_pension_annuity_subtraction: 4_200

@@ -282,3 +282,31 @@
         state_code: ID
   output:
     wa_birth_to_three_eceap_eligible: [false, false]
+
+- name: Family above the income limit with reported SNAP receipt is Birth to Three ECEAP eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 100_000
+      child:
+        age: 2
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+        snap: 0
+        receives_snap: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Income above 130% FPL and not SNAP eligible, but reported SNAP receipt
+    # confers eligibility for the age-eligible child
+    wa_birth_to_three_eceap_eligible: [false, true]

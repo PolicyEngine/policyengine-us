@@ -13,4 +13,9 @@ class ks_tanf_is_assistance_unit_member(Variable):
     def formula(person, period, parameters):
         # Per KEESM 4113: SSI recipients are excluded from the TAF assistance
         # unit, so they are left out of its size, income, and benefit.
-        return person("applicable_ssi", period) == 0
+        # Reported receipt (receives_ssi) also excludes, covering people the
+        # model computes as $0.
+        is_ssi_recipient = (person("ssi", period) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
+        return ~is_ssi_recipient

@@ -93,10 +93,14 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
       - name: Install package
-        run: uv pip install --system .
+        run: uv pip install --system . pytest
       - name: Smoke-import
         run: |
           python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
+      - name: Dataset copy/extension tests (real pandas semantics per Python version)
+        # Fixture-based, no dataset downloads; on py3.9/3.10 this exercises
+        # the pandas 2.x deep-copy fallback with real (non-CoW) pandas.
+        run: python -m pytest policyengine_us/tests/microsimulation/data/ -q
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest

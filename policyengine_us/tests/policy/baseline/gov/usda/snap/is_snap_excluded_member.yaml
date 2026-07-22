@@ -1,0 +1,55 @@
+- name: Case 1, eligible working-age citizen is not excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_excluded_member: false
+
+- name: Case 2, ineligible student is excluded as a nonhousehold member.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_snap_ineligible_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_excluded_member: true
+
+- name: Case 3, immigration-status-ineligible member is excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_excluded_member: true
+
+- name: Case 4, member failing the work requirements is excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        meets_snap_work_requirements_person: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_excluded_member: true

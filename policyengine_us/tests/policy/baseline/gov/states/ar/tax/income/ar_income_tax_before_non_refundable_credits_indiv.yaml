@@ -265,3 +265,37 @@
   output:
     # $94 + ($200,000 - $4,700) * 0.037 = $7,320.10
     ar_income_tax_before_non_refundable_credits_indiv: 7_320.10
+
+- name: AR 2023 bracket adjustment - row 89,901-90,000 that PE previously omitted (pe-us 9026)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 89_950
+    state_code: AR
+  output:
+    # 2023 card row "$89,901 $90,000 4.70% $553.70":
+    # 0.047 x 89,950 - 553.70 = 3,673.95 (card table value 3,674)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_673.95
+
+- name: AR 2023 bracket adjustment - asterisked 200-wide range 90,001-90,200 (pe-us 9026)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 90_100
+    state_code: AR
+  output:
+    # card row "*$90,001 *$90,200 4.70% $543.70" (ranges with * extend an
+    # extra $100 intentionally): 0.047 x 90,100 - 543.70 = 3,691.00
+    ar_income_tax_before_non_refundable_credits_indiv: 3_691
+
+- name: AR 2023 bracket adjustment - formerly duplicated 91,701/91,801 thresholds (pe-us 9026)
+  period: 2023
+  absolute_error_margin: 1
+  input:
+    ar_taxable_income_indiv: 91_750
+    state_code: AR
+  output:
+    # card row "$91,701 $91,800 4.70% $393.70":
+    # 0.047 x 91,750 - 393.70 = 3,918.55 (previously the two duplicated
+    # thresholds summed to a 787.40 reduction -> 3,524.85)
+    ar_income_tax_before_non_refundable_credits_indiv: 3_918.55

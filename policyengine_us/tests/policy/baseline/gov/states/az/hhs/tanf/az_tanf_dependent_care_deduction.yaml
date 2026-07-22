@@ -155,3 +155,49 @@
     # Child at age 2: $175/month max (not $200)
     # Expenses ($250/mo) > max ($175), so deduction = $175
     az_tanf_dependent_care_deduction: 175
+
+- name: Case 7, adult dependent care expenses count toward the deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+        is_tax_unit_dependent: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Per ARS 46-292: care of an adult dependent household member,
+    # capped at $175/month. Expenses = 1,200 / 12 = 100/month.
+    az_tanf_dependent_care_deduction: 100
+
+- name: Case 8, non-dependent adult care expenses are not deducted.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # ARS 46-292(P)(1) covers a DEPENDENT household member; a
+    # non-dependent adult adds nothing to the cap: min(100, 0) = 0.
+    az_tanf_dependent_care_deduction: 0

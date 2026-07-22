@@ -4,6 +4,10 @@ values:
     - de_pension_exclusion # (3)
     - taxable_social_security # (4)
     - us_govt_interest_person
+    # Unemployment compensation received in calendar years 2020 and 2021,
+    # to the extent included in federal AGI, is excluded under
+    # 30 Del. C. § 1106(b)(10) (HB 65 of 2021; HB 285 of 2022).
+    - taxable_unemployment_compensation # (10)
     # The elderly or disabled income exclusion is computed separately
     # - de_elderly_or_disabled_income_exclusion # (2)
   2022-01-01:
@@ -16,6 +20,10 @@ metadata:
   unit: list
   period: year
   label: Delaware adjusted gross income subtractions
-  references: 
+  references:
   - title: Delaware Code, § 1106 Modifcations (b)
     href: https://delcode.delaware.gov/title30/c011/sc02/index.html
+  - title: Delaware HB 285 (151st General Assembly), amending 30 Del. C. § 1106(b)(10)
+    href: https://legis.delaware.gov/BillDetail/79061
+  - title: 2021 Delaware Resident Individual Income Tax Return (PIT-RES) Instructions, Line 7
+    href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf

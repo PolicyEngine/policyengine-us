@@ -29,7 +29,12 @@ class il_pfae_has_highest_priority_factor(Variable):
 
         # Factor 4: Income <= 50% FPL OR receiving TANF
         is_deep_poverty = person("il_pfae_is_deep_poverty", period)
-        receives_tanf = person.spm_unit("il_tanf", period) > 0
+        # Read the take-up-gated federal aggregator rather than il_tanf
+        # directly, so reported non-receipt and reported amounts propagate;
+        # for an Illinois household, tanf equals the IL TANF benefit.
+        receives_tanf = (add(person.spm_unit, period, ["tanf"]) > 0) | (
+            add(person.spm_unit, period, ["receives_tanf"]) > 0
+        )
 
         return (
             is_homeless | is_in_foster_care | has_iep | is_deep_poverty | receives_tanf

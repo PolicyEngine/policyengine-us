@@ -347,3 +347,31 @@
     ok_standard_deduction: 12_700
     # Sales tax credit: 4 exemptions * $40 = $160 (has dependents, under $50k)
     ok_stc: 160
+
+- name: OK 2021 joint couple with private (IRC 401) employer pensions each claim the 10k other-retirement exclusion (taxsim 1083)
+  period: 2021
+  absolute_error_margin: 2
+  input:
+    people:
+      head:
+        age: 65
+        taxable_private_pension_income: 19_228.76
+        taxable_interest_income: 21_716.92
+        social_security_retirement: 12_472.44
+      spouse:
+        age: 68
+        taxable_private_pension_income: 19_228.76
+        taxable_interest_income: 21_716.92
+        social_security_retirement: 12_472.44
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OK
+  output:
+    adjusted_gross_income: 103_095
+    ok_pension_subtraction: 20_000
+    ok_agi: 61_891
+    ok_income_tax: 2_005

@@ -5,8 +5,11 @@ brackets:
     rate:
       2022-01-01: 0.07
   - threshold:
-      2025-01-01: 1_000_000
+      2022-01-01: 1_000_000
     rate:
+      # Flat 7% before ESSB 5813 (Ch. 421, Laws of 2025) added the
+      # 2.9% surcharge tier beginning January 1, 2025.
+      2022-01-01: 0.07
       2025-01-01: 0.099
 
 metadata:

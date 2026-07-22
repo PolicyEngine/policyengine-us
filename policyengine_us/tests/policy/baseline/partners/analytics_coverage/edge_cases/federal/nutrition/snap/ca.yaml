@@ -75,9 +75,9 @@
         # 2,191.00 (SUA 663 < half of pre-shelter net, so no shelter deduction)
         # <= 2,220.83 Jan-Sep limit -> eligible all year. EC = floor(2,191) x
         # 0.3 = 657.30 -> 785 - 657.30 = 127.70/month Jan-Sep; Oct-Dec: net
-        # 2,186.32 -> EC 655.80 -> 802.60 - 655.80 = 146.80.
-        # Annual = 9 x 127.70 + 3 x 146.80 = 1,589.70.
-        snap: 1_589.69
+        # 2,183.62 -> EC 654.90 -> 812.72 - 654.90 = 157.82.
+        # Annual = 9 x 127.70 + 3 x 157.82 = 1,622.76.
+        snap: 1622.76
         is_snap_eligible: true
 - name: snap_ca_net_income_at_fy2026_net_limit_36447 (ca)
   period: 2026
@@ -142,9 +142,9 @@
         # At the binding CA net limit: net = 36,447/12 x 0.8 - 209 = 2,220.80,
         # just under the Jan-Sep limit of 26,650/12 = 2,220.83 -> eligible.
         # EC = floor(2,220) x 0.3 = 666.00 -> 785 - 666.00 = 119.00/month
-        # Jan-Sep; Oct-Dec: net 2,216.12 -> EC 664.80 -> 802.60 - 664.80 =
-        # 137.80. Annual = 9 x 119.00 + 3 x 137.80 = 1,484.40.
-        snap: 1_484.39
+        # Jan-Sep; Oct-Dec: net 2,213.42 -> EC 663.90 -> 812.72 - 663.90 =
+        # 148.82. Annual = 9 x 119.00 + 3 x 148.82 = 1,517.46.
+        snap: 1517.46
         is_snap_eligible: true
 - name: snap_ca_net_income_above_net_limit_all_year_38000 (ca)
   period: 2026
@@ -208,7 +208,7 @@
       spm_unit:
         # Deliberate ineligible-side pin of CA's net-test route: net =
         # 38,000/12 x 0.8 - 209 = 2,324.33 exceeds the net limit in every
-        # month (Jan-Sep 2,220.83; Oct-Dec: 2,319.65 > 2,276.67), and the
+        # month (Jan-Sep 2,220.83; Oct-Dec: 2,316.95 > 2,276.67), and the
         # federal 130% gross test also fails (ratio 1.43), so the unit is
         # ineligible all year. In a no-net-test 200% state this income would
         # be eligible.
@@ -275,14 +275,12 @@
     spm_units:
       spm_unit:
         # CA delays the OBBB refugee exclusion to 2026-04-01 (ACL 25-92), and
-        # CalWORKs ($7,700/year here) counts as unearned income ($641.67/mo):
-        # Jan-Mar (refugee still in unit, size 3): net = 1,333.33 (earned after
-        # 20% deduction) + 641.67 - 209 = 1,766.00 -> EC = floor(1,766) x 0.3 =
-        # 529.50 -> 785 - 529.50 = 255.50/month. Apr-Sep (head excluded, size 2): 546 - 529.50
-        # = 16.50 < minimum allotment 23.84 -> 23.84/month. Oct-Dec: 558.24 -
-        # 528.30 = 29.94/month. Annual = 3 x 255.50 + 6 x 23.84 + 3 x 29.94 =
-        # 999.36.
-        snap: 999.36
+        # CalWORKs counts as unearned income at the unit level (in full).
+        # Jan-Mar the refugee is still in the unit (size 3) with earnings
+        # fully counted; from April the head is excluded (size 2) and their
+        # earnings count at the 2/3 prorated share under 7 CFR
+        # 273.11(c)(2)-(3), raising the benefit relative to full counting.
+        snap: 2186.94
         is_snap_eligible: true
 - name: snap_ca_head_immigration_undocumented_calworks_interaction (ca)
   period: 2026
@@ -345,10 +343,8 @@
     spm_units:
       spm_unit:
         # Undocumented head is excluded all year (not a CFAP status): unit size
-        # 2, and the CalWORKs grant is smaller ($5,133.33/year -> $427.78/mo
-        # unearned) because the head is also excluded from the CalWORKs AU:
-        # net = 1,333.33 + 427.78 - 209 = 1,552.11 -> EC 465.60 -> 546 - 465.60
-        # = 80.40/month Jan-Sep; Oct-Dec: 558.24 - 464.10 = 94.14.
-        # Annual = 9 x 80.40 + 3 x 94.14 = 1,006.02.
-        snap: 1_006.02
+        # 2, the CalWORKs grant excludes the head from the AU but counts in
+        # full as unit-level unearned income, and the head's earnings count
+        # at the 2/3 prorated share under 7 CFR 273.11(c)(2)-(3).
+        snap: 3026.94
         is_snap_eligible: true

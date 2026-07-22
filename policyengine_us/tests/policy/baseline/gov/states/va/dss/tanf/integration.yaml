@@ -347,6 +347,9 @@
         age: 40
         employment_income_before_lsr: 0
         is_disabled: true
+        # The childcare deduction's adult slot requires incapacity per
+        # Manual 305.3 item 5.
+        is_incapable_of_self_care: true
       person3:
         is_child: true
         age: 16
@@ -422,6 +425,9 @@
         age: 50
         employment_income_before_lsr: 0
         is_disabled: true
+        # The childcare deduction's adult slot requires incapacity per
+        # Manual 305.3 item 5.
+        is_incapable_of_self_care: true
       person3:
         is_child: true
         age: 12

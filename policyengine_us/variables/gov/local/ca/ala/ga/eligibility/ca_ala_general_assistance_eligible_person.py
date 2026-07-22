@@ -17,7 +17,7 @@ class ca_ala_general_assistance_eligible_person(Variable):
         immigration_status_eligible = person(
             "ca_ala_general_assistance_immigration_status_eligible", period
         )
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return (
             age_eligible

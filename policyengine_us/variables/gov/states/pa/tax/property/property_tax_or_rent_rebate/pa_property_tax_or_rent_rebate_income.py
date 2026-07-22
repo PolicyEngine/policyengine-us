@@ -34,7 +34,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                 period,
                 [
                     "social_security",
-                    "ssi_reported",
+                    "ssi",
                     "railroad_benefits",
                 ],
             )

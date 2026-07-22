@@ -71,7 +71,7 @@
   output:
     meets_snap_parent_exception: [true, false]
 
-- name: Single parent with child under 6 but NOT full-time student does not meet exception
+- name: Single parent with child under 6 but NOT full-time student meets exception 5
   period: 2024
   input:
     people:
@@ -88,7 +88,7 @@
       spm_unit:
         members: [parent, child]
   output:
-    meets_snap_parent_exception: [false, false]
+    meets_snap_parent_exception: [true, false]
 
 - name: Single parent with child exactly 12 does not meet exception even if full-time student
   period: 2024

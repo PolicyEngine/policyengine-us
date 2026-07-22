@@ -1,0 +1,32 @@
+- name: DE FS4 does not shift a spouse's own personal credit across columns (taxsim #839)
+  absolute_error_margin: 2
+  period: 2025
+  input:
+    people:
+      head:
+        age: 31
+        employment_income: 5_490.84
+      spouse:
+        age: 32
+        employment_income: 20_000
+      c1:
+        age: 8
+      c2:
+        age: 15
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, c1, c2]
+    households:
+      household:
+        members: [head, spouse, c1, c2]
+        state_code: DE
+  output:
+    # Each spouse's own $110 credit stays in their column (PIT-RES line 27a
+    # example: "$110 in each column if Filing Status 4"), so legal FS4
+    # (255.30) exceeds joint (~253) and the election lands on joint:
+    # tax 692.56 - 440 credits - 321.84 refundable EITC = -69.28, matching
+    # the TaxAct return (refund $68) and taxsimtest.
+    de_income_tax: -69.28

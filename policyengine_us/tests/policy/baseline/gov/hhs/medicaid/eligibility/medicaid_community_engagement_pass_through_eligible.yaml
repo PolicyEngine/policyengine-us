@@ -260,3 +260,22 @@
         state_code: TX
   output:
     medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 13, reported SNAP receipt passes through when computed SNAP is zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true

@@ -33,17 +33,6 @@ class ok_pension_subtraction(Variable):
         # Get pension income for each person in the tax unit
         pensions = tax_unit.members("taxable_pension_income", period)
         p = parameters(period).gov.states.ok.tax.income.agi.subtractions
-        # Before tax year 2022, private employer (IRC section 401) pensions
-        # were not a qualifying source on Schedule 511-A, line 6 (Other
-        # Retirement Income); Oklahoma added IRC section 401 employer plans
-        # starting in 2022. Exclude private pension income from the
-        # subtraction base before then.
-        private_pensions = tax_unit.members("taxable_private_pension_income", period)
-        qualifying_pensions = where(
-            p.private_pension_qualifies,
-            pensions,
-            max_(0, pensions - private_pensions),
-        )
         # Each person can subtract up to the pension limit
         # Sum across all tax unit members
-        return tax_unit.sum(min_(p.pension_limit, qualifying_pensions))
+        return tax_unit.sum(min_(p.pension_limit, pensions))

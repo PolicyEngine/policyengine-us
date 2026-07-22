@@ -1,0 +1,21 @@
+description: Michigan allows a deduction for federally qualified tips and overtime compensation in these years.
+values:
+  2025-01-01: false
+  2026-01-01: true
+  2029-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Michigan qualified tips and overtime deduction in effect
+  reference:
+    - title: House Bill 4961 of 2025 (Public Act 24 of 2025) - amends MCL 206.30 to allow the qualified tips and overtime deductions for tax years 2026, 2027, and 2028
+      href: https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-4961
+    - title: MCL 206.30 (as amended by PA 24 of 2025) - subtractions for qualified tips (IRC 224) and qualified overtime (IRC 225) for tax years beginning after December 31, 2025 and before January 1, 2029
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Michigan Department of Treasury - Notice Regarding New Deductions for Qualified Overtime Compensation and Qualified Tips
+      href: https://www.michigan.gov/treasury/reference/taxpayer-notices/notice-regarding-new-deductions-for-qualified-overtime-compensation-and-qualified-tips
+# Public Act 24 of 2025 incorporates the IRC section 224 (qualified tips) and 225
+# (qualified overtime compensation) definitions into the Michigan Income Tax Act.
+# The deductions are available only for tax years 2026, 2027, and 2028, and are
+# expressly unavailable for 2025 even though the federal deductions began in 2025.

@@ -1,0 +1,93 @@
+- name: Case 1, disabled eligible member confers elderly or disabled status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_usda_disabled: true
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: true
+
+- name: Case 2, disabled excluded member does not confer status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_usda_disabled: true
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: false
+
+- name: Case 3, elderly eligible member confers status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: true
+
+- name: Case 4, elderly excluded member does not confer status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: false
+
+- name: Case 5, household with no elderly or disabled members.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: false

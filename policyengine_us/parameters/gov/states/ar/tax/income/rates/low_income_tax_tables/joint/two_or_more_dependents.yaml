@@ -750,22 +750,33 @@ brackets:
       2024-01-01: 754
       2025-01-01: 758
   - threshold:
+      # Rows beyond each year's published cutoff must stay .inf so incomes
+      # above the table fall through to the regular tax table (core
+      # backfills a bracket's first value to the timeline start).
+      2021-01-01: .inf
       2024-01-01: 35_000
       2025-01-01: 35_801
     amount:
+      2021-01-01: .inf
       2024-01-01: 765
       2025-01-01: 769
   - threshold:
+      2021-01-01: .inf
       2024-01-01: 35_100
       2025-01-01: 35_901
     amount:
+      2021-01-01: .inf
       2024-01-01: .inf
       2025-01-01: 779
   - threshold:
+      2021-01-01: .inf
       2025-01-01: 36_001
     amount:
+      2021-01-01: .inf
       2025-01-01: 790
   - threshold:
+      2021-01-01: .inf
       2025-01-01: 36_101
     amount:
+      2021-01-01: .inf
       2025-01-01: .inf

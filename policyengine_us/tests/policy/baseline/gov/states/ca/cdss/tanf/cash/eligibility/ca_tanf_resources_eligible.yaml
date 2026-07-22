@@ -18,7 +18,6 @@
 
 - name: Case 1, resources at exactly $12,137 lower limit boundary.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     ca_tanf_resources: 12_137
@@ -28,7 +27,6 @@
 
 - name: Case 2, resources one dollar above $12,137 lower limit boundary.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     ca_tanf_resources: 12_138
@@ -38,7 +36,6 @@
 
 - name: Case 3, resources at exactly $18,206 higher limit boundary.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     ca_tanf_resources: 18_206
@@ -48,7 +45,6 @@
 
 - name: Case 4, resources one dollar above $18,206 higher limit boundary.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     ca_tanf_resources: 18_207
@@ -58,10 +54,92 @@
 
 - name: Case 5, zero resources always eligible.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     ca_tanf_resources: 0
     ca_tanf_resources_limit: 12_137
   output:
+    ca_tanf_resources_eligible: true
+
+- name: Case 6, vehicle moderately over the vehicle limit stays eligible because only the excess counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        household_vehicles_value: 34_000
+  output:
+    # Vehicle excess: 34,000 - 33,499 (Jul 2025 limit) = 501
+    # Resources: 501 is below the lower resource limit
+    ca_tanf_resources_eligible: true
+
+- name: Case 7, vehicle excess plus cash assets over the resource limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 13_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        household_vehicles_value: 34_000
+  output:
+    # Vehicle excess: 34,000 - 33,499 (Jul 2025 limit) = 501
+    # Resources: 13,000 + 501 = 13,501 exceeds the lower resource limit
+    ca_tanf_resources_eligible: false
+
+- name: Case 8, vehicle excess alone above the resource limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        household_vehicles_value: 50_000
+  output:
+    # Vehicle excess: 50,000 - 33,499 (Jul 2025 limit) = 16,501
+    # Resources: 16,501 alone exceeds the lower resource limit
+    ca_tanf_resources_eligible: false
+
+- name: Case 9, elderly member raises the resource limit above the vehicle excess plus cash.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        household_vehicles_value: 34_000
+  output:
+    # Vehicle excess: 34,000 - 33,499 (Jul 2025 limit) = 501
+    # Resources: 14,000 + 501 = 14,501 exceeds the lower resource limit
+    # but stays within the higher limit for households with an elderly member
     ca_tanf_resources_eligible: true

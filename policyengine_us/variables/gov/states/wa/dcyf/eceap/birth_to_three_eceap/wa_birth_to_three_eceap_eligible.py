@@ -29,5 +29,7 @@ class wa_birth_to_three_eceap_eligible(Variable):
         age_eligible = person("wa_birth_to_three_eceap_age_eligible", period)
         income_eligible = person("wa_birth_to_three_eceap_income_eligible", period)
         snap_eligible = person.spm_unit("is_snap_eligible", period)
-        snap_receipt = person.spm_unit("snap", period) > 0
+        snap_receipt = (person.spm_unit("snap", period) > 0) | (
+            add(person.spm_unit, period, ["receives_snap"]) > 0
+        )
         return age_eligible & (income_eligible | snap_eligible | snap_receipt)

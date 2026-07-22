@@ -13,8 +13,10 @@ from policyengine_us.data.dataset_schema import (
     USSingleYearDataset,
     USMultiYearDataset,
 )
+from policyengine_us.data.dataset_schema import PANDAS_HAS_COW
 from policyengine_us.data.economic_assumptions import (
     _apply_single_year_uprating,
+    _apply_uprating,
     _resolve_parameter,
     get_parameter_last_year,
 )
@@ -1110,3 +1112,159 @@ class TestGetParameterLastYear:
         # CPI-U YAML currently extends to 2035; if the YAML is updated,
         # this assertion should be updated to match.
         assert last_year == 2035
+
+
+# ---------------------------------------------------------------------------
+# Shallow-copy extension (copy-on-write fast path)
+# ---------------------------------------------------------------------------
+
+
+class TestShallowExtension:
+    """Regression tests for the shallow-copy dataset extension.
+
+    The extension previously deep-copied every entity DataFrame once per
+    projected year and then deep-copied the whole multi-year set again in
+    _apply_uprating. Under pandas copy-on-write the year frames are now
+    shallow copies of the base year; these tests pin down that the change
+    is invisible in values (equivalence, isolation) while the buffer
+    sharing that makes it fast actually happens (sharing).
+    """
+
+    def test_extension_equals_deep_copy_reference(self, mock_system, base_dataset):
+        # Given a reference result built the old way: deep copies for
+        # every year, then _apply_uprating with its defensive copy.
+        reference_years = [base_dataset.copy()]
+        for year in range(BASE_YEAR + 1, END_YEAR_SHORT + 1):
+            next_year = base_dataset.copy()
+            next_year.time_period = str(year)
+            reference_years.append(next_year)
+        reference = _apply_uprating(
+            USMultiYearDataset(datasets=reference_years),
+            system=mock_system,
+            copy=True,
+        )
+
+        # When extending via the shallow fast path
+        result = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+
+        # Then every table of every year is exactly equal
+        assert result.years == reference.years
+        for year in result.years:
+            for name, result_df, reference_df in zip(
+                result[year].table_names,
+                result[year].tables,
+                reference[year].tables,
+            ):
+                pd.testing.assert_frame_equal(
+                    result_df,
+                    reference_df,
+                    check_exact=True,
+                    obj=f"{name}/{year}",
+                )
+
+    def test_extension_leaves_caller_dataset_untouched(self, mock_system, base_dataset):
+        # Given snapshots of the caller's frames
+        snapshots = [df.copy() for df in base_dataset.tables]
+
+        # When extending
+        call_extend_with_mock_system(mock_system, base_dataset, end_year=END_YEAR_SHORT)
+
+        # Then the caller's dataset is bit-identical
+        for name, df, snapshot in zip(
+            base_dataset.table_names, base_dataset.tables, snapshots
+        ):
+            pd.testing.assert_frame_equal(df, snapshot, check_exact=True, obj=name)
+
+    @pytest.mark.skipif(
+        not PANDAS_HAS_COW,
+        reason="buffer sharing requires pandas copy-on-write (pandas >= 3)",
+    )
+    def test_carried_forward_columns_share_base_year_buffers(
+        self, mock_system, base_dataset
+    ):
+        # When extending
+        result = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+
+        # Then carried-forward columns share memory with the base year —
+        # this is the performance win; if this fails, deep copies crept
+        # back into the extension path.
+        assert np.shares_memory(
+            result[BASE_YEAR + 1].person["age"].values,
+            result[BASE_YEAR].person["age"].values,
+        )
+
+        # And uprated columns are freshly materialized per year.
+        assert not np.shares_memory(
+            result[BASE_YEAR + 1].person["employment_income"].values,
+            result[BASE_YEAR].person["employment_income"].values,
+        )
+
+    def test_apply_uprating_default_still_copies(self, mock_system, base_dataset):
+        # Given a multi-year dataset the caller owns
+        next_year = base_dataset.copy()
+        next_year.time_period = str(BASE_YEAR + 1)
+        multi = USMultiYearDataset(datasets=[base_dataset.copy(), next_year])
+        snapshot = multi[BASE_YEAR + 1].person["employment_income"].copy()
+
+        # When uprating with the default copy=True
+        _apply_uprating(multi, system=mock_system)
+
+        # Then the caller's dataset is not modified in place
+        assert (multi[BASE_YEAR + 1].person["employment_income"] == snapshot).all()
+
+    def test_apply_uprating_copy_false_modifies_in_place(
+        self, mock_system, base_dataset
+    ):
+        # Given a multi-year dataset built from private copies
+        next_year = base_dataset.copy()
+        next_year.time_period = str(BASE_YEAR + 1)
+        multi = USMultiYearDataset(datasets=[base_dataset.copy(), next_year])
+
+        # When uprating with copy=False (the extension fast path)
+        result = _apply_uprating(multi, system=mock_system, copy=False)
+
+        # Then the input dataset itself is uprated in place
+        assert result is multi
+        expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
+        np.testing.assert_allclose(
+            multi[BASE_YEAR + 1].person["employment_income"].values, expected
+        )
+
+    def test_deep_fallback_path_produces_identical_output(
+        self, mock_system, base_dataset, monkeypatch
+    ):
+        """The non-CoW fallback (deep copies inside ``copy(deep=False)``)
+        must produce output identical to the shallow fast path. On
+        pandas 3 CI this is exercised by forcing the gate off; the
+        py3.9/3.10 compat CI legs run this suite on real pandas 2.x."""
+        import policyengine_us.data.dataset_schema as dataset_schema
+
+        monkeypatch.setattr(dataset_schema, "PANDAS_HAS_COW", False)
+        fallback = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+        monkeypatch.undo()
+        fast = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+
+        assert fallback.years == fast.years
+        for year in fast.years:
+            for name, fast_df, fallback_df in zip(
+                fast[year].table_names,
+                fast[year].tables,
+                fallback[year].tables,
+            ):
+                pd.testing.assert_frame_equal(
+                    fast_df, fallback_df, check_exact=True, obj=f"{name}/{year}"
+                )
+
+        # The fallback shares no buffers across years (true deep copies).
+        assert not np.shares_memory(
+            fallback[BASE_YEAR + 1].person["age"].values,
+            fallback[BASE_YEAR].person["age"].values,
+        )

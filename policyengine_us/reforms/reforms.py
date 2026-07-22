@@ -260,6 +260,9 @@ from .states.ct.hb5009 import (
 from .states.ct.hb5114 import (
     create_ct_hb5114_reform,
 )
+from .states.tx.rebate import (
+    create_tx_rebate_reform,
+)
 from .congress.watca import (
     create_watca_reform,
 )
@@ -529,6 +532,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ct_tax_rebate_2026 = create_ct_tax_rebate_2026_reform(parameters, period)
     ct_hb5009 = create_ct_hb5009_reform(parameters, period)
     ct_hb5114 = create_ct_hb5114_reform(parameters, period)
+    tx_rebate = create_tx_rebate_reform(parameters, period)
     al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
         parameters, period
     )
@@ -674,6 +678,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_hb5114,
         ct_sb100,
         ct_tax_rebate_2026,
+        tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
         ga_sb520,

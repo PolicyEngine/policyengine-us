@@ -1,3 +1,332 @@
+## [1.779.4] - 2026-07-22
+
+### Fixed
+
+- Fixed the SNAP student parent exception so a single parent responsible for a child under six qualifies for Exception 5 without being a full-time student.
+
+
+## [1.779.3] - 2026-07-21
+
+### Fixed
+
+- Update the June 2026 WIC CVB test to the takes_up_wic_if_eligible take-up flag, fixing the baseline suite on main after the would_claim_wic rename.
+
+
+## [1.779.2] - 2026-07-21
+
+### Changed
+
+- Add the published KFF 2026 national average benchmark premium ($625) to the ACA benchmark uprating index, keeping the long-run extension on the pre-2026 growth trend so the one-off jump does not compound.
+
+
+## [1.779.1] - 2026-07-21
+
+### Changed
+
+- Migrate programs from the deprecated applicable_ssi bridge to reading ssi directly (SNAP categorical eligibility, Kansas TANF assistance units — now also excluding reported SSI recipients — Texas CEAP, Nebraska Child Care Subsidy, and Illinois AABD), count computed ssi instead of ssi_reported in the Pennsylvania Property Tax/Rent Rebate income, and retain applicable_ssi, ssi_reported, and use_reported_ssi as deprecated no-op inputs for API partner compatibility.
+- Add published BLS monthly CPI values (CPI-U, Chained CPI-U, and CPI-W) from September 2025 through June 2026 — October 2025 was never published — replacing the CBO projection points those months cover, and update the HHS uprating index's 2025 entry to the published calendar-2025 CPI-U average.
+
+
+## [1.779.0] - 2026-07-21
+
+### Added
+
+- Vehicle value checks in the Santa Clara, Contra Costa, San Francisco (CAAP), and Marin county General Assistance/General Relief eligibility, and cash assets in the Santa Clara and Contra Costa personal property tests.
+
+
+## [1.778.1] - 2026-07-21
+
+### Changed
+
+- Derive is_tanf_enrolled from receives_tanf by default, consolidating the TANF enrollment signal with reported receipt; explicit is_tanf_enrolled inputs still override. Year-defined consumers (NH FANF, CO/NC TANF income, CalWORKs financial test, TX CEAP) now read enrollment at the year's first month instead of relying on input carry-over.
+
+
+## [1.778.0] - 2026-07-21
+
+### Added
+
+- Count reported receipt (receives_ssi, receives_tanf, receives_snap) in state and local receipt-proxy rules: state SSI supplements (KS, WA, GA, MI, IN, FL, MD, NE, ID, MN), TANF assistance-unit rules (TX, NC, MT, IL), the SNAP student exemption, Medicaid community engagement pass-through, California county General Assistance programs, and state tax credits and childcare programs keyed on benefit receipt.
+
+
+## [1.777.0] - 2026-07-21
+
+### Added
+
+- Add X_if_takes_up counterfactual outputs and receives_X reported-receipt inputs for SSI, TANF, SNAP, and WIC, apply SNAP take-up through the household API, rename would_claim_wic to takes_up_wic_if_eligible, and count reported receipt in SNAP categorical eligibility, WIC adjunctive eligibility, Head Start, and Medicaid SSI-recipient categories.
+
+
+## [1.776.2] - 2026-07-21
+
+### Changed
+
+- Add published June 2024 and June 2025 California CPI values to the CA uprating index, and fix six CA breakdown parameters (standard deduction, AMT exemption and AMTI thresholds, itemized deduction limit, exemption phase-out start) whose uprating metadata was silently inert at the file level by moving it onto the filing-status values.
+
+
+## [1.776.1] - 2026-07-20
+
+### Fixed
+
+- Cap the Georgia HB 162 surplus tax rebate at Form 500 Line 16 tax before credits per O.C.G.A. 48-7-20.2 and pay it out as a refundable amount, so other nonrefundable credits no longer reduce it; zero the amount outside tax year 2021. Also correct the qualifying surviving spouse (Form 500 status D) rebate cap from $500 to $375 to match the head-of-household tier.
+- Correct the Missouri head of household $1,400 additional exemption to start in 2022, when MO-1040 Line 15 first appeared (the 2018-2021 forms had no line for it), and stop netting the refundable CTC and 2021 refundable CDCC out of the federal income tax deduction base, per the MO-1040 Line 9 worksheet.
+
+
+## [1.776.0] - 2026-07-20
+
+### Added
+
+- Add Colorado's add-back of the federal overtime compensation deduction (HB25-1296) from tax year 2026.
+
+
+## [1.775.12] - 2026-07-20
+
+### Changed
+
+- - Dataset extension no longer deep-copies the full dataset per projected year; under pandas copy-on-write, carried-forward columns share base-year buffers, cutting extension time ~11x (about 21s to 2s on the full Populace 2024 dataset) with bit-identical output. `USSingleYearDataset.copy(deep=False)` falls back to a deep copy when copy-on-write is unavailable, so isolation is guaranteed on all pandas versions.
+  - Require pandas >= 3.0 on Python >= 3.11 (pandas >= 2.0 retained for Python 3.9/3.10). This floor is stricter than the code requires — the runtime fallback keeps pandas 2.x fully correct — and is a deliberate choice to guarantee the fast path and pandas-3 CI coverage; downstream environments on Python >= 3.11 will be upgraded to pandas 3.
+  - Note for downstream code: under pandas 3, arrays loaded from datasets into simulation holders are read-only views; in-place mutation of `holder.get_array(...)` results (e.g. `arr[mask] = x`) now raises `ValueError` where it previously worked. Copy the array first if mutation is needed.
+  - Cap numpy below 2.0 on Python 3.9, where PyTables 3.9.x wheels are built against numpy 1.x; without the cap, every `pd.HDFStore` call on Python 3.9 fails with a binary-incompatibility error (pre-existing breakage surfaced by the new compat-leg tests).
+
+
+## [1.775.11] - 2026-07-20
+
+### Fixed
+
+- - Require policyengine-core >= 3.30.1 so behavioral-response measurement branches record real baseline and reform marginal tax rates; the substitution and capital-gains channels were inert under earlier cores. Adds an end-to-end regression test.
+
+
+## [1.775.10] - 2026-07-20
+
+### Fixed
+
+- Washington Working Families Tax Credit no longer pays for tax years before 2022, the program's first year under RCW 82.08.0206 as funded by ch. 195, Laws of 2021.
+
+
+## [1.775.9] - 2026-07-20
+
+### Changed
+
+- Update the SNAP uprating index with published CPI-U actuals for June 2024, 2025, and 2026, raising projected FY2027 COLAs to +3.5% year-over-year; later years remain CBO forecasts.
+
+
+## [1.775.8] - 2026-07-18
+
+### Fixed
+
+- Guard the bracket-schedule loops (income_tax_main_rates, the AMT regular-tax worksheet, and the additional_tax_bracket reform's copies) against non-monotone thresholds: an inverted bracket pair contributed rate x (top - bottom) < 0 to every filer of the affected status at any income, and a partially patched schedule manufactured phantom AMT for filers with preferential income (issue #9084).
+
+
+## [1.775.7] - 2026-07-18
+
+### Fixed
+
+- Weight rent by an assumed landlord property tax factor (0.15, matching TAXSIM) instead of counting 100% of rent as property taxes paid in the Arizona property tax credit, per ARS 43-1072(B) and Form 140PTC line 13.
+
+
+## [1.775.6] - 2026-07-18
+
+### Fixed
+
+- Delaware now excludes unemployment compensation received in 2020 and 2021 from Delaware AGI, per 30 Del. C. § 1106(b)(10).
+
+
+## [1.775.5] - 2026-07-17
+
+### Fixed
+
+- Fixed the Montana 2021 income tax rebate double-count by applying the per-return cap once, splitting it across each spouse's column rather than projecting the tax-unit rebate onto every member.
+
+
+## [1.775.4] - 2026-07-17
+
+### Fixed
+
+- Fixed the Montana taxable Social Security schedule to apply the filing-status base amounts once per return rather than in full per spouse, using the half-of-joint amounts per column for married filers and the full joint amounts for the single-column joint computation.
+
+
+## [1.775.3] - 2026-07-17
+
+### Fixed
+
+- The DC Child Tax Credit now applies only to DC households: `dc_ctc` was missing `defined_for = StateCode.DC`, so from 2026 (when it joined `gov.states.household.state_ctcs`) it computed for households in any state and leaked into `taxsim_state_ctc` and its deprecated `state_ctc` alias (see #9079).
+
+
+## [1.775.2] - 2026-07-17
+
+### Fixed
+
+- Oregon Kids' Credit: encode the HB 3235 sunset (tax years beginning before January 1, 2029) as a `gov.states.or.tax.income.credits.ctc.in_effect` parameter gating the `or_ctc` formula, keep `or_ctc` in the refundable-credits list so a single switch models renewal scenarios, and project the credit amount and phase-out start with the exact ORS 315.273(5) cost-of-living formula (unchained CPI-U over the 2022 Q2 base, each increase from the statutory bases rounded down to the next lower multiple of $50), which pins the CPI-determined 2026 values at $1,050 and $27,250.
+
+
+## [1.775.1] - 2026-07-17
+
+### Fixed
+
+- Reforms starting at a future date no longer freeze uprating of the reformed parameter for the years before the reform starts: the reform set is now applied after the parameter processing pipeline (uprating included) instead of before it, so pre-start years keep their baseline uprated values. As a consequence, a reform on an uprating index series (e.g. gov.bls.cpi.c_cpi_u) now changes only that series and no longer regenerates gov.irs.uprating or dependent parameters' uprated values — an untested incidental behavior of the old ordering (see #9078).
+
+
+## [1.775.0] - 2026-07-16
+
+### Added
+
+- Hawaii Act 24 (S.B. 3125, SLH 2026) income tax rate schedules: 13% top bracket above $1,000,000 (joint and surviving spouse), $750,000 (head of household), and $500,000 (single and separate) with restructured 2027 and 2029 rates.
+
+
+## [1.774.7] - 2026-07-16
+
+### Fixed
+
+- - Applied Washington's capital gains 9.9% tier only from 2025; ESSB 5813 (Ch. 421, Laws of 2025) imposes the additional 2.9% over $1,000,000 beginning January 1, 2025, and the rate was a flat 7% in 2022-2024.
+
+
+## [1.774.6] - 2026-07-16
+
+### Fixed
+
+- - Raised the Vermont CSRS/military retirement exemption thresholds by $5,000 for 2025 per Act No. 51 (2025), Sec. 3 (32 V.S.A. § 5830e(b)), matching the Social Security thresholds updated in #8853.
+
+
+## [1.774.5] - 2026-07-16
+
+### Fixed
+
+- Applied Kentucky personal tax credits per column under the combined-separate filing election, flooring each spouse's credit at their own column tax.
+
+
+## [1.774.4] - 2026-07-16
+
+### Fixed
+
+- Restored the Oklahoma retirement benefit subtraction for private employer (IRC section 401) pension income before tax year 2022, which qualifies as an Other Retirement Income source on Schedule 511-A line 6.
+
+
+## [1.774.3] - 2026-07-16
+
+### Fixed
+
+- Fixed the Connecticut pension and annuity subtraction so the 2024 phase-out brackets no longer leak into 2019-2023, where the subtraction is zero above the AGI cliff.
+
+
+## [1.774.2] - 2026-07-16
+
+### Fixed
+
+- - Kept the Arkansas MFJ two-or-more-dependents low-income tax table rows added for 2024-2025 out of earlier years; the published tables end at $32,200 (2021) through $34,100 (2023), so incomes above the cutoff use the regular tax table.
+- Keep each spouse's own Delaware personal credit in their own Filing Status 4 column per the PIT-RES line 27a example, allocating only dependent credits between columns, so the post-credit filing-status election no longer favors combined-separate filing through an impermissible credit shift.
+
+
+## [1.774.1] - 2026-07-16
+
+### Fixed
+
+- - Corrected the Arkansas 2023 bracket-adjustment column: added the missing $89,901-$90,000 row, encoded the three intentionally $200-wide ranges, and removed duplicated 91,701/91,801 thresholds that doubled the reduction.
+
+
+## [1.774.0] - 2026-07-16
+
+### Added
+
+- Add the North Dakota primary residence credit (HB 1176), raising the maximum credit to $1,600 from tax year 2025, and restore the North Dakota renter's refund to the 2026 state property tax credit aggregate.
+
+
+## [1.773.3] - 2026-07-16
+
+### Fixed
+
+- Fix broken and mislabeled FTB reference links in California CalEITC and Foster Youth Tax Credit parameter files.
+
+
+## [1.773.2] - 2026-07-16
+
+### Fixed
+
+- Bump policyengine-core to 3.30.0 (>=3.26.5 floor), fixing filesystem-order-dependent uprating of chained indexes (California CPI) that caused CA test failures on new CI runner images.
+
+
+## [1.773.1] - 2026-07-15
+
+### Fixed
+
+- Fix the Indiana blind/disabled property tax credit aggregate test to account for the supplemental homestead credit (SEA 1) stacking in the umbrella.
+
+
+## [1.773.0] - 2026-07-15
+
+### Added
+
+- Add the Indiana blind or disabled property tax credit (Senate Enrolled Act 1, 2025), a $125 credit for blind or disabled homeowners, from 2026.
+- Add the Indiana supplemental homestead credit (Senate Enrolled Act 1, 2025), the lesser of 10% of homestead property tax or $300, from 2026.
+
+
+## [1.772.0] - 2026-07-15
+
+### Added
+
+- Add Michigan qualified tips and overtime compensation deductions (Public Act 24 of 2025) for tax years 2026-2028.
+
+### Fixed
+
+- Restore the Pennsylvania property tax or rent rebate to the 2026 state property tax credit aggregate, from which it was accidentally dropped.
+
+
+## [1.771.2] - 2026-07-14
+
+### Changed
+
+- Count CalWORKs vehicle value above the vehicle limit toward the resource limit instead of denying eligibility outright, per CDSS ACLs 25-37 and 26-38.
+
+
+## [1.771.1] - 2026-07-14
+
+### Changed
+
+- Include incapacitated or disabled adult care expenses in the dependent care deductions of 21 state TANF-family cash assistance programs (AK, AL, AZ, DC, DE, GA, HI, IL, KY, MA TAFDC/EAEDC, MD, ME, MN, MO, MT, NH, OK, RI, TX, VA, VT, WV).
+
+
+## [1.771.0] - 2026-07-14
+
+### Added
+
+- Texas $1,500 per-household rebate proposal as a contributed reform.
+
+
+## [1.770.0] - 2026-07-14
+
+### Added
+
+- Add Virginia's eligible educator expense deduction (up to $500), reinstated for tax year 2026 and after by the 2026 Appropriation Act (HB 30).
+
+### Changed
+
+- Extend Virginia's 20% refundable EITC through tax year 2029 under the 2026 Appropriation Act (HB 30); it expires (0%) for tax years beginning on or after January 1, 2030.
+- Raise Virginia's standard deduction under the 2026 Appropriation Act (HB 30) to $9,200 single / $18,400 joint for tax year 2027 and $9,300 / $18,600 for tax years 2028-2029, with the sunset to $3,000 / $6,000 moved to tax year 2030.
+
+
+## [1.769.0] - 2026-07-14
+
+### Added
+
+- Prorate the income and deductible expenses of SNAP-ineligible household members per 7 CFR 273.11(c) and (d), including full income counting for members sanctioned under the general work requirements, state income counting options for ineligible immigrants, and full exclusion of ineligible students' income. Excluded members no longer confer household-wide elderly or disabled status for the gross income test, shelter deduction cap, and BBCE screens; standard utility allowances are no longer prorated; and non-farm self-employment losses no longer offset other members' income per 7 CFR 273.11(a)(2)(ii). snap_earned_income_person is now a person-level employment income variable and snap_work_requirement_income_proration_fraction is removed.
+
+### Changed
+
+- Include disabled adult care expenses in the Texas Family Planning Program dependent care deduction, the Hawaii child and dependent care credit, and the Montana child and dependent care expense deduction.
+
+
+## [1.768.5] - 2026-07-14
+
+### Changed
+
+- Include disabled adult care expenses in the SNAP dependent care deduction per 7 CFR 273.9(d)(4); this also extends New York's 200% FPL SNAP BBCE gross income limit to households with adult dependent care costs per NY OTDA 16-ADM-06.
+- Update CalWORKs vehicle value limit for July 2025 and July 2026 (CDSS ACLs 25-37 and 26-38), MBSAC income limits for July 2026 (CDSS ACL 26-39), and maximum resource limits for January 2024 and January 2026 (CDSS ACLs 23-71 and 25-65).
+
+
+## [1.768.4] - 2026-07-13
+
+### Changed
+
+- Increase the Oregon Earned Income Tax Credit match to 14% (17% for filers with a dependent under age 3) from tax year 2026 under SB 1507.
+
+
 ## [1.768.3] - 2026-07-09
 
 ### Fixed

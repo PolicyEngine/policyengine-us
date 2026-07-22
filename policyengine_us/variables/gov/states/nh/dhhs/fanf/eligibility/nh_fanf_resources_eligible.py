@@ -18,6 +18,6 @@ class nh_fanf_resources_eligible(Variable):
         # Resource limits differ for applicants ($1,000) vs recipients ($5,000 as of 07/01/22)
         p = parameters(period).gov.states.nh.dhhs.fanf.resources
         resources = spm_unit("spm_unit_cash_assets", period)
-        is_enrolled = spm_unit("is_tanf_enrolled", period)
+        is_enrolled = spm_unit("is_tanf_enrolled", period.first_month)
         limit = where(is_enrolled, p.recipient_limit, p.applicant_limit)
         return resources <= limit

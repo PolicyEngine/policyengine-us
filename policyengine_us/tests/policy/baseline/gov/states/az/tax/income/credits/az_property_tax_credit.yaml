@@ -8,7 +8,40 @@
     real_estate_taxes: 0
     rent: 1_000
   output:
+    # Taxes paid: 0.15 * 1,000 = 150, above the $123 table amount.
     az_property_tax_credit: 123
+
+# Form 140PTC line 13: a renter's property taxes paid equal rent multiplied
+# by the landlord's property tax factor (Form 201), modeled as 0.15.
+# Integration case from issue 9064: Table 1 amount is 457 at $1,919.59 of
+# income, but taxes paid are only 0.15 * 856.96 = 128.54.
+- name: renter credit is capped at rent times the property tax factor
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    age: 79
+    az_property_tax_credit_income: 1_919.59
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 0
+    rent: 856.96
+  output:
+    az_property_tax_credit: 128.54
+
+# Homeowner property taxes count in full; only rent is weighted.
+- name: homeowner real estate taxes count at 100 percent alongside weighted rent
+  period: 2021
+  input:
+    state_code: AZ
+    cohabitating_spouses: false
+    az_property_tax_credit_income: 1_900
+    az_property_tax_credit_eligible: true
+    real_estate_taxes: 300
+    rent: 1_000
+  output:
+    # Taxes paid: 300 + 0.15 * 1,000 = 450, below the $457 table amount.
+    az_property_tax_credit: 450
 
 - name: filer at 50 meets criteria
   period: 2023

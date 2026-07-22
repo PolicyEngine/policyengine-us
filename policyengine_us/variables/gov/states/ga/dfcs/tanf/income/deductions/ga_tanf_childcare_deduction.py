@@ -17,15 +17,22 @@ class ga_tanf_childcare_deduction(Variable):
         p = parameters(period).gov.states.ga.dfcs.tanf.income.deductions
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
+        # PAMMS 1615 also covers "the care of an incapacitated individual
+        # in the home" at the $175 tier for individuals age two or above.
+        incapacitated_adult = person("is_adult", period.this_year) & person(
+            "is_incapable_of_self_care", period.this_year
+        )
         age = person("monthly_age", period)
         childcare_expenses = spm_unit("childcare_expenses", period)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
 
         # PAMMS 1615: "$200 monthly for each child under the age of two"
         # and "$175 monthly for each individual age two or above"
         # PAMMS 1605: Childcare is an earned income deduction applied
         # in order after work expense
-        # Calculate max deduction per dependent based on age
-        childcare_deduction_person = p.childcare.calc(age) * dependent
-        total_childcare_deduction = spm_unit.sum(childcare_deduction_person)
+        # Calculate max deduction per care recipient based on age
+        care_recipient = dependent | incapacitated_adult
+        care_deduction_person = p.childcare.calc(age) * care_recipient
+        total_care_deduction = spm_unit.sum(care_deduction_person)
 
-        return min_(childcare_expenses, total_childcare_deduction)
+        return min_(childcare_expenses + adult_care_expenses, total_care_deduction)

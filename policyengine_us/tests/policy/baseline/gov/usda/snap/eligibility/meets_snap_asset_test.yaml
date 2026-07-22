@@ -16,7 +16,7 @@
   period: 2022
   input:
     snap_assets: 2_600
-    has_usda_elderly_disabled: true
+    has_snap_elderly_disabled_member: true
   output:
     meets_snap_asset_test: true
 
@@ -24,6 +24,51 @@
   period: 2022
   input:
     snap_assets: 3_800
-    has_usda_elderly_disabled: true
+    has_snap_elderly_disabled_member: true
   output:
     meets_snap_asset_test: false
+
+- name: Excluded elderly member does not confer the elderly/disabled resource limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_assets: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $4,000 exceeds the $3,000 standard limit, and the excluded elderly
+    # member does not confer the $4,500 elderly/disabled limit
+    # (7 CFR 273.11(c)(2)(iv)(D)).
+    meets_snap_asset_test: false
+
+- name: Eligible elderly member confers the elderly/disabled resource limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 70
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap_assets: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $4,000 is between the $3,000 standard and $4,500 elderly/disabled
+    # limits, and the eligible elderly member confers the higher limit.
+    meets_snap_asset_test: true

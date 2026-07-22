@@ -56,7 +56,11 @@ class regular_tax_before_credits(Variable):
         bracket_bottom = 0
         for i in range(1, len(list(bracket_rates.__iter__())) + 1):
             b = str(i)
-            bracket_top = bracket_tops[b][filing_status]
+            # Clamp as in income_tax_main_rates (#9084): an inverted
+            # bracket must contribute zero width here too, or the AMT
+            # comparator diverges from the corrected main-rates tax and
+            # manufactures phantom AMT for qdiv/LTCG filers.
+            bracket_top = max_(bracket_bottom, bracket_tops[b][filing_status])
             reg_tax += bracket_rates[b] * amount_between(
                 reg_taxinc, bracket_bottom, bracket_top
             )

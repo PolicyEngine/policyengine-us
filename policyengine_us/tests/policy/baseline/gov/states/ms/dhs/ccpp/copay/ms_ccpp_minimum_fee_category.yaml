@@ -102,3 +102,25 @@
         state_code: MS
   output:
     ms_ccpp_minimum_fee_category: false
+
+- name: Case 6, SSI-disabled parent with reported SSI receipt is a minimum-fee category.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_ssi_disabled: true
+        ssi: 0
+        receives_ssi: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_minimum_fee_category: true

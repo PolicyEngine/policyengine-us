@@ -1,8 +1,28 @@
 description: Missouri ignores the following credits in federal income tax deduction calculations.
+# The MO-1040 Line 9 worksheet defines the base as 1040 Line 22 less the EIC
+# (Line 27), the refundable American Opportunity Credit (Line 29), Schedule 2
+# Part I Line 3, and the net premium tax credit (Schedule 3 Line 9). Credits
+# claimed on Line 28 (refundable CTC) and Line 30 (recovery rebate), and the
+# 2021 refundable CDCC (Schedule 3 Line 13g), never reduce Line 22, so they
+# are added back here. The worksheet does subtract the EIC, so its presence
+# in this list deviates from the form — see issue #9094.
 values:
   2018-01-01:
     - eitc
     - recovery_rebate_credit
+    - refundable_ctc
+  # The CDCC is a refundable credit only in 2021 (ARPA); in other years it
+  # already reduces income tax before refundable credits, so adding it back
+  # would overstate the base.
+  2021-01-01:
+    - eitc
+    - recovery_rebate_credit
+    - refundable_ctc
+    - cdcc
+  2022-01-01:
+    - eitc
+    - recovery_rebate_credit
+    - refundable_ctc
 metadata:
   unit: list
   label: Missouri ignored credits in federal income tax deduction
@@ -10,5 +30,7 @@ metadata:
   reference:
     - title: Revisor of Missouri Title X TAXATION AND REVENUE section 143.171
       href: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044
-    - title: 2021 Form MO-1040 instructions, Line 9
+    - title: 2021 Form MO-1040 instructions, Line 9 worksheet
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=7
+    - title: 2024 Form MO-1040 instructions, Line 9 worksheet
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=7

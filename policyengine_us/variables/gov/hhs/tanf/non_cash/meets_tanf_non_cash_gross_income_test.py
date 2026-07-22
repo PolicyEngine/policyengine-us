@@ -30,5 +30,9 @@ class meets_tanf_non_cash_gross_income_test(Variable):
         )
         gross_limit = where(ny, ny_gross_limit, gross_limit)
 
-        gross_income = spm_unit("snap_gross_income_fpg_ratio", period)
+        # Use the gross-test income concept so states electing full
+        # counting of certain ineligible aliens' income under the gross
+        # income test (7 CFR 273.11(c)(3)(i)) apply it to this categorical
+        # eligibility screen as well.
+        gross_income = spm_unit("snap_gross_test_income_fpg_ratio", period)
         return gross_income <= gross_limit

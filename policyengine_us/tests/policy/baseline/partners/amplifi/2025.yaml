@@ -79,7 +79,7 @@
       member1:
         medicaid: 7954.03
         is_medicaid_eligible: true
-        wic: 711.43
+        wic: 712.06
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -89,7 +89,7 @@
       member2:
         medicaid: 7954.03
         is_medicaid_eligible: true
-        wic: 711.27
+        wic: 711.90
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -110,8 +110,8 @@
       spm_unit:
         ca_tanf: 0.0
         ca_tanf_eligible: false
-        snap: 0.0
-        is_snap_eligible: false
+        snap: 2114.10
+        is_snap_eligible: true
         lifeline: 228.0
         is_lifeline_eligible: true
         la_general_relief: 0.0

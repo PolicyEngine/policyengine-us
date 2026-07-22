@@ -68,3 +68,28 @@
     state_code: WA
   output:
     wa_capital_gains_tax: 0
+
+- name: 2023 gains over one million are taxed at a flat 7 percent, with no 2025 surcharge tier (pe-us 9022)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    long_term_capital_gains: 2_262_000
+    state_code: WA
+  output:
+    # Standard deduction: $262,000
+    # Taxable LTCG: $2,262,000 - $262,000 = $2,000,000
+    # RCW 82.87.040 (2022-2024): flat 7% -> $140,000
+    # (the ESSB 5813 2.9% tier over $1M begins January 1, 2025)
+    wa_capital_gains_tax: 140_000
+
+- name: 2025 gains over one million pay the additional 2.9 percent on the excess (ESSB 5813 Sec. 101)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    long_term_capital_gains: 2_278_000
+    state_code: WA
+  output:
+    # Standard deduction: $278,000
+    # Taxable LTCG: $2,000,000
+    # 7% x $2,000,000 + 2.9% x $1,000,000 = $169,000
+    wa_capital_gains_tax: 169_000

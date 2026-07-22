@@ -47,7 +47,9 @@ class is_snap_ineligible_student(Variable):
 
         # Exception 6: Receiving TANF benefits (part A of title IV)
         tanf = person("tanf_person", period)
-        receives_tanf = tanf > 0
+        receives_tanf = (tanf > 0) | (
+            add(person.spm_unit, period, ["receives_tanf"]) > 0
+        )
 
         # Exception 7 is combined with Exception 3 above via
         # is_snap_employment_training_or_work_incentive_student.

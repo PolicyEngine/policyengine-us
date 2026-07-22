@@ -26,7 +26,7 @@ class md_paa_eligible(Variable):
         # md_paa_pending_federal_benefit input — we don't auto-detect
         # income-denied SSI applicants at the moment, so the caller must
         # set the flag manually.
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         ssdi = person("social_security_disability", period)
         receives_ssdi = ssdi > 0
         is_categorically_qualifying = person(

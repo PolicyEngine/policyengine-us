@@ -1,4 +1,4 @@
-- name: Single filer
+- name: Single filer receives the full single rebate
   period: 2023
   input:
     filing_status: SINGLE
@@ -6,13 +6,25 @@
   output:
     mt_income_tax_rebate: 1_250
 
-- name: Joint filers
+- name: Joint filers split the per-return rebate across each spouse's column
   period: 2023
   input:
-    filing_status: JOINT
-    state_code: MT
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
   output:
-    mt_income_tax_rebate: 2_500
+    # $2,500 per-return cap split $1,250 per spouse (sums to $2,500, not $5,000)
+    mt_income_tax_rebate: [1_250, 1_250]
 
 - name: Not in Montana
   period: 2023

@@ -14,7 +14,7 @@ class in_ssp_sapn_eligible(Variable):
 
     def formula(person, period, parameters):
         # IC 12-15-32-6.5: must be "a recipient of assistance under the federal SSI program"
-        is_ssi_recipient = person("ssi", period) > 0
+        is_ssi_recipient = (person("ssi", period) > 0) | person("receives_ssi", period)
         on_medicaid = person("medicaid_enrolled", period.this_year)
         age = person("age", period.this_year)
         p = parameters(period).gov.states["in"].fssa.ssp

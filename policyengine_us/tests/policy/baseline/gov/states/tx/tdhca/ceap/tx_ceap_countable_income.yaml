@@ -157,7 +157,7 @@
   output:
     tx_ceap_countable_income: 0
 
-- name: Case 9, reported SSI replaces calculated SSI when an API partner opts in.
+- name: Case 9, reported SSI sent as the ssi input replaces the calculated amount.
   absolute_error_margin: 0.01
   period: 2024
   input:
@@ -165,8 +165,7 @@
       person1:
         age: 70
         social_security: 9_000
-        ssi_reported: 4_000
-        use_reported_ssi: true
+        ssi: 4_000
     spm_units:
       spm_unit:
         members: [person1]

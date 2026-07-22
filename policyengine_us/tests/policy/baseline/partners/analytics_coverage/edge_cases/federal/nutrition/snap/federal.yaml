@@ -4,9 +4,9 @@
 # (sizes 1-4), standard deduction $209 (sizes 1-3) / $223 (size 4), shelter cap
 # $744, TX SUA $445, TX LUA $400, earned income deduction 20%, expected food
 # contribution 30% of floored net income, minimum allotment 8% of the 1-person
-# maximum. Oct-Dec 2026 use uprated FY2027 values: max $304.68/$558.24/$802.60/
-# $1,016.28, standard deduction $213.68/$228.00, shelter cap $760.68 (SUA is not
-# uprated; LUA is, to $408.97).
+# maximum. Oct-Dec 2026 use uprated FY2027 values: max $308.52/$565.28/$812.72/
+# $1,029.10, standard deduction $216.38/$230.88, shelter cap $770.27 (SUA is not
+# uprated; LUA is, to $414.13).
 # SNAP compares income to the poverty guideline in effect at the preceding
 # Oct 1 (snap_fpg): Jan-Sep 2026 use the 2025 FPG (1p $15,650 / 2p $21,150 /
 # 3p $26,650), Oct-Dec 2026 use the 2026 FPG (1p $15,960 / 2p $21,640 /
@@ -82,9 +82,9 @@
         # shelter expense = 1,500 housing + 445 SUA (heating/cooling expense present)
         # = 1,945 - 0.5 x 2,715.80 = 587.10 (< 744 cap); net = 2,128.70 ->
         # contribution = floor(2,128) x 0.3 = 638.40 -> 785 - 638.40 = 146.60/month.
-        # Oct-Dec: std ded 213.68 -> net 2,121.68 -> EC 636.30 -> 802.60 - 636.30
-        # = 166.30/month. Annual = 9 x 146.60 + 3 x 166.30 = 1,818.30.
-        snap: 1_818.29
+        # Oct-Dec: std ded 216.38 -> net 2,117.63 -> EC 635.10 -> 812.72 - 635.10
+        # = 177.62/month. Annual = 9 x 146.60 + 3 x 177.62 = 1,852.26.
+        snap: 1852.26
         is_snap_eligible: true
 - name: snap_income_at_fy2026_bbce_gross_limit_43972 (federal)
   period: 2026
@@ -152,9 +152,9 @@
         # limit 1.65 x 26,650 / 12 = 3,664.38 -> still eligible.
         # Jan-Sep: pre-shelter net = 3,664.33 x 0.8 - 209 = 2,722.47; shelter =
         # 1,945 - 1,361.23 = 583.77 -> net = 2,138.70 -> EC 641.40 ->
-        # 785 - 641.40 = 143.60/month. Oct-Dec: 802.60 - 639.30 = 163.30/month.
-        # Annual = 9 x 143.60 + 3 x 163.30 = 1,782.30.
-        snap: 1_782.29
+        # 785 - 641.40 = 143.60/month. Oct-Dec: 812.72 - 638.10 = 174.62/month.
+        # Annual = 9 x 143.60 + 3 x 174.62 = 1,816.26.
+        snap: 1816.26
         is_snap_eligible: true
 - name: snap_income_above_bbce_gross_limit_all_year_45178 (federal)
   period: 2026
@@ -275,8 +275,8 @@
         # Zero-income childless couple pins the 2-person maximum allotment
         # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr defaults
         # to 40, so work requirements are met). Net income 0 -> contribution 0 ->
-        # benefit = max allotment: 9 x 546 + 3 x 558.24 = 6,588.72.
-        snap: 6_588.72
+        # benefit = max allotment: 9 x 546 + 3 x 565.28 = 6,609.84.
+        snap: 6609.85
         is_snap_eligible: true
 - name: snap_minimum_allotment_single_adult_20k (federal)
   period: 2026
@@ -320,8 +320,8 @@
         # contribution 337.20 exceeds the 1-person maximum (298), so the normal
         # allotment is negative and the minimum allotment applies (8% of the
         # 1-person maximum, units of 1-2 people only): Jan-Sep 0.08 x 298 =
-        # 23.84/month; Oct-Dec 0.08 x 304.68 = 24.37/month. Annual = 287.67.
-        snap: 287.68
+        # 23.84/month; Oct-Dec 0.08 x 308.52 = 24.68/month. Annual = 288.60.
+        snap: 288.61
         is_snap_eligible: true
 - name: snap_single_elderly_65_ssi_counts_as_unearned_income (federal)
   period: 2026
@@ -364,10 +364,10 @@
         # Zero-income aged-65 single receives SSI (2026 federal benefit rate
         # $994/month), which counts as SNAP unearned income:
         # Jan-Sep: net = 994 - 209 = 785 -> EC 235.50 -> 298 - 235.50 =
-        # 62.50/month. Oct-Dec: net = 994 - 213.68 = 780.32 -> EC floor(780) x
-        # 0.3 = 234.00 -> 304.68 - 234.00 = 70.68/month.
-        # Annual = 9 x 62.50 + 3 x 70.68 = 774.54.
-        snap: 774.54
+        # 62.50/month. Oct-Dec: net = 994 - 216.38 = 777.62 -> EC floor(777) x
+        # 0.3 = 233.10 -> 308.52 - 233.10 = 75.42/month.
+        # Annual = 9 x 62.50 + 3 x 75.42 = 788.76.
+        snap: 788.77
         is_snap_eligible: true
 - name: snap_childless_couple_20k (federal)
   period: 2026
@@ -418,10 +418,10 @@
     spm_units:
       spm_unit:
         # 2-person baseline: net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC 337.20
-        # -> 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: net 1,119.65 -> EC
-        # 335.70 -> 558.24 - 335.70 = 222.54. Annual = 9 x 208.80 + 3 x 222.54
-        # = 2,546.82. (Also the benchmark for the excluded-immigrant cases below.)
-        snap: 2_546.82
+        # -> 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: net 1,116.95 -> EC
+        # 334.80 -> 565.28 - 334.80 = 230.48. Annual = 9 x 208.80 + 3 x 230.48
+        # = 2,570.64. (Also the benchmark for the excluded-immigrant cases below.)
+        snap: 2570.64
         is_snap_eligible: true
 - name: snap_single_parent_1_child_15k_mid_phase_out (federal)
   period: 2026
@@ -474,10 +474,10 @@
     spm_units:
       spm_unit:
         # Mid-phase-out partial benefit: net = 15,000/12 x 0.8 - 209 = 791.00 ->
-        # EC 237.30 -> 546 - 237.30 = 308.70/month Jan-Sep; Oct-Dec: net 786.32
-        # -> EC 235.80 -> 558.24 - 235.80 = 322.44. Annual = 9 x 308.70 +
-        # 3 x 322.44 = 3,745.62. (TX TANF is 0 at this income.)
-        snap: 3_745.62
+        # EC 237.30 -> 546 - 237.30 = 308.70/month Jan-Sep; Oct-Dec: net 783.62
+        # -> EC 234.90 -> 565.28 - 234.90 = 330.38. Annual = 9 x 308.70 +
+        # 3 x 330.38 = 3,769.44. (TX TANF is 0 at this income.)
+        snap: 3769.44
         is_snap_eligible: true
 - name: snap_size_4_couple_2_children_20k (federal)
   period: 2026
@@ -553,9 +553,9 @@
       spm_unit:
         # Size 4 uses the higher standard deduction ($223): net = 1,666.67 x 0.8
         # - 223 = 1,110.33 -> EC 333.00 -> 994 - 333.00 = 661.00/month Jan-Sep;
-        # Oct-Dec: net 1,105.33 -> EC 331.50 -> 1,016.28 - 331.50 = 684.78.
-        # Annual = 9 x 661.00 + 3 x 684.78 = 8,003.34.
-        snap: 8_003.34
+        # Oct-Dec: net 1,102.46 -> EC 330.60 -> 1,029.10 - 330.60 = 698.50.
+        # Annual = 9 x 661.00 + 3 x 698.50 = 8,044.50.
+        snap: 8044.51
         is_snap_eligible: true
 - name: snap_shelter_deduction_capped_non_elderly (federal)
   period: 2026
@@ -613,9 +613,9 @@
         # pre-shelter net = 24,000/12 x 0.8 - 209 = 1,391.00; shelter expense =
         # 1,200 housing + 445 SUA = 1,645 - 0.5 x 1,391 = 949.50 -> capped at
         # 744 -> net = 647.00 -> EC 194.10 -> 546 - 194.10 = 351.90/month
-        # Jan-Sep; Oct-Dec (cap 760.68): 558.24 - 187.50 = 370.74.
-        # Annual = 9 x 351.90 + 3 x 370.74 = 4,279.32.
-        snap: 4_279.32
+        # Jan-Sep; Oct-Dec (cap 770.27): 565.28 - 183.90 = 381.38.
+        # Annual = 9 x 351.90 + 3 x 381.38 = 4,311.24.
+        snap: 4311.24
         is_snap_eligible: true
 - name: snap_shelter_deduction_uncapped_elderly (federal)
   period: 2026
@@ -672,9 +672,9 @@
         # Same unit as the previous case but the head is 60+, so the shelter
         # deduction is NOT capped: full 949.50 deducted -> net = 1,391.00 -
         # 949.50 = 441.50 -> EC 132.30 -> 546 - 132.30 = 413.70/month Jan-Sep;
-        # Oct-Dec: net 434.48 -> EC 130.20 -> 558.24 - 130.20 = 428.04.
-        # Annual = 9 x 413.70 + 3 x 428.04 = 5,007.42 (vs 4,279.32 capped).
-        snap: 5_007.42
+        # Oct-Dec: net 430.43 -> EC 129.00 -> 565.28 - 129.00 = 436.28.
+        # Annual = 9 x 413.70 + 3 x 436.28 = 5,032.14 (vs 4,311.24 capped).
+        snap: 5032.15
         is_snap_eligible: true
 - name: snap_head_immigration_lpr (federal)
   period: 2026
@@ -738,9 +738,9 @@
       spm_unit:
         # LPR head remains a full unit member post-OBBB (size 3): net =
         # 1,666.67 x 0.8 - 209 = 1,124.33 -> EC 337.20 -> 785 - 337.20 =
-        # 447.80/month Jan-Sep; Oct-Dec: 802.60 - 335.70 = 466.90.
-        # Annual = 9 x 447.80 + 3 x 466.90 = 5,430.90.
-        snap: 5_430.89
+        # 447.80/month Jan-Sep; Oct-Dec: 812.72 - 334.80 = 477.92.
+        # Annual = 9 x 447.80 + 3 x 477.92 = 5,463.96.
+        snap: 5463.97
         is_snap_eligible: true
 - name: snap_head_immigration_refugee_excluded_post_obbb (federal)
   period: 2026
@@ -804,10 +804,12 @@
       spm_unit:
         # OBBB (PL 119-21, eff. 2025-07-04) removed refugees from SNAP-eligible
         # immigration statuses: the refugee head is excluded (unit size 2, max
-        # allotment 546) but their earnings still count in full (they meet work
-        # requirements, so no income proration). Same math as the childless-
-        # couple 20k case: annual = 9 x 208.80 + 3 x 222.54 = 2,546.82.
-        snap: 2_546.82
+        # allotment 546) and their earnings count at the 2/3 prorated share
+        # under 7 CFR 273.11(c)(2)-(3) (TX prorates): counted earnings
+        # 1,111.11/mo, net income 679.89 -> EC = floor(679.89) x 0.3 = 203.70
+        # -> 546 - 203.70 = 342.30/month Jan-Sep; Oct-Dec (FY2027): 565.28 -
+        # 201.60 = 363.68. Annual = 9 x 342.30 + 3 x 363.68 = 4,171.74.
+        snap: 4171.75
         is_snap_eligible: true
 - name: snap_head_immigration_undocumented_excluded (federal)
   period: 2026
@@ -870,9 +872,9 @@
     spm_units:
       spm_unit:
         # Undocumented head is excluded from the unit (size 2) with earnings
-        # fully counted; identical arithmetic to the refugee case:
-        # annual = 9 x 208.80 + 3 x 222.54 = 2,546.82.
-        snap: 2_546.82
+        # counted at the 2/3 prorated share; identical arithmetic to the
+        # refugee case: annual = 9 x 342.30 + 3 x 363.68 = 4,171.74.
+        snap: 4171.75
         is_snap_eligible: true
 - name: snap_abawd_zero_hours_fails_work_requirements (federal)
   period: 2026
@@ -967,9 +969,9 @@
         # general-requirement compliance, flipping the unit to eligible
         # (without it this person is ineligible). Benefit: net = 13,000/12 -
         # 20% - 209 = 657.67 -> EC 197.10 -> 298 - 197.10 = 100.90/month
-        # Jan-Sep; Oct-Dec: 304.68 - 195.60 = 109.08.
-        # Annual = 9 x 100.90 + 3 x 109.08 = 1,235.34.
-        snap: 1_235.34
+        # Jan-Sep; Oct-Dec: 308.52 - 195.00 = 113.52.
+        # Annual = 9 x 100.90 + 3 x 113.52 = 1,248.66.
+        snap: 1248.67
         is_snap_eligible: true
 - name: snap_ineligible_student_sole_member (federal)
   period: 2026
@@ -1147,9 +1149,9 @@
         # TANF cash ($2,400/year override): TANF receipt confers categorical
         # eligibility, overriding the failed asset test. TANF also counts as
         # unearned income ($200/month): net = 1,124.33 + 200 = 1,324.33 -> EC
-        # 397.20 -> 785 - 397.20 = 387.80/month Jan-Sep; Oct-Dec: 802.60 -
-        # 395.70 = 406.90. Annual = 9 x 387.80 + 3 x 406.90 = 4,710.90.
-        snap: 4_710.89
+        # 397.20 -> 785 - 397.20 = 387.80/month Jan-Sep; Oct-Dec: 812.72 -
+        # 394.80 = 417.92. Annual = 9 x 387.80 + 3 x 417.92 = 4,743.96.
+        snap: 4743.97
         is_snap_eligible: true
 - name: snap_partner_override_snap_earned_and_unearned_income (federal)
   period: 2026
@@ -1220,9 +1222,9 @@
         # (2,400/year) inputs replace the model's own aggregation, so SNAP sees
         # earned 1,250/month (not the 1,500 implied by employment income) and
         # unearned 200/month. Net = 1,250 - 250 (20%) + 200 - 209 = 991.00 ->
-        # EC 297.30 -> 785 - 297.30 = 487.70/month Jan-Sep; Oct-Dec: 802.60 -
-        # 295.80 = 506.80. Annual = 9 x 487.70 + 3 x 506.80 = 5,909.70.
-        snap: 5_909.69
+        # EC 297.30 -> 785 - 297.30 = 487.70/month Jan-Sep; Oct-Dec: 812.72 -
+        # 294.90 = 517.82. Annual = 9 x 487.70 + 3 x 517.82 = 5,942.76.
+        snap: 5942.77
         is_snap_eligible: true
 - name: snap_negative_self_employment_income_robustness (federal)
   period: 2026
@@ -1278,10 +1280,10 @@
         # Robustness: a $6,000 self-employment LOSS does not offset wages in
         # SNAP earned income (floored at zero), so the benefit equals the
         # wages-only case: net = 18,000/12 x 0.8 - 209 = 991.00 -> EC 297.30 ->
-        # 546 - 297.30 = 248.70/month Jan-Sep; Oct-Dec: 558.24 - 295.80 =
-        # 262.44. Annual = 9 x 248.70 + 3 x 262.44 = 3,025.62 (no benefit
+        # 546 - 297.30 = 248.70/month Jan-Sep; Oct-Dec: 565.28 - 294.90 =
+        # 270.38. Annual = 9 x 248.70 + 3 x 270.38 = 3,049.44 (no benefit
         # inflation from negative income).
-        snap: 3_025.62
+        snap: 3049.44
         is_snap_eligible: true
 - name: snap_2025_single_parent_2_children_20k (federal)
   period: 2025
@@ -1421,7 +1423,66 @@
         # expense inputs) select TX's Limited Utility Allowance ($400 FY2026)
         # instead of the SUA: shelter expense = 600 housing + 400 LUA = 1,000 -
         # 0.5 x 1,124.33 = 437.83 (uncapped) -> net = 686.50 -> EC 205.80 ->
-        # 785 - 205.80 = 579.20/month Jan-Sep; Oct-Dec (LUA uprated to 408.97):
-        # 802.60 - 201.00 = 601.60. Annual = 9 x 579.20 + 3 x 601.60 = 7,017.60.
-        snap: 7_017.59
+        # 785 - 205.80 = 579.20/month Jan-Sep; Oct-Dec (LUA uprated to 414.13):
+        # 812.72 - 198.30 = 614.42. Annual = 9 x 579.20 + 3 x 614.42 = 7,056.06.
+        snap: 7056.07
+        is_snap_eligible: true
+
+- name: snap_ineligible_student_income_excluded_mixed_household (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        employment_income_before_lsr: 10_000
+    households:
+      household:
+        members: &id903
+        - head
+        - student
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id903
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id903
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id903
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_student:
+        members:
+        - student
+  output:
+    spm_units:
+      spm_unit:
+        # The ineligible student is a nonhousehold member (7 CFR 273.11(d)):
+        # their $10,000 earnings are excluded entirely and the unit size is 1;
+        # the 130%-FPG gross test passes only because of the exclusion, and
+        # the unit receives the 1-2 person minimum allotment.
+        snap: 288.61
         is_snap_eligible: true

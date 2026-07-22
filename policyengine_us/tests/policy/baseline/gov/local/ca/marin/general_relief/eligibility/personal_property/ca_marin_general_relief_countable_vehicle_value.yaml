@@ -1,0 +1,116 @@
+# The Standards exempt one motor vehicle used for transportation regardless
+# of value, and a second if used by the applicant as a home; further vehicles
+# count at market value (household-average value per vehicle).
+- name: Case 1, one vehicle is fully exempt regardless of value.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_countable_vehicle_value: 0
+
+- name: Case 2, second vehicle counts at market value.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Average value 4,000; one vehicle exempt, the second counts.
+    ca_marin_general_relief_countable_vehicle_value: 4_000
+
+- name: Case 3, second vehicle used as a home is exempt.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+        lives_in_vehicle: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_countable_vehicle_value: 0
+
+- name: Case 4, third vehicle counts even when one is used as a home.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 3
+        household_vehicles_value: 9_000
+        lives_in_vehicle: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Average value 3,000; two vehicles exempt, the third counts.
+    ca_marin_general_relief_countable_vehicle_value: 3_000
+
+- name: Case 5, no vehicles produce no countable vehicle value.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_countable_vehicle_value: 0
+
+# Regression: this year-defined formula resolves parameters at January 1, so
+# it must be computable for 2025, when the program takes effect mid-year.
+- name: Case 6, computable for 2025 with the second vehicle counting.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_countable_vehicle_value: 4_000

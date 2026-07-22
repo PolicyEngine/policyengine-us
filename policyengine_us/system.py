@@ -86,8 +86,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         super().__init__(entities, reform=reform)
         self.load_parameters(COUNTRY_DIR / "parameters")
         self.add_abolition_parameters()
-        if reform:
-            self.apply_reform_set(reform)
         self.parameters = set_irs_uprating_parameter(self.parameters)
         self.parameters = homogenize_parameter_structures(
             self.parameters, self.variables
@@ -97,6 +95,16 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = uprate_parameters(self.parameters)
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
+
+        if reform:
+            # Applied after the parameter processing pipeline so that values
+            # a reform inserts at future dates cannot act as defined values
+            # during uprating/interpolation, which would freeze the years
+            # between the last legislated value and the reform start at the
+            # last legislated nominal value (issue #9075) — and before
+            # structural-reform detection, which reads reformed parameter
+            # values.
+            self.apply_reform_set(reform)
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, start_instant

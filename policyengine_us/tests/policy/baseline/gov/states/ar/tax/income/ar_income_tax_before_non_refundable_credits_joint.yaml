@@ -121,3 +121,81 @@
     # Low income cap: 5_000
     # min(1_530, 5_000) = 1_530
     ar_income_tax_before_non_refundable_credits_joint: 1_530
+
+- name: AR 2021 MFJ with two dependents just above the low-income table cutoff uses the regular table (pe-us 9024)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 35_050
+      spouse:
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: AR
+  output:
+    # 2021 MFJ 2+ dependents low-income table ends at $32,200
+    # ("Above $32,200 use Standard or Itemized Deductions and Regular
+    # Income Tax Table"); regular table: 0.05 x 30,650 - 439.96 = 1,092.54.
+    # Before the fix a leaked 2024 row returned $765.
+    ar_income_tax_before_non_refundable_credits_joint: [1_092.54, 0, 0, 0]
+
+- name: AR 2021 MFJ with two dependents inside the low-income table keeps its table amount (monotonicity companion, pe-us 9024)
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 31_950
+      spouse:
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: AR
+  output:
+    # 2021 published row $31,901-$32,000 -> $921 (TaxTables_2021.pdf)
+    ar_income_tax_before_non_refundable_credits_joint: [921, 0, 0, 0]
+
+- name: AR 2024 MFJ with two dependents at the published last table row still gets 765 (pe-us 9024)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 35_050
+      spouse:
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: AR
+  output:
+    # 2024 published last row $35,001-$35,100 -> $765
+    ar_income_tax_before_non_refundable_credits_joint: [765, 0, 0, 0]

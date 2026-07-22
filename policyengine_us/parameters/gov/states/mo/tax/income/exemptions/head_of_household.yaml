@@ -6,7 +6,15 @@ metadata:
   reference:
     - title: RSMo 143.161(2) — Head of household additional exemption
       href: https://www.revisor.mo.gov/main/OneSection.aspx?section=143.161
+    - title: 2021 MO-1040 Instructions (Line 15 is the long-term care insurance deduction; the booklet has no head of household exemption line)
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8
+    - title: 2022 MO-1040 Instructions, Line 15
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=8
     - title: 2024 MO-1040 Instructions, Line 15
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=8
 values:
-  2021-01-01: 1_400
+  # The Department of Revenue provided no line for this exemption on the
+  # 2018-2021 forms; it (re)appeared as MO-1040 Line 15 on the 2022 form.
+  # Pre-2018 history, when the exemption was also claimable, is not modeled.
+  0000-01-01: 0
+  2022-01-01: 1_400

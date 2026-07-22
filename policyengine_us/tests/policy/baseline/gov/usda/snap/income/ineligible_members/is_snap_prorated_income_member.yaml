@@ -1,0 +1,75 @@
+- name: Case 1, undocumented member in a prorating state.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    meets_snap_work_requirements_person: true
+    state_code: TX
+  output:
+    is_snap_prorated_income_member: true
+
+- name: Case 2, undocumented member in a state that counts all income.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    meets_snap_work_requirements_person: true
+    state_code: MA
+  output:
+    is_snap_prorated_income_member: false
+
+- name: Case 3, refugee is prorated in every state after OBBBA.
+  period: 2026-01
+  input:
+    immigration_status: REFUGEE
+    meets_snap_work_requirements_person: true
+    state_code: MA
+  output:
+    is_snap_prorated_income_member: true
+
+- name: Case 4, citizen meeting work requirements is not prorated.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    meets_snap_work_requirements_person: true
+    state_code: TX
+  output:
+    is_snap_prorated_income_member: false
+
+- name: Case 5, citizen failing the ABAWD time limit is prorated.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    meets_snap_general_work_requirements: true
+    meets_snap_work_requirements_person: false
+    state_code: TX
+  output:
+    is_snap_prorated_income_member: true
+
+- name: Case 6, ineligible student is a nonhousehold member, not prorated.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    meets_snap_work_requirements_person: true
+    is_snap_ineligible_student: true
+    state_code: TX
+  output:
+    is_snap_prorated_income_member: false
+
+- name: Case 7, citizen sanctioned under the general work requirements is counted in full, not prorated.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    meets_snap_general_work_requirements: false
+    meets_snap_work_requirements_person: false
+    state_code: TX
+  output:
+    is_snap_prorated_income_member: false
+
+- name: Case 8, count-all state election governs an undocumented member who also fails the ABAWD time limit.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    meets_snap_general_work_requirements: true
+    meets_snap_work_requirements_person: false
+    state_code: MA
+  output:
+    is_snap_prorated_income_member: false

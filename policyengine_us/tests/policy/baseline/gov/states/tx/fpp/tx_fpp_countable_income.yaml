@@ -173,7 +173,8 @@
       person2:
         age: 35
         is_disabled: false
-        pre_subsidy_childcare_expenses: 2_400
+        is_tax_unit_dependent: true
+        care_expenses: 2_400
     households:
       household:
         members: [person1, person2]
@@ -192,7 +193,8 @@
       person2:
         age: 35
         is_disabled: true
-        pre_subsidy_childcare_expenses: 2_400
+        is_tax_unit_dependent: true
+        care_expenses: 2_400
     households:
       household:
         members: [person1, person2]

@@ -1,0 +1,23 @@
+description: The Department of Agriculture grants states discretion over counting the income of household members who are ineligible for the Supplemental Nutrition Assistance Program due to these immigration statuses.
+values:
+  2018-01-01:
+    # Statuses outside the excepted categories of 7 CFR 273.11(c)(3)(i)(A)-(G),
+    # for which states elect full counting, proration, or full counting under
+    # the gross income test only.
+    - UNDOCUMENTED
+    - DACA
+    - TPS
+    # Conditional entrants (INA 203(a)(7)) are not listed in the excepted
+    # categories of 273.11(c)(3)(i)(A)-(G).
+    - CONDITIONAL_ENTRANT
+metadata:
+  label: SNAP ineligible member state income counting discretion immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: 7 CFR 273.11(c)(3)(i)
+      href: https://www.law.cornell.edu/cfr/text/7/273.11#c_3_i
+    - title: 7 USC 2015(f) - Aliens
+      href: https://www.law.cornell.edu/uscode/text/7/2015#f
+    - title: SNAP State Options Report, 16th Edition
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-16th-state-options-report-june24.pdf#page=15

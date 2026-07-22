@@ -23,4 +23,9 @@ class va_taxable_income(Variable):
         cdcc_expense_deduction = tax_unit(
             "va_child_dependent_care_expense_deduction", period
         )
-        return max_(agi - total_deductions - cdcc_expense_deduction, 0)
+        # Virginia also allows the eligible educator expense deduction.
+        educator_deduction = tax_unit("va_educator_expense_deduction", period)
+        return max_(
+            agi - total_deductions - cdcc_expense_deduction - educator_deduction,
+            0,
+        )

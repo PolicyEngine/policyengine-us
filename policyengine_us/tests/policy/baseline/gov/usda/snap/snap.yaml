@@ -156,32 +156,27 @@
     snap_max_allotment: 291
     snap: 291
 
-- name: Case 6, ABAWD-time-limit-ineligible adult income counts in full for SNAP.
+- name: Case 6, ABAWD time-limit-ineligible adult income is prorated for SNAP.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        # Working 40 hours: meets ABAWD via hours; general met in baseline.
         age:
           2024: 35
         monthly_age: 35
         is_tax_unit_dependent: false
-        weekly_hours_worked_before_lsr: 40
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
       person2:
-        # Earns $12,000/yr but works 0 hours (e.g., lump-sum), no dependent child,
-        # in-band, not exempt: fails ABAWD. Needs leave the unit; income counts
-        # in full (273.11(c)(1) treatment) so disqualification cannot raise the benefit.
         age:
           2024: 30
         monthly_age: 30
         is_tax_unit_dependent: false
         employment_income:
           2024: 12_000
-        weekly_hours_worked_before_lsr: 0
-        is_disabled: false
-        is_pregnant: false
-        is_veteran: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -194,8 +189,52 @@
         state_code: TX
   output:
     snap_unit_size: 1
+    snap_prorated_income_fraction: 0.5
+    snap_income_counted_share: [1, 0.5]
+    snap_earned_income: 500
+    snap_gross_income: 500
+    snap: 230.40
+
+- name: Case 7, income of an adult sanctioned under the general work requirements is counted in full.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2024: 35
+        monthly_age: 35
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements: true
+        meets_snap_abawd_work_requirements: true
+      person2:
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        employment_income:
+          2024: 12_000
+        meets_snap_general_work_requirements: false
+        meets_snap_abawd_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_unit_size: 1
+    # 7 CFR 273.11(c)(1): income of members sanctioned under 273.7 counts
+    # in full, while the member is still excluded from the unit size.
+    snap_income_counted_share: [1, 1]
     snap_earned_income: 1_000
     snap_gross_income: 1_000
+    # Net income: $1,000 - $200 earned income deduction - $198 standard
+    # deduction = $602; benefit: $291 - 0.3 x $602 = $110.40.
     snap: 110.40
 
 # Acceptance-criteria integration tests for issue #8862 (person-level SNAP work
@@ -203,7 +242,7 @@
 # threshold 18, homeless/veteran exempt); ABAWD exemptions are set explicitly
 # false on the ABAWD failers so no unintended exemption triggers.
 
-- name: Case 7, issue example, unemployed non-disabled adult with a 10-year-old dependent is eligible.
+- name: Case 8, issue example, unemployed non-disabled adult with a 10-year-old dependent is eligible.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -247,7 +286,7 @@
     snap_max_allotment: 535
     snap: 535
 
-- name: Case 8, mixed household with no children, one working adult and one non-working ABAWD.
+- name: Case 9, mixed household with no children, one working adult and one non-working ABAWD.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -286,7 +325,7 @@
     is_snap_eligible: true
     snap_unit_size: 1
 
-- name: Case 9, single non-working non-disabled adult with no children is work-requirement ineligible.
+- name: Case 10, single non-working non-disabled adult with no children is work-requirement ineligible.
   period: 2024-01
   absolute_error_margin: 0.01
   input:

@@ -179,3 +179,27 @@
         members: [person1]
   output:
     ca_cc_general_assistance_eligible_person: false
+
+- name: Reported SSI receipt disqualifies despite zero computed benefits.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 400
+        ssi: 0
+        receives_ssi: true
+        social_security_disability: 0
+        unemployment_compensation: 0
+        ca_state_disability_insurance: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible_person: false

@@ -57,3 +57,33 @@
         tanf: 0
   output:
     meets_wic_categorical_eligibility: [true, false]
+
+- name: Reported TANF receipt entitles to WIC when computed benefits are zero.
+  period: 2022
+  input:
+    people:
+      mother:
+        medicaid_enrolled: 0
+    spm_units:
+      spm_unit:
+        members: [mother]
+        snap: 0
+        tanf: 0
+        receives_tanf: true
+  output:
+    meets_wic_categorical_eligibility: [true]
+
+- name: Reported SNAP receipt entitles to WIC when computed benefits are zero.
+  period: 2022
+  input:
+    people:
+      mother:
+        medicaid_enrolled: 0
+    spm_units:
+      spm_unit:
+        members: [mother]
+        snap: 0
+        tanf: 0
+        receives_snap: true
+  output:
+    meets_wic_categorical_eligibility: [true]

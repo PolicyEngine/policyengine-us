@@ -17,7 +17,10 @@
         state_code: DE
   output:
     # 2 exemptions × $110 = $220, all to spouse (more capacity)
-    de_personal_credit_indv: [0, 220]
+    # Each spouse's own $110 stays in their column (PIT-RES line 27a
+    # example: "$110 in each column if Filing Status 4"); only dependent
+    # credits are splittable, and this couple has none.
+    de_personal_credit_indv: [110, 110]
 
 - name: all credits to higher-capacity column (head)
   period: 2025
@@ -44,7 +47,9 @@
         state_code: DE
   output:
     # 4 exemptions × $110 = $440, all to head (more capacity)
-    de_personal_credit_indv: [440, 0, 0, 0]
+    # Own $110 per spouse is fixed; only the two dependents' credits are
+    # allocable, so the head column can receive at most 110 + 220 = 330.
+    de_personal_credit_indv: [330, 110, 0, 0]
 
 - name: tied capacity splits evenly
   period: 2025
