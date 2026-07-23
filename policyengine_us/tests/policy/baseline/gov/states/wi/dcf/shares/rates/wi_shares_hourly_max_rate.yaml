@@ -1,0 +1,147 @@
+# Wisconsin Shares hourly maximum rates by county, provider type, and child
+# age group, from the statewide maximum rate table effective 10/1/2025
+# (max-rates-statewide.pdf pages 26-40). Certified provider hourly maximums
+# equal 90% of the licensed family hourly maximum, rounded up to the cent
+# (Wis. Stat. s. 49.155(6)(b)-(c)); both certified cases below match the
+# dollar figures printed in Handbook Appendix II.
+- name: Case 1, Adams County licensed group rate for a one-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: ADAMS_COUNTY_WI
+  output:
+    wi_shares_hourly_max_rate: 10.15
+
+- name: Case 2, Milwaukee County licensed group rate for a three-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    wi_shares_hourly_max_rate: 9.72
+
+- name: Case 3, Milwaukee County licensed family rate for a three-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    wi_shares_hourly_max_rate: 8.15
+
+- name: Case 4, Ashland County certified rate for a four-year-old matches Handbook Appendix II.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 10
+        wi_shares_provider_type: CERTIFIED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: ASHLAND_COUNTY_WI
+  output:
+    # 90% of the 4.43 licensed family hourly rate = 3.987, rounded up to 3.99.
+    wi_shares_hourly_max_rate: 3.99
+
+- name: Case 5, Washburn County certified rate for a six-year-old matches Handbook Appendix II.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_hours_per_week: 10
+        wi_shares_provider_type: CERTIFIED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: WASHBURN_COUNTY_WI
+  output:
+    # 90% of the 4.86 licensed family hourly rate = 4.374, rounded UP to
+    # 4.38 (this cell distinguishes ceiling from nearest-cent rounding).
+    wi_shares_hourly_max_rate: 4.38
+
+- name: Case 6, provider type defaults to licensed group in Dane County for an infant.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: DANE_COUNTY_WI
+  output:
+    wi_shares_hourly_max_rate: 13.72
+
+- name: Case 7, disabled fifteen-year-old uses the 6 and older rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # The disability pathway keeps the child eligible through age 18; the
+    # rate table's 6 and older group applies.
+    wi_shares_hourly_max_rate: 7.86
+
+- name: Case 8, fifteen-year-old without a disability is not an eligible child and has no rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 15
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # defined_for wi_shares_eligible_child zeroes the rate.
+    wi_shares_hourly_max_rate: 0

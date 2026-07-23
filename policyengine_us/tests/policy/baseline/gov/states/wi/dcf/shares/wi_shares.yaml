@@ -1,0 +1,148 @@
+# Wisconsin Shares monthly subsidy: the sum over eligible children in care
+# of the per-child subsidy net of the child's copayment share, floored at
+# $0 per child. Wisconsin Shares Handbook (July 2026) Sections 18.2 and
+# 18.5. FPG is set explicitly (24,000/year = 2,000/month) so FPL ratios are
+# exact; Milwaukee County licensed group rates apply (three-year-old:
+# 9.72 hourly, 1,478.37 full-time monthly cell).
+- name: Case 1, working family at 100% FPL receives the full maximum rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    wi_shares_eligible: true
+    # min(9.72 x 153 = 1,487.16, 2,000, 1,478.37) = 1,478.37; no copay at
+    # 100% FPL.
+    wi_shares: 1_478.37
+
+- name: Case 2, a second child not in care adds no subsidy and does not change the copayment column.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+      person3:
+        age: 5
+        childcare_hours_per_week: 0  # No authorization.
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 48_000  # 2,000/month per child.
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Only one child has an authorization, so the one-child copay column
+    # applies at 115% FPL (1.03/hour), and only that child's 152 full-time
+    # copay hours count.
+    wi_shares_copay_per_hour: 1.03
+    wi_shares_copay: 156.56  # 1.03 x 152.
+    # Subsidy: 1,478.37 for the child in care, nothing for the other child.
+    # 1,478.37 - 156.56 = 1,321.81.
+    wi_shares: 1_321.81
+
+- name: Case 3, a self-employment loss does not inflate the benefit.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/month.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Negative income floors at zero: the family is income eligible with a
+    # $0 copayment, and the benefit stays capped at the maximum rate.
+    wi_shares_income_eligible: true
+    wi_shares_copay: 0
+    wi_shares: 1_478.37
+
+- name: Case 4, a foster child's family pays no copayment and receives the full subsidy.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    wi_shares_copay: 0
+    wi_shares: 1_478.37
+
+- name: Case 5, family with no income receives the maximum-rate subsidy with no copayment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0  # weekly_hours_worked_before_lsr defaults to 40, keeping the activity test satisfied.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Zero income is at or below 100% FPL: eligible, $0 copayment, and the
+    # subsidy stays capped at the full-time monthly cell.
+    wi_shares_eligible: true
+    wi_shares_copay: 0
+    wi_shares: 1_478.37
