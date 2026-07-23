@@ -1,0 +1,1 @@
+Fixed the federal mortgage interest deduction to use person-level home_mortgage_interest when the structured tax-unit inputs are absent, and to treat mortgage interest with no specified balance as fully deductible instead of non-deductible.
