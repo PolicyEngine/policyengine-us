@@ -1,3 +1,18 @@
+## [1.782.1] - 2026-07-23
+
+### Changed
+
+- Restructure the Colorado Income-Qualified Senior Housing Credit to gate on an in_effect parameter instead of zeroing off-year values, and remove its erroneous 2025 refundable-credits listing.
+
+### Fixed
+
+- Branched the Idaho aged or disabled credit versus deduction choice to select whichever yields lower Idaho income tax, instead of always taking the credit.
+- Fixed a crash in md_withheld_income_tax for Maryland households whose county is unknown by falling back to a default Maryland county.
+- Fixed the federal mortgage interest deduction to use person-level home_mortgage_interest when the structured tax-unit inputs are absent, and to treat mortgage interest with no specified balance as fully deductible instead of non-deductible.
+- Fixed the Vermont retirement income exemption so the 2025 income-based U.S. military retirement exclusion is not phased a second time through the CSRS band, and is no longer denied to military retirees with AGI above the CSRS threshold.
+- Corrected the 2025 Arkansas low-income tax table thresholds to use inclusive upper bounds, so each published income range and the cutoff to the regular table apply at the correct income.
+
+
 ## [1.782.0] - 2026-07-23
 
 ### Added
