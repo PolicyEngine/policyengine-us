@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OR, PA, RI, SC, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -626,6 +626,13 @@ programs:
         full_name: Nevada Child Care and Development Program
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: OR
+        status: complete
+        name: Oregon ERDC
+        full_name: Oregon Employment Related Day Care
+        variable: or_erdc
+        parameter_prefix: gov.states.or.delc.erdc
+        notes: Provider rate area is an input; automatic provider ZIP mapping is deferred
       - state: DC
         status: complete
         name: DC CCSP

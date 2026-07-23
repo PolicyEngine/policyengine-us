@@ -1,0 +1,26 @@
+# OAR 414-175-0035 counts unearned income such as Social Security benefits
+# under the Employment Related Day Care program.
+
+- name: Case 1, a caretaker's Social Security benefits count as unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        social_security: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Social Security 12,000/year = 1,000/month countable.
+    or_erdc_countable_income: 1_000

@@ -1,0 +1,100 @@
+- name: Household sizes above eight use the size-eight copay schedule.
+  period: 2027-01
+  input:
+    or_erdc_countable_income: 5_000
+    spm_unit_size: 9
+    state_code: OR
+  output:
+    or_erdc_copay: 5
+
+- name: Categorically eligible families have no copay.
+  period: 2027-01
+  input:
+    or_erdc_countable_income: 10_000
+    or_erdc_categorically_eligible: true
+    spm_unit_size: 2
+    state_code: OR
+  output:
+    or_erdc_copay: 0
+
+- name: Group size 2 copay just below the second bracket boundary.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 2_704
+    spm_unit_size: 2
+    state_code: OR
+  output:
+    or_erdc_copay: 5
+
+- name: Group size 2 copay at the second bracket boundary.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 2_705
+    spm_unit_size: 2
+    state_code: OR
+  output:
+    or_erdc_copay: 10
+
+- name: Group size 4 copay in the twenty-dollar bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 5_000
+    spm_unit_size: 4
+    state_code: OR
+  output:
+    or_erdc_copay: 20
+
+- name: Group size 5 copay in the ten-dollar bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 5_000
+    spm_unit_size: 5
+    state_code: OR
+  output:
+    or_erdc_copay: 10
+
+- name: Group size 6 copay in the twenty-five-dollar bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 6_500
+    spm_unit_size: 6
+    state_code: OR
+  output:
+    or_erdc_copay: 25
+
+- name: Group size 7 copay in the seventy-dollar bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 9_000
+    spm_unit_size: 7
+    state_code: OR
+  output:
+    or_erdc_copay: 70
+
+- name: Group size 8 copay in the highest bracket.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 11_000
+    spm_unit_size: 8
+    state_code: OR
+  output:
+    or_erdc_copay: 130
+
+- name: Group size 2 non-categorical family below the first paid bracket has no copay.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    or_erdc_countable_income: 1_500
+    spm_unit_size: 2
+    state_code: OR
+  output:
+    # 1,500/month is below the first paid bracket threshold of 1,804, so the
+    # non-categorical family owes no copay.
+    or_erdc_copay: 0
