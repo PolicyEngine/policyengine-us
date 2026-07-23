@@ -188,17 +188,33 @@
     # AGI $31,200 in 2025 Joint/2+ dep table: bracket $31,101 => amount $257
     ar_low_income_tax_joint: 257
 
-# Boundary cases pinning the issue #9068 fix: pre-2025 low-income-table
-# thresholds were keyed at the row UPPER bound (X_X00), one dollar low, and
-# have been corrected to the published FROM bound (X_X01). Published AR tables
-# list rows as "FROM $X,X01 TO $X,X00 inclusive". Cases use the Joint / two-or-
-# more-dependents column (JOINT, 2 dependents) so the numbers match issue #9068.
-- name: Case 11, 2024 joint 2+ dep at $35,000 boundary => $754.
+# These tables are evaluated with right=True, so thresholds are the inclusive
+# upper bounds of the preceding published range. The 2021 and 2024 cases pin
+# that established encoding; the 2025 cases cover the corrected boundaries.
+- name: Case 11, 2021 joint 2+ dep at the $32,101 lower boundary.
+  period: 2021
+  input:
+    people:
+      person1:
+        ar_agi_joint: 32_101
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 945
+
+- name: Case 12, 2024 joint 2+ dep at the $34,901 lower boundary.
   period: 2024
   input:
     people:
       person1:
-        ar_agi_joint: 35_000
+        ar_agi_joint: 34_901
     tax_units:
       tax_unit:
         members: [person1]
@@ -211,12 +227,12 @@
   output:
     ar_low_income_tax_joint: 754
 
-- name: Case 12, 2024 joint 2+ dep at $35,100 boundary => $765.
+- name: Case 13, 2024 joint 2+ dep at the $35,001 lower boundary.
   period: 2024
   input:
     people:
       person1:
-        ar_agi_joint: 35_100
+        ar_agi_joint: 35_001
     tax_units:
       tax_unit:
         members: [person1]
@@ -229,7 +245,7 @@
   output:
     ar_low_income_tax_joint: 765
 
-- name: Case 13, 2024 joint 2+ dep at $35,101 is above the cutoff => regular table.
+- name: Case 14, 2024 joint 2+ dep above the $35,100 cutoff.
   period: 2024
   input:
     people:
@@ -245,17 +261,14 @@
         members: [person1]
         state_code: AR
   output:
-    # The last low-income row is $35,001-$35,100 ($765); the published table
-    # sends income above $35,100 to the regular tax table, so $35,101 does not
-    # use the low-income table.
     ar_uses_low_income_tax_tables: false
 
-- name: Case 14, 2024 joint 2+ dep above cutoff => regular table (inf).
-  period: 2024
+- name: Case 15, 2025 joint 2+ dep at the first taxable lower boundary.
+  period: 2025
   input:
     people:
       person1:
-        ar_agi_joint: 35_102
+        ar_agi_joint: 29_723
     tax_units:
       tax_unit:
         members: [person1]
@@ -266,16 +279,14 @@
         members: [person1]
         state_code: AR
   output:
-    # Income above the published cutoff falls through to the regular tax table
-    # (the low-income table returns inf, so this filer does not use it).
-    ar_uses_low_income_tax_tables: false
+    ar_low_income_tax_joint: 111
 
-- name: Case 15, 2021 joint 2+ dep at $32,200 boundary => $945 (was regular before fix).
-  period: 2021
+- name: Case 16, 2025 joint 2+ dep at the $31,101 lower boundary.
+  period: 2025
   input:
     people:
       person1:
-        ar_agi_joint: 32_200
+        ar_agi_joint: 31_101
     tax_units:
       tax_unit:
         members: [person1]
@@ -286,6 +297,40 @@
         members: [person1]
         state_code: AR
   output:
-    # Pre-fix the $32_100-keyed cutoff kicked $32,200 to the regular table;
-    # published 2021 table keeps the $32,101-$32,200 row on the table at $945.
-    ar_low_income_tax_joint: 945
+    ar_low_income_tax_joint: 257
+
+- name: Case 17, 2025 joint 2+ dep at the final lower boundary.
+  period: 2025
+  input:
+    people:
+      person1:
+        ar_agi_joint: 36_001
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_low_income_tax_joint: 790
+
+- name: Case 18, 2025 joint 2+ dep above the $36,100 cutoff.
+  period: 2025
+  input:
+    people:
+      person1:
+        ar_agi_joint: 36_101
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+        tax_unit_dependents: 2
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    ar_uses_low_income_tax_tables: false
