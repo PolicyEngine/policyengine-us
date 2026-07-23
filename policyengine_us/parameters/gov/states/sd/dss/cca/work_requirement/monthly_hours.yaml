@@ -1,0 +1,20 @@
+description: South Dakota requires each employed or self-employed caretaker to establish at least this many work hours per month under the Child Care Assistance program.
+
+# The applicant must establish at least 80 work hours per month; employed and
+# self-employed applicants must also have earnings equivalent to the federal
+# minimum wage. Dated to the modeled program start month (2026-08-01; the
+# weekly rate era takes effect 8/3/2026).
+values:
+  2026-08-01: 80
+
+metadata:
+  unit: hour
+  period: month
+  label: South Dakota CCA caretaker monthly work hours requirement
+  reference:
+    - title: South Dakota BEES Child Care Assistance Policy Manual, Section 7.1 Minimum Work Hours/Wage
+      href: https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=35
+    - title: South Dakota BEES Child Care Assistance Policy Manual, Section 8.3.1 Earned Income
+      href: https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=37
+    - title: ARSD 67:47:01:03.01 Time requirements for work and education
+      href: https://sdlegislature.gov/Rules/Administrative/67:47:01:03.01

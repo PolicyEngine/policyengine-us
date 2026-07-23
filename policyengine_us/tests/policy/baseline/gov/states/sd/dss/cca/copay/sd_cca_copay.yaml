@@ -1,0 +1,274 @@
+# Tests for sd_cca_copay (SPMUnit, MONTH, USD).
+# The family co-payment is (monthly countable income - 170% of the monthly
+# federal poverty guideline) x 5%, floored at zero, capped at 12% of countable
+# income, then rounded down to a whole dollar. TANF waives the family amount;
+# foster/protective-services waivers apply only to the eligible covered child
+# (Sliding Fee Scale; BEES Section 9). The 12%
+# ceiling is defensive: with a 5% rate on income above the threshold it cannot
+# bind, so it is not exercised here (this mirrors the North Dakota co-pay
+# ceiling, which also does not bind).
+# Each household is otherwise eligible. spm_unit_fpg is pinned as an annual
+# input (24,000/yr -> 2,000/mo; 170% = 3,400/mo) so the threshold is exact;
+# countable income equals 96% of earned income after the 4% disregard.
+
+- name: Case 1, income below 170% FPL, no co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo gross; countable 2,880
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # countable 2,880 < 3,400 (170% FPL), so the co-payment is zero.
+    sd_cca_copay: 0
+
+- name: Case 2, income above 170% FPL, positive co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # 3,958.33/mo gross; countable 3,800
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # (3,800 - 3,400) x 5% = 20.00. 12% cap (0.12 x 3,800 = 456) not binding.
+    sd_cca_copay: 20
+
+- name: Case 3, TANF recipient, co-payment waived.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # would otherwise owe a 20 co-payment
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_copay: 0
+
+- name: Case 4, foster child in the unit, co-payment waived.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # would otherwise owe a 20 co-payment
+      person2:
+        age: 1
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_copay: 0
+
+- name: Case 5, countable income exactly at 170% FPL, no co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_500  # 3,541.67/mo gross; countable exactly 3,400
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # countable 3,400 = 170% FPL, so income above the threshold is 0: copay 0.
+    sd_cca_copay: 0
+
+- name: Case 6, self-employment loss, countable income floored, no co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -120_000  # -10,000/mo
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # countable income floors at 0, which is below the threshold: copay 0.
+    sd_cca_copay: 0
+
+- name: Case 7, enrolled high earner, co-payment is 5% of excess and below the 12% cap.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000  # 8,333.33/mo gross; countable 8,000
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # 170% FPL = 3,400/mo
+        hhs_smi: 120_000  # 10,000/mo; 85% = 8,500/mo continuing ceiling
+        is_sd_cca_enrolled: true  # continuing recipient stays eligible at 8,000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # copay = (8,000 - 3,400) x 5% = 230. The 12% cap (0.12 x 8,000 = 960)
+    # never binds: with a 5% marginal rate the copay share of income cannot
+    # reach 12%.
+    sd_cca_copay: 230
+
+- name: Case 8, protective-services child in the unit, co-payment waived.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # would otherwise owe a 20 co-payment
+      person2:
+        age: 1
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # The Sliding Fee Scale waives the co-payment for children determined to
+    # be in need of protective services.
+    sd_cca_copay: 0
+
+- name: Case 9, foster child waiver does not erase an ordinary child's copay.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500
+      person2:
+        age: 1
+      person3:
+        age: 2
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    # BEES Section 9.3 keeps the full family copay on the ordinary child.
+    sd_cca_copay: 20
+
+- name: Case 10, protective waiver does not erase an ordinary child's copay.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500
+      person2:
+        age: 1
+      person3:
+        age: 2
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+  output:
+    sd_cca_copay: 20
+
+- name: Case 11, calculated monthly copay rounds down to a whole dollar.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_512.50
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_countable_income: 3_801
+    # (3,801 - 3,400) x 5% = 20.05, rounded down under BEES Section 9.2.
+    sd_cca_copay: 20

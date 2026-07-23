@@ -196,6 +196,45 @@
     ri_cdcc: 0
     ri_income_tax: -398
 
+# Locks the "no-op for covered years" claim behind PR #9123: for 2021+,
+# refundable_percent = 1, so ri_refundable_eitc == ri_eitc and the swap to
+# ri_refundable_eitc in refundable.yaml leaves 2015+ behavior unchanged. Low
+# earner produces a real federal EITC that matches at 15% (ri_eitc), is fully
+# refundable, and flows through ri_refundable_credits into a negative
+# ri_income_tax. Existing RI integration cases are high-income with ~zero EITC,
+# so this exercises the ri_eitc -> ri_refundable_eitc -> ri_income_tax chain.
+- name: 2023 RI low-earner HOH with 1 child - refundable EITC flows to negative income tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: RI
+  output:
+    # Federal EITC = 3,995; RI match = 15% -> ri_eitc = 599.25.
+    # 2023 refundable_percent = 1, so ri_refundable_eitc == ri_eitc, it flows
+    # through ri_refundable_credits, and with zero pre-credit liability drives
+    # ri_income_tax to -599.25.
+    ri_eitc: 599.25
+    ri_refundable_eitc: 599.25
+    ri_income_tax: -599.25
+
 - name: 2027 RI CTC and high-income surtax apply in the same tax unit
   absolute_error_margin: 0.01
   period: 2027

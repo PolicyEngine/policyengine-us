@@ -1,0 +1,45 @@
+description: Ohio counts these income sources under the Publicly Funded Child Care program.
+values:
+  2022-02-27:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    - rental_income
+    # social_security already includes SSA disability, retirement, and
+    # survivor's benefits per 5180:2-16-03(H)(3)(b), so the component
+    # variables are not listed separately to avoid double-counting.
+    - social_security
+    - child_support_received
+    - alimony_income
+    - workers_compensation
+    - unemployment_compensation
+    - pension_income
+    # PolicyEngine records military retirement separately from pension_income;
+    # it is countable under the 5180:2-16-03(H)(1)-(2) gross-unearned-income
+    # catch-all.
+    - military_retirement_pay
+    - dividend_income
+    - interest_income
+    - veterans_benefits
+    # 5180:2-16-03(H)(3)(c): railroad disability, retirement, or survivor's
+    # benefits are countable unearned income.
+    - railroad_benefits
+    - oh_ccap_owf_basic_assistance
+    #
+    # Excluded sources (5180:2-16-03(F), (I)) — so simply not listed:
+    # - ssi (excluded per (I)(1)); the earned income of SSI recipients is
+    #   also excluded per (F)(8), modeled person-level in
+    #   oh_ccap_countable_income (cannot be expressed by a list omission).
+    # - foster care maintenance and adoption assistance (I)(2),(3) — no
+    #   PolicyEngine income variable.
+    # - SNAP allotments (I)(22), income tax refunds (I)(13), EITC (I)(15),
+    #   home energy assistance (I)(12), non-recurring lump sums (I)(23) — none
+    #   are in the PolicyEngine income-source list, so nothing to exclude.
+    #
+metadata:
+  unit: list
+  period: year
+  label: Ohio PFCC countable income sources
+  reference:
+    - title: OAC 5180:2-16-03 — Income eligibility requirements for publicly funded child care benefits
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03

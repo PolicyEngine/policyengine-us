@@ -122,3 +122,37 @@
         is_married: false
   output:
     basic_income_before_phase_out: 12_000
+
+- name: Disability supplement applies to a blind person (issue 3523)
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.amount.person.disability: 6_000
+    people:
+      blind_adult:
+        age: 40
+        is_blind: true
+        is_ssi_disabled: false
+      nondisabled_adult:
+        age: 40
+        is_blind: false
+        is_ssi_disabled: false
+    tax_units:
+      tax_unit:
+        members: [blind_adult, nondisabled_adult]
+  output:
+    basic_income_before_phase_out: 6_000
+
+- name: Disability supplement not double-counted for a blind and disabled person
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.amount.person.disability: 6_000
+    people:
+      blind_and_disabled_adult:
+        age: 40
+        is_blind: true
+        is_ssi_disabled: true
+    tax_units:
+      tax_unit:
+        members: [blind_and_disabled_adult]
+  output:
+    basic_income_before_phase_out: 6_000

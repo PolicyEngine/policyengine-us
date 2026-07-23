@@ -359,3 +359,60 @@
   output:
     co_ctc: 900
     co_income_tax: -1_803.2
+
+# End-to-end age-basis + ITIN integration test for the 2022-2023 refundable CTC.
+# Unlike the cases above (which inject co_federal_ctc / the child count directly),
+# this flows through the REAL derivation: co_ctc_qualifying_child ->
+# co_ctc_eligible_child -> co_ctc_eligible_children_count -> co_refundable_ctc.
+# The ITIN child (ssn_card_type OTHER_NON_CITIZEN) aged 4 has no SSN gate and is
+# under 6, so it IS counted and produces a NON-ZERO co_refundable_ctc; the
+# citizen child aged 10 (6-16) is EXCLUDED from the 2022-2023 age-basis count.
+# C.R.S. 39-22-129(2)(a) / (3.5)(a). This case FAILS if a federal child-SSN gate
+# is added or the under-6 age basis is broken.
+- name: Age-basis integration - ITIN under-6 child counted, citizen 6-16 child excluded (2022)
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 20_000
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      itin_child:
+        age: 4
+        is_tax_unit_dependent: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+      citizen_older_child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN
+        employment_income: 0
+        ssi: 0
+        wic: 0
+        deductible_mortgage_interest: 0
+    tax_units:
+      tax_unit:
+        members: [parent, itin_child, citizen_older_child]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [parent, itin_child, citizen_older_child]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [parent, itin_child, citizen_older_child]
+        state_fips: 8
+  output:
+    # Only the under-6 ITIN child is counted; the 6-16 citizen child is excluded.
+    co_ctc_eligible_children_count: 1
+    # Non-zero refundable CTC driven entirely by the ITIN under-6 child.
+    co_refundable_ctc: 1_500

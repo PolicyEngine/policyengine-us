@@ -1,0 +1,294 @@
+# Integration tests for South Dakota Child Care Assistance (CCA).
+# End-to-end scenarios verifying the eligibility chain, the region/age/level-of-
+# service rate lookup, the weekly-to-monthly conversion (weekly x 52/12), the
+# co-payment, the special-needs +75% rate, and the flow into sd_cca and the
+# federal child_care_subsidies total. All cases run in 2027, inside the weekly
+# rate era (effective 2026-08-03). Where a positive co-payment is exercised,
+# spm_unit_fpg is pinned (24,000/yr -> 2,000/mo; 170% FPL = 3,400/mo) so the
+# threshold does not depend on future uprating; countable income equals 96% of
+# earned income after the 4% disregard.
+
+- name: Case 1, single parent, infant in an urban licensed center, positive co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # 3,958.33/mo gross; countable 3,800
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # pins 170% FPL to 3,400/mo
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    sd_cca_region: URBAN
+    sd_cca_income_eligible: true
+    sd_cca_eligible: true
+    # urban licensed center full-time infant 276/wk; parent (not an eligible
+    # child) contributes 0.
+    sd_cca_weekly_rate: [0, 276]
+    # copay = (3,800 - 3,400) x 5% = 20.
+    sd_cca_copay: 20
+    # rate 276 x 52/12 = 1,196; capped at expenses (2,000); benefit = 1,196 - 20 = 1,176.
+    sd_cca: 1_176
+    sd_child_care_subsidies: 1_176
+    # sd_cca is registered as a federal child care subsidy program.
+    child_care_subsidies: 1_176
+
+- name: Case 2, rural family day care, low income, no co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 24_000  # 2,000/mo; countable 1,920, below 170% FPL
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD  # rural
+  output:
+    sd_cca_region: RURAL
+    sd_cca_eligible: true
+    sd_cca_copay: 0
+    # rural family day care full-time infant 140/wk x 52/12 = 606.67; copay 0.
+    sd_cca: 606.67
+
+- name: Case 3, two children in suburban family day care, rates summed.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000  # copay 0
+      person2:
+        age: 0.5  # infant, full time
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+      person3:
+        age: 4  # preschool, full time
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/mo, above the summed rate
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county_str: BROOKINGS_COUNTY_SD  # suburban
+  output:
+    sd_cca_region: SUBURBAN
+    sd_cca_eligible: true
+    # suburban family day care full-time: infant 153/wk + preschool 150/wk = 303/wk.
+    # 303 x 52/12 = 1,313; copay 0.
+    sd_cca: 1_313
+
+- name: Case 4, special-needs infant, urban family day care, base plus 75%.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # copay 0
+      person2:
+        age: 0.5  # infant
+        is_disabled: true
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    sd_cca_eligible: true
+    # urban family day care full-time infant 180/wk x 1.75 (special needs) = 315/wk.
+    sd_cca_weekly_rate: [0, 315]
+    # 315 x 52/12 = 1,365; capped at expenses (2,000); copay 0.
+    sd_cca: 1_365
+
+- name: Case 5, income too high, applicant ineligible.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 240_000  # 20,000/mo, above the income limit
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        is_sd_cca_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_income_eligible: false
+    sd_cca_eligible: false
+    sd_cca: 0
+    sd_child_care_subsidies: 0
+
+- name: Case 6, TANF recipient, co-payment waived.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # countable 3,800, would otherwise owe a copay
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_eligible: true
+    # copay waived for TANF recipients.
+    sd_cca_copay: 0
+    # urban family day care full-time infant 180/wk x 52/12 = 780; copay 0.
+    sd_cca: 780
+
+- name: Case 7, foster child, co-payment waived.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # countable 3,800, would otherwise owe a copay
+      person2:
+        age: 0.5  # infant in foster care
+        is_in_foster_care: true
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_eligible: true
+    # copay waived for foster/protective-services children.
+    sd_cca_copay: 0
+    sd_cca: 780
+
+- name: Case 8, enrolled family in the phase-out band, benefit net of co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo gross; countable 4,800
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # 209% FPL = 4,180/mo; 170% FPL = 3,400/mo
+        hhs_smi: 84_000  # 7,000/mo; 85% = 5,950/mo continuing ceiling
+        is_sd_cca_enrolled: true  # continuing recipient
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    # countable 4,800 exceeds the 4,180 applicant ceiling but is below the
+    # 5,950 continuing ceiling, so the enrolled family stays eligible.
+    sd_cca_income_eligible: true
+    sd_cca_eligible: true
+    # copay = (4,800 - 3,400) x 5% = 70.
+    sd_cca_copay: 70
+    # urban family day care full-time infant 180/wk x 52/12 = 780 monthly cap;
+    # expenses 2,000 higher, capped at 780; benefit = 780 - 70 = 710.
+    sd_cca: 710
+    sd_child_care_subsidies: 710
+
+- name: Case 9, zero-income family, full rate benefit, no co-payment.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30  # activity met through the CCDF activity test (e.g., training)
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    sd_cca_income_eligible: true
+    sd_cca_eligible: true
+    sd_cca_copay: 0  # countable income 0 is below the 170% FPL threshold
+    # urban family day care full-time infant 180/wk x 52/12 = 780; copay 0.
+    sd_cca: 780

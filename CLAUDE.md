@@ -10,12 +10,11 @@ At the START of each session, ask the user:
 1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
 2. "No, skip" - Proceed without loading skills
 
-**If Option 1 selected, load ALL of these:**
-- /policyengine-code-style
-- /policyengine-parameter-patterns
-- /policyengine-period-patterns
-- /policyengine-testing-patterns
-- /policyengine-variable-patterns
+**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
+- /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
+- /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
+
+If these skills are unavailable (plugin not installed), skip loading and proceed.
 
 ---
 

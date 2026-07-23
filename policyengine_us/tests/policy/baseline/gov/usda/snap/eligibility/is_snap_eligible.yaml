@@ -117,3 +117,49 @@
         meets_snap_categorical_eligibility: false
   output:
     is_snap_eligible: false
+
+- name: Issue 8133 - student and immigration eligibility split across two members (no single member both).
+  period: 2023-01
+  input:
+    people:
+      # Member A: eligible (non-ineligible) student, but NOT immigration eligible.
+      personA:
+        immigration_status: UNDOCUMENTED
+        is_snap_ineligible_student: false
+      # Member B: immigration eligible (CITIZEN), but IS an ineligible student.
+      personB:
+        immigration_status: CITIZEN
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [personA, personB]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+        meets_snap_work_requirements: true
+  output:
+    is_snap_eligible: false
+
+- name: Issue 8133 - single member is both a non-ineligible student and immigration eligible (happy path).
+  period: 2023-01
+  input:
+    people:
+      # Member A: eligible (non-ineligible) student AND immigration eligible.
+      personA:
+        immigration_status: CITIZEN
+        is_snap_ineligible_student: false
+      # Member B: ineligible student and not immigration eligible.
+      personB:
+        immigration_status: UNDOCUMENTED
+        is_snap_ineligible_student: true
+    spm_units:
+      spm_unit1:
+        members: [personA, personB]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+        meets_snap_work_requirements: true
+  output:
+    is_snap_eligible: true

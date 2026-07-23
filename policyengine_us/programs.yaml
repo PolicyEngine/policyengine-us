@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, PA, RI, SC, SD, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -641,6 +641,12 @@ programs:
         name: Delaware POC
         full_name: Delaware Purchase of Care
         variable: de_poc
+      - state: OH
+        status: complete
+        name: Ohio Publicly Funded Child Care
+        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care)
+        variable: oh_child_care_subsidies
+        parameter_prefix: gov.states.oh.dcy.ccap
       - state: PA
         status: complete
         name: Pennsylvania CCW
@@ -702,6 +708,12 @@ programs:
         full_name: New Mexico Child Care Assistance Program
         variable: nm_ccap
         parameter_prefix: gov.states.nm.ececd.ccap
+      - state: SD
+        status: in_progress
+        name: South Dakota CCA
+        full_name: South Dakota Child Care Assistance
+        variable: sd_cca
+        parameter_prefix: gov.states.sd.dss.cca
 
   - id: head_start
     name: Head Start
