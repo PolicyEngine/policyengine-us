@@ -1,0 +1,15 @@
+description: South Dakota limits eligibility to school-enrolled special-needs children below this age under the Child Care Assistance program.
+
+# A child incapable of self-care who is enrolled in school and expected to
+# graduate is eligible through age 18 (under 19) rather than the standard
+# special-needs limit of under 18 (Subsidy Manual, Section 3).
+values:
+  2026-08-01: 19
+
+metadata:
+  unit: year
+  period: year
+  label: South Dakota CCA school-enrolled special-needs child age limit
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 3 Eligibility Criteria
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=9

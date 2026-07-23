@@ -1,0 +1,296 @@
+# Tests for sd_cca_eligible_child (Person, MONTH, bool).
+# A child is eligible if under the applicable age limit AND a US citizen or
+# lawful permanent resident AND has a reason for care (every caretaker in an
+# approved activity, or the child receives protective services)
+# (ARSD 67:47:01:02, :03; Subsidy Manual Section 3):
+#   general limit: under 13
+#   special needs (disabled), not in school: under 18
+#   special needs (disabled), enrolled in school: under 19
+# is_in_k12_school imputes true for ages 5-17, so the disabled cases set it
+# explicitly to isolate the school vs non-school age limit. Each case sets
+# meets_ccdf_activity_test true so the age and immigration dimensions are
+# isolated; Cases 14-15 exercise the reason-for-care dimension.
+
+- name: Case 1, citizen infant, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 2, citizen age 12, under the 13 limit, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 3, citizen age 13, at the 13 limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 4, non-disabled age 14, over the general limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 14
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 5, disabled age 17 not in school, under the 18 limit, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_disabled: true
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 6, disabled age 18 not in school, at the 18 limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 7, disabled age 18 in school, under the 19 limit, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 8, disabled age 19 in school, at the 19 limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 9, lawful permanent resident infant, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 10, undocumented infant, immigration-ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 11, refugee infant, immigration-ineligible (narrower than federal CCDF).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1
+        immigration_status: REFUGEE
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: false
+
+- name: Case 12, newborn citizen, eligible (minimum age).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_eligible_child: true
+
+- name: Case 13, disabled age 13 not in school, eligible (disability extends past 13).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: true
+        is_in_k12_school: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Age 13 exceeds the general under-13 limit, but the special-needs limit
+    # (under 18, not in school) keeps the child eligible (contrast Case 3).
+    sd_cca_eligible_child: true
+
+- name: Case 14, protective-services infant with an inactive caretaker, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0  # not in any activity
+      person2:
+        age: 1
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Protective services is an independent reason for care
+    # (ARSD 67:47:01:03), so the child is eligible without caretaker activity.
+    sd_cca_eligible_child: [false, true]
+
+- name: Case 15, infant with an inactive caretaker and no protective services, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0  # not in any activity
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Age and immigration eligible, but no caretaker activity and no
+    # protective services: the child has no reason for care.
+    sd_cca_eligible_child: [false, false]

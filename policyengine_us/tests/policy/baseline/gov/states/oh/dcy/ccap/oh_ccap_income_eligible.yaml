@@ -1,0 +1,443 @@
+# Tests for oh_ccap_income_eligible (SPMUnit, MONTH).
+# DCY Procedure Letter 21: initial (intake) eligibility caps income at 145% FPG;
+# a special-needs child raises the initial limit to 150% FPG; a family in the
+# post-Ohio Works First transitional period (5180:6-1-02(F)) also uses 150%;
+# once enrolled, a family remains eligible until income exceeds 300% FPG.
+#
+# PL 21 uses the FPG in effect each October 1, so 2026-01 cases use the 2025
+# guidelines. Family of 3: annual 100% FPG = 26,650; monthly = 2,220.83.
+# Monthly standards round up to the next dollar (PL 21 table):
+#   145% = 3,221; 150% = 3,332; 300% = 6,663.
+# Income parameters start 2025-10-01, so cases use 2026.
+- name: Case 1, income below 145% FPG is income-eligible at intake.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month, below 3,221
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 2, income above 145% FPG fails intake when not enrolled.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+- name: Case 3, special-needs child raises the intake limit to 150% FPG.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_600  # 3,300/month, between 145% (3,221) and 150% (3,332)
+      person2:
+        age: 28
+      person3:
+        age: 3
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 4, enrolled family stays eligible up to 300% FPG.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 3,500/month, above 145% but below 300%
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 5, enrolled family above 300% FPG loses eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7,000/month, above 6,663
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+# 5180:6-1-02(B)(1) makes income eligibility purely FPL-based, and
+# 5180:2-16-03(H)(3)(j) counts OWF cash assistance as unearned income, so
+# TANF enrollment confers no categorical income eligibility.
+- name: Case 6, TANF enrollment does not bypass the income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7,000/month, far above 300%
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+# Edge cases.
+# 145% intake boundary (size 3): monthly standard = 3,221. Income is offset
+# from the exact boundary to avoid float32 drift flipping the comparison.
+- name: Case 7, income just below the 145% intake limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_400  # 3,200/month, just below 3,221
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 8, income just above the 145% intake limit fails at intake.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_880  # 3,240/month, just above 3,221
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+# 150% special-needs intake boundary (size 3): monthly standard = 3,332.
+- name: Case 9, special-needs family just below the 150% intake limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_840  # 3,320/month, just below 3,332
+      person2:
+        age: 28
+      person3:
+        age: 3
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 10, special-needs family just above the 150% intake limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_080  # 3,340/month, just above 3,332
+      person2:
+        age: 28
+      person3:
+        age: 3
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+# 300% ongoing boundary (size 3, enrolled): monthly standard = 6,663.
+- name: Case 11, enrolled family just below the 300% ongoing limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 79_800  # 6,650/month, just below 6,663
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 12, enrolled family just above the 300% ongoing limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_100  # 6,675/month, just above 6,663
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+# Minimum family size: a single parent with one child (size 2).
+# Annual 100% FPG = 21,150; monthly = 1,762.50; 145% standard = 2,556.
+- name: Case 13, smallest family (single parent, one child) just below 145%.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/month, below 2,556
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 14, smallest family above the 145% intake limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_000  # 2,750/month, above 2,556
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+- name: Case 15, zero income is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+# Transitional child care (5180:6-1-02(F)): a family in the 12 months after
+# Ohio Works First ends qualifies at intake up to 150% FPG (3,332 for size 3).
+- name: Case 16, transitional family between 145% and 150% FPG is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true
+
+- name: Case 17, transitional family above 150% FPG fails at intake.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_080  # 3,340/month, above 3,332
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+- name: Case 18, transitional 150% limit requires employment, not full-time study.
+  # 5180:6-1-02(F)(1)(a): transitional child care is employment-based; a
+  # non-working student caretaker keeps the ordinary 145% intake limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        is_full_time_student: true
+        weekly_hours_worked_before_lsr: 0
+        unemployment_compensation: 39_600  # 3,300/month, above 3,221
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: false
+
+- name: Case 19, a second caretaker may meet the activity rule through education.
+  # 5180:6-1-02(F)(1)(a) requires employment of the former OWF caretaker;
+  # it does not require every caretaker in the family to be employed.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
+        oh_ccap_owf_transitional: true
+      person2:
+        age: 28
+        is_tax_unit_spouse: true
+        is_full_time_student: true
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_income_eligible: true

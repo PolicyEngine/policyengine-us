@@ -1,0 +1,307 @@
+# Tests for oh_ccap_eligible (SPMUnit, MONTH).
+# Eligibility = has an eligible child AND (income-eligible AND asset-eligible
+# AND activity-eligible), OR protective care, OR homeless (each bypass still
+# requires an eligible child). The activity test (5180:6-1-02(B)(2)) requires
+# every caretaker to work or attend school full time; weekly_hours_worked
+# defaults to 40 via weekly_hours_worked_before_lsr, so cases that do not set
+# hours have working caretakers. Income parameters start 2025-10-01, so cases
+# use 2026.
+- name: Case 1, eligible child with low income and no excess assets.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+
+- name: Case 2, income-eligible family whose caretaker has no qualifying activity is ineligible.
+  # Blocking direction of the activity gate: the caretaker has zero work hours
+  # and is not a student, so the family fails 5180:6-1-02(B)(2).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30  # no earnings, no work hours, not a student
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+
+- name: Case 3, no eligible child means the family is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 14  # over age 13, not an eligible child
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+
+- name: Case 4, income above the intake limit makes the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000  # 10,000/month, far above 145% FPG
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+
+- name: Case 5, excess assets make the family ineligible.
+  # The CCDF asset cap is 1,000,000; assets above it fail the asset test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        bank_account_assets: 2_000_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+
+- name: Case 6, out-of-Ohio family is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    oh_ccap_eligible: false
+
+# Edge cases.
+# One eligible child plus one over-age child: the family is still eligible
+# because at least one child qualifies.
+- name: Case 7, one eligible child and one over-age child is still eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 4  # eligible
+        immigration_status: CITIZEN
+      person3:
+        age: 14  # over age 13, not an eligible child
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: [false, true, false]
+    oh_ccap_eligible: true
+
+# Smallest possible assistance unit: one adult and one eligible child.
+- name: Case 8, smallest family (single parent, one eligible child) is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+
+# Large family with multiple eligible children remains eligible when income is
+# below the (size-scaled) intake limit.
+- name: Case 9, large family with two eligible children is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2,500/month
+      person2:
+        age: 33
+        employment_income: 18_000  # 1,500/month — total 4,000/month
+      person3:
+        age: 1
+        immigration_status: CITIZEN
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+      person5:
+        age: 15
+        immigration_status: CITIZEN
+      person6:
+        age: 17
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: OH
+  output:
+    # Size 6 (Oct-2025 FPG vintage): monthly 100% FPG = 3,595.83; 145% intake
+    # standard = 5,214; income 4,000/month is below the limit.
+    oh_ccap_eligible_child: [false, false, true, true, false, false]
+    oh_ccap_eligible: true
+
+- name: Case 10, the supported Ohio CCAP rules do not apply before November 2025.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: false
+
+- name: Case 11, protective care bypasses income, assets, and activity tests.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 2_000_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_protective_care: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_eligible: true
+
+- name: Case 12, homeless family is exempt from the income and activity tests.
+  # 5180:6-1-02(H)(2): homelessness waives the income and activity
+  # requirements — this caretaker is over-income with no qualifying activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000  # 10,000/month, far above 145% FPG
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        is_homeless: true
+  output:
+    oh_ccap_eligible: true
+
+- name: Case 13, homeless family with excess assets still fails the asset test.
+  # 5180:6-1-02(H)(2) waives only the income and activity requirements for
+  # homeless families; unlike protective care (G)(1), the asset test applies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        bank_account_assets: 2_000_000
+      person2:
+        age: 3
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        is_homeless: true
+  output:
+    oh_ccap_eligible: false

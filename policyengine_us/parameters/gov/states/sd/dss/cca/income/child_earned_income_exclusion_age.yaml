@@ -1,0 +1,15 @@
+description: South Dakota excludes the earned income of children below this age from countable income under the Child Care Assistance program.
+
+# Earned income is counted only when received by an applicant or other countable
+# adult household member, so the earned income of children under 18 is excluded
+# (Subsidy Manual, Section 4 Income Types).
+values:
+  2026-08-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: South Dakota CCA child earned income exclusion age
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 4 Income Types
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=10

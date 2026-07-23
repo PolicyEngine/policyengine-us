@@ -1,0 +1,123 @@
+description: Ohio provides these maximum reimbursement rates for child care centers, day camps, preschool/school-age, and ODE programs under the Publicly Funded Child Care program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Ohio PFCC center maximum reimbursement rates
+  breakdown:
+    - oh_ccap_county_rate_category
+    - oh_ccap_child_age_group
+    - oh_ccap_time_category
+  reference:
+    - title: OAC 5180:6-1-10 Appendix A — Maximum reimbursement ceilings (centers/day camps/preschool-school-age/ODE)
+      href: https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/6/1/5180$6-1-10_PH_FF_N_APP1_20251020_1028.pdf#page=1
+
+# Full-time and part-time cells are weekly dollar amounts; hourly cells are
+# per-hour dollar amounts (applied to authorized hours in the variable).
+CATEGORY_1:
+  INFANT:
+    HOURLY:
+      2025-11-01: 10.4
+    PART_TIME:
+      2025-11-01: 144
+    FULL_TIME:
+      2025-11-01: 195
+  TODDLER:
+    HOURLY:
+      2025-11-01: 9.83
+    PART_TIME:
+      2025-11-01: 129.18
+    FULL_TIME:
+      2025-11-01: 180
+  PRESCHOOL:
+    HOURLY:
+      2025-11-01: 6.25
+    PART_TIME:
+      2025-11-01: 100
+    FULL_TIME:
+      2025-11-01: 160
+  SCHOOL_AGE:
+    HOURLY:
+      2025-11-01: 6
+    PART_TIME:
+      2025-11-01: 75
+    FULL_TIME:
+      2025-11-01: 107.71
+  SCHOOL_AGE_SUMMER:
+    HOURLY:
+      2025-11-01: 7.49
+    PART_TIME:
+      2025-11-01: 107.21
+    FULL_TIME:
+      2025-11-01: 155
+CATEGORY_2:
+  INFANT:
+    HOURLY:
+      2025-11-01: 10.21
+    PART_TIME:
+      2025-11-01: 175
+    FULL_TIME:
+      2025-11-01: 246.65
+  TODDLER:
+    HOURLY:
+      2025-11-01: 11.71
+    PART_TIME:
+      2025-11-01: 150
+    FULL_TIME:
+      2025-11-01: 220
+  PRESCHOOL:
+    HOURLY:
+      2025-11-01: 7.28
+    PART_TIME:
+      2025-11-01: 125
+    FULL_TIME:
+      2025-11-01: 190
+  SCHOOL_AGE:
+    HOURLY:
+      2025-11-01: 7
+    PART_TIME:
+      2025-11-01: 90
+    FULL_TIME:
+      2025-11-01: 130
+  SCHOOL_AGE_SUMMER:
+    HOURLY:
+      2025-11-01: 7.83
+    PART_TIME:
+      2025-11-01: 125
+    FULL_TIME:
+      2025-11-01: 177.45
+CATEGORY_3:
+  INFANT:
+    HOURLY:
+      2025-11-01: 13
+    PART_TIME:
+      2025-11-01: 220.69
+    FULL_TIME:
+      2025-11-01: 325
+  TODDLER:
+    HOURLY:
+      2025-11-01: 13
+    PART_TIME:
+      2025-11-01: 200
+    FULL_TIME:
+      2025-11-01: 292.15
+  PRESCHOOL:
+    HOURLY:
+      2025-11-01: 10
+    PART_TIME:
+      2025-11-01: 170
+    FULL_TIME:
+      2025-11-01: 258
+  SCHOOL_AGE:
+    HOURLY:
+      2025-11-01: 10
+    PART_TIME:
+      2025-11-01: 110
+    FULL_TIME:
+      2025-11-01: 165
+  SCHOOL_AGE_SUMMER:
+    HOURLY:
+      2025-11-01: 10.5
+    PART_TIME:
+      2025-11-01: 160
+    FULL_TIME:
+      2025-11-01: 235

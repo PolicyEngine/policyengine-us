@@ -1,3 +1,83 @@
+## [1.781.2] - 2026-07-23
+
+### Fixed
+
+- Gate the Arizona Families Tax Rebate on tax liability net of nonrefundable and refundable credits per SB 1734's definition, instead of tax before credits, with the $1 minimum-liability threshold now set as a parameter rather than a hard-coded literal.
+
+
+## [1.781.1] - 2026-07-23
+
+### Fixed
+
+- Fixed SNAP eligibility so the student and immigration-status filters must be satisfied by the same household member rather than by different members.
+
+
+## [1.781.0] - 2026-07-23
+
+### Added
+
+- South Dakota Child Care Assistance (CCA) program.
+
+
+## [1.780.1] - 2026-07-23
+
+### Fixed
+
+- Key the pre-2023 Iowa child and dependent care credit percentage on net income (IA 1040 line 26) rather than taxable income, and restore the pre-2021 45,000 dollar credit cutoff.
+
+
+## [1.780.0] - 2026-07-23
+
+### Added
+
+- Added Ohio Child Care Assistance Program (Publicly Funded Child Care).
+
+
+## [1.779.10] - 2026-07-23
+
+### Fixed
+
+- Colorado child tax credit refundable child count no longer imposes the federal child-SSN gate for 2022-2023, including ITIN children, and now qualifies children under six years of age rather than under seventeen, per C.R.S. 39-22-129(2)(a) and (3.5)(a).
+- Corrected the Minnesota Child Tax Credit and Working Family Credit to allow ITIN filers and qualifying children, per Minn. Stat. 290.0661 and 290.0671, which disapply IRC section 32(m).
+
+
+## [1.779.9] - 2026-07-23
+
+### Changed
+
+- Update CLAUDE.md skill-loading instructions to reference current policyengine-claude plugin skills instead of removed skill names.
+
+
+## [1.779.8] - 2026-07-23
+
+### Fixed
+
+- Restrict the childless EITC age test to the tax unit head and spouse, excluding dependents, per IRC § 32(c)(1)(A)(ii)(II).
+
+
+## [1.779.7] - 2026-07-22
+
+### Fixed
+
+- Fixed the Colorado sales tax refund to pay the single per-person amount when only one spouse of a joint return is eligible, instead of always doubling for joint returns.
+- Corrected the medicaid_rating_area lookup comment to match the code (county first, then three-digit zip code fallback, defaulting to 1).
+- Applied Rhode Island's pre-2015 partial (15%) refundability of the earned income tax credit amount exceeding the tax liability.
+
+
+## [1.779.6] - 2026-07-22
+
+### Fixed
+
+- Applied the basic income disability supplement to blind people in household simulations by including is_blind alongside is_ssi_disabled.
+
+
+## [1.779.5] - 2026-07-22
+
+### Fixed
+
+- Fixed a misspelled Westchester County, NY key in the CCDF copay percent parameter so the county's 27% copay is applied instead of defaulting to 100%.
+
+
 ## [1.779.4] - 2026-07-22
 
 ### Fixed

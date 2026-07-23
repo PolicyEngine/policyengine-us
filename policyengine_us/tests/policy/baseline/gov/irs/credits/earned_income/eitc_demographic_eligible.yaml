@@ -26,6 +26,93 @@
   output:
     eitc_demographic_eligible: true
 
+- name: Childless 22-year-old with a 60-year-old dependent parent is not eligible - a dependent's age does not satisfy IRC 32(c)(1)(A)(ii)(II).
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+      parent:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+  output:
+    eitc_demographic_eligible: false
+
+- name: Childless 23-year-old filing jointly with a 30-year-old spouse is eligible - either spouse can satisfy the age test.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 23
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    eitc_demographic_eligible: true
+
+- name: Childless 64-year-old is eligible - upper bound of the age window.
+  period: 2025
+  input:
+    age: 64
+  output:
+    eitc_demographic_eligible: true
+
+- name: Childless 65-year-old is not eligible - has attained age 65 before the close of the taxable year.
+  period: 2025
+  input:
+    age: 65
+  output:
+    eitc_demographic_eligible: false
+
+- name: Childless joint filers aged 22 and 23 are not eligible - neither spouse is in the age window.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 23
+      spouse:
+        age: 22
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    eitc_demographic_eligible: false
+
+- name: Childless 40-year-old with a 70-year-old dependent parent is eligible - the filer's own age qualifies and the dependent's age is ignored.
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+  output:
+    eitc_demographic_eligible: true
+
+- name: 70-year-old with a qualifying child is eligible - the age test does not apply to filers with children.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+      child:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    eitc_demographic_eligible: true
+
 - name: Non-student in 2021 eligible at age 19.
   period: 2021
   input:
