@@ -1,0 +1,204 @@
+# Tests for ut_ccap_market_rate (Person, MONTH, USD).
+# Table 3, "Maximum Monthly Child Care Payments Based on Monthly Local
+# Market Rates", effective October 1, 2024 (R986-700-713(1)). Statewide
+# full-time monthly maximums per child, by provider type and age band.
+# Every provider type and every age band is covered by at least one case.
+
+- name: Case 1, licensed center, under two.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 1_230
+
+- name: Case 2, licensed center, two year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 992
+
+- name: Case 3, licensed center, three year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 900
+
+- name: Case 4, licensed center, four year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 875
+
+- name: Case 5, licensed center, five year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 5
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 825
+
+- name: Case 6, licensed center, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 660
+
+- name: Case 7, licensed family home, under two.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        ut_ccap_provider_type: LICENSED_FAMILY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 850
+
+- name: Case 8, licensed family home, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        ut_ccap_provider_type: LICENSED_FAMILY_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 640
+
+- name: Case 9, license exempt center, three year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ut_ccap_provider_type: LICENSE_EXEMPT_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 596
+
+- name: Case 10, license exempt home, school age.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        ut_ccap_provider_type: LICENSE_EXEMPT_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 385
+
+- name: Case 11, licensed commercial preschool, four year old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ut_ccap_provider_type: LICENSED_COMMERCIAL_PRESCHOOL
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 416
+
+- name: Case 12, license exempt home, under two.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        ut_ccap_provider_type: LICENSE_EXEMPT_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_market_rate: 495
+
+- name: Case 13, an ineligible child carries no market rate cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 14
+        is_disabled: false  # over the age 13 limit, not special needs
+        ut_ccap_provider_type: LICENSED_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # The variable is defined only for CCAP-eligible children, so an
+    # ineligible 14-year-old contributes nothing to the family's pooled
+    # market rate cap.
+    ut_ccap_market_rate: 0

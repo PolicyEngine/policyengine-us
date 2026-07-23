@@ -1,0 +1,250 @@
+# Tests for ut_ccap_copay (SPMUnit, MONTH, USD).
+# Table 4 (effective April 1, 2026): the monthly copayment is a sliding
+# scale by household size (2-12+), countable income group (1-16), and the
+# number of children receiving the subsidy (one, two, or more than two).
+# Group 1 has no copayment (R986-700-707(5)(a)). Countable income is set
+# directly to pin the income group.
+
+- name: Case 1, size 2 in income group 1 pays no copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 1_500  # group 1 (at or below 1,763)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_copay: 0
+
+- name: Case 2, size 2 in income group 2 with one child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 2_000  # group 2 (1,763.01-2,082)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_copay: 18
+
+- name: Case 3, size 3 in income group 2 with one child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ut_ccap_countable_income: 2_500  # group 2 (2,221.01-2,610)
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ut_ccap_copay: 22
+
+- name: Case 4, size 3 in income group 2 with two children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ut_ccap_countable_income: 2_500  # group 2 (2,221.01-2,610)
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Same household size and income group as Case 3, but the two-child
+    # column applies: 28 instead of 22.
+    ut_ccap_copay: 28
+
+- name: Case 5, size 4 in income group 2 with three children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 4
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 3_000  # group 2 (2,679.01-3,137)
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_copay: 40
+
+- name: Case 6, size 4 in income group 9 with two children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+      person4:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 6_000  # group 9 (5,883.01-6,128)
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_copay: 309
+
+- name: Case 7, size 5 in income group 15 with three children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 2
+      person4:
+        age: 5
+      person5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ut_ccap_countable_income: 9_000  # group 15 (8,815.01-9,242)
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: UT
+  output:
+    ut_ccap_copay: 573
+
+- name: Case 8, size 12 in income group 16 with three or more children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+      person12:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        ut_ccap_countable_income: 12_000  # group 16 (11,951.01-12,502)
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12]
+        state_code: UT
+  output:
+    ut_ccap_copay: 837
+
+- name: Case 9, income above the group 16 bound uses the group 16 copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 6_000  # above the size 2 group 16 bound of 5,668
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # The copayment lookup stays defined above the schedule's top bound
+    # (income eligibility is enforced separately): size 2, group 16, one
+    # child -> 352.
+    ut_ccap_copay: 352
+
+- name: Case 10, single adult clamps to the size 2 schedule.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ut_ccap_countable_income: 2_000  # size 2 column group 2 (1,763.01-2,082)
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # A one-person unit (no eligible child, so never actually eligible)
+    # floors to the size 2 row and the one-child column without erroring:
+    # size 2, group 2, one child -> 18.
+    ut_ccap_copay: 18

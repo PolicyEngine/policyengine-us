@@ -1,0 +1,92 @@
+description: Utah caps the monthly child care payment at these local market rates under the Child Care Assistance program.
+
+# Table 3, "Maximum Monthly Child Care Payments Based on Monthly Local
+# Market Rates", effective October 1, 2024. The 2020 entry is placed at
+# PolicyEngine's backdating floor; earlier editions of Table 3 are not
+# encoded, so prior periods use this table as an approximation.
+#
+# Statewide full-time monthly maximums per child, by provider type and
+# child age (R986-700-713(1)). The License Exempt home (family, friend,
+# and neighbor) and Licensed Commercial Preschool rows publish identical
+# rates but are distinct provider categories in the table.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Utah CCAP maximum monthly local market rates
+  breakdown:
+    - ut_ccap_provider_type
+    - ut_ccap_age_group
+  breakdown_labels:
+    - Provider type
+    - Child age group
+  reference:
+    - title: Utah DWS Table 3 - Maximum Monthly Child Care Payments (effective October 1, 2024)
+      href: https://jobs.utah.gov/occ/provider/table30824.pdf
+    - title: Utah Admin. Code R986-700-713(1)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-713
+
+LICENSE_EXEMPT_HOME:
+  UNDER_TWO:
+    2020-01-01: 495
+  TWO_YEAR_OLD:
+    2020-01-01: 443
+  THREE_YEAR_OLD:
+    2020-01-01: 437
+  FOUR_YEAR_OLD:
+    2020-01-01: 416
+  FIVE_YEAR_OLD:
+    2020-01-01: 413
+  SCHOOL_AGE:
+    2020-01-01: 385
+LICENSED_COMMERCIAL_PRESCHOOL:
+  UNDER_TWO:
+    2020-01-01: 495
+  TWO_YEAR_OLD:
+    2020-01-01: 443
+  THREE_YEAR_OLD:
+    2020-01-01: 437
+  FOUR_YEAR_OLD:
+    2020-01-01: 416
+  FIVE_YEAR_OLD:
+    2020-01-01: 413
+  SCHOOL_AGE:
+    2020-01-01: 385
+LICENSE_EXEMPT_CENTER:
+  UNDER_TWO:
+    2020-01-01: 675
+  TWO_YEAR_OLD:
+    2020-01-01: 604
+  THREE_YEAR_OLD:
+    2020-01-01: 596
+  FOUR_YEAR_OLD:
+    2020-01-01: 567
+  FIVE_YEAR_OLD:
+    2020-01-01: 563
+  SCHOOL_AGE:
+    2020-01-01: 525
+LICENSED_FAMILY_HOME:
+  UNDER_TWO:
+    2020-01-01: 850
+  TWO_YEAR_OLD:
+    2020-01-01: 750
+  THREE_YEAR_OLD:
+    2020-01-01: 725
+  FOUR_YEAR_OLD:
+    2020-01-01: 710
+  FIVE_YEAR_OLD:
+    2020-01-01: 700
+  SCHOOL_AGE:
+    2020-01-01: 640
+LICENSED_CENTER:
+  UNDER_TWO:
+    2020-01-01: 1_230
+  TWO_YEAR_OLD:
+    2020-01-01: 992
+  THREE_YEAR_OLD:
+    2020-01-01: 900
+  FOUR_YEAR_OLD:
+    2020-01-01: 875
+  FIVE_YEAR_OLD:
+    2020-01-01: 825
+  SCHOOL_AGE:
+    2020-01-01: 660
