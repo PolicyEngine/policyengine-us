@@ -1,0 +1,1 @@
+Fixed the Vermont retirement income exemption so the 2025 income-based U.S. military retirement exclusion is not phased a second time through the CSRS band, and is no longer denied to military retirees with AGI above the CSRS threshold.
