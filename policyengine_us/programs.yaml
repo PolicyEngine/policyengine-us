@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, PA, RI, SC, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, PA, RI, SC, TX, VA, VT, WA, WV, WY
     state_implementations:
       - state: AK
         status: complete
@@ -702,6 +702,12 @@ programs:
         full_name: New Mexico Child Care Assistance Program
         variable: nm_ccap
         parameter_prefix: gov.states.nm.ececd.ccap
+      - state: WY
+        status: complete
+        name: Wyoming CCAP
+        full_name: Wyoming Child Care, Purchase of Service
+        variable: wy_ccap
+        parameter_prefix: gov.states.wy.dfs.ccap
 
   - id: head_start
     name: Head Start

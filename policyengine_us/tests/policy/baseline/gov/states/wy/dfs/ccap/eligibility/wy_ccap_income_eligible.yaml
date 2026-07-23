@@ -1,0 +1,204 @@
+# Unit tests for wy_ccap_income_eligible (SPMUnit, MONTH, bool).
+# Manual §1101.A: initial applications must be at Sliding Fee Scale Step 4 or
+# below (175% of the federal poverty guideline); Manual §1201: units already
+# enrolled (wy_ccap_enrolled) may continue through Step 6 (225%). Manual §502:
+# POWER and Tribal TANF recipients are categorically eligible.
+# Every case uses a family of four (two parents, two children): 2026 FPG =
+# 15_960 + 3 x 5_680 = 33_000 per year = 2_750 per month.
+#   Step 4 initial limit: 1.75 x 2_750 = 4_812.50 per month.
+#   Step 6 continued limit: 2.25 x 2_750 = 6_187.50 per month.
+# Countable income = employment / 12 - 200 earned income disregard (one
+# earner), so annual employment of (limit + 200) x 12 lands exactly on the
+# limit; the +/- 12 cases move countable income one dollar per month.
+- name: Case 1, countable income exactly at the 175 percent initial limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 60_150 / 12 = 5_012.50 - 200 = 4_812.50 = 1.75 x 2_750.
+        employment_income: 60_150
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 2, one dollar per month above the initial limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 60_162 / 12 = 5_013.50 - 200 = 4_813.50 > 4_812.50.
+        employment_income: 60_162
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: false
+
+- name: Case 3, one dollar per month below the initial limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 60_138 / 12 = 5_011.50 - 200 = 4_811.50 < 4_812.50.
+        employment_income: 60_138
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 4, an enrolled unit exactly at the 225 percent continued limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 76_650 / 12 = 6_387.50 - 200 = 6_187.50 = 2.25 x 2_750.
+        employment_income: 76_650
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 5, the same income without enrollment fails the initial limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # Countable 6_187.50 > 4_812.50 initial limit; not enrolled.
+        employment_income: 76_650
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: false
+
+- name: Case 6, an enrolled unit one dollar per month above the continued limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 76_662 / 12 = 6_388.50 - 200 = 6_188.50 > 6_187.50.
+        employment_income: 76_662
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: false
+
+- name: Case 7, a POWER recipient is categorically eligible despite income above every limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 120_000 / 12 = 10_000 - 200 = 9_800 > 6_187.50.
+        employment_income: 120_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 8, a unit with no income is eligible at Step 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true

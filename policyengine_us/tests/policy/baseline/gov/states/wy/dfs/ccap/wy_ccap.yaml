@@ -1,0 +1,169 @@
+# Unit tests for wy_ccap (SPMUnit, MONTH, USD).
+# Rules Ch. 1 §9(c) / Manual §1101.M: benefit = sum over eligible children of
+# min(Table I maximum rate, provider's actual daily charge) x attended days,
+# minus the family copay, floored at zero.
+# Baseline family of two (parent age 30, child age 3 in center care 8 hours
+# per day, 10 days per month): 2026 FPG = 15_960 + 5_680 = 21_640 per year =
+# 1_803.33 per month; Step 4 initial limit 1.75 x 1_803.33 = 3_155.83.
+# The center full-day rate for the 2-3 year band is $32.00.
+- name: Case 1, rate-capped care minus a Step 3 copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 30_000 / 12 = 2_500 - 200 = 2_300 countable; ratio
+        # 2_300 / 1_803.33 = 1.275 lands in Step 3 (full-day copay 1.76).
+        employment_income: 30_000
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        # 6_000 / 12 = 500 per month / 10 days = 50 per day > 32 rate.
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # 32 x 10 days = 320 reimbursement - 17.60 copay = 302.40.
+    wy_ccap: 302.4
+
+- name: Case 2, the provider's lower charge caps the reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # Step 3, as in Case 1
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        # 3_000 / 12 = 250 per month / 10 days = 25 per day < 32 rate.
+        pre_subsidy_childcare_expenses: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # 25 x 10 days = 250 reimbursement - 17.60 copay = 232.40.
+    wy_ccap: 232.4
+
+- name: Case 3, the benefit floors at zero when the copay exceeds the reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 38_400 / 12 = 3_200 - 200 = 3_000 countable; ratio
+        # 3_000 / 1_803.33 = 1.664 lands in Step 4 (full-day copay 6.40).
+        employment_income: 38_400
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        # 600 / 12 = 50 per month / 10 days = 5 per day; reimbursement
+        # 5 x 10 = 50 < copay 6.40 x 10 = 64.
+        pre_subsidy_childcare_expenses: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap: 0
+
+- name: Case 4, no attended days means no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 0
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap: 0
+
+- name: Case 5, an income-ineligible unit receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 60_000 / 12 = 5_000 - 200 = 4_800 > 3_155.83 initial limit.
+        employment_income: 60_000
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_eligible: false
+    wy_ccap: 0
+
+- name: Case 6, a large self-employment loss cannot inflate the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        # -7_500 per month floors the parent's countable earnings at 0, so
+        # the unit lands at Step 1 with no copay; the benefit stays capped
+        # at the Table I rate times attended days.
+        self_employment_income: -90_000
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 0
+    # 32 x 10 days = 320 reimbursement - 0 copay, not millions.
+    wy_ccap: 320

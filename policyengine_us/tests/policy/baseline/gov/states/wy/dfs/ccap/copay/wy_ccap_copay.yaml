@@ -1,0 +1,350 @@
+# Unit tests for wy_ccap_copay (SPMUnit, MONTH, USD).
+# Table I: a flat daily DFS parental copay per child by Sliding Fee Scale
+# step and part/full day (part/full): Step 1 (<=100% FPG) 0/0, Step 2 (125%)
+# 0.44/0.88, Step 3 (150%) 0.88/1.76, Step 4 (175%) 3.20/6.40, Step 5 (200%)
+# 4.68/9.36, Step 6 (225%) 6.84/13.68. The family copay is capped at 7% of
+# gross income (CCDF Plan 3.1.1) and waived for foster/protective-services
+# children (W.S. 42-2-103(f)(i)(A), Plan 3.3.1).
+# Baseline family of four (two parents, child age 3 in care 10 days per
+# month, child age 8 not in care): 2026 FPG = 33_000 per year = 2_750 per
+# month. Countable income = employment / 12 - 200 (one earner). The variable
+# is defined_for wy_ccap_eligible; parents' default 40 weekly work hours
+# keep every unit activity eligible.
+- name: Case 1, a unit with no income at Step 1 owes no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 0
+
+- name: Case 2, Step 2 part-day copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 38_400 / 12 = 3_200 - 200 = 3_000; ratio 3_000 / 2_750 = 1.091
+        # lands in Step 2 (above 100% through 125%).
+        employment_income: 38_400
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 4  # part day
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 4.4  # 0.44 x 10 days
+
+- name: Case 3, the full-day copay is twice the part-day copay at the same step.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_400  # Step 2, as in Case 2
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8  # full day
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 8.8  # 0.88 x 10 days
+
+- name: Case 4, Step 3 full-day copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 50_400 / 12 = 4_200 - 200 = 4_000; ratio 4_000 / 2_750 = 1.455
+        # lands in Step 3 (above 125% through 150%).
+        employment_income: 50_400
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 17.6  # 1.76 x 10 days
+
+- name: Case 5, Step 4 full-day copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 56_400 / 12 = 4_700 - 200 = 4_500; ratio 4_500 / 2_750 = 1.636
+        # lands in Step 4 (above 150% through 175%).
+        employment_income: 56_400
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 64  # 6.40 x 10 days
+
+- name: Case 6, Step 5 full-day copay for an enrolled unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 62_400 / 12 = 5_200 - 200 = 5_000; ratio 5_000 / 2_750 = 1.818
+        # lands in Step 5 (above 175% through 200%), reachable only while
+        # enrolled.
+        employment_income: 62_400
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 93.6  # 9.36 x 10 days
+
+- name: Case 7, Step 6 full-day copay for an enrolled unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 74_400 / 12 = 6_200 - 200 = 6_000; ratio 6_000 / 2_750 = 2.182
+        # lands in Step 6 (above 200% through 225%).
+        employment_income: 74_400
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 136.8  # 13.68 x 10 days
+
+- name: Case 8, the copay is charged per child by each child's own day length.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 50_400  # Step 3, as in Case 4
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8  # full day: 1.76 per day
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 8
+        childcare_hours_per_day: 4  # part day: 0.88 per day
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 26.4  # (1.76 + 0.88) x 10 days
+
+- name: Case 9, the copay is waived when a child is in foster care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 56_400  # Step 4 income, would owe 64
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        is_in_foster_care: true
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 0
+
+- name: Case 10, the copay is waived for a protective-services child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 56_400  # Step 4 income, would owe 64
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        receives_or_needs_protective_services: true
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 0
+
+- name: Case 11, the family copay is capped at 7 percent of gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # Single parent, three children in care: 69_000 / 12 = 5_750 gross;
+        # countable 5_550; ratio 5_550 / 2_750 = 2.018 lands in Step 6.
+        # Uncapped copay 3 x 13.68 x 10 = 410.40 exceeds the cap
+        # 0.07 x 5_750 = 402.50.
+        employment_income: 69_000
+      person2:
+        age: 2
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person3:
+        age: 4
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 7
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 402.5
+
+- name: Case 12, an ineligible teenager in care adds no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 56_400  # Step 4, as in Case 5
+      person2:
+        age: 33
+      person3:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+      person4:
+        age: 14  # not an eligible child; care days do not accrue copay
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_copay: 64  # 6.40 x 10 days for the eligible child only

@@ -1,0 +1,147 @@
+# Unit tests for wy_ccap_eligible (SPMUnit, MONTH, bool).
+# Rules Ch. 1 §8(e): the unit needs at least one eligible child AND income
+# eligibility AND activity eligibility AND the federal CCDF asset test
+# (Manual §800: $1,000,000). The baseline family of four (two parents, two
+# children) has 2026 FPG of 2_750 per month; the Step 4 initial limit is
+# 4_812.50. Parents' weekly_hours_worked_before_lsr defaults to 40 (working).
+- name: Case 1, a working family below the income limit with a young child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 - 200 = 2_300 countable < 4_812.50
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible: true
+
+- name: Case 2, a unit with no eligible child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+      person3:
+        age: 14  # over the age-13 limit without special needs
+      person4:
+        age: 16  # over the age-13 limit without special needs
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible: false
+
+- name: Case 3, income above the initial limit without enrollment is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        # 72_000 / 12 = 6_000 - 200 = 5_800 > 4_812.50 initial limit.
+        employment_income: 72_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible: false
+
+- name: Case 4, an idle able caretaker makes the unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible: false
+
+- name: Case 5, assets above the federal CCDF million-dollar ceiling make the unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible: false
+
+- name: Case 6, an otherwise-eligible family outside Wyoming is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CO
+  output:
+    wy_ccap_eligible: false

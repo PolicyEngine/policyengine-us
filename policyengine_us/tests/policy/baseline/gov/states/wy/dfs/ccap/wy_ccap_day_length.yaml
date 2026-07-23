@@ -1,0 +1,38 @@
+# Unit tests for wy_ccap_day_length (Person, MONTH, Enum).
+# Table I / Manual §1101.N.1: a part day is less than five hours of care and
+# a full day is five or more hours (rates/day_length_min_hours.yaml = 5).
+- name: Case 1, exactly five hours of care is the full-day boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 4
+      person2:
+        age: 3
+        childcare_hours_per_day: 4.99  # just below the 5-hour cutoff
+      person3:
+        age: 3
+        childcare_hours_per_day: 5  # exactly 5 hours is a full day
+      person4:
+        age: 3
+        childcare_hours_per_day: 9
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_day_length: [PART_DAY, PART_DAY, FULL_DAY, FULL_DAY]
+
+- name: Case 2, with no reported care hours the zero default is a part day.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: WY
+  output:
+    wy_ccap_day_length: [PART_DAY]
