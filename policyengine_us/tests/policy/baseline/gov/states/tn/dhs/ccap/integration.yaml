@@ -1,0 +1,316 @@
+# Tennessee CCAP (Child Care Certificate Program / Smart Steps) integration tests.
+# Full pipeline: eligible child -> income/activity/asset eligibility -> copay ->
+# per-child weekly rate -> monthly benefit.
+#
+# 2026-01 (current era): FFY 2026 SMI amount[TN] = 102_735; QRIS +5%/+10%;
+#   no toddler differential; 5% copay for all (no FPL waiver).
+# 2025-01 (prior era): FFY 2025 SMI amount[TN] = 98_377; QRIS +15%/+20%;
+#   toddler differential +15%; copay waived at or below 150% FPL.
+# Base weekly State Rates (both eras): center Top preschool 208, center Top infant
+#   260, center Lower toddler 160, family home Top School In 119.
+
+- name: Case 1, single working parent with one preschooler at a center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Child age 4 < 13 and citizen -> eligible child
+    tn_ccap_eligible_child: [false, true]
+    # Family of 2, 2026 85% SMI = 4_948.40/mo; income 2_000/mo -> eligible
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    # copay: m=floor(2_000*0.05)=100; w=floor(100/4.3)=23; monthly = 23*4.3 = 98.90
+    tn_ccap_copay: 98.90
+    # Center Top Tier preschool state rate = 208
+    tn_ccap_max_weekly_benefit: [0, 208]
+    # max monthly = 208*52/12 = 901.33; expenses 1_000/mo capped at 901.33
+    # benefit = 901.33 - 98.90 = 802.43
+    tn_ccap: 802.43
+
+- name: Case 2, two children with different ages and provider types (Top Tier).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: QRIS_90_100
+      person3:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child: [false, true, true]
+    # Family of 3, 2026 85% SMI = 6_112.73/mo; income 3_000/mo -> eligible
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    # copay: m=floor(3_000*0.05)=150; w=floor(150/4.3)=34; two FT -> monthly = 34*4.3 = 146.20
+    tn_ccap_copay: 146.20
+    # Infant center Top q90 = 260*1.10*1.15 = 328.90; school-age family home Top School In = 119
+    tn_ccap_max_weekly_benefit: [0, 328.90, 119]
+    # max monthly = (328.90+119)*52/12 = 1_940.90; expenses 2_000/mo capped at 1_940.90
+    # benefit = 1_940.90 - 146.20 = 1_794.70
+    tn_ccap: 1_794.70
+
+- name: Case 3, part-time toddler at a Lower Tier center in the prior era with waived copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 18_000
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child: [false, true]
+    # Family of 2, 2025 85% SMI = 5_574.70/mo; income 1_500/mo -> eligible
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    # FPG family of 2 (2025) = 1_762.50/mo; FPL ratio = 1_500/1_762.50 = 0.85 <= 1.5 -> waived
+    tn_ccap_copay: 0
+    # Prior-era toddler differential active: full-time = 160*1.15 = 184;
+    # part-time = ceil(184*0.5) = 92
+    tn_ccap_max_weekly_benefit: [0, 92]
+    # max monthly = 92*52/12 = 398.67; expenses 500/mo capped at 398.67
+    # benefit = 398.67 - 0 = 398.67
+    tn_ccap: 398.67
+
+- name: Case 4, Families First (TANF) family above 85% SMI is categorically eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child: [false, true]
+    # 5_500/mo > 4_948.40 (85% SMI) -> income test fails...
+    tn_ccap_income_eligible: false
+    # ...but TANF enrollment provides categorical eligibility
+    tn_ccap_eligible: true
+    # TANF families have the copay waived
+    tn_ccap_copay: 0
+    tn_ccap_max_weekly_benefit: [0, 208]
+    # benefit = min(1_000, 901.33) - 0 = 901.33
+    tn_ccap: 901.33
+
+- name: Case 5, family above 85% SMI without TANF is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible_child: [false, true]
+    # 8_333.33/mo > 4_948.40 -> ineligible; no TANF bypass
+    tn_ccap_income_eligible: false
+    tn_ccap_eligible: false
+    tn_ccap: 0
+
+- name: Case 6, negative self-employment income does not inflate the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Negative countable income still passes the income test
+    tn_ccap_income_eligible: true
+    tn_ccap_eligible: true
+    # copay uses max(income, 0) = 0
+    tn_ccap_copay: 0
+    tn_ccap_max_weekly_benefit: [0, 208]
+    # benefit capped at the annualized state rate 901.33, not inflated by the loss
+    tn_ccap: 901.33
+
+- name: Case 7, benefit capped at low actual childcare expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_eligible: true
+    tn_ccap_copay: 98.90
+    # expenses 300/mo < 901.33 max -> capped at 300; benefit = 300 - 98.90 = 201.10
+    tn_ccap: 201.10
+
+# ---- Edge cases ----
+
+- name: Case 8, an otherwise-eligible family outside Tennessee gets nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Same inputs as Case 1 but in Alabama; defined_for = StateCode.TN zeroes the
+    # whole pipeline. Assert both the eligibility flag and the benefit to verify
+    # the state gate reaches the top-level output.
+    tn_ccap_eligible: false
+    tn_ccap: 0

@@ -1,0 +1,149 @@
+# tn_ccap_smi: SPMUnit, float, MONTH
+# Monthly State Median Income with federal-fiscal-year Oct-1 pinning.
+# smi(size, TN, instant) = amount[TN] * (0.52 + 0.16*min(size-1,5) + 0.03*max(size-6,0)).
+# Period 2026-01 -> month < 10 -> FFY instant 2025-10-01 -> amount[TN] = 102_735.
+# Period 2025-01 -> month < 10 -> FFY instant 2024-10-01 -> amount[TN] = 98_377.
+# These reproduce the published TDHS income charts (e.g. Oct 1 2025 chart HH4
+# 100% SMI = 8_561/mo, 85% SMI = 7_277/mo).
+
+- name: Case 1, family of 2 monthly SMI in the 2026 FFY.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 102_735 * 0.68 / 12 = 5_821.65
+    tn_ccap_smi: 5_821.65
+
+- name: Case 2, family of 3 monthly SMI in the 2026 FFY.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # 102_735 * 0.84 / 12 = 7_191.45
+    tn_ccap_smi: 7_191.45
+
+- name: Case 3, family of 4 monthly SMI in the 2026 FFY.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 102_735 * 1.00 / 12 = 8_561.25 (matches Oct 1 2025 chart HH4 100% SMI)
+    tn_ccap_smi: 8_561.25
+
+- name: Case 4, family of 7 uses the additional-person adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: TN
+  output:
+    # size adjustment = 0.52 + 0.16*5 + 0.03*1 = 1.35
+    # 102_735 * 1.35 / 12 = 11_557.69
+    tn_ccap_smi: 11_557.69
+
+- name: Case 5, family of 4 monthly SMI in the 2025 FFY (prior-era instant).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 2025-01 -> FFY instant 2024-10-01 -> amount[TN] = 98_377
+    # 98_377 * 1.00 / 12 = 8_198.08
+    tn_ccap_smi: 8_198.08
+
+# ---- Edge cases ----
+
+- name: Case 6, single-person unit (minimum size) monthly SMI in the 2026 FFY.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # size 1 adjustment = 0.52; 102_735 * 0.52 / 12 = 4_451.85
+    tn_ccap_smi: 4_451.85
