@@ -1,0 +1,1 @@
+Restored 52 changelog entries from 51 orphaned changelog.d fragments (type subdirectories and missing type suffixes, all merged 2026-05-19 to 2026-05-27) into the CHANGELOG.md sections of the releases that first shipped them, removed the orphaned fragments, and fixed 32 pre-existing double-bullet formatting artifacts.
