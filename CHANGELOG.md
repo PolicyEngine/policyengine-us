@@ -1,3 +1,10 @@
+## [1.782.3] - 2026-07-24
+
+### Fixed
+
+- Corrected stale documentation: supported Python floor (3.9, not 3.11), sharded YAML test targets, install-command description, fork-PR CI guidance, ruff badge, codecov badge branch, programs.yaml year-field names, and the partner-test question protocol; removed dead .github templates and committed lane-handoff files.
+
+
 ## [1.782.2] - 2026-07-24
 
 ### Fixed
