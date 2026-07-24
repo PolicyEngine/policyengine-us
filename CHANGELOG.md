@@ -1,3 +1,10 @@
+## [1.782.2] - 2026-07-24
+
+### Fixed
+
+- Fixed crashes in the Maryland local tax variables md_applicable_local_tax_rate and md_flat_rate_county_tax for Maryland households whose county is unknown, by falling back to the same default county used elsewhere.
+
+
 ## [1.782.1] - 2026-07-23
 
 ### Changed
