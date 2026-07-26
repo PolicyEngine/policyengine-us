@@ -1,1 +1,1 @@
-Add Oklahoma Child Care Subsidy Program (CCAP).
+Add Oklahoma Child Care Subsidy Program (CCS).
