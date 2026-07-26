@@ -58,6 +58,30 @@ jobs:
             echo "::error::No valid changelog fragment found. Add one like: changelog.d/${{ github.head_ref }}.fixed.md"
             exit 1
           fi
+      - name: Validate changelog.d tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Tree-state guard: fragments at invalid paths (type subdirectories,
+          # missing .<type>. suffix) are silently ignored by towncrier and
+          # bump_version.py, so their entries never reach CHANGELOG.md (#9149).
+          # The changed-files check above only sees files touched by the PR;
+          # this step keeps the whole tree clean so strays cannot accumulate.
+          invalid=0
+          while IFS= read -r f; do
+            if [ "$f" = "changelog.d/.gitkeep" ]; then
+              continue
+            fi
+            if [[ ! "$f" =~ ^changelog\.d/[^/]+\.(breaking|added|changed|fixed|removed)\.md$ ]]; then
+              echo "::error file=${f}::Fragment at an invalid path (towncrier will ignore it). Use changelog.d/<name>.<type>.md at the top level; no type subdirectories."
+              invalid=1
+            fi
+          done < <(git ls-files -- changelog.d)
+
+          if [ "$invalid" -ne 0 ]; then
+            exit 1
+          fi
   BundleMetadataContract:
     name: Validate bundle metadata contract
     runs-on: ubuntu-latest

@@ -9,7 +9,7 @@ Subagents must not edit partner test files. If a subagent finds that an edit is 
 Before changing these tests:
 
 - Flag the partner-facing risk to the user.
-- Ask these three questions separately, one at a time, waiting for the user's response after each question:
+- Use the `AskUserQuestion` tool to ask these three questions in a single call (per CLAUDE.md):
   1. Are you sure you want to edit this test file?
   2. Have you notified a team member about this change?
   3. Have you notified the API partner about this change?

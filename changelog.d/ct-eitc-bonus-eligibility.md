@@ -1,1 +1,0 @@
-- Fixed the Connecticut EITC qualifying child bonus to require Connecticut EITC eligibility.

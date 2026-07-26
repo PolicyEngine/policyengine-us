@@ -28,6 +28,8 @@ values:
     - miscellaneous_income
     # Listed separately on 1040 line 8g.
     - ak_permanent_fund_dividend
+    # Alimony from divorces executed before the TCJA cutoff (Schedule 1 line 2a).
+    - taxable_alimony_income
 
 metadata:
   unit: list
