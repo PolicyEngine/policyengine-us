@@ -1,3 +1,10 @@
+## [1.783.0] - 2026-07-26
+
+### Added
+
+- Add Oklahoma Child Care Subsidy Program (CCS).
+
+
 ## [1.782.4] - 2026-07-24
 
 ### Fixed
