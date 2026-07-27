@@ -1456,6 +1456,17 @@ programs:
     variable: ca_riv_general_relief
     parameter_prefix: gov.local.ca.riv.general_relief
 
+  - id: ca_sbd_general_relief
+    name: San Bernardino County General Relief
+    full_name: San Bernardino County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Bernardino County
+    variable: ca_sbd_general_relief
+    parameter_prefix: gov.local.ca.sbd.general_relief
+    notes: Flat maximum basic grant by assistance unit size (June 2021 design onward) net of countable income; the pre-June-2021 needs-based design, employable time limits, and loan repayment are not modeled
+
   - id: ca_riv_liheap
     name: Riverside County LIHEAP
     full_name: Riverside County LIHEAP

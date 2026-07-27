@@ -1,0 +1,123 @@
+# Unit eligibility requires the flat-grant design to be in effect (June 1,
+# 2021 onward), at least one eligible adult, income eligibility, and
+# resource eligibility.
+- name: Case 1, a single eligible adult with no income or resources qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible: true
+
+- name: Case 2, the same adult in January 2021 predates the modeled program and gets nothing.
+  period: 2021-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The flat-grant design takes effect June 1, 2021; the earlier
+    # needs-based era is not modeled, so in_effect is false in 2021-01.
+    ca_sbd_general_relief_eligible: false
+    ca_sbd_general_relief: 0
+
+- name: Case 3, a unit with only a child has no eligible adult and does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The child passes the person-level screen (linked through the under-16
+    # path) but the unit requires at least one eligible adult.
+    ca_sbd_general_relief_eligible_person: true
+    ca_sbd_general_relief_eligible: false
+
+- name: Case 4, countable income exactly at the grant makes the unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 0
+        # $5,832 per year is $486 per month, exactly the size-1 grant in the
+        # 7/1/25 era.
+        social_security: 5_832
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_income_eligible: false
+    ca_sbd_general_relief_eligible: false
+
+- name: Case 5, liquid assets over the limit make the unit ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        spm_unit_cash_assets: 51
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: false
+    ca_sbd_general_relief_eligible: false
+
+- name: Case 6, a facility-resident adult with a young child leaves no eligible adult.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+      person2:
+        age: 10
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The adult is barred by the treatment-facility exclusion; the child is
+    # an eligible person but cannot satisfy the adult requirement.
+    ca_sbd_general_relief_eligible: false

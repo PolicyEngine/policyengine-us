@@ -1,0 +1,72 @@
+# Real property is the combined assessed value with no encumbrance
+# deductions; a vehicle used as the principal residence is evaluated under
+# the real property limit (Banda settlement change).
+- name: Case 1, assessed property value passes through.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 20_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_real_property_value: 20_000
+
+- name: Case 2, a residence vehicle counts as real property.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 5_000
+        lives_in_vehicle: true
+  output:
+    # The full average vehicle value (5,000), not the post-exemption value,
+    # is evaluated as real property.
+    ca_sbd_general_relief_real_property_value: 5_000
+
+- name: Case 3, assessed property and a residence vehicle are combined.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 30_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_000
+        lives_in_vehicle: true
+  output:
+    # 30,000 + 4,000 = 34,000 (over the $32,000 limit tested elsewhere).
+    ca_sbd_general_relief_real_property_value: 34_000
+
+- name: Case 4, vehicles not used as a residence do not enter real property.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 10_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+  output:
+    ca_sbd_general_relief_real_property_value: 10_000

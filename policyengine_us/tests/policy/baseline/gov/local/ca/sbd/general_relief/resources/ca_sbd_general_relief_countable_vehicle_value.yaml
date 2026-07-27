@@ -1,0 +1,107 @@
+# The first $3,000 of each vehicle's value is exempt; the balance counts
+# toward the $500 personal property limit. The household-average vehicle
+# value proxies each vehicle's value, and a vehicle used as the principal
+# residence is evaluated as real property instead.
+- name: Case 1, a unit with no vehicles has no countable vehicle value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+  output:
+    ca_sbd_general_relief_countable_vehicle_value: 0
+
+- name: Case 2, a vehicle worth less than the exemption has no countable value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 2_500
+  output:
+    # max(2,500 - 3,000, 0) = 0.
+    ca_sbd_general_relief_countable_vehicle_value: 0
+
+- name: Case 3, a vehicle worth 5,000 dollars counts the excess over the exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 5_000
+  output:
+    # 5,000 - 3,000 = 2,000.
+    ca_sbd_general_relief_countable_vehicle_value: 2_000
+
+- name: Case 4, the per-vehicle exemption applies to each of two vehicles.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+  output:
+    # Average value 8,000 / 2 = 4,000; (4,000 - 3,000) x 2 vehicles = 2,000.
+    ca_sbd_general_relief_countable_vehicle_value: 2_000
+
+- name: Case 5, a residence vehicle is excluded from the personal property count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+        lives_in_vehicle: true
+  output:
+    # One of the two vehicles is the principal residence and shifts to the
+    # real property test: (4,000 - 3,000) x (2 - 1) = 1,000.
+    ca_sbd_general_relief_countable_vehicle_value: 1_000
+
+- name: Case 6, an only vehicle used as the residence leaves no countable vehicle value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 5_000
+        lives_in_vehicle: true
+  output:
+    # (5,000 - 3,000) x (1 - 1) = 0; the value moves to real property.
+    ca_sbd_general_relief_countable_vehicle_value: 0

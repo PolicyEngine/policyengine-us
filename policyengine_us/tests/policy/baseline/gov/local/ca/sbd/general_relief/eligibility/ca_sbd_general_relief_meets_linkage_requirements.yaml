@@ -1,0 +1,271 @@
+# Linkage per GRPHB Handbook Letter #7356: adults link through verified
+# incapacity (proxied by is_incapable_of_self_care) or through
+# employability (unemployed, or employed under 100 hours a month;
+# self-employment counts as exceeding 100 hours; students who are employable
+# are ineligible). Children link when under 16, or at 16 to 18 while
+# enrolled in and attending high school full time.
+# Monthly hours = weekly hours x 52 / 12 (about 4.333 weeks per month).
+- name: Case 1, an unemployed adult is employable and linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # No employment income, so hours (even the 40-hour default) are ignored.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 2, an adult working 20 hours a week is under the monthly hours limit and linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 20
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 20 x 52 / 12 = 86.67 monthly hours < 100.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 3, an adult working 30 hours a week exceeds the monthly hours limit and is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 30 x 52 / 12 = 130 monthly hours >= 100.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 4, an adult working 23 hours a week is just under the 100-hour limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 23
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 23 x 52 / 12 = 99.67 monthly hours < 100.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 5, an adult working 24 hours a week is just over the 100-hour limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 24
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 24 x 52 / 12 = 104 monthly hours >= 100.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 6, an adult with positive self-employment income is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Self-employment is treated as exceeding 100 hours a month.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 7, an adult flagged as self-employed is not linked even without self-employment income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_self_employed: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 8, an adult with a self-employment loss is not treated as self-employed and stays linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -12_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Only positive self-employment income (or the is_self_employed flag)
+    # triggers the self-employment bar.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 9, a full-time student adult who is employable is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Attending school while employable is an eligibility bar.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 10, a full-time student adult who is incapacitated is linked through incapacity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: true
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The student bar applies only to employable adults;
+    # incapacity linkage is unaffected by student status.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 11, a 15-year-old child links through a parent regardless of school status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Children under 16 are linked with no school requirement.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 12, a 16-year-old attending high school full time is linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 13, a 16-year-old not in school is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # At 16 the under-16 child path closes and the student path requires
+    # full-time high school attendance; the adult path requires age 18.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 14, a 16-year-old enrolled in high school but not full time is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_full_time_student: false
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The 16-to-18 path requires full-time enrollment and attendance.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 15, an 18-year-old attending high school full time is linked through the child student path.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The 16-to-18 student path is inclusive of age 18.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 16, a 19-year-old attending high school full time is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Too old for the child student path, and as an adult the student-while-
+    # employable bar applies.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 17, an incapacitated adult working full time is linked through incapacity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The default 40 weekly hours imply 173.33 monthly hours, failing the
+    # employable path, but incapacity linkage has no hours test.
+    ca_sbd_general_relief_meets_linkage_requirements: true

@@ -1,0 +1,120 @@
+# GR will not subsidize any other cash-assistance program; the handbook
+# names SSI/SSP and CalWORKs recipients; CAPI is not barred.
+# SSI bars only the individual recipient; CalWORKs receipt is unit-level and
+# bars every member.
+- name: Case 1, a person with no SSI and no CalWORKs is not barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: false
+
+- name: Case 2, an SSI recipient is barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 3, a person reported to receive SSI is barred even with a zero computed amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 4, CalWORKs receipt bars every member of the unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $3,600 per year is $300 per month of TANF (CalWORKs in California).
+        tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: [true, true]
+
+- name: Case 5, a unit reported to receive TANF is barred even with a zero computed amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        receives_tanf: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 6, SSI bars only the recipient spouse, not the other member.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 500
+      person2:
+        age: 28
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: [true, false]

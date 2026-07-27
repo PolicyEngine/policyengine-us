@@ -1,0 +1,25 @@
+description: San Bernardino County considers people with these immigration statuses as qualified for the General Relief program.
+values:
+  2021-06-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    # The brochure's "other non-citizen authorized to live in the United
+    # States" category is mapped to all lawfully present immigration statuses.
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    - DACA
+    - TPS
+
+metadata:
+  unit: list
+  period: year
+  label: San Bernardino County General Relief qualified immigration statuses
+  reference:
+    - title: San Bernardino County Transitional Assistance Department, General Relief 101 brochure (June 2025)
+      href: https://wp.sbcounty.gov/tad/wp-content/uploads/sites/25/2025/06/gr000101-4.pdf#page=2
+    - title: San Bernardino County GRPHB Handbook Letter #7358, Chapter A p. A-2 (Citizenship/Alienage, narrower citizen and legal-permanent-resident wording)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx
