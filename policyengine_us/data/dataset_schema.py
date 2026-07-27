@@ -1,14 +1,6 @@
-from typing import List, Optional
-
-import pandas as pd
 from pathlib import Path
 
-# pandas copy-on-write (always on in pandas >= 3) makes shallow DataFrame
-# copies safe to hand out: buffers are shared until a column is reassigned,
-# and modifying one frame never touches the other. Without CoW (pandas 2.x,
-# kept for Python 3.9/3.10), shallow copies alias mutably, so ``copy``
-# falls back to deep copies there.
-PANDAS_HAS_COW = int(pd.__version__.split(".", 1)[0]) >= 3
+import pandas as pd
 
 US_ENTITIES = [
     "person",
@@ -167,17 +159,11 @@ class USSingleYearDataset:
     def copy(self, deep: bool = True) -> "USSingleYearDataset":
         """Return a copy of the dataset.
 
-        Isolation from the original is guaranteed either way. With
-        ``deep=False``, entity DataFrames share column buffers with the
-        original as an optimization when pandas copy-on-write is active
-        (always on in pandas >= 3); without CoW the call falls back to a
-        deep copy, so pandas 2.x callers never get mutable aliasing.
-        Under CoW, callers must modify columns via whole-column
-        assignment (``df[col] = value``), never in place
-        (``df[col] *= x``, ``.loc``/``.iloc`` writes).
+        With ``deep=False``, entity DataFrames share column buffers with
+        the original until they are modified. pandas copy-on-write keeps
+        the original isolated. Callers should modify columns via
+        whole-column assignment (``df[col] = value``).
         """
-        if not deep and not PANDAS_HAS_COW:
-            deep = True
         return USSingleYearDataset(
             person=self.person.copy(deep=deep),
             household=self.household.copy(deep=deep),
@@ -193,7 +179,7 @@ class USMultiYearDataset:
     def __init__(
         self,
         file_path: str = None,
-        datasets: Optional[List[USSingleYearDataset]] = None,
+        datasets: list[USSingleYearDataset] | None = None,
     ):
         if datasets is not None and file_path is not None:
             raise ValueError("Provide either datasets or file_path, not both.")
@@ -280,8 +266,7 @@ class USMultiYearDataset:
 
     def copy(self, deep: bool = True) -> "USMultiYearDataset":
         """Return a copy of the dataset. ``deep=False`` shares buffers
-        only when pandas copy-on-write is active; see
-        ``USSingleYearDataset.copy``."""
+        using pandas copy-on-write; see ``USSingleYearDataset.copy``."""
         new_datasets = {
             year: dataset.copy(deep=deep) for year, dataset in self.datasets.items()
         }

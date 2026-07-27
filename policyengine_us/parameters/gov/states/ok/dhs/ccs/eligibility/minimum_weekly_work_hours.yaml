@@ -1,0 +1,24 @@
+description: Oklahoma sets this threshold as the minimum weekly work hours under the Child Care Subsidy Program.
+# The 20-hour floor exists only under the emergency amendment to OAC
+# 340:40-7-8 in effect 2025-02-10 through 2026-09-13: "The client must work
+# continuously 20 hours or more per week, averaged monthly." The prior rule
+# (last amended 2017-10-01) had no minimum-hours requirement, and the
+# permanent rule effective 2026-09-14 removes it again, leaving the (a)(3)
+# minimum-wage-per-hour test as the only employment earnings gate. A zero
+# value disables the floor.
+values:
+  2000-01-01: 0
+  2025-02-10: 20
+  2026-09-14: 0
+
+metadata:
+  unit: hour
+  period: week
+  label: Oklahoma Child Care Subsidy minimum weekly work hours
+  reference:
+    - title: OAC 340:40-7-8(a)(1) Employment (emergency amendment, in effect 2/10/2025 through 9/13/2026)
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-8
+    - title: OAC 340:40-7-8(a) Employment (permanent rule effective 9/14/2026, no minimum-hours requirement)
+      href: https://www.law.cornell.edu/regulations/oklahoma/Okla-Admin-Code-SS-340-40-7-8
+    - title: OAC 340:40-7-8(a) Employment (version amended 10/1/2017, no minimum-hours requirement)
+      href: https://okrules.elaws.us/oac/340:40-7-8

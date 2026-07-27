@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, PA, RI, SC, SD, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -708,6 +708,12 @@ programs:
         full_name: New Mexico Child Care Assistance Program
         variable: nm_ccap
         parameter_prefix: gov.states.nm.ececd.ccap
+      - state: OK
+        status: complete
+        name: Oklahoma Child Care Subsidy
+        full_name: Oklahoma Child Care Subsidy Program
+        variable: ok_ccs
+        parameter_prefix: gov.states.ok.dhs.ccs
       - state: SD
         status: in_progress
         name: South Dakota CCA

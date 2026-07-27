@@ -1,19 +1,17 @@
 [project]
 name = "policyengine-us"
-version = "1.781.2"
+version = "1.784.0"
 description = "US federal and state tax-benefit microsimulation model."
 readme = "README.md"
 authors = [
     { name = "PolicyEngine", email = "hello@policyengine.org" }
 ]
-requires-python = ">=3.9,<3.15"
+requires-python = ">=3.11,<3.15"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: POSIX",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -22,15 +20,9 @@ classifiers = [
 ]
 dependencies = [
     "microdf-python>=1.0.0",
-    # pandas 3 (copy-on-write always on) enables the shallow-copy fast path
-    # in dataset extension. pandas 3 needs Python >= 3.11; older Pythons
-    # (kept for Census, PR #8035) stay on pandas 2.x with deep copies.
-    "pandas>=3.0; python_version >= '3.11'",
-    "pandas>=2.0; python_version < '3.11'",
-    # tables 3.9.x (the last PyTables supporting Python 3.9) ships wheels
-    # built against numpy 1.x; without this cap, py3.9 resolves numpy 2.0
-    # and every pd.HDFStore call fails with a dtype-size ABI error.
-    "numpy>=1.26,<2; python_version < '3.10'",
+    # pandas 3 copy-on-write enables the shallow-copy fast path in dataset
+    # extension and is available on every supported Python version.
+    "pandas>=3.0",
     "policyengine-core>=3.30.1",
     "spm-calculator>=0.2.0",
     "tables>=3.9",
