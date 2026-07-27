@@ -1,3 +1,12 @@
+## [1.784.1] - 2026-07-27
+
+### Fixed
+
+- Encode the Medicaid community engagement SNAP exclusion as the status test in 42 CFR 435.554(c)(7) - SNAP receipt plus being subject to a SNAP work requirement - removing the actual-work-compliance condition, per interim final rule CMS-2454-IFC.
+- SNAP eligibility now requires a single member to satisfy the student, immigration, and work-requirement filters simultaneously, instead of testing the work requirement in a separate unit-level reduction (issue #9145).
+- Assume baseline compliance with SNAP work registration for non-exempt registrants per 7 CFR 273.7, adding an `is_snap_work_registration_noncompliant` input as a sanction-modeling hook, so that work-requirement disqualification applies to individuals (ABAWD time limits, explicit sanctions) rather than zeroing entire households.
+
+
 ## [1.784.0] - 2026-07-27
 
 ### Removed

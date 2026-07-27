@@ -1,1 +1,0 @@
-SNAP eligibility now requires a single member to satisfy the student, immigration, and work-requirement filters simultaneously, instead of testing the work requirement in a separate unit-level reduction (issue #9145).
