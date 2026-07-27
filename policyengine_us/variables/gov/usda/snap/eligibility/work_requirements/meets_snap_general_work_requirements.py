@@ -7,13 +7,25 @@ class meets_snap_general_work_requirements(Variable):
     label = "Person is eligible for SNAP benefits via general work requirements"
     definition_period = MONTH
     documentation = (
-        "Whether the person meets the SNAP general work requirements or is "
-        "exempt from them. Non-modeled provision: voluntary quit and reduced "
-        "work effort disqualifications (7 CFR 273.7(j)) are not modeled, "
-        "because job-separation events are unobservable in cross-sectional "
-        "survey data."
+        "Working 30 or more hours weekly is an exemption from SNAP work "
+        "registration under 7 CFR 273.7(b)(1)(vii), not an affirmative "
+        "requirement. Non-exempt registrants remain eligible unless they "
+        "affirmatively fail to comply without good cause (refuse suitable "
+        "employment, employment and training noncompliance, or voluntary "
+        "quit/reduction under 7 CFR 273.7(j)). Because those 'without good "
+        "cause' noncompliance events are not observable in survey data, the "
+        "baseline assumes registration compliance; the "
+        "is_snap_work_registration_noncompliant hook can be set true to "
+        "model sanctions under 7 CFR 273.7(f)(1)-(2). Work program "
+        "participation under 7 CFR 273.7(a)(1)(ii) is affirmative "
+        "compliance and overrides the noncompliance hook."
     )
-    reference = "https://www.law.cornell.edu/cfr/text/7/273.7"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.7#a_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#b_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#f_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#j",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
@@ -44,7 +56,10 @@ class meets_snap_general_work_requirements(Variable):
             | is_working
         )
         # Non-exempt registrants comply by participating in, or otherwise
-        # complying with, a work program under 7 CFR 273.7(a)(1).
-        compliant = person("is_snap_work_program_participant", period)
-
+        # complying with, a work program under 7 CFR 273.7(a)(1). Absent
+        # an affirmative noncompliance determination (unobservable in
+        # survey data), registrants are assumed compliant.
+        compliant = person("is_snap_work_program_participant", period) | ~person(
+            "is_snap_work_registration_noncompliant", period
+        )
         return exempted | compliant

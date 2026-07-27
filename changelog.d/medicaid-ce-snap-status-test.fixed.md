@@ -1,0 +1,1 @@
+Encode the Medicaid community engagement SNAP exclusion as the status test in 42 CFR 435.554(c)(7) - SNAP receipt plus being subject to a SNAP work requirement - removing the actual-work-compliance condition, per interim final rule CMS-2454-IFC.

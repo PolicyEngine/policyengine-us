@@ -137,7 +137,6 @@
         meets_snap_net_income_test: true
         meets_snap_asset_test: true
         meets_snap_categorical_eligibility: false
-        meets_snap_work_requirements: true
   output:
     is_snap_eligible: false
 
@@ -160,6 +159,59 @@
         meets_snap_net_income_test: true
         meets_snap_asset_test: true
         meets_snap_categorical_eligibility: false
-        meets_snap_work_requirements: true
   output:
     is_snap_eligible: true
+
+# Issue 9145 regression: the work-requirement filter must be tested on the
+# SAME member as the student and immigration filters. Period 2024-01 is
+# pre-HR1 (ABAWD band 18-52); ABAWD exemptions are set explicitly false on
+# the failing member so no unintended exemption triggers.
+- name: Issue 9145 - work requirement and immigration eligibility split across two members (no single member all three).
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      # Member A: works 40 hours (meets the work requirements) but is NOT
+      # immigration eligible.
+      personA:
+        age:
+          2024: 30
+        monthly_age: 30
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 40
+      # Member B: immigration eligible (CITIZEN) but in-band, not working,
+      # no dependent child, no exemption: fails the ABAWD time limit.
+      personB:
+        age:
+          2024: 30
+        monthly_age: 30
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+        is_pregnant: false
+        is_veteran: false
+    spm_units:
+      spm_unit1:
+        members: [personA, personB]
+        meets_snap_gross_income_test: true
+        meets_snap_net_income_test: true
+        meets_snap_asset_test: true
+        meets_snap_categorical_eligibility: false
+    tax_units:
+      tax_unit:
+        members: [personA, personB]
+    households:
+      household:
+        members: [personA, personB]
+        state_code: TX
+  output:
+    # The unit-level any() of the work requirement alone is still true
+    # (personA meets it), but no single member passes all three filters,
+    # so the fully-excluded unit is ineligible and draws no minimum
+    # allotment despite its zero counted income.
+    meets_snap_work_requirements: true
+    snap_unit_size: 0
+    is_snap_eligible: false
+    snap: 0

@@ -552,6 +552,9 @@
       person3:
         age: 30
         weekly_hours_worked_before_lsr: 0
+        # Registration compliance is assumed in baseline; the sanction is
+        # modeled with the explicit noncompliance hook (7 CFR 273.7(f)).
+        is_snap_work_registration_noncompliant: true
       person4:
         age: 33
       person5:

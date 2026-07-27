@@ -16,6 +16,7 @@ class is_snap_prorated_income_member(Variable):
         "consistent with these members' exclusion from the SNAP unit size."
     )
     reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.11#c_1",
         "https://www.law.cornell.edu/cfr/text/7/273.11#c_2_ii",
         "https://www.law.cornell.edu/cfr/text/7/273.11#c_3",
         "https://www.law.cornell.edu/uscode/text/7/2015#f",

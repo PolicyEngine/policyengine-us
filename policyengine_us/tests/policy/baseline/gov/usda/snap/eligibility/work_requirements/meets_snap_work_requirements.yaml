@@ -1,31 +1,49 @@
+# meets_snap_work_requirements is an SPMUnit any() over person-level results.
+# Under the corrected reading (issue #8862), a person only fails
+# meets_snap_work_requirements_person via ABAWD facts (no dependent child in the
+# unit, in the ABAWD age band, under the work-hours threshold, no ABAWD exemption)
+# or via an explicit work-registration noncompliance sanction. The general
+# requirement is met in the baseline for everyone. These cases override the
+# person-level general/ABAWD flags to exercise the combination logic and the
+# household any() semantics; the flag values represent those two failure paths.
+
 - name: Case 1, has dependent child, meets both work requirements.
   period: 2022
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: true
-    monthly_age: 17
+    # age (YEAR) rather than monthly_age: setting monthly_age at a year
+    # period divides the value across months, which would make the person
+    # read as a household child under the 273.24(c)(4) any-member exception.
+    age: 17
     is_tax_unit_dependent: true
-  output: 
+  output:
     meets_snap_work_requirements: true
 
-- name: Case 2, has dependent child, meets the general work requirements.
+- name: Case 2, has dependent child so ABAWD is skipped and only the general requirement applies.
   period: 2022
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: false
-    monthly_age: 17
+    # age (YEAR) rather than monthly_age: setting monthly_age at a year
+    # period divides the value across months, which would make the person
+    # read as a household child under the 273.24(c)(4) any-member exception.
+    age: 17
     is_tax_unit_dependent: true
-  output: 
+  output:
+    # With a dependent child in the unit, ABAWD is not tested; the general
+    # requirement (met in baseline) governs, so the person passes.
     meets_snap_work_requirements: true
 
-- name: Case 3, no dependent child, meets only one work requirements.
+- name: Case 3, no dependent child, fails ABAWD time limit despite meeting the general requirement.
   period: 2022
   input:
-    meets_snap_general_work_requirements: false
-    meets_snap_abawd_work_requirements: true
-    monthly_age: 18
+    # No dependent child: ABAWD applies. General met (baseline) but ABAWD failed.
+    meets_snap_general_work_requirements: true
+    meets_snap_abawd_work_requirements: false
+    age: 18
     is_tax_unit_dependent: false
-  output: 
+  output:
     meets_snap_work_requirements: false
 
 - name: Case 4, no dependent child, meets both work requirements.
@@ -33,12 +51,12 @@
   input:
     meets_snap_general_work_requirements: true
     meets_snap_abawd_work_requirements: true
-    monthly_age: 18
+    age: 18
     is_tax_unit_dependent: false
   output:
     meets_snap_work_requirements: true
 
-- name: Case 5, CA pre-HR1 age 55 exempt flows through SPM.
+- name: Case 5, CA pre-HR1 age 55 ABAWD-exempt flows through SPM.
   period: 2026-01
   input:
     people:
@@ -46,7 +64,6 @@
         age: 55
         weekly_hours_worked_before_lsr: 1
         is_disabled: false
-        meets_snap_general_work_requirements: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -58,9 +75,11 @@
         members: [person1]
         state_code: CA
   output:
+    # CA delays HR1 to 2026-06, so in 2026-01 the pre-HR1 ABAWD band (18-54)
+    # applies and age 55 is exempt. General requirement met in baseline.
     meets_snap_work_requirements: true
 
-- name: Case 6, non-CA post-HR1 age 55 not exempt.
+- name: Case 6, non-CA post-HR1 age 55 in ABAWD band and not working fails.
   period: 2026-01
   input:
     people:
@@ -68,7 +87,8 @@
         age: 55
         weekly_hours_worked_before_lsr: 1
         is_disabled: false
-        meets_snap_general_work_requirements: true
+        is_pregnant: false
+        is_veteran: false
     spm_units:
       spm_unit:
         members: [person1]
@@ -80,6 +100,8 @@
         members: [person1]
         state_code: TX
   output:
+    # Post-HR1 the ABAWD band extends to 64 (exempt at 65+), so age 55 is in-band.
+    # No dependent child, under the hours threshold, no exemption, so ABAWD fails.
     meets_snap_work_requirements: false
 
 - name: Case 7, two adults remain eligible when one adult passes.
@@ -94,7 +116,8 @@
       person2:
         monthly_age: 30
         is_tax_unit_dependent: false
-        meets_snap_general_work_requirements: false
+        # ABAWD time-limit failure (no dependent child, in-band, not exempt).
+        meets_snap_general_work_requirements: true
         meets_snap_abawd_work_requirements: false
     spm_units:
       spm_unit:
@@ -102,24 +125,25 @@
   output:
     meets_snap_work_requirements: true
 
-- name: Case 8, two adults are ineligible when both adults fail.
+- name: Case 8, two adults are ineligible when both fail the ABAWD time limit.
   period: 2024-01
   input:
     people:
       person1:
         monthly_age: 35
         is_tax_unit_dependent: false
-        meets_snap_general_work_requirements: false
+        meets_snap_general_work_requirements: true
         meets_snap_abawd_work_requirements: false
       person2:
         monthly_age: 30
         is_tax_unit_dependent: false
-        meets_snap_general_work_requirements: false
+        meets_snap_general_work_requirements: true
         meets_snap_abawd_work_requirements: false
     spm_units:
       spm_unit:
         members: [person1, person2]
   output:
+    # Both fail ABAWD with no dependent child in the unit, so the any() is false.
     meets_snap_work_requirements: false
 
 - name: Case 9, two adults remain eligible when both adults pass.
@@ -159,7 +183,7 @@
     meets_snap_abawd_work_requirements: false
     meets_snap_work_requirements: false
 
-- name: Case 11, non-working parent of a teenager fails without the work program flag.
+- name: Case 11, sanctioned parent of a sanctioned teenager fails without the work program flag.
   period: 2024-01
   input:
     people:
@@ -167,18 +191,20 @@
         monthly_age: 30
         is_tax_unit_dependent: false
         is_snap_work_program_participant: false
+        is_snap_work_registration_noncompliant: true
         weekly_hours_worked_before_lsr: 0
       person2:
         monthly_age: 17
         is_tax_unit_dependent: true
+        is_snap_work_registration_noncompliant: true
         weekly_hours_worked_before_lsr: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
   output:
-    # Neither member passes the general check: the parent is non-exempt
-    # and not working, and the 17-year-old is past the under-16 age
-    # exemption.
+    # Neither member passes the general check: both are sanctioned via the
+    # noncompliance hook, the parent is non-exempt and not working, and the
+    # 17-year-old is past the under-16 age exemption.
     meets_snap_general_work_requirements: [false, false]
     meets_snap_work_requirements: false
 
@@ -190,17 +216,20 @@
         monthly_age: 30
         is_tax_unit_dependent: false
         is_snap_work_program_participant: true
+        is_snap_work_registration_noncompliant: true
         weekly_hours_worked_before_lsr: 0
       person2:
         monthly_age: 17
         is_tax_unit_dependent: true
+        is_snap_work_registration_noncompliant: true
         weekly_hours_worked_before_lsr: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
   output:
-    # The dependent child under 18 waives the ABAWD check (pre-HR1), so
-    # the parent's work program participation alone flips the unit from
+    # Work program participation is affirmative compliance, overriding the
+    # parent's sanction. The dependent child under 18 waives the ABAWD check
+    # (pre-HR1), so the parent's participation alone flips the unit from
     # failing to passing.
     meets_snap_general_work_requirements: [true, false]
     meets_snap_work_requirements: true
@@ -319,4 +348,32 @@
   output:
     # No household member under 14, so person1 must satisfy the ABAWD test,
     # which fails.
+    meets_snap_work_requirements: false
+
+- name: Case 17, noncompliant non-exempt adult fails the general requirement organically.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age:
+          2024: 30
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+        is_incapable_of_self_care: false
+        is_snap_work_registration_noncompliant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Noncompliant and non-exempt, so the general requirement fails; ABAWD also
+    # fails (in-band, no dependent child, not working), so the person fails and
+    # the single-person SPM unit fails.
     meets_snap_work_requirements: false

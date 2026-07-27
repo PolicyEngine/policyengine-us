@@ -6,9 +6,24 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
     entity = Person
     label = "Medicaid community engagement pass-through eligibility"
     definition_period = MONTH
+    documentation = (
+        "Under 42 CFR 435.554(c)(7) (CMS-2454-IFC), the SNAP exclusion from "
+        "the Medicaid community engagement requirement is a status test: the "
+        "individual is a member of a household receiving SNAP and is not "
+        "exempt from (i.e., is subject to) a SNAP work requirement. Unlike "
+        "the TANF exclusion, states do not confirm actual compliance with "
+        "SNAP work requirements. The model tests subject-to status with the "
+        "general work requirement age brackets and non-age registration "
+        "exemptions; the 7 CFR 273.7(b)(1)(vii) exemption for people working "
+        "30 or more hours weekly is not netted out, and post-HR1 adults aged "
+        "60-64 who are subject only to the ABAWD requirement are not "
+        "separately captured."
+    )
     reference = (
         "https://www.congress.gov/bill/119th-congress/house-bill/1/text",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf#page=6",
+        "https://www.federalregister.gov/documents/2026/06/03/2026-11094/medicaid-program-community-engagement-requirement-for-certain-individuals",
+        "https://www.ecfr.gov/current/title-42/part-435/section-435.554#p-435.554(c)(7)",
     )
 
     def formula(person, period, parameters):
@@ -27,29 +42,7 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
             bool
         )
         snap_non_age_exempt = person("is_snap_work_registration_exempt_non_age", period)
-        general_work_compliant = person("meets_snap_general_work_requirements", period)
-        abawd_work_compliant = person("meets_snap_abawd_work_requirements", period)
-        hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
-        pre_hr1_abawd = parameters("2025-06-01").gov.usda.snap.work_requirements.abawd
-        dependent_age_threshold = where(
-            hr1_in_effect,
-            snap_work.abawd.age_threshold.dependent,
-            pre_hr1_abawd.age_threshold.dependent,
-        )
-        # Mirror the SNAP ABAWD child exception exactly: 7 CFR 273.24(c)(4)
-        # keys on any household member under the age threshold, regardless of
-        # tax-unit dependency (see meets_snap_work_requirements_person). The
-        # pass-through deems a person compliant because they satisfy SNAP's
-        # requirements, so it must apply SNAP's own exception semantics.
-        has_household_child = person.spm_unit.any(age < dependent_age_threshold)
-        snap_work_compliant = where(
-            has_household_child,
-            general_work_compliant,
-            general_work_compliant & abawd_work_compliant,
-        )
-        snap_pass_through = (
-            snap & ~snap_age_exempt & ~snap_non_age_exempt & snap_work_compliant
-        )
+        snap_pass_through = snap & ~snap_age_exempt & ~snap_non_age_exempt
 
         tanf_pass_through = tanf & person.spm_unit(
             "meets_tanf_work_requirements", period

@@ -1,0 +1,124 @@
+# Work-requirement disqualification excludes the member from the SNAP unit
+# size, and 7 CFR 273.11(c) splits the income treatment by cause:
+# - 273.11(c)(1): members sanctioned for noncompliance with the general work
+#   requirements of 273.7 have their income counted in full, so a sanction
+#   can only reduce eligibility and benefits (Cases 3-4 pin this no-gain
+#   invariant against the compliant counterfactual).
+# - 273.11(c)(2): members ineligible under the 273.24 ABAWD time limit have
+#   their income prorated. Because the member's needs leave the unit while
+#   only a prorated share of their income counts, a household over the
+#   income limits at full composition can newly qualify at the reduced size
+#   (Case 2 pins this reg-prescribed outcome).
+#
+# Case 1 pins the loss direction for a zero-income time-limit-ineligible
+# member, where proration has no income to offset the smaller unit.
+
+- name: Case 1, non-working zero-income ABAWD shrinks the unit and lowers the benefit.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      worker:
+        # age (YEAR) rather than monthly_age: setting monthly_age at a year
+        # period divides the value across months (273.24(c)(4) gotcha).
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      abawd:
+        age: 30
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      unit:
+        members: [worker, abawd]
+    households:
+      household:
+        members: [worker, abawd]
+        state_code: TX
+  output:
+    snap_unit_size: 1
+    is_snap_eligible: true
+    # 1-person allotment on the compliant worker's income; strictly below
+    # the ~4,466 the unit receives when both members comply.
+    snap: 1_487.17
+
+- name: Case 2, over-income household newly qualifies when the earner fails the time limit and income is prorated.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      elder:
+        age: 66
+        social_security_retirement: 9_600
+      abawd:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      unit:
+        members: [elder, abawd]
+    households:
+      household:
+        members: [elder, abawd]
+        state_code: TX
+  output:
+    # With both members counted, $30,000 wages + $9,600 Social Security
+    # exceed the 2-person limits. When the earner fails the ABAWD time
+    # limit, 273.11(c)(2) counts half his income toward the remaining
+    # 1-person unit, which qualifies: proration can create eligibility.
+    is_snap_eligible: true
+    snap: 288.61
+
+- name: Case 3, over-income household stays ineligible when the earner is sanctioned under the general work requirements.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      elder:
+        age: 66
+        social_security_retirement: 9_600
+      abawd:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_registration_noncompliant: true
+    spm_units:
+      unit:
+        members: [elder, abawd]
+    households:
+      household:
+        members: [elder, abawd]
+        state_code: TX
+  output:
+    # A 273.7 registration sanction falls under 273.11(c)(1): the member
+    # leaves the unit size but his income counts in full, so the sanction
+    # cannot qualify an otherwise-ineligible household.
+    snap_unit_size: 1
+    is_snap_eligible: false
+    snap: 0
+
+- name: Case 4, benefit with a sanctioned earning member never exceeds the compliant counterfactual.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      elder:
+        age: 66
+        social_security_retirement: 9_600
+      abawd:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 25
+    spm_units:
+      unit:
+        members: [elder, abawd]
+    households:
+      household:
+        members: [elder, abawd]
+        state_code: TX
+  output:
+    # Compliant counterfactual for Case 3: same unit, earner works 25h/week.
+    # Pinned so Cases 3 and 4 together assert the no-gain invariant
+    # (snap[sanctioned] <= snap[compliant]).
+    is_snap_eligible: false
+    snap: 0

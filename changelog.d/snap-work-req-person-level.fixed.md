@@ -1,0 +1,1 @@
+Assume baseline compliance with SNAP work registration for non-exempt registrants per 7 CFR 273.7, adding an `is_snap_work_registration_noncompliant` input as a sanction-modeling hook, so that work-requirement disqualification applies to individuals (ABAWD time limits, explicit sanctions) rather than zeroing entire households.
