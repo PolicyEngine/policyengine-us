@@ -1,5 +1,3 @@
-from typing import Optional
-
 import yaml
 
 from policyengine_us.data.dataset_schema import (
@@ -76,16 +74,15 @@ def _get_default_end_year(system) -> int:
 
 def extend_single_year_dataset(
     dataset: USSingleYearDataset,
-    end_year: Optional[int] = None,
+    end_year: int | None = None,
     system=None,
 ) -> USMultiYearDataset:
     """Extend a single-year US dataset to multiple years via uprating.
 
     Builds a frame set for each year from the base year through
-    ``end_year`` (shallow copies sharing base-year buffers under pandas
-    copy-on-write; deep copies on pandas 2.x), then applies
-    multiplicative uprating using growth factors derived from the
-    policyengine-us parameter tree.
+    ``end_year`` using shallow dataset copies, then applies multiplicative
+    uprating using growth factors derived from the policyengine-us parameter
+    tree.
 
     If ``end_year`` is not provided, it defaults to the latest year
     covered by the CPI-U parameter (gov.bls.cpi.cpi_u).
@@ -107,9 +104,8 @@ def extend_single_year_dataset(
         )
     # Copy the base year too, so the returned multi-year dataset never
     # holds the caller's DataFrames directly. ``deep=False`` shares
-    # base-year buffers under pandas copy-on-write and falls back to
-    # deep copies on pandas 2.x — uprating's whole-column assignments
-    # then materialize only the columns they replace.
+    # base-year buffers under pandas copy-on-write; uprating's whole-column
+    # assignments then materialize only the columns they replace.
     datasets = [dataset.copy(deep=False)]
     for year in range(start_year + 1, end_year + 1):
         next_year = dataset.copy(deep=False)
@@ -158,9 +154,8 @@ def _apply_single_year_uprating(current, previous, system):
     upraters live in ``MICRODATA_UPRATING_OVERRIDES`` instead.
 
     Variables without an uprating parameter (or whose uprating parameter
-    evaluates to 0 for the previous year) are left unchanged — they carry
-    the base-year values forward (sharing base-year buffers under pandas
-    copy-on-write; as independent deep copies on pandas 2.x).
+    evaluates to 0 for the previous year) are left unchanged and carry the
+    base-year values forward.
     """
     current_year = int(current.time_period)
     previous_year = int(previous.time_period)

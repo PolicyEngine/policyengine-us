@@ -13,7 +13,6 @@ from policyengine_us.data.dataset_schema import (
     USSingleYearDataset,
     USMultiYearDataset,
 )
-from policyengine_us.data.dataset_schema import PANDAS_HAS_COW
 from policyengine_us.data.economic_assumptions import (
     _apply_single_year_uprating,
     _apply_uprating,
@@ -1177,10 +1176,6 @@ class TestShallowExtension:
         ):
             pd.testing.assert_frame_equal(df, snapshot, check_exact=True, obj=name)
 
-    @pytest.mark.skipif(
-        not PANDAS_HAS_COW,
-        reason="buffer sharing requires pandas copy-on-write (pandas >= 3)",
-    )
     def test_carried_forward_columns_share_base_year_buffers(
         self, mock_system, base_dataset
     ):
@@ -1232,39 +1227,4 @@ class TestShallowExtension:
         expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
         np.testing.assert_allclose(
             multi[BASE_YEAR + 1].person["employment_income"].values, expected
-        )
-
-    def test_deep_fallback_path_produces_identical_output(
-        self, mock_system, base_dataset, monkeypatch
-    ):
-        """The non-CoW fallback (deep copies inside ``copy(deep=False)``)
-        must produce output identical to the shallow fast path. On
-        pandas 3 CI this is exercised by forcing the gate off; the
-        py3.9/3.10 compat CI legs run this suite on real pandas 2.x."""
-        import policyengine_us.data.dataset_schema as dataset_schema
-
-        monkeypatch.setattr(dataset_schema, "PANDAS_HAS_COW", False)
-        fallback = call_extend_with_mock_system(
-            mock_system, base_dataset, end_year=END_YEAR_SHORT
-        )
-        monkeypatch.undo()
-        fast = call_extend_with_mock_system(
-            mock_system, base_dataset, end_year=END_YEAR_SHORT
-        )
-
-        assert fallback.years == fast.years
-        for year in fast.years:
-            for name, fast_df, fallback_df in zip(
-                fast[year].table_names,
-                fast[year].tables,
-                fallback[year].tables,
-            ):
-                pd.testing.assert_frame_equal(
-                    fast_df, fallback_df, check_exact=True, obj=f"{name}/{year}"
-                )
-
-        # The fallback shares no buffers across years (true deep copies).
-        assert not np.shares_memory(
-            fallback[BASE_YEAR + 1].person["age"].values,
-            fallback[BASE_YEAR].person["age"].values,
         )
