@@ -172,6 +172,34 @@
     # person2 is exempt by age (under 16).
     meets_snap_general_work_requirements: [true, true]
 
+- name: Case 12b, noncompliant 30-year-old caring for an incapacitated person is exempt.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        is_incapable_of_self_care: false
+        is_snap_work_registration_noncompliant: true
+      person2:
+        age: 40
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # person1 exempt under 7 CFR 273.7(b)(1)(v) (caring for an incapacitated
+    # person), so the sanction does not apply; person2 is exempt on the same
+    # household basis.
+    meets_snap_general_work_requirements: [true, true]
+
 # Work program participation under 7 CFR 273.7(a)(1)(ii) is affirmative
 # compliance, so it satisfies the requirement even alongside a noncompliance
 # flag.
