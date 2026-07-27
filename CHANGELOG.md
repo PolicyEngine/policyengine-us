@@ -1,3 +1,10 @@
+## [1.784.0] - 2026-07-27
+
+### Removed
+
+- Remove support for Python 3.9 and 3.10 and the pandas 2 compatibility path; supported versions are now Python 3.11 through 3.14 with pandas 3 or later.
+
+
 ## [1.783.0] - 2026-07-26
 
 ### Added
