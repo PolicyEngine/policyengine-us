@@ -15,7 +15,7 @@
 
 - name: Case 1, non-working zero-income ABAWD shrinks the unit and lowers the benefit.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       worker:
@@ -40,11 +40,11 @@
     is_snap_eligible: true
     # 1-person allotment on the compliant worker's income; strictly below
     # the ~4,466 the unit receives when both members comply.
-    snap: 1_487
+    snap: 1_487.17
 
 - name: Case 2, over-income household newly qualifies when the earner fails the time limit and income is prorated.
   period: 2026
-  absolute_error_margin: 1
+  absolute_error_margin: 0.1
   input:
     people:
       elder:
