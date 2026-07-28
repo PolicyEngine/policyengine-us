@@ -19,5 +19,9 @@ class al_ui_maximum_benefit_amount(Variable):
         max_weeks = person("al_ui_max_weeks", period)
         base_period_wages = person("al_ui_base_period_wages", period)
         weeks_cap = max_weeks * wba
+        # Statutory formula per Code of Ala. § 25-4-74(a): the lesser of
+        # max-weeks x WBA and one-fourth of base-period wages (confirmed by
+        # USDOL Comparison of State UI Laws). This is authoritative over the
+        # BRR handbook's simplified gloss and should not be "corrected".
         bpw_cap = p.mba.bpw_fraction * base_period_wages
         return np.round(min_(weeks_cap, bpw_cap))

@@ -21,4 +21,7 @@ class al_ui(Variable):
         mba = person("al_ui_maximum_benefit_amount", period)
         weeks_unemployed = person("weeks_unemployed", period)
         weeks_paid = clip(weeks_unemployed - p.waiting_weeks, 0, max_weeks)
+        # Intentional: the partial weekly benefit is applied to every payable
+        # week, assuming the same weekly earnings across the whole spell
+        # (equivalent to the full WBA whenever weekly earnings are zero).
         return min_(weeks_paid * partial_weekly_benefit, mba)
