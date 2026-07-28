@@ -66,8 +66,11 @@
     # exceed the 2-person limits. When the earner fails the ABAWD time
     # limit, 273.11(c)(2) counts half his income toward the remaining
     # 1-person unit, which qualifies: proration can create eligibility.
+    # The unit receives the minimum allotment, rounded to the nearest
+    # whole dollar per 7 CFR 273.10(e)(2)(ii)(C): $24 for the nine
+    # FY 2026 months plus $25 for the three uprated FY 2027 months.
     is_snap_eligible: true
-    snap: 288.61
+    snap: 291
 
 - name: Case 3, over-income household stays ineligible when the earner is sanctioned under the general work requirements.
   period: 2026
