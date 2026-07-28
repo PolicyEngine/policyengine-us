@@ -73,3 +73,32 @@
     state_group: CONTIGUOUS_US
   output:
     snap_min_allotment: 40
+
+- name: Case 9, federal minimum allotment before the FY2026 COLA rounds to a whole dollar.
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    state_code: MA
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $292 one-person maximum is $23.36, rounded to $23.
+    snap_min_allotment: 23
+
+- name: Case 10, federal minimum allotment after the FY2026 COLA rounds to a whole dollar.
+  period: 2026-01
+  input:
+    spm_unit_size: 1
+    state_code: MA
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $298 one-person maximum is $23.84, rounded to $24.
+    snap_min_allotment: 24
+
+- name: Case 11, federal rounding does not alter the New Jersey override.
+  period: 2026-01
+  input:
+    spm_unit_size: 1
+    state_code: NJ
+    state_group: CONTIGUOUS_US
+  output:
+    snap_min_allotment: 95
