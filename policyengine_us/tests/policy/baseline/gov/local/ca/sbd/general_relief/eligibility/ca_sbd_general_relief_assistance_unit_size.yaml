@@ -162,3 +162,34 @@
   output:
     # The size itself is uncapped; the grant table caps at the 5+ row.
     ca_sbd_general_relief_assistance_unit_size: 7
+
+- name: Case 8, an SSP-only recipient is excluded from the assistance unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 68
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # An SSP-only case: a positive state supplement with no federal SSI.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The aged member is the state supplement's person-level target and is
+    # excluded from the count; the younger adult remains.
+    ca_sbd_general_relief_assistance_unit_size: 1

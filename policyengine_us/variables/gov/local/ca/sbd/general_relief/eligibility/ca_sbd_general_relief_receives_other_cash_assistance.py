@@ -19,6 +19,13 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
         # here, since the handbook names only SSI/SSP and CalWORKs.
         # SSI is person-level, so only the individual recipient is barred.
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+        # SSP is computed at the SPM-unit level, so unit receipt is projected
+        # down and intersected with the person-level categorical flag
+        # (mirroring the SF CAAP CAPI bar): only the aged, blind, or disabled
+        # member an SSP-only payment serves is barred, not the whole unit.
+        receives_ssp = person("ca_state_supplement_eligible_person", period) & (
+            person.spm_unit("ca_state_supplement", period) > 0
+        )
         # CalWORKs receipt is tracked at the SPM-unit level, so a unit
         # receiving it bars its members. Read the take-up-gated federal
         # aggregator rather than ca_tanf directly (matching the ssi arm) so
@@ -27,4 +34,4 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
         receives_calworks = (person.spm_unit("tanf", period) > 0) | person.spm_unit(
             "receives_tanf", period
         )
-        return receives_ssi | receives_calworks
+        return receives_ssi | receives_ssp | receives_calworks

@@ -105,3 +105,22 @@
   output:
     # (5,000 - 3,000) x (1 - 1) = 0; the value moves to real property.
     ca_sbd_general_relief_countable_vehicle_value: 0
+
+- name: Case 7, living in a vehicle while owning none leaves no countable vehicle value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+        lives_in_vehicle: true
+  output:
+    # Degenerate input guard: the average vehicle value is 0 and the
+    # countable vehicle count max(0 - 1, 0) = 0.
+    ca_sbd_general_relief_countable_vehicle_value: 0

@@ -125,6 +125,10 @@
       spm_unit:
         members: [person1]
         tanf: 0
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member, bar them, and
+        # count as unit income.
+        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -151,6 +155,8 @@
       spm_unit:
         members: [person1]
         tanf: 0
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -277,3 +283,131 @@
     # The benefit formula floors countable income at zero:
     # 486 - max(-200, 0) = 486, not 686.
     ca_sbd_general_relief: 486
+
+- name: Case 10, a barred SSI recipient's wages still count against the family's grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        ssi: 0
+      person3:
+        age: 60
+        # $300 of monthly SSI bars this member from the assistance unit.
+        ssi: 300
+        # $2,400 per year is $200 per month of wages.
+        employment_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_sbd: true
+  output:
+    # The SSI recipient is out of the unit count...
+    ca_sbd_general_relief_eligible_person: [true, true, false]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 615
+    ca_sbd_general_relief_gross_earned_income: [0, 0, 200]
+    # ...but both halves of their income count toward the unit: earned
+    # (200 - 10) x 0.8 = 152, plus SSI of 300 in full = 452.
+    ca_sbd_general_relief_countable_income: 452
+    # 452 < 615.
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    # 615 - 452 = 163.
+    ca_sbd_general_relief: 163
+
+- name: Case 11, a whole-year 2021 period pins the June 1, 2021 program start.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # January through May 2021 predate the modeled flat-grant design
+    # (in_effect false); June through December pay the size-1 grant of
+    # $332: 7 x 332 = 2,324.
+    ca_sbd_general_relief: 2_324
+
+- name: Case 12, a whole-year 2026 period spans the July 1, 2026 era boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # January through June 2026 pay the 7/1/25 era size-1 grant of $486;
+    # July through December pay the 7/1/26 era grant of $504:
+    # 6 x 486 + 6 x 504 = 2,916 + 3,024 = 5,940.
+    ca_sbd_general_relief: 5_940
+
+- name: Case 13, an SSP-only recipient is excluded from the unit but the supplement counts as income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 68
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $200 per month of state supplement with no federal SSI (an
+        # SSP-only case).
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The aged SSP recipient is barred like an SSI recipient...
+    ca_sbd_general_relief_receives_other_cash_assistance: [false, true]
+    ca_sbd_general_relief_eligible_person: [true, false]
+    ca_sbd_general_relief_assistance_unit_size: 1
+    # One-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+    # ...but the unit-level supplement counts toward pooled income in full.
+    ca_sbd_general_relief_countable_income: 200
+    # 200 < 486.
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    # 486 - 200 = 286.
+    ca_sbd_general_relief: 286

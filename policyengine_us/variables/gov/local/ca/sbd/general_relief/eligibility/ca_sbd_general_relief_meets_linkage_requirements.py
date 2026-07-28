@@ -37,15 +37,25 @@ class ca_sbd_general_relief_meets_linkage_requirements(Variable):
             self_employment_income > 0
         )
         # Employable applicants must be available for and actively seeking
-        # work; students do not meet this criterion.
-        student = person("is_full_time_student", period.this_year)
+        # work; students do not meet this criterion. Both the handbook and
+        # the orientation deck bar students without qualification, so full-
+        # and part-time students both fail the employable path (part-time
+        # college is the only part-time enrollment input).
+        full_time_student = person("is_full_time_student", period.this_year)
+        student = full_time_student | person(
+            "is_part_time_college_student", period.this_year
+        )
         employable = hours_eligible & ~self_employed & ~student
         adult_linked = (age >= p.age_threshold) & (incapacitated | employable)
         # Children link through a cooperating parent when under 16, or when
         # aged 16 to 18 and enrolled in and attending high school full time.
         # Passing grades are not tracked.
-        in_high_school = student & person("is_in_secondary_school", period.this_year)
+        in_high_school = full_time_student & person(
+            "is_in_secondary_school", period.this_year
+        )
+        # "Aged 16 to 18" is a whole-number age band: a child is "aged 18"
+        # until their 19th birthday, and age is a float.
         child_linked = (age < p.child_linkage.age_limit) | (
-            (age <= p.child_linkage.student_age_limit) & in_high_school
+            (age < p.child_linkage.student_age_limit + 1) & in_high_school
         )
         return adult_linked | child_linked

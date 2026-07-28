@@ -185,3 +185,44 @@
     # Liquid assets pass alone (50 <= 50) but count within the personal
     # property total: 50 + 451 = 501 > 500.
     ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 11, a two-person unit shares the flat 50 dollar liquid asset limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 80
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The $50 limit is flat per assistance unit: 80 > 50 fails, though a
+    # per-person reading would have allowed up to 100.
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 12, a two-person unit exactly at the 50 dollar liquid asset limit passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 50
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # 50 <= 50 regardless of unit size.
+    ca_sbd_general_relief_resources_eligible: true

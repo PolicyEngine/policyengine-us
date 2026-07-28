@@ -1,8 +1,10 @@
 description: San Bernardino County counts these unearned income sources in full under the General Relief program.
 values:
   2021-06-01:
-    # In-kind and vendor payments are not counted as income since 6/1/2021
-    # (GRPHB HL #7358, Chapter A p. A-1), hence their absence from this list.
+    # In-kind income and vendor payments not given directly to the customer
+    # are not counted as income since 6/1/2021 (GRPHB HL #7358, cover
+    # transmittal change summary), hence their absence from this list; vendor
+    # payments given to the customer remain countable unearned income.
     # Social Security retirement, survivors, and disability benefits.
     - social_security
     # Unemployment Insurance Benefits.
@@ -34,12 +36,22 @@ values:
     - estate_income
     # Net income from any kind of property is counted as unearned income.
     - rental_income
-    # Grants and scholarships count as unearned income; the education-expense
-    # carve-out (tuition, books, supplies, transportation) is not modeled.
+    # Grants and scholarships count as unearned income. The A-3 income chart
+    # deducts the portion used for tuition, books, required supplies, and
+    # transportation to and from school; counting educational_assistance
+    # gross is an intentional approved approximation, so that carve-out is
+    # excluded from the model by design.
     - educational_assistance
     # SSI recipients are barred from the assistance unit at the person level,
     # but "all income in the AU must be taken into consideration", so an
-    # excluded member's SSI counts toward the unit's pooled income.
+    # excluded member's SSI counts toward the unit's pooled income. The
+    # excluded member's SSP counts the same way, but ca_state_supplement is
+    # an SPM-unit-level variable, so it is added in
+    # ca_sbd_general_relief_countable_income rather than in this person-level
+    # list. CAPI cash is deliberately not counted: CAPI recipients are not
+    # barred (the handbook names only SSI/SSP and CalWORKs) and remain
+    # assistance unit members, and excluding their CAPI payments from the
+    # literal all-income rule is an intentional approved approximation.
     - ssi
 
 metadata:
@@ -47,5 +59,5 @@ metadata:
   period: year
   label: San Bernardino County General Relief unearned income sources
   reference:
-    - title: San Bernardino County GRPHB Handbook Letter #7358, Chapter A pp. A-2 and A-3 (income chart, unearned income rows)
+    - title: "San Bernardino County GRPHB Handbook Letter #7358, Chapter A p. A-3 (income chart, unearned income rows)"
       href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

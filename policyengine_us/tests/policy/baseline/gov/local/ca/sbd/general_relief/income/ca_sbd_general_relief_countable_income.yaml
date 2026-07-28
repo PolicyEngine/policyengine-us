@@ -72,6 +72,10 @@
     spm_units:
       spm_unit:
         members: [person1]
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member and count as
+        # unit income.
+        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -163,6 +167,8 @@
     spm_units:
       spm_unit:
         members: [person1]
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
     households:
       household:
         members: [person1]
@@ -191,3 +197,32 @@
     # Unearned -200; the benefit formula (not this variable) floors
     # countable income at zero so the loss cannot inflate the grant.
     ca_sbd_general_relief_countable_income: -200
+
+- name: Case 10, an undocumented member's wages still count toward unit income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+        # $2,400 per year is $200 per month of wages.
+        employment_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The undocumented member is excluded from the assistance unit count,
+    # but "all income in the AU" is not limited to eligible members.
+    ca_sbd_general_relief_assistance_unit_size: 1
+    # (200 - 10) x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152

@@ -17,5 +17,5 @@ class ca_sbd_general_relief_maximum_basic_grant(Variable):
         p = parameters(period).gov.local.ca.sbd.general_relief.payment
         size = spm_unit("ca_sbd_general_relief_assistance_unit_size", period)
         # The grant table tops out at assistance units of five or more.
-        capped_size = clip(size, 1, 5)
+        capped_size = clip(size, 1, p.max_unit_size)
         return p.maximum_basic_grant[capped_size]

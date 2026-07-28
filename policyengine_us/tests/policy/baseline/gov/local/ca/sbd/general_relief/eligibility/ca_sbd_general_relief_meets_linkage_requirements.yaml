@@ -269,3 +269,36 @@
     # The default 40 weekly hours imply 173.33 monthly hours, failing the
     # employable path, but incapacity linkage has no hours test.
     ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 18, an 18-and-a-half-year-old attending high school full time stays linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18.5
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # "Children aged 16 to 18" is a whole-number age band running through
+    # the 19th birthday, so a float age of 18.5 still falls inside it.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 19, a part-time college student adult is not linked while employable.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_part_time_college_student: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # "Students do not meet this criteria" is unqualified: part-time and
+    # full-time students alike fail the employability linkage.
+    ca_sbd_general_relief_meets_linkage_requirements: false

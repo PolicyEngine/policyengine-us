@@ -29,4 +29,9 @@ class ca_sbd_general_relief_countable_income(Variable):
         unearned = add(
             spm_unit, period, ["ca_sbd_general_relief_gross_unearned_income"]
         )
-        return countable_earned + unearned
+        # Like an excluded member's SSI, their SSP counts toward the unit's
+        # pooled income; ca_state_supplement is an SPM-unit-level variable,
+        # so it is added here rather than in the person-level unearned
+        # sources list.
+        ssp = spm_unit("ca_state_supplement", period)
+        return countable_earned + unearned + ssp

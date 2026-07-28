@@ -1,7 +1,7 @@
 # GR will not subsidize any other cash-assistance program; the handbook
-# names SSI/SSP and CalWORKs recipients; CAPI is not barred.
-# SSI bars only the individual recipient; CalWORKs receipt is unit-level and
-# bars every member.
+# names SSI/SSP and CalWORKs recipients; CAPI is deliberately not barred.
+# SSI and SSP bar only the individual recipient; CalWORKs receipt is
+# unit-level and bars every member.
 - name: Case 1, a person with no SSI and no CalWORKs is not barred.
   period: 2026-01
   input:
@@ -118,3 +118,53 @@
         in_sbd: true
   output:
     ca_sbd_general_relief_receives_other_cash_assistance: [true, false]
+
+- name: Case 7, an SSP-only recipient is barred like an SSI recipient.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # An SSP-only case: a positive state supplement with no federal SSI.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The handbook's named program pair is "SSI/SSP", so a state-supplement-
+    # only payment also bars its aged recipient.
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 8, CAPI receipt does not bar and CAPI cash is not counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,400 per year is $200 per month of CAPI.
+        ca_capi: 2_400
+        # Pin the CA state supplement off so only CAPI is in play.
+        ca_state_supplement: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Only the programs the handbook names (SSI/SSP and CalWORKs) bar a
+    # member, and CAPI cash is deliberately left out of unit income.
+    ca_sbd_general_relief_receives_other_cash_assistance: false
+    ca_sbd_general_relief_countable_income: 0

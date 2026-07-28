@@ -174,3 +174,48 @@
     # clip(0, 1, 5) = 1; eligibility separately requires an eligible adult,
     # so no unit with zero eligible members ever receives this amount.
     ca_sbd_general_relief_maximum_basic_grant: 486
+
+# The two cases below pin the July 1 era boundary itself (June versus July
+# of the same year). Year-defined inputs are keyed by year because
+# non-January month periods reject scalar inputs for year variables.
+- name: Case 10, June 2025 is the last month of the 7/1/24 era.
+  period: 2025-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2025: true
+  output:
+    # The 7/1/24 schedule still applies through 6/30/25: $442.
+    ca_sbd_general_relief_maximum_basic_grant: 442
+
+- name: Case 11, July 2025 is the first month of the 7/1/25 era.
+  period: 2025-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2025: true
+  output:
+    # The 7/1/25 schedule takes over on the boundary month: $486.
+    ca_sbd_general_relief_maximum_basic_grant: 486

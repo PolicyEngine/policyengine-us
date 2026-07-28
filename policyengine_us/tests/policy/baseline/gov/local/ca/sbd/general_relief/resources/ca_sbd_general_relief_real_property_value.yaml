@@ -70,3 +70,23 @@
         household_vehicles_value: 8_000
   output:
     ca_sbd_general_relief_real_property_value: 10_000
+
+- name: Case 5, living in a vehicle while owning none adds nothing to real property.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 10_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+        lives_in_vehicle: true
+  output:
+    # Degenerate input guard: with zero vehicles the average vehicle value
+    # is zero, leaving only the assessed value.
+    ca_sbd_general_relief_real_property_value: 10_000
