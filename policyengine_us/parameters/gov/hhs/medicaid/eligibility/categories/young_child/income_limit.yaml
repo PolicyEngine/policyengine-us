@@ -78,9 +78,11 @@ MI:
 MN:
   2018-01-01: 2.80
 MO:
-  # 148% FPL base standard plus the conditional 5% MAGI disregard.
-  # Missouri's MAGI-converted standard is 148% (not the 150% KFF reports);
-  # the state's published dollar limits equal exactly 148% of the FPL.
+  # 148% MAGI-converted base standard plus the conditional 5% FPL disregard,
+  # folded into the limit because medicaid_income_level applies no disregard
+  # of its own. KFF historically reported 155% (the legacy pre-MAGI 150% base
+  # plus the 5% disregard); the state's published dollar limits equal exactly
+  # 148% of the FPL, so the effective ceiling is 148% + 5% = 153%.
   2018-01-01: 1.53
 MS:
   2018-01-01: 1.48
