@@ -22,11 +22,12 @@
 # "lack of sufficient jobs" criterion, which P.L. 119-21 (OBBBA)
 # section 10102 repealed. After Rhode Island State Council of Churches v.
 # Rollins (D.R.I., No. 1:25-cv-00569, TRO issued 2025-10-31), USDA's
-# February 26, 2026 guidance kept the terminated waivers in effect through
-# their original expiration dates. Per that guidance's expiration table (as
-# reported by Ballotpedia's OBBBA implementation tracker; USDA has not
-# published the table on a stable public page): CT and KY through 2025-11-30;
-# DC, NM, and OR through 2025-12-31; CA, IL, NV, NJ, and WA through
+# February 26, 2026 status update memorandum ("Waiver of the Time Limit -
+# Status Update," published on the USDA guidance portal and linked from the
+# FNA SNAP waiver reinstatement page) kept the terminated waivers in effect
+# through their original expiration dates. Per Appendix A of that
+# memorandum: CT and KY through 2025-11-30; DC, NM, OR, and the U.S. Virgin
+# Islands through 2025-12-31; CA, IL, NV, NJ, WA, and Guam through
 # 2026-01-31; MI, NY, and RI through 2026-02-28; MN, MT, and ND through
 # 2026-06-30.
 #
@@ -40,10 +41,11 @@
 #   FY2025 quarterly status reports). Sub-state coverage would require
 #   county FIPS (or sub-county) encoding and is not modeled here.
 # - The CA and DC FNS approval letters run through 2027-01-31 and 2026-12-31
-#   respectively, but the USDA February 26, 2026 guidance table lists their
-#   reinstated expirations as 2026-01-31 and 2025-12-31; this parameter
-#   follows the guidance table, which governs post-litigation administration
-#   (CDSS implemented the time limit statewide on 2026-06-01 per ACL 25-93).
+#   respectively, but Appendix A of the USDA February 26, 2026 memorandum
+#   lists their reinstated expirations as 2026-01-31 and 2025-12-31; this
+#   parameter follows the memorandum, which governs post-litigation
+#   administration (CDSS implemented the time limit statewide on 2026-06-01
+#   per ACL 25-93).
 # - Statewide waivers in effect before 2024-11-01 are not modeled.
 # - Guam and the U.S. Virgin Islands held territory-wide waivers but are not
 #   modeled by PolicyEngine US.
@@ -93,9 +95,11 @@ metadata:
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/dc-abawd-response-fy2025.pdf#page=3
     - title: USDA FNS District of Columbia Districtwide ABAWD Waiver Response, January 13, 2025 (effective 2025-01-01)
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/dc-abawd-response-fy2025-b.pdf#page=3
-    - title: USDA FNS Supplemental Nutrition Assistance Program Time Limit Waiver Status Update Memorandum (February 26, 2026)
-      href: https://drive.google.com/uc?export=download&id=1G7TGS7MYfPZ_JGBrc7jb82Fs-BwEow1y#page=2
-    - title: Ballotpedia, USDA guidance in response to litigation reinstates SNAP benefits for some ABAWDs (reporting the USDA February 26, 2026 guidance expiration table)
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, time limit waiver expiration dates)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA Food and Nutrition Administration, SNAP Waiver of the Time Limit - Status Update (landing page for the February 26, 2026 memorandum)
+      href: https://www.fna.usda.gov/snap/work-requirements/policies/waiver-reinstatement
+    - title: Ballotpedia, USDA guidance in response to litigation reinstates SNAP benefits for some ABAWDs (secondary reporting of the February 26, 2026 memorandum)
       href: https://news.ballotpedia.org/2026/04/02/usda-guidance-in-response-to-litigation-reinstates-snap-benefits-for-some-abawds/
     - title: USDA FNS FY 2025 Quarter 2 ABAWD Waiver Status Report (statewide vs. partial waiver classification)
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY25-Quarter-2-ABAWD-Waiver-Status-Revised.pdf#page=1
