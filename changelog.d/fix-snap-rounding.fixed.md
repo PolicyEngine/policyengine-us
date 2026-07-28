@@ -1,0 +1,1 @@
+Round SNAP monthly gross and net income eligibility standards up to the next whole dollar (7 CFR 273.9(a)(3)) and the minimum allotment to the nearest whole dollar (7 CFR 273.10(e)(2)(ii)(C)), matching USDA published values.
