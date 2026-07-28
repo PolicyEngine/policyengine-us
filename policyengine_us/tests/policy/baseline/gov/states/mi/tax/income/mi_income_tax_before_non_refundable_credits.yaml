@@ -14,3 +14,11 @@
     state_code: MI
   output:
     mi_income_tax_before_non_refundable_credits: 0
+
+- name: 2026 Michigan income tax uses the official 4.25 percent rate
+  period: 2026
+  input:
+    mi_taxable_income: 20_000
+    state_code: MI
+  output:
+    mi_income_tax_before_non_refundable_credits: 850
