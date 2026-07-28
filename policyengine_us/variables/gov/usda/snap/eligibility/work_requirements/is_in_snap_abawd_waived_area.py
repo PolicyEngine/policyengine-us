@@ -9,7 +9,7 @@ class is_in_snap_abawd_waived_area(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2015#o_4",
         "https://www.law.cornell.edu/cfr/text/7/273.24#f",
-        "https://www.fna.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=4",
+        "https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=4",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-79.pdf#page=6",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-15.pdf#page=6",
     )

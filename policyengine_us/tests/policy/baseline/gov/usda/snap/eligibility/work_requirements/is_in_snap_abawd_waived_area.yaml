@@ -4,9 +4,10 @@
 # (FIPS 02020).
 # From 2025-11-01 through 2026-10-31, FNS waived the time limit in seven
 # California counties (CDSS ACL 25-79 and ACL 26-15).
-# Statewide waivers (CA, DC, IL, NV) are modeled in waived_states,
-# including the period litigation kept them in effect (Rhode Island State
-# Council of Churches v. Rollins, D.R.I. No. 1:25-cv-00569).
+# Statewide waivers (CA, DC, IL, NV, and NY through 2025-02-28) are
+# modeled in waived_states, including the period litigation kept them in
+# effect (Rhode Island State Council of Churches v. Rollins, D.R.I.
+# No. 1:25-cv-00569).
 
 - name: Case 1, post-HR1 AK resident of waived borough (Fairbanks North Star) meets ABAWD requirements via area waiver.
   period: 2026-01
@@ -236,8 +237,10 @@
     meets_snap_abawd_work_requirements: true
 
 # Documented limitation: 12 of the 16 litigation-reinstated waivers were
-# partial-state waivers (e.g., NY covered 61 of 62 counties) and are not
-# modeled; see waived_states.yaml.
+# partial-state waivers (e.g., NY covered 61 of 62 counties from
+# 2025-03-01) and are not modeled; see waived_states.yaml. New York's
+# earlier FY2024 waiver (2024-03-01 through 2025-02-28) WAS statewide and
+# is modeled from 2024-11-01.
 
 - name: Case 16, NY resident (2026-02) is not exempt because NY's litigation-reinstated waiver was partial-state and is not modeled.
   period: 2026-02
@@ -250,6 +253,69 @@
       2026: false
     state_code:
       2026: NY
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 17, NY resident (2025-01) is exempt via the FY2024 statewide waiver under pre-HR1 rules.
+  period: 2025-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 18, NY resident (2025-03) is not exempt after the FY2024 statewide waiver expires on 2025-02-28 (the 61-county FY2025 waiver is not modeled).
+  period: 2025-03
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: NY
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# CA county waiver window edges: the county list applies from 2025-11-01
+# through 2026-10-31 only.
+
+- name: Case 19, CA resident of waived Imperial County (2026-04, after the statewide waiver expired) is exempt via the county waiver.
+  period: 2026-04
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06025"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 20, CA resident of Tulare County (2026-11, after the county waiver approval end date) is no longer exempt.
+  period: 2026-11
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06107"
   output:
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
