@@ -74,6 +74,18 @@
   output:
     snap_min_allotment: 40
 
+- name: Before Maryland's supplement took effect, Maryland follows the federal rules
+  period: 2016-01
+  input:
+    spm_unit_size: 1
+    md_snap_elderly_present: true
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $194 one-person maximum allotment is $15.52, rounded to
+    # the nearest whole dollar: $16 (the USDA FY 2016 minimum benefit).
+    snap_min_allotment: 16
+
 - name: FY 2025 minimum allotment rounds down to the nearest whole dollar
   period: 2025-01
   input:
