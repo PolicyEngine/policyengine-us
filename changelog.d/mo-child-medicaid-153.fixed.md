@@ -1,1 +1,0 @@
-Correct Missouri's Medicaid income limit for children ages 1-18 from 155% to 153% of the federal poverty level (the 148% base standard plus the 5% MAGI disregard), fixing eligibility in the 153-155% band and Medicaid-vs-CHIP routing.
