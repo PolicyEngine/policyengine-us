@@ -67,7 +67,9 @@
     # limit, 273.11(c)(2) counts half his income toward the remaining
     # 1-person unit, which qualifies: proration can create eligibility.
     is_snap_eligible: true
-    snap: 288.61
+    # Nine months at the rounded FY2026 minimum of $24, then three months
+    # at the rounded projected FY2027 minimum of $25.
+    snap: 291
 
 - name: Case 3, over-income household stays ineligible when the earner is sanctioned under the general work requirements.
   period: 2026
