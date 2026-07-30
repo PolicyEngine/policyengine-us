@@ -48,3 +48,12 @@
     mo_income_tax_before_credits: 1000000
   output:
     mo_wftc: 0
+- name: Filers claimed as a dependent receive no credit from 2024
+  period: 2025
+  input:
+    state_code: MO
+    eitc: 100
+    claimed_as_dependent_on_another_return: true
+    mo_income_tax_before_credits: 1000000
+  output:
+    mo_wftc: 0
