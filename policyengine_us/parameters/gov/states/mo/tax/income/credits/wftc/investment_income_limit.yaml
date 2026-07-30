@@ -1,0 +1,29 @@
+description: Missouri disqualifies filers from the Working Families Tax Credit if their investment income exceeds this amount.
+# RSMo 143.177.3(1) computes the credit under the federal EITC "as such credit
+# existed under 26 U.S.C. Section 32 as of January 1, 2021" — pre-ARPA law,
+# whose Section 32(i) disqualified-income limit ($3,650 for 2021 per Rev.
+# Proc. 2020-45) ARPA later replaced with the much higher current-law limit.
+# The IRS no longer publishes the pre-ARPA indexed value, so the Missouri
+# Department of Revenue computes it each year and publishes it only on Form
+# MO-WFTC and its FAQ; the statute contains no dollar amount. There is no
+# federal source to uprate from — each year's value is added when the
+# department releases the new form.
+values:
+  2023-01-01: 4_050
+  2024-01-01: 4_300
+  2025-01-01: 4_400
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri Working Families Tax Credit investment income limit
+  reference:
+    - title: 143.177. Missouri working family tax credit act, 3(1)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.177&bid=49978&hl=
+    - title: 2023 Form MO-WFTC, Qualifications, Line 3
+      href: https://dor.mo.gov/forms/MO-WFTC_2023.pdf#page=1
+    - title: 2024 Form MO-WFTC, Qualifications, Line 3
+      href: https://dor.mo.gov/forms/MO-WFTC_2024.pdf#page=1
+    - title: 2025 MO-1040 Book - Individual Income Tax Long Form, Form MO-WFTC
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=43
+    - title: Missouri Department of Revenue, Working Family Tax Credit FAQ
+      href: https://dor.mo.gov/faq/taxation/individual/missouri-working-family-tax-credit.html
