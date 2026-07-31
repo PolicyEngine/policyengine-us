@@ -41,7 +41,7 @@
     il_ccap_copay: 39
     il_ccap: 1_301
 
-- name: Case 2, 2026 licensed home rate and actual-charge cap include an undocumented child.
+- name: Case 2, 2026 licensed home attendance rule includes an undocumented child.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -56,7 +56,8 @@
         is_tax_unit_dependent: true
         childcare_provider_type_group: FDC_GFDC
         childcare_hours_per_day: 8
-        childcare_attending_days_per_month: 20
+        childcare_attending_days_per_month: 14
+        il_ccap_approved_eligible_days_per_month: 20
         pre_subsidy_childcare_expenses: 7_200
     spm_units:
       spm_unit:
@@ -82,6 +83,7 @@
     il_ccap_child_age_group: [AGE_THREE_OR_OLDER, AGE_TWO]
     il_ccap_max_daily_rate: [0, 44.99]
     il_ccap_max_monthly_reimbursement: [0, 899.8]
+    # Family attendance is 14 / 20 = 70%, so all 20 approved days are payable.
     # Actual charge is $600/month, below the $899.80 State maximum.
     # The ordinary minimum copay is $1, so State payment is $599.
     il_ccap_copay: 1

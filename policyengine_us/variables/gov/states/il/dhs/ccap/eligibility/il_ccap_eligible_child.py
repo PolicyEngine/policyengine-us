@@ -7,7 +7,10 @@ class il_ccap_eligible_child(Variable):
     label = "Eligible child for Illinois Child Care Assistance Program (CCAP)"
     definition_period = MONTH
     defined_for = StateCode.IL
-    reference = "https://www.dhs.state.il.us/page.aspx?item=104995"
+    reference = (
+        "https://www.dhs.state.il.us/page.aspx?item=104995",
+        "https://www.dhs.state.il.us/page.aspx?item=46885",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.il.dhs.ccap.age_limit
