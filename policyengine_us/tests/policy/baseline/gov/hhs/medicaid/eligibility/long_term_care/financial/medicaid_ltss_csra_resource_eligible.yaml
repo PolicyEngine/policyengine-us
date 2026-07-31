@@ -354,14 +354,51 @@
 - name: Case 7, the federal CSRA maximum controls when half of snapshot resources is higher.
   period: 2026-07
   input:
-    state_code:
-      2026: TX
-    medicaid_ltss_setting: INSTITUTIONAL
-    medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 1
-    medicaid_ltss_has_community_spouse: true
-    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
-    medicaid_ltss_countable_resources: 2_000
-    medicaid_ltss_community_spouse_countable_resources: 162_660
+    people:
+      at_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_660
+      above_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_661
+    tax_units:
+      at_maximum_tax_unit:
+        members: [at_maximum]
+      above_maximum_tax_unit:
+        members: [above_maximum]
+    families:
+      at_maximum_family:
+        members: [at_maximum]
+      above_maximum_family:
+        members: [above_maximum]
+    spm_units:
+      at_maximum_spm_unit:
+        members: [at_maximum]
+      above_maximum_spm_unit:
+        members: [above_maximum]
+    marital_units:
+      at_maximum_marital_unit:
+        members: [at_maximum]
+      above_maximum_marital_unit:
+        members: [above_maximum]
+    households:
+      at_maximum_household:
+        members: [at_maximum]
+        state_code:
+          2026: TX
+      above_maximum_household:
+        members: [above_maximum]
+        state_code:
+          2026: TX
   output:
-    medicaid_ltss_csra_resource_eligible: true
+    medicaid_ltss_csra_resource_eligible: [true, false]
