@@ -124,7 +124,7 @@
   output:
     medicaid_ltss_csra_resource_eligible: [true, true, false]
 
-- name: Case 3, Delaware couple resource limit includes the exact boundary.
+- name: Case 3, Delaware individual and couple resource limits include their exact boundaries.
   period: 2026-07
   input:
     people:
@@ -143,6 +143,21 @@
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_countable_resources: 3_001
+      individual_below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 1_999
+      individual_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_000
+      individual_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_001
     tax_units:
       below_tax_unit:
         members: [below]
@@ -150,6 +165,12 @@
         members: [at]
       above_tax_unit:
         members: [above]
+      individual_below_tax_unit:
+        members: [individual_below]
+      individual_at_tax_unit:
+        members: [individual_at]
+      individual_above_tax_unit:
+        members: [individual_above]
     families:
       below_family:
         members: [below]
@@ -157,6 +178,12 @@
         members: [at]
       above_family:
         members: [above]
+      individual_below_family:
+        members: [individual_below]
+      individual_at_family:
+        members: [individual_at]
+      individual_above_family:
+        members: [individual_above]
     spm_units:
       below_spm_unit:
         members: [below]
@@ -164,6 +191,12 @@
         members: [at]
       above_spm_unit:
         members: [above]
+      individual_below_spm_unit:
+        members: [individual_below]
+      individual_at_spm_unit:
+        members: [individual_at]
+      individual_above_spm_unit:
+        members: [individual_above]
     marital_units:
       below_marital_unit:
         members: [below]
@@ -171,6 +204,12 @@
         members: [at]
       above_marital_unit:
         members: [above]
+      individual_below_marital_unit:
+        members: [individual_below]
+      individual_at_marital_unit:
+        members: [individual_at]
+      individual_above_marital_unit:
+        members: [individual_above]
     households:
       below_household:
         members: [below]
@@ -184,21 +223,103 @@
         members: [above]
         state_code:
           2026: DE
+      individual_below_household:
+        members: [individual_below]
+        state_code:
+          2026: DE
+      individual_at_household:
+        members: [individual_at]
+        state_code:
+          2026: DE
+      individual_above_household:
+        members: [individual_above]
+        state_code:
+          2026: DE
   output:
-    medicaid_ltss_csra_resource_eligible: [true, true, false]
+    medicaid_ltss_csra_resource_eligible:
+      [true, true, false, true, true, false]
 
-- name: Case 4, Washington assistance unit of two is unmodeled and fails closed.
+- name: Case 4, Washington individual resource boundary is inclusive and assistance unit of two fails closed.
   period: 2026-07
   input:
-    state_code:
-      2026: WA
-    medicaid_ltss_setting: INSTITUTIONAL
-    medicaid_ltss_waiver: NONE
-    medicaid_ltss_assistance_unit_size: 2
-    medicaid_ltss_countable_resources: 0
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 1_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_001
+      unsupported_couple:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 0
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+      unsupported_couple_tax_unit:
+        members: [unsupported_couple]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+      unsupported_couple_family:
+        members: [unsupported_couple]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+      unsupported_couple_spm_unit:
+        members: [unsupported_couple]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+      unsupported_couple_marital_unit:
+        members: [unsupported_couple]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: WA
+      at_household:
+        members: [at]
+        state_code:
+          2026: WA
+      above_household:
+        members: [above]
+        state_code:
+          2026: WA
+      unsupported_couple_household:
+        members: [unsupported_couple]
+        state_code:
+          2026: WA
   output:
-    medicaid_ltss_financial_pathway: UNMODELED
-    medicaid_ltss_csra_resource_eligible: false
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, UNMODELED]
+    medicaid_ltss_csra_resource_eligible: [true, true, false, false]
 
 - name: Case 5, the CSRA floor controls when half of snapshot resources is lower.
   period: 2026-07
