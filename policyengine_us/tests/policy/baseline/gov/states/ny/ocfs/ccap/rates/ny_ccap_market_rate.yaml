@@ -1,0 +1,76 @@
+- name: Case 1, group one center infant weekly rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 484 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 2, group two family day care toddler daily rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_2
+    childcare_provider_type_group: FDC_GFDC
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 63 * 4 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 3, group three legally exempt group preschool part-day rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_3
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 3
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 29 * 3 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 4, group four standard informal school-age weekly rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_STD
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 188 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 5, group one enhanced informal preschool daily rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 55 * 5 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 6, historical group five hourly rate remains available.
+  period: 2024-01
+  input:
+    ny_ccap_county_group: GROUP_5
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: HOURLY
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 2
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 10 * 4 * 52 / 12
+  absolute_error_margin: 0.01

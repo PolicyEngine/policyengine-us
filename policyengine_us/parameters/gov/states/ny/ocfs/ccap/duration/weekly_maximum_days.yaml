@@ -1,0 +1,11 @@
+description: New York applies a weekly Child Care Assistance Program market rate only when care occurs on no more than this number of days per week.
+values:
+  2021-10-01: 5
+
+metadata:
+  unit: day
+  period: week
+  label: New York CCAP weekly rate maximum days
+  reference:
+    - title: 18 NYCRR 415.9(a)
+      href: https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=44

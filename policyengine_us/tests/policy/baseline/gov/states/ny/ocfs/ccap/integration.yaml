@@ -1,0 +1,168 @@
+- name: Case 1, current group one weekly center care is capped by the market rate.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ccdf_income: 60_000
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1]
+        county_str: NASSAU_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_1
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    # Market rate: $484/week * 52 / 12.
+    ny_ccap_market_rate: 484 * 52 / 12
+    # Family share: ($60,000 - $25,750) * 1% / 12.
+    ny_ccap_family_share: (60_000 - 25_750) * 0.01 / 12
+    # Expenses are $3,000/month, so the market rate binds.
+    ny_ccap: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+    ny_child_care_subsidies: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+    child_care_subsidies: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+  absolute_error_margin: 0.01
+
+- name: Case 2, current group two daily home care is capped by actual expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_provider_type_group: FDC_GFDC
+        childcare_hours_per_day: 7
+        childcare_days_per_week: 4
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ccdf_income: 25_750
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1]
+        county_str: ALBANY_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_2
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    # Market rate: $63/day * 4 days/week * 52 / 12.
+    ny_ccap_market_rate: 63 * 4 * 52 / 12
+    ny_ccap_family_share: 0
+    # Actual expenses are $800/month and bind below the market rate.
+    ny_ccap: 800
+    ny_child_care_subsidies: 800
+    child_care_subsidies: 800
+  absolute_error_margin: 0.01
+
+- name: Case 3, current group four part-day informal care applies the minimum share.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_provider_type_group: LE_ENH
+        childcare_hours_per_day: 4
+        childcare_days_per_week: 3
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ccdf_income: 25_751
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1]
+        county_str: BRONX_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_4
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    # Market rate: $28/part-day * 3 days/week * 52 / 12.
+    ny_ccap_market_rate: 28 * 3 * 52 / 12
+    ny_ccap_family_share: 52 / 12
+    ny_ccap: (28 * 3 * 52 - 52) / 12
+    ny_child_care_subsidies: (28 * 3 * 52 - 52) / 12
+    child_care_subsidies: (28 * 3 * 52 - 52) / 12
+  absolute_error_margin: 0.01
+
+- name: Case 4, an ineligible child receives no New York subsidy.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        is_ccdf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ccdf_income: 60_000
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1]
+        county_str: ALLEGANY_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_3
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: 277 * 52 / 12
+    ny_ccap: 0
+    ny_child_care_subsidies: 0
+    child_care_subsidies: 0
+  absolute_error_margin: 0.01
+
+- name: Case 5, historical New York City hourly care and county share remain available.
+  period: 2023-01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 2
+        childcare_days_per_week: 2
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ccdf_income: 30_000
+        spm_unit_fpg: 25_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1]
+        county_str: BRONX_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_5
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: HOURLY
+    # Historical rate: $10/hour * 4 hours/week * 52 / 12.
+    ny_ccap_market_rate: 10 * 4 * 52 / 12
+    # Historical Bronx family share: 10% of income above FPL.
+    ny_ccap_family_share: (30_000 - 25_000) * 0.1 / 12
+    ny_ccap: (10 * 4 * 52 - (30_000 - 25_000) * 0.1) / 12
+    # Annual aggregators reflect nine historical-share months and three
+    # statewide-share months in 2023, then return the annual average here.
+    ny_child_care_subsidies: 141
+    child_care_subsidies: 141
+  absolute_error_margin: 0.01

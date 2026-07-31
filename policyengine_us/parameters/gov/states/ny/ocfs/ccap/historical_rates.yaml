@@ -1,6 +1,6 @@
-description: CCDF benefit rate by county cluster, provider type, duration of care, and child age
+description: New York set historical child care assistance market rates by county group, provider type, duration of care, and child age under the Child Care Assistance Program.
 
-1:
+GROUP_1:
   DCC_SACC:
     WEEKLY:
       INFANT:
@@ -186,7 +186,7 @@ description: CCDF benefit rate by county cluster, provider type, duration of car
         2021-10-01: 7.00
       SCHOOL_AGE:
         2021-10-01: 7.00
-2:
+GROUP_2:
   DCC_SACC:
     WEEKLY:
       INFANT:
@@ -372,7 +372,7 @@ description: CCDF benefit rate by county cluster, provider type, duration of car
         2021-10-01: 5.60
       SCHOOL_AGE:
         2021-10-01: 5.60
-3:
+GROUP_3:
   DCC_SACC:
     WEEKLY:
       INFANT:
@@ -558,7 +558,7 @@ description: CCDF benefit rate by county cluster, provider type, duration of car
         2021-10-01: 3.50
       SCHOOL_AGE:
         2021-10-01: 3.50
-4:
+GROUP_4:
   DCC_SACC:
     WEEKLY:
       INFANT:
@@ -744,7 +744,7 @@ description: CCDF benefit rate by county cluster, provider type, duration of car
         2021-10-01: 5.95
       SCHOOL_AGE:
         2021-10-01: 6.30
-5:
+GROUP_5:
   DCC_SACC:
     WEEKLY:
       INFANT:
@@ -933,6 +933,13 @@ description: CCDF benefit rate by county cluster, provider type, duration of car
 
 metadata:
   unit: currency-USD
+  period: year
+  label: New York CCAP historical market rates
+  breakdown:
+    - ny_ccap_county_group
+    - childcare_provider_type_group
+    - ny_ccap_duration_of_care
+    - ny_ccap_age_group
   reference:
-    - title: Child Care Market Rate Survey
-      href: https://ocfs.ny.gov/main/reports/2019-Child-Care-Market-Rate-Survey.pdf
+    - title: 19-OCFS-LCM-23 Attachment A
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=13

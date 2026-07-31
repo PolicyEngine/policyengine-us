@@ -1,4 +1,4 @@
-description: CCDF family copay as percentage of income in excess of FPL by county
+description: New York set historical county-specific family share rates on income above the federal poverty guideline under the Child Care Assistance Program.
 
 ALBANY_COUNTY_NY:
   2021-10-01: 0.1
@@ -127,6 +127,8 @@ YATES_COUNTY_NY:
 
 metadata:
   unit: /1
+  period: year
+  label: New York CCAP historical family share rate
   reference:
     - title: Policy Rules Database - New York State
       href: https://docs.google.com/spreadsheets/d/1WkApq1lljpm73kZepN8LmjwONJj-e3llG9p4PBkgYf8/edit#gid=1680972492

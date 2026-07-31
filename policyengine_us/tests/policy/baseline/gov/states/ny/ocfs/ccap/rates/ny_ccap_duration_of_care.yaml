@@ -1,0 +1,62 @@
+- name: Case 1, care at the weekly threshold uses the weekly rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+
+- name: Case 2, care below 30 weekly hours and at six daily hours uses the daily rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+- name: Case 3, care below six daily hours uses the current part-day rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+- name: Case 4, care below three daily hours used the historical hourly rate.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: HOURLY
+
+- name: Case 5, historical care at three daily hours used the part-day rate.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 3
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+- name: Case 6, extended daily care retains the daily base category.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 12
+    childcare_days_per_week: 2
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+- name: Case 7, care across six days does not use the weekly rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 6
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY

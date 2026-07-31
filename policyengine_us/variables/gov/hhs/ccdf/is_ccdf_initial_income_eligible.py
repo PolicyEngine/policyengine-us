@@ -5,4 +5,8 @@ class is_ccdf_initial_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "Initial income eligibility for CCDF"
+    label = "Whether the SPM unit meets an unmodeled initial CCDF income test"
+    documentation = (
+        "Intentional input for state programs whose initial income rules "
+        "are not modeled from household income."
+    )
