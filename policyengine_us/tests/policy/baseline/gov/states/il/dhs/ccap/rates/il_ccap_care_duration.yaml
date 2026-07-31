@@ -1,0 +1,79 @@
+- name: Case 1, negative care hours produce no care.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: -1
+    state_code: IL
+  output:
+    il_ccap_care_duration: NONE
+
+- name: Case 2, zero care hours produce no care.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 0
+    state_code: IL
+  output:
+    il_ccap_care_duration: NONE
+
+- name: Case 3, care just below five hours is part-day.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 4.99
+    state_code: IL
+  output:
+    il_ccap_care_duration: PART_DAY
+
+- name: Case 4, exactly five hours is full-day.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 5
+    state_code: IL
+  output:
+    il_ccap_care_duration: FULL_DAY
+
+- name: Case 5, exactly twelve hours is full-day.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 12
+    state_code: IL
+  output:
+    il_ccap_care_duration: FULL_DAY
+
+- name: Case 6, care just above twelve hours is full plus part.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 12.01
+    state_code: IL
+  output:
+    il_ccap_care_duration: FULL_PLUS_PART
+
+- name: Case 7, care just below seventeen hours is full plus part.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 16.99
+    state_code: IL
+  output:
+    il_ccap_care_duration: FULL_PLUS_PART
+
+- name: Case 8, exactly seventeen hours is two full days.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 17
+    state_code: IL
+  output:
+    il_ccap_care_duration: TWO_FULL_DAYS
+
+- name: Case 9, exactly twenty-four hours is two full days.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 24
+    state_code: IL
+  output:
+    il_ccap_care_duration: TWO_FULL_DAYS
+
+- name: Case 10, care above twenty-four hours remains two full days.
+  period: 2026-01
+  input:
+    childcare_hours_per_day: 25
+    state_code: IL
+  output:
+    il_ccap_care_duration: TWO_FULL_DAYS

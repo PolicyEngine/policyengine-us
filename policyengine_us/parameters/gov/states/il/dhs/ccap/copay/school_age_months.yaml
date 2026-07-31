@@ -1,0 +1,22 @@
+description: Illinois applies the school-age part-day copayment schedule in these service months under the Child Care Assistance Program.
+values:
+  2025-07-01:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 9
+    - 10
+    - 11
+    - 12
+
+metadata:
+  unit: list
+  period: month
+  label: Illinois CCAP school-age part-day copayment months
+  reference:
+    - title: IDHS Important Parent Copayment Information, Table B, effective July 1, 2025
+      href: https://www.dhs.state.il.us/OneNetLibrary/27897/documents/Forms/443455B%20CCAP%20Income%20and%20Copay%20Chart%20Eff%207.1.25.pdf#page=5
+    - title: IDHS CCAP Policy 04.02.01, Copayments
+      href: https://www.dhs.state.il.us/page.aspx?item=54862
