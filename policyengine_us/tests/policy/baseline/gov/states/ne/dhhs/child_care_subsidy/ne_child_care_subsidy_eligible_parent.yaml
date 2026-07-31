@@ -42,3 +42,12 @@
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_parent: true
+
+- name: Case 6, a business loss cannot offset positive wages for activity.
+  period: 2026-01
+  input:
+    employment_income: 10_000
+    self_employment_income: -15_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true

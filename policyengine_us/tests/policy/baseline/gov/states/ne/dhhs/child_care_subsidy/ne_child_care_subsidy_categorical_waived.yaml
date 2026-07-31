@@ -6,13 +6,13 @@
   output:
     ne_child_care_subsidy_categorical_waived: true
 
-- name: Case 2, protective services waives the income and asset tests.
+- name: Case 2, protective status alone does not establish a case-specific waiver.
   period: 2026-01
   input:
     receives_or_needs_protective_services: true
     state_code: NE
   output:
-    ne_child_care_subsidy_categorical_waived: true
+    ne_child_care_subsidy_categorical_waived: false
 
 - name: Case 3, an approved administrative category waives the tests.
   period: 2026-01

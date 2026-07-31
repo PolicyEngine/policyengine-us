@@ -18,9 +18,9 @@ class ne_child_care_subsidy_eligible_child(Variable):
         has_special_needs = person("ne_dhhs_has_special_needs", period.this_year)
         enrolled = person.spm_unit("ne_child_care_subsidy_enrolled", period)
         age_eligible = (
-            (age <= p.base)
-            | (enrolled & (age <= p.enrolled))
-            | (has_special_needs & (age <= p.special_needs))
+            (age < p.base + 1)
+            | (enrolled & (age < p.enrolled + 1))
+            | (has_special_needs & (age < p.special_needs + 1))
         )
         immigration_eligible = person(
             "is_ccdf_immigration_eligible_child", period.this_year

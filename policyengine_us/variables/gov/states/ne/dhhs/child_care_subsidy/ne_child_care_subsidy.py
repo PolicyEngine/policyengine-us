@@ -14,15 +14,26 @@ class ne_child_care_subsidy(Variable):
     defined_for = "ne_child_care_subsidy_eligible"
 
     def formula(spm_unit, period, parameters):
-        state_maximum = add(
-            spm_unit,
-            period,
-            [
-                "ne_child_care_subsidy_maximum_provider_rate",
-                "ne_child_care_subsidy_optional_fees",
-            ],
-        )
-        private_charge = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
-        reimbursement = min_(state_maximum, private_charge)
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
+        if (period.start.year, period.start.month) < (2025, 10):
+            # Preserve the prior expense-based approximation until the first
+            # fully encoded provider-rate matrix takes effect.
+            childcare_expenses = spm_unit(
+                "spm_unit_pre_subsidy_childcare_expenses", period
+            )
+            income = spm_unit("ne_child_care_subsidy_countable_income", period)
+            fpg = spm_unit("spm_unit_fpg", period)
+            fee_applies = income > fpg * p.fpg_fraction.fee_free_limit
+            return where(
+                fee_applies,
+                max_(childcare_expenses - p.rate * income, 0),
+                childcare_expenses,
+            )
+        person = spm_unit.members
+        state_maximum = person(
+            "ne_child_care_subsidy_maximum_provider_rate", period
+        ) + person("ne_child_care_subsidy_optional_fees", period)
+        private_charge = person("pre_subsidy_childcare_expenses", period)
+        reimbursement = spm_unit.sum(min_(state_maximum, private_charge))
         family_fee = spm_unit("ne_child_care_subsidy_family_fee", period)
         return max_(reimbursement - family_fee, 0)

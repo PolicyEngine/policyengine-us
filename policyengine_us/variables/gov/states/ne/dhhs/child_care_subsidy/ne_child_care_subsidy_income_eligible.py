@@ -15,15 +15,18 @@ class ne_child_care_subsidy_income_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         income = spm_unit("ne_child_care_subsidy_countable_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
+        fpg = spm_unit("ne_child_care_subsidy_fpg", period)
         smi = spm_unit("hhs_smi", period)
         enrolled = spm_unit("ne_child_care_subsidy_enrolled", period)
         at_redetermination = spm_unit(
             "ne_child_care_subsidy_at_redetermination", period
         )
-        initial_eligible = income <= fpg * p.fpg_fraction.initial_eligibility
-        redetermination_eligible = income < fpg * p.fpg_fraction.redetermination
-        current_period_eligible = income <= smi * p.smi_fraction.current_period_exit
+        initial_limit = np.ceil(fpg * p.fpg_fraction.initial_eligibility)
+        redetermination_limit = np.ceil(fpg * p.fpg_fraction.redetermination)
+        current_period_limit = np.ceil(smi * p.smi_fraction.current_period_exit)
+        initial_eligible = income <= initial_limit
+        redetermination_eligible = income < redetermination_limit
+        current_period_eligible = income <= current_period_limit
         categorical = spm_unit("ne_child_care_subsidy_categorical_waived", period)
         return categorical | select(
             [at_redetermination, enrolled],

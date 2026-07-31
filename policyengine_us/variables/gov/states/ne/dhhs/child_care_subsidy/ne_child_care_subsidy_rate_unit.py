@@ -27,7 +27,6 @@ class ne_child_care_subsidy_rate_unit(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
-        override = person("ne_child_care_subsidy_authorized_rate_unit", period)
         provider = person("ne_child_care_subsidy_provider_type", period)
         hours = min_(
             person("childcare_hours_per_day", period.this_year),
@@ -52,8 +51,4 @@ class ne_child_care_subsidy_rate_unit(Variable):
             ],
             default=NEChildCareSubsidyRateUnit.NONE,
         )
-        return where(
-            override != NEChildCareSubsidyRateUnit.NONE,
-            override,
-            derived,
-        )
+        return derived

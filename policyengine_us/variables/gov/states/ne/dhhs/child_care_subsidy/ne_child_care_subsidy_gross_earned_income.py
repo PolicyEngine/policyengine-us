@@ -10,8 +10,10 @@ class ne_child_care_subsidy_gross_earned_income(Variable):
     defined_for = StateCode.NE
     reference = (
         "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=3",
+        "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=4",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=11",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=13",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=14",
     )
 
     def formula(spm_unit, period, parameters):
@@ -19,9 +21,12 @@ class ne_child_care_subsidy_gross_earned_income(Variable):
         person = spm_unit.members
         earned = add(person, period, p.sources.earned)
         age = person("age", period)
-        excluded_student = person("is_in_k12_school", period) & (
-            age <= p.student_earner_age_threshold
+        in_school = (
+            person("is_full_time_student", period)
+            | person("is_part_time_college_student", period)
+            | person("technical_institution_student", period)
         )
+        excluded_student = in_school & (age < p.student_earner_age_threshold + 1)
         # Net self-employment inputs approximate statutory gross receipts less
         # allowable expenses; military income cannot isolate excluded combat pay.
         return spm_unit.sum(earned * ~excluded_student)

@@ -20,6 +20,8 @@ class ne_child_care_subsidy_optional_fees(Variable):
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=22",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=23",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=24",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=25",
+        "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=10",
     )
 
     def formula(person, period, parameters):
@@ -32,7 +34,17 @@ class ne_child_care_subsidy_optional_fees(Variable):
             person("ne_child_care_subsidy_transportation_occurrences", period),
             0,
         )
-        transportation = transportation_occurrences * p.transportation * licensed
+        spm_unit = person.spm_unit
+        gross_income = spm_unit("ne_child_care_subsidy_gross_income", period)
+        fpg = spm_unit("ne_child_care_subsidy_fpg", period)
+        eligible_category = (
+            spm_unit("is_tanf_enrolled", period)
+            | (gross_income <= np.ceil(fpg))
+            | spm_unit("ne_child_care_subsidy_categorical_waived", period)
+        )
+        transportation = (
+            transportation_occurrences * p.transportation * licensed * eligible_category
+        )
         summer_approved = person(
             "ne_child_care_subsidy_summer_activity_fee_approved", period
         )

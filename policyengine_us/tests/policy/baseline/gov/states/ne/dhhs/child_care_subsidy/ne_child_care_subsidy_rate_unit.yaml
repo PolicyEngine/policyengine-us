@@ -60,15 +60,3 @@
     state_code: NE
   output:
     ne_child_care_subsidy_rate_unit: NONE
-
-- name: Case 7, an explicit authorized unit overrides derived hours.
-  period: 2026-01
-  input:
-    childcare_days_per_week: 5
-    childcare_hours_per_day: 8
-    childcare_hours_per_week: 40
-    ne_child_care_subsidy_authorized_rate_unit: PARTIAL_DAY
-    ne_child_care_subsidy_provider_type: CENTER
-    state_code: NE
-  output:
-    ne_child_care_subsidy_rate_unit: PARTIAL_DAY

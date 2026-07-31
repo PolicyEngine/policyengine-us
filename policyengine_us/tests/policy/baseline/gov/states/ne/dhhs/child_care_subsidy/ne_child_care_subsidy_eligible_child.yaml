@@ -73,3 +73,32 @@
     state_code: NE
   output:
     ne_child_care_subsidy_eligible_child: true
+
+- name: Case 9, an ordinary child remains eligible until the 13th birthday.
+  period: 2026-01
+  input:
+    age: 12.5
+    immigration_status: CITIZEN
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 10, an enrolled child remains eligible until the 14th birthday.
+  period: 2026-01
+  input:
+    age: 13.5
+    immigration_status: CITIZEN
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 11, a special-needs child remains eligible until age 19.
+  period: 2026-01
+  input:
+    age: 18.5
+    immigration_status: CITIZEN
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true

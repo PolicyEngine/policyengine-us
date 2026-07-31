@@ -8,5 +8,5 @@ class ne_child_care_subsidy_registration_fee_count(Variable):
     label = "Nebraska Child Care Subsidy approved registration fee count"
     defined_for = StateCode.NE
     reference = (
-        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=22",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=23",
     )

@@ -76,19 +76,53 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
         licensed_daily = p.rates.licensed[location][provider_key][age_group][
             quality_key
         ][unit_key]
+        licensed_full_day = p.rates.licensed[location][provider_key][age_group][
+            quality_key
+        ][NEChildCareSubsidyRateUnit.FULL_DAY.name]
         exempt_family_daily = p.rates.license_exempt_family_home[location][unit_key]
+        exempt_family_full_day = p.rates.license_exempt_family_home[location][
+            NEChildCareSubsidyRateUnit.FULL_DAY.name
+        ]
 
         paid_days = person("ne_child_care_subsidy_paid_days", period)
-        authorized_hours = person(
-            "ne_child_care_subsidy_authorized_weekly_hours", period
+        absence_days = clip(
+            person("ne_child_care_subsidy_approved_absence_days", period),
+            0,
+            p.attendance.max_absence_days,
         )
-        licensed_monthly = licensed_daily * paid_days
-        exempt_family_monthly = exempt_family_daily * paid_days
+        attending_days = max_(paid_days - absence_days, 0)
+        # Nebraska prices each approved absence as one full-day unit,
+        # independently of the child's ordinary authorized unit.
+        licensed_monthly = (
+            licensed_daily * attending_days + licensed_full_day * absence_days
+        )
+        exempt_family_monthly = (
+            exempt_family_daily * attending_days + exempt_family_full_day * absence_days
+        )
+        members = person.spm_unit.members
+        member_provider = members("ne_child_care_subsidy_provider_type", period)
+        member_provider_eligible = members(
+            "ne_child_care_subsidy_provider_eligible", period
+        )
+        member_in_home = (
+            member_provider == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME
+        ) & member_provider_eligible
+        member_hours = members("ne_child_care_subsidy_authorized_weekly_hours", period)
+        # One in-home provider serves the family, so the base uses the
+        # maximum concurrent authorization rather than a wage per child.
+        in_home_hours = person.spm_unit.max(member_hours * member_in_home)
         in_home_monthly = (
             p.rates.license_exempt_in_home
-            * authorized_hours
+            * in_home_hours
             * WEEKS_IN_YEAR
             / MONTHS_IN_YEAR
+        )
+        in_home_child_count = person.spm_unit.sum(member_in_home)
+        in_home_base_per_child = np.zeros_like(in_home_monthly)
+        has_in_home_children = in_home_child_count > 0
+        in_home_base_per_child[has_in_home_children] = (
+            in_home_monthly[has_in_home_children]
+            / in_home_child_count[has_in_home_children]
         )
         base_rate = select(
             [
@@ -102,7 +136,7 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
                 licensed_monthly,
                 licensed_monthly,
                 exempt_family_monthly,
-                in_home_monthly,
+                in_home_base_per_child,
                 0,
             ],
             default=0,
@@ -110,10 +144,14 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
 
         special_needs = person("ne_dhhs_has_special_needs", period.this_year)
         approved = person("ne_child_care_subsidy_special_needs_rate_approved", period)
-        special_rate = where(
+        special_increase = where(
             provider == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME,
-            p.special_needs.in_home_increase_per_child,
-            p.special_needs.max_increase,
+            in_home_monthly * p.special_needs.in_home_increase_per_child,
+            base_rate * p.special_needs.max_increase,
         )
-        multiplier = where(special_needs & approved, 1 + special_rate, 1)
-        return base_rate * multiplier
+        special_increase = where(special_needs & approved, special_increase, 0)
+        quality_reported = quality != NEChildCareSubsidyQualityTier.NONE
+        licensed = (provider == NEChildCareSubsidyProviderType.HOME_I_II) | (
+            provider == NEChildCareSubsidyProviderType.CENTER
+        )
+        return (base_rate + special_increase) * (~licensed | quality_reported)

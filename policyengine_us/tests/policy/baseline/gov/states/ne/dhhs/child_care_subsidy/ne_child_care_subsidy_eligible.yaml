@@ -116,3 +116,52 @@
         state_code: IA
   output:
     ne_child_care_subsidy_eligible: false
+
+- name: Case 6, an enrolled family keeps activity and asset eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: false
+      person2:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
+    spm_units:
+      spm_unit:
+        is_ccdf_asset_eligible: false
+        members: [person1, person2]
+        ne_child_care_subsidy_enrolled: true
+        ne_child_care_subsidy_income_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: true
+
+- name: Case 7, a non-head parent must meet the activity test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: true
+      person2:
+        is_parent: true
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_eligible_parent: false
+      person3:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
+    spm_units:
+      spm_unit:
+        is_ccdf_asset_eligible: true
+        members: [person1, person2, person3]
+        ne_child_care_subsidy_income_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: false

@@ -2,9 +2,6 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_provider_type import (
     NEChildCareSubsidyProviderType,
 )
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_quality_tier import (
-    NEChildCareSubsidyQualityTier,
-)
 from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_rate_unit import (
     NEChildCareSubsidyRateUnit,
 )
@@ -24,19 +21,16 @@ class ne_child_care_subsidy_provider_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.provider
         provider = person("ne_child_care_subsidy_provider_type", period)
-        quality = person("ne_child_care_subsidy_quality_tier", period)
         rate_unit = person("ne_child_care_subsidy_rate_unit", period)
-        licensed = (provider == NEChildCareSubsidyProviderType.HOME_I_II) | (
-            provider == NEChildCareSubsidyProviderType.CENTER
-        )
-        licensed_quality_reported = ~licensed | (
-            quality != NEChildCareSubsidyQualityTier.NONE
-        )
         in_home = provider == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME
         special_needs = person("ne_dhhs_has_special_needs", period.this_year)
+        members = person.spm_unit.members
+        in_home_children = members("ne_child_care_subsidy_eligible_child", period) & (
+            members("ne_child_care_subsidy_provider_type", period)
+            == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME
+        )
         enough_children = (
-            person.spm_unit("ne_child_care_subsidy_eligible_child_count", period)
-            >= p.in_home_min_children
+            person.spm_unit.sum(in_home_children) >= p.in_home_min_children
         )
         in_home_condition = (
             ~in_home
@@ -58,6 +52,5 @@ class ne_child_care_subsidy_provider_eligible(Variable):
             (provider != NEChildCareSubsidyProviderType.NONE)
             & (rate_unit != NEChildCareSubsidyRateUnit.NONE)
             & unit_compatible
-            & licensed_quality_reported
             & in_home_condition
         )

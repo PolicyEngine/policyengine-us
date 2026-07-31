@@ -16,18 +16,36 @@ class ne_child_care_subsidy_eligible(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         eligible_parent = person("ne_child_care_subsidy_eligible_parent", period)
-        caretaker = person("is_tax_unit_head_or_spouse", period.this_year)
+        caretaker = person("is_tax_unit_head_or_spouse", period.this_year) | person(
+            "is_parent", period.this_year
+        )
         all_caretakers_eligible = spm_unit.sum(caretaker & ~eligible_parent) == 0
         eligible_child = person("ne_child_care_subsidy_eligible_child", period)
         provider_eligible = person("ne_child_care_subsidy_provider_eligible", period)
-        eligible_child_present = spm_unit.sum(eligible_child & provider_eligible) > 0
+        eligible_child_present = spm_unit.sum(eligible_child) > 0
         income_eligible = spm_unit("ne_child_care_subsidy_income_eligible", period)
+        if (period.start.year, period.start.month) < (2025, 10):
+            # Preserve the pre-matrix model path for historical periods.
+            return (
+                (spm_unit.sum(eligible_parent) > 0)
+                & eligible_child_present
+                & income_eligible
+            )
+        enrolled = spm_unit("ne_child_care_subsidy_enrolled", period)
+        at_redetermination = spm_unit(
+            "ne_child_care_subsidy_at_redetermination", period
+        )
+        activity_eligible = all_caretakers_eligible | (enrolled & ~at_redetermination)
+        eligible_provider_child_present = (
+            spm_unit.sum(eligible_child & provider_eligible) > 0
+        )
         asset_eligible = spm_unit(
             "is_ccdf_asset_eligible", period.this_year
         ) | spm_unit("ne_child_care_subsidy_categorical_waived", period)
+        asset_eligible |= enrolled & ~at_redetermination
         return (
-            all_caretakers_eligible
-            & eligible_child_present
+            activity_eligible
+            & eligible_provider_child_present
             & income_eligible
             & asset_eligible
         )

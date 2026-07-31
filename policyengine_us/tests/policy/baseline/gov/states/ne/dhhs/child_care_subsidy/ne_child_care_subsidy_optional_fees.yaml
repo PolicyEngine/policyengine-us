@@ -126,3 +126,16 @@
   output:
     # Three fees per program year less two paid earlier leaves one $15 fee.
     ne_child_care_subsidy_optional_fees: 15
+
+- name: Case 12, a transitional family above FPL cannot receive transportation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_fpg: 1_000
+    ne_child_care_subsidy_gross_income: 24_000
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_transportation_occurrences: 3
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0

@@ -16,8 +16,9 @@ class ne_child_care_subsidy_family_fee(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         gross_income = spm_unit("ne_child_care_subsidy_gross_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
-        fee_free = gross_income <= fpg * p.fpg_fraction.fee_free_limit
+        fpg = spm_unit("ne_child_care_subsidy_fpg", period)
+        fee_free_limit = np.ceil(fpg * p.fpg_fraction.fee_free_limit)
+        fee_free = gross_income <= fee_free_limit
         waived = spm_unit("is_tanf_enrolled", period) | spm_unit(
             "ne_child_care_subsidy_categorical_waived", period
         )

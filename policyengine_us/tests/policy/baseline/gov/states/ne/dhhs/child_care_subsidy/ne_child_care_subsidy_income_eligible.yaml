@@ -2,7 +2,7 @@
   period: 2026-01
   input:
     ne_child_care_subsidy_countable_income: 1_849
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
@@ -11,7 +11,7 @@
   period: 2026-01
   input:
     ne_child_care_subsidy_countable_income: 1_850
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
@@ -20,7 +20,7 @@
   period: 2026-01
   input:
     ne_child_care_subsidy_countable_income: 1_851
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: false
@@ -30,7 +30,7 @@
   input:
     ne_child_care_subsidy_at_redetermination: true
     ne_child_care_subsidy_countable_income: 1_999
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
@@ -40,7 +40,7 @@
   input:
     ne_child_care_subsidy_at_redetermination: true
     ne_child_care_subsidy_countable_income: 2_000
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: false
@@ -50,7 +50,7 @@
   input:
     ne_child_care_subsidy_at_redetermination: true
     ne_child_care_subsidy_countable_income: 2_001
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: false
@@ -90,9 +90,58 @@
   period: 2027-01
   input:
     ne_child_care_subsidy_countable_income: 1_500
-    spm_unit_fpg: 12_000
+    ne_child_care_subsidy_fpg: 1_000
     state_code: NE
   output:
     # 150% FPL remains below the 185% initial limit, but exceeds the repealed
     # 130% limit.
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 11, January uses the prior October FPG vintage.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The 2025 two-person annual guideline is $21,150.
+    ne_child_care_subsidy_fpg: 1_762.5
+
+- name: Case 12, the post-October period uses the current FPG vintage.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The 2026 two-person annual guideline is $21,640.
+    ne_child_care_subsidy_fpg: 1_803.33
+
+- name: Case 13, initial eligibility rounds the published limit up.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_countable_income: 3_261
+    ne_child_care_subsidy_fpg: 1_762.5
+    state_code: NE
+  output:
     ne_child_care_subsidy_income_eligible: true

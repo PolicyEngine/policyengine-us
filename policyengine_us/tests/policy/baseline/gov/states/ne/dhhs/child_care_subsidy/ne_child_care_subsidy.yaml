@@ -6,7 +6,7 @@
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 450
     ne_child_care_subsidy_optional_fees: 50
-    spm_unit_pre_subsidy_childcare_expenses: 1_200
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 450
@@ -22,7 +22,7 @@
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 80
     ne_child_care_subsidy_optional_fees: 0
-    spm_unit_pre_subsidy_childcare_expenses: 1_200
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 80
@@ -37,10 +37,49 @@
     ne_child_care_subsidy_family_fee: 150
     ne_child_care_subsidy_maximum_provider_rate: 80
     ne_child_care_subsidy_optional_fees: 20
-    spm_unit_pre_subsidy_childcare_expenses: 1_200
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 80
     ne_child_care_subsidy_optional_fees: 20
     # max(min($100, $80 provider rate + $20 fees) - $150, 0).
     ne_child_care_subsidy: 0
+
+- name: Case 4, private charges cap each child separately.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child1:
+        ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_optional_fees: 0
+        pre_subsidy_childcare_expenses: 1_800
+      child2:
+        ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_optional_fees: 0
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+    households:
+      household:
+        members: [child1, child2]
+        state_code: NE
+  output:
+    # The second child's unused maximum cannot absorb the first child's charge.
+    ne_child_care_subsidy: 100
+
+- name: Case 5, the pre-matrix historical expense approximation is preserved.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_countable_income: 200
+    ne_child_care_subsidy_eligible: true
+    spm_unit_fpg: 100
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    state_code: NE
+  output:
+    # $50 annual expense less the 7% historical family fee.
+    ne_child_care_subsidy: 36

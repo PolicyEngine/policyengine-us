@@ -20,7 +20,7 @@
   output:
     ne_child_care_subsidy_paid_days: 23
 
-- name: Case 3, scheduled days fill in missing attendance.
+- name: Case 3, zero reported attendance remains zero.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -29,8 +29,7 @@
     ne_child_care_subsidy_provider_eligible: true
     state_code: NE
   output:
-    # 3 days/week * 52 weeks / 12 months.
-    ne_child_care_subsidy_paid_days: 13
+    ne_child_care_subsidy_paid_days: 0
 
 - name: Case 4, negative reported attendance cannot reduce paid days.
   period: 2026-01

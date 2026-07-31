@@ -3,6 +3,7 @@ values:
   2011-06-28:
     - ssi
     - social_security
+    - railroad_benefits
     - dividend_income
     - interest_income
     - estate_income
@@ -23,6 +24,8 @@ metadata:
   reference:
     - title: Nebraska DHHS Title 392 Guidance, 392 NAC 2-010.01(A)
       href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=3
+    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 2-010.01(A), continued
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=4
     - title: 392 NAC 2-010.04
       href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=12
 # We do not include AABD payments (item 2) at the moment to avoid a circular
