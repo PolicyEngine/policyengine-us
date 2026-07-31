@@ -9,9 +9,8 @@
 # The baseline tax below these tests also moved: gov/states/ri/tax/income/
 # rate.yaml's bracket thresholds ($79,900 @ bracket[1] / $181,650 @ bracket[2]
 # in 2025) were frozen by the same #8905 bug and are now gov.irs.uprating
-# projections ($84,100 / $191,300 for 2027) -- RI's own rate-schedule
-# references only cover through 2025, so this is also a projection pending
-# RI's 2027 publication, not yet a published figure.
+# projections ($84,450 / $192,000 for 2027) from RI's official 2026
+# thresholds -- this remains a projection pending RI's 2027 publication.
 
 - name: RI high earner tax - income below threshold (no surtax)
   period: 2027
@@ -32,8 +31,8 @@
         state_code: RI
   output:
     # Income below the 2027 threshold - only baseline tax applies, surtax = 0.
-    # Baseline: .0375*84,100 + .0475*(191,300-84,100) + .0599*(500,000-191,300) = 26,736.88
-    ri_income_tax_before_non_refundable_credits: 26_736.88
+    # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(500,000-192,000) = 26,724.70
+    ri_income_tax_before_non_refundable_credits: 26_724.70
 
 - name: RI high earner tax - income above threshold
   period: 2027
@@ -53,12 +52,12 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (41,711.88) + 3% surtax on income above the 2027 threshold
+    # Baseline tax (41,699.70) + 3% surtax on income above the 2027 threshold
     # (gov.irs.uprating-projected from $640,000 @ 2026 to $659,050 @ 2027)
-    # Baseline: .0375*84,100 + .0475*(191,300-84,100) + .0599*(750,000-191,300) = 41,711.88
+    # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(750,000-192,000) = 41,699.70
     # Surtax: (750,000 - 659,050) * 0.03 = 90,950 * 0.03 = 2,728.5
-    # Total: 41,711.88 + 2,728.5 = 44,440.38
-    ri_income_tax_before_non_refundable_credits: 44_440.38
+    # Total: 41,699.70 + 2,728.5 = 44,428.20
+    ri_income_tax_before_non_refundable_credits: 44_428.20
 
 - name: RI high earner tax - income well above threshold
   period: 2027
@@ -78,12 +77,12 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (56,686.88) + 3% surtax on income above the 2027 threshold
+    # Baseline tax (56,674.70) + 3% surtax on income above the 2027 threshold
     # (gov.irs.uprating-projected from $640,000 @ 2026 to $659,050 @ 2027)
-    # Baseline: .0375*84,100 + .0475*(191,300-84,100) + .0599*(1,000,000-191,300) = 56,686.88
+    # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(1,000,000-192,000) = 56,674.70
     # Surtax: (1,000,000 - 659,050) * 0.03 = 340,950 * 0.03 = 10,228.5
-    # Total: 56,686.88 + 10,228.5 = 66,915.38
-    ri_income_tax_before_non_refundable_credits: 66_915.38
+    # Total: 56,674.70 + 10,228.5 = 66,903.20
+    ri_income_tax_before_non_refundable_credits: 66_903.20
 
 - name: RI high earner tax - reform not in effect
   period: 2027
@@ -104,5 +103,5 @@
         state_code: RI
   output:
     # Reform not in effect - only baseline tax applies (no surtax)
-    # Baseline: .0375*84,100 + .0475*(191,300-84,100) + .0599*(750,000-191,300) = 41,711.88
-    ri_income_tax_before_non_refundable_credits: 41_711.88
+    # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(750,000-192,000) = 41,699.70
+    ri_income_tax_before_non_refundable_credits: 41_699.70

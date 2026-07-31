@@ -118,6 +118,19 @@ def test_ri_2026_standard_deduction(status, value):
     assert amount[status] == value
 
 
+def test_ri_2026_income_tax_parameters():
+    p = _p("2026-01-01").gov.states.ri.tax.income
+    rates = SYSTEM.parameters.gov.states.ri.tax.income.rate
+
+    assert rates.brackets[1].threshold("2026-01-01") == 82_050
+    assert rates.brackets[2].threshold("2026-01-01") == 186_450
+    assert p.exemption.amount == 5_250
+    assert p.exemption.reduction.start == 261_000
+    assert p.exemption.reduction.increment == 7_450
+    assert p.deductions.standard.phase_out.start == 261_000
+    assert p.deductions.standard.phase_out.increment == 7_450
+
+
 # --- New York: 2024 and 2025 itemized-deduction phase-out applicable amount ----
 # NY Tax Law 615 conforms to the pre-TCJA federal 26 U.S.C. 68 applicable amount,
 # which NY continues to inflation-adjust. This parameter is not currently consumed

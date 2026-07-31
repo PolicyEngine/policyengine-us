@@ -5,6 +5,7 @@ values:
   2023-01-01: 4_700
   2024-01-01: 4_950
   2025-01-01: 5_100
+  2026-01-01: 5_250
 
 metadata:
   unit: currency-USD
@@ -16,6 +17,8 @@ metadata:
       type: downwards
       interval: 50
   reference:
+    - title: Rhode Island Division of Taxation Advisory ADV 2025-22
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/ADV_2025_22_Inflation_Adjustments.pdf#page=1
     - title: 2025 RI-1040 Instructions page I-5
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=5
     # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
