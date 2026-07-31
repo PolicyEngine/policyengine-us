@@ -1,0 +1,11 @@
+description: Washington models COPES as a named Home and Community Services Medicaid HCBS waiver for the LTSS financial screen.
+values:
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Washington Medicaid LTSS COPES waiver enabled
+  reference:
+    - title: WAC 182-515-1505 - HCB waiver services authorized by Home and Community Services
+      href: https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/wac-182-515-1505-home-and-community-based-hcb-waiver-services-authorized-home-and-community-services-hcs
