@@ -1,15 +1,19 @@
-- name: At least one eligible child, at least one eligible parent, is income eligible
-  period: 2024
+- name: Case 1, all caretaker child provider income and asset tests pass.
+  period: 2026-01
   input:
     people:
       person1:
+        is_tax_unit_head_or_spouse: true
         ne_child_care_subsidy_eligible_parent: true
       person2:
+        is_tax_unit_head_or_spouse: false
         ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
     spm_units:
       spm_unit:
-        ne_child_care_subsidy_income_eligible: true
+        is_ccdf_asset_eligible: true
         members: [person1, person2]
+        ne_child_care_subsidy_income_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -17,18 +21,48 @@
   output:
     ne_child_care_subsidy_eligible: true
 
-- name: No eligible children, at least one eligible parent, is income eligible
-  period: 2024
+- name: Case 2, one failing caretaker makes the family ineligible.
+  period: 2026-01
   input:
     people:
       person1:
+        is_tax_unit_head_or_spouse: true
         ne_child_care_subsidy_eligible_parent: true
       person2:
-        ne_child_care_subsidy_eligible_child: false
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: false
+      person3:
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
     spm_units:
       spm_unit:
+        is_ccdf_asset_eligible: true
+        members: [person1, person2, person3]
         ne_child_care_subsidy_income_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: false
+
+- name: Case 3, an eligible child without eligible provider conditions fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: true
+      person2:
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: false
+    spm_units:
+      spm_unit:
+        is_ccdf_asset_eligible: true
         members: [person1, person2]
+        ne_child_care_subsidy_income_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -36,40 +70,49 @@
   output:
     ne_child_care_subsidy_eligible: false
 
-- name: At least one eligible child, no eligible parents, is income eligible
-  period: 2024
+- name: Case 4, categorical status can waive a failed asset test.
+  period: 2026-01
   input:
     people:
       person1:
-        ne_child_care_subsidy_eligible_parent: false
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: true
       person2:
+        is_tax_unit_head_or_spouse: false
         ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
     spm_units:
       spm_unit:
-        ne_child_care_subsidy_income_eligible: true
+        is_ccdf_asset_eligible: false
         members: [person1, person2]
+        ne_child_care_subsidy_categorical_waived: true
+        ne_child_care_subsidy_income_eligible: true
     households:
       household:
         members: [person1, person2]
         state_code: NE
   output:
-    ne_child_care_subsidy_eligible: false
+    ne_child_care_subsidy_eligible: true
 
-- name: At least one eligible child, at least one eligible parent, not income eligible
-  period: 2024
+- name: Case 5, an out-of-state family is not Nebraska resident eligible.
+  period: 2026-01
   input:
     people:
       person1:
-        ne_child_care_subsidy_eligible_parent: false
+        is_tax_unit_head_or_spouse: true
+        ne_child_care_subsidy_eligible_parent: true
       person2:
+        is_tax_unit_head_or_spouse: false
         ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_eligible: true
     spm_units:
       spm_unit:
-        ne_child_care_subsidy_income_eligible: false
+        is_ccdf_asset_eligible: true
         members: [person1, person2]
+        ne_child_care_subsidy_income_eligible: true
     households:
       household:
         members: [person1, person2]
-        state_code: NE
+        state_code: IA
   output:
     ne_child_care_subsidy_eligible: false

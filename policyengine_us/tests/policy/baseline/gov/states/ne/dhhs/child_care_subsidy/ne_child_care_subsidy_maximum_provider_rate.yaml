@@ -1,0 +1,146 @@
+- name: Case 1, urban center infant base full-day rate is applied per paid day.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: INFANT
+    ne_child_care_subsidy_location: URBAN
+    ne_child_care_subsidy_paid_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_quality_tier: BASE
+    ne_child_care_subsidy_authorized_rate_unit: FULL_DAY
+    state_code: NE
+  output:
+    # $66.35 full-day rate * 2 paid days.
+    ne_child_care_subsidy_maximum_provider_rate: 132.70
+
+- name: Case 2, urban home toddler accredited partial-day rate is applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: TODDLER
+    ne_child_care_subsidy_location: URBAN
+    ne_child_care_subsidy_paid_days: 3
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    ne_child_care_subsidy_quality_tier: ACCREDITED_STEP_3
+    ne_child_care_subsidy_authorized_rate_unit: PARTIAL_DAY
+    state_code: NE
+  output:
+    # $36.75 partial-day rate * 3 paid days.
+    ne_child_care_subsidy_maximum_provider_rate: 110.25
+
+- name: Case 3, rural center preschool Step 4 full-plus-partial rate is applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: PRESCHOOL
+    ne_child_care_subsidy_location: RURAL
+    ne_child_care_subsidy_paid_days: 1
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_quality_tier: STEP_4
+    ne_child_care_subsidy_authorized_rate_unit: FULL_PLUS_PARTIAL
+    state_code: NE
+  output:
+    # $43 partial day + $43 full day.
+    ne_child_care_subsidy_maximum_provider_rate: 86
+
+- name: Case 4, rural home school-age Step 5 full-day rate is applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: SCHOOL_AGE
+    ne_child_care_subsidy_location: RURAL
+    ne_child_care_subsidy_paid_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    ne_child_care_subsidy_quality_tier: STEP_5
+    ne_child_care_subsidy_authorized_rate_unit: FULL_DAY
+    state_code: NE
+  output:
+    # $37.10 full-day rate * 2 paid days.
+    ne_child_care_subsidy_maximum_provider_rate: 74.20
+
+- name: Case 5, urban license-exempt family-home rate is applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_location: URBAN
+    ne_child_care_subsidy_paid_days: 4
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    ne_child_care_subsidy_authorized_rate_unit: PARTIAL_DAY
+    state_code: NE
+  output:
+    # $9.90 partial-day rate * 4 paid days.
+    ne_child_care_subsidy_maximum_provider_rate: 39.60
+
+- name: Case 6, rural license-exempt family-home combined rate is applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_location: RURAL
+    ne_child_care_subsidy_paid_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    ne_child_care_subsidy_authorized_rate_unit: FULL_PLUS_PARTIAL
+    state_code: NE
+  output:
+    # ($8.80 partial + $14.90 full) * 2 paid days.
+    ne_child_care_subsidy_maximum_provider_rate: 47.40
+
+- name: Case 7, license-exempt in-home care uses the hourly rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_authorized_weekly_hours: 40
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+    ne_child_care_subsidy_authorized_rate_unit: HOUR
+    state_code: NE
+  output:
+    # $13.50/hour * 40 hours/week * 52 weeks / 12 months.
+    ne_child_care_subsidy_maximum_provider_rate: 2_340
+
+- name: Case 8, approved special-needs care increases a licensed rate by 25 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: PRESCHOOL
+    ne_child_care_subsidy_location: URBAN
+    ne_child_care_subsidy_paid_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_quality_tier: BASE
+    ne_child_care_subsidy_authorized_rate_unit: FULL_DAY
+    ne_child_care_subsidy_special_needs_rate_approved: true
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    # $55 * 2 days * 1.25.
+    ne_child_care_subsidy_maximum_provider_rate: 137.50
+
+- name: Case 9, special-needs status without rate approval has no uplift.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: PRESCHOOL
+    ne_child_care_subsidy_location: URBAN
+    ne_child_care_subsidy_paid_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_quality_tier: BASE
+    ne_child_care_subsidy_authorized_rate_unit: FULL_DAY
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_maximum_provider_rate: 110
+
+- name: Case 10, a missing provider yields a conservative zero rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NE
+  output:
+    ne_child_care_subsidy_maximum_provider_rate: 0

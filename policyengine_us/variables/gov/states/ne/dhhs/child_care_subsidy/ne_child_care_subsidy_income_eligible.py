@@ -5,17 +5,28 @@ class ne_child_care_subsidy_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Nebraska Child Care Subsidy program income eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206",
-        "https://dhhs.ne.gov/Pages/Child-Care-Parents.aspx",
-        "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=5",
+        "https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB304.pdf#page=1",
     )
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.fpg_fraction
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         income = spm_unit("ne_child_care_subsidy_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
-        income_limit = fpg * p.initial_eligibility
-        return income <= income_limit
+        smi = spm_unit("hhs_smi", period)
+        enrolled = spm_unit("ne_child_care_subsidy_enrolled", period)
+        at_redetermination = spm_unit(
+            "ne_child_care_subsidy_at_redetermination", period
+        )
+        initial_eligible = income <= fpg * p.fpg_fraction.initial_eligibility
+        redetermination_eligible = income < fpg * p.fpg_fraction.redetermination
+        current_period_eligible = income <= smi * p.smi_fraction.current_period_exit
+        categorical = spm_unit("ne_child_care_subsidy_categorical_waived", period)
+        return categorical | select(
+            [at_redetermination, enrolled],
+            [redetermination_eligible, current_period_eligible],
+            default=initial_eligible,
+        )

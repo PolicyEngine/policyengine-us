@@ -5,9 +5,18 @@ class ne_child_care_subsidy_eligible_parent(Variable):
     value_type = bool
     entity = Person
     label = "Nebraska Child Care Subsidy program eligible parent"
-    definition_period = YEAR
-    documentation = "Nebraska Child Care Subsidy eligible program parent must either be working, involved with Employment First as part of the ADC program, going to school or trainings, going to medical or therapy visits for self or child(ren), or ill or hurt (must be confirmed by a doctor)"
+    definition_period = MONTH
     reference = (
-        "https://dhhs.ne.gov/Pages/Child-Care-Subsidy-Information-for-Parents.aspx",
+        "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=15",
+        "https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=17",
     )
     defined_for = StateCode.NE
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.income
+        employed = add(person, period, p.sources.earned) > 0
+        student = person("is_full_time_student", period.this_year)
+        approved_activity = person.spm_unit(
+            "meets_ccdf_activity_test", period.this_year
+        )
+        return employed | student | approved_activity

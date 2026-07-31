@@ -1,0 +1,44 @@
+- name: Case 1, reported attendance plus approved absences are paid.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    childcare_attending_days_per_month: 18
+    ne_child_care_subsidy_approved_absence_days: 2
+    ne_child_care_subsidy_provider_eligible: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_paid_days: 20
+
+- name: Case 2, approved absences are capped at five days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    childcare_attending_days_per_month: 18
+    ne_child_care_subsidy_approved_absence_days: 8
+    ne_child_care_subsidy_provider_eligible: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_paid_days: 23
+
+- name: Case 3, scheduled days fill in missing attendance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    childcare_attending_days_per_month: 0
+    childcare_days_per_week: 3
+    ne_child_care_subsidy_provider_eligible: true
+    state_code: NE
+  output:
+    # 3 days/week * 52 weeks / 12 months.
+    ne_child_care_subsidy_paid_days: 13
+
+- name: Case 4, negative reported attendance cannot reduce paid days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    childcare_attending_days_per_month: -2
+    childcare_days_per_week: 0
+    ne_child_care_subsidy_provider_eligible: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_paid_days: 0

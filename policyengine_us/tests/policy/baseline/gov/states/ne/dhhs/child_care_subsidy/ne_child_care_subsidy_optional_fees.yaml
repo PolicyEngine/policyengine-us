@@ -1,0 +1,128 @@
+- name: Case 1, transportation occurrences are paid at five dollars each.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_transportation_occurrences: 3
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 15
+
+- name: Case 2, negative transportation occurrences are floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_transportation_occurrences: -2
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 3, a continuing center receives at most one registration fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_registration_fee_count: 3
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 25
+
+- name: Case 4, a new home provider may receive three registration fees.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_new_provider: true
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    ne_child_care_subsidy_registration_fee_count: 4
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 45
+
+- name: Case 5, an approved summer activity fee is not paid in January.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_summer_activity_fee_approved: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 6, approved summer activity fees total the annual cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_summer_activity_fee_approved: true
+    state_code: NE
+  output:
+    # $50 in June, July, and August.
+    ne_child_care_subsidy_optional_fees: 150
+
+- name: Case 7, an infant cannot receive a summer activity fee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: INFANT
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_summer_activity_fee_approved: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 8, a license-exempt provider cannot receive an activity fee.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: TODDLER
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    ne_child_care_subsidy_summer_activity_fee_approved: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 9, a license-exempt provider cannot receive transportation fees.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    ne_child_care_subsidy_transportation_occurrences: 3
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 10, a prior continuing registration fee exhausts the annual cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_registration_fee_count: 1
+    ne_child_care_subsidy_registration_fees_paid_ytd: 1
+    state_code: NE
+  output:
+    ne_child_care_subsidy_optional_fees: 0
+
+- name: Case 11, prior new-provider fees leave one annual registration fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_new_provider: true
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    ne_child_care_subsidy_registration_fee_count: 2
+    ne_child_care_subsidy_registration_fees_paid_ytd: 2
+    state_code: NE
+  output:
+    # Three fees per program year less two paid earlier leaves one $15 fee.
+    ne_child_care_subsidy_optional_fees: 15

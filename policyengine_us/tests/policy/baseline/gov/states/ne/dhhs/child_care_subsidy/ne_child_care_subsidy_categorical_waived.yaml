@@ -1,0 +1,30 @@
+- name: Case 1, foster care waives the income and asset tests.
+  period: 2026-01
+  input:
+    is_in_foster_care: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_categorical_waived: true
+
+- name: Case 2, protective services waives the income and asset tests.
+  period: 2026-01
+  input:
+    receives_or_needs_protective_services: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_categorical_waived: true
+
+- name: Case 3, an approved administrative category waives the tests.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_administrative_categorical_waiver: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_categorical_waived: true
+
+- name: Case 4, no categorical status leaves the tests in force.
+  period: 2026-01
+  input:
+    state_code: NE
+  output:
+    ne_child_care_subsidy_categorical_waived: false
