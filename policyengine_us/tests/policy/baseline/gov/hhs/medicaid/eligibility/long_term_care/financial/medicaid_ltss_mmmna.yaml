@@ -1,0 +1,59 @@
+- name: Federal July 2026 MMMNA uses the base, shelter threshold, and maximum.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      base:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 0
+      shelter_threshold:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 811.50
+      maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 2_173
+    tax_units:
+      base:
+        members: [base]
+      shelter_threshold:
+        members: [shelter_threshold]
+      maximum:
+        members: [maximum]
+    marital_units:
+      base:
+        members: [base]
+      shelter_threshold:
+        members: [shelter_threshold]
+      maximum:
+        members: [maximum]
+    spm_units:
+      base:
+        members: [base]
+      shelter_threshold:
+        members: [shelter_threshold]
+      maximum:
+        members: [maximum]
+    households:
+      base:
+        members: [base]
+        state_code:
+          2026: TX
+      shelter_threshold:
+        members: [shelter_threshold]
+        state_code:
+          2026: TX
+      maximum:
+        members: [maximum]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_mmmna: [2_705, 2_705, 4_066.50]

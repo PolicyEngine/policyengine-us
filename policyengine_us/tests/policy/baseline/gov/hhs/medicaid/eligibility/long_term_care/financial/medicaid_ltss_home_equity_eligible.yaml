@@ -1,0 +1,212 @@
+- name: Case 1, Texas home-equity cap includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 751_999
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_001
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: TX
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_home_equity_eligible: [true, true, false]
+
+- name: Case 2, Washington home-equity cap includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 1_129_999
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 1_130_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 1_130_001
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: WA
+      at_household:
+        members: [at]
+        state_code:
+          2026: WA
+      above_household:
+        members: [above]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_home_equity_eligible: [true, true, false]
+
+- name: Case 3, a resident spouse exception applies above the Texas cap.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_home_market_value: 752_001
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+    medicaid_ltss_home_occupied_by_spouse: true
+  output:
+    medicaid_ltss_home_equity_eligible: true
+
+- name: Case 4, a resident child under age 21 exception applies above the Texas cap.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_home_market_value: 752_001
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+    medicaid_ltss_home_occupied_by_child_under_21: true
+  output:
+    medicaid_ltss_home_equity_eligible: true
+
+- name: Case 5, a resident blind or disabled child exception applies above the Texas cap.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_home_market_value: 752_001
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+    medicaid_ltss_home_occupied_by_blind_or_disabled_child: true
+  output:
+    medicaid_ltss_home_equity_eligible: true
+
+- name: Case 6, a granted hardship waiver applies above the Texas cap.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_home_market_value: 752_001
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+    medicaid_ltss_home_equity_hardship_waiver: true
+  output:
+    medicaid_ltss_home_equity_eligible: true
+
+- name: Case 7, Delaware remains fail-closed without a modeled numeric home-equity cap.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_home_market_value: 0
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    medicaid_ltss_home_equity_eligible: false
