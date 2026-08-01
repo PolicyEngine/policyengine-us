@@ -34,8 +34,29 @@ class vt_retirement_income_exemption(Variable):
         vt_csrs_retirement_pay_exclusion = tax_unit(
             "vt_csrs_retirement_pay_exclusion", period
         )
-        # Assume that filers will always choose the largest reitrement income
-        # exclusion from various retirement system
+        filing_status = tax_unit("filing_status", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        # Get which parameter file to use
+        p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
+
+        def phased_exemption(amount, reduction_start, reduction_end):
+            partial_qualified = (
+                (agi >= reduction_start) & (agi < reduction_end) & (amount != 0)
+            )
+            partial_exemption_ratio = max_(reduction_end - agi, 0) / p.divisor
+            partial_exemption_ratio = round_(partial_exemption_ratio, 2)
+            partial_exemption_ratio = min_(partial_exemption_ratio, 1)
+            partial_exemption = amount * partial_exemption_ratio
+            full_exemption = where(agi < reduction_start, amount, 0)
+            return where(partial_qualified, partial_exemption, full_exemption)
+
+        ss_reduction_start = p.social_security.reduction.start[filing_status]
+        ss_reduction_end = p.social_security.reduction.end[filing_status]
+        csrs_reduction_start = p.csrs.reduction.start[filing_status]
+        csrs_reduction_end = p.csrs.reduction.end[filing_status]
+
+        # Assume that filers will always choose the largest retirement income
+        # exclusion from various retirement systems before Act 71.
         larger_retirement_income = max_(
             tax_unit_taxable_social_security,
             vt_military_retirement_pay_exclusion,
@@ -43,21 +64,17 @@ class vt_retirement_income_exemption(Variable):
         chosen_retirement_income = max_(
             larger_retirement_income, vt_csrs_retirement_pay_exclusion
         )
-        filing_status = tax_unit("filing_status", period)
-        agi = tax_unit("adjusted_gross_income", period)
         # Get which retirement system the filer use
         use_ss = tax_unit_taxable_social_security == chosen_retirement_income
-        # Get which parameter file to use
-        p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         reduction_start = where(
             use_ss,
-            p.social_security.reduction.start[filing_status],
-            p.csrs.reduction.start[filing_status],
+            ss_reduction_start,
+            csrs_reduction_start,
         )
         reduction_end = where(
             use_ss,
-            p.social_security.reduction.end[filing_status],
-            p.csrs.reduction.end[filing_status],
+            ss_reduction_end,
+            csrs_reduction_end,
         )
         # List of partial qualified tax unit(SECTION II)
         partial_qualified = (
@@ -76,13 +93,30 @@ class vt_retirement_income_exemption(Variable):
         csrs_or_ss_exemption = where(
             partial_qualified, partial_exemption, chosen_retirement_income
         )
-        # The 2025 income-based military exclusion (32 V.S.A. 5830e(d)) has its own
-        # $125k-$175k phase-out inside vt_military_retirement_income_based_exemption,
-        # so when it is the chosen exclusion it bypasses the CSRS reduction band
-        # rather than being phased a second time.
+        # The 2025 Act 71 income-based military exclusion (32 V.S.A. 5830e(d))
+        # has its own phase-out and stacks with one elected exclusion from
+        # subsections (a)-(c).
         use_military = ~use_ss & (
             vt_military_retirement_pay_exclusion == chosen_retirement_income
         )
         military_income_based = p.military_retirement.income_based_structure.in_effect
         bypass_csrs_band = use_military & military_income_based
-        return where(bypass_csrs_band, chosen_retirement_income, csrs_or_ss_exemption)
+        single_election_exemption = where(
+            bypass_csrs_band, chosen_retirement_income, csrs_or_ss_exemption
+        )
+        ss_exemption = phased_exemption(
+            tax_unit_taxable_social_security,
+            ss_reduction_start,
+            ss_reduction_end,
+        )
+        csrs_exemption = phased_exemption(
+            vt_csrs_retirement_pay_exclusion,
+            csrs_reduction_start,
+            csrs_reduction_end,
+        )
+        act_71_exemption = vt_military_retirement_pay_exclusion + max_(
+            ss_exemption, csrs_exemption
+        )
+        return where(
+            military_income_based, act_71_exemption, single_election_exemption
+        )

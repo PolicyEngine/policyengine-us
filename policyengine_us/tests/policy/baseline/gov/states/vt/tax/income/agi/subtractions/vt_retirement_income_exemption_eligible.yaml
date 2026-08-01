@@ -209,3 +209,23 @@
         state_code: VT
   output:
     vt_retirement_income_exemption_eligible: True  # Fully qualified
+
+- name: VT 2025 military retiree above non-military bands remains eligible under Act 71
+  period: 2025
+  input:
+    people:
+      person1:
+        military_retirement_pay: 30_000
+        csrs_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+        tax_unit_taxable_social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True

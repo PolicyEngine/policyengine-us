@@ -36,7 +36,7 @@ class vt_retirement_income_exemption_eligible(Variable):
         # Determine which retirement system the filer uses, mirroring the
         # main exemption formula, so the eligibility gate uses the matching
         # phase-out threshold (Social Security thresholds differ from CSRS
-        # under 2025 law, S.51).
+        # under 2025 Act 71).
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
@@ -46,6 +46,18 @@ class vt_retirement_income_exemption_eligible(Variable):
         vt_csrs_retirement_pay_exclusion = tax_unit(
             "vt_csrs_retirement_pay_exclusion", period
         )
+
+        def phased_exemption(amount, reduction_start, reduction_end):
+            partial_qualified = (
+                (agi >= reduction_start) & (agi < reduction_end) & (amount != 0)
+            )
+            partial_exemption_ratio = max_(reduction_end - agi, 0) / p.divisor
+            partial_exemption_ratio = round_(partial_exemption_ratio, 2)
+            partial_exemption_ratio = min_(partial_exemption_ratio, 1)
+            partial_exemption = amount * partial_exemption_ratio
+            full_exemption = where(agi < reduction_start, amount, 0)
+            return where(partial_qualified, partial_exemption, full_exemption)
+
         larger_retirement_income = max_(
             tax_unit_taxable_social_security,
             vt_military_retirement_pay_exclusion,
@@ -54,22 +66,43 @@ class vt_retirement_income_exemption_eligible(Variable):
             larger_retirement_income, vt_csrs_retirement_pay_exclusion
         )
         use_ss = tax_unit_taxable_social_security == chosen_retirement_income
+        ss_reduction_end = p.social_security.reduction.end[filing_status]
+        csrs_reduction_end = p.csrs.reduction.end[filing_status]
         reduction_end = where(
             use_ss,
-            p.social_security.reduction.end[filing_status],
-            p.csrs.reduction.end[filing_status],
+            ss_reduction_end,
+            csrs_reduction_end,
         )
         # The agi should below threshold
         agi_qualified = agi < reduction_end
-        # The 2025 income-based military exclusion (32 V.S.A. 5830e(d)) carries its
-        # own $125k-$175k phase-out, so it does not use the CSRS-end AGI gate; a
-        # high-AGI military retiree stays eligible (the exclusion itself returns 0
-        # above $175k).
+        # The 2025 Act 71 income-based military exclusion (32 V.S.A. 5830e(d))
+        # may be taken in addition to one elected exclusion from subsections
+        # (a)-(c), so the non-military AGI gate only controls that component.
         use_military = ~use_ss & (
             vt_military_retirement_pay_exclusion == chosen_retirement_income
         )
         military_income_based = p.military_retirement.income_based_structure.in_effect
-        agi_qualified = where(use_military & military_income_based, True, agi_qualified)
+        agi_qualified = where(
+            use_military & military_income_based, True, agi_qualified
+        )
+        single_election_eligible = retirement_income_qualified & agi_qualified
+        ss_exemption = phased_exemption(
+            tax_unit_taxable_social_security,
+            p.social_security.reduction.start[filing_status],
+            ss_reduction_end,
+        )
+        csrs_exemption = phased_exemption(
+            vt_csrs_retirement_pay_exclusion,
+            p.csrs.reduction.start[filing_status],
+            csrs_reduction_end,
+        )
+        act_71_eligible = (
+            (vt_military_retirement_pay_exclusion > 0)
+            | (ss_exemption > 0)
+            | (csrs_exemption > 0)
+        )
         # Both qualified then the filer is qualified for vermont retirement
         # income exemption
-        return retirement_income_qualified & agi_qualified
+        return where(
+            military_income_based, act_71_eligible, single_election_eligible
+        )
