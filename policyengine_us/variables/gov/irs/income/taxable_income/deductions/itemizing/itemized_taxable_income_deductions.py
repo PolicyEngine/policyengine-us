@@ -11,4 +11,10 @@ class itemized_taxable_income_deductions(Variable):
     def formula(tax_unit, period, parameters):
         total_deductions = tax_unit("total_itemized_taxable_income_deductions", period)
         reduction = tax_unit("itemized_taxable_income_deductions_reduction", period)
-        return max_(0, total_deductions - reduction)
+        deductions = max_(0, total_deductions - reduction)
+        p = parameters(period).gov.simulation
+        if p.limit_itemized_deductions_to_taxable_income:
+            agi = tax_unit("adjusted_gross_income", period)
+            exemptions = tax_unit("exemptions", period)
+            deductions = min_(deductions, max_(0, agi - exemptions))
+        return deductions

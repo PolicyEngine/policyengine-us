@@ -111,3 +111,24 @@
         state_and_local_sales_or_income_tax: 0
   output:
     salt_deduction: 11_000
+
+- name: Low AGI SALT deduction is not limited by taxable income
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+    households:
+      household:
+        members: [person]
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+        adjusted_gross_income: 5_000
+        state_and_local_sales_or_income_tax: 10_000
+  output:
+    salt: 10_000
+    salt_cap: 40_400
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 5_000
