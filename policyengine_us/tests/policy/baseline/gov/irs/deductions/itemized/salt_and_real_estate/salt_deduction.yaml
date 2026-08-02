@@ -111,3 +111,17 @@
         state_and_local_sales_or_income_tax: 0
   output:
     salt_deduction: 11_000
+
+- name: Personal property taxes are included in SALT
+  period: 2026
+  input:
+    people:
+      person:
+        state_and_local_personal_property_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+  output:
+    salt: 4_000
+    salt_deduction: 4_000

@@ -1,8 +1,9 @@
-description: The State and local taxes and real estate tax deduction is limited to the following sources.
+description: The State and local taxes and real estate tax deduction is limited to the following sources, including personal property taxes.
 values:
   2013-01-01:
     - state_and_local_sales_or_income_tax
     - real_estate_taxes
+    - state_and_local_personal_property_taxes
 
 metadata:
   unit: list
