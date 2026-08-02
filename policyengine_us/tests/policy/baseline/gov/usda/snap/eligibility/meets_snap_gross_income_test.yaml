@@ -29,3 +29,62 @@
     has_snap_elderly_disabled_member: true
   output:
     meets_snap_gross_income_test: true
+
+- name: Monthly gross standard rounds up to the next whole dollar
+  period: 2022
+  input:
+    # $1,302 per month against a $1,000.83 monthly poverty guideline;
+    # 130% of the guideline is $1,301.08, which 7 CFR 273.9(a)(3)(i)
+    # rounds up to $1,302.
+    snap_gross_test_income: 15_624
+    snap_fpg: 12_010
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Income above the rounded monthly gross standard fails
+  period: 2022
+  input:
+    # $1,303 per month against the rounded $1,302 monthly standard.
+    snap_gross_test_income: 15_636
+    snap_fpg: 12_010
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Missouri three-person household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # USDA FY 2026 gross monthly income limit for a household of three:
+        # 130% of the $26,650 annual poverty guideline / 12 = $2,887.08,
+        # rounded up to $2,888.
+        snap_gross_test_income: 2_888
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Missouri three-person household just above the published FY 2026 gross limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_gross_test_income: 2_889
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_gross_income_test: false

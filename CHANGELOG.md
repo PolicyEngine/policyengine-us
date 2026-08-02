@@ -1,3 +1,33 @@
+## [1.784.4] - 2026-07-31
+
+### Fixed
+
+- Correct Rhode Island's 2026 personal income tax brackets, exemption, and deduction phase-out parameters using Division of Taxation Advisory ADV 2025-22.
+
+
+## [1.784.3] - 2026-07-28
+
+### Fixed
+
+- Correct Missouri's Medicaid income limit for children ages 1-18 from 155% to 153% of the federal poverty level (the 148% base standard plus the 5% MAGI disregard), fixing eligibility in the 153-155% band and Medicaid-vs-CHIP routing.
+
+
+## [1.784.2] - 2026-07-28
+
+### Fixed
+
+- Round SNAP monthly gross and net income eligibility standards up to the next whole dollar (7 CFR 273.9(a)(3)) and the minimum allotment to the nearest whole dollar (7 CFR 273.10(e)(2)(ii)(C)), matching USDA published values.
+
+
+## [1.784.1] - 2026-07-27
+
+### Fixed
+
+- Encode the Medicaid community engagement SNAP exclusion as the status test in 42 CFR 435.554(c)(7) - SNAP receipt plus being subject to a SNAP work requirement - removing the actual-work-compliance condition, per interim final rule CMS-2454-IFC.
+- SNAP eligibility now requires a single member to satisfy the student, immigration, and work-requirement filters simultaneously, instead of testing the work requirement in a separate unit-level reduction (issue #9145).
+- Assume baseline compliance with SNAP work registration for non-exempt registrants per 7 CFR 273.7, adding an `is_snap_work_registration_noncompliant` input as a sanction-modeling hook, so that work-requirement disqualification applies to individuals (ABAWD time limits, explicit sanctions) rather than zeroing entire households.
+
+
 ## [1.784.0] - 2026-07-27
 
 ### Removed
