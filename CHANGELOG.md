@@ -1,3 +1,10 @@
+## [1.784.4] - 2026-07-31
+
+### Fixed
+
+- Correct Rhode Island's 2026 personal income tax brackets, exemption, and deduction phase-out parameters using Division of Taxation Advisory ADV 2025-22.
+
+
 ## [1.784.3] - 2026-07-28
 
 ### Fixed
