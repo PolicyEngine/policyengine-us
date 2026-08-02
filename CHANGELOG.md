@@ -1,3 +1,10 @@
+## [1.784.8] - 2026-08-02
+
+### Fixed
+
+- Fix Saver's Credit exact AGI boundary rates.
+
+
 ## [1.784.7] - 2026-08-02
 
 ### Changed
