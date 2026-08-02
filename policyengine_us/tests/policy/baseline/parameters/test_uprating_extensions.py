@@ -5,6 +5,7 @@ import pytest
 from policyengine_us.system import system
 from policyengine_us.parameters.uprating_extensions import (
     LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS,
+    get_irs_cpi,
     round_social_security_amount,
     round_social_security_payroll_cap,
 )
@@ -58,6 +59,23 @@ def test_all_uprating_factors_extend_to_2100():
         assert abs(growth_rate_1 - growth_rate_2) < 0.001, (
             f"{name} growth rate should be consistent: {growth_rate_1:.5f} vs {growth_rate_2:.5f}"
         )
+
+
+def test_irs_cpi_uses_twelve_month_window_ending_august():
+    """IRS CPI should average September through August."""
+    cpi = PARAMETERS.gov.bls.cpi.c_cpi_u
+
+    expected = sum(
+        cpi(f"2024-{month:02d}-01") for month in range(9, 13)
+    ) + sum(cpi(f"2025-{month:02d}-01") for month in range(1, 9))
+    old_august_july_window = sum(
+        cpi(f"2024-{month:02d}-01") for month in range(8, 13)
+    ) + sum(cpi(f"2025-{month:02d}-01") for month in range(1, 8))
+
+    assert get_irs_cpi(PARAMETERS, 2025) == pytest.approx(expected / 12)
+    assert get_irs_cpi(PARAMETERS, 2025) != pytest.approx(
+        old_august_july_window / 12
+    )
 
 
 def test_cbo_income_by_source_anchors_extend_to_2100():
