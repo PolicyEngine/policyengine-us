@@ -65,17 +65,15 @@ def test_irs_cpi_uses_twelve_month_window_ending_august():
     """IRS CPI should average September through August."""
     cpi = PARAMETERS.gov.bls.cpi.c_cpi_u
 
-    expected = sum(
-        cpi(f"2024-{month:02d}-01") for month in range(9, 13)
-    ) + sum(cpi(f"2025-{month:02d}-01") for month in range(1, 9))
+    expected = sum(cpi(f"2024-{month:02d}-01") for month in range(9, 13)) + sum(
+        cpi(f"2025-{month:02d}-01") for month in range(1, 9)
+    )
     old_august_july_window = sum(
         cpi(f"2024-{month:02d}-01") for month in range(8, 13)
     ) + sum(cpi(f"2025-{month:02d}-01") for month in range(1, 8))
 
     assert get_irs_cpi(PARAMETERS, 2025) == pytest.approx(expected / 12)
-    assert get_irs_cpi(PARAMETERS, 2025) != pytest.approx(
-        old_august_july_window / 12
-    )
+    assert get_irs_cpi(PARAMETERS, 2025) != pytest.approx(old_august_july_window / 12)
 
 
 def test_cbo_income_by_source_anchors_extend_to_2100():
