@@ -1,0 +1,19 @@
+description: New York applies a part-day Child Care Assistance Program market rate beginning at this number of care hours per day when care is below the daily-rate threshold.
+# 19-OCFS-LCM-23 §II.3.c-d: part-day market rates apply when care is provided
+# for at least three but fewer than six hours per day; care of fewer than
+# three hours per day is paid at an hourly market rate. 22-OCFS-LCM-14
+# eliminated hourly market rates effective June 1, 2022, so from that date
+# part-day rates apply to all care under six hours per day.
+values:
+  2021-10-01: 3
+  2022-06-01: 0
+
+metadata:
+  unit: hour
+  period: day
+  label: New York CCAP part-day rate minimum hours
+  reference:
+    - title: 19-OCFS-LCM-23, §II.3.c-d
+      href: https://ocfs.ny.gov/main/policies/external/2019/LCM/19-OCFS-LCM-23.pdf#page=6
+    - title: 22-OCFS-LCM-14, §II.4.c (hourly market rates eliminated effective June 1, 2022)
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14.pdf#page=5

@@ -24,4 +24,8 @@ class ny_ccap(Variable):
             total_eligible_market_rate,
         )
         family_share = spm_unit("ny_ccap_family_share", period)
-        return max_(reimbursable_care - family_share, 0)
+        # New York's own income limit (300% of the poverty guideline, then
+        # 85% of the state median income) binds below the federal 85% state
+        # median income ceiling embedded in is_ccdf_eligible.
+        income_eligible = spm_unit("ny_ccap_income_eligible", period)
+        return income_eligible * max_(reimbursable_care - family_share, 0)

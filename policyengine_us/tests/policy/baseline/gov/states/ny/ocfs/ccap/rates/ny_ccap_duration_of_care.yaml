@@ -25,13 +25,15 @@
   output:
     ny_ccap_duration_of_care: PART_DAY
 
-- name: Case 4, care below three daily hours used the historical hourly rate.
-  period: 2024-01
+- name: Case 4, care below three daily hours used the hourly rate before June 2022.
+  period: 2022-01
   input:
     childcare_hours_per_day: 2
     childcare_days_per_week: 5
     state_code: NY
   output:
+    # 19-OCFS-LCM-23 (p.6): fewer than three hours per day was paid hourly;
+    # 22-OCFS-LCM-14 (p.5) abolished hourly rates effective 2022-06-01.
     ny_ccap_duration_of_care: HOURLY
 
 - name: Case 5, historical care at three daily hours used the part-day rate.
@@ -59,4 +61,15 @@
     childcare_days_per_week: 6
     state_code: NY
   output:
+    ny_ccap_duration_of_care: PART_DAY
+
+- name: Case 8, care below three daily hours is part-day after hourly rates ended.
+  period: 2024-01
+  input:
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    # 22-OCFS-LCM-14 (p.5) abolished hourly rates effective 2022-06-01, so
+    # short care falls to the part-day category.
     ny_ccap_duration_of_care: PART_DAY

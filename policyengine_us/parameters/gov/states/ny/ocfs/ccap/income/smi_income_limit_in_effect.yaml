@@ -1,0 +1,17 @@
+description: New York determines Child Care Assistance Program income eligibility as a share of the state median income when this is in effect, and as a multiple of the federal poverty guideline otherwise.
+# Districts had to come into compliance with the 85% state median income
+# threshold on October 1, 2023, when the statutory revisions to SSL 410-u and
+# 410-w took effect.
+values:
+  2021-10-01: false
+  2023-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: New York CCAP state median income limit in effect
+  reference:
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), printed p. 7 (compliance schedule)
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=13
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), printed p. 6
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=12

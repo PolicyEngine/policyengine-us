@@ -1,34 +1,51 @@
 description: New York set historical child care assistance market rates by county group, provider type, duration of care, and child age under the Child Care Assistance Program.
+# 22-OCFS-LCM-14 abolished hourly market rates effective 2022-06-01, so the
+# 2022 era has no HOURLY values. The HOURLY entries below apply only through
+# 2022-05-31; from 2022-06-01 the HOURLY branch is unreachable because
+# duration/part_day_minimum_hours.yaml drops to 0 (care under the former
+# three-hour threshold classifies as PART_DAY).
 
 GROUP_1:
   DCC_SACC:
     WEEKLY:
       INFANT:
         2021-10-01: 364
+        2022-06-01: 409
       TODDLER:
         2021-10-01: 338
+        2022-06-01: 380
       PRESCHOOLER:
         2021-10-01: 310
+        2022-06-01: 355
       SCHOOL_AGE:
         2021-10-01: 317
+        2022-06-01: 325
     DAILY:
       INFANT:
         2021-10-01: 65
+        2022-06-01: 85
       TODDLER:
         2021-10-01: 62
+        2022-06-01: 82
       PRESCHOOLER:
         2021-10-01: 55
+        2022-06-01: 75
       SCHOOL_AGE:
         2021-10-01: 65
+        2022-06-01: 69
     PART_DAY:
       INFANT:
         2021-10-01: 43
+        2022-06-01: 57
       TODDLER:
         2021-10-01: 41
+        2022-06-01: 55
       PRESCHOOLER:
         2021-10-01: 37
+        2022-06-01: 50
       SCHOOL_AGE:
         2021-10-01: 43
+        2022-06-01: 46
     HOURLY:
       INFANT:
         2021-10-01: 9.50
@@ -42,30 +59,42 @@ GROUP_1:
     WEEKLY:
       INFANT:
         2021-10-01: 300
+        2022-06-01: 350
       TODDLER:
         2021-10-01: 295
+        2022-06-01: 345
       PRESCHOOLER:
         2021-10-01: 285
+        2022-06-01: 325
       SCHOOL_AGE:
         2021-10-01: 275
+        2022-06-01: 300
     DAILY:
       INFANT:
         2021-10-01: 60
+        2022-06-01: 75
       TODDLER:
         2021-10-01: 60
+        2022-06-01: 70
       PRESCHOOLER:
         2021-10-01: 60
+        2022-06-01: 70
       SCHOOL_AGE:
         2021-10-01: 57
+        2022-06-01: 65
     PART_DAY:
       INFANT:
         2021-10-01: 40
+        2022-06-01: 50
       TODDLER:
         2021-10-01: 40
+        2022-06-01: 47
       PRESCHOOLER:
         2021-10-01: 40
+        2022-06-01: 47
       SCHOOL_AGE:
         2021-10-01: 38
+        2022-06-01: 43
     HOURLY:
       INFANT:
         2021-10-01: 10.00
@@ -83,8 +112,10 @@ GROUP_1:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 233
+        2022-06-01: 266
       SCHOOL_AGE:
         2021-10-01: 238
+        2022-06-01: 244
     DAILY:
       INFANT:
         2021-10-01: 0
@@ -92,8 +123,10 @@ GROUP_1:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 41
+        2022-06-01: 56
       SCHOOL_AGE:
         2021-10-01: 49
+        2022-06-01: 52
     PART_DAY:
       INFANT:
         2021-10-01: 0
@@ -101,8 +134,10 @@ GROUP_1:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 28
+        2022-06-01: 38
       SCHOOL_AGE:
         2021-10-01: 32
+        2022-06-01: 35
     HOURLY:
       INFANT:
         2021-10-01: 0
@@ -116,30 +151,42 @@ GROUP_1:
     WEEKLY:
       INFANT:
         2021-10-01: 195
+        2022-06-01: 228
       TODDLER:
         2021-10-01: 192
+        2022-06-01: 224
       PRESCHOOLER:
         2021-10-01: 185
+        2022-06-01: 211
       SCHOOL_AGE:
         2021-10-01: 179
+        2022-06-01: 195
     DAILY:
       INFANT:
         2021-10-01: 39
+        2022-06-01: 49
       TODDLER:
         2021-10-01: 39
+        2022-06-01: 46
       PRESCHOOLER:
         2021-10-01: 39
+        2022-06-01: 46
       SCHOOL_AGE:
         2021-10-01: 37
+        2022-06-01: 42
     PART_DAY:
       INFANT:
         2021-10-01: 26
+        2022-06-01: 33
       TODDLER:
         2021-10-01: 26
+        2022-06-01: 31
       PRESCHOOLER:
         2021-10-01: 26
+        2022-06-01: 31
       SCHOOL_AGE:
         2021-10-01: 25
+        2022-06-01: 28
     HOURLY:
       INFANT:
         2021-10-01: 6.50
@@ -153,30 +200,42 @@ GROUP_1:
     WEEKLY:
       INFANT:
         2021-10-01: 210
+        2022-06-01: 245
       TODDLER:
         2021-10-01: 207
+        2022-06-01: 242
       PRESCHOOLER:
         2021-10-01: 200
+        2022-06-01: 228
       SCHOOL_AGE:
         2021-10-01: 193
+        2022-06-01: 210
     DAILY:
       INFANT:
         2021-10-01: 42
+        2022-06-01: 53
       TODDLER:
         2021-10-01: 42
+        2022-06-01: 49
       PRESCHOOLER:
         2021-10-01: 42
+        2022-06-01: 49
       SCHOOL_AGE:
         2021-10-01: 40
+        2022-06-01: 46
     PART_DAY:
       INFANT:
         2021-10-01: 28
+        2022-06-01: 35
       TODDLER:
         2021-10-01: 28
+        2022-06-01: 33
       PRESCHOOLER:
         2021-10-01: 28
+        2022-06-01: 33
       SCHOOL_AGE:
         2021-10-01: 27
+        2022-06-01: 30
     HOURLY:
       INFANT:
         2021-10-01: 7.00
@@ -191,30 +250,42 @@ GROUP_2:
     WEEKLY:
       INFANT:
         2021-10-01: 280
+        2022-06-01: 340
       TODDLER:
         2021-10-01: 264
+        2022-06-01: 320
       PRESCHOOLER:
         2021-10-01: 245
+        2022-06-01: 300
       SCHOOL_AGE:
         2021-10-01: 215
+        2022-06-01: 265
     DAILY:
       INFANT:
         2021-10-01: 59
+        2022-06-01: 70
       TODDLER:
         2021-10-01: 55
+        2022-06-01: 68
       PRESCHOOLER:
         2021-10-01: 51
+        2022-06-01: 64
       SCHOOL_AGE:
         2021-10-01: 45
+        2022-06-01: 57
     PART_DAY:
       INFANT:
         2021-10-01: 39
+        2022-06-01: 47
       TODDLER:
         2021-10-01: 37
+        2022-06-01: 45
       PRESCHOOLER:
         2021-10-01: 34
+        2022-06-01: 43
       SCHOOL_AGE:
         2021-10-01: 30
+        2022-06-01: 38
     HOURLY:
       INFANT:
         2021-10-01: 9.75
@@ -228,30 +299,42 @@ GROUP_2:
     WEEKLY:
       INFANT:
         2021-10-01: 190
+        2022-06-01: 300
       TODDLER:
         2021-10-01: 185
+        2022-06-01: 285
       PRESCHOOLER:
         2021-10-01: 180
+        2022-06-01: 269
       SCHOOL_AGE:
         2021-10-01: 175
+        2022-06-01: 240
     DAILY:
       INFANT:
         2021-10-01: 40
+        2022-06-01: 60
       TODDLER:
         2021-10-01: 40
+        2022-06-01: 60
       PRESCHOOLER:
         2021-10-01: 38
+        2022-06-01: 57
       SCHOOL_AGE:
         2021-10-01: 35
+        2022-06-01: 50
     PART_DAY:
       INFANT:
         2021-10-01: 27
+        2022-06-01: 40
       TODDLER:
         2021-10-01: 27
+        2022-06-01: 40
       PRESCHOOLER:
         2021-10-01: 25
+        2022-06-01: 38
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 33
     HOURLY:
       INFANT:
         2021-10-01: 8.00
@@ -269,8 +352,10 @@ GROUP_2:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 184
+        2022-06-01: 225
       SCHOOL_AGE:
         2021-10-01: 161
+        2022-06-01: 199
     DAILY:
       INFANT:
         2021-10-01: 0
@@ -278,8 +363,10 @@ GROUP_2:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 38
+        2022-06-01: 48
       SCHOOL_AGE:
         2021-10-01: 34
+        2022-06-01: 43
     PART_DAY:
       INFANT:
         2021-10-01: 0
@@ -287,8 +374,10 @@ GROUP_2:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 26
+        2022-06-01: 32
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 29
     HOURLY:
       INFANT:
         2021-10-01: 0
@@ -302,30 +391,42 @@ GROUP_2:
     WEEKLY:
       INFANT:
         2021-10-01: 124
+        2022-06-01: 195
       TODDLER:
         2021-10-01: 120
+        2022-06-01: 185
       PRESCHOOLER:
         2021-10-01: 117
+        2022-06-01: 175
       SCHOOL_AGE:
         2021-10-01: 114
+        2022-06-01: 156
     DAILY:
       INFANT:
         2021-10-01: 26
+        2022-06-01: 39
       TODDLER:
         2021-10-01: 26
+        2022-06-01: 39
       PRESCHOOLER:
         2021-10-01: 25
+        2022-06-01: 37
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 33
     PART_DAY:
       INFANT:
         2021-10-01: 18
+        2022-06-01: 26
       TODDLER:
         2021-10-01: 18
+        2022-06-01: 26
       PRESCHOOLER:
         2021-10-01: 16
+        2022-06-01: 25
       SCHOOL_AGE:
         2021-10-01: 15
+        2022-06-01: 21
     HOURLY:
       INFANT:
         2021-10-01: 5.20
@@ -339,30 +440,42 @@ GROUP_2:
     WEEKLY:
       INFANT:
         2021-10-01: 133
+        2022-06-01: 210
       TODDLER:
         2021-10-01: 130
+        2022-06-01: 200
       PRESCHOOLER:
         2021-10-01: 126
+        2022-06-01: 188
       SCHOOL_AGE:
         2021-10-01: 123
+        2022-06-01: 168
     DAILY:
       INFANT:
         2021-10-01: 28
+        2022-06-01: 42
       TODDLER:
         2021-10-01: 28
+        2022-06-01: 42
       PRESCHOOLER:
         2021-10-01: 27
+        2022-06-01: 40
       SCHOOL_AGE:
         2021-10-01: 25
+        2022-06-01: 35
     PART_DAY:
       INFANT:
         2021-10-01: 19
+        2022-06-01: 28
       TODDLER:
         2021-10-01: 19
+        2022-06-01: 28
       PRESCHOOLER:
         2021-10-01: 18
+        2022-06-01: 27
       SCHOOL_AGE:
         2021-10-01: 16
+        2022-06-01: 23
     HOURLY:
       INFANT:
         2021-10-01: 5.60
@@ -377,30 +490,42 @@ GROUP_3:
     WEEKLY:
       INFANT:
         2021-10-01: 220
+        2022-06-01: 295
       TODDLER:
         2021-10-01: 206
+        2022-06-01: 275
       PRESCHOOLER:
         2021-10-01: 195
+        2022-06-01: 253
       SCHOOL_AGE:
         2021-10-01: 180
+        2022-06-01: 245
     DAILY:
       INFANT:
         2021-10-01: 48
+        2022-06-01: 64
       TODDLER:
         2021-10-01: 45
+        2022-06-01: 59
       PRESCHOOLER:
         2021-10-01: 44
+        2022-06-01: 55
       SCHOOL_AGE:
         2021-10-01: 39
+        2022-06-01: 55
     PART_DAY:
       INFANT:
         2021-10-01: 32
+        2022-06-01: 43
       TODDLER:
         2021-10-01: 30
+        2022-06-01: 39
       PRESCHOOLER:
         2021-10-01: 29
+        2022-06-01: 37
       SCHOOL_AGE:
         2021-10-01: 26
+        2022-06-01: 37
     HOURLY:
       INFANT:
         2021-10-01: 8.00
@@ -414,30 +539,42 @@ GROUP_3:
     WEEKLY:
       INFANT:
         2021-10-01: 160
+        2022-06-01: 266
       TODDLER:
         2021-10-01: 150
+        2022-06-01: 252
       PRESCHOOLER:
         2021-10-01: 150
+        2022-06-01: 250
       SCHOOL_AGE:
         2021-10-01: 150
+        2022-06-01: 225
     DAILY:
       INFANT:
         2021-10-01: 35
+        2022-06-01: 55
       TODDLER:
         2021-10-01: 35
+        2022-06-01: 53
       PRESCHOOLER:
         2021-10-01: 33
+        2022-06-01: 50
       SCHOOL_AGE:
         2021-10-01: 30
+        2022-06-01: 50
     PART_DAY:
       INFANT:
         2021-10-01: 23
+        2022-06-01: 37
       TODDLER:
         2021-10-01: 23
+        2022-06-01: 35
       PRESCHOOLER:
         2021-10-01: 22
+        2022-06-01: 33
       SCHOOL_AGE:
         2021-10-01: 20
+        2022-06-01: 33
     HOURLY:
       INFANT:
         2021-10-01: 5.00
@@ -455,8 +592,10 @@ GROUP_3:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 146
+        2022-06-01: 190
       SCHOOL_AGE:
         2021-10-01: 135
+        2022-06-01: 184
     DAILY:
       INFANT:
         2021-10-01: 0
@@ -464,8 +603,10 @@ GROUP_3:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 33
+        2022-06-01: 41
       SCHOOL_AGE:
         2021-10-01: 29
+        2022-06-01: 41
     PART_DAY:
       INFANT:
         2021-10-01: 0
@@ -473,8 +614,10 @@ GROUP_3:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 22
+        2022-06-01: 28
       SCHOOL_AGE:
         2021-10-01: 20
+        2022-06-01: 28
     HOURLY:
       INFANT:
         2021-10-01: 0
@@ -488,30 +631,42 @@ GROUP_3:
     WEEKLY:
       INFANT:
         2021-10-01: 104
+        2022-06-01: 173
       TODDLER:
         2021-10-01: 98
+        2022-06-01: 164
       PRESCHOOLER:
         2021-10-01: 98
+        2022-06-01: 163
       SCHOOL_AGE:
         2021-10-01: 98
+        2022-06-01: 146
     DAILY:
       INFANT:
         2021-10-01: 23
+        2022-06-01: 36
       TODDLER:
         2021-10-01: 23
+        2022-06-01: 34
       PRESCHOOLER:
         2021-10-01: 21
+        2022-06-01: 33
       SCHOOL_AGE:
         2021-10-01: 20
+        2022-06-01: 33
     PART_DAY:
       INFANT:
         2021-10-01: 15
+        2022-06-01: 24
       TODDLER:
         2021-10-01: 15
+        2022-06-01: 23
       PRESCHOOLER:
         2021-10-01: 14
+        2022-06-01: 21
       SCHOOL_AGE:
         2021-10-01: 13
+        2022-06-01: 21
     HOURLY:
       INFANT:
         2021-10-01: 3.25
@@ -525,30 +680,42 @@ GROUP_3:
     WEEKLY:
       INFANT:
         2021-10-01: 112
+        2022-06-01: 186
       TODDLER:
         2021-10-01: 105
+        2022-06-01: 176
       PRESCHOOLER:
         2021-10-01: 105
+        2022-06-01: 175
       SCHOOL_AGE:
         2021-10-01: 105
+        2022-06-01: 158
     DAILY:
       INFANT:
         2021-10-01: 25
+        2022-06-01: 39
       TODDLER:
         2021-10-01: 25
+        2022-06-01: 37
       PRESCHOOLER:
         2021-10-01: 23
+        2022-06-01: 35
       SCHOOL_AGE:
         2021-10-01: 21
+        2022-06-01: 35
     PART_DAY:
       INFANT:
         2021-10-01: 16
+        2022-06-01: 26
       TODDLER:
         2021-10-01: 16
+        2022-06-01: 25
       PRESCHOOLER:
         2021-10-01: 15
+        2022-06-01: 23
       SCHOOL_AGE:
         2021-10-01: 14
+        2022-06-01: 23
     HOURLY:
       INFANT:
         2021-10-01: 3.50
@@ -563,30 +730,42 @@ GROUP_4:
     WEEKLY:
       INFANT:
         2021-10-01: 282
+        2022-06-01: 336
       TODDLER:
         2021-10-01: 265
+        2022-06-01: 314
       PRESCHOOLER:
         2021-10-01: 250
+        2022-06-01: 293
       SCHOOL_AGE:
         2021-10-01: 230
+        2022-06-01: 258
     DAILY:
       INFANT:
         2021-10-01: 59
+        2022-06-01: 75
       TODDLER:
         2021-10-01: 55
+        2022-06-01: 71
       PRESCHOOLER:
         2021-10-01: 52
+        2022-06-01: 65
       SCHOOL_AGE:
         2021-10-01: 50
+        2022-06-01: 55
     PART_DAY:
       INFANT:
         2021-10-01: 39
+        2022-06-01: 50
       TODDLER:
         2021-10-01: 37
+        2022-06-01: 47
       PRESCHOOLER:
         2021-10-01: 35
+        2022-06-01: 43
       SCHOOL_AGE:
         2021-10-01: 33
+        2022-06-01: 37
     HOURLY:
       INFANT:
         2021-10-01: 8.50
@@ -600,30 +779,42 @@ GROUP_4:
     WEEKLY:
       INFANT:
         2021-10-01: 225
+        2022-06-01: 275
       TODDLER:
         2021-10-01: 210
+        2022-06-01: 268
       PRESCHOOLER:
         2021-10-01: 200
+        2022-06-01: 250
       SCHOOL_AGE:
         2021-10-01: 200
+        2022-06-01: 250
     DAILY:
       INFANT:
         2021-10-01: 45
+        2022-06-01: 60
       TODDLER:
         2021-10-01: 45
+        2022-06-01: 55
       PRESCHOOLER:
         2021-10-01: 45
+        2022-06-01: 52
       SCHOOL_AGE:
         2021-10-01: 40
+        2022-06-01: 50
     PART_DAY:
       INFANT:
         2021-10-01: 30
+        2022-06-01: 40
       TODDLER:
         2021-10-01: 30
+        2022-06-01: 37
       PRESCHOOLER:
         2021-10-01: 30
+        2022-06-01: 35
       SCHOOL_AGE:
         2021-10-01: 27
+        2022-06-01: 33
     HOURLY:
       INFANT:
         2021-10-01: 8.75
@@ -641,8 +832,10 @@ GROUP_4:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 188
+        2022-06-01: 220
       SCHOOL_AGE:
         2021-10-01: 173
+        2022-06-01: 194
     DAILY:
       INFANT:
         2021-10-01: 0
@@ -650,8 +843,10 @@ GROUP_4:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 39
+        2022-06-01: 49
       SCHOOL_AGE:
         2021-10-01: 38
+        2022-06-01: 41
     PART_DAY:
       INFANT:
         2021-10-01: 0
@@ -659,8 +854,10 @@ GROUP_4:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 26
+        2022-06-01: 32
       SCHOOL_AGE:
         2021-10-01: 25
+        2022-06-01: 28
     HOURLY:
       INFANT:
         2021-10-01: 0
@@ -674,30 +871,42 @@ GROUP_4:
     WEEKLY:
       INFANT:
         2021-10-01: 146
+        2022-06-01: 179
       TODDLER:
         2021-10-01: 137
+        2022-06-01: 174
       PRESCHOOLER:
         2021-10-01: 130
+        2022-06-01: 163
       SCHOOL_AGE:
         2021-10-01: 130
+        2022-06-01: 163
     DAILY:
       INFANT:
         2021-10-01: 29
+        2022-06-01: 39
       TODDLER:
         2021-10-01: 29
+        2022-06-01: 36
       PRESCHOOLER:
         2021-10-01: 29
+        2022-06-01: 34
       SCHOOL_AGE:
         2021-10-01: 26
+        2022-06-01: 33
     PART_DAY:
       INFANT:
         2021-10-01: 20
+        2022-06-01: 26
       TODDLER:
         2021-10-01: 20
+        2022-06-01: 24
       PRESCHOOLER:
         2021-10-01: 20
+        2022-06-01: 23
       SCHOOL_AGE:
         2021-10-01: 18
+        2022-06-01: 21
     HOURLY:
       INFANT:
         2021-10-01: 5.69
@@ -711,30 +920,42 @@ GROUP_4:
     WEEKLY:
       INFANT:
         2021-10-01: 158
+        2022-06-01: 193
       TODDLER:
         2021-10-01: 147
+        2022-06-01: 188
       PRESCHOOLER:
         2021-10-01: 140
+        2022-06-01: 175
       SCHOOL_AGE:
         2021-10-01: 140
+        2022-06-01: 175
     DAILY:
       INFANT:
         2021-10-01: 32
+        2022-06-01: 42
       TODDLER:
         2021-10-01: 32
+        2022-06-01: 39
       PRESCHOOLER:
         2021-10-01: 32
+        2022-06-01: 36
       SCHOOL_AGE:
         2021-10-01: 28
+        2022-06-01: 35
     PART_DAY:
       INFANT:
         2021-10-01: 21
+        2022-06-01: 28
       TODDLER:
         2021-10-01: 21
+        2022-06-01: 26
       PRESCHOOLER:
         2021-10-01: 21
+        2022-06-01: 25
       SCHOOL_AGE:
         2021-10-01: 19
+        2022-06-01: 23
     HOURLY:
       INFANT:
         2021-10-01: 6.13
@@ -749,30 +970,42 @@ GROUP_5:
     WEEKLY:
       INFANT:
         2021-10-01: 406
+        # 2022-06-01: unchanged at 406 per 22-OCFS-LCM-14 Att. A
       TODDLER:
         2021-10-01: 315
+        2022-06-01: 370
       PRESCHOOLER:
         2021-10-01: 289
+        2022-06-01: 325
       SCHOOL_AGE:
         2021-10-01: 236
+        2022-06-01: 300
     DAILY:
       INFANT:
         2021-10-01: 69
+        2022-06-01: 80
       TODDLER:
         2021-10-01: 60
+        2022-06-01: 75
       PRESCHOOLER:
         2021-10-01: 54
+        2022-06-01: 67
       SCHOOL_AGE:
         2021-10-01: 47
+        2022-06-01: 60
     PART_DAY:
       INFANT:
         2021-10-01: 46
+        2022-06-01: 53
       TODDLER:
         2021-10-01: 40
+        2022-06-01: 50
       PRESCHOOLER:
         2021-10-01: 36
+        2022-06-01: 45
       SCHOOL_AGE:
         2021-10-01: 31
+        2022-06-01: 40
     HOURLY:
       INFANT:
         2021-10-01: 15.75
@@ -786,30 +1019,42 @@ GROUP_5:
     WEEKLY:
       INFANT:
         2021-10-01: 200
+        2022-06-01: 325
       TODDLER:
         2021-10-01: 196
+        2022-06-01: 300
       PRESCHOOLER:
         2021-10-01: 185
+        2022-06-01: 275
       SCHOOL_AGE:
         2021-10-01: 170
+        2022-06-01: 250
     DAILY:
       INFANT:
         2021-10-01: 40
+        2022-06-01: 70
       TODDLER:
         2021-10-01: 40
+        2022-06-01: 60
       PRESCHOOLER:
         2021-10-01: 35
+        2022-06-01: 60
       SCHOOL_AGE:
         2021-10-01: 35
+        2022-06-01: 55
     PART_DAY:
       INFANT:
         2021-10-01: 27
+        2022-06-01: 47
       TODDLER:
         2021-10-01: 27
+        2022-06-01: 40
       PRESCHOOLER:
         2021-10-01: 23
+        2022-06-01: 40
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 37
     HOURLY:
       INFANT:
         2021-10-01: 16.00
@@ -827,8 +1072,10 @@ GROUP_5:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 217
+        2022-06-01: 244
       SCHOOL_AGE:
         2021-10-01: 177
+        2022-06-01: 225
     DAILY:
       INFANT:
         2021-10-01: 0
@@ -836,8 +1083,10 @@ GROUP_5:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 41
+        2022-06-01: 50
       SCHOOL_AGE:
         2021-10-01: 35
+        2022-06-01: 45
     PART_DAY:
       INFANT:
         2021-10-01: 0
@@ -845,8 +1094,10 @@ GROUP_5:
         2021-10-01: 0
       PRESCHOOLER:
         2021-10-01: 27
+        2022-06-01: 34
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 30
     HOURLY:
       INFANT:
         2021-10-01: 0
@@ -860,30 +1111,42 @@ GROUP_5:
     WEEKLY:
       INFANT:
         2021-10-01: 130
+        2022-06-01: 211
       TODDLER:
         2021-10-01: 127
+        2022-06-01: 195
       PRESCHOOLER:
         2021-10-01: 120
+        2022-06-01: 179
       SCHOOL_AGE:
         2021-10-01: 111
+        2022-06-01: 163
     DAILY:
       INFANT:
         2021-10-01: 26
+        2022-06-01: 46
       TODDLER:
         2021-10-01: 26
+        2022-06-01: 39
       PRESCHOOLER:
         2021-10-01: 23
+        2022-06-01: 39
       SCHOOL_AGE:
         2021-10-01: 23
+        2022-06-01: 36
     PART_DAY:
       INFANT:
         2021-10-01: 18
+        2022-06-01: 31
       TODDLER:
         2021-10-01: 18
+        2022-06-01: 26
       PRESCHOOLER:
         2021-10-01: 15
+        2022-06-01: 26
       SCHOOL_AGE:
         2021-10-01: 15
+        2022-06-01: 24
     HOURLY:
       INFANT:
         2021-10-01: 10.40
@@ -897,30 +1160,42 @@ GROUP_5:
     WEEKLY:
       INFANT:
         2021-10-01: 140
+        2022-06-01: 228
       TODDLER:
         2021-10-01: 137
+        2022-06-01: 210
       PRESCHOOLER:
         2021-10-01: 130
+        2022-06-01: 193
       SCHOOL_AGE:
         2021-10-01: 119
+        2022-06-01: 175
     DAILY:
       INFANT:
         2021-10-01: 28
+        2022-06-01: 49
       TODDLER:
         2021-10-01: 28
+        2022-06-01: 42
       PRESCHOOLER:
         2021-10-01: 25
+        2022-06-01: 42
       SCHOOL_AGE:
         2021-10-01: 25
+        2022-06-01: 39
     PART_DAY:
       INFANT:
         2021-10-01: 19
+        2022-06-01: 33
       TODDLER:
         2021-10-01: 19
+        2022-06-01: 28
       PRESCHOOLER:
         2021-10-01: 16
+        2022-06-01: 28
       SCHOOL_AGE:
         2021-10-01: 16
+        2022-06-01: 26
     HOURLY:
       INFANT:
         2021-10-01: 11.20
@@ -943,3 +1218,17 @@ metadata:
   reference:
     - title: 19-OCFS-LCM-23 Attachment A
       href: https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=13
+    - title: 22-OCFS-LCM-14, Child Care Assistance Program Market Rates 2022, effective June 1, 2022
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14.pdf#page=1
+    - title: 22-OCFS-LCM-14, hourly market rates abolished effective June 1, 2022
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14.pdf#page=5
+    - title: 22-OCFS-LCM-14 Attachment A, Group 1 rates
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14-Att-A-Market-Rates.pdf#page=2
+    - title: 22-OCFS-LCM-14 Attachment A, Group 2 rates
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14-Att-A-Market-Rates.pdf#page=3
+    - title: 22-OCFS-LCM-14 Attachment A, Group 3 rates
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14-Att-A-Market-Rates.pdf#page=4
+    - title: 22-OCFS-LCM-14 Attachment A, Group 4 rates
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14-Att-A-Market-Rates.pdf#page=5
+    - title: 22-OCFS-LCM-14 Attachment A, Group 5 rates
+      href: https://ocfs.ny.gov/main/policies/external/2022/lcm/22-OCFS-LCM-14-Att-A-Market-Rates.pdf#page=6

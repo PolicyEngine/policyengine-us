@@ -1,0 +1,17 @@
+description: New York limits income to this share of the state median income under the Child Care Assistance Program.
+# SSL 410-u(2), 410-w(1), and 410-w(3), as revised effective October 1, 2023,
+# set the income eligibility threshold for the New York State Child Care Block
+# Grant Program at 85% of the state median income — the federal CCDF maximum
+# at 45 CFR 98.20(a)(2) — expanded from 300% of the state income standard.
+values:
+  2023-10-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: New York CCAP income limit share of state median income
+  reference:
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), printed p. 6
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=12
+    - title: 45 CFR 98.20(a)(2) (CCDF income eligibility maximum of 85% of state median income)
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(2)

@@ -13,6 +13,8 @@
         members: [person1]
         ccdf_income: 60_000
         spm_unit_fpg: 25_750
+        # 85% of SMI is the limit from 2023-10-01; $68,000 > $60,000 income.
+        hhs_smi: 80_000
         spm_unit_pre_subsidy_childcare_expenses: 36_000
     households:
       household:
@@ -20,6 +22,7 @@
         county_str: NASSAU_COUNTY_NY
         state_code: NY
   output:
+    ny_ccap_income_eligible: true
     ny_ccap_county_group: GROUP_1
     ny_ccap_age_group: INFANT
     ny_ccap_duration_of_care: WEEKLY
@@ -131,8 +134,8 @@
     child_care_subsidies: 0
   absolute_error_margin: 0.01
 
-- name: Case 5, historical New York City hourly care and county share remain available.
-  period: 2023-01
+- name: Case 5, historical New York City hourly care and capped share before June 2022.
+  period: 2022-01
   input:
     people:
       person1:
@@ -155,14 +158,19 @@
   output:
     ny_ccap_county_group: GROUP_5
     ny_ccap_age_group: SCHOOL_AGE
+    # Hourly rates existed until 22-OCFS-LCM-14 abolished them on 2022-06-01.
     ny_ccap_duration_of_care: HOURLY
-    # Historical rate: $10/hour * 4 hours/week * 52 / 12.
+    # Historical rate: $10/hour * 4 hours/week * 52 / 12 (19-OCFS-LCM-23).
     ny_ccap_market_rate: 10 * 4 * 52 / 12
-    # Historical Bronx family share: 10% of income above FPL.
+    # Family share: 10% statutory cap (SSL 410-x(6), eff. 2021-04-16) on
+    # income above FPL.
     ny_ccap_family_share: (30_000 - 25_000) * 0.1 / 12
     ny_ccap: (10 * 4 * 52 - (30_000 - 25_000) * 0.1) / 12
-    # Annual aggregators reflect nine historical-share months and three
-    # statewide-share months in 2023, then return the annual average here.
-    ny_child_care_subsidies: 141
-    child_care_subsidies: 141
+    # Annual aggregator blends five hourly-era months (Jan-May: $10/hour *
+    # 4 hours/week -> $173.33 market rate, minus the $41.67 share = $131.67)
+    # and seven part-day months (Jun-Dec: $40/part-day * 2 days/week ->
+    # $346.67, minus $41.67 = $305.00) from 22-OCFS-LCM-14 Attachment A,
+    # then returns the annual average here.
+    ny_child_care_subsidies: (5 * (10 * 4 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
+    child_care_subsidies: (5 * (10 * 4 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
   absolute_error_margin: 0.01

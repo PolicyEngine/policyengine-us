@@ -20,6 +20,7 @@ class ny_ccap_duration_of_care(Variable):
         "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=5",
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=44",
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=45",
+        "https://ocfs.ny.gov/main/policies/external/2019/LCM/19-OCFS-LCM-23.pdf#page=6",
     )
 
     def formula(person, period, parameters):
@@ -54,13 +55,17 @@ class ny_ccap_duration_of_care(Variable):
                 default=NYCCAPDurationOfCare.PART_DAY,
             )
 
+        # 19-OCFS-LCM-23 §II.3.c-d: part-day rates apply from the part-day
+        # minimum up to the daily minimum; care below the part-day minimum is
+        # paid hourly. The minimum drops to zero on June 1, 2022, when
+        # 22-OCFS-LCM-14 abolished hourly rates, making HOURLY unreachable.
         historical_daily = hours_per_day >= p.duration.daily_minimum_hours
         return select(
             [
                 weekly,
                 historical_daily,
-                hours_per_day >= 3,
-                hours_per_day < 3,
+                hours_per_day >= p.duration.part_day_minimum_hours,
+                hours_per_day < p.duration.part_day_minimum_hours,
             ],
             [
                 NYCCAPDurationOfCare.WEEKLY,

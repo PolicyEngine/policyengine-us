@@ -1,134 +1,20 @@
-description: New York set historical county-specific family share rates on income above the federal poverty guideline under the Child Care Assistance Program.
-
-ALBANY_COUNTY_NY:
-  2021-10-01: 0.1
-ALLEGANY_COUNTY_NY:
-  2021-10-01: 0.2
-BRONX_COUNTY_NY:
-  2021-10-01: 0.1
-BROOME_COUNTY_NY:
-  2021-10-01: 0.25
-CATTARAUGUS_COUNTY_NY:
-  2021-10-01: 0.1
-CAYUGA_COUNTY_NY:
-  2021-10-01: 0.2
-CHAUTAUQUA_COUNTY_NY:
-  2021-10-01: 0.2
-CHEMUNG_COUNTY_NY:
-  2021-10-01: 0.25
-CHENANGO_COUNTY_NY:
-  2021-10-01: 0.25
-CLINTON_COUNTY_NY:
-  2021-10-01: 0.2
-COLUMBIA_COUNTY_NY:
-  2021-10-01: 0.1
-CORTLAND_COUNTY_NY:
-  2021-10-01: 0.35
-DELAWARE_COUNTY_NY:
-  2021-10-01: 0.25
-DUTCHESS_COUNTY_NY:
-  2021-10-01: 0.2
-ERIE_COUNTY_NY:
-  2021-10-01: 0.25
-ESSEX_COUNTY_NY:
-  2021-10-01: 0.2
-FRANKLIN_COUNTY_NY:
-  2021-10-01: 0.25
-FULTON_COUNTY_NY:
-  2021-10-01: 0.25
-GENESEE_COUNTY_NY:
-  2021-10-01: 0.1
-GREENE_COUNTY_NY:
-  2021-10-01: 0.1
-HAMILTON_COUNTY_NY:
-  2021-10-01: 0.25
-HERKIMER_COUNTY_NY:
-  2021-10-01: 0.25
-JEFFERSON_COUNTY_NY:
-  2021-10-01: 0.25
-KINGS_COUNTY_NY:
-  2021-10-01: 0.1
-LEWIS_COUNTY_NY:
-  2021-10-01: 0.25
-LIVINGSTON_COUNTY_NY:
-  2021-10-01: 0.1
-MADISON_COUNTY_NY:
-  2021-10-01: 0.25
-MONROE_COUNTY_NY:
-  2021-10-01: 0.2
-MONTGOMERY_COUNTY_NY:
-  2021-10-01: 0.25
-NASSAU_COUNTY_NY:
-  2021-10-01: 0.2
-NEW_YORK_COUNTY_NY:
-  2021-10-01: 0.1
-NIAGARA_COUNTY_NY:
-  2021-10-01: 0.2
-ONEIDA_COUNTY_NY:
-  2021-10-01: 0.25
-ONONDAGA_COUNTY_NY:
-  2021-10-01: 0.35
-ONTARIO_COUNTY_NY:
-  2021-10-01: 0.2
-ORANGE_COUNTY_NY:
-  2021-10-01: 0.2
-ORLEANS_COUNTY_NY:
-  2021-10-01: 0.2
-OSWEGO_COUNTY_NY:
-  2021-10-01: 0.15
-OTSEGO_COUNTY_NY:
-  2021-10-01: 0.2
-PUTNAM_COUNTY_NY:
-  2021-10-01: 0.2
-QUEENS_COUNTY_NY:
-  2021-10-01: 0.1
-RENSSELAER_COUNTY_NY:
-  2021-10-01: 0.25
-RICHMOND_COUNTY_NY:
-  2021-10-01: 0.1
-ROCKLAND_COUNTY_NY:
-  2021-10-01: 0.25
-SARATOGA_COUNTY_NY:
-  2021-10-01: 0.2
-SCHENECTADY_COUNTY_NY:
-  2021-10-01: 0.25
-SCHOHARIE_COUNTY_NY:
-  2021-10-01: 0.3
-SCHUYLER_COUNTY_NY:
-  2021-10-01: 0.15
-SENECA_COUNTY_NY:
-  2021-10-01: 0.2
-ST_LAWRENCE_COUNTY_NY:
-  2021-10-01: 0.15
-STEUBEN_COUNTY_NY:
-  2021-10-01: 0.1
-SUFFOLK_COUNTY_NY:
-  2021-10-01: 0.2
-SULLIVAN_COUNTY_NY:
-  2021-10-01: 0.25
-TIOGA_COUNTY_NY:
-  2021-10-01: 0.1
-TOMPKINS_COUNTY_NY:
-  2021-10-01: 0.2
-ULSTER_COUNTY_NY:
-  2021-10-01: 0.25
-WARREN_COUNTY_NY:
-  2021-10-01: 0.25
-WASHINGTON_COUNTY_NY:
-  2021-10-01: 0.1
-WAYNE_COUNTY_NY:
-  2021-10-01: 0.25
-WESTCHESTER_COUNTY_NY:
-  2021-10-01: 0.27
-WYOMING_COUNTY_NY:
-  2021-10-01: 0.25
-YATES_COUNTY_NY:
-  2021-10-01: 0.2
+description: New York applied this family share rate to income above the federal poverty guideline under the Child Care Assistance Program before the statewide rate took effect.
+# SSL 410-x(6), as amended effective April 16, 2021, caps the income-based
+# family share at 10% of income exceeding the federal poverty level. Districts
+# elect a whole percentage of at least 1% but no more than 10% under
+# 18 NYCRR 415.3(e)(3), and OCFS automatically amended the Child and Family
+# Services Plan of every district electing above 10% down to 10%, retroactive
+# to April 16, 2021. The statutory 10% cap is modeled statewide; district
+# elections below 10% are not modeled.
+values:
+  2021-04-16: 0.1
 
 metadata:
   unit: /1
   period: year
   label: New York CCAP historical family share rate
   reference:
-    - title: Policy Rules Database - New York State
-      href: https://docs.google.com/spreadsheets/d/1WkApq1lljpm73kZepN8LmjwONJj-e3llG9p4PBkgYf8/edit#gid=1680972492
+    - title: 21-OCFS-ADM-14, p. 2 (SSL 410-x(6) 10% cap, effective April 16, 2021)
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2021/ADM/21-OCFS-ADM-14.pdf#page=2
+    - title: 21-OCFS-ADM-14, p. 3 (1%-10% district range; districts above 10% auto-amended to 10%)
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2021/ADM/21-OCFS-ADM-14.pdf#page=3

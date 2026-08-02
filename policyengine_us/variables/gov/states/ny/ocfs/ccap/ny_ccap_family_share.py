@@ -20,23 +20,16 @@ class ny_ccap_family_share(Variable):
         p = parameters(period).gov.states.ny.ocfs.ccap
 
         if p.statewide_family_share_in_effect:
-            calculated_share = income_exceeding_fpl * p.family_share_rate
-            minimum_share = p.minimum_weekly_family_share * (
-                WEEKS_IN_YEAR / MONTHS_IN_YEAR
-            )
-            return where(
-                income > fpl,
-                max_(calculated_share, minimum_share),
-                0,
-            )
-
-        county = spm_unit.household("county_str", period.this_year)
-        historical_rates = p.historical_family_share_rate
-        county_names = list(historical_rates._children)
-        family_share_rate = select(
-            [county == county_name for county_name in county_names],
-            [historical_rates[county_name] for county_name in county_names],
-            default=0.1,
-        )
+            family_share_rate = p.family_share_rate
+        else:
+            family_share_rate = p.historical_family_share_rate
+        calculated_share = income_exceeding_fpl * family_share_rate
         minimum_share = p.minimum_weekly_family_share * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
-        return max_(income_exceeding_fpl * family_share_rate, minimum_share)
+        # 18 NYCRR 415.3(e)(1) exempts families with income at or below the
+        # poverty level from any family share; the $1 weekly minimum under
+        # 415.3(e)(4) applies only to families paying an income-based share.
+        return where(
+            income > fpl,
+            max_(calculated_share, minimum_share),
+            0,
+        )

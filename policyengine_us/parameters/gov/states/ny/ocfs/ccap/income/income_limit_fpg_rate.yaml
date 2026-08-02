@@ -1,0 +1,17 @@
+description: New York limits income to this multiple of the federal poverty guideline under the Child Care Assistance Program when the state median income limit is not in effect.
+# Before October 1, 2023, SSL 410-u(2), 410-w(1), and 410-w(3) set the income
+# eligibility threshold for the New York State Child Care Block Grant Program
+# at 300% of the state income standard, modeled here as the federal poverty
+# guideline. A lower 200% limit possibly in force before August 2022 is not
+# established by a dated citation, so 300% applies for the whole
+# pre-October-2023 window.
+values:
+  2021-10-01: 3
+
+metadata:
+  unit: /1
+  period: year
+  label: New York CCAP income limit multiple of the federal poverty guideline
+  reference:
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), printed p. 6
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=12
