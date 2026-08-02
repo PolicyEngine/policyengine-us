@@ -170,3 +170,35 @@
     mo_adjusted_gross_income: [66_215.1053]
     mo_taxable_income: [27_570.8053]
     mo_income_tax: 1_119.8859
+- name: WFTC liability cap nets out the property tax credit
+  period: 2025
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_disabled: true
+        employment_income: 18_000
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Form MO-WFTC 2025: Line 6 = 20% x $84.43 EITC = $16.89; Line 7 =
+    # $17.17 tax before credits; Line 8 includes the $446.49 property tax
+    # credit; Line 9 = max(17.17 - 446.49, 0) = 0; Line 10 = min(16.89, 0).
+    eitc: 84.43
+    mo_wftc_potential: 16.89
+    mo_income_tax_before_credits: 17.17
+    mo_property_tax_credit: 446.49
+    mo_wftc_liability_cap: 0
+    mo_wftc: 0
+    mo_income_tax: -429.32
