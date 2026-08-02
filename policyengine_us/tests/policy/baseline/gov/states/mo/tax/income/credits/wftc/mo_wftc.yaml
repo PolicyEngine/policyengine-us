@@ -30,3 +30,30 @@
     mo_income_tax_before_credits: 1000000
   output:
     mo_wftc: 10
+- name: Married filing separately filers receive no credit
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SEPARATE
+    eitc: 100
+    mo_income_tax_before_credits: 1000000
+  output:
+    mo_wftc: 0
+- name: Investment income above the Missouri limit zeroes the credit
+  period: 2025
+  input:
+    state_code: MO
+    eitc: 100
+    eitc_relevant_investment_income: 4_401
+    mo_income_tax_before_credits: 1000000
+  output:
+    mo_wftc: 0
+- name: Filers claimed as a dependent receive no credit from 2024
+  period: 2025
+  input:
+    state_code: MO
+    eitc: 100
+    claimed_as_dependent_on_another_return: true
+    mo_income_tax_before_credits: 1000000
+  output:
+    mo_wftc: 0
