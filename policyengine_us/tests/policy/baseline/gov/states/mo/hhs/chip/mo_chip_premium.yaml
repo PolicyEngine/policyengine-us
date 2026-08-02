@@ -117,6 +117,49 @@
   output:
     mo_chip_premium: 1524
 
+- name: Missouri tier 2 family of 10 in 2027 uses the post-July 2026 size-10 amount (257 dollars monthly).
+  period: 2027
+  input:
+    people:
+      p1:
+        is_chip_eligible: false
+      p2:
+        is_chip_eligible: false
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c5:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c6:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c7:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c8:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [p1, p2, c1, c2, c3, c4, c5, c6, c7, c8]
+        tax_unit_medicaid_income_level: 2.00
+    households:
+      household:
+        members: [p1, p2, c1, c2, c3, c4, c5, c6, c7, c8]
+        state_code: MO
+  output:
+    mo_chip_premium: 3_084
+
 - name: Missouri tier 3 family of 1 in 2027 uses the post-July 2026 schedule (150 dollars monthly).
   period: 2027
   input:
