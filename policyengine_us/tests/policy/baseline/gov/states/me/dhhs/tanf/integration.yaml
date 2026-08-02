@@ -1032,3 +1032,104 @@
     me_tanf_eligible: true
     # Benefit = min($669, $769 - $0) = $669
     me_tanf: 669
+
+- name: Case 24, 2026 COLA family of 3 with zero income.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ME
+  output:
+    # Size 3, adult-included:
+    # Standard of Need = $1,052
+    # Maximum Benefit = $917
+    me_tanf_standard_of_need: 1_052
+    me_tanf_maximum_benefit: 917
+    me_tanf_countable_income: 0
+    me_tanf_income_eligible: true
+    me_tanf_eligible: true
+    # Benefit = min($917, $1,052 - $0) = $917
+    me_tanf: 917
+
+- name: Case 25, 2026 COLA large household of 9 with zero income.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: 38
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person2:
+        age: 36
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 14
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person8:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: ME
+  output:
+    # Size 9, adult-included:
+    # Standard of Need = $2,398 + $269 = $2,667
+    # Maximum Benefit = $2,088 + $234 = $2,322
+    me_tanf_standard_of_need: 2_667
+    me_tanf_maximum_benefit: 2_322
+    me_tanf_countable_income: 0
+    me_tanf_income_eligible: true
+    me_tanf_resources_eligible: true
+    me_tanf_eligible: true
+    # Benefit = min($2,322, $2,667 - $0) = $2,322
+    me_tanf: 2_322
