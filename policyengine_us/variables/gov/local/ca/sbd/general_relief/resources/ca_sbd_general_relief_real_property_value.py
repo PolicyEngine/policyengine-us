@@ -13,20 +13,10 @@ class ca_sbd_general_relief_real_property_value(Variable):
 
     def formula(spm_unit, period, parameters):
         # Combined assessed value of real property; no encumbrances are
-        # deducted.
+        # deducted. A vehicle used as the principal residence is evaluated
+        # as real property.
         assessed_value = add(spm_unit, period, ["assessed_property_value"])
         household = spm_unit.household
-        vehicle_count = household("household_vehicles_owned", period)
+        lives_in_vehicle = household("lives_in_vehicle", period)
         vehicle_value = household("household_vehicles_value", period)
-        average_vehicle_value = where(
-            vehicle_count > 0,
-            vehicle_value / max_(vehicle_count, 1),
-            0,
-        )
-        # A vehicle used as the principal residence is evaluated as real
-        # property; the household-average vehicle value proxies that
-        # vehicle's value.
-        residence_vehicle_value = (
-            household("lives_in_vehicle", period) * average_vehicle_value
-        )
-        return assessed_value + residence_vehicle_value
+        return assessed_value + lives_in_vehicle * vehicle_value

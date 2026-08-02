@@ -20,17 +20,9 @@ class ca_sbd_general_relief_countable_vehicle_value(Variable):
         vehicle_count = household("household_vehicles_owned", period)
         vehicle_value = household("household_vehicles_value", period)
         # The first $3,000 of each vehicle's net market value is exempt and
-        # the balance counts toward the personal property limit; the
-        # household-average vehicle value proxies each vehicle's value.
-        average_vehicle_value = where(
-            vehicle_count > 0,
-            vehicle_value / max_(vehicle_count, 1),
-            0,
-        )
-        # A vehicle used as the principal residence is evaluated as real
-        # property instead of personal property.
-        residence_vehicles = household("lives_in_vehicle", period)
-        countable_vehicles = max_(vehicle_count - residence_vehicles, 0)
-        return max_(average_vehicle_value - p.vehicle_exemption, 0) * (
-            countable_vehicles
-        )
+        # the balance counts toward the personal property limit. A vehicle
+        # used as the principal residence is evaluated as real property
+        # instead of personal property.
+        lives_in_vehicle = household("lives_in_vehicle", period)
+        exempt_value = p.vehicle_exemption * vehicle_count
+        return ~lives_in_vehicle * max_(vehicle_value - exempt_value, 0)

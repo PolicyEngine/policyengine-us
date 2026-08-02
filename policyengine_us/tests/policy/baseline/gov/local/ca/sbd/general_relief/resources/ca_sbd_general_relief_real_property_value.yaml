@@ -31,8 +31,8 @@
         household_vehicles_value: 5_000
         lives_in_vehicle: true
   output:
-    # The full average vehicle value (5,000), not the post-exemption value,
-    # is evaluated as real property.
+    # The full vehicle value (5,000), not the post-exemption value, is
+    # evaluated as real property.
     ca_sbd_general_relief_real_property_value: 5_000
 
 - name: Case 3, assessed property and a residence vehicle are combined.
@@ -87,6 +87,4 @@
         household_vehicles_value: 0
         lives_in_vehicle: true
   output:
-    # Degenerate input guard: with zero vehicles the average vehicle value
-    # is zero, leaving only the assessed value.
     ca_sbd_general_relief_real_property_value: 10_000

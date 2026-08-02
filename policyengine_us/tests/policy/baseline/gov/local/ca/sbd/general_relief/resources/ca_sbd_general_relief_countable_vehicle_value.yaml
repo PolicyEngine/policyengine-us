@@ -1,6 +1,5 @@
 # The first $3,000 of each vehicle's value is exempt; the balance counts
-# toward the $500 personal property limit. The household-average vehicle
-# value proxies each vehicle's value, and a vehicle used as the principal
+# toward the $500 personal property limit. A vehicle used as the principal
 # residence is evaluated as real property instead.
 - name: Case 1, a unit with no vehicles has no countable vehicle value.
   period: 2026
@@ -66,10 +65,10 @@
         household_vehicles_owned: 2
         household_vehicles_value: 8_000
   output:
-    # Average value 8,000 / 2 = 4,000; (4,000 - 3,000) x 2 vehicles = 2,000.
+    # 8,000 - 3,000 x 2 vehicles = 2,000.
     ca_sbd_general_relief_countable_vehicle_value: 2_000
 
-- name: Case 5, a residence vehicle is excluded from the personal property count.
+- name: Case 5, vehicles are excluded from the personal property count when used as the residence.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -84,9 +83,9 @@
         household_vehicles_value: 8_000
         lives_in_vehicle: true
   output:
-    # One of the two vehicles is the principal residence and shifts to the
-    # real property test: (4,000 - 3,000) x (2 - 1) = 1,000.
-    ca_sbd_general_relief_countable_vehicle_value: 1_000
+    # Vehicle value shifts to the real property test when the unit lives
+    # in a vehicle.
+    ca_sbd_general_relief_countable_vehicle_value: 0
 
 - name: Case 6, an only vehicle used as the residence leaves no countable vehicle value.
   period: 2026
@@ -103,7 +102,7 @@
         household_vehicles_value: 5_000
         lives_in_vehicle: true
   output:
-    # (5,000 - 3,000) x (1 - 1) = 0; the value moves to real property.
+    # The value moves to real property.
     ca_sbd_general_relief_countable_vehicle_value: 0
 
 - name: Case 7, living in a vehicle while owning none leaves no countable vehicle value.
@@ -121,6 +120,4 @@
         household_vehicles_value: 0
         lives_in_vehicle: true
   output:
-    # Degenerate input guard: the average vehicle value is 0 and the
-    # countable vehicle count max(0 - 1, 0) = 0.
     ca_sbd_general_relief_countable_vehicle_value: 0
