@@ -1,0 +1,53 @@
+- name: TN infant at 200% FPL, eligible
+  period: 2026
+  input:
+    age: 0
+    medicaid_income_level: 2.00
+    state_code: TN
+  output:
+    is_infant_for_medicaid: true
+
+- name: TN infant above 200% FPL, ineligible
+  period: 2026
+  input:
+    age: 0
+    medicaid_income_level: 2.01
+    state_code: TN
+  output:
+    is_infant_for_medicaid: false
+
+- name: TN young child at 147% FPL, eligible
+  period: 2026
+  input:
+    age: 3
+    medicaid_income_level: 1.47
+    state_code: TN
+  output:
+    is_young_child_for_medicaid: true
+
+- name: TN young child above 147% FPL, ineligible
+  period: 2026
+  input:
+    age: 3
+    medicaid_income_level: 1.48
+    state_code: TN
+  output:
+    is_young_child_for_medicaid: false
+
+- name: TN older child at 138% FPL, eligible
+  period: 2026
+  input:
+    age: 8
+    medicaid_income_level: 1.38
+    state_code: TN
+  output:
+    is_older_child_for_medicaid: true
+
+- name: TN older child above 138% FPL, ineligible
+  period: 2026
+  input:
+    age: 8
+    medicaid_income_level: 1.39
+    state_code: TN
+  output:
+    is_older_child_for_medicaid: false
