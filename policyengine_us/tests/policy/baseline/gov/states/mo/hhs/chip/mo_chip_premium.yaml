@@ -69,6 +69,72 @@
   output:
     mo_chip_premium: 372
 
+- name: Missouri tier 1 family of 3 in 2027 uses the post-July 2026 schedule (32 dollars monthly).
+  period: 2027
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    mo_chip_premium: 384
+
+- name: Missouri tier 2 family of 4 in 2027 uses the post-July 2026 schedule (127 dollars monthly).
+  period: 2027
+  input:
+    people:
+      p1:
+        is_chip_eligible: false
+      p2:
+        is_chip_eligible: false
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [p1, p2, c1, c2]
+        tax_unit_medicaid_income_level: 2.00
+    households:
+      household:
+        members: [p1, p2, c1, c2]
+        state_code: MO
+  output:
+    mo_chip_premium: 1524
+
+- name: Missouri tier 3 family of 1 in 2027 uses the post-July 2026 schedule (150 dollars monthly).
+  period: 2027
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.50
+    households:
+      household:
+        members: [child]
+        state_code: MO
+  output:
+    mo_chip_premium: 1800
+
 - name: Missouri below 151 percent FPL owes no premium.
   period: 2024
   input:
