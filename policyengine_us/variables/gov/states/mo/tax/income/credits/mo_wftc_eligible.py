@@ -35,10 +35,12 @@ class mo_wftc_eligible(Variable):
         # and tax-exempt interest, ordinary dividends, and positive capital
         # gain net income, with an IRS Publication 596 worksheet fallback);
         # we approximate it with the federal EITC investment income measure.
-        # The 2023 form checklist disqualifies at "equal to or greater than"
-        # the limit while the 2024 and 2025 checklists use "greater than";
-        # we follow the strict "exceeds" reading of the statutorily
-        # referenced pre-ARPA Section 32(i) in all years.
+        # The 2023 form disqualifies at "equal to or greater than" the limit
+        # in both its checklist and its Line 3 instructions, though its own
+        # information page says income "cannot exceed" the limit; the 2024
+        # and 2025 forms use "greater than" throughout. We follow the strict
+        # "exceeds" reading of the statutorily referenced pre-ARPA Section
+        # 32(i) in all years.
         investment_income = tax_unit("eitc_relevant_investment_income", period)
         meets_investment_limit = investment_income <= p.investment_income_limit
         return (
