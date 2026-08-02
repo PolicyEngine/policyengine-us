@@ -62,3 +62,15 @@
     state_code: NE
   output:
     ne_child_care_subsidy_family_fee: 0
+
+- name: Case 7, the fee-free limit is not rounded up to whole dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 12_012
+    ne_child_care_subsidy_fpg: 1_000.5
+    state_code: NE
+  output:
+    # $1,001 monthly gross exceeds the un-rounded $1,000.50 limit, so the 7%
+    # fee applies; rounding the limit up to $1,001 would wrongly waive it.
+    ne_child_care_subsidy_family_fee: 70.07

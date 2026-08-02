@@ -17,8 +17,9 @@ class ne_child_care_subsidy_family_fee(Variable):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         gross_income = spm_unit("ne_child_care_subsidy_gross_income", period)
         fpg = spm_unit("ne_child_care_subsidy_fpg", period)
-        fee_free_limit = np.ceil(fpg * p.fpg_fraction.fee_free_limit)
-        fee_free = gross_income <= fee_free_limit
+        # 392 NAC 1-001.20: the fee attaches only when income exceeds 100% of
+        # the poverty guideline, with no rounding of the standard.
+        fee_free = gross_income <= fpg * p.fpg_fraction.fee_free_limit
         waived = spm_unit("is_tanf_enrolled", period) | spm_unit(
             "ne_child_care_subsidy_categorical_waived", period
         )

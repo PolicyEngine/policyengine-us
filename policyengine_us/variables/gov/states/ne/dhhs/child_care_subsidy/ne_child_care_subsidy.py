@@ -15,7 +15,7 @@ class ne_child_care_subsidy(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
-        if (period.start.year, period.start.month) < (2025, 10):
+        if not p.rate_matrix_in_effect:
             # Preserve the prior expense-based approximation until the first
             # fully encoded provider-rate matrix takes effect.
             childcare_expenses = spm_unit(

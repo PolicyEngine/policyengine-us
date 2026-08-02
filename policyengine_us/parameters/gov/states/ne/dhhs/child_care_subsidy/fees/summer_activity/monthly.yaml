@@ -1,7 +1,11 @@
 description: Nebraska permits this monthly summer activity fee per approved child under the Child Care Subsidy program.
+# The flat $50 monthly fee took effect with the July 2023 rate restructure and
+# carried unchanged into the 2025-2027 schedule. Before July 2023 the activity
+# fee varied by provider type ($25/month centers, $5/month homes); that
+# structure is not modeled, so pre-2023 periods pay no activity fee.
 values:
   2000-01-01: 0
-  2025-10-01: 50
+  2023-07-01: 50
 
 metadata:
   unit: currency-USD
@@ -9,8 +13,10 @@ metadata:
   label: Nebraska Child Care Subsidy summer activity monthly fee
   reference:
     - title: Nebraska 2025-2027 Child Care Subsidy Rates
-      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1
-    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 3-004.04
-      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=9
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf
+    - title: Nebraska Child Care Subsidy Rates, July 2023 (archived 2023-08-26)
+      href: https://web.archive.org/web/20230826134449id_/https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf
+    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 3-004.04 (archived 2023-08-26)
+      href: https://web.archive.org/web/20230826134321id_/https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20Guidance%20Document.pdf#page=9
     - title: Neb. Rev. Stat. § 68-1206(3), annual October 1 rate schedule
       href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206

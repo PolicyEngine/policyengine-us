@@ -1,0 +1,18 @@
+description: Nebraska applies updated federal poverty guideline standards to the Child Care Subsidy program from this month of each year.
+# Neb. Rev. Stat. § 68-1206(3) places the subsidy rate schedule on an annual
+# October 1 cycle, and the DHHS guidance publishes the income standards
+# "[b]eginning October 1st, 2023". Later-year standards tables corroborating a
+# recurring October refresh have not been located; revisit if DHHS publishes an
+# off-cycle table.
+values:
+  2000-01-01: 10
+
+metadata:
+  unit: /1
+  period: year
+  label: Nebraska Child Care Subsidy FPG update month
+  reference:
+    - title: Neb. Rev. Stat. § 68-1206(3), annual October 1 rate schedule
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+    - title: Nebraska DHHS Title 392 Guidance
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=6

@@ -1,14 +1,25 @@
 description: Nebraska sets this maximum hourly rate for license-exempt in-home providers under the Child Care Subsidy program.
+# The in-home hourly rate is pegged to the Nebraska minimum wage (FFY 2025-2027
+# CCDF State Plan § 4.3.1), which Initiative 433 (2022) stepped to $10.50
+# (2023), $12.00 (2024), $13.50 (2025), and $15.00 (2026); LB258 (2025)
+# replaces CPI indexing with 1.75% annual increases from 2027 — encode each
+# year's wage when it takes effect. The DHHS rate sheet still prints $13.50
+# as of its 2026-07-31 refresh; the statutory wage controls the peg.
 values:
   2000-01-01: 0
-  2025-10-01: 13.5
+  2023-01-01: 10.5
+  2024-01-01: 12
+  2025-01-01: 13.5
+  2026-01-01: 15
 
 metadata:
   unit: currency-USD
   period: hour
   label: Nebraska Child Care Subsidy license-exempt in-home hourly rate
   reference:
+    - title: Nebraska FFY 2025-2027 CCDF State Plan, Section 4.3.1
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=52
+    - title: Neb. Rev. Stat. § 48-1203 (state minimum wage schedule)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=48-1203
     - title: Nebraska 2025-2027 Child Care Subsidy Rates
-      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1
-    - title: Neb. Rev. Stat. § 68-1206(3)
-      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf

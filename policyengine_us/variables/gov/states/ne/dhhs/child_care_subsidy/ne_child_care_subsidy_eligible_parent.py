@@ -20,7 +20,15 @@ class ne_child_care_subsidy_eligible_parent(Variable):
             [person(source, period) > 0 for source in p.sources.earned],
             axis=0,
         )
-        student = person("is_full_time_student", period.this_year)
+        # 392 NAC 2-013(E) qualifies any enrolled and regularly attending
+        # student with no full-time requirement (2-013.04 authorizes hours per
+        # credit hour). Full-time status over-includes graduate students
+        # relative to the covered program list; accepted approximation.
+        student = (
+            person("is_full_time_student", period.this_year)
+            | person("is_part_time_college_student", period.this_year)
+            | person("technical_institution_student", period.this_year)
+        )
         approved_activity = person.spm_unit(
             "meets_ccdf_activity_test", period.this_year
         )
