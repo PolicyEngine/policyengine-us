@@ -196,12 +196,34 @@
   output:
     mo_chip_premium: 0
 
-# A pregnant member's expected child counts toward the MAGI household size,
-# shifting both the chart's income boundaries and its premium row. Pregnant
-# parent plus one child in 2026 uses size-3 values: FPG of 27,320 dollars
-# (2,276.67 monthly) puts the tier 1 upper boundary at 4,212 dollars, and
-# January 2026 resolves to the July 2025 size-3 amounts (31 / 102 dollars).
-- name: Missouri pregnant parent with one child at the size-3 tier 1 boundary (4,212 dollars monthly) in 2026 pays the size-3 tier 1 premium.
+# The unborn child counts only in the pregnant member's own MAGI household;
+# the CHIP child's household counts the pregnant member as one person (DSS
+# manual 1885.010.00 example), so the chart keeps the size-2 boundaries
+# (2,705 / 3,337 / 4,058 dollars in 2026) and size-2 amounts. The pregnancy
+# still enlarges the FPG underlying tax_unit_medicaid_income_level, which
+# the formula must undo when recovering dollar income.
+- name: Missouri pregnant parent with one child at 4,058 dollars monthly in 2026 pays the size-2 tier 2 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+        current_pregnancies: 1
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 48_696
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 972
+
+- name: Missouri pregnant parent with one child at 4,212 dollars monthly in 2026 pays the size-2 tier 3 premium.
   period: 2026
   input:
     people:
@@ -220,28 +242,7 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 372
-
-- name: Missouri pregnant parent with one child one dollar above the size-3 tier 1 boundary in 2026 pays the size-3 tier 2 premium.
-  period: 2026
-  input:
-    people:
-      parent:
-        is_chip_eligible: false
-        current_pregnancies: 1
-      child:
-        is_chip_eligible: true
-        is_chip_eligible_child: true
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        medicaid_magi: 50_556
-    households:
-      household:
-        members: [parent, child]
-        state_code: MO
-  output:
-    mo_chip_premium: 1_224
+    mo_chip_premium: 2_376
 
 # Boundary tests for the Appendix E chart's rounded monthly-dollar tier
 # boundaries. Family of 2 in 2026: FPG is 21,640 dollars (1,803.33 monthly),

@@ -25,16 +25,18 @@ class mo_chip_premium(Variable):
     def formula(tax_unit, period, parameters):
         has_chip_member = add(tax_unit, period, ["is_chip_eligible"]) > 0
         income_level = tax_unit("tax_unit_medicaid_income_level", period)
-        # Missouri keys both columns of the Appendix E chart - the income
-        # ranges and the premium amounts - on the MAGI household size, which
-        # counts children a pregnant member is expected to deliver.
         family_size = tax_unit("tax_unit_size", period)
         pregnant_count = add(tax_unit, period, ["current_pregnancies"])
-        magi_family_size = family_size + pregnant_count
         state_group = tax_unit.household("state_group_str", period)
-        monthly_fpg = (
-            fpg(magi_family_size, state_group, period, parameters) / MONTHS_IN_YEAR
-        )
+        # tax_unit_medicaid_income_level divides income by an FPG that
+        # counts children a pregnant member is expected to deliver;
+        # multiply by that same FPG to recover monthly dollar income.
+        income_fpg = fpg(family_size + pregnant_count, state_group, period, parameters)
+        # Missouri keys the Appendix E chart on the CHIP child's MAGI
+        # household size, which counts a pregnant member as one person -
+        # the unborn child counts only in the pregnant member's own
+        # household (DSS manual 1885.010.00 household example).
+        monthly_fpg = fpg(family_size, state_group, period, parameters) / MONTHS_IN_YEAR
         p = parameters(period).gov.states.mo.hhs.chip.premium
         # The Appendix E chart sets each tier boundary at the FPL percentage
         # converted to monthly dollars and rounded up to the next whole
@@ -45,7 +47,7 @@ class mo_chip_premium(Variable):
         tier_1_floor = np.ceil(np.round(monthly_fpg * p.fpl_floor.tier_1, 2))
         tier_2_floor = np.ceil(np.round(monthly_fpg * p.fpl_floor.tier_2, 2))
         tier_3_floor = np.ceil(np.round(monthly_fpg * p.fpl_floor.tier_3, 2))
-        monthly_income = np.round(income_level * monthly_fpg, 2)
+        monthly_income = np.round(income_level * income_fpg / MONTHS_IN_YEAR, 2)
         monthly_premium = select(
             [
                 monthly_income > tier_3_floor,
@@ -53,9 +55,9 @@ class mo_chip_premium(Variable):
                 monthly_income >= tier_1_floor,
             ],
             [
-                p.tier_3.calc(magi_family_size),
-                p.tier_2.calc(magi_family_size),
-                p.tier_1.calc(magi_family_size),
+                p.tier_3.calc(family_size),
+                p.tier_2.calc(family_size),
+                p.tier_1.calc(family_size),
             ],
             default=0,
         )
