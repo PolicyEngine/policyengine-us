@@ -1,3 +1,14 @@
+## [1.784.7] - 2026-08-02
+
+### Changed
+
+- Clarify in CHIP income limit parameter descriptions that -inf denotes states without a separate CHIP program for that category.
+
+### Fixed
+
+- Fix the MO WFTC liability cap to net out the property tax credit, following Form MO-WFTC lines 7 through 10.
+
+
 ## [1.784.6] - 2026-08-02
 
 ### Fixed
