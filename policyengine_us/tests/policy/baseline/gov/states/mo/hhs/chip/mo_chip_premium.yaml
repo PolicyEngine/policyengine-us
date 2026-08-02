@@ -69,6 +69,115 @@
   output:
     mo_chip_premium: 372
 
+- name: Missouri tier 1 family of 3 in 2027 uses the post-July 2026 schedule (32 dollars monthly).
+  period: 2027
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      child2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tax_unit_medicaid_income_level: 1.70
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    mo_chip_premium: 384
+
+- name: Missouri tier 2 family of 4 in 2027 uses the post-July 2026 schedule (127 dollars monthly).
+  period: 2027
+  input:
+    people:
+      p1:
+        is_chip_eligible: false
+      p2:
+        is_chip_eligible: false
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [p1, p2, c1, c2]
+        tax_unit_medicaid_income_level: 2.00
+    households:
+      household:
+        members: [p1, p2, c1, c2]
+        state_code: MO
+  output:
+    mo_chip_premium: 1524
+
+- name: Missouri tier 2 family of 10 in 2027 uses the post-July 2026 size-10 amount (257 dollars monthly).
+  period: 2027
+  input:
+    people:
+      p1:
+        is_chip_eligible: false
+      p2:
+        is_chip_eligible: false
+      c1:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c2:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c3:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c4:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c5:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c6:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c7:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      c8:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [p1, p2, c1, c2, c3, c4, c5, c6, c7, c8]
+        tax_unit_medicaid_income_level: 2.00
+    households:
+      household:
+        members: [p1, p2, c1, c2, c3, c4, c5, c6, c7, c8]
+        state_code: MO
+  output:
+    mo_chip_premium: 3_084
+
+- name: Missouri tier 3 family of 1 in 2027 uses the post-July 2026 schedule (150 dollars monthly).
+  period: 2027
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.50
+    households:
+      household:
+        members: [child]
+        state_code: MO
+  output:
+    mo_chip_premium: 1800
+
 - name: Missouri below 151 percent FPL owes no premium.
   period: 2024
   input:
@@ -86,3 +195,175 @@
         state_code: MO
   output:
     mo_chip_premium: 0
+
+# The unborn child counts only in the pregnant member's own MAGI household;
+# the CHIP child's household counts the pregnant member as one person (DSS
+# manual 1885.010.00 example), so the chart keeps the size-2 boundaries
+# (2,705 / 3,337 / 4,058 dollars in 2026) and size-2 amounts. The pregnancy
+# still enlarges the FPG underlying tax_unit_medicaid_income_level, which
+# the formula must undo when recovering dollar income.
+- name: Missouri pregnant parent with one child at 4,058 dollars monthly in 2026 pays the size-2 tier 2 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+        current_pregnancies: 1
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 48_696
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 972
+
+- name: Missouri pregnant parent with one child at 4,212 dollars monthly in 2026 pays the size-2 tier 3 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+        current_pregnancies: 1
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 50_544
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 2_376
+
+# Boundary tests for the Appendix E chart's rounded monthly-dollar tier
+# boundaries. Family of 2 in 2026: FPG is 21,640 dollars (1,803.33 monthly),
+# so the ceiled boundaries are 2,705 / 3,337 / 4,058 dollars, and January
+# 2026 resolves to the July 2025 premium schedule (25 / 81 / 198 dollars).
+- name: Missouri family of 2 just below the tier 1 floor (2,704 dollars monthly) in 2026 owes no premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 32_448
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 0
+
+- name: Missouri family of 2 at the tier 1 floor (2,705 dollars monthly) in 2026 pays the tier 1 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 32_460
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 300
+
+- name: Missouri family of 2 at the published tier 1 upper boundary (3,337 dollars monthly) in 2026 stays in tier 1.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 40_044
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 300
+
+- name: Missouri family of 2 one dollar above the tier 1 upper boundary (3,338 dollars monthly) in 2026 pays the tier 2 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 40_056
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 972
+
+- name: Missouri family of 2 at the published tier 2 upper boundary (4,058 dollars monthly) in 2026 stays in tier 2.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 48_696
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 972
+
+- name: Missouri family of 2 one dollar above the tier 2 upper boundary (4,059 dollars monthly) in 2026 pays the tier 3 premium.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 48_708
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium: 2_376
