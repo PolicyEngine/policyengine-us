@@ -1,3 +1,14 @@
+## [1.784.5] - 2026-08-02
+
+### Changed
+
+- Update Missouri CHIP premium schedules for the July 2026 Appendix E table and extend the family-size brackets to 12.
+
+### Fixed
+
+- Select Missouri CHIP premium tiers using the Appendix E chart's rounded monthly-dollar boundaries instead of exact FPL ratios.
+
+
 ## [1.784.4] - 2026-07-31
 
 ### Fixed
