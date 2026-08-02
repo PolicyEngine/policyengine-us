@@ -25,12 +25,15 @@ class mo_chip_premium(Variable):
     def formula(tax_unit, period, parameters):
         has_chip_member = add(tax_unit, period, ["is_chip_eligible"]) > 0
         income_level = tax_unit("tax_unit_medicaid_income_level", period)
+        # Missouri keys both columns of the Appendix E chart - the income
+        # ranges and the premium amounts - on the MAGI household size, which
+        # counts children a pregnant member is expected to deliver.
         family_size = tax_unit("tax_unit_size", period)
         pregnant_count = add(tax_unit, period, ["current_pregnancies"])
+        magi_family_size = family_size + pregnant_count
         state_group = tax_unit.household("state_group_str", period)
         monthly_fpg = (
-            fpg(pregnant_count + family_size, state_group, period, parameters)
-            / MONTHS_IN_YEAR
+            fpg(magi_family_size, state_group, period, parameters) / MONTHS_IN_YEAR
         )
         p = parameters(period).gov.states.mo.hhs.chip.premium
         # The Appendix E chart sets each tier boundary at the FPL percentage
@@ -50,9 +53,9 @@ class mo_chip_premium(Variable):
                 monthly_income >= tier_1_floor,
             ],
             [
-                p.tier_3.calc(family_size),
-                p.tier_2.calc(family_size),
-                p.tier_1.calc(family_size),
+                p.tier_3.calc(magi_family_size),
+                p.tier_2.calc(magi_family_size),
+                p.tier_1.calc(magi_family_size),
             ],
             default=0,
         )
