@@ -23,7 +23,7 @@ class mo_wftc(Variable):
             tax_unit,
             period,
             ordered_credits,
-            "mo_income_tax_before_credits",
+            "mo_income_tax_less_property_tax_credit",
             "mo_wftc",
             "mo_wftc_potential",
         )

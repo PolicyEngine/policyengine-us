@@ -17,5 +17,8 @@ class mo_non_refundable_credits(Variable):
             period
         ).gov.states.mo.tax.income.credits.non_refundable
         return ordered_capped_state_non_refundable_credits(
-            tax_unit, period, ordered_credits, "mo_income_tax_before_credits"
+            tax_unit,
+            period,
+            ordered_credits,
+            "mo_income_tax_less_property_tax_credit",
         )

@@ -57,3 +57,23 @@
     mo_income_tax_before_credits: 1000000
   output:
     mo_wftc: 0
+- name: Property tax credit exhausting liability leaves no room for the WFTC
+  period: 2023
+  input:
+    state_code: MO
+    eitc: 1_000
+    mo_income_tax_before_credits: 100
+    mo_property_tax_credit: 150
+  output:
+    # Form MO-WFTC Line 9: 100 - 150, floored at 0.
+    mo_wftc: 0
+- name: Property tax credit partially reduces the liability cap
+  period: 2023
+  input:
+    state_code: MO
+    eitc: 5_000
+    mo_income_tax_before_credits: 100
+    mo_property_tax_credit: 60
+  output:
+    # min(10% x 5,000, 100 - 60) = 40, per Form MO-WFTC Lines 7-10.
+    mo_wftc: 40
