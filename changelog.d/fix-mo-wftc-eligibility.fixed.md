@@ -1,0 +1,1 @@
+Missouri Working Families Tax Credit: require a federal EITC, exclude married filing separately filers and (from 2024) filers claimed as a dependent, and apply Missouri's investment income limit ($4,050 in 2023, $4,300 in 2024, $4,400 in 2025).

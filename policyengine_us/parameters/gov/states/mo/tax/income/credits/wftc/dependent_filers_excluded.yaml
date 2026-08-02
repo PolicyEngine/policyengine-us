@@ -1,0 +1,17 @@
+description: Missouri excludes filers claimed as a dependent on another return from the Working Families Tax Credit when this is true.
+# The 2023 Form MO-WFTC checklist stops only married filing separately
+# filers; the claimed-as-a-dependent stop first appears on the 2024 form.
+values:
+  2023-01-01: false
+  2024-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Missouri Working Families Tax Credit dependent filer exclusion
+  reference:
+    - title: 2023 Form MO-WFTC, Qualifications, Line 2
+      href: https://dor.mo.gov/forms/MO-WFTC_2023.pdf#page=1
+    - title: 2024 Form MO-WFTC, Qualifications, Line 2
+      href: https://dor.mo.gov/forms/MO-WFTC_2024.pdf#page=1
+    - title: 2025 MO-1040 Book - Individual Income Tax Long Form, Form MO-WFTC
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=43
