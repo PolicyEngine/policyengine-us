@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mo_income_tax_less_property_tax_credit(Variable):
+class mo_wftc_liability_cap(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Missouri income tax less the property tax credit"
+    label = "Missouri Working Families Tax Credit liability cap"
     unit = USD
     definition_period = YEAR
     reference = (
