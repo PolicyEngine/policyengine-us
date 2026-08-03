@@ -1,3 +1,11 @@
+## [1.784.9] - 2026-08-03
+
+### Fixed
+
+- Fix the Missouri MHF parent and caretaker Medicaid income limit.
+- Updated Iowa infant and Nevada pregnancy Medicaid income limits.
+
+
 ## [1.784.8] - 2026-08-02
 
 ### Fixed
