@@ -21,21 +21,15 @@ class ca_sbd_general_relief_meets_linkage_requirements(Variable):
         # model input, so it folds into the assumed-compliance employable
         # path.
         incapacitated = person("is_incapable_of_self_care", period.this_year)
-        # Employable: currently unemployed, or employed fewer than 100 hours
-        # a month (verification that more hours are unavailable is assumed).
-        weekly_hours = person("weekly_hours_worked_before_lsr", period.this_year)
-        monthly_hours = weekly_hours * WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        employed = person("employment_income", period) > 0
-        hours_eligible = ~employed | (monthly_hours < p.employable.monthly_hours_limit)
-        # Self-employment is considered to exceed 100 hours a month.
-        self_employment_income = add(
-            person,
-            period,
-            ["self_employment_income", "sstb_self_employment_income"],
-        )
-        self_employed = person("is_self_employed", period.this_year) | (
-            self_employment_income > 0
-        )
+        # The handbook's employable definition (unemployed, or employed
+        # under 100 hours a month) and its self-employment bar are
+        # deliberately not modeled: any worker whose income is low enough
+        # to pass the income test could leave the job and qualify
+        # categorically, so in steady state the income test alone governs
+        # need. The 90-day voluntary-quit disqualification that would delay
+        # that path has no model input and is likewise not modeled, along
+        # with the WDD-registration and weekly job-search compliance
+        # requirements (assumed met).
         # Employable applicants must be available for and actively seeking
         # work; students do not meet this criterion. Both the handbook and
         # the orientation deck bar students without qualification, so full-
@@ -45,11 +39,15 @@ class ca_sbd_general_relief_meets_linkage_requirements(Variable):
         student = full_time_student | person(
             "is_part_time_college_student", period.this_year
         )
-        employable = hours_eligible & ~self_employed & ~student
+        employable = ~student
         adult_linked = (age >= p.age_threshold) & (incapacitated | employable)
         # Children link through a cooperating parent when under 16, or when
         # aged 16 to 18 and enrolled in and attending high school full time.
-        # Passing grades are not tracked.
+        # Passing grades are not tracked, and the cooperating-parent
+        # requirement is not modeled: a 16-to-18 high-school student with no
+        # parent in the unit still links here (and at 18 satisfies the
+        # unit's adult-age requirement alone) — an approximation, since the
+        # county's child linkage runs through a parent applicant.
         in_high_school = full_time_student & person(
             "is_in_secondary_school", period.this_year
         )

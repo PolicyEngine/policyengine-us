@@ -23,8 +23,14 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
         # down and intersected with the person-level categorical flag
         # (mirroring the SF CAAP CAPI bar): only the aged, blind, or disabled
         # member an SSP-only payment serves is barred, not the whole unit.
-        receives_ssp = person("ca_state_supplement_eligible_person", period) & (
-            person.spm_unit("ca_state_supplement", period) > 0
+        # ca_state_supplement is an ungated computed entitlement (it grows
+        # when SSI take-up is declined, since no federal SSI is netted out),
+        # so the SSI take-up flag stands in for actual SSP receipt —
+        # declined take-up lifts the bar, matching the ssi arm.
+        receives_ssp = (
+            person("ca_state_supplement_eligible_person", period)
+            & (person.spm_unit("ca_state_supplement", period) > 0)
+            & person("takes_up_ssi_if_eligible", period.this_year)
         )
         # CalWORKs receipt is tracked at the SPM-unit level, so a unit
         # receiving it bars its members. Read the take-up-gated federal

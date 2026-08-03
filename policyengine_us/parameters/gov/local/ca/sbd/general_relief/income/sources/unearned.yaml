@@ -36,6 +36,7 @@ values:
     - estate_income
     # Net income from any kind of property is counted as unearned income.
     - rental_income
+    - farm_rent_income
     # Grants and scholarships count as unearned income. The A-3 income chart
     # deducts the portion used for tuition, books, required supplies, and
     # transportation to and from school; counting educational_assistance
@@ -45,13 +46,12 @@ values:
     # SSI recipients are barred from the assistance unit at the person level,
     # but "all income in the AU must be taken into consideration", so an
     # excluded member's SSI counts toward the unit's pooled income. The
-    # excluded member's SSP counts the same way, but ca_state_supplement is
-    # an SPM-unit-level variable, so it is added in
-    # ca_sbd_general_relief_countable_income rather than in this person-level
-    # list. CAPI cash is deliberately not counted: CAPI recipients are not
-    # barred (the handbook names only SSI/SSP and CalWORKs) and remain
-    # assistance unit members, and excluding their CAPI payments from the
-    # literal all-income rule is an intentional approved approximation.
+    # excluded member's SSP counts the same way, and CAPI recipients — who
+    # are not barred (the handbook names only SSI/SSP and CalWORKs) — have
+    # their CAPI cash counted under the same all-income rule; but
+    # ca_state_supplement and ca_capi are SPM-unit-level variables, so both
+    # are added in ca_sbd_general_relief_countable_income rather than in
+    # this person-level list.
     - ssi
 
 metadata:

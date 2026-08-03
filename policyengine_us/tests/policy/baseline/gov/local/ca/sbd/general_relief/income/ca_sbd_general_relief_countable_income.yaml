@@ -1,4 +1,5 @@
-# Countable income = max(unit earned - $10, 0) x (1 - 0.20) + unit unearned.
+# Countable income = max(unit earned - $10, 0) x (1 - 0.20) + unit unearned
+# + unit-level SSP (when taken up) and CAPI.
 # The $10 + 20% earned exemption applies once per assistance unit.
 - name: Case 1, the earned income disregard applies to monthly earnings of 200 dollars.
   period: 2026-01
@@ -226,3 +227,92 @@
     ca_sbd_general_relief_assistance_unit_size: 1
     # (200 - 10) x 0.8 = 152.
     ca_sbd_general_relief_countable_income: 152
+
+- name: Case 11, CAPI cash counts toward unit income in full.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,400 per year is $200 per month of CAPI.
+        ca_capi: 2_400
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # CAPI recipients stay in the unit and their cash counts as unearned
+    # income with no exemption.
+    ca_sbd_general_relief_countable_income: 200
+
+- name: Case 12, an imputed supplement is not counted when SSI take-up is declined.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+        takes_up_ssi_if_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # A positive computed supplement that is never actually received.
+        ca_state_supplement: 200
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Without take-up the unit never receives the SSP check, so the
+    # imputed entitlement does not count as income.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 13, farm operations income is earned income with the standard disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # $2,400 per year is $200 per month of Schedule F farming income.
+        farm_operations_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # (200 - 10) x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152
+
+- name: Case 14, farm rental income counts as unearned income in full.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $2,400 per year is $200 per month of farmland rent.
+        farm_rent_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_countable_income: 200

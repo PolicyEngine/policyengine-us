@@ -25,5 +25,7 @@ class ca_sbd_general_relief(Variable):
         grant = spm_unit("ca_sbd_general_relief_maximum_basic_grant", period)
         countable_income = spm_unit("ca_sbd_general_relief_countable_income", period)
         # Countable income is floored at zero so net losses (e.g.,
-        # self-employment or rental losses) cannot inflate the grant.
-        return max_(grant - max_(countable_income, 0), 0)
+        # self-employment or rental losses) cannot inflate the grant. No
+        # outer floor is needed: defined_for already requires income
+        # eligibility, which guarantees countable income below the grant.
+        return grant - max_(countable_income, 0)

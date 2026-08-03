@@ -5,10 +5,12 @@ description: San Bernardino County counts these earned income sources under the 
 values:
   2021-06-01:
     - employment_income
-    # Self-employed members do not meet the employability linkage criteria,
-    # but their income still counts toward assistance unit income.
     - self_employment_income
     - sstb_self_employment_income
+    # Active farming (Schedule F) is self-employment earned income; the
+    # farm_operations_income variable holds it separately from
+    # self_employment_income by model convention.
+    - farm_operations_income
 
 metadata:
   unit: list

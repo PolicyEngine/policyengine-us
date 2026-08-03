@@ -9,10 +9,8 @@
     people:
       person1:
         age: 30
-        # $2,400 per year is $200 per month, worked at 20 hours per week
-        # (20 x 52 / 12 = 86.67 monthly hours, under the 100-hour limit).
+        # $2,400 per year is $200 per month of wages.
         employment_income: 2_400
-        weekly_hours_worked_before_lsr: 20
         ssi: 0
       person2:
         age: 8
@@ -30,7 +28,7 @@
         state_code: CA
   output:
     in_sbd: true
-    # Parent is employable (86.67 hours < 100); child links through the
+    # Parent is an employable non-student adult; child links through the
     # cooperating parent (under 16).
     ca_sbd_general_relief_eligible_person: [true, true]
     ca_sbd_general_relief_assistance_unit_size: 2
@@ -247,8 +245,8 @@
         members: [person1]
         in_sbd: true
   output:
-    # A loss is not the self-employment linkage bar (only positive
-    # self-employment income is).
+    # Self-employment does not bar linkage (the employability screen is
+    # not modeled), and the loss cannot inflate the grant.
     ca_sbd_general_relief_meets_linkage_requirements: true
     # -60,000,000 / 12 = -5,000,000 per month.
     ca_sbd_general_relief_gross_earned_income: -5_000_000
@@ -411,3 +409,40 @@
     ca_sbd_general_relief_eligible: true
     # 486 - 200 = 286.
     ca_sbd_general_relief: 286
+
+- name: Case 14, a TPS parent and child get nothing from CalWORKs but receive the family General Relief grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: TPS
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: TPS
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # CalWORKs prorates its grant by the share of members holding a
+    # CalWORKs-qualifying status (CITIZEN, LPR, ASYLEE, PAROLED_ONE_YEAR,
+    # REFUGEE); with zero qualifying members the computed benefit is $0
+    # even though the unit passes the demographic, financial, and resource
+    # tests — so no tanf pin is needed and the CalWORKs bar never fires.
+    tanf: 0
+    # TPS falls under the GR brochure's "other non-citizen authorized to
+    # live in the United States" category, so both members qualify: the
+    # parent as an employable non-student adult, the child through the
+    # under-16 parent linkage.
+    ca_sbd_general_relief_eligible_person: [true, true]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/25-6/30/26 era, with no countable income.
+    ca_sbd_general_relief: 615

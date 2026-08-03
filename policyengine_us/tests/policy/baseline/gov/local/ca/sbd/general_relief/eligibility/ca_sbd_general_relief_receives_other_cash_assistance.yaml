@@ -142,7 +142,7 @@
     # only payment also bars its aged recipient.
     ca_sbd_general_relief_receives_other_cash_assistance: true
 
-- name: Case 8, CAPI receipt does not bar and CAPI cash is not counted.
+- name: Case 8, CAPI receipt does not bar but CAPI cash counts as unit income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -165,6 +165,32 @@
         in_sbd: true
   output:
     # Only the programs the handbook names (SSI/SSP and CalWORKs) bar a
-    # member, and CAPI cash is deliberately left out of unit income.
+    # member; the recipient stays in the unit while their CAPI cash counts
+    # toward pooled income under the all-income rule.
     ca_sbd_general_relief_receives_other_cash_assistance: false
-    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_countable_income: 200
+
+- name: Case 9, declined SSI take-up lifts the SSP bar.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+        takes_up_ssi_if_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # A positive computed supplement that is never actually received,
+        # since the SSI/SSP payment is not taken up.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        state_code: CA
+  output:
+    # ca_state_supplement is an ungated computed entitlement; with take-up
+    # declined no SSP check arrives, so the bar lifts like the ssi arm.
+    ca_sbd_general_relief_receives_other_cash_assistance: false

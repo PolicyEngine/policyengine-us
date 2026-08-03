@@ -14,5 +14,7 @@ class ca_sbd_general_relief_income_eligible(Variable):
         grant = spm_unit("ca_sbd_general_relief_maximum_basic_grant", period)
         # NOTE: Chapter A states no explicit boundary; a unit whose countable
         # income exactly equals the maximum basic grant would receive a zero
-        # payment, so it is treated as not in need.
-        return countable_income < grant
+        # payment, so it is treated as not in need. Countable income is
+        # rounded to the cent first so float error in the earned-exemption
+        # arithmetic cannot flip the exact-equality boundary either way.
+        return np.round(countable_income, 2) < grant

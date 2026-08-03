@@ -55,7 +55,8 @@
         members: [person1]
         in_sbd: true
   output:
-    # The comparison is strict: 486 < 486 is false.
+    # The comparison is strict at the cent-rounded value: 486 < 486 is
+    # false.
     ca_sbd_general_relief_income_eligible: false
 
 - name: Case 4, countable income one dollar above the grant is not income-eligible.
