@@ -1,8 +1,8 @@
 # CalEITC (R&TC 17052) edge cases, 2026 parameters:
 # adjustment factor 0.85; phase-in/phase-out rates 0.0765/0.34/0.40 by child count;
-# phase-in ends (= phase-out starts) at $4,766.63 (0 kids) / $7,156.60 (1) / $10,045.62 (2+);
+# phase-in ends (= phase-out starts) at $4,769.26 (0 kids) / $7,160.54 (1) / $10,051.15 (2+);
 # final phase-out runs linearly to $0 at earnings/AGI $32,901;
-# investment income limit $4,923.10; min age 18 for childless filers.
+# investment income limit $4,925.81; min age 18 for childless filers.
 - name: ca_eitc_max_credit_two_children_at_phase_in_end (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -82,7 +82,7 @@
   output:
     tax_units:
       tax_unit:
-        # Earnings $10,045 sit just below the 2-child phase-in end ($10,045.62),
+        # Earnings $10,045 sit just below the 2-child phase-in end ($10,051.15),
         # so the credit is at (essentially) its maximum:
         # 10,045 x 0.40 x 0.85 = 3,415.30; phase-out excess = $0.
         ca_eitc: 3_415.3
@@ -180,8 +180,8 @@
       tax_unit:
         # Age 18 passes the minimum-age boundary (contrast with the age-17 case).
         # 0-kid final phase-out: credit = 257 x (32,901 - 15,000) /
-        # (32,901 - 5,580.94) = 257 x 0.65521 = 168.39.
-        ca_eitc: 168.39
+        # (32,901 - 5,586.1903) = 257 x 0.6553588 = 168.4272.
+        ca_eitc: 168.43
         ca_eitc_eligible: true
         adjusted_gross_income: 15_000.0
 - name: ca_eitc_investment_income_at_limit_4923_eligible (ca)
@@ -228,12 +228,12 @@
     tax_units:
       tax_unit:
         # Investment income $4,923 is at/below the 2026 uprated limit
-        # ($4,923.10), so eligibility holds; the credit still uses earned
-        # income only: 257 x (32,901 - 15,000) / 27,320.06 = 168.39.
-        ca_eitc: 168.39
+        # ($4,925.81), so eligibility holds; the credit still uses earned
+        # income only: 257 x (32,901 - 15,000) / 27,314.8097 = 168.4272.
+        ca_eitc: 168.43
         ca_eitc_eligible: true
         adjusted_gross_income: 19_923.0
-- name: ca_eitc_investment_income_above_limit_4924_ineligible (ca)
+- name: ca_eitc_investment_income_above_limit_4926_ineligible (ca)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -246,7 +246,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 15_000
-        long_term_capital_gains_before_response: 4_924
+        long_term_capital_gains_before_response: 4_926
         rent: 0
         was_in_foster_care: false
         is_full_time_student: false
@@ -276,10 +276,10 @@
   output:
     tax_units:
       tax_unit:
-        # Investment income $4,924 exceeds the $4,923.10 limit -> ineligible.
+        # Investment income $4,926 exceeds the $4,925.81 limit -> ineligible.
         ca_eitc: 0.0
         ca_eitc_eligible: false
-        adjusted_gross_income: 19_924.0
+        adjusted_gross_income: 19_926.0
 - name: ca_eitc_earnings_at_max_32901_ineligible (ca)
   period: 2026
   absolute_error_margin: 0.1
