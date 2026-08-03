@@ -73,3 +73,23 @@
         state_code: DC
   output:
     is_parent_for_medicaid: [false]
+
+- name: Missouri parent just below the size-3 MHF limit is eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 34
+        medicaid_household_size: 3
+        medicaid_income_level: 0.13553
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_count_dependents: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    is_parent_for_medicaid: [true]
