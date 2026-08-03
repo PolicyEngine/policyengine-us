@@ -1,0 +1,86 @@
+description: Missouri limits MHF parent and caretaker income to this monthly dollar amount.
+metadata:
+  propagate_metadata_to_children: true
+  economy: false
+  household: false
+amount:
+  description: Missouri limits MHF parent and caretaker income to this monthly dollar amount by household size.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Missouri MHF parent income limit
+    breakdown:
+      - range(1, 23)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Missouri DSS Manual 1810.020.10
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-10/
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  1:
+    1996-07-16: 141
+  2:
+    1996-07-16: 241
+  3:
+    1996-07-16: 301
+  4:
+    1996-07-16: 353
+  5:
+    1996-07-16: 400
+  6:
+    1996-07-16: 445
+  7:
+    1996-07-16: 490
+  8:
+    1996-07-16: 532
+  9:
+    1996-07-16: 574
+  10:
+    1996-07-16: 616
+  11:
+    1996-07-16: 658
+  12:
+    1996-07-16: 700
+  13:
+    1996-07-16: 742
+  14:
+    1996-07-16: 784
+  15:
+    1996-07-16: 826
+  16:
+    1996-07-16: 868
+  17:
+    1996-07-16: 910
+  18:
+    1996-07-16: 952
+  19:
+    1996-07-16: 994
+  20:
+    1996-07-16: 1_036
+  21:
+    1996-07-16: 1_078
+  22:
+    1996-07-16: 1_120
+additional_person:
+  description: Missouri increases the MHF parent and caretaker income limit by this monthly amount for each person above the published table.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Missouri MHF parent income limit additional person amount
+    reference:
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  values:
+    1996-07-16: 42
+max_household_size:
+  description: Missouri publishes the MHF parent and caretaker income limit through this household size.
+  metadata:
+    unit: person
+    period: year
+    label: Missouri MHF parent income limit maximum household size
+    reference:
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  values:
+    1996-07-16: 22

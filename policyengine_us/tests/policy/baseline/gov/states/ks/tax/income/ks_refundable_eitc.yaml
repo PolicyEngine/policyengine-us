@@ -17,3 +17,19 @@
     state_code: KS
   output:
     ks_refundable_eitc: 0  # because ks_nonrefundable_eitc = 600
+
+- name: EITC fully refundable when the zero-tax band eliminates the tax (taxsim issue 1115)
+  period: 2021
+  absolute_error_margin: 0.05
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 4_440
+    ks_agi: 18_340
+    eitc: 709.95
+    state_code: KS
+  output:
+    # Line 8 tax is 0, so the page 8 worksheet routes the entire 17%
+    # Kansas EITC to line 25 as refundable.
+    ks_total_eitc: 120.69
+    ks_nonrefundable_eitc: 0
+    ks_refundable_eitc: 120.69

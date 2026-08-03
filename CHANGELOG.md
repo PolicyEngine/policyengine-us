@@ -1,3 +1,62 @@
+## [1.784.11] - 2026-08-03
+
+### Fixed
+
+- Apply the Iowa pension exclusion's married cap as a combined $12,000 limit prorated across eligible spouses, per the 2021 IA Expanded Instructions, instead of up to $12,000 per spouse.
+- Compare the Kansas zero-tax threshold against taxable income per K.S.A. 79-32,110 and the K-40 tax tables (2016-2023), keeping the 2024+ minimum-filing-requirement values on an AGI basis in a separate parameter; this lets the refundable Kansas EITC pay out for filers in the zero-tax band.
+
+
+## [1.784.10] - 2026-08-03
+
+### Changed
+
+- Add regression and boundary tests for the state CTC federal-conformance audit (NC ITIN-filer child deduction, CO rate-branch flip date) and cite the Utah CTC statute.
+
+
+## [1.784.9] - 2026-08-03
+
+### Fixed
+
+- Fix the Missouri MHF parent and caretaker Medicaid income limit.
+- Updated Iowa infant and Nevada pregnancy Medicaid income limits.
+
+
+## [1.784.8] - 2026-08-02
+
+### Fixed
+
+- Fix Saver's Credit exact AGI boundary rates.
+
+
+## [1.784.7] - 2026-08-02
+
+### Changed
+
+- Clarify in CHIP income limit parameter descriptions that -inf denotes states without a separate CHIP program for that category.
+
+### Fixed
+
+- Fix the MO WFTC liability cap to net out the property tax credit, following Form MO-WFTC lines 7 through 10.
+
+
+## [1.784.6] - 2026-08-02
+
+### Fixed
+
+- Missouri Working Families Tax Credit: require a federal EITC, exclude married filing separately filers and (from 2024) filers claimed as a dependent, and apply Missouri's investment income limit ($4,050 in 2023, $4,300 in 2024, $4,400 in 2025).
+
+
+## [1.784.5] - 2026-08-02
+
+### Changed
+
+- Update Missouri CHIP premium schedules for the July 2026 Appendix E table and extend the family-size brackets to 12.
+
+### Fixed
+
+- Select Missouri CHIP premium tiers using the Appendix E chart's rounded monthly-dollar boundaries instead of exact FPL ratios.
+
+
 ## [1.784.4] - 2026-07-31
 
 ### Fixed
