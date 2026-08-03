@@ -260,10 +260,14 @@
 - name: Case 17, NY resident (2025-01) is exempt via the FY2024 statewide waiver under pre-HR1 rules.
   period: 2025-01
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: NY
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: NY
   output:
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
@@ -319,3 +323,118 @@
   output:
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
+
+# Statewide waiver expiry (2026-01-31) with no county geography: after the
+# CA and IL statewide waivers expire, a household with no county FIPS has no
+# remaining waiver (only the seven CA counties stay waived through
+# 2026-10-31).
+
+- name: Case 21, CA household without county geography (2026-02, after the statewide waiver expired) is not exempt.
+  period: 2026-02
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 22, IL resident (2026-02, after the statewide waiver expired on 2026-01-31) is not exempt.
+  period: 2026-02
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: IL
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# CA county waiver (ACL 26-15) retroactive window: the Monterey County
+# modification was approved 2026-02-10 but is retroactively effective
+# 2025-11-01, so the waiver applies from the start of the window.
+
+- name: Case 23, CA resident of waived Monterey County (2025-11, retroactive ACL 26-15 window) is exempt via the county waiver.
+  period: 2025-11
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: CA
+    county_fips:
+      2025: "06053"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 24, CA resident of waived Monterey County (2026-03, after the statewide waiver expired) is exempt via the county waiver alone.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_fips:
+      2026: "06053"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# County-not-waived but state-waived: Los Angeles County (06037) is not in
+# the seven-county list, but the statewide waiver is still active in
+# 2025-12, so the OR of county and state coverage is true.
+
+- name: Case 25, CA resident of non-waived Los Angeles County (2025-12) is exempt via the still-active statewide waiver.
+  period: 2025-12
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: CA
+    county_fips:
+      2025: "06037"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Alaska county block split (2025-11-01 good faith exemption waiver under
+# P.L. 119-21 section 10102): the waived-borough list continues after the
+# 2025-11-01 renewal, so Fairbanks remains waived.
+
+- name: Case 26, AK resident of waived Fairbanks North Star Borough (2025-11, after the good faith exemption waiver renewal) is exempt via the area waiver.
+  period: 2025-11
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: AK
+    county_fips:
+      2025: "02090"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
