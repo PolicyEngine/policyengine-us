@@ -61,3 +61,21 @@
   output:
     is_infant_for_medicaid_fc: true
     is_infant_for_medicaid: true
+
+- name: Child under 1 and exactly at updated FPL limit, eligible in IA
+  period: 2025
+  input:
+    state_code: IA
+    age: 0
+    medicaid_income_level: 2.20
+  output:
+    is_infant_for_medicaid: true
+
+- name: Child under 1 and just over updated FPL limit, ineligible in IA
+  period: 2025
+  input:
+    state_code: IA
+    age: 0
+    medicaid_income_level: 2.21
+  output:
+    is_infant_for_medicaid: false
