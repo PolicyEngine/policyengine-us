@@ -1,0 +1,71 @@
+- name: Adult without SSI is included in the assistance unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        receives_ssi: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_adult_included: true
+
+- name: Adult with SSI income is excluded from the assistance unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ssi: 1
+        receives_ssi: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_adult_included: false
+
+- name: Adult with reported SSI receipt is excluded from the assistance unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        ssi: 0
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_adult_included: false
+
+- name: Child-only unit has no included adult.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: false
+        ssi: 0
+        receives_ssi: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+  output:
+    me_tanf_adult_included: false

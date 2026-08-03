@@ -1,0 +1,17 @@
+description: Maine's modeled separate child-only TANF schedule begins with the FFY2021 chart; earlier periods fall back to the adult-included tables.
+
+values:
+  0000-01-01: false
+  2020-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Maine TANF child-only schedule in effect
+  reference:
+    - title: 10-144 C.M.R. Chapter 331, TANF 125A Rule Pages
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2025-10/TANF%20125A%20Rule%20Pages%20%28Clean%29.pdf
+    - title: Maine DHHS Rulemaking, 10-144 C.M.R. Chapter 331 (2025-10-29)
+      href: https://www.maine.gov/dhhs/about/rulemaking/10-144-cmr-ch-331-public-assistance-manual-maximum-benefit-and-standard-need-chart-2025-10-29
+    - title: 10-144 C.M.R. Chapter 331, Appendix Charts (Table 2)
+      href: https://www.law.cornell.edu/regulations/maine/10-144-C-M-R-ch-331-app-Charts

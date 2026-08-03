@@ -1,1 +1,1 @@
-Add the 2025-10-01 Maine TANF COLA to the maximum benefit and standard of need parameters.
+Correct the 2025-10-01 Maine TANF COLA amounts and add child-only maximum benefit and standard of need schedules.

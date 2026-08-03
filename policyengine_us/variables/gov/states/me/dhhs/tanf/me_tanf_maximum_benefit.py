@@ -24,10 +24,20 @@ class me_tanf_maximum_benefit(Variable):
         capped_size = min_(unit_size, max_size)
         additional_members = max_(unit_size - max_size, 0)
 
-        # Look up base amount
-        base_amount = p.maximum_benefit.amount[capped_size]
+        # Select the child-only schedule when it is published and the
+        # assistance unit has no included adult.
+        adult_included = spm_unit("me_tanf_adult_included", period.this_year)
+        adult_included_amount = p.maximum_benefit.amount[capped_size]
+        child_only_amount = p.maximum_benefit.child_only_amount[capped_size]
+        use_child_only_schedule = p.child_only_structure.in_effect & ~adult_included
+        base_amount = where(
+            use_child_only_schedule,
+            child_only_amount,
+            adult_included_amount,
+        )
 
         # Add incremental amount for households larger than max size
+        # Rule 125A publishes identical increments for both grant types.
         incremental = additional_members * p.maximum_benefit.additional_person
 
         return base_amount + incremental

@@ -1038,17 +1038,17 @@
   input:
     people:
       person1:
-        age: 30
-        is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN
+        age: {2026: 30}
+        is_tax_unit_head_or_spouse: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person2:
-        age: 8
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 8}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person3:
-        age: 5
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 5}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -1058,7 +1058,7 @@
     households:
       household:
         members: [person1, person2, person3]
-        state_code: ME
+        state_code: {2026: ME}
   output:
     # Size 3, adult-included:
     # Standard of Need = $1,052
@@ -1071,65 +1071,140 @@
     # Benefit = min($917, $1,052 - $0) = $917
     me_tanf: 917
 
-- name: Case 25, 2026 COLA large household of 9 with zero income.
+- name: Case 25, 2026 COLA large household of 10 with zero income.
   period: 2026-07
   input:
     people:
       person1:
-        age: 38
-        is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN
+        age: {2026: 38}
+        is_tax_unit_head_or_spouse: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person2:
-        age: 36
-        is_tax_unit_head_or_spouse: true
-        immigration_status: CITIZEN
+        age: {2026: 36}
+        is_tax_unit_head_or_spouse: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person3:
-        age: 16
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 16}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person4:
-        age: 14
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 14}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person5:
-        age: 12
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 12}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person6:
-        age: 10
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 10}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person7:
-        age: 8
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 8}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person8:
-        age: 5
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 5}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
       person9:
-        age: 3
-        is_tax_unit_dependent: true
-        immigration_status: CITIZEN
+        age: {2026: 3}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
+      person10:
+        age: {2026: 1}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
     spm_units:
       spm_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
     tax_units:
       tax_unit:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
     households:
       household:
-        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
-        state_code: ME
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: {2026: ME}
   output:
-    # Size 9, adult-included:
-    # Standard of Need = $2,398 + $269 = $2,667
-    # Maximum Benefit = $2,088 + $234 = $2,322
-    me_tanf_standard_of_need: 2_667
-    me_tanf_maximum_benefit: 2_322
+    # Size 10, adult-included:
+    # Standard of Need = $2,400 + 2 * $269 = $2,938
+    # Maximum Benefit = $2,091 + 2 * $234 = $2,559
+    me_tanf_standard_of_need: 2_938
+    me_tanf_maximum_benefit: 2_559
     me_tanf_countable_income: 0
     me_tanf_income_eligible: true
     me_tanf_resources_eligible: true
     me_tanf_eligible: true
-    # Benefit = min($2,322, $2,667 - $0) = $2,322
-    me_tanf: 2_322
+    # Benefit = min($2,559, $2,938 - $0) = $2,559
+    me_tanf: 2_559
+
+- name: Case 26, 2026 child-only assistance unit of 3 with zero income.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: {2026: 12}
+        is_tax_unit_head_or_spouse: {2026: false}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
+      person2:
+        age: {2026: 8}
+        is_tax_unit_head_or_spouse: {2026: false}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
+      person3:
+        age: {2026: 5}
+        is_tax_unit_head_or_spouse: {2026: false}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: {2026: ME}
+  output:
+    # Size 3, child-only:
+    # Standard of Need = $835
+    # Maximum Benefit = $730
+    me_tanf_standard_of_need: 835
+    me_tanf_maximum_benefit: 730
+    me_tanf_countable_income: 0
+    me_tanf_income_eligible: true
+    me_tanf_resources_eligible: true
+    me_tanf_eligible: true
+    # Benefit = min($730, $835 - $0) = $730
+    me_tanf: 730
+
+- name: Case 27, 2026 child-only household above table maximum.
+  period: 2026-07
+  input:
+    people:
+      person1:
+        age: {2026: 12}
+        is_tax_unit_head_or_spouse: {2026: false}
+        is_tax_unit_dependent: {2026: true}
+        immigration_status: {2026: CITIZEN}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_size: {2026: 10}
+        me_tanf_countable_income: 0
+        me_tanf_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: {2026: ME}
+  output:
+    # Size 10 child-only SON = $2,177 + 2 * $269 = $2,715
+    me_tanf_standard_of_need: 2_715
+    # Size 10 child-only maximum = $1,897 + 2 * $234 = $2,365
+    me_tanf_maximum_benefit: 2_365
+    me_tanf: 2_365
