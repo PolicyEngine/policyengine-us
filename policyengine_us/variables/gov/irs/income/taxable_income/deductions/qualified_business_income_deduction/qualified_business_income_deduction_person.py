@@ -21,6 +21,21 @@ class qualified_business_income_deduction_person(Variable):
             "qualified_business_income_deduction", period
         )
         deduction_fraction = np.zeros_like(total_qbid_amount)
-        mask = total_qbid_amount != 0
-        deduction_fraction[mask] = qbid_amt[mask] / total_qbid_amount[mask]
+        qbid_mask = total_qbid_amount != 0
+        deduction_fraction[qbid_mask] = (
+            qbid_amt[qbid_mask] / total_qbid_amount[qbid_mask]
+        )
+
+        # A floor-only deduction can have no ordinary per-person QBID amount.
+        # In that case, allocate the §199A(i) floor by active-QBI shares.
+        active_qbi = person("active_qualified_business_income", period)
+        total_active_qbi = person.tax_unit.sum(active_qbi)
+        active_qbi_mask = (
+            (total_qbid_amount == 0)
+            & (total_deduction_amount > 0)
+            & (total_active_qbi != 0)
+        )
+        deduction_fraction[active_qbi_mask] = (
+            active_qbi[active_qbi_mask] / total_active_qbi[active_qbi_mask]
+        )
         return deduction_fraction * total_deduction_amount

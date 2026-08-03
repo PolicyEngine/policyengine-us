@@ -8,8 +8,8 @@ class qualified_business_income_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
-        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
+        "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
     )
 
     def formula(tax_unit, period, parameters):
@@ -17,9 +17,7 @@ class qualified_business_income_deduction(Variable):
         # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
         person = tax_unit.members
         qbid_amt = person("qbid_amount", period)
-        active_qbi = tax_unit.sum(
-            person("active_qualified_business_income", period)
-        )
+        active_qbi = tax_unit.sum(person("active_qualified_business_income", period))
         uncapped_qbid = tax_unit.sum(qbid_amt)
         # apply taxinc cap at the TaxUnit level following logic
         # in 2018 IRS Publication 535, Worksheet 12-A, lines 32-37
@@ -30,5 +28,8 @@ class qualified_business_income_deduction(Variable):
         pre_floor_qbid = min_(uncapped_qbid, taxinc_cap)
         if p.deduction_floor.in_effect:
             floor = p.deduction_floor.amount.calc(active_qbi)
+            # Section 199A(i)(1) makes the subsection (a) deduction the
+            # "greater of" the otherwise-determined amount or $400, so the
+            # floor overrides subsection (a)'s taxable-income limitation.
             return max_(pre_floor_qbid, floor)
         return pre_floor_qbid

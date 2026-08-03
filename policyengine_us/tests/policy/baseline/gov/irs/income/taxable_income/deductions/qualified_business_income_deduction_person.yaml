@@ -45,3 +45,26 @@
         qualified_business_income_deduction: 0
   output:
     qualified_business_income_deduction_person: [0, 0]
+
+# Above the joint phaseout, zero W-2 wages and UBIA make both ordinary QBID
+# amounts zero. The $400 floor is therefore allocated by active-QBI shares.
+- name: A floor-only deduction is allocated by active QBI
+  absolute_error_margin: 0
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income: 1_500
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+      person2:
+        self_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        taxable_income_less_qbid: 600_000
+        adjusted_net_capital_gain: 0
+  output:
+    qualified_business_income_deduction_person: [400, 0]
