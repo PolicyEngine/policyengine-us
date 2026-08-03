@@ -1,3 +1,10 @@
+## [1.784.10] - 2026-08-03
+
+### Changed
+
+- Add regression and boundary tests for the state CTC federal-conformance audit (NC ITIN-filer child deduction, CO rate-branch flip date) and cite the Utah CTC statute.
+
+
 ## [1.784.9] - 2026-08-03
 
 ### Fixed
