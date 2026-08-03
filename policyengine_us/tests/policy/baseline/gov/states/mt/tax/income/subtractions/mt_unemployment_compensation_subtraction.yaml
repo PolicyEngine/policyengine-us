@@ -59,3 +59,28 @@
     mt_taxable_social_security: 11_064.69
     # 73,013.31 - 800 - 23,120 - (31,396.68 - 11,064.69) = 28,761.32
     mt_agi_indiv: 28_761.32
+
+- name: Taxsim issue 1121 record - unemployment-only income zeroes out
+    Montana taxable income
+  absolute_error_margin: 0.05
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 53
+        taxable_interest_income: 309.730_99
+        unemployment_compensation: 50_823.199
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_subtractions: 50_823.20
+    # Only the interest remains in Montana AGI; the standard deduction
+    # floors at the single minimum (2,140), so taxable income is zero.
+    mt_agi_indiv: 309.73
+    mt_taxable_income_indiv: 0
+    mt_income_tax: 0
