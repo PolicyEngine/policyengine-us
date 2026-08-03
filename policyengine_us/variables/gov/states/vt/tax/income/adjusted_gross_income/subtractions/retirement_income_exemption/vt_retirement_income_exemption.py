@@ -8,7 +8,7 @@ class vt_retirement_income_exemption(Variable):
     label = "Vermont retirement income exemption"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
@@ -114,9 +114,11 @@ class vt_retirement_income_exemption(Variable):
             csrs_reduction_start,
             csrs_reduction_end,
         )
+        # Act 71 gives subsections (a) and (b) identical reduction bands:
+        # $55k-$65k for single filers and $70k-$80k for joint filers.
+        # Raw and post-phase-out elections therefore currently coincide; keep
+        # the post-phase-out comparison as the correct form if bands diverge.
         act_71_exemption = vt_military_retirement_pay_exclusion + max_(
             ss_exemption, csrs_exemption
         )
-        return where(
-            military_income_based, act_71_exemption, single_election_exemption
-        )
+        return where(military_income_based, act_71_exemption, single_election_exemption)

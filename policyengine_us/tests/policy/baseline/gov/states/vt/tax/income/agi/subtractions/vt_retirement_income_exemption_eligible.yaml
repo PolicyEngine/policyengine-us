@@ -229,3 +229,21 @@
         state_code: VT
   output:
     vt_retirement_income_exemption_eligible: True
+
+- name: VT 2025 military survivor benefits qualify under Act 71
+  period: 2025
+  input:
+    people:
+      survivor:
+        military_retirement_pay_survivors: 20_000
+    tax_units:
+      tax_unit:
+        members: [survivor]
+        filing_status: SINGLE
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [survivor]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True

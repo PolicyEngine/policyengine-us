@@ -8,7 +8,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     label = "Vermont retirement income exemption eligibility status"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
@@ -29,14 +29,14 @@ class vt_retirement_income_exemption_eligible(Variable):
             [
                 "tax_unit_taxable_social_security",
                 "military_retirement_pay",
+                "military_retirement_pay_survivors",
                 "csrs_retirement_pay",
             ],
         )
         retirement_income_qualified = retirement_income > 0
-        # Determine which retirement system the filer uses, mirroring the
-        # main exemption formula, so the eligibility gate uses the matching
-        # phase-out threshold (Social Security thresholds differ from CSRS
-        # under 2025 Act 71).
+        # Mirror the main formula's per-option band selection in the gate.
+        # Act 71 moved the Social Security and CSRS bands in lockstep, so the
+        # bands are currently identical.
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
@@ -82,9 +82,7 @@ class vt_retirement_income_exemption_eligible(Variable):
             vt_military_retirement_pay_exclusion == chosen_retirement_income
         )
         military_income_based = p.military_retirement.income_based_structure.in_effect
-        agi_qualified = where(
-            use_military & military_income_based, True, agi_qualified
-        )
+        agi_qualified = where(use_military & military_income_based, True, agi_qualified)
         single_election_eligible = retirement_income_qualified & agi_qualified
         ss_exemption = phased_exemption(
             tax_unit_taxable_social_security,
@@ -103,6 +101,4 @@ class vt_retirement_income_exemption_eligible(Variable):
         )
         # Both qualified then the filer is qualified for vermont retirement
         # income exemption
-        return where(
-            military_income_based, act_71_eligible, single_election_eligible
-        )
+        return where(military_income_based, act_71_eligible, single_election_eligible)
