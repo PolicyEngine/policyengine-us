@@ -1,3 +1,11 @@
+## [1.784.11] - 2026-08-03
+
+### Fixed
+
+- Apply the Iowa pension exclusion's married cap as a combined $12,000 limit prorated across eligible spouses, per the 2021 IA Expanded Instructions, instead of up to $12,000 per spouse.
+- Compare the Kansas zero-tax threshold against taxable income per K.S.A. 79-32,110 and the K-40 tax tables (2016-2023), keeping the 2024+ minimum-filing-requirement values on an AGI basis in a separate parameter; this lets the refundable Kansas EITC pay out for filers in the zero-tax band.
+
+
 ## [1.784.10] - 2026-08-03
 
 ### Changed
