@@ -137,3 +137,70 @@
   output:
     medicaid_parent_income_limit: 0.31
   absolute_error_margin: 0.0001
+
+- name: Case 10, Missouri uses the MHF monthly dollar parent limit in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 10
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.113461
+  absolute_error_margin: 0.0001
+
+- name: Case 11, Missouri uses the same dollar limit but a lower FPL ratio in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 10
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.110197
+  absolute_error_margin: 0.0001
+
+# $301/month * 12 / ($15,650 + 2 * $5,500) = 0.1355347.
+- name: Case 12, Missouri uses the size-3 MHF monthly dollar parent limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.135535
+  absolute_error_margin: 0.0001
+
+# ($1,120/month + 3 * $42/month) * 12
+# / ($15,650 + 24 * $5,500) = 0.1012665.
+- name: Case 13, Missouri extends the MHF table for a size-25 household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 25
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.101267
+  absolute_error_margin: 0.0001
