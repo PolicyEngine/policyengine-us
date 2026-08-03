@@ -1,0 +1,1 @@
+Compare the Kansas zero-tax threshold against taxable income per K.S.A. 79-32,110 and the K-40 tax tables (2016-2023), keeping the 2024+ minimum-filing-requirement values on an AGI basis in a separate parameter; this lets the refundable Kansas EITC pay out for filers in the zero-tax band.
