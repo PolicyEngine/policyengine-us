@@ -70,3 +70,59 @@
     state_code: CT
   output:
     is_optional_senior_or_disabled_income_eligible: false
+
+# Issue #9125: Missouri MHABD applies an 85% FPL non-spend-down standard to
+# old-age and disability-based eligibility but a 100% FPL standard to
+# blindness-based eligibility (DSS Manual § 0805.015.45).
+- name: Missouri blind applicant between 85% and 100% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Missouri non-blind applicant with the same income fails the 85% standard
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Missouri blind applicant above 100% FPL is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 15_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]

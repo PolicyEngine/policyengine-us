@@ -29,15 +29,7 @@ class is_209b_ssi_recipient_income_eligible_for_medicaid(Variable):
         tax_unit = person.tax_unit
         income_after_spenddown = tax_unit.sum(personal_income - medical_expenses)
 
-        is_joint = tax_unit("tax_unit_is_joint", period)
-        state = person.household("state_code_str", period)
-        p = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.senior_or_disabled
-        income_limit_pct = where(
-            is_joint,
-            p.income.limit.couple[state],
-            p.income.limit.individual[state],
+        income_limit = person(
+            "medicaid_optional_senior_or_disabled_income_limit", period
         )
-        income_limit = income_limit_pct * tax_unit("tax_unit_fpg", period)
         return income_eligible | (income_after_spenddown <= income_limit)
