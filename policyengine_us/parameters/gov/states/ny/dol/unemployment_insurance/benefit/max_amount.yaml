@@ -1,5 +1,13 @@
 description: New York sets this maximum weekly benefit rate under the Unemployment Insurance program.
 
+# The $869 step takes effect 2025-10-06, the first Monday of October 2025 (the
+# statutory effective point); the P832 reference to the "week of Oct 13"
+# reflects the benefit-payment lag, not a different effective date. The $869
+# value is set by Ch. 56 of the Laws of 2025.
+# FOLLOW-UP: a further step effective 2026-10-05 sets the maximum WBR to 50% of
+# the state average weekly wage per NY Lab. Law § 590(5). That value is not yet
+# published and may be suspended depending on the UI trust fund balance, so it
+# is not encoded here.
 values:
   2020-01-01: 504
   2025-10-06: 869
@@ -11,7 +19,9 @@ metadata:
   reference:
     - title: NY Labor Law § 590(5)(a) — Rights to benefits
       href: https://www.nysenate.gov/legislation/laws/LAB/590
+    - title: Ch. 56 of the Laws of 2025 — Maximum weekly benefit increase to $869
+      href: https://www.nysenate.gov/legislation/bills/2025/S3006
     - title: Governor Hochul and Labor Leaders Announce Maximum Weekly Benefit Increase for Unemployed Workers, May 9, 2025
       href: https://www.governor.ny.gov/news/governor-hochul-and-labor-leaders-announce-maximum-weekly-benefit-increase-unemployed-workers
-    - title: NYSDOL P832 (Feb 2026), page 2
+    - title: NYSDOL P832 (Feb 2026)
       href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

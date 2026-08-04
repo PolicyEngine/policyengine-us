@@ -1,5 +1,10 @@
 description: New York requires this minimum amount of wages paid in the high quarter of the base period under the Unemployment Insurance program.
 
+# Values intentionally start 2025-01-01, later than sibling parameters (2020).
+# Earlier high quarter minimum wages were not corroborated against an official
+# source in this pass, so no pre-2025 entries are backfilled. See also
+# derivation note below: high_quarter_minimum = 221 x the applicable minimum
+# wage, floored to the next $100 (NY Lab. Law § 527(1)(d)).
 values:
   2025-01-01: 3_400
   2026-01-01: 3_500
@@ -11,5 +16,5 @@ metadata:
   reference:
     - title: NY Labor Law § 527(1)(d) — Valid original claim
       href: https://www.nysenate.gov/legislation/laws/LAB/527
-    - title: NYSDOL P832 (Feb 2026), page 2
+    - title: NYSDOL P832 (Feb 2026)
       href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

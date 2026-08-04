@@ -1,12 +1,12 @@
-description: New York divides high quarter wages by this amount to compute the weekly benefit rate when high quarter wages are at or below the low threshold under the Unemployment Insurance program.
+description: New York uses this many base period quarters with wages to apply the four-quarter weekly benefit formula under the Unemployment Insurance program.
 
 values:
-  2020-01-01: 25
+  2020-01-01: 4
 
 metadata:
   unit: /1
   period: year
-  label: New York UI low weekly benefit divisor
+  label: New York UI full base period quarters
   reference:
     - title: NY Labor Law § 590(5)(a) — Rights to benefits
       href: https://www.nysenate.gov/legislation/laws/LAB/590

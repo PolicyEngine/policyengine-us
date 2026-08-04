@@ -14,7 +14,9 @@ class ny_ui(Variable):
         p = parameters(period).gov.states.ny.dol.unemployment_insurance.benefit
         weekly_benefit_rate = person("ny_ui_weekly_benefit_rate", period)
         weekly_payable = person("ny_ui_weekly_payable", period)
-        weeks_unemployed = person("weeks_unemployed", period)
+        # Floor weeks at zero so a negative input cannot produce a negative
+        # benefit (mirrors the AL/OK UI guard pattern).
+        weeks_unemployed = max_(person("weeks_unemployed", period), 0)
 
         # Maximum benefit amount caps total benefits at the weekly rate times
         # the maximum benefit weeks within the benefit year (§ 590).

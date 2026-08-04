@@ -1,6 +1,8 @@
 # Tests for New York UI monetary eligibility (§ 527).
 # A claimant is monetarily eligible only if ALL THREE base-period tests pass:
-#   1. High-quarter wages >= statutory minimum ($3,400 in 2025; $3,500 from 2026-01-05).
+#   1. High-quarter wages >= statutory minimum ($3,400 in 2025; $3,500 from
+#      2026-01-01). (The high_quarter_minimum step is 2026-01-01, matching its
+#      sibling parameters; Pavel re-review item.)
 #   2. Wages paid in at least 2 calendar quarters of the base period.
 #   3. Total base-period wages >= 1.5 x high-quarter wages (standard case)
 #      OR other quarters >= half of the high-quarter cap (capped case).
@@ -262,4 +264,84 @@
     people:
       person1:
         # HQ $3,499 < $3,500 (2026 minimum) -> fails test 1.
+        ny_ui_monetarily_eligible: false
+
+- name: Case 14, edge - exactly 2 quarters with wages passes the quarters test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 5_000
+        ny_ui_base_period_wages: 10_000
+        ny_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $5,000 >= $3,400; quarters 2 >= 2 required (>= boundary passes);
+        # base $10,000 >= 1.5 * $5,000 = $7,500 -> eligible.
+        ny_ui_monetarily_eligible: true
+
+- name: Case 15, cap-switch below - HQ $11,087 (2025) uses the standard test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 11_087
+        ny_ui_base_period_wages: 13_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $11,087 < $11,088 (2025 cap) -> standard test applies.
+        # Standard: base $13,000 < 1.5 * $11,087 = $16,630.50 -> fails.
+        ny_ui_monetarily_eligible: false
+
+- name: Case 16, cap-switch at - HQ $11,088 (2025) activates the capped test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 11_088
+        # Other 3 quarters = $16,632 - $11,088 = $5,544.
+        ny_ui_base_period_wages: 16_632
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $11,088 >= $11,088 (2025 cap) -> capped test applies.
+        # Other 3 qtrs $5,544 >= 0.5 * $11,088 = $5,544 -> passes.
+        ny_ui_monetarily_eligible: true
+
+- name: Case 17, zero wages - fails the high-quarter minimum, ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 0
+        ny_ui_base_period_wages: 0
+        ny_ui_quarters_with_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $0 < $3,400 (2025 minimum) -> fails test 1 -> ineligible.
         ny_ui_monetarily_eligible: false

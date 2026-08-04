@@ -1,5 +1,8 @@
 description: New York sets this minimum weekly benefit rate for divisor-26 formula cases under the Unemployment Insurance program.
 
+# $143 is the 2025-product value; the 2020 start date backdates it. Value
+# verified for 2025-2026; earlier dates carry the current-law value for
+# calculator convenience.
 values:
   2020-01-01: 143
 
@@ -10,5 +13,5 @@ metadata:
   reference:
     - title: NY Labor Law § 590(5)(a) — Rights to benefits
       href: https://www.nysenate.gov/legislation/laws/LAB/590
-    - title: NYSDOL P832 (Feb 2026), page 2
+    - title: NYSDOL P832 (Feb 2026)
       href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

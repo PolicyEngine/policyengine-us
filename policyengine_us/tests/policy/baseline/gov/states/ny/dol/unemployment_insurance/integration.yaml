@@ -213,3 +213,40 @@
         ny_ui_weekly_payable: 500
         # Annual benefit: $500 * 26 = $13,000; MBA = $500 * 26 = $13,000.
         ny_ui: 13_000
+
+- name: Case 8, divisor-25 path routed through hours tiers in the 2026 regime.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        ny_ui_high_quarter_wages: 3_575
+        ny_ui_base_period_wages: 12_000
+        ny_ui_quarters_with_wages: 4
+        weeks_unemployed: 10
+        ny_ui_weekly_hours_worked: 19
+        ny_ui_gross_weekly_earnings: 100
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible (2026): HQ $3,575 >= $3,500; 4 qtrs;
+        # base $12,000 >= 1.5 * $3,575 = $5,362.50 (standard test, HQ < cap).
+        ny_ui_monetarily_eligible: true
+        # WBR (§ 590): 4 quarters, HQ $3,575 not > $3,575 -> low divisor 25.
+        # floor($3,575 / 25) = $143; well above the 2026 minimum and far below
+        # the $869 maximum (cap active but non-binding on the divisor-25 path).
+        ny_ui_weekly_benefit_rate: 143
+        # PBC = ceil(max(0.5 * $143, $100)) = max($72, $100) = $100.
+        ny_ui_partial_benefit_credit: 100
+        # 19 hours -> 17-21 tier -> 0.50 rate.
+        ny_ui_hours_tier_rate: 0.5
+        # Earnings $100 < WBR + PBC = $243 and <= $869 cap -> partial payable.
+        # Partial amount = 0.50 * $143 = $71.50.
+        ny_ui_weekly_payable: 71.5
+        # Annual = $71.50 * 10 = $715; MBA = $143 * 26 = $3,718 (not binding).
+        ny_ui: 715

@@ -182,3 +182,55 @@
         ny_ui_weekly_benefit_rate: 869
         ny_ui_partial_benefit_credit: 435
         ny_ui_weekly_payable: 869
+
+- name: Case 8, zero hours with positive earnings under the cap - full WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 300
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; 2025 max WBR = $504.
+        # Earnings $300 <= $504 -> not earnings-cap disqualified.
+        # 0 hours -> not "partially employed", so the select default (full WBR)
+        # applies regardless of the earnings offset.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 384
+
+- name: Case 9, boundary - earnings one dollar below WBR + PBC remain payable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 13
+        ny_ui_gross_weekly_earnings: 575
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; PBC = $192; threshold = WBR + PBC = $576.
+        # Earnings $575 < $576 -> partial payment eligible (mirror of Case 6).
+        # 13 hours -> tier 2 (0.75); partial amount = 0.75 * $384 = $288.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_partial_benefit_credit: 192
+        ny_ui_weekly_payable: 288

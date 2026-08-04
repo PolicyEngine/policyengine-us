@@ -11,12 +11,15 @@ class ny_ui_raw_weekly_benefit_rate(Variable):
     defined_for = StateCode.NY
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ny.dol.unemployment_insurance.benefit
+        ui = parameters(period).gov.states.ny.dol.unemployment_insurance
+        p = ui.benefit
         high_quarter_wages = person("ny_ui_high_quarter_wages", period)
         second_high_quarter_wages = person("ny_ui_second_high_quarter_wages", period)
         quarters_with_wages = person("ny_ui_quarters_with_wages", period)
 
-        four_quarter_case = quarters_with_wages >= 4
+        four_quarter_case = (
+            quarters_with_wages >= ui.eligibility.full_base_period_quarters
+        )
 
         # Four-quarter formula: high quarter wages divided by the standard
         # divisor (or the low divisor when wages are at or below the low

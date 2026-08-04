@@ -186,3 +186,75 @@
       person1:
         # 0 hours falls in tier 1 (0-10) -> full rate 1.0.
         ny_ui_hours_tier_rate: 1.0
+
+- name: Case 11, boundary - 16 hours is the top of tier 2, 75 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 16
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 16 hours is below the tier-3 threshold of 17 -> 0.75 rate.
+        ny_ui_hours_tier_rate: 0.75
+
+- name: Case 12, boundary - 17 hours is the bottom of tier 3, 50 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 17
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 17 hours meets the tier-3 threshold -> 0.5 rate.
+        ny_ui_hours_tier_rate: 0.5
+
+- name: Case 13, boundary - 21 hours is the top of tier 3, 50 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 21
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 21 hours is below the tier-4 threshold of 22 -> 0.5 rate.
+        ny_ui_hours_tier_rate: 0.5
+
+- name: Case 14, boundary - 22 hours is the bottom of tier 4, 25 percent rate.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_weekly_hours_worked: 22
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 22 hours meets the tier-4 threshold -> 0.25 rate.
+        ny_ui_hours_tier_rate: 0.25

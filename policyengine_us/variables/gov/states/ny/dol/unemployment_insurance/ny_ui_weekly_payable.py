@@ -8,6 +8,15 @@ class ny_ui_weekly_payable(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/LAB/590"
+    documentation = (
+        "Hybrid partial-benefit rule. The paid amount follows the P803 "
+        "hours-tier fraction times the weekly benefit rate; the earnings "
+        "zero-gate (gross earnings at or above WBR + partial benefit credit) "
+        "follows NY Lab. Law § 525 / § 590(5)(c). The two sources conflict for "
+        "low-WBR, high-earnings weeks: e.g. WBR $150 / 12 hours / $260 earnings "
+        "yields $0 here under the statutory gate versus $112.50 under pure P803. "
+        "The statutory gate is deliberately retained."
+    )
     defined_for = "ny_ui_monetarily_eligible"
 
     def formula(person, period, parameters):
@@ -19,9 +28,14 @@ class ny_ui_weekly_payable(Variable):
         hours_tier_rate = person("ny_ui_hours_tier_rate", period)
         earnings_cap_disqualified = gross_weekly_earnings > p.max_amount
         partially_employed = (weekly_hours_worked > 0) & ~earnings_cap_disqualified
+        # Statutory § 525 / § 590(5)(c) earnings zero-gate: no partial payment
+        # once gross earnings reach WBR + partial benefit credit. This gate is
+        # retained even though the P803 hours-tier amount below would otherwise
+        # pay a positive benefit for the same week (see class documentation).
         partial_payment_eligible = gross_weekly_earnings < (
             weekly_benefit_rate + partial_benefit_credit
         )
+        # Paid amount follows the P803 hours-tier fraction of the WBR.
         partial_amount = hours_tier_rate * weekly_benefit_rate
 
         amount = select(
