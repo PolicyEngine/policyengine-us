@@ -1,3 +1,14 @@
+## [1.786.1] - 2026-08-04
+
+### Changed
+
+- Match SNAP ABAWD area waivers on County enum names (county_str) instead of county FIPS codes, so households identified by either the county enum name or a county FIPS code receive county-level waivers.
+
+### Fixed
+
+- Add the federal Medicare and mandatory-coverage SSI exclusions and Missouri's SSI-receipt exclusion to the Medicaid adult expansion group, a caretaker-relative and dependent-child check to the Medicaid parent category, Missouri's MHABD 100% FPL income standard for blind applicants, and the 5% FPL disregard that applied to Missouri's MHF parent income limit before the July 2021 adult expansion, and treat every state's optional senior-or-disabled income limit as an inclusive maximum.
+
+
 ## [1.786.0] - 2026-08-04
 
 ### Added

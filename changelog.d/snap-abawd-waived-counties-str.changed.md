@@ -1,1 +1,0 @@
-Match SNAP ABAWD area waivers on County enum names (county_str) instead of county FIPS codes, so households identified by either the county enum name or a county FIPS code receive county-level waivers.
