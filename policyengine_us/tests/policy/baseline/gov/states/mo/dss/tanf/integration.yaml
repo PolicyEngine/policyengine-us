@@ -386,3 +386,64 @@
     mo_tanf_gross_earned_income: 0
     mo_tanf_eligible: true
     mo_tanf: 234.086
+
+- name: An SSI-recipient parent is excluded from needs and income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        ssi: 750
+        social_security: 3_600  # $300/month, excluded with the recipient
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(1)(F) and DSS Manual 0210.005.10: the SSI
+    # recipient's needs and income are excluded, leaving a child-only
+    # case at the size-1 payment level.
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_standard_of_need: 393
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_countable_income: 0
+    mo_tanf_maximum_benefit: 135.687
+    mo_tanf_eligible: true
+    mo_tanf: 135.687
+
+- name: A family whose only child receives SSI has no eligible case
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # The SSI child cannot be in the unit, and without a dependent child
+    # in the unit there is no Temporary Assistance case.
+    mo_tanf_assistance_unit_size: 0
+    mo_tanf_eligible: false
+    mo_tanf: 0
