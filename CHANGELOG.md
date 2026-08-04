@@ -1,3 +1,10 @@
+## [1.785.0] - 2026-08-04
+
+### Added
+
+- Add California county-level SNAP ABAWD time limit waivers (CDSS ACL 25-79 and ACL 26-15) and litigation-reinstated statewide waivers for CA, DC, IL, and NV following Rhode Island State Council of Churches v. Rollins.
+
+
 ## [1.784.11] - 2026-08-03
 
 ### Fixed
