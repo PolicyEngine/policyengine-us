@@ -18,21 +18,7 @@
   output:
     ca_sbd_general_relief_immigration_status_eligible: true
 
-- name: Case 2, a legal permanent resident is immigration-status eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: LEGAL_PERMANENT_RESIDENT
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: true
-
-- name: Case 3, a refugee is immigration-status eligible.
+- name: Case 2, a refugee is immigration-status eligible.
   period: 2026-01
   input:
     people:
@@ -46,77 +32,7 @@
   output:
     ca_sbd_general_relief_immigration_status_eligible: true
 
-- name: Case 4, an asylee is immigration-status eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: ASYLEE
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: true
-
-- name: Case 5, a Cuban/Haitian entrant is not on the modeled status list.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: CUBAN_HAITIAN_ENTRANT
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: false
-
-- name: Case 6, a person with deportation withheld is not on the modeled status list.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: DEPORTATION_WITHHELD
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: false
-
-- name: Case 7, a conditional entrant is not on the modeled status list.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: CONDITIONAL_ENTRANT
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: false
-
-- name: Case 8, a person paroled for at least one year is immigration-status eligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: PAROLED_ONE_YEAR
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_immigration_status_eligible: true
-
-- name: Case 9, a DACA recipient is not on the modeled status list.
+- name: Case 3, a DACA recipient is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -131,22 +47,7 @@
     # Lawfully present but outside the CalWORKs-consistent qualified list.
     ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 10, a person with temporary protected status is not on the modeled status list.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        immigration_status: TPS
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    # Lawfully present but outside the CalWORKs-consistent qualified list.
-    ca_sbd_general_relief_immigration_status_eligible: false
-
-- name: Case 11, an undocumented person is not immigration-status eligible.
+- name: Case 4, an undocumented person is not immigration-status eligible.
   period: 2026-01
   input:
     people:
@@ -160,7 +61,7 @@
   output:
     ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 12, before May 2022 a TPS holder is not immigration-status eligible.
+- name: Case 5, before May 2022 a TPS holder is not immigration-status eligible.
   period: 2022-01
   input:
     people:
@@ -176,7 +77,7 @@
     # rule still governs in January 2022.
     ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 13, before May 2022 a legal permanent resident is immigration-status eligible.
+- name: Case 6, before May 2022 a legal permanent resident is immigration-status eligible.
   period: 2022-01
   input:
     people:

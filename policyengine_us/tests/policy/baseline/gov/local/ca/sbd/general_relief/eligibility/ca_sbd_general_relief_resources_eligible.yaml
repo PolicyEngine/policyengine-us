@@ -108,6 +108,28 @@
   output:
     ca_sbd_general_relief_resources_eligible: true
 
+- name: Case 6b, assessed values sum across members under the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 20_000
+      person2:
+        age: 32
+        assessed_property_value: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # 20,000 + 11,000 = 31,000 <= 32,000.
+    ca_sbd_general_relief_resources_eligible: true
+
 - name: Case 7, real property one dollar over the limit fails.
   period: 2026-01
   input:

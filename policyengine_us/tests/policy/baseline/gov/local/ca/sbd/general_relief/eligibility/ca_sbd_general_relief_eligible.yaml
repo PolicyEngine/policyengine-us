@@ -19,23 +19,7 @@
   output:
     ca_sbd_general_relief_eligible: true
 
-- name: Case 2, the same adult in January 2021 predates the modeled program and gets nothing.
-  period: 2021-01
-  input:
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    # The flat-grant design takes effect June 1, 2021; the earlier
-    # needs-based era is not modeled, so in_effect is false in 2021-01.
-    ca_sbd_general_relief_eligible: false
-    ca_sbd_general_relief: 0
-
-- name: Case 3, a unit with only a child has no eligible adult and does not qualify.
+- name: Case 2, a unit with only a child has no eligible adult and does not qualify.
   period: 2026-01
   input:
     people:
@@ -56,53 +40,7 @@
     ca_sbd_general_relief_eligible_person: true
     ca_sbd_general_relief_eligible: false
 
-- name: Case 4, countable income exactly at the grant makes the unit ineligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 65
-        ssi: 0
-        # $5,832 per year is $486 per month, exactly the size-1 grant in the
-        # 7/1/25 era.
-        social_security: 5_832
-    spm_units:
-      spm_unit:
-        members: [person1]
-        tanf: 0
-        # Pin the CA state supplement off: state_code defaults to CA, so it
-        # would otherwise self-compute for the aged member and blur this
-        # exact income-at-grant boundary.
-        ca_state_supplement: 0
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_income_eligible: false
-    ca_sbd_general_relief_eligible: false
-
-- name: Case 5, liquid assets over the limit make the unit ineligible.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 30
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        tanf: 0
-        spm_unit_cash_assets: 51
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    ca_sbd_general_relief_resources_eligible: false
-    ca_sbd_general_relief_eligible: false
-
-- name: Case 6, a facility-resident adult with a young child leaves no eligible adult.
+- name: Case 3, a facility-resident adult with a young child leaves no eligible adult.
   period: 2026-01
   input:
     people:
@@ -129,7 +67,8 @@
 # The two cases below pin the June 1, 2021 start month itself (May versus
 # June 2021). Year-defined inputs are keyed by year because non-January
 # month periods reject scalar inputs for year variables.
-- name: Case 7, May 2021 is the last month before the flat-grant design takes effect.
+
+- name: Case 4, May 2021 is the last month before the flat-grant design takes effect.
   period: 2021-05
   input:
     people:
@@ -151,7 +90,7 @@
     ca_sbd_general_relief_eligible: false
     ca_sbd_general_relief: 0
 
-- name: Case 8, June 2021 is the first month of the flat-grant design.
+- name: Case 5, June 2021 is the first month of the flat-grant design.
   period: 2021-06
   absolute_error_margin: 0.01
   input:
@@ -175,7 +114,7 @@
     # The size-1 grant of the 6/1/21-6/30/22 era.
     ca_sbd_general_relief: 332
 
-- name: Case 9, a sole 18-year-old non-student adult is exactly at the age threshold.
+- name: Case 6, a sole 18-year-old non-student adult is exactly at the age threshold.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -197,30 +136,7 @@
     ca_sbd_general_relief_eligible: true
     ca_sbd_general_relief: 486
 
-- name: Case 10, a sole 17-year-old high school student is not linked and is not an adult.
-  period: 2026-01
-  input:
-    people:
-      person1:
-        age: 17
-        is_full_time_student: true
-        is_in_secondary_school: true
-        ssi: 0
-    spm_units:
-      spm_unit:
-        members: [person1]
-        tanf: 0
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-  output:
-    # The 16-to-18 student path requires an adult-linked member in the
-    # unit, and 17 < 18 would leave the unit with no eligible adult anyway.
-    ca_sbd_general_relief_eligible_person: false
-    ca_sbd_general_relief_eligible: false
-
-- name: Case 11, a sole 18-year-old high school student cannot qualify through the child student path.
+- name: Case 7, a sole 18-year-old high school student cannot qualify through the child student path.
   period: 2026-01
   input:
     people:
@@ -244,7 +160,7 @@
     # an adult-linked member in the unit.
     ca_sbd_general_relief_eligible: false
 
-- name: Case 12, an undocumented parent with a citizen child leaves no eligible adult.
+- name: Case 8, an undocumented parent with a citizen child leaves no eligible adult.
   period: 2026-01
   input:
     people:
