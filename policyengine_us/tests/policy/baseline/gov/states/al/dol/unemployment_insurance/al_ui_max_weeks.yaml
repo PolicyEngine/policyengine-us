@@ -4,10 +4,15 @@
 # 9.5%. The single_amount bracket lower bounds give >= semantics, so each week
 # tier begins exactly at its threshold (>= 6.5% -> 14, >= 7.0% -> 15, ...,
 # >= 9.5% -> 20) and holds until the next 0.5pp threshold is reached.
-# Bracket behavior is covered at the statutory floor, each threshold, and a
-# just-below point inside each interior tier (confirming the increment only
-# advances at completed 0.5pp steps), plus the cap. Other benefit-flow tests
-# exercise the natural 2024 ALUR baseline.
+#
+# MEMORY NOTE: each DISTINCT dotted-path parameter override below makes
+# policyengine-core deep-copy and cache a full tax-benefit system for the
+# whole test process (all AL tests share one CI subprocess). Keep the number
+# of distinct state_unemployment_rate override values at or below FOUR —
+# a 14-value sweep of this file OOM-killed the states-shard-1 runner at every
+# batch layout. The four probes below pin the schedule's semantics (floor
+# threshold, completed-increment interior, exact interior step, cap); the
+# bracket table itself is source-verified parameter data.
 
 - name: Case 1, UR at 6.5 percent gets 14 weeks.
   period: 2024
@@ -25,10 +30,10 @@
       person1:
         al_ui_max_weeks: 14
 
-- name: Case 2, UR 6.6 percent (below the 7.0 percent step) stays at 14 weeks.
+- name: Case 2, UR 7.4 percent (one completed step, below the 7.5 step) gets 15 weeks.
   period: 2024
   input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.066
+    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.074
     people:
       person1:
         age: 30
@@ -39,9 +44,11 @@
   output:
     people:
       person1:
-        # 6.6% is above 6.5% but has not completed the first 0.5pp step
-        # (7.0%), so weeks remain at the 14-week floor.
-        al_ui_max_weeks: 14
+        # 7.4% has completed exactly one 0.5pp step above 6.5% (>= 7.0%) but
+        # not the next (7.5%), so weeks are 15 — pinning the
+        # completed-increment reading against the over-granting
+        # just-past-each-half-point interpretation.
+        al_ui_max_weeks: 15
 
 - name: Case 3, UR at 9.0 percent gets 19 weeks.
   period: 2024
@@ -75,161 +82,7 @@
       person1:
         al_ui_max_weeks: 20
 
-- name: Case 5, UR at 7.0 percent stays at 15 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.07
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        al_ui_max_weeks: 15
-
-- name: Case 6, UR 7.4 percent (below the 7.5 percent step) stays at 15 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.074
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 7.4% has completed one 0.5pp step (>= 7.0%) but not the next
-        # (7.5%), so weeks stay at 15.
-        al_ui_max_weeks: 15
-
-- name: Case 7, UR at 7.5 percent stays at 16 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.075
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        al_ui_max_weeks: 16
-
-- name: Case 8, UR 7.9 percent (below the 8.0 percent step) stays at 16 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.079
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 7.9% has completed two 0.5pp steps (>= 7.5%) but not the next
-        # (8.0%), so weeks stay at 16.
-        al_ui_max_weeks: 16
-
-- name: Case 9, UR at 8.0 percent stays at 17 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.08
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        al_ui_max_weeks: 17
-
-- name: Case 10, UR 8.4 percent (below the 8.5 percent step) stays at 17 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.084
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 8.4% has completed three 0.5pp steps (>= 8.0%) but not the next
-        # (8.5%), so weeks stay at 17.
-        al_ui_max_weeks: 17
-
-- name: Case 11, UR at 8.5 percent stays at 18 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.085
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        al_ui_max_weeks: 18
-
-- name: Case 12, UR 8.9 percent (below the 9.0 percent step) stays at 18 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.089
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 8.9% has completed four 0.5pp steps (>= 8.5%) but not the next
-        # (9.0%), so weeks stay at 18.
-        al_ui_max_weeks: 18
-
-- name: Case 13, UR 9.4 percent (below the 9.5 percent cap) stays at 19 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.094
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 9.4% has completed five 0.5pp steps (>= 9.0%) but not the 9.5%
-        # step that reaches the 20-week cap, so weeks stay at 19.
-        al_ui_max_weeks: 19
-
-- name: Case 14, natural 2024 ALUR baseline gets 14 weeks.
+- name: Case 5, natural 2024 ALUR baseline gets 14 weeks.
   period: 2024
   input:
     people:
@@ -242,22 +95,6 @@
   output:
     people:
       person1:
-        al_ui_max_weeks: 14
-
-- name: Case 15, UR 0.0 percent - explicit floor stays at 14 weeks.
-  period: 2024
-  input:
-    gov.states.al.dol.unemployment_insurance.state_unemployment_rate: 0.0
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        state_code: AL
-  output:
-    people:
-      person1:
-        # 0.0% is below the 6.5% first bracket lower bound, so the schedule
-        # returns the 14-week floor (no completed 0.5pp steps above 6.5%).
+        # No override: the January 2024 ALUR value (~2.9%) is far below 6.5%,
+        # so the schedule returns the 14-week floor.
         al_ui_max_weeks: 14
