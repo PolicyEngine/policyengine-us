@@ -19,7 +19,11 @@ class ok_ui_maximum_benefit_amount(Variable):
         # applicable share of base-period wages.
         p = parameters(period).gov.states.ok.oesc.unemployment_insurance.mba
         weekly_benefit_rate = person("ok_ui_weekly_benefit_rate", period)
-        base_period_total_wages = person("ok_ui_base_period_total_wages", period)
+        # Guard against negative base-period wages so the share-of-wages cap
+        # cannot drive the maximum benefit amount below zero.
+        base_period_total_wages = max_(
+            person("ok_ui_base_period_total_wages", period), 0
+        )
         return min_(
             min_(weekly_benefit_rate * p.max_weeks, p.max_amount),
             base_period_total_wages * p.base_period_wages_share,
