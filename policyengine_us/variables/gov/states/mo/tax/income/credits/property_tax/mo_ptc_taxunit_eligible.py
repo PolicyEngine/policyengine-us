@@ -47,6 +47,7 @@ class mo_ptc_taxunit_eligible(Variable):
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         paid_rent_or_property_tax = (rent + property_tax) > 0
         # RSMo 135.030(1) caps net income at the maximum upper limit.
-        net_income = tax_unit("mo_ptc_net_income", period)
+        # DOR forms round entries half-up to whole dollars.
+        net_income = np.floor(tax_unit("mo_ptc_net_income", period) + 0.5)
         income_eligible = net_income <= tax_unit("mo_ptc_income_limit", period)
         return categorical & paid_rent_or_property_tax & income_eligible

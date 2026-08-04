@@ -28,7 +28,9 @@ class mo_property_tax_credit(Variable):
             rent_equivalent + min_(property_tax, p.property_tax_limit),
             p.property_tax_limit,
         )
-        net_income = tax_unit("mo_ptc_net_income", period)
+        # DOR forms round entries half-up to whole dollars before table lookup.
+        payment = np.floor(payment + 0.5)
+        net_income = np.floor(tax_unit("mo_ptc_net_income", period) + 0.5)
         base = p.phase_out.threshold
         step = p.phase_out.step
         # RSMo 135.030(2)-(3): income at or below the minimum base receives

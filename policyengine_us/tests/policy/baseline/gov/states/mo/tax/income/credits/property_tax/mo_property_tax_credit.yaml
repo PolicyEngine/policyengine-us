@@ -333,3 +333,151 @@
     # 1,076-1,100 midpoint 1,088; 12 increments give a 0.75% rate on bracket
     # 19,746-20,240 midpoint 19,992.5; 1,088 less ceil(149.95) = 150 is 938.
     mo_property_tax_credit: 938
+
+- name: 2025 payment rounds down before selecting a table column
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_075.49
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 11 rounds to 1,075, selecting the 1,051-1,075 column. Its 1,063
+    # midpoint less the first-row phaseout of 10 produces a 1,053 credit.
+    mo_property_tax_credit: 1_053
+
+- name: 2025 payment rounds up before selecting a table column
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_075.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 11 rounds to 1,076, selecting the 1,076-1,100 column. Its 1,088
+    # midpoint less the first-row phaseout of 10 produces a 1,078 credit.
+    mo_property_tax_credit: 1_078
+
+- name: 2025 income rounds down before selecting a table row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_600.49
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 8 rounds to 14,600, selecting the 14,301-14,600 row.
+    mo_property_tax_credit: 1_078
+
+- name: 2025 income rounds up before selecting a table row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_600.50
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 8 rounds to 14,601, selecting the 14,601-14,900 row.
+    mo_property_tax_credit: 1_069
+
+- name: 2025 below-base payment rounds to the nearest whole dollar
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 500.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 501
+
+- name: 2026 income rounds down to the upper eligibility limit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200.49
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+    mo_property_tax_credit: 280
+
+- name: 2026 income rounds above the upper eligibility limit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200.50
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+    mo_property_tax_credit: 0
