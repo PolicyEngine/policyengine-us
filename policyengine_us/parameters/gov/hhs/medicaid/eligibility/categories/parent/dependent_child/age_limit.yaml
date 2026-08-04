@@ -18,6 +18,8 @@ metadata:
       href: https://khap.kdhe.ks.gov/kfmam/main.asp?tier1=02000&tier2=02100
     - title: Ala. Admin. Code r. 560-X-25-.15(1)(c) - dependent child "under the age of 19"
       href: https://admincode.legislature.state.al.us/api/chapter/560-X-25#page=40
+    - title: 130 CMR 505.002(C) - MassHealth Standard for a parent or caretaker relative of "a child younger than 19 years old"
+      href: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-505-002
     - title: Alabama approved state plan S25 (AL-13-0021-MM1) - under-18 base, student option unchecked (conflicts with current admin code)
       href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/AL/AL-13-0021-MM1.pdf#page=12
 # 18 is the federal floor: 42 CFR 435.4 defines a dependent child as
@@ -74,8 +76,11 @@ KY:
   2014-01-01: 18
 LA:
   2014-01-01: 18
+# Massachusetts covers a "parent or caretaker relative of a child
+# younger than 19 years old" with no student condition
+# (130 CMR 505.002(C)).
 MA:
-  2014-01-01: 18
+  2014-01-01: 19
 MD:
   2014-01-01: 18
 ME:

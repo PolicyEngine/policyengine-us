@@ -431,6 +431,31 @@
   output:
     is_parent_for_medicaid: [true, false]
 
+# Massachusetts covers a parent of "a child younger than 19 years old"
+# with no student condition (130 CMR 505.002(C)); a 19-year-old does
+# not qualify, so parents of one shift to the adult group.
+- name: An 18-year-old non-student qualifies the parent in Massachusetts
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+    households:
+      household:
+        members: [head, non_student]
+        state_code: MA
+  output:
+    is_parent_for_medicaid: [true, false]
+
 # Wisconsin counts an 18-year-old full-time student expected to
 # complete school before 19 (Wis. Stat. § 49.471(4)(a)4.a.; S25
 # option checked).

@@ -290,6 +290,10 @@
         is_aca_eshi_eligible: false
       child1:
         age: 18
+        # Texas elects the 42 CFR 435.4 student option (Texas Works
+        # Handbook A-521): an 18-year-old full-time student remains a
+        # dependent child, keeping the parents in the PARENT category.
+        is_full_time_student: true
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         is_tax_unit_dependent: true
