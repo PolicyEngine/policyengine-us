@@ -1,0 +1,91 @@
+# Person-level gross unearned income; unearned income counts in full with
+# no exemptions.
+- name: Case 1, Social Security converts to a monthly amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 6_000
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 6,000 / 12 = 500 per month.
+    ca_sbd_general_relief_gross_unearned_income: 500
+
+- name: Case 2, SSI appears in person-level gross unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        ssi: 500
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Gross income reports the person's income faithfully; SSI receipt
+    # bars the person from the assistance unit, and the countable-income
+    # formula excludes barred members' income at the unit level, so this
+    # amount never reaches the AU.
+    ca_sbd_general_relief_gross_unearned_income: 500
+
+- name: Case 3, multiple unearned sources are summed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 2_400
+        child_support_received: 1_200
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 200 + 100 = 300 per month.
+    ca_sbd_general_relief_gross_unearned_income: 300
+
+- name: Case 4, a rental loss passes through as negative unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        rental_income: -2_400
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # -2,400 / 12 = -200 per month; the benefit formula floors unit
+    # countable income at zero so losses cannot inflate the grant.
+    ca_sbd_general_relief_gross_unearned_income: -200
+
+- name: Case 5, educational assistance counts in full as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        educational_assistance: 1_200
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 1,200 / 12 = 100 per month. The education-expense carve-out (tuition,
+    # books, supplies, transportation) is not modeled.
+    ca_sbd_general_relief_gross_unearned_income: 100

@@ -1,0 +1,87 @@
+# The first $3,000 of each vehicle's value is exempt; the balance counts
+# toward the $500 personal property limit. The county's rule evaluating a
+# vehicle used as the principal residence under the real property limit
+# instead is not modeled.
+- name: Case 1, a unit with no vehicles has no countable vehicle value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+  output:
+    ca_sbd_general_relief_countable_vehicle_value: 0
+
+- name: Case 2, a vehicle worth less than the exemption has no countable value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 2_500
+  output:
+    # max(2,500 - 3,000, 0) = 0.
+    ca_sbd_general_relief_countable_vehicle_value: 0
+
+- name: Case 3, a vehicle worth 5,000 dollars counts the excess over the exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 5_000
+  output:
+    # 5,000 - 3,000 = 2,000.
+    ca_sbd_general_relief_countable_vehicle_value: 2_000
+
+- name: Case 4, the per-vehicle exemption applies to each of two vehicles.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+  output:
+    # 8,000 - 3,000 x 2 vehicles = 2,000.
+    ca_sbd_general_relief_countable_vehicle_value: 2_000
+
+- name: Case 5, a vehicle 1 dollar over the exemption leaves 1 countable dollar.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 3_001
+  output:
+    # 3,001 - 3,000 = 1.
+    ca_sbd_general_relief_countable_vehicle_value: 1
