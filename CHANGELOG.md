@@ -1,3 +1,10 @@
+## [1.786.4] - 2026-08-04
+
+### Changed
+
+- Revert the Missouri TANF assistance unit, dependent-child eligibility, student-earnings, and SSI-exclusion changes that reached main without review; they return for review in PR #9229.
+
+
 ## [1.786.3] - 2026-08-04
 
 ### Fixed
