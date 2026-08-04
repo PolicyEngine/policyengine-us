@@ -36,6 +36,6 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 lesser_of_deductions_or_excess = min_(
                     total_itemized_deductions, taxable_income_excess
                 )
-                return p.obbb.rate * lesser_of_deductions_or_excess
+                return lesser_of_deductions_or_excess * 2 / 37
             return min_(agi_excess_reduction, maximum_deductions_reduction)
         return 0
