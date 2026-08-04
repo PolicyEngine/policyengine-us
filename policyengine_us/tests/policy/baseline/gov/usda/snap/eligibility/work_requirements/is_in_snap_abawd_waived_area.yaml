@@ -48,7 +48,13 @@
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
 
-- name: Case 4, AK household without county geography falls back to no area waiver.
+# With county names matched via county_str, a household with no county
+# geography falls back to the first county alphabetically in its state.
+# For Alaska that is the waived Aleutians East Borough, so unknown-county
+# AK households are treated as waived (29 of 30 AK county-equivalents are
+# waived; households in Anchorage, the only exception, must supply their
+# county — see Cases 2 and 29).
+- name: Case 4, AK household without county geography falls back to the first county in the state (Aleutians East Borough), which is waived.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -57,8 +63,8 @@
     is_disabled: false
     state_code: AK
   output:
-    is_in_snap_abawd_waived_area: false
-    meets_snap_abawd_work_requirements: false
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
 
 - name: Case 5, pre-HR1 AK resident of waived census area (Bethel) meets ABAWD requirements via area waiver.
   period: 2025-01
@@ -325,9 +331,10 @@
     meets_snap_abawd_work_requirements: false
 
 # Statewide waiver expiry (2026-01-31) with no county geography: after the
-# CA and IL statewide waivers expire, a household with no county FIPS has no
-# remaining waiver (only the seven CA counties stay waived through
-# 2026-10-31).
+# CA and IL statewide waivers expire, a household with no county information
+# falls back to the first county alphabetically in its state — for CA that
+# is Alameda County, which is not waived — so no waiver remains (only the
+# seven CA counties stay waived through 2026-10-31).
 
 - name: Case 21, CA household without county geography (2026-02, after the statewide waiver expired) is not exempt.
   period: 2026-02
@@ -438,3 +445,55 @@
   output:
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
+
+# Households identified by county name (county_str) rather than county
+# FIPS code, as API partners send them: county_str is matched directly
+# against the waived_counties parameter, so both input forms receive
+# county-level waivers.
+
+- name: Case 27, CA resident of waived Tulare County identified by county_str (2026-03, after the statewide waiver expired) is exempt via the county waiver.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: TULARE_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 28, CA resident of non-waived Los Angeles County identified by county_str (2026-03) is not exempt.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: LOS_ANGELES_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 29, AK resident of non-waived Municipality of Anchorage identified by county_str (2026-01) is subject to the time limit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
