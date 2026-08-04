@@ -89,9 +89,10 @@
     mo_tanf_maximum_benefit: 3_505.08
     mo_tanf_income_eligible: true
     mo_tanf_eligible: true
-    # Monthly: $250 earned - $172.80 deductions = $77.20 countable;
-    # $292.09 - $77.20 = $214.89 benefit; * 12 = $2,578.68.
-    mo_tanf: 2_578.68
+    # Monthly: $250 earned - ($90 + $30 + $130 / 3) deductions leaves
+    # $86.67 countable; $292.09 - $86.67 = $205.42 benefit; * 12 =
+    # $2,465.08.
+    mo_tanf: 2_465.08
 
 - name: Family of 3 income at exact 185% limit
   period: 2024
