@@ -197,7 +197,7 @@
     ca_sbd_general_relief_eligible: true
     ca_sbd_general_relief: 486
 
-- name: Case 10, a sole 17-year-old high school student passes the person screen but is not an adult.
+- name: Case 10, a sole 17-year-old high school student is not linked and is not an adult.
   period: 2026-01
   input:
     people:
@@ -215,12 +215,12 @@
         members: [person1]
         in_sbd: true
   output:
-    # Linked through the 16-to-18 student path, but 17 < 18 leaves the unit
-    # with no eligible adult.
-    ca_sbd_general_relief_eligible_person: true
+    # The 16-to-18 student path requires an adult-linked member in the
+    # unit, and 17 < 18 would leave the unit with no eligible adult anyway.
+    ca_sbd_general_relief_eligible_person: false
     ca_sbd_general_relief_eligible: false
 
-- name: Case 11, a sole 18-year-old high school student satisfies the adult requirement through the student path.
+- name: Case 11, a sole 18-year-old high school student cannot qualify through the child student path.
   period: 2026-01
   input:
     people:
@@ -238,10 +238,11 @@
         members: [person1]
         in_sbd: true
   output:
-    # Modeling choice: the 16-to-18 student linkage is not restricted to
-    # children in a parent's unit, so an 18-year-old student who is both
-    # linked and of adult age qualifies on their own.
-    ca_sbd_general_relief_eligible: true
+    # The county evaluates a lone 18-year-old as an adult applicant, and a
+    # full-time student fails the employable path; the 16-to-18 student
+    # path serves children in a cooperating parent's case, so it requires
+    # an adult-linked member in the unit.
+    ca_sbd_general_relief_eligible: false
 
 - name: Case 12, an undocumented parent with a citizen child leaves no eligible adult.
   period: 2026-01

@@ -15,8 +15,8 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
     def formula(person, period, parameters):
         # GR will not be utilized to subsidize any other cash assistance
         # program; the handbook names SSI/SSP and CalWORKs recipients as
-        # supported by other public funds. CAPI is deliberately not barred
-        # here, since the handbook names only SSI/SSP and CalWORKs.
+        # supported by other public funds, and CAPI falls under the same
+        # "any other cash assistance program" bar.
         # SSI is person-level, so only the individual recipient is barred.
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         # SSP is computed at the SPM-unit level, so unit receipt is projected
@@ -32,6 +32,15 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
             & (person.spm_unit("ca_state_supplement", period) > 0)
             & person("takes_up_ssi_if_eligible", period.this_year)
         )
+        # CAPI pays SSI-equivalent cash to aged, blind, or disabled
+        # immigrants barred from federal SSI by immigration status. Like
+        # SSP it is computed at the SPM-unit level, so unit receipt is
+        # projected down and intersected with the person-level categorical
+        # flag. CAPI has no take-up input, so the computed entitlement
+        # stands in for receipt.
+        receives_capi = person("ca_capi_eligible_person", period.this_year) & (
+            person.spm_unit("ca_capi", period) > 0
+        )
         # CalWORKs receipt is tracked at the SPM-unit level, so a unit
         # receiving it bars its members. Read the take-up-gated federal
         # aggregator rather than ca_tanf directly (matching the ssi arm) so
@@ -40,4 +49,4 @@ class ca_sbd_general_relief_receives_other_cash_assistance(Variable):
         receives_calworks = (person.spm_unit("tanf", period) > 0) | person.spm_unit(
             "receives_tanf", period
         )
-        return receives_ssi | receives_ssp | receives_calworks
+        return receives_ssi | receives_ssp | receives_capi | receives_calworks

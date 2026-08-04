@@ -21,8 +21,10 @@ class ca_sbd_general_relief_eligible(Variable):
         person = spm_unit.members
         eligible_person = person("ca_sbd_general_relief_eligible_person", period)
         # General Relief serves needy adults; children participate only
-        # through a parent applicant.
-        adult = person("monthly_age", period) >= p.eligibility.age_threshold
+        # through a parent applicant. County materials state no age, so the
+        # model-wide adult definition (18 or older, matching California
+        # Family Code section 6501) supplies the threshold.
+        adult = person("is_adult", period.this_year)
         has_eligible_adult = spm_unit.any(eligible_person & adult)
         income_eligible = spm_unit("ca_sbd_general_relief_income_eligible", period)
         resources_eligible = spm_unit(

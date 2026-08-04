@@ -1,7 +1,7 @@
 # GR will not subsidize any other cash-assistance program; the handbook
-# names SSI/SSP and CalWORKs recipients; CAPI is deliberately not barred.
-# SSI and SSP bar only the individual recipient; CalWORKs receipt is
-# unit-level and bars every member.
+# names SSI/SSP and CalWORKs recipients, and CAPI falls under the same
+# bar. SSI, SSP, and CAPI bar only the individual recipient; CalWORKs
+# receipt is unit-level and bars every member.
 - name: Case 1, a person with no SSI and no CalWORKs is not barred.
   period: 2026-01
   input:
@@ -142,7 +142,7 @@
     # only payment also bars its aged recipient.
     ca_sbd_general_relief_receives_other_cash_assistance: true
 
-- name: Case 8, CAPI receipt does not bar but CAPI cash counts as unit income.
+- name: Case 8, CAPI receipt bars its recipient and excludes their income from the AU.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -150,6 +150,10 @@
       person1:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Without 40 qualifying work quarters (the input defaults to 40),
+        # the LPR is not an SSI-qualified noncitizen — the population CAPI
+        # serves.
+        ssi_qualifying_quarters_earnings: 0
         ssi: 0
     spm_units:
       spm_unit:
@@ -164,11 +168,11 @@
         members: [person1]
         in_sbd: true
   output:
-    # Only the programs the handbook names (SSI/SSP and CalWORKs) bar a
-    # member; the recipient stays in the unit while their CAPI cash counts
-    # toward pooled income under the all-income rule.
-    ca_sbd_general_relief_receives_other_cash_assistance: false
-    ca_sbd_general_relief_countable_income: 200
+    # CAPI is another cash-assistance program, so its aged noncitizen
+    # recipient is barred like an SSI recipient, and a barred member's
+    # income is excluded from AU income entirely.
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+    ca_sbd_general_relief_countable_income: 0
 
 - name: Case 9, declined SSI take-up lifts the SSP bar.
   period: 2026-01

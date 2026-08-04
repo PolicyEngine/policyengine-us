@@ -40,20 +40,32 @@ class ca_sbd_general_relief_meets_linkage_requirements(Variable):
             "is_part_time_college_student", period.this_year
         )
         employable = ~student
-        adult_linked = (age >= p.age_threshold) & (incapacitated | employable)
+        # County materials limit the program to "needy adults" without
+        # stating an age; the model-wide adult definition (18 or older,
+        # matching California Family Code section 6501) supplies the
+        # threshold.
+        adult = person("is_adult", period.this_year)
+        adult_linked = adult & (incapacitated | employable)
         # Children link through a cooperating parent when under 16, or when
         # aged 16 to 18 and enrolled in and attending high school full time.
-        # Passing grades are not tracked, and the cooperating-parent
-        # requirement is not modeled: a 16-to-18 high-school student with no
-        # parent in the unit still links here (and at 18 satisfies the
-        # unit's adult-age requirement alone) — an approximation, since the
-        # county's child linkage runs through a parent applicant.
+        # The cooperating-parent requirement is approximated by requiring an
+        # adult-linked member in the unit for the 16-to-18 student path —
+        # otherwise a solo 18-year-old high-school student would satisfy
+        # the unit's adult-age requirement alone and be paid as their own
+        # case, while the county would evaluate them as an adult applicant
+        # (and a full-time student fails the employable path). Under-16
+        # children keep unconditional linkage since a unit without an
+        # adult fails the adult-age requirement anyway. Passing grades are
+        # not tracked.
         in_high_school = full_time_student & person(
             "is_in_secondary_school", period.this_year
         )
+        unit_has_linked_adult = person.spm_unit.any(adult_linked)
         # "Aged 16 to 18" is a whole-number age band: a child is "aged 18"
         # until their 19th birthday, and age is a float.
         child_linked = (age < p.child_linkage.age_limit) | (
-            (age < p.child_linkage.student_age_limit + 1) & in_high_school
+            (age < p.child_linkage.student_age_limit + 1)
+            & in_high_school
+            & unit_has_linked_adult
         )
         return adult_linked | child_linked

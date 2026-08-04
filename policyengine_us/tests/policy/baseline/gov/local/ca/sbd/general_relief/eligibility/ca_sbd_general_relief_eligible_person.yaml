@@ -99,13 +99,13 @@
   output:
     ca_sbd_general_relief_eligible_person: false
 
-- name: Case 6, a DACA recipient on the broad brochure immigration list is an eligible person.
+- name: Case 6, a refugee on the qualified immigration list is an eligible person.
   period: 2026-01
   input:
     people:
       person1:
         age: 30
-        immigration_status: DACA
+        immigration_status: REFUGEE
         ssi: 0
     spm_units:
       spm_unit:

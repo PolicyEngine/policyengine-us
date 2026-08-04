@@ -1,7 +1,9 @@
-# The GR 101 brochure's broader list governs: citizens,
+# From May 2022 the GR 101 brochure's broader list governs: citizens,
 # legal permanent residents, and other non-citizens authorized to live in
-# the United States (mapped to all lawfully present statuses). Only
-# undocumented people are excluded.
+# the United States, mapped to the same statuses the model applies for
+# CalWORKs (adding refugees, asylees, and people paroled for at least one
+# year). Before then, Handbook Letter #7358 limits the program to citizens
+# and legal permanent residents.
 - name: Case 1, a citizen is immigration-status eligible.
   period: 2026-01
   input:
@@ -58,7 +60,7 @@
   output:
     ca_sbd_general_relief_immigration_status_eligible: true
 
-- name: Case 5, a Cuban/Haitian entrant is immigration-status eligible.
+- name: Case 5, a Cuban/Haitian entrant is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -70,9 +72,9 @@
         members: [person1]
         in_sbd: true
   output:
-    ca_sbd_general_relief_immigration_status_eligible: true
+    ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 6, a person with deportation withheld is immigration-status eligible.
+- name: Case 6, a person with deportation withheld is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -84,9 +86,9 @@
         members: [person1]
         in_sbd: true
   output:
-    ca_sbd_general_relief_immigration_status_eligible: true
+    ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 7, a conditional entrant is immigration-status eligible.
+- name: Case 7, a conditional entrant is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -98,7 +100,7 @@
         members: [person1]
         in_sbd: true
   output:
-    ca_sbd_general_relief_immigration_status_eligible: true
+    ca_sbd_general_relief_immigration_status_eligible: false
 
 - name: Case 8, a person paroled for at least one year is immigration-status eligible.
   period: 2026-01
@@ -114,7 +116,7 @@
   output:
     ca_sbd_general_relief_immigration_status_eligible: true
 
-- name: Case 9, a DACA recipient is immigration-status eligible.
+- name: Case 9, a DACA recipient is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -126,9 +128,10 @@
         members: [person1]
         in_sbd: true
   output:
-    ca_sbd_general_relief_immigration_status_eligible: true
+    # Lawfully present but outside the CalWORKs-consistent qualified list.
+    ca_sbd_general_relief_immigration_status_eligible: false
 
-- name: Case 10, a person with temporary protected status is immigration-status eligible.
+- name: Case 10, a person with temporary protected status is not on the modeled status list.
   period: 2026-01
   input:
     people:
@@ -140,7 +143,8 @@
         members: [person1]
         in_sbd: true
   output:
-    ca_sbd_general_relief_immigration_status_eligible: true
+    # Lawfully present but outside the CalWORKs-consistent qualified list.
+    ca_sbd_general_relief_immigration_status_eligible: false
 
 - name: Case 11, an undocumented person is not immigration-status eligible.
   period: 2026-01
@@ -155,3 +159,33 @@
         in_sbd: true
   output:
     ca_sbd_general_relief_immigration_status_eligible: false
+
+- name: Case 12, before May 2022 a TPS holder is not immigration-status eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: TPS
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Handbook Letter #7358's narrower citizen and legal-permanent-resident
+    # rule still governs in January 2022.
+    ca_sbd_general_relief_immigration_status_eligible: false
+
+- name: Case 13, before May 2022 a legal permanent resident is immigration-status eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_immigration_status_eligible: true

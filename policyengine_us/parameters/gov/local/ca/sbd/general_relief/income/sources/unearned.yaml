@@ -43,15 +43,13 @@ values:
     # gross is an intentional approved approximation, so that carve-out is
     # excluded from the model by design.
     - educational_assistance
-    # SSI recipients are barred from the assistance unit at the person level,
-    # but "all income in the AU must be taken into consideration", so an
-    # excluded member's SSI counts toward the unit's pooled income. The
-    # excluded member's SSP counts the same way, and CAPI recipients — who
-    # are not barred (the handbook names only SSI/SSP and CalWORKs) — have
-    # their CAPI cash counted under the same all-income rule; but
-    # ca_state_supplement and ca_capi are SPM-unit-level variables, so both
-    # are added in ca_sbd_general_relief_countable_income rather than in
-    # this person-level list.
+    # SSI stays in this gross source list for completeness, but a person
+    # with SSI is barred from the assistance unit, and the countable-income
+    # formula excludes barred members' income at the unit level — the
+    # other program's budget covers the recipient, so neither their SSI
+    # nor their other income is charged to the AU. SSP
+    # (ca_state_supplement) and CAPI (ca_capi) recipients are barred the
+    # same way, so those unit-level benefits never enter AU income either.
     - ssi
 
 metadata:
@@ -59,5 +57,5 @@ metadata:
   period: year
   label: San Bernardino County General Relief unearned income sources
   reference:
-    - title: "San Bernardino County GRPHB Handbook Letter #7358, Chapter A p. A-3 (income chart, unearned income rows)"
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-3 (income chart, unearned income rows)
       href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

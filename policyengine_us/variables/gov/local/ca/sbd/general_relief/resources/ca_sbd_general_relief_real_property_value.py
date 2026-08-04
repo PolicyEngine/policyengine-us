@@ -11,14 +11,8 @@ class ca_sbd_general_relief_real_property_value(Variable):
     defined_for = "in_sbd"
     reference = "https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx"
 
-    def formula(spm_unit, period, parameters):
-        # Combined assessed value of real property; no encumbrances are
-        # deducted. A vehicle used as the principal residence is evaluated
-        # as real property; vehicle values are modeled only in aggregate, so
-        # when the unit lives in a vehicle every vehicle's value (not just
-        # the residence vehicle) moves to the real property test.
-        assessed_value = add(spm_unit, period, ["assessed_property_value"])
-        household = spm_unit.household
-        lives_in_vehicle = household("lives_in_vehicle", period)
-        vehicle_value = household("household_vehicles_value", period)
-        return assessed_value + lives_in_vehicle * vehicle_value
+    # Combined assessed value of real property; no encumbrances are
+    # deducted. The county's rule evaluating a vehicle used as the
+    # principal residence under this limit is not modeled — vehicles are
+    # always evaluated under the personal property test.
+    adds = ["assessed_property_value"]

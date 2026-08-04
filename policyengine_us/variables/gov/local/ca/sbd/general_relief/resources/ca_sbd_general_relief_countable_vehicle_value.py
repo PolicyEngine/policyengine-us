@@ -29,10 +29,8 @@ class ca_sbd_general_relief_countable_vehicle_value(Variable):
         # as $3,000 x count against the total — this understates countable
         # value whenever a single vehicle is worth less than the exemption,
         # since its unused exemption shelters another vehicle's excess.
-        # A vehicle used as the principal residence is evaluated as real
-        # property instead of personal property; lives_in_vehicle is a
-        # household-level flag, so it shifts every vehicle (not just the
-        # residence) to the real property test.
-        lives_in_vehicle = household("lives_in_vehicle", period)
+        # The county's rule evaluating a vehicle used as the principal
+        # residence under the real property limit instead is not modeled;
+        # every vehicle receives the personal property treatment.
         exempt_value = p.vehicle_exemption * vehicle_count
-        return ~lives_in_vehicle * max_(vehicle_value - exempt_value, 0)
+        return max_(vehicle_value - exempt_value, 0)

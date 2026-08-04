@@ -1,6 +1,8 @@
-# Countable income = max(unit earned - $10, 0) x (1 - 0.20) + unit unearned
-# + unit-level SSP (when taken up) and CAPI.
-# The $10 + 20% earned exemption applies once per assistance unit.
+# Countable income = max(unit earned - $10, 0) x (1 - 0.20) + unit unearned,
+# summed over members not barred for other-cash-assistance receipt: a
+# barred SSI/SSP/CAPI recipient is supported by the other program's budget,
+# so neither their benefit check nor their other income is charged to the
+# AU. The $10 + 20% earned exemption applies once per assistance unit.
 - name: Case 1, the earned income disregard applies to monthly earnings of 200 dollars.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -223,12 +225,15 @@
         in_sbd: true
   output:
     # The undocumented member is excluded from the assistance unit count,
-    # but "all income in the AU" is not limited to eligible members.
+    # but unlike an SSI/SSP/CAPI recipient they are not supported by
+    # another program: they remain a family member whose income supports
+    # the AU, so their wages still count (the CalWORKs excluded-member
+    # pattern).
     ca_sbd_general_relief_assistance_unit_size: 1
     # (200 - 10) x 0.8 = 152.
     ca_sbd_general_relief_countable_income: 152
 
-- name: Case 11, CAPI cash counts toward unit income in full.
+- name: Case 11, a barred CAPI recipient's cash does not enter AU income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -236,6 +241,10 @@
       person1:
         age: 68
         immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Without 40 qualifying work quarters (the input defaults to 40),
+        # the LPR is not an SSI-qualified noncitizen — the population CAPI
+        # serves.
+        ssi_qualifying_quarters_earnings: 0
         ssi: 0
     spm_units:
       spm_unit:
@@ -249,11 +258,11 @@
         members: [person1]
         in_sbd: true
   output:
-    # CAPI recipients stay in the unit and their cash counts as unearned
-    # income with no exemption.
-    ca_sbd_general_relief_countable_income: 200
+    # CAPI receipt bars the aged noncitizen from the AU, and a barred
+    # member's income is excluded from AU income entirely.
+    ca_sbd_general_relief_countable_income: 0
 
-- name: Case 12, an imputed supplement is not counted when SSI take-up is declined.
+- name: Case 12, a barred SSP recipient's supplement is not charged to the AU.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -261,19 +270,18 @@
       person1:
         age: 68
         ssi: 0
-        takes_up_ssi_if_eligible: false
     spm_units:
       spm_unit:
         members: [person1]
-        # A positive computed supplement that is never actually received.
+        # $200 per month of state supplement (an SSP-only case).
         ca_state_supplement: 200
     households:
       household:
         members: [person1]
         in_sbd: true
   output:
-    # Without take-up the unit never receives the SSP check, so the
-    # imputed entitlement does not count as income.
+    # The SSP recipient is barred from the AU, and a barred member's
+    # income is excluded from AU income entirely.
     ca_sbd_general_relief_countable_income: 0
 
 - name: Case 13, farm operations income is earned income with the standard disregard.

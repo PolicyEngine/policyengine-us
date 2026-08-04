@@ -17,7 +17,7 @@
     # 6,000 / 12 = 500 per month.
     ca_sbd_general_relief_gross_unearned_income: 500
 
-- name: Case 2, an excluded member's SSI still counts as unearned income.
+- name: Case 2, SSI appears in person-level gross unearned income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -30,8 +30,10 @@
         members: [person1]
         in_sbd: true
   output:
-    # SSI receipt bars the person from the assistance unit,
-    # but all income in the unit, including that SSI, is counted.
+    # Gross income reports the person's income faithfully; SSI receipt
+    # bars the person from the assistance unit, and the countable-income
+    # formula excludes barred members' income at the unit level, so this
+    # amount never reaches the AU.
     ca_sbd_general_relief_gross_unearned_income: 500
 
 - name: Case 3, multiple unearned sources are summed.

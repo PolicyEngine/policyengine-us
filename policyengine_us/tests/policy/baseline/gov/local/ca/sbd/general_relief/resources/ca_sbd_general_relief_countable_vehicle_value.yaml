@@ -1,6 +1,7 @@
 # The first $3,000 of each vehicle's value is exempt; the balance counts
-# toward the $500 personal property limit. A vehicle used as the principal
-# residence is evaluated as real property instead.
+# toward the $500 personal property limit. The county's rule evaluating a
+# vehicle used as the principal residence under the real property limit
+# instead is not modeled.
 - name: Case 1, a unit with no vehicles has no countable vehicle value.
   period: 2026
   absolute_error_margin: 0.01
@@ -68,26 +69,7 @@
     # 8,000 - 3,000 x 2 vehicles = 2,000.
     ca_sbd_general_relief_countable_vehicle_value: 2_000
 
-- name: Case 5, vehicles are excluded from the personal property count when used as the residence.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-        household_vehicles_owned: 2
-        household_vehicles_value: 8_000
-        lives_in_vehicle: true
-  output:
-    # Vehicle value shifts to the real property test when the unit lives
-    # in a vehicle.
-    ca_sbd_general_relief_countable_vehicle_value: 0
-
-- name: Case 6, an only vehicle used as the residence leaves no countable vehicle value.
+- name: Case 5, a vehicle 1 dollar over the exemption leaves 1 countable dollar.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -99,25 +81,7 @@
         members: [person1]
         in_sbd: true
         household_vehicles_owned: 1
-        household_vehicles_value: 5_000
-        lives_in_vehicle: true
+        household_vehicles_value: 3_001
   output:
-    # The value moves to real property.
-    ca_sbd_general_relief_countable_vehicle_value: 0
-
-- name: Case 7, living in a vehicle while owning none leaves no countable vehicle value.
-  period: 2026
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 30
-    households:
-      household:
-        members: [person1]
-        in_sbd: true
-        household_vehicles_owned: 0
-        household_vehicles_value: 0
-        lives_in_vehicle: true
-  output:
-    ca_sbd_general_relief_countable_vehicle_value: 0
+    # 3,001 - 3,000 = 1.
+    ca_sbd_general_relief_countable_vehicle_value: 1

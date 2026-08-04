@@ -15,10 +15,23 @@ class ca_sbd_general_relief_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.local.ca.sbd.general_relief.income
-        # All income in the assistance unit is taken into consideration,
-        # including income (and SSI) of members barred from the unit for
-        # other-cash-assistance receipt.
-        earned = add(spm_unit, period, ["ca_sbd_general_relief_gross_earned_income"])
+        person = spm_unit.members
+        # "All income in the AU must be taken into consideration": a member
+        # barred for SSI/SSP, CAPI, or CalWORKs receipt is supported by the
+        # other program's budget and is not part of the AU, so neither
+        # their benefit check nor their other income is charged to the AU
+        # (mirroring how CalWORKs treats SSI recipients). Members excluded
+        # for other reasons (immigration status, linkage) remain family
+        # members whose income supports the AU, so their income counts.
+        # Actual cash contributions a barred member hands the AU would
+        # count under the county's cash-contributions row, but no input
+        # distinguishes them.
+        counted = ~person(
+            "ca_sbd_general_relief_receives_other_cash_assistance", period
+        )
+        earned = spm_unit.sum(
+            person("ca_sbd_general_relief_gross_earned_income", period) * counted
+        )
         # The first $10 and 20% of the balance are exempt per assistance
         # unit, applied after summing earned income to the unit. The floor
         # also keeps self-employment losses from offsetting unearned income.
@@ -26,25 +39,7 @@ class ca_sbd_general_relief_countable_income(Variable):
             1 - p.earned_exemption.rate
         )
         # Unearned income counts in full, with no exemptions or deductions.
-        unearned = add(
-            spm_unit, period, ["ca_sbd_general_relief_gross_unearned_income"]
+        unearned = spm_unit.sum(
+            person("ca_sbd_general_relief_gross_unearned_income", period) * counted
         )
-        # Like an excluded member's SSI, their SSP counts toward the unit's
-        # pooled income; ca_state_supplement is an SPM-unit-level variable,
-        # so it is added here rather than in the person-level unearned
-        # sources list. It is an ungated computed entitlement, so it counts
-        # only when an SSP-eligible member actually takes up the SSI/SSP
-        # payment — otherwise the unit would be charged income it never
-        # receives.
-        person = spm_unit.members
-        ssp_taken_up = spm_unit.any(
-            person("ca_state_supplement_eligible_person", period)
-            & person("takes_up_ssi_if_eligible", period.this_year)
-        )
-        ssp = spm_unit("ca_state_supplement", period) * ssp_taken_up
-        # CAPI recipients are not barred from the unit (the handbook names
-        # only SSI/SSP and CalWORKs), but all income in the AU is taken into
-        # consideration, so their CAPI cash counts; ca_capi is likewise an
-        # SPM-unit-level variable.
-        capi = spm_unit("ca_capi", period)
-        return countable_earned + unearned + ssp + capi
+        return countable_earned + unearned
