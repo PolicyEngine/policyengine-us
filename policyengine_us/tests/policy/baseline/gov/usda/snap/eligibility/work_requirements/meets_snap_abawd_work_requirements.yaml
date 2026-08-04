@@ -33,6 +33,8 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
 - name: Case 4, pre-HR1 age 54 NOT exempt.
   period: 2024
   absolute_error_margin: 0.1
@@ -40,6 +42,7 @@
     age: 54
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
 
@@ -366,6 +369,8 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
 - name: Case 25, pre-HR1 Indian exemption input does not change ABAWD rules.
   period: 2024
   input:
@@ -373,6 +378,7 @@
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
     is_snap_abawd_indian_exempt: true
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
 
@@ -404,59 +410,87 @@
 # California delayed adoption — ACL 25-93
 # =====================================================
 
+# In 2026-01 the litigation-reinstated CA statewide waiver still applies
+# (through 2026-01-31), so the exempt cases below (28-30) are tested in
+# 2026-03, after it expires, to confirm the pre-HR1 personal exemptions
+# still hold on their own. The same 2026-03 period is used for the
+# non-exempt cases (31-32) so all CA delayed-adoption cases share the
+# post-statewide-waiver window.
 - name: Case 28, CA pre-HR1 age 55 still exempt.
-  period: 2026-01
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 55
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: CA
+    age:
+      2026: 55
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: true
 
 - name: Case 29, CA pre-HR1 homeless still exempt.
-  period: 2026-01
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    is_homeless: true
-    state_code: CA
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_homeless:
+      2026: true
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: true
 
 - name: Case 30, CA pre-HR1 veteran still exempt.
-  period: 2026-01
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    is_veteran: true
-    state_code: CA
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_veteran:
+      2026: true
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer.
-  period: 2026-01
+- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer after the statewide waiver expires.
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
     people:
       person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 1
-        is_disabled: false
-        is_parent: true
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 1
+        is_disabled:
+          2026: false
+        is_parent:
+          2026: true
       person2:
-        age: 15
-        is_disabled: false
-        is_tax_unit_dependent: true
+        age:
+          2026: 15
+        is_disabled:
+          2026: false
+        is_tax_unit_dependent:
+          2026: true
     households:
       household:
         members: [person1, person2]
-        state_code: CA
+        state_code:
+          2026: CA
   output:
     # The child-under-18 exemption (CA pre-HR1) is applied upstream in
     # meets_snap_work_requirements_person, not in this variable, so person1
@@ -464,14 +498,18 @@
     # age-exempt (pre-HR1 threshold is under 18).
     meets_snap_abawd_work_requirements: [false, true]
 
-- name: Case 32, CA pre-HR1 non-exempt person fails.
-  period: 2026-01
+- name: Case 32, CA pre-HR1 non-exempt person fails after the statewide waiver expires.
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 30
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: CA
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: false
 
