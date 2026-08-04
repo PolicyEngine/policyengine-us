@@ -1477,6 +1477,17 @@ programs:
     variable: ca_riv_share_payment
     parameter_prefix: gov.local.ca.riv.share
 
+  - id: ca_sbd_general_relief
+    name: San Bernardino County General Relief
+    full_name: San Bernardino County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Bernardino County
+    variable: ca_sbd_general_relief
+    parameter_prefix: gov.local.ca.sbd.general_relief
+    notes: Flat maximum basic grant by assistance unit size (June 2021 design onward) net of countable income; the pre-June-2021 needs-based design, employability screening (100-hour rule and self-employment bar), employable time limits, vehicle-as-residence real-property treatment, and loan repayment are not modeled
+
   - id: ca_ala_general_assistance
     name: Alameda County General Assistance
     full_name: Alameda County General Assistance
