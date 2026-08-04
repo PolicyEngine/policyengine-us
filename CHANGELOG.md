@@ -1,3 +1,10 @@
+## [1.786.3] - 2026-08-04
+
+### Fixed
+
+- Restrict the Missouri TANF assistance unit to dependent children and their caretaker parents per DSS Manual 0210.005.10 and 13 CSR 40-2.325, excluding household members age 19 and over who are not dependent children from the unit's needs and counting only unit members' income, require an actual dependent child for eligibility per RSMo 208.040 (pregnancy alone no longer qualifies), exempt student children's and student teen parents' earnings per DSS Manual 0210.015.35.10 and 0210.015.35.15, and exclude SSI recipients' needs and income from the unit per 13 CSR 40-2.310(1)(F).
+
+
 ## [1.786.2] - 2026-08-04
 
 ### Fixed
