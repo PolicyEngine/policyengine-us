@@ -13,3 +13,5 @@ class ut_ui_weeks_unemployed(Variable):
     # collect) Utah Unemployment Insurance benefits. Used to convert the
     # weekly payable amount into an annual benefit, capped by the maximum
     # benefit amount per Utah Code § 35A-4-401(4)(a).
+    # Defaults to 0, so in microsimulation (where this input is not populated)
+    # claimants are treated as unemployed for no weeks, yielding a $0 benefit.

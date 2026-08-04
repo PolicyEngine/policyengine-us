@@ -13,3 +13,5 @@ class ut_ui_weekly_hours_worked(Variable):
     # full-time hours threshold (40 hours) in a week is not eligible for
     # benefits that week per Utah DWS Claimant Guide page 11 (PDF file p. 13)
     # and the "total unemployment" definition in Utah Code § 35A-4-207.
+    # Defaults to 0, so in microsimulation (where this input is not populated)
+    # claimants are treated as working no hours while claiming.

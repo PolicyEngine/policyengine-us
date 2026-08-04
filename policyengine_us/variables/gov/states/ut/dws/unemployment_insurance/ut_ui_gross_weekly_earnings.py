@@ -15,3 +15,5 @@ class ut_ui_gross_weekly_earnings(Variable):
     # payments are excluded from "wages" for this calculation, so the caller
     # is responsible for providing only countable earnings here (excluding
     # public assistance benefits).
+    # Defaults to 0, so in microsimulation (where this input is not populated)
+    # claimants are treated as having no earnings while claiming.

@@ -128,3 +128,31 @@
         # Earnings $0 < WBA, BUT hours 40 >= 40-hour threshold -> disqualified.
         ut_ui_weekly_benefit_amount: 395
         ut_ui_weekly_payable_amount: 0
+
+# ---------------------------------------------------------------------------
+# S9(c) EARNINGS ONE DOLLAR BELOW WBA — still payable (disqualification is at
+# earnings >= WBA, so WBA-1 does not disqualify).
+- name: Case 6, earnings one dollar below WBA remain payable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_gross_weekly_earnings: 394
+        ut_ui_weekly_hours_worked: 20
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395. Earnings $394 < WBA $395 -> not disqualified.
+        # Disregard = $118.50; excess = $394 - $118.50 = $275.50.
+        # Payable = floor(max(0, $395 - $275.50)) = floor($119.50) = $119.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_weekly_payable_amount: 119

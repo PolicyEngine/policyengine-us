@@ -58,17 +58,17 @@
         # Monetarily eligible: $80,000 >= 1.5 * $25,000 = $37,500.
         ut_ui_monetarily_eligible: true
         # Raw WBA = floor($25,000 / 26) - $5 = $961 - $5 = $956.
-        # 2024 cap = $712, so WBA = $712.
-        ut_ui_weekly_benefit_amount: 712
-        # Raw duration = floor(floor(0.27 * $80,000) / $712)
-        #              = floor($21,600 / $712) = floor(30.34) = 30, clamp 26.
+        # 2024 cap = $746, so WBA = $746.
+        ut_ui_weekly_benefit_amount: 746
+        # Raw duration = floor(floor(0.27 * $80,000) / $746)
+        #              = floor($21,600 / $746) = floor(28.95) = 28, clamp 26.
         ut_ui_duration_weeks: 26
-        # MBA = $712 * 26 = $18,512.
-        ut_ui_maximum_benefit_amount: 18_512
+        # MBA = $746 * 26 = $19,396.
+        ut_ui_maximum_benefit_amount: 19_396
         # Weekly payable = WBA when no earnings/hours.
-        ut_ui_weekly_payable_amount: 712
-        # Annual = $712 * 26 = $18,512; MBA cap = $18,512.
-        ut_ui: 18_512
+        ut_ui_weekly_payable_amount: 746
+        # Annual = $746 * 26 = $19,396; MBA cap = $19,396.
+        ut_ui: 19_396
 
 - name: Case 3, full-year unemployment hits 2026 max WBA cap.
   period: 2026
@@ -229,3 +229,40 @@
         # ut_ui has defined_for = StateCode.UT -> zero for non-UT households,
         # regardless of monetary inputs.
         ut_ui: 0
+
+# ---------------------------------------------------------------------------
+# S9(d) WEEKS UNEMPLOYED EXACTLY EQUAL TO DURATION — the min_(WBA * weeks, MBA)
+# cap binds at equality (annual == MBA). Also the 10-week duration floor
+# (S9(a)) is effectively unreachable: the raw duration only drops toward 10 as
+# base wages approach the 1.5x monetary boundary, which is already exercised by
+# integration Case 4 without a separately contrived input, so no extra case is
+# added for it here.
+- name: Case 8, weeks unemployed exactly equal to duration weeks hit MBA cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+        ut_ui_weeks_unemployed: 17
+        ut_ui_gross_weekly_earnings: 0
+        ut_ui_weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $25,000 >= 1.5 * $10,400 = $15,600.
+        # WBA = $395; duration = 17; MBA = $395 * 17 = $6,715.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+        ut_ui_maximum_benefit_amount: 6_715
+        ut_ui_weekly_payable_amount: 395
+        # weeks_unemployed (17) == duration (17): annual = $395 * 17 = $6,715.
+        # min($6,715, MBA $6,715) = $6,715 -> cap binds exactly at equality.
+        ut_ui: 6_715

@@ -10,7 +10,7 @@ class ut_ui_duration_weeks(Variable):
     reference = "https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S401.html"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ut.dwf.unemployment_insurance
+        p = parameters(period).gov.states.ut.dws.unemployment_insurance
         base_period_wages = person("ut_ui_base_period_wages", period)
         weekly_benefit_amount = person("ut_ui_weekly_benefit_amount", period)
 

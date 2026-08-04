@@ -19,6 +19,14 @@ class ut_ui(Variable):
     #   § 35A-4-401(2)(c)(i)-(iii); Utah Admin Code R994-401-203). Modeling
     #   requires base-period-employer attribution that is not available in
     #   the underlying microdata.
+    # - Waiting week: the first otherwise-eligible week is unpaid (Claimant
+    #   Guide p.16). Not modeled — the annual formula does not track the
+    #   week-by-week claim sequence.
+    # - Deductions from the benefit payment that do not change entitlement:
+    #   child-support withholding of up to 50% of the WBA, and voluntary
+    #   federal (10%) and Utah state (5%) income-tax withholding (Claimant
+    #   Guide p.19). Not modeled — these are payment-side withholdings, not
+    #   reductions in the benefit amount.
 
     def formula(person, period, parameters):
         weekly_payable_amount = person("ut_ui_weekly_payable_amount", period)

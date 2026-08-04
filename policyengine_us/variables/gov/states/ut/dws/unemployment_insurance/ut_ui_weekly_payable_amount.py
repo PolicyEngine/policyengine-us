@@ -13,7 +13,7 @@ class ut_ui_weekly_payable_amount(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ut.dwf.unemployment_insurance
+        p = parameters(period).gov.states.ut.dws.unemployment_insurance
         weekly_benefit_amount = person("ut_ui_weekly_benefit_amount", period)
         gross_weekly_earnings = person("ut_ui_gross_weekly_earnings", period)
         weekly_hours_worked = person("ut_ui_weekly_hours_worked", period)

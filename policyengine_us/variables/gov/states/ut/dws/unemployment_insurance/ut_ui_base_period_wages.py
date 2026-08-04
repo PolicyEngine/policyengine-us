@@ -16,3 +16,5 @@ class ut_ui_base_period_wages(Variable):
     # quarters) when the standard base period fails monetary eligibility.
     # Caller should supply the more favorable of standard or alternate base
     # period wages.
+    # Defaults to 0, so in microsimulation (where this input is not populated)
+    # claimants are treated as having no base-period wages and are ineligible.

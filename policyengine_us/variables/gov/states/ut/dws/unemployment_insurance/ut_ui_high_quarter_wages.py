@@ -12,3 +12,5 @@ class ut_ui_high_quarter_wages(Variable):
     # Wages paid during the calendar quarter of the base period in which the
     # claimant's wages were highest, used to compute the weekly benefit amount
     # under Utah Code § 35A-4-401(2)(a)(ii).
+    # Defaults to 0, so in microsimulation (where this input is not populated)
+    # claimants are treated as having no high-quarter wages.
