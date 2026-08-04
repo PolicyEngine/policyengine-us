@@ -1,3 +1,10 @@
+## [1.786.2] - 2026-08-04
+
+### Fixed
+
+- Refactor the Missouri Property Tax Credit to the statutory table method with the 2026 H.B. 594 parameters, upper income limits, and corrected eligibility pathways.
+
+
 ## [1.786.1] - 2026-08-04
 
 ### Changed
