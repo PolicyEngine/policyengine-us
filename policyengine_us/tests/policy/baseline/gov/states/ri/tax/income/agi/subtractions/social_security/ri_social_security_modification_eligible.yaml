@@ -117,7 +117,7 @@
 - name: 2027 - Single filer just below income limit is eligible
   period: 2027
   input:
-    adjusted_gross_income: 112_649
+    adjusted_gross_income: 112_749
     filing_status: SINGLE
     older_spouse_birth_year: 1990
     state_code: RI
@@ -127,7 +127,7 @@
 - name: 2027 - Single filer at income limit is ineligible
   period: 2027
   input:
-    adjusted_gross_income: 112_650
+    adjusted_gross_income: 112_750
     filing_status: SINGLE
     older_spouse_birth_year: 1990
     state_code: RI
@@ -137,7 +137,7 @@
 - name: 2027 - Joint filer just below income limit is eligible
   period: 2027
   input:
-    adjusted_gross_income: 140_849
+    adjusted_gross_income: 140_949
     filing_status: JOINT
     older_spouse_birth_year: 1990
     state_code: RI
@@ -147,7 +147,7 @@
 - name: 2027 - Joint filer at income limit is ineligible
   period: 2027
   input:
-    adjusted_gross_income: 140_850
+    adjusted_gross_income: 140_950
     filing_status: JOINT
     older_spouse_birth_year: 1990
     state_code: RI

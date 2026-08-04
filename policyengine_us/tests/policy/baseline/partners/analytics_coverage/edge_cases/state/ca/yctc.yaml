@@ -1,6 +1,6 @@
 # California Young Child Tax Credit (R&TC 17052.1) edge cases, 2026 parameters:
-# amount $1,215.95; child must be under age 6; requires CalEITC receipt (or the
-# limited-loss route); phases out above earnings of $28,046.53 by $21.71 per
+# amount $1,216.62; child must be under age 6; requires CalEITC receipt (or the
+# limited-loss route); phases out above earnings of $28,061.98 by $21.71 per
 # $100 increment.
 - name: ca_yctc_child_age_5_full_amount (ca)
   period: 2026
@@ -64,8 +64,8 @@
     tax_units:
       tax_unit:
         # Child age 5 is under the age-6 cutoff and the unit receives CalEITC;
-        # earnings $20,000 < $28,046.53 phase-out start -> full $1,215.95.
-        ca_yctc: 1_215.95
+        # earnings $20,000 < $28,061.98 phase-out start -> full $1,216.62.
+        ca_yctc: 1_216.62
         adjusted_gross_income: 20_000.0
 - name: ca_yctc_child_age_6_ineligible (ca)
   period: 2026
@@ -193,8 +193,8 @@
   output:
     tax_units:
       tax_unit:
-        # Mid-phase-out: reduction = (30,000 - 28,046.53) / 100 x 21.71
-        # = 19.5347 x 21.71 = 424.10; credit = 1,215.95 - 424.10 = 791.85.
-        # (CalEITC at $30,000 with 1 child is still positive: $92.23.)
-        ca_yctc: 791.85
+        # Mid-phase-out: reduction = (30,000 - 28,061.9834) / 100 x 21.71
+        # = 19.380166 x 21.71 = 420.7434; credit = 1,216.6162 - 420.7434
+        # = 795.8728. (CalEITC at $30,000 with 1 child is still $90.41.)
+        ca_yctc: 795.87
         adjusted_gross_income: 30_000.0

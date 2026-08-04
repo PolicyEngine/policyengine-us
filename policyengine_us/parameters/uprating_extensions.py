@@ -25,7 +25,7 @@ def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
     """Calculate IRS CPI based on Chained CPI-U average from Sep to Aug."""
     cpi = parameters.gov.bls.cpi.c_cpi_u
     end = instant(f"{year}-08-01")
-    start = end.offset(-MONTHS_IN_YEAR, MONTH)
+    start = end.offset(1 - MONTHS_IN_YEAR, MONTH)
     monthly_cpi_values = []
     for month in range(MONTHS_IN_YEAR):
         monthly_cpi_values += [cpi(start.offset(month, MONTH))]
