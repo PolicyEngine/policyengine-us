@@ -30,7 +30,9 @@ class mo_ptc_taxunit_eligible(Variable):
         )
         # The surviving-spouse pathway applies to the claimant only: the
         # claimant must be 60 or older and have received surviving spouse
-        # Social Security benefits themselves.
+        # Social Security benefits themselves. The model treats the tax
+        # unit head as the filer/claimant, so the same-person test runs on
+        # the head; the other three pathways are claimant-or-spouse.
         person = tax_unit.members
         head_survivor_benefits = tax_unit.sum(
             person("social_security_survivors", period)

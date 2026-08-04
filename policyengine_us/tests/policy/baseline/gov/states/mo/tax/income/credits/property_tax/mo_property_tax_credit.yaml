@@ -481,3 +481,133 @@
   output:
     mo_ptc_taxunit_eligible: false
     mo_property_tax_credit: 0
+
+- name: 2026 eligible owner fully phased out through the formula floor
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 42_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible (income at the 42,200 homestead limit), but the 38 payment
+    # midpoint is below the 843 phase-out, so the formula floors at zero.
+    mo_ptc_taxunit_eligible: true
+    mo_property_tax_credit: 0
+
+- name: 2026 renter at the minimum base receives the actual capped payment
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # At the base there is no table lookup: 20% of 6,000 capped at 1,055.
+    mo_property_tax_credit: 1_055
+
+- name: 2026 renter one dollar over the minimum base switches to the table
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_301
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # First increment: payment midpoint 1,043 less ceil(0.0625% x 14,547.5)
+    # = 10 gives 1,033.
+    mo_property_tax_credit: 1_033
+
+- name: 2025 DOR chart cell, row 14,901-15,200, column 726-750
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Payment midpoint 738 less ceil(3 x 0.0625% x 15,050) = 29 gives 709.
+    mo_property_tax_credit: 709
+
+- name: 2025 DOR chart cell, row 24,801-25,100, column 726-750
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Payment midpoint 738 less ceil(36 x 0.0625% x 24,950) = 562 gives 176.
+    mo_property_tax_credit: 176
+
+- name: Negative gross income floors net income at zero and pays in full
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Nonbusiness losses can push PTC gross income negative; net income
+        # floors at zero, below the base, so the capped payment is paid.
+        mo_ptc_gross_income: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 1_100
