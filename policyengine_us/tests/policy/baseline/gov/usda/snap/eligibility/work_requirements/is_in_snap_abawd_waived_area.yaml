@@ -497,3 +497,54 @@
   output:
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
+
+- name: Case 30, TX resident of Harris County identified by county_str (2026-01) is unaffected by any waiver.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    county_str: HARRIS_COUNTY_TX
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 31, CA resident of Tulare County identified by county_str (2026-11, after the county waiver approval end date) is no longer exempt.
+  period: 2026-11
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: TULARE_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# Alameda County is the first county alphabetically in California, so it
+# is the county the unknown-county fallback resolves to (see Case 21).
+# Pinning it explicitly as not waived keeps the CA fallback behavior
+# stable if the waived-county list changes.
+- name: Case 32, CA resident of Alameda County identified by county_str (2026-02) is not exempt.
+  period: 2026-02
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: ALAMEDA_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false

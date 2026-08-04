@@ -16,19 +16,14 @@ class is_in_snap_abawd_waived_area(Variable):
     documentation = (
         "Whether the person lives in an area where the USDA Food and "
         "Nutrition Service has waived the SNAP ABAWD time limit under "
-        "7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f). Waived areas are "
-        "identified by county name (sub-state waivers, matched on "
-        "county_str) or by state code (statewide waivers, including "
-        "waivers litigation kept in effect after Rhode Island State "
-        "Council of Churches v. Rollins, D.R.I. No. 1:25-cv-00569). "
-        "county_str derives from county_fips when a FIPS code is "
-        "provided, so households identified by either county name or "
-        "FIPS code match. When a household has no county information, "
-        "county_str falls back to the first county alphabetically in "
-        "its state; for Alaska that is the waived Aleutians East "
-        "Borough, so unknown-county Alaska households are treated as "
-        "waived during the Alaska waiver windows (Anchorage, the only "
-        "non-waived county-equivalent, must be supplied explicitly)."
+        "7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f). Sub-state waivers are "
+        "matched on the County enum name via county_str (which derives "
+        "from county_fips when a FIPS code is provided, so either input "
+        "form matches); statewide waivers are matched on state_code. A "
+        "household with no county information falls back to the first "
+        "county alphabetically in its state, which for Alaska is the "
+        "waived Aleutians East Borough — see waived_counties.yaml for "
+        "the waiver provenance and this fallback's implications."
     )
 
     def formula(person, period, parameters):
