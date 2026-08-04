@@ -8,8 +8,8 @@ class md_premium_assistance_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
     reference = (
-        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=3",
-        "https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=25",
+        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=5",
+        "https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14",
     )
     documentation = (
         "A tax unit is eligible for Maryland Premium Assistance when the "
