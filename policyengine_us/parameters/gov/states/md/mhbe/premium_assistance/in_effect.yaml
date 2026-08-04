@@ -1,0 +1,15 @@
+description: Maryland provides state premium assistance under the State-Based Health Insurance Subsidies Program when this is true.
+values:
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Maryland Premium Assistance in effect
+  reference:
+    - title: Md. Insurance Article § 31-125(D)
+      href: https://www.marylandhbe.com/wp-content/uploads/2025/05/State-Based-Subsidy-Parameters-and-Regulations-Board-5.19.25.pdf#page=22
+    - title: COMAR 14.35.21.04E
+      href: https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=3

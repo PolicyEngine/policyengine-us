@@ -1,0 +1,31 @@
+description: Maryland sets this initial target contribution percentage for each bracket under the State-Based Health Insurance Subsidies Program.
+values:
+  # Bands: 0-150%, 150-200%, 200-250%, 250-300%, 300-400% FPL.
+  # MD target = 2025 enhanced (ARPA) percentage + replacement share x
+  # (2026 non-enhanced percentage - 2025 enhanced percentage), where the
+  # replacement share is 1.0 up to 200% FPL, tapers linearly 1.0 -> 0.5 over
+  # 200-250% FPL, and is 0.5 over 250-400% FPL.
+  # NOTE: the 150-200% band ends at 2.00% (full replacement of the enhanced
+  # schedule). The HGO 10-16-2025 briefing table (page 58) shows "1.00%" at the
+  # 200% FPL endpoint, but that conflicts with the "full replacement up to 200%
+  # FPL" row label and the MIA Exhibit 2a validation targets (single age 40 at
+  # 200% FPL pays about 2.03%), so 2.00% is used and the table entry is treated
+  # as a typo.
+  2026-01-01:
+    - 0       # 0-150%: flat 0%
+    - 0       # 150-200%: 0% -> 2%
+    - 0.02    # 200-250%: 2% -> 6.22%
+    - 0.0622  # 250-300%: 6.22% -> 7.98%
+    - 0.0798  # 300-400%: 7.98% -> 9.23%
+
+metadata:
+  unit: /1
+  period: year
+  label: Maryland Premium Assistance target contribution percentage - initial rate per bracket
+  reference:
+    - title: COMAR 14.35.21.04
+      href: https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=3
+    - title: HGO Combined MHBE and MIA briefing to HGO and Finance (10-16-2025), state subsidy design table
+      href: https://mgaleg.maryland.gov/meeting_material/2025/hgo%20-%20134051066649659653%20-%20Combined%20MHBE.MIA%20slides_10.16.2025%20briefing%20to%20HGO&Finance.pdf#page=58
+    - title: MIA 2026 ACA Approved Rates State Subsidy Program Impact, Exhibit 2a
+      href: https://insurance.maryland.gov/Documents/newscenter/newsreleases/2026-ACA-Approved-Rates-State-Subsidy-Program-Impact.pdf#page=1
