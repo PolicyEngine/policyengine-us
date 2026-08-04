@@ -214,17 +214,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 20 batches / 4 shards / --workers 1: smaller per-batch memory
+          # 24 batches / 4 shards / --workers 1: smaller per-batch memory
           # footprint. The prior 16-batch layout OOM'd the runner (not a test
-          # failure) per the Jul 30 diagnosis; see the Makefile memory-layout notes.
+          # failure) per the Jul 30 diagnosis, and 20 batches still hit a
+          # runner shutdown (exit 143) on states-shard-1; see the Makefile
+          # memory-layout notes.
           - group: states-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 20 --workers 1 --shard 1/4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 24 --workers 1 --shard 1/4
           - group: states-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 20 --workers 1 --shard 2/4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 24 --workers 1 --shard 2/4
           - group: states-shard-3
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 20 --workers 1 --shard 3/4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 24 --workers 1 --shard 3/4
           - group: states-shard-4
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 20 --workers 1 --shard 4/4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 24 --workers 1 --shard 4/4
           - group: irs
             cmd: make test-yaml-no-structural-other-irs
           - group: household
