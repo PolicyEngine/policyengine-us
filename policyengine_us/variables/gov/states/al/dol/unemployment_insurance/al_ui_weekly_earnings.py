@@ -13,3 +13,6 @@ class al_ui_weekly_earnings(Variable):
         "https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf#page=20",
     )
     defined_for = StateCode.AL
+    # Despite the YEAR definition period, this input holds a single week's gross
+    # earnings during a partial unemployment week, not an annual total. It is
+    # assumed constant across every payable week of the unemployment spell.

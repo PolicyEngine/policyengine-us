@@ -1,6 +1,8 @@
 description: Alabama provides this amount as the maximum weekly benefit under the Unemployment Compensation program.
 
 values:
+  # The maximum weekly benefit was $265 before 2020-01-01 (raised to $275 by
+  # Act 2019-204); a backdating pass must add the earlier $265 (and prior) tier.
   2020-01-01: 275
 
 metadata:

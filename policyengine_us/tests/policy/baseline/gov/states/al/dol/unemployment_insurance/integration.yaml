@@ -100,7 +100,7 @@
   output:
     people:
       person1:
-        # Only 1 quarter < 2 required -> ineligible per § 25-4-77(a)(4).
+        # Only 1 quarter < 2 required -> ineligible per § 25-4-77(a)(6).
         al_ui_monetarily_eligible: false
         al_ui_weekly_benefit_amount: 0
         al_ui_maximum_benefit_amount: 0
@@ -128,7 +128,7 @@
   output:
     people:
       person1:
-        # Fails § 25-4-77(a)(4)(a) -> ineligible.
+        # Fails § 25-4-77(a)(6) -> ineligible.
         al_ui_monetarily_eligible: false
         al_ui_weekly_benefit_amount: 0
         al_ui: 0
@@ -307,7 +307,9 @@
   output:
     people:
       person1:
-        # Non-AL state -> defined_for filter applies -> al_ui = 0.
+        # Non-AL state -> defined_for filter applies -> every AL UI variable
+        # returns 0 for this person.
+        al_ui_weekly_benefit_amount: 0
         al_ui: 0
 
 - name: Case 11, waiting week reduces a 14-week claim.
@@ -332,3 +334,36 @@
       person1:
         # al_ui = 275 * max(0, 14 - 1) = 3,575.
         al_ui: 3_575
+
+- name: Case 12, long claim - upper week clamp binds at max_weeks.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+        al_ui_base_period_wages: 40_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+        weeks_unemployed: 15
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_monetarily_eligible: true
+        al_ui_weekly_benefit_amount: 275
+        # UR (2024-01) = 0.029 -> max_weeks = 14.
+        al_ui_max_weeks: 14
+        # MBA = min(14 * 275, 0.25 * 40,000) = min(3,850, 10,000) = 3,850.
+        al_ui_maximum_benefit_amount: 3_850
+        al_ui_partial_weekly_benefit: 275
+        # payable_weeks = min(max(0, 15 - 1), 14) = min(14, 14) = 14.
+        # The 15 - 1 = 14 waiting-week reduction ties the 14-week upper clamp,
+        # so the clamp binds. Annual = 275 * 14 = 3,850 (equals MBA, so the
+        # MBA cap is not additionally binding here).
+        al_ui: 3_850

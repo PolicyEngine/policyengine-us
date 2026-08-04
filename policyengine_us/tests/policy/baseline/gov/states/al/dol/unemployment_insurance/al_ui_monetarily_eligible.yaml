@@ -1,9 +1,9 @@
-# Tests for Alabama UI monetary eligibility (§§ 25-4-77(a)(4), 25-4-72(b)(2)).
+# Tests for Alabama UI monetary eligibility (§§ 25-4-77(a)(6), 25-4-72(b)(2)).
 # A claimant is monetarily eligible only if ALL THREE tests pass:
 #   1. Wages paid in at least 2 calendar quarters of the base period
-#      (§ 25-4-77(a)(4)).
+#      (§ 25-4-77(a)(6)).
 #   2. Total base-period wages >= 1.5 x high-quarter wages
-#      (§ 25-4-77(a)(4)(a)).
+#      (§ 25-4-77(a)(6)).
 #   3. Unrounded WBA = (HQW + 2HQW) / 52 must exceed $44.50
 #      (§ 25-4-72(b)(2)).
 # References:
@@ -48,7 +48,7 @@
   output:
     people:
       person1:
-        # Only 1 quarter < 2 required -> fails § 25-4-77(a)(4).
+        # Only 1 quarter < 2 required -> fails § 25-4-77(a)(6).
         al_ui_monetarily_eligible: false
 
 - name: Case 3, fails 1.5x base-wages test.
@@ -69,7 +69,7 @@
   output:
     people:
       person1:
-        # BPW 10,000 < 1.5 * 8,000 = 12,000 -> fails § 25-4-77(a)(4)(a).
+        # BPW 10,000 < 1.5 * 8,000 = 12,000 -> fails § 25-4-77(a)(6).
         al_ui_monetarily_eligible: false
 
 - name: Case 4, fails unrounded-WBA floor - unrounded WBA below $44.50.
@@ -176,5 +176,5 @@
   output:
     people:
       person1:
-        # BPW 5,999 < 1.5 * 4,000 = 6,000 -> fails § 25-4-77(a)(4)(a).
+        # BPW 5,999 < 1.5 * 4,000 = 6,000 -> fails § 25-4-77(a)(6).
         al_ui_monetarily_eligible: false

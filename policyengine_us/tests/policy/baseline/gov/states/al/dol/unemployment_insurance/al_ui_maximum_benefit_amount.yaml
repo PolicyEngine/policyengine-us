@@ -240,3 +240,58 @@
         al_ui_monetarily_eligible: false
         al_ui_weekly_benefit_amount: 0
         al_ui_maximum_benefit_amount: 0
+
+- name: Case 10, BPW cap 0.25 x BPW at an exact .50 tie - half-to-even rounds DOWN.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # WBA = 100 (unrounded = 5,226 / 52 = 100.50 -> half-down -> 100).
+        # 14 * 100 = 1,400.
+        # BPW = 5,002 -> 0.25 * 5,002 = 1,250.50 exactly.
+        # BPW passes 1.5x test: 5,002 >= 1.5 * 2,613 = 3,919.5.
+        al_ui_high_quarter_wages: 2_613
+        al_ui_second_high_quarter_wages: 2_613
+        al_ui_base_period_wages: 5_002
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 14
+        al_ui_weekly_benefit_amount: 100
+        # min(1,400, 1,250.50) = 1,250.50. np.round uses half-to-even, and
+        # 1,250 is even, so 1,250.50 -> 1,250 (rounds DOWN at the tie).
+        al_ui_maximum_benefit_amount: 1_250
+
+- name: Case 11, min_ crossover - N x WBA one dollar below the BPW cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # WBA = 100 (5,226 / 52 = 100.50 -> half-down -> 100). 14 * 100 = 1,400.
+        # BPW = 5,604 -> 0.25 * 5,604 = 1,401 (integer, no rounding).
+        # BPW passes 1.5x test: 5,604 >= 1.5 * 2,613 = 3,919.5.
+        al_ui_high_quarter_wages: 2_613
+        al_ui_second_high_quarter_wages: 2_613
+        al_ui_base_period_wages: 5_604
+        al_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_max_weeks: 14
+        al_ui_weekly_benefit_amount: 100
+        # min(14 * 100, 0.25 * 5,604) = min(1,400, 1,401) = 1,400.
+        # N x WBA binds, exactly $1 below the BPW cap (just-below direction).
+        al_ui_maximum_benefit_amount: 1_400

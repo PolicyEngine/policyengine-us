@@ -250,3 +250,56 @@
         al_ui_weekly_benefit_amount: 275
         # WBA/3 = 91.6667; 275 - (274.99 - 91.6667) = 91.6767 -> rounded to $92.
         al_ui_partial_weekly_benefit: 92
+
+- name: Case 11, partial benefit at an exact .50 tie - half-to-even rounds DOWN.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # WBA = 273 exactly: (7,098 + 7,098) / 52 = 14,196 / 52 = 273.00.
+        # Chosen divisible by 3 so the 1/3 disregard is a clean 91.
+        al_ui_high_quarter_wages: 7_098
+        al_ui_second_high_quarter_wages: 7_098
+        al_ui_base_period_wages: 28_392
+        al_ui_quarters_with_wages: 4
+        # disregard = 273 / 3 = 91; earnings 147.50 -> countable = 56.50;
+        # partial = 273 - 56.50 = 216.50 exactly.
+        al_ui_weekly_earnings: 147.50
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_weekly_benefit_amount: 273
+        # np.round(216.50) uses half-to-even; 216 is even, so 216.50 -> 216.
+        al_ui_partial_weekly_benefit: 216
+
+- name: Case 12, negative wage inputs (defensive) - ineligible, $0 partial.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Defensive: negative reported wages must not produce a benefit.
+        # Unrounded WBA = (-2,000 + -2,000) / 52 = -76.92 < 44.50 -> the WBA
+        # floor fails -> not monetarily eligible -> WBA = 0 -> partial = 0.
+        al_ui_high_quarter_wages: -2_000
+        al_ui_second_high_quarter_wages: -2_000
+        al_ui_base_period_wages: -8_000
+        al_ui_quarters_with_wages: 4
+        al_ui_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_monetarily_eligible: false
+        al_ui_weekly_benefit_amount: 0
+        al_ui_partial_weekly_benefit: 0
