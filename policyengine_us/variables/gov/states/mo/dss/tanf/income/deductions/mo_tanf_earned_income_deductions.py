@@ -18,7 +18,7 @@ class mo_tanf_earned_income_deductions(Variable):
         # first 4 months, $30-only for next 8 months, 2/3 for up to 12 months).
         # This simplified implementation does not model these month limits.
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
+        gross_earned = spm_unit("mo_tanf_gross_earned_income", period)
         is_enrolled = spm_unit("is_tanf_enrolled", period)
         work_expense = min_(gross_earned, p.amount)
         child_care = spm_unit("mo_tanf_child_care_deduction", period)

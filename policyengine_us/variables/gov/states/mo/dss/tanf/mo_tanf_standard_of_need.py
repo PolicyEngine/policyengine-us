@@ -15,8 +15,10 @@ class mo_tanf_standard_of_need(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf.standard_of_need
-        size = spm_unit("spm_unit_size", period)
-        table_size = min_(size, p.base_table_max_size)
+        size = spm_unit("mo_tanf_assistance_unit_size", period)
+        # The floor of one keeps the table lookup defined for units with no
+        # assistance unit members; such units are not eligible.
+        table_size = max_(min_(size, p.base_table_max_size), 1)
         base_amount = p.amount[table_size]
         additional_persons = max_(size - p.base_table_max_size, 0)
         additional = additional_persons * p.additional_person_increment
