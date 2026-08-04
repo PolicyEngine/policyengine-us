@@ -307,3 +307,23 @@
     mo_tanf_standard_of_need: 678
     mo_tanf_maximum_benefit: 234.086
     mo_tanf: 234.086
+
+- name: Pregnancy alone does not create eligibility without a dependent child
+  period: 2024-01
+  input:
+    people:
+      pregnant_adult:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [pregnant_adult]
+    households:
+      household:
+        members: [pregnant_adult]
+        state_code: MO
+  output:
+    # RSMo 208.040 pays only on behalf of a dependent child; unlike the
+    # federal default demographic test, pregnancy alone does not qualify.
+    mo_tanf_eligible: false
+    mo_tanf: 0
