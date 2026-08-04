@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mo_tanf_earned_income_exempt(Variable):
+class is_mo_tanf_earned_income_exempt(Variable):
     value_type = bool
     entity = Person
     label = "Person whose earned income is exempt for Missouri TANF"

@@ -20,6 +20,6 @@ class mo_tanf_gross_earned_income(Variable):
         # exempt (DSS Manual 0210.015.35.10 and 0210.015.35.15).
         person = spm_unit.members
         member = person("mo_tanf_is_assistance_unit_member", period)
-        exempt = person("mo_tanf_earned_income_exempt", period)
+        exempt = person("is_mo_tanf_earned_income_exempt", period)
         earned = person("tanf_gross_earned_income", period)
         return spm_unit.sum(earned * member * ~exempt)

@@ -6,7 +6,7 @@
     is_tax_unit_dependent: true
     is_full_time_student: true
   output:
-    mo_tanf_earned_income_exempt: true
+    is_mo_tanf_earned_income_exempt: true
 
 - name: Secondary-school student child's earnings are exempt
   period: 2024-01
@@ -16,7 +16,7 @@
     is_tax_unit_dependent: true
     is_in_secondary_school: true
   output:
-    mo_tanf_earned_income_exempt: true
+    is_mo_tanf_earned_income_exempt: true
 
 - name: Non-student child's earnings are not exempt
   period: 2024-01
@@ -27,7 +27,7 @@
     is_full_time_student: false
     is_in_secondary_school: false
   output:
-    mo_tanf_earned_income_exempt: false
+    is_mo_tanf_earned_income_exempt: false
 
 - name: Teen parent in secondary school has exempt earnings
   period: 2024-01
@@ -50,7 +50,7 @@
         members: [teen_parent, infant]
         state_code: MO
   output:
-    mo_tanf_earned_income_exempt: [true, false]
+    is_mo_tanf_earned_income_exempt: [true, false]
 
 - name: Adult parent's earnings are not exempt
   period: 2024-01
@@ -58,6 +58,8 @@
     people:
       parent:
         age: 30
+      # The child is exempt because is_in_k12_school imputes school
+      # enrollment for ages 5-17, making the child a full-time student.
       child:
         age: 5
         is_tax_unit_dependent: true
@@ -72,4 +74,4 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_tanf_earned_income_exempt: [false, false]
+    is_mo_tanf_earned_income_exempt: [false, true]
