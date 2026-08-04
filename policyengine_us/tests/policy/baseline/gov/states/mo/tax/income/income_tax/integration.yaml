@@ -177,7 +177,7 @@
     people:
       person1:
         age: 45
-        is_ssi_disabled: true
+        is_disabled: true
         employment_income: 18_000
         rent: 9_600
     tax_units:
@@ -193,12 +193,15 @@
         state_code: MO
   output:
     # Form MO-WFTC 2025: Line 6 = 20% x $84.43 EITC = $16.89; Line 7 =
-    # $17.17 tax before credits; Line 8 includes the $446.49 property tax
-    # credit; Line 9 = max(17.17 - 446.49, 0) = 0; Line 10 = min(16.89, 0).
+    # $17.17 tax before credits; Line 8 includes the $591 property tax
+    # credit from the 2025 DOR chart: rent 20% x 9,600 = 1,920 capped at
+    # 750 (payment midpoint 738), net income 18,000 in the 17,901-18,200
+    # row, phase-out = ceil(13 x 0.0625% x 18,050) = 147, 738 - 147 = 591;
+    # Line 9 = max(17.17 - 591, 0) = 0; Line 10 = min(16.89, 0).
     eitc: 84.43
     mo_wftc_potential: 16.89
     mo_income_tax_before_credits: 17.17
-    mo_property_tax_credit: 446.49
+    mo_property_tax_credit: 591
     mo_wftc_liability_cap: 0
     mo_wftc: 0
-    mo_income_tax: -429.32
+    mo_income_tax: -573.84

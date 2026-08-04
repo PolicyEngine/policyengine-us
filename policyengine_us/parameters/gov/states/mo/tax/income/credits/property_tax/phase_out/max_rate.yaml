@@ -1,0 +1,15 @@
+description: Missouri caps the accumulated property tax credit phaseout percent at this rate.
+values:
+  # The 4% cap is unreachable within the pre-2026 income limits: the
+  # accumulation peaks at 53 increments (3.3125%) at the 30,000 owner limit.
+  2008-08-28: 0.04
+  2026-01-01: 0.02
+metadata:
+  unit: /1
+  period: year
+  label: Missouri property tax credit maximum phaseout rate
+  reference:
+    - title: MO Rev Stat § 135.030.2(1)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439
+    - title: MO Rev Stat § 135.030.3(1), effective 2026-01-01
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542
