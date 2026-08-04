@@ -1,8 +1,8 @@
-- name: Eligible when a dependent child is present and all tests pass
+- name: Eligible when all conditions met
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_dependent_child: true
+    is_person_demographic_tanf_eligible: true
     mo_tanf_income_eligible: true
     mo_tanf_resources_eligible: true
   output:
@@ -12,28 +12,17 @@
   period: 2024-01
   input:
     state_code: NY
-    mo_tanf_dependent_child: true
+    is_person_demographic_tanf_eligible: true
     mo_tanf_income_eligible: true
     mo_tanf_resources_eligible: true
   output:
     mo_tanf_eligible: false
 
-- name: Pregnancy alone does not qualify without a dependent child
+- name: Ineligible when not demographically eligible
   period: 2024-01
   input:
     state_code: MO
-    age: 25
-    is_pregnant: true
-    mo_tanf_income_eligible: true
-    mo_tanf_resources_eligible: true
-  output:
-    mo_tanf_eligible: false
-
-- name: Ineligible when no dependent child is present
-  period: 2024-01
-  input:
-    state_code: MO
-    mo_tanf_dependent_child: false
+    is_person_demographic_tanf_eligible: false
     mo_tanf_income_eligible: true
     mo_tanf_resources_eligible: true
   output:
@@ -43,7 +32,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_dependent_child: true
+    is_person_demographic_tanf_eligible: true
     mo_tanf_income_eligible: false
     mo_tanf_resources_eligible: true
   output:
@@ -53,7 +42,7 @@
   period: 2024-01
   input:
     state_code: MO
-    mo_tanf_dependent_child: true
+    is_person_demographic_tanf_eligible: true
     mo_tanf_income_eligible: true
     mo_tanf_resources_eligible: false
   output:
@@ -63,7 +52,7 @@
   period: 2024-01
   input:
     state_code: NY
-    mo_tanf_dependent_child: false
+    is_person_demographic_tanf_eligible: false
     mo_tanf_income_eligible: false
     mo_tanf_resources_eligible: false
   output:
