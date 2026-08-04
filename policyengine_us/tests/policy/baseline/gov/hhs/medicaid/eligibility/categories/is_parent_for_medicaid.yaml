@@ -5,43 +5,88 @@
   output:
     is_parent_for_medicaid: false
 
-- name: 1 dependent, under FPL limit, eligible in CA
+- name: 1 dependent child, under FPL limit, eligible in CA
   period: 2022
   input:
-    tax_unit_count_dependents: 1
-    medicaid_income_level: 1.13
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 1.13
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        medicaid_income_level: 1.13
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
   output:
-    is_parent_for_medicaid: true
+    is_parent_for_medicaid: [true, false]
 
-- name: 1 dependent, at FPL limit, eligible in CA
+- name: 1 dependent child, at FPL limit, eligible in CA
   period: 2022
   input:
-    tax_unit_count_dependents: 1
-    medicaid_income_level: 1.14
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 1.14
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        medicaid_income_level: 1.14
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
   output:
-    is_parent_for_medicaid: true
+    is_parent_for_medicaid: [true, false]
 
-- name: 1 dependent, over FPL limit, ineligible in CA
+- name: 1 dependent child, over FPL limit, ineligible in CA
   period: 2022
   input:
-    tax_unit_count_dependents: 1
-    medicaid_income_level: 1.15
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 1.15
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        medicaid_income_level: 1.15
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
   output:
-    is_parent_for_medicaid: false
+    is_parent_for_medicaid: [false, false]
 
 - name: Two-parent household under the income limit is eligible in TX
   period: 2025
   input:
     people:
       head:
+        age: 30
         is_tax_unit_head: true
         is_tax_unit_dependent: false
         medicaid_income_level: 0.1
       spouse:
+        age: 30
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
         medicaid_income_level: 0.1
       child:
+        age: 5
         is_tax_unit_dependent: true
         medicaid_income_level: 0.1
     tax_units:
@@ -56,40 +101,495 @@
   output:
     is_parent_for_medicaid: [true, true, false]
 
+# A real dependent child keeps the non-financial test satisfied so the
+# case exercises the DC income ceiling itself.
 - name: DC parent above the Medicaid ceiling is not parent-eligible after Healthy DC Plan starts
   period: 2026
   input:
     people:
       person1:
         age: 34
+        is_tax_unit_head: true
+        medicaid_income_level: 1.5
+      child:
+        age: 5
+        is_tax_unit_dependent: true
         medicaid_income_level: 1.5
     tax_units:
       tax_unit:
-        members: [person1]
-        tax_unit_count_dependents: 1
+        members: [person1, child]
     households:
       household:
-        members: [person1]
+        members: [person1, child]
         state_code: DC
   output:
-    is_parent_for_medicaid: [false]
+    is_parent_for_medicaid: [false, false]
 
+# Restructured from PR #9200 with an actual dependent child, which the
+# caretaker-relative check requires.
 - name: Missouri parent just below the size-3 MHF limit is eligible
   period: 2025
   input:
     people:
       person1:
         age: 34
+        is_tax_unit_head: true
+        medicaid_household_size: 3
+        medicaid_income_level: 0.13553
+      child:
+        age: 5
+        is_tax_unit_dependent: true
         medicaid_household_size: 3
         medicaid_income_level: 0.13553
     tax_units:
       tax_unit:
-        members: [person1]
-        tax_unit_count_dependents: 1
+        members: [person1, child]
     households:
       household:
-        members: [person1]
+        members: [person1, child]
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    is_parent_for_medicaid: [true]
+    is_parent_for_medicaid: [true, false]
+
+# Issue #9128: 42 CFR 435.110 restricts the parent category to parents and
+# other caretaker relatives (42 CFR 435.4) living with a dependent child.
+- name: Non-filer adult in the tax unit is not a caretaker relative in MO
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      roommate:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        medicaid_income_level: 0.1
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [parent, roommate, child]
+    households:
+      household:
+        members: [parent, roommate, child]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [true, false, false]
+
+# Tax-unit dependency here encodes the living arrangement, not filing
+# behavior, so this also covers the non-filer caretaker of Missouri DSS
+# § 1805.030.10.25 (the Jon/Gavin uncle-nephew example): a caretaker
+# relative need not claim, or file at all (42 CFR 435.4).
+- name: An aunt claiming her nephew as a dependent qualifies as a caretaker relative in MO
+  period: 2025
+  input:
+    people:
+      aunt:
+        age: 40
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      nephew:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [aunt, nephew]
+    households:
+      household:
+        members: [aunt, nephew]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [true, false]
+
+- name: An adult dependent does not qualify the filer for the parent category
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      adult_dependent:
+        age: 24
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, adult_dependent]
+    households:
+      household:
+        members: [head, adult_dependent]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# An unrelated foster parent is not a relative by blood, adoption, or
+# marriage even when claiming the foster child as a tax dependent.
+- name: A foster child does not make the foster parent a caretaker relative
+  period: 2025
+  input:
+    people:
+      foster_parent:
+        age: 40
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      foster_child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [foster_parent, foster_child]
+    households:
+      household:
+        members: [foster_parent, foster_child]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# Known limitation: a kinship foster caregiver's blood relationship
+# legally survives the foster placement, but the model cannot
+# distinguish kinship from unrelated foster placements, so the foster
+# exclusion also reaches this grandmother.
+- name: A grandmother fostering her grandchild is excluded by the foster proxy
+  period: 2025
+  input:
+    people:
+      grandmother:
+        age: 60
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      grandchild:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [grandmother, grandchild]
+    households:
+      household:
+        members: [grandmother, grandchild]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# Missouri elects the 42 CFR 435.4 18-year-old student option
+# (DSS Manual § 1810.020.20.20).
+- name: An 18-year-old full-time student counts as a dependent child
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [true, false]
+
+- name: An 18-year-old who is not a student is not a dependent child
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+    households:
+      household:
+        members: [head, non_student]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# Texas elects the student option: dependent child is "under age 18; or
+# if age 18, attends school full-time" (Texas Works Handbook A-521).
+- name: An 18-year-old full-time student qualifies the parent in Texas
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: TX
+  output:
+    is_parent_for_medicaid: [true, false]
+
+# Florida does not elect the student option: the approved S25 checkbox
+# is empty (FL-13-0015-MM1) and Fla. Admin. Code R. 65A-1.703(2)(e)
+# limits the group to children under 18.
+- name: An 18-year-old full-time student does not qualify the parent in Florida
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: FL
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# Georgia applies a plain under-19 rule with no student condition:
+# "there must be a child in the assistance unit under the age of 19"
+# (DFCS Manual § 2255).
+- name: An 18-year-old non-student qualifies the parent in Georgia
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, non_student]
+        state_code: GA
+  output:
+    is_parent_for_medicaid: [true, false]
+
+# Alabama defines a dependent child as "under the age of 19" with no
+# student condition (Ala. Admin. Code r. 560-X-25-.15(1)(c)).
+- name: An 18-year-old non-student qualifies the parent in Alabama
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.05
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.05
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, non_student]
+        state_code: AL
+  output:
+    is_parent_for_medicaid: [true, false]
+
+# Massachusetts covers a parent of "a child younger than 19 years old"
+# with no student condition (130 CMR 505.002(C)); a 19-year-old does
+# not qualify, so parents of one shift to the adult group.
+- name: An 18-year-old non-student qualifies the parent in Massachusetts
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 18
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+    households:
+      household:
+        members: [head, non_student]
+        state_code: MA
+  output:
+    is_parent_for_medicaid: [true, false]
+
+# Wisconsin counts an 18-year-old full-time student expected to
+# complete school before 19 (Wis. Stat. § 49.471(4)(a)4.a.; S25
+# option checked).
+- name: An 18-year-old full-time student qualifies the parent in Wisconsin
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, student]
+        state_code: WI
+  output:
+    is_parent_for_medicaid: [true, false]
+
+# At exactly Georgia's under-19 limit the child no longer qualifies:
+# "there must be a child in the assistance unit under the age of 19"
+# (DFCS Manual § 2255).
+- name: A 19-year-old does not qualify the parent in Georgia
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 19
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, non_student]
+        state_code: GA
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# The student option only reaches 18-year-olds (42 CFR 435.4; DSS
+# Manual § 1810.020.20.20), so a 19-year-old full-time student is not
+# a dependent child in Missouri.
+- name: A 19-year-old full-time student does not qualify the parent in Missouri
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, student]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# A 19-year-old is not "a child younger than 19 years old"
+# (130 CMR 505.002(C)), so a Massachusetts parent of one shifts from
+# the parent category to the adult group - the flip behind the partner
+# fixture ma.yaml.
+- name: A Massachusetts parent of a 19-year-old lands in the adult group instead
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      young_adult:
+        age: 19
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, young_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, young_adult]
+        state_code: MA
+  output:
+    is_parent_for_medicaid: [false, false]
+    is_adult_for_medicaid: [true, true]
+
+# Known limitation: 42 CFR 435.4 limits the student option to full-time
+# students "in secondary school" or equivalent vocational or technical
+# training, but the model's is_full_time_student proxy also captures
+# full-time college students, and the secondary-school indicator is an
+# unimputed input. This 18-year-old college student therefore still
+# counts as a dependent child in Texas.
+- name: An 18-year-old college student counts as a dependent child in Texas via the student proxy
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_secondary_school: false
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: TX
+  output:
+    is_parent_for_medicaid: [true, false]

@@ -12,6 +12,7 @@ class mo_mhf_parent_income_limit(Variable):
     reference = (
         "https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-10/",
         "https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-030-00/1805-030-20/1805-030-20-20/1805-030-20-20-05/",
+        "https://web.archive.org/web/20210303084354/https://dssmanuals.mo.gov/wp-content/uploads/2019/03/MAGIappendix-a.pdf#page=1",
     )
 
     def formula(person, period, parameters):
@@ -23,7 +24,12 @@ class mo_mhf_parent_income_limit(Variable):
         monthly_limit = p.amount[capped_size] + additional_people * p.additional_person
         annual_limit = monthly_limit * MONTHS_IN_YEAR
         state_group = person.household("state_group_str", period)
-        # The conditional 5-point MAGI disregard in 1805.030.20.20.05
-        # applies only to CHIP, MHK, MPW, SMHB, UWHS, and AEG, not MHF
-        # parents/caretakers; this is therefore the raw schedule-to-FPG ratio.
-        return annual_limit / fpg(size, state_group, period, parameters)
+        limit_ratio = annual_limit / fpg(size, state_group, period, parameters)
+        # The conditional 5-point MAGI disregard in 1805.030.20.20.05 applies
+        # only at the highest standard under which the person may qualify
+        # (42 CFR 435.603(d)(4)). Since the adult expansion took effect
+        # (July 1, 2021) that is the AEG, so the current schedule is the raw
+        # ratio; before the expansion, Appendix A published a separate "MHF
+        # Adult" row equal to this schedule plus 5% of the FPG, captured by
+        # the dated fpl_disregard parameter.
+        return limit_ratio + p.fpl_disregard

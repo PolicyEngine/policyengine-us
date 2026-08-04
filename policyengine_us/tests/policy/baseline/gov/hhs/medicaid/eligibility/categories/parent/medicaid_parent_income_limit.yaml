@@ -204,3 +204,60 @@
   output:
     medicaid_parent_income_limit: 0.101267
   absolute_error_margin: 0.0001
+
+# Before the adult expansion (effective July 1, 2021), the 5% FPL
+# disregard applied at the MHF level: the archived Appendix A (revised
+# 11/2020) publishes an "MHF Adult" row of $392 for a household of 3,
+# i.e. $301 + 5% x $1,810 monthly FPG.
+# $301 x 12 / $21,720 (2020 FPG for 3) + 0.05 = 0.216298.
+- name: Case 14, Missouri MHF limit included the 5% FPL disregard before the adult expansion.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.216298
+  absolute_error_margin: 0.0001
+
+# Both sides of the 2021 transition at year granularity:
+# 2021 reads the January 1 value, so the disregard still applies.
+# $301 x 12 / $21,960 (2021 FPG for 3) + 0.05 = 0.214481.
+- name: Case 15, Missouri MHF limit keeps the disregard in 2021, the expansion's first year.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.214481
+  absolute_error_margin: 0.0001
+
+# $301 x 12 / $23,030 (2022 FPG for 3) with no disregard = 0.156839.
+- name: Case 16, Missouri MHF limit drops the disregard from 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.156839
+  absolute_error_margin: 0.0001
