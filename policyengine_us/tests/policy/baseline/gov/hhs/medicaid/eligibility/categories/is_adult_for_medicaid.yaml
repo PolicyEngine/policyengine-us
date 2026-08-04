@@ -103,6 +103,29 @@
   output:
     is_adult_for_medicaid: true
 
+# Medicare entitlement begins in the 25th month of SSDI receipt
+# (42 U.S.C. § 426(b)), so exactly 24 months crosses the threshold
+# while 23 does not.
+- name: SSDI recipient at exactly 24 months is Medicare-excluded from the adult group
+  period: 2025
+  input:
+    age: 55
+    medicaid_income_level: 0.5
+    social_security_disability: 12_000
+    months_receiving_social_security_disability: 24
+  output:
+    is_adult_for_medicaid: false
+
+- name: SSDI recipient at 23 months stays in the adult group
+  period: 2025
+  input:
+    age: 55
+    medicaid_income_level: 0.5
+    social_security_disability: 12_000
+    months_receiving_social_security_disability: 23
+  output:
+    is_adult_for_medicaid: true
+
 - name: SSI recipient is excluded from the adult group in Missouri
   period: 2025
   input:
@@ -174,4 +197,22 @@
     receives_ssi: true
     ssi_countable_resources: 100_000
   output:
+    is_adult_for_medicaid: false
+
+# At year granularity 2021 reads the January 1 parameter values, before
+# Missouri's adult expansion took effect (Mo. Const. art. IV, § 36(c),
+# effective July 1, 2021; DSS Manual § 1865.010.00): the SSI-receipt
+# bar is not yet read, so the non-financial criteria pass, but the
+# adult group itself does not exist yet, so full adult-group
+# eligibility is still false.
+- name: Missouri SSI receipt bar and adult group both start with the 2021 expansion
+  period: 2021
+  input:
+    state_code: MO
+    age: 40
+    medicaid_income_level: 0.5
+    receives_ssi: true
+    ssi_countable_resources: 100_000
+  output:
+    is_adult_for_medicaid_nfc: true
     is_adult_for_medicaid: false

@@ -482,3 +482,114 @@
         state_code: WI
   output:
     is_parent_for_medicaid: [true, false]
+
+# At exactly Georgia's under-19 limit the child no longer qualifies:
+# "there must be a child in the assistance unit under the age of 19"
+# (DFCS Manual § 2255).
+- name: A 19-year-old does not qualify the parent in Georgia
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      non_student:
+        age: 19
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, non_student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, non_student]
+        state_code: GA
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# The student option only reaches 18-year-olds (42 CFR 435.4; DSS
+# Manual § 1810.020.20.20), so a 19-year-old full-time student is not
+# a dependent child in Missouri.
+- name: A 19-year-old full-time student does not qualify the parent in Missouri
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 19
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, student]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]
+
+# A 19-year-old is not "a child younger than 19 years old"
+# (130 CMR 505.002(C)), so a Massachusetts parent of one shifts from
+# the parent category to the adult group - the flip behind the partner
+# fixture ma.yaml.
+- name: A Massachusetts parent of a 19-year-old lands in the adult group instead
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      young_adult:
+        age: 19
+        is_tax_unit_dependent: true
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, young_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, young_adult]
+        state_code: MA
+  output:
+    is_parent_for_medicaid: [false, false]
+    is_adult_for_medicaid: [true, true]
+
+# Known limitation: 42 CFR 435.4 limits the student option to full-time
+# students "in secondary school" or equivalent vocational or technical
+# training, but the model's is_full_time_student proxy also captures
+# full-time college students, and the secondary-school indicator is an
+# unimputed input. This 18-year-old college student therefore still
+# counts as a dependent child in Texas.
+- name: An 18-year-old college student counts as a dependent child in Texas via the student proxy
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        medicaid_income_level: 0.1
+      student:
+        age: 18
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_secondary_school: false
+        medicaid_income_level: 0.1
+    tax_units:
+      tax_unit:
+        members: [head, student]
+    households:
+      household:
+        members: [head, student]
+        state_code: TX
+  output:
+    is_parent_for_medicaid: [true, false]

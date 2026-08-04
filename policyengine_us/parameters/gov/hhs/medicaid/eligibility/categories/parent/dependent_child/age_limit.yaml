@@ -33,7 +33,9 @@ AK:
 # chapter revised 7/15/2023). Conflict: the CMS-approved S25
 # (AL-13-0021-MM1, effective 1/1/2014) reads under-18 with the student
 # option unchecked; the operative admin code is encoded, as with
-# Kansas.
+# Kansas. If this is ever returned to 18 per the S25, no
+# student_option.yaml change is needed - Alabama's S25 box is
+# unchecked.
 AL:
   2014-01-01: 19
 AR:
@@ -69,7 +71,9 @@ IN:
   2014-01-01: 18
 # Kansas operates a plain under-19 rule: "A child must be under 19
 # years of age" (KFMAM § 02100), broader than its S25 election of the
-# 18-year-old student option (SPA KS 14-0002-MM1).
+# 18-year-old student option (SPA KS 14-0002-MM1). If this is ever
+# returned to 18, also flip student_option.yaml to true per that
+# election.
 KS:
   2014-01-01: 19
 KY:

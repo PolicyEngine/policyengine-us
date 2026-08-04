@@ -20,7 +20,7 @@ class is_adult_for_medicaid_nfc(Variable):
         # to or enrolled in Medicare Part A or B. The Medicare proxy models
         # the age-65 and 24-month SSDI routes only; the immediate ALS and
         # ESRD entitlement routes are not modeled.
-        medicare_enrolled = person("is_medicare_eligible", period)
+        medicare_eligible = person("is_medicare_eligible", period)
         # 42 CFR 435.119(b)(4) excludes people otherwise eligible for and
         # enrolled in mandatory coverage. For SSI recipients the
         # SSI-recipient category captures this: automatically in Section
@@ -28,13 +28,16 @@ class is_adult_for_medicaid_nfc(Variable):
         # state's more restrictive criteria in Section 209(b) states
         # (42 CFR 435.121).
         ssi_mandatorily_covered = person("is_ssi_recipient_for_medicaid", period)
-        # Missouri's Adult Expansion Group additionally excludes anyone
-        # receiving SSI, including 209(b) residual cases that fail the
-        # state's more restrictive criteria (DSS Manual § 1865.020.00).
+        # Some states bar SSI receipt from the adult group outright
+        # (e.g., Missouri DSS Manual § 1865.020.00, "Not receiving SSI").
+        # The categorical bar excludes even an SSI recipient who fails the
+        # state's more restrictive 209(b) criteria and so has no
+        # mandatory-coverage pathway, closing the residual adult-group
+        # route that remains open in other 209(b) states.
         state = person.household("state_code_str", period)
         excludes_all_ssi = ma.excludes_ssi_recipients[state].astype(bool)
         receives_ssi = (person("ssi", period) > 0) | (
             add(person, period, ["receives_ssi"]) > 0
         )
         ssi_excluded = ssi_mandatorily_covered | (excludes_all_ssi & receives_ssi)
-        return age_eligible & ~medicare_enrolled & ~ssi_excluded
+        return age_eligible & ~medicare_eligible & ~ssi_excluded

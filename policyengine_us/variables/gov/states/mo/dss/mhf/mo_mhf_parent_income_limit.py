@@ -27,8 +27,9 @@ class mo_mhf_parent_income_limit(Variable):
         limit_ratio = annual_limit / fpg(size, state_group, period, parameters)
         # The conditional 5-point MAGI disregard in 1805.030.20.20.05 applies
         # only at the highest standard under which the person may qualify
-        # (42 CFR 435.603(d)(4)). Since October 2021 that is the AEG, so the
-        # current schedule is the raw ratio; before the expansion, Appendix A
-        # published a separate "MHF Adult" row equal to this schedule plus 5%
-        # of the FPG, captured by the dated fpl_disregard parameter.
+        # (42 CFR 435.603(d)(4)). Since the adult expansion took effect
+        # (July 1, 2021) that is the AEG, so the current schedule is the raw
+        # ratio; before the expansion, Appendix A published a separate "MHF
+        # Adult" row equal to this schedule plus 5% of the FPG, captured by
+        # the dated fpl_disregard parameter.
         return limit_ratio + p.fpl_disregard

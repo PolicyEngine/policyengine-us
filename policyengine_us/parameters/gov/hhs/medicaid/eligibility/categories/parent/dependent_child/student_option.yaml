@@ -36,6 +36,14 @@ metadata:
 # verified non-elections: they apply the federal under-18 floor pending a
 # source. In Medicaid-expansion states the impact is limited to category
 # assignment, since parents there qualify for the adult group regardless.
+# The formula's is_full_time_student proxy is broader than the 42 CFR
+# 435.4 option (a full-time student in secondary school or equivalent
+# vocational or technical training): it also captures full-time college
+# students. The strict is_in_secondary_school input is not required
+# because nothing populates it - it has no formula and the dataset
+# maps no CPS column to it - so requiring it would deny the option
+# wherever that obscure input is left unset and zero it out in
+# microsimulation, where only college enrollment carries signal at 18.
 AK:
   2014-01-01: false
 # Moot: Alabama's S25 leaves the option unchecked, and its current
@@ -78,6 +86,9 @@ IN:
   2014-01-01: false
 # Moot: Kansas operates an under-19 age limit (see age_limit.yaml),
 # subsuming its S25 election of the student option (KS 14-0002-MM1).
+# Guard: if Kansas's age_limit is ever returned to 18, flip this to
+# true - the stored false would otherwise silently drop the state's
+# actual S25 election.
 KS:
   2014-01-01: false
 KY:

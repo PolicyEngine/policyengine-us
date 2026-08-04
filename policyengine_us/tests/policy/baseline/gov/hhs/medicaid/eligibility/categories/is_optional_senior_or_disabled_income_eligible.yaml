@@ -163,3 +163,80 @@
         state_code: MO
   output:
     is_optional_senior_or_disabled_income_eligible: [true]
+
+# The limits are inclusive maxima in every state, not just Missouri:
+# 42 U.S.C. § 1396a(m)(1)(B) covers income that "does not exceed" the
+# state's standard. Florida's individual limit is 88% FPL.
+- name: Income exactly at Florida's limit is eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Income one dollar over Florida's limit is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_201
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Joint income exactly at Florida's couple limit is eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_600
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Joint income over Florida's couple limit is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_601
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_601
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]

@@ -85,7 +85,7 @@ max_household_size:
   values:
     1996-07-16: 22
 fpl_disregard:
-  description: Missouri adds this share of the federal poverty guideline to the MHF parent and caretaker income limit, reflecting the conditional 5% MAGI disregard that applied at the MHF adult level until the Adult Expansion Group became the highest MAGI standard applicable to parents on October 1, 2021.
+  description: Missouri adds this share of the federal poverty guideline to the MHF parent and caretaker income limit, reflecting the conditional 5% MAGI disregard that applied at the MHF adult level until the Adult Expansion Group became the highest MAGI standard applicable to parents.
   metadata:
     unit: /1
     label: Missouri MHF parent income limit FPL disregard
@@ -101,6 +101,11 @@ fpl_disregard:
         href: https://web.archive.org/web/20210303084354/https://dssmanuals.mo.gov/wp-content/uploads/2019/03/MAGIappendix-a.pdf#page=1
       - title: Missouri DSS Manual § 1805.030.20.20.05 - 5% FPL disregard
         href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-030-00/1805-030-20/1805-030-20-20/1805-030-20-20-05/
+      - title: Missouri DSS Manual § 1865.010.00 - Legal Basis (Mo. Const. art. IV, § 36(c), expansion effective July 1, 2021)
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1865-000-00/1865-010-00/
   values:
     2014-01-01: 0.05
-    2021-10-01: 0
+    # The expansion's constitutional effective date; enrollment began
+    # October 1, 2021 after Doyle v. Tidball, with eligibility
+    # retroactive to the effective date.
+    2021-07-01: 0
