@@ -33,6 +33,7 @@
     taxable_income_less_qbid: 600
     adjusted_net_capital_gain: 0
     qualified_business_income: 1_000
+    active_qualified_business_income: 1_000
   output:
     qualified_business_income_deduction: 400
 
@@ -44,6 +45,7 @@
     taxable_income_less_qbid: 0
     adjusted_net_capital_gain: 0
     qualified_business_income: 999
+    active_qualified_business_income: 999
   output:
     qualified_business_income_deduction: 0
 
@@ -55,6 +57,7 @@
     taxable_income_less_qbid: 20_000
     adjusted_net_capital_gain: 0
     qualified_business_income: 1_000
+    active_qualified_business_income: 1_000
   output:
     qualified_business_income_deduction: 2_000
 
@@ -69,6 +72,7 @@
         self_employed_health_insurance_ald_person: 0
         self_employed_pension_contribution_ald_person: 0
         qbid_amount: 200
+        active_qualified_business_income: 1_000
         is_tax_unit_head: true
     tax_units:
       tax_unit:
@@ -87,6 +91,36 @@
         state_fips: 6
   output:
     qualified_business_income_deduction: 400
+
+- name: No active QBI does not trigger 2026 deduction floor
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        qualified_business_income: 300_000
+        w2_wages_from_qualified_business: 0
+        unadjusted_basis_qualified_property: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        taxable_income_less_qbid: 300_000
+        adjusted_net_capital_gain: 0
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: TX
+  output:
+    qualified_business_income_deduction: 0
 
 # Integration test: doctor (SSTB) with rental property (non-SSTB) above threshold.
 # Demonstrates the §199A(d)(3) phaseout reaching only the SSTB component
