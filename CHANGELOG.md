@@ -1,3 +1,10 @@
+## [1.786.0] - 2026-08-04
+
+### Added
+
+- San Bernardino County General Relief program.
+
+
 ## [1.785.0] - 2026-08-04
 
 ### Added
