@@ -126,3 +126,40 @@
         state_code: MO
   output:
     is_optional_senior_or_disabled_income_eligible: [false]
+
+# The standards are income maxima (DSS Manual § 0805.015.45), so income
+# exactly at the limit qualifies.
+- name: Missouri blind applicant at exactly 100% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Missouri non-blind applicant at exactly 85% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 12_750
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]

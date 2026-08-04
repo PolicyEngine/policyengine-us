@@ -10,9 +10,10 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
     )
     documentation = (
         "True if the tax unit's countable income after the state-specific "
-        "income disregard is below the income limit that the state sets for its "
-        "optional pathway for aged, blind, or disabled individuals who are not "
-        "otherwise SSI-eligible."
+        "income disregard does not exceed the income limit that the state sets "
+        "for its optional pathway for aged, blind, or disabled individuals who "
+        "are not otherwise SSI-eligible. The limits are income maxima, so "
+        "income exactly equal to the limit qualifies."
     )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#m"
@@ -25,4 +26,4 @@ class is_optional_senior_or_disabled_income_eligible(Variable):
         income_limit = person(
             "medicaid_optional_senior_or_disabled_income_limit", period
         )
-        return income < income_limit
+        return income <= income_limit

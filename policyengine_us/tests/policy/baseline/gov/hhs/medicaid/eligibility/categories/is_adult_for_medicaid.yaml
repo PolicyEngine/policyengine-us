@@ -131,3 +131,47 @@
     medicaid_income_level: 0.5
   output:
     is_adult_for_medicaid: true
+
+# In a Section 1634 state, an SSI recipient is eligible for and enrolled
+# in mandatory SSI-recipient coverage (42 CFR 435.120), so 42 CFR
+# 435.119(b)(4) excludes them from the adult group.
+- name: SSI recipient in a Section 1634 state is excluded from the adult group
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    medicaid_income_level: 0.5
+    ssi: 11_000
+  output:
+    is_adult_for_medicaid: false
+
+# Connecticut's 209(b) resource limit ($1,600) is more restrictive than
+# SSI's ($2,000), so a recipient with $1,800 in countable resources
+# receives SSI yet fails the state's mandatory-coverage criteria
+# (42 CFR 435.121). 42 CFR 435.119(b)(4) then leaves them in the adult
+# group, and HUSKY D's own criteria carry no SSI-receipt test
+# (DSS UPM 2540 chart, X02).
+- name: SSI recipient failing a 209(b) state's criteria stays in the adult group
+  period: 2025
+  input:
+    state_code: CT
+    age: 40
+    medicaid_income_level: 0.5
+    receives_ssi: true
+    ssi_countable_resources: 1_800
+  output:
+    is_adult_for_medicaid: true
+
+# Minnesota excludes by receipt - "Is not a Supplemental Security
+# Income (SSI) recipient" (EPM § 2.2.2.1) - so even an SSI recipient
+# failing the state's 209(b) criteria is excluded, unlike in CT.
+- name: SSI recipient is excluded from Minnesota's adult group regardless of 209(b) status
+  period: 2025
+  input:
+    state_code: MN
+    age: 40
+    medicaid_income_level: 0.5
+    receives_ssi: true
+    ssi_countable_resources: 100_000
+  output:
+    is_adult_for_medicaid: false

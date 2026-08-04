@@ -11,6 +11,10 @@ class is_medicare_eligible(Variable):
         "https://www.cms.gov/medicare/enrollment-renewal/health-plans/original-part-a-b"
         "Above link includes the following text:"
         "  Part A coverage begins the month the individual turns age 65"
+        "Only the age-65 and 24-month SSDI routes are modeled. The immediate "
+        "entitlement routes for ALS (42 U.S.C. 426(h)) and ESRD "
+        "(42 U.S.C. 426-1) are not, as the model has no inputs for those "
+        "conditions."
     )
 
     def formula(person, period, parameters):
