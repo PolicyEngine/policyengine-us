@@ -1,0 +1,297 @@
+# End-to-end integration tests for Maryland Premium Assistance
+# (State-Based Health Insurance Subsidies Program), PY2026.
+# Scenarios follow the MIA Exhibit 2a illustrative net-premium targets
+# (single age 40 and family of four across FPL tiers), plus a young-adult case,
+# an over-400% ineligible case, and a non-MD case.
+#
+# To keep expected values exactly hand-verifiable and independent of the
+# rating-area premium lookup, aca_magi, aca_magi_fraction, the federal required
+# contribution percentage, slcsp (annual) and aca_ptc are supplied directly, and
+# each scenario checks the intermediate values so a reviewer can follow the
+# arithmetic:
+#   md_pct  = target contribution % from the MD schedule (keyed on aca_magi_fraction)
+#   subsidy = min(max(0, aca_magi * (federal_pct - md_pct)), max(0, slcsp - aca_ptc))
+#
+# MD target schedule (initial per band): 0-150% 0%, 150-200% 0%->2%,
+# 200-250% 2%->6.22%, 250-300% 6.22%->7.98%, 300-400% 7.98%->9.23%.
+# 2026 federal non-enhanced percentages at each tier: 138% 3.4488%, 150% 4.19%,
+# 200% 6.60%, 250% 8.44%, 300% 9.96%, 400% 9.96%.
+
+- name: Scenario 1, single age 40 at 138% FPL (full replacement, MIA ~$1/mo net).
+  # aca_magi 21_597; md target 0% (below 150%); federal 3.4488%.
+  # gap = 0.034488 * 21_597 = 744.84/yr (~62/mo state subsidy).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 21_597
+        aca_magi_fraction: 1.38
+        aca_required_contribution_percentage: 0.034488
+        slcsp: 6_000
+        aca_ptc: 5_255  # 6_000 - 0.034488*21_597 (federal contribution)
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0
+    md_premium_assistance: 744.84
+
+- name: Scenario 2, single age 40 at 200% FPL (MIA net $53/mo vs $173/mo).
+  # md target 2.00%; federal 6.60%; gap 0.046 * 31_300 = 1_439.80/yr (~120/mo).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 6_000
+        aca_ptc: 3_934  # 6_000 - 0.066*31_300
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.02
+    md_premium_assistance: 1_439.80
+
+- name: Scenario 3, single age 40 at 300% FPL (50% replacement, MIA net $313 vs $390/mo).
+  # md target 7.98%; federal 9.96%; gap 0.0198 * 46_950 = 929.61/yr (~77/mo).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950
+        aca_magi_fraction: 3.00
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 9_000
+        aca_ptc: 4_324  # 9_000 - 0.0996*46_950
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0798
+    md_premium_assistance: 929.61
+
+- name: Scenario 4, family of four at 200% FPL (MIA net $110/mo vs $356/mo).
+  # ages 45/43/15/13; aca_magi 64_300; md target 2.00%; federal 6.60%.
+  # gap 0.046 * 64_300 = 2_957.80/yr (~246/mo).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 13
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 64_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 18_000
+        aca_ptc: 13_756  # 18_000 - 0.066*64_300
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.02
+    md_premium_assistance: 2_957.80
+
+- name: Scenario 5, family of four at 400% FPL (top of schedule, MIA net $992 vs $1070/mo).
+  # aca_magi 128_600; md target 9.23%; federal 9.96%; gap 0.0073 * 128_600 = 938.78/yr.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 13
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 128_600
+        aca_magi_fraction: 4.00
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 22_000
+        aca_ptc: 9_191  # 22_000 - 0.0996*128_600
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0923
+    md_premium_assistance: 938.78
+
+- name: Scenario 6, young adult age 30 at 250% FPL (YAS overlay, HGO p.59 example).
+  # md target 6.22% - 2.5pp = 3.72%; federal 8.44%; gap 4.72% * 39_125 = 1_846.70/yr.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698  # 6_000 - 0.0844*39_125
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance_target_contribution_percentage: 0.0372
+    md_premium_assistance: 1_846.70
+
+- name: Scenario 7, single age 40 at 401% FPL (over the limit, no subsidy, REQ-014).
+  # aca_magi 62_757; above 400% FPL -> ineligible -> subsidy 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_757
+        aca_magi_fraction: 4.01
+        slcsp: 6_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+    md_premium_assistance: 0
+
+- name: Scenario 8a, young adult age 30 at 200% FPL -> full floor (target 0%).
+  # md target = 2.00% - 2.5pp = 0 (floored, REQ-018); federal 6.60%.
+  # gap = (0.066 - 0) * 31_300 = 2_065.80; cap = 6_000 - 0.066*31_300 = 4_066 -> not binding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 6_000
+        aca_ptc: 1_934  # 6_000 - 0.066*31_300 leaves a 4_066 cap headroom
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance_target_contribution_percentage: 0
+    md_premium_assistance: 2_065.80
+
+- name: Scenario 9, single age 40 at 250% FPL, APTC already covers full premium.
+  # aca_ptc 6_000 == slcsp 6_000 -> cap 0 -> subsidy 0 despite a positive gap (REQ-016).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0622
+    md_premium_assistance: 0
+
+- name: Scenario 8, single age 40 at 250% FPL living in Virginia (non-MD -> 0).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    md_premium_assistance_eligible: false
+    md_premium_assistance: 0
