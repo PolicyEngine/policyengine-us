@@ -9,7 +9,7 @@ class md_premium_assistance(Variable):
     definition_period = YEAR
     defined_for = "md_premium_assistance_eligible"
     reference = (
-        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=3",
+        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=5",
         "https://mgaleg.maryland.gov/meeting_material/2025/hgo%20-%20134051066649659653%20-%20Combined%20MHBE.MIA%20slides_10.16.2025%20briefing%20to%20HGO&Finance.pdf#page=58",
     )
     documentation = (

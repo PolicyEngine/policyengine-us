@@ -10,7 +10,7 @@ class md_premium_assistance_young_adult_reduction(Variable):
     defined_for = StateCode.MD
     reference = (
         "https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14",
-        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=3",
+        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=5",
     )
     documentation = (
         "Young Adult Subsidy overlay reduces the tax unit's target "
