@@ -29,6 +29,29 @@ def test_runner_unit_test_is_not_treated_as_infrastructure():
     )
 
 
+def test_yaml_only_changes_do_not_request_python_coverage():
+    assert (
+        SelectiveTestRunner.get_changed_python_coverage_patterns(
+            {
+                "policyengine_us/parameters/gov/states/nm/tax/income/modified_gross_income.yaml",
+                "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/nm_modified_gross_income.yaml",
+            }
+        )
+        == []
+    )
+
+
+def test_changed_tests_are_not_coverage_targets():
+    assert SelectiveTestRunner.get_changed_python_coverage_patterns(
+        {
+            "policyengine_us/tests/core/test_run_selective_tests.py",
+            "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py",
+        }
+    ) == [
+        "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py"
+    ]
+
+
 def test_limit_test_paths_prefers_directly_changed_tests_for_broad_changes():
     runner = SelectiveTestRunner()
     runner.max_test_targets = 1
@@ -80,6 +103,25 @@ def test_limit_test_paths_defers_slow_ssa_baseline_directory():
 
     assert "policyengine_us/tests/policy/baseline/gov/ssa" not in limited_paths
     assert limited_paths == set()
+
+
+def test_limit_test_paths_defers_slow_household_directories():
+    runner = SelectiveTestRunner()
+
+    changed_files = {
+        "policyengine_us/variables/household/income/person/fsla_overtime_premium.py",
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/microsimulation" not in limited_paths
+    assert "policyengine_us/tests/policy/baseline/household" not in limited_paths
+    assert limited_paths == {
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
 
 
 def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():

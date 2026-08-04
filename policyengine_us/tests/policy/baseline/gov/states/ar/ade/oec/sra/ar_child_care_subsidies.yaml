@@ -1,0 +1,66 @@
+# Federal aggregator: ar_child_care_subsidies = adds ar_sra (annual sum
+# of monthly ar_sra). Verifies the YEAR-level wiring from the federal
+# child_care_subsidies path to AR's monthly benefit.
+
+- name: Case 1, eligible AR family's annual ar_child_care_subsidies equals 12 times the monthly ar_sra (LE_40 tier, no copay).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / REGULAR / FT / LE_40: monthly ar_sra = $770.
+    # Annual ar_child_care_subsidies = 12 * 770 = 9_240.
+    ar_child_care_subsidies: 9_240
+
+- name: Case 2, non-AR household's ar_child_care_subsidies is zero (defined_for guard).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        weekly_hours_worked: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    ar_child_care_subsidies: 0

@@ -3,7 +3,6 @@ metadata:
   label: California standard deduction
   period: year
   unit: currency-USD
-  uprating: gov.states.ca.cpi
   breakdown:
   - filing_status
   reference:
@@ -22,32 +21,47 @@ metadata:
     href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-3-computation-of-taxable-income/article-1-definition-of-gross-income-adjusted-gross-income-taxable-income-etc/section-170735-standard-deduction?searchWithin=true&listingIndexId=california-codes.california-revenue-and-taxation-code.division-2-other-taxes.part-10-personal-income-tax
 
 JOINT:
-  2021-01-01: 9_606
-  2022-01-01: 10_404
-  2023-01-01: 10_726
-  2024-01-01: 11_080
-  2025-01-01: 11_412
+  values:
+    2021-01-01: 9_606
+    2022-01-01: 10_404
+    2023-01-01: 10_726
+    2024-01-01: 11_080
+    2025-01-01: 11_412
+  metadata:
+    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 9_606
-  2022-01-01: 10_404
-  2023-01-01: 10_726
-  2024-01-01: 11_080
-  2025-01-01: 11_412
+  values:
+    2021-01-01: 9_606
+    2022-01-01: 10_404
+    2023-01-01: 10_726
+    2024-01-01: 11_080
+    2025-01-01: 11_412
+  metadata:
+    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
-  2021-01-01: 9_606
-  2022-01-01: 10_404
-  2023-01-01: 10_726
-  2024-01-01: 11_080
-  2025-01-01: 11_412
+  values:
+    2021-01-01: 9_606
+    2022-01-01: 10_404
+    2023-01-01: 10_726
+    2024-01-01: 11_080
+    2025-01-01: 11_412
+  metadata:
+    uprating: gov.states.ca.cpi
 SINGLE:
-  2021-01-01: 4_803
-  2022-01-01: 5_202
-  2023-01-01: 5_363
-  2024-01-01: 5_540
-  2025-01-01: 5_706
+  values:
+    2021-01-01: 4_803
+    2022-01-01: 5_202
+    2023-01-01: 5_363
+    2024-01-01: 5_540
+    2025-01-01: 5_706
+  metadata:
+    uprating: gov.states.ca.cpi
 SEPARATE:
-  2021-01-01: 4_803
-  2022-01-01: 5_202
-  2023-01-01: 5_363
-  2024-01-01: 5_540
-  2025-01-01: 5_706
+  values:
+    2021-01-01: 4_803
+    2022-01-01: 5_202
+    2023-01-01: 5_363
+    2024-01-01: 5_540
+    2025-01-01: 5_706
+  metadata:
+    uprating: gov.states.ca.cpi

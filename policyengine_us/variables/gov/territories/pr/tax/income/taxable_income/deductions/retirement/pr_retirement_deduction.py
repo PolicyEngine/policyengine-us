@@ -20,6 +20,9 @@ class pr_retirement_deduction(Variable):
         contributions = add(
             person,
             period,
-            ["traditional_ira_contributions", "roth_ira_contributions"],
+            [
+                "traditional_ira_contributions",
+                "roth_ira_contributions",
+            ],
         )
         return min_(max_deduction, contributions)

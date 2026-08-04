@@ -1,0 +1,59 @@
+# ia_cca_asset_eligible: SPMUnit, bool, MONTH.
+# Iowa's resource limit is $1,000,000, applied instead of the much tighter federal
+# CCDF asset check. Tests spm_unit_assets <= 1_000_000.
+
+- name: Resources below the one million dollar limit are eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    spm_units:
+      spm_unit:
+        members: [parent]
+        spm_unit_assets: 500_000
+    people:
+      parent:
+        age: 30
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    ia_cca_asset_eligible: true
+
+- name: Resources at exactly the limit are eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    spm_units:
+      spm_unit:
+        members: [parent]
+        spm_unit_assets: 1_000_000
+    people:
+      parent:
+        age: 30
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # 1_000_000 <= 1_000_000 -> eligible (at the limit)
+    ia_cca_asset_eligible: true
+
+- name: Resources above the limit are not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    spm_units:
+      spm_unit:
+        members: [parent]
+        spm_unit_assets: 1_000_001
+    people:
+      parent:
+        age: 30
+    households:
+      household:
+        members: [parent]
+        state_code: IA
+  output:
+    # Just above the $1,000,000 limit -> ineligible
+    ia_cca_asset_eligible: false

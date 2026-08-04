@@ -1,0 +1,171 @@
+- name: Case 1, center full-time infant in a cluster 3 county uses the cluster 3 center infant rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: FULL_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_3
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_maximum_monthly_benefit: [0, 1_245]
+
+- name: Case 2, family part-time infant in a cluster 2 county uses the cluster 2 family infant rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 12
+        id_iccp_provider_type: FAMILY
+        id_iccp_time_category: PART_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_2
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_maximum_monthly_benefit: [0, 593]
+
+- name: Case 3, child with zero childcare hours is not in care and gets no benefit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 0  # not in care
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: FULL_TIME
+        id_iccp_age_group: INFANT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_3
+  output:
+    id_iccp_eligible_child: [false, true]
+    # in_care is false -> maximum monthly benefit floors to 0
+    id_iccp_maximum_monthly_benefit: [0, 0]
+
+- name: Case 4, center full-time toddler in a cluster 2 county uses the cluster 2 center toddler rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2  # 24 months -> TODDLER
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_2
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_age_group: [SCHOOL_AGE, TODDLER]
+    # CENTER, CLUSTER_2, FULL_TIME, TODDLER = 875
+    id_iccp_maximum_monthly_benefit: [0, 875]
+
+- name: Case 5, family full-time school-age child in a cluster 3 county uses the cluster 3 family school-age rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 6  # 72 months -> SCHOOL_AGE
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 40
+        id_iccp_provider_type: FAMILY
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_3
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    # FAMILY, CLUSTER_3, FULL_TIME, SCHOOL_AGE = 697
+    id_iccp_maximum_monthly_benefit: [0, 697]
+
+- name: Case 6, center part-time preschool child in a cluster 1 county uses the cluster 1 center preschool rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3  # 36 months -> PRESCHOOL
+        is_tax_unit_dependent: true
+        childcare_hours_per_week: 12
+        id_iccp_provider_type: CENTER
+        id_iccp_time_category: PART_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        id_iccp_county_cluster: CLUSTER_1
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_age_group: [SCHOOL_AGE, PRESCHOOL]
+    # CENTER, CLUSTER_1, PART_TIME, PRESCHOOL = 511
+    id_iccp_maximum_monthly_benefit: [0, 511]

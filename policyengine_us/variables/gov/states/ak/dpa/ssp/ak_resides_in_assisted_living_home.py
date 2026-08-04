@@ -5,7 +5,7 @@ class ak_resides_in_assisted_living_home(Variable):
     value_type = bool
     entity = Person
     label = "Resides in an Alaska assisted living home"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     default_value = False
     reference = (

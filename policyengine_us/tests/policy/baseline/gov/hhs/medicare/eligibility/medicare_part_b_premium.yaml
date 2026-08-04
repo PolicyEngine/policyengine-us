@@ -113,3 +113,83 @@
     msp_asset_eligible: true
   output:
     medicare_part_b_premium: 2_220
+
+- name: Case 9, 2026 single filer at the IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2024: 109_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    medicare_part_b_premium: 2_434.8
+
+- name: Case 10, 2026 single filer above the IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2024: 109_001
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    medicare_part_b_premium: 3_409.2
+
+- name: Case 11, 2026 joint filer in the second IRMAA tier.
+  period: 2026
+  input:
+    age: 65
+    filing_status: JOINT
+    adjusted_gross_income:
+      2024: 274_001
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    medicare_part_b_premium: 4_869.6
+
+- name: Case 12, 2026 separate filer in the middle IRMAA tier.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2024: 200_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    medicare_part_b_premium: 7_790.4
+
+- name: Case 13, 2026 separate filer at the top IRMAA threshold.
+  period: 2026
+  input:
+    age: 65
+    filing_status: SEPARATE
+    adjusted_gross_income:
+      2024: 391_000
+    tax_exempt_interest_income:
+      2024: 0
+    is_medicare_eligible: true
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: false
+  output:
+    medicare_part_b_premium: 8_278.8

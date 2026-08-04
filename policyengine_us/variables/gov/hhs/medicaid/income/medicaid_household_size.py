@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
+    medicaid_claiming_tax_unit_value,
+    medicaid_external_claimed_sum,
+)
 
 
 class medicaid_household_size(Variable):
@@ -38,10 +42,27 @@ class medicaid_household_size(Variable):
         tax_household_size = person.tax_unit("tax_unit_size", period) + (
             cohabitating_separate.astype(int)
         )
+        person_count = np.ones_like(person.tax_unit("tax_unit_id", period))
+        tax_household_size = tax_household_size + medicaid_external_claimed_sum(
+            person,
+            period,
+            person.tax_unit("tax_unit_id", period),
+            person_count,
+        ).astype(int)
+        known_claiming_tax_unit = person("medicaid_has_known_claiming_tax_unit", period)
+        claimant_tax_household_size = medicaid_claiming_tax_unit_value(
+            person, period, tax_household_size
+        ).astype(int)
 
         # Count the applicant's unborn children in their own household size.
         # The treatment of another household member's pregnancy is state-optional
         # and is not yet parameterized here.
         return where(
-            non_filer_rules, non_filer_household_size, tax_household_size
+            non_filer_rules,
+            non_filer_household_size,
+            where(
+                known_claiming_tax_unit,
+                claimant_tax_household_size,
+                tax_household_size,
+            ),
         ) + person("current_pregnancies", period)

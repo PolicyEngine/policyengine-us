@@ -13,8 +13,10 @@ class medicaid_premium(Variable):
         "variables add their contributions. Michigan Healthy Michigan "
         "contributions were eliminated 2024-01-01 and Montana HELP premiums "
         "were eliminated 2023-01-01; Indiana HIP POWER Account contributions "
-        "have been paused since 2020-03-01. Schedules are still encoded for "
-        "reform analysis."
+        "have been paused since 2020-03-01. Working disabled Buy-In premiums "
+        "are routed through the Medicaid working disabled Buy-In premium "
+        "variable; California 250% Working Disabled Program premiums are zero "
+        "as of 2022-07-01. Schedules are still encoded for reform analysis."
     )
     definition_period = YEAR
     reference = "https://www.medicaid.gov/medicaid/section-1115-demonstrations/"
@@ -22,4 +24,5 @@ class medicaid_premium(Variable):
         "in_hip_power_account_contribution",
         "mi_healthy_michigan_contribution",
         "mt_help_premium",
+        "medicaid_working_disabled_buy_in_premium",
     ]

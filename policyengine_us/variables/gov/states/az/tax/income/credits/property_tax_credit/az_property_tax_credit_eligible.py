@@ -18,7 +18,9 @@ class az_property_tax_credit_eligible(Variable):
         age = person("age", period)
         age_eligible_head_or_spouse = (age >= p.age_threshold) & head_or_spouse
 
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
         head_or_spouse_receives_ssi = (receives_ssi > 0) & head_or_spouse
 
         age_or_ssi_eligible = tax_unit.any(

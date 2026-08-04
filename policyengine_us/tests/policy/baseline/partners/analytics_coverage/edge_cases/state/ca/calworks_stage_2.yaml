@@ -1,0 +1,120 @@
+# CalWORKs Stage 2 child care partner edge cases (monthly program).
+# Stage 2 requires: former CalWORKs recipient, NOT currently on cash aid,
+# within 24 months of exit, income <= 85% SMI, work need, age-eligible child.
+- name: ca_calworks_stage_2_at_24_month_limit_eligible (ca)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: true
+        months_since_calworks_exit: 24
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Exactly at the 24-month post-exit limit -> still Stage 2 (<= 24).
+        # Off cash aid: (2,500 - 450) = 2,050 > 1,526 MBSAC size 2 -> ca_tanf = 0.
+        # Income $2,500/mo <= 85% of CA SMI size 2 ($121,926 x 0.68 / 12 = $6,909/mo).
+        # Fee-exempt: income < 75% SMI. Payment: min($1,253.26 RMR full-time
+        # monthly ceiling, $2,000/mo expenses) = $1,253.26.
+        ca_calworks_stage_2_eligible: true
+        ca_calworks_stage_2: 1_253.26
+- name: ca_calworks_stage_2_still_on_cash_aid_ineligible (ca)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+        was_calworks_recipient: true
+        months_since_calworks_exit: 6
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # $1,000/mo earned keeps the family on CalWORKs cash aid (ca_tanf > 0),
+        # which routes child care to Stage 1, not Stage 2 (stacking rule).
+        ca_calworks_stage_2_eligible: false
+        ca_calworks_stage_2: 0.0

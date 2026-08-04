@@ -1,0 +1,240 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# TX Child Care Services (40 TAC 809), 2026 parameters: income limit 85% of
+# TX SMI (hhs_smi for size 2 = 108,284 x 0.68 = 73,633.12/year -> monthly
+# 6,136.09; 85% limit = 5,215.68/month). Parent share of cost (BCY2026 PSoC):
+# first-child rate = 2% + (SMI% - 1%) x (6.93% - 2%) / (75% - 1%), capped at
+# 7% of income. Benefit = min(childcare expense, board max rate) - copay.
+# tx_ccs_payment_rate is set directly (7,200/year = 600/month) to pin the
+# copay math independent of the provider-rate table; the work requirement
+# (25 hours/week single parent) passes via the weekly_hours_worked_before_lsr
+# default of 40.
+- name: tx_ccs_expense_capped_at_max_rate_copay_deducted (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        # $600/month board maximum rate x 12 (YEAR-period dispatch /12).
+        tx_ccs_payment_rate: 7_200
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        # $1,000/month provider charge, above the $600 board max rate.
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income 2,500/month -> SMI ratio 2,500 / 6,136.09 = 0.40742.
+        # Copay rate = 0.02 + (0.40742 - 0.01) x 0.0666216 = 0.046476;
+        # copay = 116.19/month. Expense 1,000 capped at 600 board max
+        # (post-cap copay deduction, bug fix #8510):
+        # (600 - 116.19) x 12 = 5,805.69.
+        tx_ccs: 5_805.69
+- name: tx_ccs_income_just_below_85pct_smi_max_copay (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        # 62,500/year = 5,208.33/month, just below the 85% SMI limit of
+        # 5,215.68/month (62,588.15/year).
+        employment_income_before_lsr: 62_500
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        tx_ccs_payment_rate: 7_200
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # SMI ratio 5,208.33 / 6,136.09 = 0.84880 -> raw first-child rate
+        # 0.02 + (0.83880 x 0.0666216) = 0.07588, capped at the 7% maximum.
+        # Copay = 0.07 x 5,208.33 = 364.58/month.
+        # Benefit = (600 - 364.58) x 12 = 2,825.00.
+        tx_ccs: 2_825.0
+- name: tx_ccs_income_just_above_85pct_smi_ineligible (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        # 63,000/year = 5,250/month, just above the 85% SMI limit of
+        # 5,215.68/month.
+        employment_income_before_lsr: 63_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        tx_ccs_payment_rate: 7_200
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income route: monthly income exceeds 85% of SMI -> ineligible.
+        tx_ccs: 0.0
+- name: tx_ccs_child_age_13_over_age_limit (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        # Non-disabled children must be under 13.
+        age: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        tx_ccs_payment_rate: 7_200
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Demographic route: no age-eligible child (13 >= 13 limit) -> 0.
+        tx_ccs: 0.0

@@ -1,0 +1,27 @@
+description: North Dakota pays providers this additional monthly amount per infant or toddler under the Child Care Assistance Program.
+
+# Infant/toddler bonus, paid to North Dakota licensed, tribally licensed, or
+# military licensed providers rated at QRIS step 2 or higher, as a separate
+# payment on top of the service-month subsidy. Effective January 1, 2026.
+# Preschool and school-age children receive no bonus.
+
+metadata:
+  period: month
+  unit: currency-USD
+  label: North Dakota CCAP infant/toddler provider bonus
+  breakdown:
+    - nd_ccap_age_group
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: North Dakota HHS Child Care Assistance Program updates 2026
+      href: https://www.hhs.nd.gov/ec-news/child-care-assistance-program-ccap-updates-2026
+
+INFANT:
+  2026-01-01: 200
+TODDLER:
+  2026-01-01: 115
+PRESCHOOL:
+  2026-01-01: 0
+SCHOOL_AGE:
+  2026-01-01: 0

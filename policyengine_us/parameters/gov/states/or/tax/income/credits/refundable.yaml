@@ -9,16 +9,14 @@ values:
   - or_kicker
   - or_529_credit
   - or_working_family_household_and_dependent_care_credit
+  # The Child Tax Credit sunsets after tax year 2028 (HB 3235 Section 11).
+  # The sunset is encoded in gov.states.or.tax.income.credits.ctc.in_effect,
+  # which zeroes or_ctc from 2029, so the credit stays listed here and a
+  # single in_effect switch models renewal scenarios.
   2023-01-01:
   - or_eitc
   - or_kicker
   - or_ctc
-  - or_529_credit
-  - or_working_family_household_and_dependent_care_credit
-  # Child Tax Credit legislation ends in 2029.
-  2029-01-01:
-  - or_eitc
-  - or_kicker
   - or_529_credit
   - or_working_family_household_and_dependent_care_credit
 metadata:

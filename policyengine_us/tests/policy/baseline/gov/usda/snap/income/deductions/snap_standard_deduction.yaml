@@ -56,3 +56,23 @@
     state_group: HI
   output:
     snap_standard_deduction: 250
+
+- name: FY2027 standard deduction uprates the FY2026 value by June 2026 over June 2025 CPI-U actuals.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    state_group: CONTIGUOUS_US
+  output:
+    # 223 * 333.952 / 322.561
+    snap_standard_deduction: 230.88
+
+- name: FY2027 standard deduction for a one-person household.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1
+    state_group: CONTIGUOUS_US
+  output:
+    # 209 * 333.952 / 322.561
+    snap_standard_deduction: 216.38

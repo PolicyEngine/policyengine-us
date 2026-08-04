@@ -1,0 +1,22 @@
+# Standards Sec II.I: an applicant/recipient receiving SSI/SSP is not
+# eligible for General Relief. Reported receipt disqualifies the person
+# even when the computed SSI amount is zero.
+- name: Reported SSI receipt disqualifies the person even with zero computed SSI
+  period: 2026-01
+  input:
+    in_marin: true
+    ssi: 0
+    receives_ssi: true
+    ca_marin_general_relief_immigration_status_eligible_person: true
+  output:
+    ca_marin_general_relief_eligible_person: false
+
+- name: Without SSI receipt, an otherwise-eligible person remains eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    ssi: 0
+    receives_ssi: false
+    ca_marin_general_relief_immigration_status_eligible_person: true
+  output:
+    ca_marin_general_relief_eligible_person: true

@@ -1,0 +1,46 @@
+# Guards that both North Dakota property-tax credits flow through the
+# state_property_tax_credits umbrella (taxsim_state_property_tax_credit). The
+# original nd_renters_refund drop from the 2026 block went uncaught because only
+# variable-level tests existed; these assert the aggregate membership directly.
+
+- name: 2026 umbrella sums both the primary residence credit and the renter's refund
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 2_000
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nd_renters_refund_income: 35_000
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # PRC min($1,600, 2,000) = 1,600; renter's refund
+    # min(600, 9,600 x 0.2 - 35,000 x 0.04) = 520; umbrella = 2,120.
+    nd_primary_residence_credit: 1_600
+    nd_renters_refund: 520
+    taxsim_state_property_tax_credit: 2_120
+
+- name: 2025 umbrella includes the primary residence credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_primary_residence_credit: 1_600
+    taxsim_state_property_tax_credit: 1_600

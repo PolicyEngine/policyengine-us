@@ -1,0 +1,46 @@
+# Liquid asset eligibility: cash assets at or below the limit qualify.
+- name: Assets below the limit are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    spm_unit_cash_assets: 399
+    ca_marin_general_relief_liquid_asset_limit: 400
+  output:
+    ca_marin_general_relief_liquid_asset_eligible: true
+
+- name: Assets at the limit are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    spm_unit_cash_assets: 400
+    ca_marin_general_relief_liquid_asset_limit: 400
+  output:
+    ca_marin_general_relief_liquid_asset_eligible: true
+
+- name: Assets above the limit are ineligible
+  period: 2026-01
+  input:
+    in_marin: true
+    spm_unit_cash_assets: 401
+    ca_marin_general_relief_liquid_asset_limit: 400
+  output:
+    ca_marin_general_relief_liquid_asset_eligible: false
+
+# Couple limit is $800; the inclusive boundary holds at the couple threshold.
+- name: Couple assets at the couple limit are eligible
+  period: 2026-01
+  input:
+    in_marin: true
+    spm_unit_cash_assets: 800
+    ca_marin_general_relief_liquid_asset_limit: 800
+  output:
+    ca_marin_general_relief_liquid_asset_eligible: true
+
+- name: Couple assets above the couple limit are ineligible
+  period: 2026-01
+  input:
+    in_marin: true
+    spm_unit_cash_assets: 801
+    ca_marin_general_relief_liquid_asset_limit: 800
+  output:
+    ca_marin_general_relief_liquid_asset_eligible: false

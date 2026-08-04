@@ -7,3 +7,23 @@
     state_code: OK
   output:
     ok_gross_income: 12_000 + 2_000 + 800
+
+- name: OK gross income includes SSTB self-employment income
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+    state_code: OK
+  output:
+    ok_gross_income: 100_000
+
+- name: OK gross income nets capital gains before applying positive-only rule
+  period: 2024
+  input:
+    short_term_capital_gains: -12_311
+    long_term_capital_gains: 18_713
+    dividend_income: 6_096
+    interest_income: 1_551
+    social_security: 24_517
+    state_code: OK
+  output:
+    ok_gross_income: 38_566

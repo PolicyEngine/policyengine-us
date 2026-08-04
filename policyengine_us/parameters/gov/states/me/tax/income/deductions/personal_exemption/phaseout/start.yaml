@@ -18,6 +18,9 @@ metadata:
       href: https://legislature.maine.gov/statutes/36/title36sec5126-A.html
     - title: 2025 Instructions for Form 1040ME - Worksheet for Phaseout of Personal Exemption Deduction Amount, Line 2
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=6
+    # 2026 phase-out thresholds from MRS 2026 Estimated Tax Worksheet, Line 6b (Phaseout of Personal Exemption Deduction Amount Worksheet, rev. Dec. 2025).
+    - title: 2026 Maine Estimated Tax Worksheet, Line 6b - Phaseout of Personal Exemption Deduction Amount Worksheet
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/26_1040es_pers_exempt_phaseout_wksht.pdf
   breakdown:
     - filing_status
 SINGLE:
@@ -27,11 +30,13 @@ SINGLE:
     2023-01-01: 305_150
     2024-01-01: 323_900
     2025-01-01: 333_450
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+    2026-01-01: 341_000
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 SEPARATE:
   values:
     2021-01-01: 167_700
@@ -39,11 +44,13 @@ SEPARATE:
     2023-01-01: 183_050
     2024-01-01: 194_325
     2025-01-01: 200_050
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 25
+    2026-01-01: 204_575
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 25
 HEAD_OF_HOUSEHOLD:
   values:
     2021-01-01: 307_450
@@ -51,11 +58,13 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 335_650
     2024-01-01: 356_300
     2025-01-01: 366_750
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+    2026-01-01: 375_050
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 JOINT:
   values:
     2021-01-01: 335_400
@@ -63,11 +72,13 @@ JOINT:
     2023-01-01: 366_100
     2024-01-01: 388_650
     2025-01-01: 400_100
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+    2026-01-01: 409_150
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50
 SURVIVING_SPOUSE:
   values:
     2021-01-01: 335_400
@@ -75,8 +86,10 @@ SURVIVING_SPOUSE:
     2023-01-01: 366_100
     2024-01-01: 388_650
     2025-01-01: 400_100
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: downwards
-      interval: 50
+    2026-01-01: 409_150
+  metadata:
+    uprating:
+      parameter: gov.irs.uprating
+      rounding:
+        type: downwards
+        interval: 50

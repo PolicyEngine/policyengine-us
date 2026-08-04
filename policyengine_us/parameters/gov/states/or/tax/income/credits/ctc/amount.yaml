@@ -1,14 +1,25 @@
 description: Oregon provides this maximum Child Tax Credit per qualifying child.
 values:
   2023-01-01: 1_000
+  # The 2024 cost-of-living increase under ORS 315.273(5) fell below $50,
+  # so the amount held at $1,000 (increases round down to the next lower
+  # multiple of $50).
+  2024-01-01: 1_000
   2025-01-01: 1_050
 metadata:
+  # Values after the last Department of Revenue publication are computed in
+  # parameters/uprating_extensions.py per ORS 315.273(5): unchained U.S.
+  # City Average CPI-U for the 12 months ending August 31 of the prior year,
+  # over the 2022 Q2 average, applied to the $1,000 base with each increase
+  # rounded down to the next lower multiple of $50.
   unit: currency-USD
   period: year
   label: Oregon Child Tax Credit amount
   reference:
     - title: 2023R1 House Bill 3235 Section 2 (3)(a)
       href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=1
+    - title: Oregon Revised Statutes Section 315.273(5) (cost-of-living adjustment)
+      href: https://oregon.public.law/statutes/ors_315.273
     - title: 2023 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=18
     - title: 2024 Oregon Income Tax Form OR-40 Instructions

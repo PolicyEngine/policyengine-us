@@ -319,3 +319,51 @@
     # 40 hrs = full-time, $175 per child
     # $700/month > $525 cap, capped at 3 children × $175 = $525
     hi_tanf_dependent_care_deduction: 525
+
+- name: Case 13, disabled adult household member care expenses.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 25
+        is_disabled: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Per State Plan 10.2.1(D): care of a disabled adult household member
+    # up to $175/month (full-time employment, 40 hours >= 32).
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    hi_tanf_dependent_care_deduction: 100
+
+- name: Case 14, adult care expenses without disability are not deducted.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 25
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Person2 is neither a child nor a disabled adult, so no care
+    # recipients: min(100, 0) = 0.
+    hi_tanf_dependent_care_deduction: 0

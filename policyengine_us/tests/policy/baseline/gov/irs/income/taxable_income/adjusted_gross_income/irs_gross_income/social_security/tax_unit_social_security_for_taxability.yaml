@@ -1,0 +1,38 @@
+- name: Dependent Social Security benefits do not count for taxability.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        social_security_retirement: 2_000
+      person2:
+        is_tax_unit_dependent: true
+        social_security_dependents: 8_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    tax_unit_social_security: 10_400
+    tax_unit_social_security_for_taxability: 2_000
+
+- name: Taxability base is zero when only dependents receive benefits.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+        social_security_dependents: 8_400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    tax_unit_social_security: 8_400
+    tax_unit_social_security_for_taxability: 0

@@ -1,4 +1,7 @@
-- name: Test case 1, filing jointly, uses amount on line 18.  
+# Married filers compute the schedule per column (married filing separately
+# on the same form), so each spouse's column uses the half-of-joint base
+# amounts ($16,000/$6,000), fully taxing this benefit at 85% ($850).
+- name: Test case 1, married per-column computation uses the separate base amounts.
   period: 2021
   input:
     social_security: 1_000
@@ -11,7 +14,24 @@
     filing_status: JOINT
     state_code: MT
   output:
-    mt_taxable_social_security: 500 
+    mt_taxable_social_security: 850
+
+# Joint filers run the schedule once with the full joint base amounts
+# ($32,000/$12,000), so the same income is only partially taxed ($500).
+- name: Test case 1b, joint single-column computation uses the full joint base amounts.
+  period: 2021
+  input:
+    social_security: 1_000
+    irs_gross_income: 50_000
+    taxable_social_security: 200
+    tax_exempt_interest_income: 100
+    mt_applicable_ald_deductions: 5_000
+    student_loan_interest_ald: 300
+    mt_subtractions: 2_000
+    filing_status: JOINT
+    state_code: MT
+  output:
+    mt_taxable_social_security_joint: 500
 
 - name: Test case 2, filing single. 
   period: 2021

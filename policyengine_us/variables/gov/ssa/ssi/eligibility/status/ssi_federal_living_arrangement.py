@@ -12,7 +12,7 @@ class ssi_federal_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "SSI federal living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     possible_values = SSIFederalLivingArrangement
     default_value = SSIFederalLivingArrangement.OWN_HOUSEHOLD
     reference = (
@@ -45,7 +45,9 @@ class ssi_federal_living_arrangement(Variable):
             > 0
         )
         is_child_in_parental = (
-            ~is_medical_facility & person("is_child", period) & has_ineligible_parent
+            ~is_medical_facility
+            & person("is_child", period.this_year)
+            & has_ineligible_parent
         )
 
         # 20 CFR § 416.1131–1133: In another person's household

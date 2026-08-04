@@ -18,7 +18,7 @@ class in_ssp_rcap(Variable):
         # deducted from the state standard. The remainder is the state
         # supplementation."
         p = parameters(period).gov.states["in"].fssa.ssp
-        living_arrangement = person("in_ssp_living_arrangement", period.this_year)
+        living_arrangement = person("in_ssp_living_arrangement", period)
         is_licensed = (
             living_arrangement
             == living_arrangement.possible_values.LICENSED_RESIDENTIAL

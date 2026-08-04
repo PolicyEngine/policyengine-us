@@ -1,0 +1,206 @@
+- name: Case 1, California uses the national parent Medicaid income limit table.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    medicaid_parent_income_limit: 1.14
+  absolute_error_margin: 0.0001
+
+- name: Case 2, Virginia Group II uses the regional LIFC income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: HENRICO_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.336896
+  absolute_error_margin: 0.0001
+
+- name: Case 3, Virginia keeps the statewide parent income limit before LIFC tables.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ARLINGTON_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.54
+  absolute_error_margin: 0.0001
+
+- name: Case 4, Virginia Group I uses the regional LIFC income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ACCOMACK_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.277599
+  absolute_error_margin: 0.0001
+
+- name: Case 5, Virginia Group III uses the regional LIFC income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+        state_group_str: CONTIGUOUS_US
+        county: ARLINGTON_COUNTY_VA
+  output:
+    medicaid_parent_income_limit: 0.460322
+  absolute_error_margin: 0.0001
+
+# Issue #8834: Georgia's dollar-based parent/caretaker standard is ~28% FPL,
+# or 0.33 including the 5% MAGI disregard (MACPAC July 2024).
+- name: Case 6, Georgia parent limit before the dollar-standard correction.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.39
+  absolute_error_margin: 0.0001
+
+- name: Case 7, Georgia parent limit is 0.33 FPL (28% + 5% MAGI disregard).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.33
+  absolute_error_margin: 0.0001
+
+- name: Case 8, Georgia parent limit falls to 0.31 FPL in 2025 (26% + 5% MAGI disregard).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.31
+  absolute_error_margin: 0.0001
+
+- name: Case 9, Georgia frozen-dollar parent standard carries the 0.31 FPL level into 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    medicaid_parent_income_limit: 0.31
+  absolute_error_margin: 0.0001
+
+- name: Case 10, Missouri uses the MHF monthly dollar parent limit in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 10
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.113461
+  absolute_error_margin: 0.0001
+
+- name: Case 11, Missouri uses the same dollar limit but a lower FPL ratio in 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 10
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.110197
+  absolute_error_margin: 0.0001
+
+# $301/month * 12 / ($15,650 + 2 * $5,500) = 0.1355347.
+- name: Case 12, Missouri uses the size-3 MHF monthly dollar parent limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.135535
+  absolute_error_margin: 0.0001
+
+# ($1,120/month + 3 * $42/month) * 12
+# / ($15,650 + 24 * $5,500) = 0.1012665.
+- name: Case 13, Missouri extends the MHF table for a size-25 household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_household_size: 25
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+        state_group_str: CONTIGUOUS_US
+  output:
+    medicaid_parent_income_limit: 0.101267
+  absolute_error_margin: 0.0001

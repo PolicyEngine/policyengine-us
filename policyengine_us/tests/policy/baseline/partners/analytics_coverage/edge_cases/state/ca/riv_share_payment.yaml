@@ -1,0 +1,91 @@
+# Riverside County SHARE utility payment (gov/local/ca/riv/share).
+# Eligible when countable income <= 250% of the poverty line; monthly payment
+# = min(electricity, $24) + min(water, $5.25/$5.75) + min(trash, $4.46), plus
+# a $250 emergency electricity payment (not triggered here; requires a
+# disconnection notice input).
+- name: ca_riv_share_low_income_capped_payments (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # $20,000 < 2.5 x FPG(1) = 2.5 x 15,960 = 39,900.
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '92501'
+        county_str: RIVERSIDE_COUNTY_CA
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: *id001
+        # Electricity $20/month (below the $24 cap) and water $4/month (below
+        # the $5.25/$5.75 cap) pay out in full; trash $10/month binds at the
+        # $4.46 cap.
+        pre_subsidy_electricity_expense: 240
+        water_expense: 48
+        trash_expense: 120
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # 240 + 48 + 4.46 x 12 = 240 + 48 + 53.52 = 341.52.
+        ca_riv_share_payment: 341.52
+        ca_riv_share_eligible: true
+- name: ca_riv_share_income_above_250pct_fpg (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # $60,000 > 2.5 x FPG(1) = 39,900 -> income-ineligible.
+        employment_income_before_lsr: 60_000
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CA
+        zip_code: '92501'
+        county_str: RIVERSIDE_COUNTY_CA
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: *id002
+        pre_subsidy_electricity_expense: 240
+        water_expense: 48
+        trash_expense: 120
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        ca_riv_share_payment: 0
+        ca_riv_share_eligible: false

@@ -1,4 +1,4 @@
-description: Iowa has a child/dependent care credit that is a taxable-income-based fraction of the federal credit.
+description: Iowa provides a child/dependent care credit equal to this fraction of the federal credit, based on net income before 2023 and taxable income thereafter.
 metadata:
   period: year
   type: single_amount
@@ -6,14 +6,18 @@ metadata:
   amount_unit: /1
   label: Iowa CDCC fraction
   reference:
+  - title: Iowa Admin. Code r. 701-304.15 (Iowa Code § 422.12C), percentage schedule by net income (pre- and post-2021 columns)
+    href: https://www.legis.iowa.gov/docs/iac/rule/701.304.15.pdf
+  - title: Iowa Admin. Code r. 701-304.15 (Cornell LII mirror)
+    href: https://www.law.cornell.edu/regulations/iowa/Iowa-Code-r-701-304.15
   - title: 2021 IA1040 Iowa Income Tax Return, Line 60
     href: https://revenue.iowa.gov/sites/default/files/2022-01/IA1040%2841-001%29.pdf#page=2
-  - title: 2021 IA1040 Income Tax Return instructions
-    href: https://revenue.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=86
+  - title: 2021 IA1040 Expanded Instructions, Line 60 worksheet (printed page 86)
+    href: https://taxsim.nber.org/historical_state_tax_forms/IA/2021/2021%20Expanded%20Instructions_0.pdf#page=87
   - title: 2022 IA1040 Iowa Income Tax Return, Line 60
     href: https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf#page=2
-  - title: 2022 IA1040 Income Tax Return instructions
-    href: https://revenue.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=86
+  - title: 2022 IA1040 Expanded Instructions, Line 60 worksheet (printed page 86)
+    href: https://taxsim.nber.org/historical_state_tax_forms/IA/2022/2022%20Expanded%20Instructions_022023.pdf#page=86
   - title: 2024 IA1040 Iowa Income Tax Return Instruction, Line 24
     href: https://revenue.iowa.gov/media/4152/download?inline#page=43
   - title: 2025 IA 1040 Expanded Instructions, Child & Dependent Care Credit
@@ -21,30 +25,37 @@ metadata:
 
 brackets:
   - threshold:
-      2021-01-01: -.inf
+      2006-01-01: -.inf
     amount:
-      2021-01-01: 0.75
+      2006-01-01: 0.75
   - threshold:
-      2021-01-01: 10_000
+      2006-01-01: 10_000
     amount:
-      2021-01-01: 0.65
+      2006-01-01: 0.65
   - threshold:
-      2021-01-01: 20_000
+      2006-01-01: 20_000
     amount:
-      2021-01-01: 0.55
+      2006-01-01: 0.55
   - threshold:
-      2021-01-01: 25_000
+      2006-01-01: 25_000
     amount:
-      2021-01-01: 0.50
+      2006-01-01: 0.50
   - threshold:
-      2021-01-01: 35_000
+      2006-01-01: 35_000
     amount:
-      2021-01-01: 0.40
+      2006-01-01: 0.40
   - threshold:
-      2021-01-01: 40_000
+      2006-01-01: 40_000
     amount:
+      2006-01-01: 0.30
+  - threshold:
+      2006-01-01: 45_000
+    amount:
+      # r. 701-304.15: $45,000-$90,000 band is "No Credit" before 2021,
+      # 30% for tax years beginning on or after January 1, 2021.
+      2006-01-01: 0.0
       2021-01-01: 0.30
   - threshold:
-      2021-01-01: 90_000
+      2006-01-01: 90_000
     amount:
-      2021-01-01: 0.0
+      2006-01-01: 0.0

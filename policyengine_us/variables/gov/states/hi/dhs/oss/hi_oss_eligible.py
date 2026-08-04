@@ -21,7 +21,7 @@ class hi_oss_eligible(Variable):
         # payment level. They receive $0 federal SSI but still
         # qualify for a reduced state supplement. Eligibility is
         # therefore categorical (is_ssi_eligible), not ssi > 0.
-        is_eligible = person("is_ssi_eligible", period.this_year)
+        is_eligible = person("is_ssi_eligible", period)
         living_arrangement = person("hi_oss_living_arrangement", period)
         in_qualifying_facility = living_arrangement != HIOSSLivingArrangement.NONE
         return is_eligible & in_qualifying_facility

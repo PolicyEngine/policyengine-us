@@ -5,7 +5,7 @@ class co_state_supplement(Variable):
     value_type = float
     entity = Person
     label = "Colorado State Supplement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "co_state_supplement_eligible"
 
     def formula(person, period, parameters):
@@ -13,5 +13,5 @@ class co_state_supplement(Variable):
         ssi = person("ssi", period)
         total_countable_income = ssi + income
         p = parameters(period).gov.states.co.ssa.state_supplement
-        grant_standard = p.grant_standard * MONTHS_IN_YEAR
+        grant_standard = p.grant_standard
         return max_(0, grant_standard - total_countable_income)

@@ -1,10 +1,17 @@
 description: HUD adjusted income elderly or disabled deduction
 values:
   2001-01-19: 400
+  # HOTMA final rule effective date; universal mandatory PHA compliance
+  # followed on 2025-07-01 (Notice PIH 2024-38).
+  2024-01-01: 525
+  # HUD CY2026 inflationary adjustment (CPI-W, rounded down to a $25 multiple).
+  2026-01-01: 550
 metadata:
   period: year
   unit: currency-USD
   label: HUD elderly or disabled deduction
   reference:
-    - title: 24 CFR § 5.611 - Adjusted income.
-      href: https://www.law.cornell.edu/cfr/text/24/5.611
+    - title: 24 CFR § 5.611(a)(2) - Adjusted income.
+      href: https://www.law.cornell.edu/cfr/text/24/5.611#a_2
+    - title: HUD CY2026 Inflation-Adjusted Values (Table 1)
+      href: https://www.huduser.gov/portal/sites/default/files/datasets/inflationary-adjustments/CY2026-Revised-Amounts-And-Passbook-Rate.pdf#page=2

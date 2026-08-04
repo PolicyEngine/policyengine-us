@@ -1,0 +1,62 @@
+- name: Case 1, medically needy category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 2, working disabled Buy-In category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+
+- name: Case 3, mandatory adult category takes priority over Buy-In.
+  period: 2026
+  input:
+    is_adult_for_medicaid: true
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: ADULT
+
+- name: Case 4, Connecticut SSI recipient passing 209(b) rules is in SSI category.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    medicaid_category: SSI_RECIPIENT
+
+- name: Case 5, Illinois SSI recipient qualifying through 209(b) spenddown is in SSI category.
+  period: 2026
+  input:
+    state_code: IL
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    tax_unit_fpg: 20_000
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 11_000
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    medicaid_category: SSI_RECIPIENT
+
+- name: Case 6, section 1115 MEC adult category.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+
+- name: Case 7, adult group takes priority over section 1115 MEC adult.
+  period: 2027
+  input:
+    is_adult_for_medicaid: true
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: ADULT

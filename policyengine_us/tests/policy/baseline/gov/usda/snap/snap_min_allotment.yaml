@@ -73,3 +73,37 @@
     state_group: CONTIGUOUS_US
   output:
     snap_min_allotment: 40
+
+- name: Before Maryland's supplement took effect, Maryland follows the federal rules
+  period: 2016-01
+  input:
+    spm_unit_size: 1
+    md_snap_elderly_present: true
+    state_code_str: MD
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $194 one-person maximum allotment is $15.52, rounded to
+    # the nearest whole dollar: $16 (the USDA FY 2016 minimum benefit).
+    snap_min_allotment: 16
+
+- name: FY 2025 minimum allotment rounds down to the nearest whole dollar
+  period: 2025-01
+  input:
+    spm_unit_size: 1
+    state_code: CA
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $292 one-person maximum allotment is $23.36, rounded to
+    # the nearest whole dollar per 7 CFR 273.10(e)(2)(ii)(C): $23.
+    snap_min_allotment: 23
+
+- name: FY 2026 minimum allotment rounds up to the nearest whole dollar
+  period: 2026-01
+  input:
+    spm_unit_size: 1
+    state_code: CA
+    state_group: CONTIGUOUS_US
+  output:
+    # 8% of the $298 one-person maximum allotment is $23.84, rounded to
+    # the nearest whole dollar per 7 CFR 273.10(e)(2)(ii)(C): $24.
+    snap_min_allotment: 24

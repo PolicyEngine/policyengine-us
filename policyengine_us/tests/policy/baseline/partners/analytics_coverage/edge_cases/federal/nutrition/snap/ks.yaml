@@ -1,0 +1,290 @@
+# Kansas has not adopted broad-based categorical eligibility (BBCE): the
+# federal 130%-FPG gross income test and the federal asset test both bind
+# (unlike the TX federal.yaml baseline, where BBCE raises the gross limit to
+# 165% and the asset limit to $5,000). Childless couples are used so that TANF
+# categorical eligibility cannot mask the KS non-BBCE tests. KS is not an
+# always-SUA state, so with no utility expense inputs the shelter deduction is
+# zero here. SNAP compares income to the poverty guideline in effect at the
+# preceding Oct 1: Jan-Sep 2026 use the 2025 FPG (2-person $21,150 -> 130%
+# limit $27,495), Oct-Dec 2026 use the 2026 FPG ($21,640 -> $28,132).
+# Boundary incomes are chosen so eligibility does not flip mid-year.
+- name: snap_couple_income_just_below_fy2026_gross_limit_27495 (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 27_395
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Monthly gross 27,395/12 = 2,282.92 vs Jan-Sep limit 1.3 x 21,150/12
+        # = 2,291.25 -> passes the federal gross test all year (Oct-Dec limit
+        # 2,344.33). Net = 2,282.92 x 0.8 - 209 = 1,617.33 -> EC 485.10 ->
+        # 546 - 485.10 = 60.90/month Jan-Sep; Oct-Dec: net 1,609.95 -> EC
+        # 482.70 -> 565.28 - 482.70 = 82.58.
+        # Annual = 9 x 60.90 + 3 x 82.58 = 795.84.
+        snap: 795.84
+        is_snap_eligible: true
+- name: snap_couple_income_at_fy2026_gross_limit_27495 (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 27_495
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id002
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Exactly at the binding FY2026 limit: 27,495 = 1.3 x 21,150 -> gross
+        # ratio 1.30 -> still eligible. Net = 2,291.25 x 0.8 - 209 = 1,624.00
+        # -> EC 487.20 -> 546 - 487.20 = 58.80/month Jan-Sep; Oct-Dec: net
+        # 1,616.62 -> EC 484.80 -> 565.28 - 484.80 = 80.48.
+        # Annual = 9 x 58.80 + 3 x 80.48 = 770.64.
+        snap: 770.64
+        is_snap_eligible: true
+- name: snap_couple_income_above_gross_limit_all_year_28232 (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 28_232
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id003
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side income pin for the non-BBCE route:
+        # 28,232/year exceeds the federal 130% gross limit in every month
+        # (Jan-Sep limit 27,495; Oct-Dec limit 28,132) and Kansas has no BBCE
+        # rescue, so the unit is ineligible all year. The same income would be
+        # eligible in the TX federal.yaml baseline (165% BBCE limit).
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_couple_assets_4000_fails_standard_asset_test (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        snap_assets: 4_000
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side resource pin for the non-BBCE route:
+        # $4,000 exceeds the federal standard asset limit ($3,000 for units
+        # without an elderly/disabled member) and Kansas has no BBCE asset
+        # waiver -> ineligible. The same unit is eligible in TX (BBCE $5,000).
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_couple_head_age_60_assets_4000_passes_elderly_asset_test (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        snap_assets: 4_000
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Same unit as the previous case but the head is 60 (elderly): the
+        # higher elderly/disabled asset limit ($4,500) applies, so $4,000
+        # passes and the age-59/60 asset distinction is observable (0 vs
+        # positive). Net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC 337.20 ->
+        # 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: 565.28 - 334.80 =
+        # 230.48. Annual = 9 x 208.80 + 3 x 230.48 = 2,570.64.
+        snap: 2570.64
+        is_snap_eligible: true

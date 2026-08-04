@@ -10,7 +10,7 @@ class non_refundable_american_opportunity_credit_potential(Variable):
         "Value of the non-refundable portion of the American Opportunity Credit"
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
+    reference = "https://uscode.house.gov/view.xhtml?edition=prelim&num=0&req=granuleid%3AUSC-prelim-title26-section25A"
 
     adds = ["american_opportunity_credit"]
     subtracts = ["refundable_american_opportunity_credit"]

@@ -1,0 +1,24 @@
+description: Iowa assigns a child to a child care rate age group based on their age in years under the Child Care Assistance program. Infant and toddler is two weeks to three years; preschool is three years to school age; school age is a child attending school. Iowa defines the preschool-to-school-age boundary by school attendance rather than a numeric age, so we treat school age as starting at age 5 (kindergarten entry).
+brackets:
+  - threshold:
+      2024-07-01: 0
+    amount:
+      2024-07-01: 0  # INFANT_TODDLER
+  - threshold:
+      2024-07-01: 3
+    amount:
+      2024-07-01: 1  # PRESCHOOL
+  - threshold:
+      2024-07-01: 5
+    amount:
+      2024-07-01: 2  # SCHOOL_AGE
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Iowa CCA child care age group by age
+  reference:
+    - title: IAC 441-170.4(7) — Definitions (infant and toddler; preschool; school age)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=15

@@ -1,0 +1,145 @@
+# Tests for nd_ccap_age_group (Person, MONTH, Enum).
+# Age groups follow the HHS rate-table headers, derived from age in months
+# (age * 12) per 400-28-100-30 / the rate table:
+#   INFANT: birth through 17 months (< 18)
+#   TODDLER: 18 through 35 months (< 36)
+#   PRESCHOOL: 3 years and older (>= 36 months) and not in K-12 school
+#   SCHOOL_AGE: in K-12 school (default)
+# Preschool vs school age is distinguished by is_in_k12_school, not age alone
+# (RI / IN pattern), so a child age 6+ who is not flagged as in school maps to
+# preschool, and the school-age cases set is_in_k12_school.
+
+- name: Case 1, age 0, infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: INFANT
+
+- name: Case 2, age 1 (12 months), still infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.0
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: INFANT
+
+- name: Case 3, exactly 17 months (1.4166), still infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.4166  # 17 months, < 18 infant cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: INFANT
+
+- name: Case 4, exactly 18 months (1.5), switches to toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5  # 18 months, infant cutoff is < 18 so this is toddler
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: TODDLER
+
+- name: Case 5, exactly 35 months (2.9166), still toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.9166  # 35 months, < 36 toddler cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: TODDLER
+
+- name: Case 6, exactly 36 months (3.0), switches to preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3.0  # 36 months, toddler cutoff is < 36 so this is preschool
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: PRESCHOOL
+
+- name: Case 7, age 4, preschool (not in school).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4.0  # is_in_k12_school imputes school only from age 5, so age 4 is preschool
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: PRESCHOOL
+
+- name: Case 7b, age 6 explicitly not in school, preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6.0
+        is_in_k12_school: false  # override the age-5+ school imputation
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    # Preschool runs from 3 years until the child is in K-12 school, so a
+    # 6-year-old not yet in school is classified preschool by the rate table.
+    nd_ccap_age_group: PRESCHOOL
+
+- name: Case 8, age 7 in K-12 school, school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 7.0
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: SCHOOL_AGE
+
+- name: Case 9, age 10 in K-12 school, school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10.0
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_age_group: SCHOOL_AGE

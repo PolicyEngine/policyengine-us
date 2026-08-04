@@ -9,7 +9,86 @@
 - name: 70% match
   period: 2023
   input:
-    state_code: DC
-    eitc: 100
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        filer_adjusted_earnings: 294.11764705882354
+        adjusted_gross_income: 294.11764705882354
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
   output:
     dc_eitc_with_qualifying_child: 70
+
+- name: DC EITC with qualifying child includes ITIN child in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        is_tax_unit_head: true
+      child:
+        age: 5
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: DC
+  output:
+    dc_eitc_with_qualifying_child: 3_400
+
+- name: DC EITC with qualifying child counts a disabled adult dependent (IRC 152(c)(3)(B))
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      disabled_adult:
+        age: 29
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, disabled_adult]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, disabled_adult]
+    households:
+      household:
+        members: [head, disabled_adult]
+        state_code: DC
+  output:
+    # The permanently and totally disabled adult dependent is a qualifying
+    # child under IRC 152(c)(3)(B), so the DC EITC uses the with-children
+    # match ($3,400 = 100% of the 1-child federal-like EITC at $10k earnings)
+    # and the childless schedule returns zero.
+    dc_eitc_with_qualifying_child: 3_400
+    dc_eitc_without_qualifying_child: 0

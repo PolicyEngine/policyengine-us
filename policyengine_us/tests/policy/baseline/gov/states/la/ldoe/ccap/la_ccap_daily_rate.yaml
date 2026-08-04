@@ -1,0 +1,155 @@
+# State maximum daily rates per LAC 28:CLXV.515.A (LR 48:1270, May 20, 2022).
+- name: Case 1, infant in a Type III early learning center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        la_ccap_provider_type: TYPE_III_EARLY_LEARNING_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 68
+
+- name: Case 2, toddler with a family child care provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        la_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 42
+
+- name: Case 3, preschooler with an in-home provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 5
+        la_ccap_provider_type: IN_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 25
+
+- name: Case 4, school-age child in a school child care center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        la_ccap_provider_type: SCHOOL_CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 24
+
+- name: Case 5, school-age child in a military child care center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        la_ccap_provider_type: MILITARY_CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 31.5
+
+- name: Case 6, disabled child receives the special needs incentive rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        is_disabled: true
+        la_ccap_provider_type: TYPE_III_EARLY_LEARNING_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 39.69
+
+- name: Case 7, disabled infant in a Type III early learning center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_disabled: true
+        la_ccap_provider_type: TYPE_III_EARLY_LEARNING_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 85.68
+
+- name: Case 8, disabled toddler with a family child care provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        is_disabled: true
+        la_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 52.92
+
+- name: Case 9, disabled school-age child in a school child care center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 7
+        is_disabled: true
+        la_ccap_provider_type: SCHOOL_CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 30.24
+
+- name: Case 10, disabled toddler with an in-home provider.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        is_disabled: true
+        la_ccap_provider_type: IN_HOME
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_daily_rate: 31.82

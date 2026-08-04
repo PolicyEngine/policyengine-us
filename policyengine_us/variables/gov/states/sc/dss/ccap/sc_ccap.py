@@ -24,5 +24,5 @@ class sc_ccap(Variable):
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        uncapped = max_(pre_subsidy_childcare_expenses - copay, 0)
-        return min_(uncapped, maximum_monthly_benefit)
+        capped_expenses = min_(pre_subsidy_childcare_expenses, maximum_monthly_benefit)
+        return max_(capped_expenses - copay, 0)

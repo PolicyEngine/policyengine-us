@@ -1,4 +1,3 @@
-from unicodedata import category
 from policyengine_us.model_api import *
 
 
@@ -13,6 +12,10 @@ class MedicaidCategory(Enum):
     SSI_RECIPIENT = "SSI recipient"
     SENIOR_OR_DISABLED = " Senior or disabled"
     NONE = "None"
+    MEDICALLY_NEEDY = "Medically needy"
+    WORKING_DISABLED_BUY_IN = "Working disabled Buy-In"
+    SECTION_1115_MEC_ADULT = "Section 1115 MEC adult"
+    HEALTHIER_MISSISSIPPI_WAIVER = "Healthier Mississippi Waiver"
 
 
 class medicaid_category(Variable):
@@ -58,6 +61,14 @@ class medicaid_category(Variable):
             is_adult_for_medicaid=MedicaidCategory.ADULT,
             # 7. Optional aged/blind/disabled pathway (non-SSI)
             is_optional_senior_or_disabled_for_medicaid=MedicaidCategory.SENIOR_OR_DISABLED,
+            # 8. Medically needy/spenddown pathways for people otherwise
+            #    outside the mandatory or optional categorical pathways.
+            is_medically_needy_for_medicaid=MedicaidCategory.MEDICALLY_NEEDY,
+            # 9. Medicaid Buy-In pathways for working disabled people.
+            is_working_disabled_buy_in_for_medicaid=MedicaidCategory.WORKING_DISABLED_BUY_IN,
+            # 10. Adult-like section 1115 demonstration coverage that
+            #     provides minimum essential coverage.
+            is_medicaid_1115_mec_adult=MedicaidCategory.SECTION_1115_MEC_ADULT,
         )
 
         # Ensure parametric reforms to the list of categories prevent those
@@ -68,6 +79,9 @@ class medicaid_category(Variable):
             for name, category in variable_to_category.items()
             if name in categories
         }
+        variable_to_category["ms_hmw_eligible"] = (
+            MedicaidCategory.HEALTHIER_MISSISSIPPI_WAIVER
+        )
 
         return select(
             [person(variable, period) for variable in variable_to_category.keys()],

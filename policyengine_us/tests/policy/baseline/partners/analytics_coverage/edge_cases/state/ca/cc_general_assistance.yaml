@@ -1,0 +1,42 @@
+# Contra Costa County General Assistance (gov/local/ca/cc/ga).
+# Fill-the-gap grant for adults (18+) without dependent children: single
+# $336 / couple $454 per month minus countable income; personal property
+# <= $500; no SSI/SSDI/UI/SDI receipt. Amplifi expansion county (in_cc).
+- name: ca_cc_single_no_income_max_grant (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '94520'
+        county_str: CONTRA_COSTA_COUNTY_CA
+        in_cc: true
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Single rate $336/month with zero countable income: 336 x 12 = 4,032.
+        ca_cc_general_assistance: 4_032
+        ca_cc_general_assistance_eligible: true

@@ -1,0 +1,33 @@
+# Financial eligibility per Sec 80.2.d: net countable income must be below the
+# maximum aid payment. The size-1 MAP is $355/month.
+- name: An adult with no income is below the maximum aid payment.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_income_eligible: true
+
+- name: An adult whose countable income is below the maximum aid payment is income eligible.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    employment_income: 4_800  # 400/month; 20% earned deduction -> 320 countable < 355
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_income_eligible: true
+
+- name: An adult whose countable income exceeds the maximum aid payment is not income eligible.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    employment_income: 12_000  # 1,000/month; 20% earned deduction -> 800 countable > 355
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_income_eligible: false

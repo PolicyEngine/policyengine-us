@@ -33,7 +33,7 @@ def _parameter_tree():
     gov.fcc.ebb.categorical_eligibility = ["pell_grant"]
     gov.fcc.ebb.prior_enrollment_required = True
     gov.fcc.lifeline = Node()
-    gov.fcc.lifeline.categorical_eligibility = ["medicaid"]
+    gov.fcc.lifeline.categorical_eligibility = ["medicaid_enrolled"]
     gov.fcc.lifeline.tribal_categorical_eligibility = ["fdpir"]
     return _Parameters(gov)
 
@@ -49,7 +49,7 @@ def test_acp_lifeline_categorical_eligibility_is_vectorized(monkeypatch):
     program_values = {
         "lifeline": np.array([0, 0, 0]),
         "wic": np.array([0, 0, 0]),
-        "medicaid": np.array([1, 1, 0]),
+        "medicaid_enrolled": np.array([1, 1, 0]),
         "fdpir": np.array([0, 0, 1]),
     }
 

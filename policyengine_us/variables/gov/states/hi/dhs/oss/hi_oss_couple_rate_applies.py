@@ -17,7 +17,7 @@ class hi_oss_couple_rate_applies(Variable):
 
     def formula(person, period, parameters):
         joint_claim = person("ssi_claim_is_joint", period.this_year)
-        is_eligible = person("is_ssi_eligible", period.this_year)
+        is_eligible = person("is_ssi_eligible", period)
         both_ssi_eligible = (
             person.marital_unit.sum(is_eligible) == person.marital_unit.nb_persons()
         )

@@ -1,0 +1,182 @@
+# nv_ccdp_countable_income: SPMUnit, float (USD), YEAR
+# MS 306 gross from the source list minus MS 302 child support paid, floored at 0.
+# SSI is EXEMPT in Nevada and is NOT in the source list.
+
+- name: Sums earned and unearned countable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        social_security: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 24_000 + 6_000 = 30_000; no child support paid
+    nv_ccdp_countable_income: 30_000
+
+- name: Deducts court-ordered child support paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        child_support_expense: 4_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 30_000 gross - 4_000 child support paid = 26_000
+    nv_ccdp_countable_income: 26_000
+
+- name: SSI is excluded from countable income in Nevada.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        ssi: 9_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # Only employment_income counts; SSI is exempt -> 12_000
+    nv_ccdp_countable_income: 12_000
+
+- name: Counts disability insurance, gambling winnings, and general assistance.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        disability_benefits: 5_000
+        gambling_winnings: 2_000
+        general_assistance: 3_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # MS 306 counts disability insurance benefits, gambling winnings (306.15),
+    # and general assistance (306.42): 12_000 + 5_000 + 2_000 + 3_000 = 22_000.
+    nv_ccdp_countable_income: 22_000
+
+- name: Countable income floors at zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_000
+        child_support_expense: 5_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # max(3_000 - 5_000, 0) = 0
+    nv_ccdp_countable_income: 0
+
+# Edge cases: zero income, maximum income, and negative income with no deductions.
+
+- name: Zero income yields zero countable income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # no income sources -> 0
+    nv_ccdp_countable_income: 0
+
+- name: Negative self-employment income with no deductions floors at zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -50_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # max(-50_000 - 0, 0) = 0 (no child support paid)
+    nv_ccdp_countable_income: 0
+
+- name: Maximum income sums all countable sources.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 500_000
+        social_security: 40_000
+        rental_income: 60_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # 500_000 + 40_000 + 60_000 = 600_000; no child support paid
+    nv_ccdp_countable_income: 600_000

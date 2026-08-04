@@ -1,0 +1,782 @@
+# ACA PTC federal edge cases, anchored in TX (non-expansion) / Dallas County
+# (rating area 8; 2026 age-0 SLCSP $414.00/month, 2025 $287.00/month).
+# aca_magi_fraction uses PRIOR-year FPG (Form 8962 Line 4): 2026 cases divide
+# by the 2025 FPG ($15,650 + $5,500/extra person); 2025 cases by the 2024 FPG
+# ($15,060). Default federal age curve: age 30 -> 1.4837, 33 -> 1.566,
+# 35 -> 1.5974, 40 -> 1.6706, 60 -> 3.5477.
+- name: aca_ptc_single_at_99pct_fpl_below_floor_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_500
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 15,500 / 15,650 (2025 FPG) = 0.99 < 1.00: below the IRC 36B(c)(1)(A)
+        # floor; citizen, so no below-FPL immigration exception (repealed 2026
+        # by OBBBA anyway). TX non-expansion: no Medicaid either (coverage gap).
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_single_at_101pct_fpl_near_full_subsidy (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_900
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 15,900 / 15,650 = 1.01 (just over the 100% floor).
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # SLCSP = 414.00 x 1.4837 x 12 = 7,371.02; applicable figure 2.1%
+        # (2026 first bracket): PTC = 7,371.02 - 0.021 x 15,900 = 7,037.12.
+        aca_ptc: 7_037.12
+        premium_tax_credit: 7_037.12
+- name: aca_ptc_single_at_399pct_fpl_phase_out (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 62_500
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 62,500 / 15,650 = 3.99: last eligible bracket below the restored
+        # 2026 400% cliff.
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # Applicable figure 9.96% (2026 300-400% bracket, flat):
+        # PTC = 7,371.02 - 0.0996 x 62,500 = 1,146.02.
+        aca_ptc: 1_146.02
+        premium_tax_credit: 1_146.02
+- name: aca_ptc_single_at_401pct_fpl_above_cliff_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 62_900
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 62,900 / 15,650 = 4.01 > 4.00: the ARPA/IRA over-400% extension
+        # expired for 2026, restoring the cliff (income eligibility parameter
+        # flips back to false above 400% on 2026-01-01).
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_family_no_employer_offer (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # Child at 50,000 / 27,320 (2026 FPG, family of 3) = 183% of poverty:
+        # above the TX age-1-5 Medicaid limit but under the TX CHIP limit
+        # (201%), so the child gets CHIP (TX per-capita CHIP amount) and is
+        # excluded from the marketplace SLCSP (CHIP is ineligible coverage
+        # under 26 USC 36B(c)(2)).
+        is_chip_eligible: true
+        chip: 1_456.51
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        # Adults-only SLCSP = 414.00 x (1.5974 + 1.566) x 12 = 15,715.77.
+        # MAGI fraction = floor(100 x 50,000 / 26,650) / 100 = 1.87; figure
+        # = 0.0419 + (1.87 - 1.50) / 0.50 x (0.066 - 0.0419) = 0.059734.
+        # PTC = 15,715.77 - 0.059734 x 50,000 = 12,729.07.
+        aca_ptc: 12_729.07
+        premium_tax_credit: 12_729.07
+- name: aca_ptc_family_employer_affordable_offer_head_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: true
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # ESHI offer makes the offer-holder ineligible; spouse stays eligible.
+        is_aca_ptc_eligible: false
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        is_chip_eligible: true
+        chip: 1_456.51
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        # Spouse-only SLCSP = 414.00 x 1.566 x 12 = 7,779.89 (head has an
+        # employer offer; child on CHIP). PTC = 7,779.89 - 0.059734 x 50,000
+        # = 4,793.19.
+        aca_ptc: 4_793.19
+        premium_tax_credit: 4_793.19
+- name: aca_ptc_married_filing_separately_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 42_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        filing_status: SEPARATE
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 42,000 / 21,150 = 1.98 is income-eligible, but IRC 36B(c)(1)(C)
+        # bars married-filing-separately units.
+        is_aca_ptc_eligible: false
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_medicare_eligible_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id008
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        # Aged 65+ with zero countable resources passes the SSI categorical
+        # and resource tests (income is tested downstream, so ssi stays 0).
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        # MSP uses SSI income methodology: countable = (30,000 - 240 - 780)/2
+        # = 14,490/yr = 1,207.50/mo < QMB limit (100% of 2026 FPG, 1,330/mo).
+        # QMB value = 12 x (565.00 Part A + 202.90 Part B premiums) = 9,214.80.
+        msp: 9_214.80
+        msp_eligible: true
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # Age 67 triggers Medicare eligibility, which is disqualifying
+        # coverage for the PTC under 26 USC 36B(c)(2)(B).
+        is_medicare_eligible: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_negative_self_employment_income_magi_clamp (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        self_employment_income_before_lsr: -20_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id009
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # A self-employment loss cannot flip eligibility or inflate the
+        # credit: aca_magi_fraction clamps MAGI at 0 (max_(0, magi)), which
+        # is below the 100% floor.
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_magi_fraction: 0.0
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_single_above_400pct_fpl_2025_capped_contribution (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 62_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id010
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 62,000 / 15,060 (2024 FPG) = 4.11: over 400% FPL but still eligible
+        # in 2025 (IRA regime, no cliff), contribution capped at 8.5%.
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # 2025 SLCSP = 287.00 x 3.5477 (age-60 multiplier) x 12 = 12,218.28.
+        # PTC = 12,218.28 - 0.085 x 62,000 = 6,948.28.
+        aca_ptc: 6_948.28
+        premium_tax_credit: 6_948.28
+- name: aca_ptc_below_fpl_lawfully_present_immigrant_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        # LPR in the five-year Medicaid bar (entered the US 2 years ago):
+        # lawfully present for ACA, Medicaid-ineligible by alien status.
+        immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        employment_income_before_lsr: 12_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id011
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # 12,000 / 15,060 = 0.79, below 100% FPL, but the 26 USC 36B(c)(1)(B)
+        # exception (in effect through 2025; repealed for 2026 by OBBBA)
+        # grants eligibility to lawfully present immigrants who are
+        # Medicaid-barred by alien status.
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # 2025 applicable figure is 0% below 150% FPL, so the PTC equals the
+        # full SLCSP: 287.00 x 1.5974 x 12 = 5,501.45.
+        aca_ptc: 5_501.45
+        premium_tax_credit: 5_501.45

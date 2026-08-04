@@ -1,0 +1,34 @@
+description: Michigan limits Child Development and Care applicants to this maximum monthly gross program-group income by family size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Michigan CDC income entry limit
+  breakdown:
+    - range(1, 11)
+  breakdown_labels:
+    - Program group size
+  reference:
+    - title: RFT 270, CDC Income Eligibility Scale (effective September 21, 2025)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=3
+
+1:
+  2025-09-21: 2_608
+2:
+  2025-09-21: 3_526
+3:
+  2025-09-21: 4_442
+4:
+  2025-09-21: 5_358
+5:
+  2025-09-21: 6_276
+6:
+  2025-09-21: 7_192
+7:
+  2025-09-21: 8_108
+8:
+  2025-09-21: 9_026
+9:
+  2025-09-21: 9_942
+10:
+  2025-09-21: 10_858

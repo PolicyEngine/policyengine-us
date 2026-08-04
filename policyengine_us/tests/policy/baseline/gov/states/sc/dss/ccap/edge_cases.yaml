@@ -170,12 +170,12 @@
     # Center C Rural FT Age 3 = $127/wk
     # Monthly max rate = $127 * 52 / 12 = $550.33
     # Monthly expenses = $12,000 / 12 = $1,000
-    # Monthly uncapped = max(1,000 - 26, 0) = $974
-    # Monthly benefit = min(974, 550.33) = $550.33
-    # Annual benefit = $550.33 * 12 = $6,604
+    # Capped expenses = min(1,000, 550.33) = $550.33
+    # Monthly benefit = max(550.33 - 26, 0) = $524.33
+    # Annual benefit = $524.33 * 12 = $6,292
     sc_ccap_copay: 312
     sc_ccap_eligible: true
-    sc_ccap: 6_604
+    sc_ccap: 6_292
 
 - name: Case 5, income one dollar below first copay threshold family size 2.
   period: 2025

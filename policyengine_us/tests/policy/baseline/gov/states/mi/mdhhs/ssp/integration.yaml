@@ -67,14 +67,14 @@
   input:
     people:
       person1:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
@@ -104,14 +104,14 @@
   input:
     people:
       person1:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
       person2:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
@@ -141,14 +141,14 @@
   input:
     people:
       person1:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
@@ -200,14 +200,14 @@
   input:
     people:
       person1:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
       person2:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
@@ -237,8 +237,8 @@
   input:
     people:
       person1:
-        # $943/mo SSI = $11,316/yr individual FBR
-        ssi: 11_316
+        # $943/mo SSI individual FBR
+        ssi: 943
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
@@ -308,14 +308,14 @@
   input:
     people:
       person1:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
       person2:
-        # $30/mo SSI = $360/yr institutional rate
-        ssi: 360
+        # $30/mo SSI institutional rate
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
@@ -345,12 +345,12 @@
   input:
     people:
       person1:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: DOMICILIARY_CARE
@@ -380,12 +380,12 @@
   input:
     people:
       person1:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: PERSONAL_CARE
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: PERSONAL_CARE
@@ -415,12 +415,12 @@
   input:
     people:
       person1:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: PERSONAL_CARE
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: PERSONAL_CARE
@@ -450,12 +450,12 @@
   input:
     people:
       person1:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
@@ -485,12 +485,12 @@
   input:
     people:
       person1:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOME_FOR_AGED
@@ -543,7 +543,7 @@
   input:
     people:
       person1:
-        ssi: 11_316
+        ssi: 943
         mi_ssp_living_arrangement: NONE
     spm_units:
       spm_unit:
@@ -627,12 +627,12 @@
   input:
     people:
       person1:
-        ssi: 8_484
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
       person2:
-        ssi: 8_484
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
@@ -661,12 +661,12 @@
   input:
     people:
       person1:
-        ssi: 8_484
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        ssi: 360
+        ssi: 30
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: PERSONAL_CARE
@@ -741,7 +741,7 @@
   input:
     people:
       person1:
-        ssi: 11_316
+        ssi: 943
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
     spm_units:
       spm_unit:
@@ -764,8 +764,8 @@
         age: 8
         is_disabled: true
         # Child receives federal SSI at 2024 individual FBR
-        # $943/mo = $11,316/yr
-        ssi: 11_316
+        # $943/mo
+        ssi: 943
         # mi_ssp_living_arrangement defaults to INDEPENDENT_LIVING
     spm_units:
       spm_unit:
@@ -820,9 +820,9 @@
     people:
       person1:
         is_ssi_eligible: true
-        # uncapped_ssi annual = -600 → monthly spillover = $50.
+        # uncapped_ssi monthly spillover = -$50.
         # Personal Care SSP base = $157.50/mo. Result = max_(0, 157.50 - 50) = $107.50.
-        uncapped_ssi: -600
+        uncapped_ssi: -50
         mi_ssp_living_arrangement: PERSONAL_CARE
     spm_units:
       spm_unit:

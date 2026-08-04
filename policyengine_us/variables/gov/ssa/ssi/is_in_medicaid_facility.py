@@ -7,5 +7,5 @@ class is_in_medicaid_facility(Variable):
     label = (
         "Whether the person resides in a Medicaid-funded nursing facility or ICF/IID"
     )
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/1382"

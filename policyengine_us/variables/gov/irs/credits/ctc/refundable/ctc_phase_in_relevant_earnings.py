@@ -20,6 +20,6 @@ class ctc_phase_in_relevant_earnings(Variable):
         # as earned income "within the meaning of section 32", which per
         # IRC 32(c)(2)(A)(ii) is determined "with regard to the deduction
         # allowed to the taxpayer by section 164(f)" (half of SE tax).
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        earnings = tax_unit("eitc_earned_income", period)
         earnings_over_threshold = max_(0, earnings - ctc.refundable.phase_in.threshold)
         return earnings_over_threshold * ctc.refundable.phase_in.rate

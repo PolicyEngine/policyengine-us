@@ -1,0 +1,102 @@
+description: Georgia provides these reimbursement rates for informal child care providers under the Childcare and Parent Services program.
+metadata:
+  unit: currency-USD
+  period: week
+  label: Georgia CAPS informal child care reimbursement rates
+  breakdown:
+    - ga_caps_zone
+    - ga_caps_age_group
+    - ga_caps_care_type
+  reference:
+    - title: Georgia CAPS Appendix C - Reimbursement Rates (effective March 2, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=1
+
+ZONE_1:
+  INFANT:
+    FULL_TIME:
+      2026-03-02: 199
+    PART_TIME:
+      2026-03-02: 53
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 68
+  TODDLER:
+    FULL_TIME:
+      2026-03-02: 188
+    PART_TIME:
+      2026-03-02: 53
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 68
+  PRESCHOOL:
+    FULL_TIME:
+      2026-03-02: 180
+    PART_TIME:
+      2026-03-02: 53
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 68
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-03-02: 156
+    PART_TIME:
+      2026-03-02: 53
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 68
+
+ZONE_2:
+  INFANT:
+    FULL_TIME:
+      2026-03-02: 145
+    PART_TIME:
+      2026-03-02: 40
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 58
+  TODDLER:
+    FULL_TIME:
+      2026-03-02: 140
+    PART_TIME:
+      2026-03-02: 40
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 58
+  PRESCHOOL:
+    FULL_TIME:
+      2026-03-02: 135
+    PART_TIME:
+      2026-03-02: 40
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 58
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-03-02: 135
+    PART_TIME:
+      2026-03-02: 40
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 58
+
+ZONE_3:
+  INFANT:
+    FULL_TIME:
+      2026-03-02: 120
+    PART_TIME:
+      2026-03-02: 35
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 47
+  TODDLER:
+    FULL_TIME:
+      2026-03-02: 110
+    PART_TIME:
+      2026-03-02: 35
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 47
+  PRESCHOOL:
+    FULL_TIME:
+      2026-03-02: 105
+    PART_TIME:
+      2026-03-02: 35
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 47
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-03-02: 94
+    PART_TIME:
+      2026-03-02: 35
+    BEFORE_AFTER_SCHOOL:
+      2026-03-02: 47

@@ -19,4 +19,13 @@ class az_increased_standard_deduction_for_charitable_contributions(Variable):
         charitable_deduction_after_credit = max_(
             charitable_deduction - charitable_contributions_credit, 0
         )
-        return p.rate * charitable_deduction_after_credit
+        # Through TY2025, the add-on is a share of charitable contributions
+        # (the rate). From TY2026 (HB 4168), the rate is zero and the add-on
+        # becomes the full IRC 170(c) charitable contribution amount, capped
+        # by filing status. The two regimes do not overlap.
+        rate_based_amount = p.rate * charitable_deduction_after_credit
+        filing_status = tax_unit("az_filing_status", period)
+        capped_full_amount = min_(
+            charitable_deduction_after_credit, p.cap[filing_status]
+        )
+        return rate_based_amount + capped_full_amount

@@ -11,7 +11,11 @@ class ca_federal_cdcc(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
+        # California conforms to the pre-ARPA IRC 21(e)(2) joint-return
+        # requirement and its 21(e)(4) separated-taxpayer exception
+        # (FTB 3506 instructions, Section E).
+        eligible = tax_unit("cdcc_filing_status_eligible", period)
         relevant_expenses = tax_unit("ca_cdcc_relevant_expenses", period)
         credit_rate = tax_unit("ca_cdcc_rate", period)
 
-        return relevant_expenses * credit_rate
+        return eligible * relevant_expenses * credit_rate

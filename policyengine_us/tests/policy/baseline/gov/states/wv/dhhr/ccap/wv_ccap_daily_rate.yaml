@@ -1,0 +1,189 @@
+# WV CCAP Daily Provider Rate Tests
+
+- name: Case 1, center Tier I infant rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Infant (0-12 months), Center, Tier I = $39
+    wv_ccap_daily_rate: [0, 39]
+
+- name: Case 2, family home Tier II toddler rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2.5
+        # 2.5 years = 30 months -> TODDLER (25-36mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: FAMILY_HOME
+        wv_ccap_quality_tier: TIER_II
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Toddler (25-36 months), Family Home, Tier II = $33
+    wv_ccap_daily_rate: [0, 33]
+
+- name: Case 3, family facility Tier III preschool rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: FAMILY_FACILITY
+        wv_ccap_quality_tier: TIER_III
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Preschool (37-59 months), Family Facility, Tier III = $39
+    wv_ccap_daily_rate: [0, 39]
+
+- name: Case 4, out of school time rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: OUT_OF_SCHOOL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Out of School Time Tier I = $14.50
+    wv_ccap_daily_rate: [0, 14.5]
+
+- name: Case 5, informal relative under 2 rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: INFORMAL_RELATIVE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Under 2, Informal/Relative = $7.50
+    wv_ccap_daily_rate: [0, 7.5]
+
+- name: Case 6, informal relative age 2+ rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: INFORMAL_RELATIVE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 2+, Informal/Relative = $6.00
+    wv_ccap_daily_rate: [0, 6]
+
+- name: Case 7, center Tier III school age rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_III
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # School Age (60+ months), Center, Tier III = $39
+    wv_ccap_daily_rate: [0, 39]

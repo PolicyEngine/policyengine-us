@@ -1,0 +1,300 @@
+# Per-child monthly subsidy = max(min(expense, rate x days) - copay x days, 0).
+# Days = childcare_days_per_week x 52/12, capped at 22 per month; with 5 days
+# per week, days = 21.67. January 2026 uses the 2025 sliding fee scale.
+- name: Case 1, zero-copay family with a toddler in a Type III center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800  # $3,400/month, $0 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000  # $1,000/month.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Toddler rate $42 x 21.67 days = $910; capped at min($1,000, $910); no copay.
+    la_ccap: 910
+
+- name: Case 2, $2 daily copay reduces the subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month, $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # $910 - $2 x 21.67 days = $866.67.
+    la_ccap: 866.67
+
+- name: Case 3, part-time hours prorate the monthly day maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_hours_per_week: 15
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # 22 days x 15/30 hours = 11 days; $42 x 11 = $462; minus $2 x 11 = $440.
+    la_ccap: 440
+
+- name: Case 4, child not in care receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 0
+        childcare_hours_per_week: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap: 0
+
+- name: Case 5, TANF-enrolled family gets the full rate with no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # Above the income limit; categorical bypass.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_eligible: true
+    la_ccap: 910
+
+- name: Case 6, negative self-employment income does not inflate the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -$5,000/month.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Copay income floors at zero: $0 band; subsidy stays at the $910 cap.
+    la_ccap: 910
+
+- name: Case 7, household outside Louisiana receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    la_ccap_eligible: false
+    la_ccap: 0
+
+- name: Case 8, disabled child gets the special needs rate and a copay waiver.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band, waived for the disabled child.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        is_disabled: true
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Special needs toddler rate $52.92 x 21.67 = $1,146.60, capped at the
+    # $1,000 monthly expense; no copay for a child with disabilities.
+    la_ccap: 1_000
+
+- name: Case 9, the 2024 scale copay band applies in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month, $3 band on the 2024 scale.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_daily_copay: 3
+    # Toddler rate $42 x 21.67 = $910, below the $1,000 monthly expense;
+    # copay $3 x 21.67 = $65; $910 - $65 = $845.
+    la_ccap: 845
+
+- name: Case 10, part-time schedule with attendance days bills hourly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 3  # Derives 15 hours/week, part-time care.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Part-time (15 < 30 hours/week) bills the hours proration even though
+    # attendance days are reported: 22 x 15/30 = 11 day-equivalents;
+    # min($1,000, $42 x 11 = $462) - $2 x 11 = $440 — not 21.67 full days.
+    la_ccap: 440
+
+- name: Case 11, full-time hours with attendance days bills day units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8  # Derives 40 hours/week, full-time care.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Full-time care pays day units: 5 x 52/12 = 21.67 days;
+    # min($1,000, $42 x 21.67 = $910) - $2 x 21.67 = $866.67.
+    la_ccap: 866.67
+
+- name: Case 12, full-time hours without days caps at 22 monthly days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_hours_per_week: 40  # No attendance days reported.
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # The min(hours/30, 1) clamp holds the proration at the 22-day maximum:
+    # min($1,000, $42 x 22 = $924) - $2 x 22 = $880.
+    la_ccap: 880

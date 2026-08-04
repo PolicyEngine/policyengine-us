@@ -10,8 +10,7 @@ class person_receives_aca(Variable):
         "tax unit that takes up ACA coverage."
     )
     definition_period = YEAR
+    defined_for = "is_aca_ptc_eligible"
 
     def formula(person, period, parameters):
-        return person.tax_unit("takes_up_aca_if_eligible", period) & person(
-            "is_aca_ptc_eligible", period
-        )
+        return person.tax_unit("takes_up_aca_if_eligible", period)

@@ -1,0 +1,18 @@
+description: Missouri assigns these counties to Region 1 dense urban for provider payment rates under the Child Care Subsidy program.
+values:
+  2025-10-01:
+    - CLAY_COUNTY_MO
+    - JACKSON_COUNTY_MO
+    - JEFFERSON_COUNTY_MO
+    - PLATTE_COUNTY_MO
+    - ST_CHARLES_COUNTY_MO
+    - ST_LOUIS_CITY_MO
+    - ST_LOUIS_COUNTY_MO
+
+metadata:
+  unit: list
+  period: year
+  label: Missouri Child Care Subsidy Region 1 dense urban counties
+  reference:
+    - title: 2025 Rates Held Harmless 2.0, Breakdown Of Counties
+      href: https://dese.mo.gov/sites/dese/files/media/file/2025/12/2025%20Rates%20Held%20Harmless%202.0.xlsx

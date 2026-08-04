@@ -1,93 +1,34 @@
-- name: AZ child
-  period: 2023
-  absolute_error_margin: 0.1
+- name: A lone Texas enrollee's cost equals state per-capita Medicaid spending.
+  period: 2026
+  absolute_error_margin: 1
   input:
-    households:
-      household:
-        state_code: AZ
-        members: [person]
-    people:
-      person:
-        is_infant_for_medicaid: true
-        is_medicaid_eligible: true
-  output: 
-    medicaid_cost_if_enrolled: 3_564.1
-
-- name: IA disabled
-  period: 2023
-  absolute_error_margin: 0.1
-  input:
-    households:
-      household:
-        state_code: IA
-        members: [person]
-    people:
-      person:
-        is_optional_senior_or_disabled_for_medicaid: true
-        is_medicaid_eligible: true
-  output: 
-    medicaid_cost_if_enrolled: 24_257.3
-
-- name: IA aged
-  period: 2023
-  absolute_error_margin: 0.1
-  input:
-    households:
-      household:
-        state_code: IA
-        members: [person]
-    people:
-      person:
-        is_ssi_recipient_for_medicaid: true
-        is_medicaid_eligible: true
-  output: 
-    medicaid_cost_if_enrolled: 24_257.3
-
-- name: texas ineligible 
-  period: 2023
-  absolute_error_margin: 0.1
-  input:
-    households:
-      household:
-        state_code: TX
-        members: [person]
-    people:
-      person:
-        is_ssi_recipient_for_medicaid: false
-        is_medicaid_eligible: false
-  output: 
-    medicaid_cost_if_enrolled: 0
-
-- name: North Carolina Expansion adult (defaults to national average)
-  period: 2024
-  absolute_error_margin: 0.1
-  input:
-    households:
-      household:
-        state_code: NC
-        members: [person]
-    people:
-      person:
-        is_ssi_recipient_for_medicaid: false
-        is_medicaid_eligible: true
-  output: 
-    medicaid_cost_if_enrolled: 7_054
-
-- name: Multiple people in recent expansion state
-  period: 2024
-  absolute_error_margin: 0.1
-  input:
-    households:
-      household:
-        state_code: WI
-        members: [person1, person2]
     people:
       person1:
-        age: 25
-        employment_income: 0
-      person2:
-        age: 2
+        age: 40
+        is_medicaid_eligible: true
+        takes_up_medicaid_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
   output:
-    # person1 is assigned to PARENT category (mandatory group) before ADULT
-    # (expansion), so uses NON_EXPANSION_ADULT per-capita cost
-    medicaid_cost_if_enrolled: [4_631.1, 2_867.8]
+    # For a single household the cost index cancels, leaving TX spending / enrollment;
+    # an enrolled person's medicaid_cost passes that computed value through unchanged.
+    medicaid_cost_if_enrolled: 13_708.50
+    medicaid_cost: 13_708.50
+
+- name: Medicaid cost is zero for a non-enrollee despite a positive per-capita cost.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_medicaid_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # medicaid_cost is defined_for medicaid_enrolled, so it stays zero off-enrollment
+    # even though medicaid_cost_if_enrolled itself computes a positive value.
+    medicaid_cost: 0

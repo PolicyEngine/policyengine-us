@@ -108,8 +108,10 @@
   output:
     # Federal EITC for 1 child at $20k income ~ $3,480
     # OK EITC = $3,480 * 5% = $174
+    # OK CTC = 5% of $1,700 refundable federal CTC.
+    ok_child_care_child_tax_credit: 85
     ok_eitc: 174
-    ok_income_tax: -239.7
+    ok_income_tax: -235.97171
 
 - name: OK EITC - 2025 - full year resident
   period: 2025

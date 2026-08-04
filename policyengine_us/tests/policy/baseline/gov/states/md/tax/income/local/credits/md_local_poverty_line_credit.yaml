@@ -1,0 +1,41 @@
+- name: Eligible Baltimore City filer receives rate times earnings (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    is_eligible_md_poverty_line_credit: true
+    employment_income: 10_000
+    eitc: 0
+    md_local_income_tax_before_credits: 400
+  output:
+    # 10,000 * 0.032 = 320 < 400 remaining tax
+    md_local_poverty_line_credit: 320
+
+- name: Credit capped at local tax remaining after local EITC (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    is_eligible_md_poverty_line_credit: true
+    employment_income: 10_000
+    eitc: 50
+    md_local_income_tax_before_credits: 200
+  output:
+    # Local EITC: min(50 * 10 * 0.032, 200) = 16
+    # Credit: min(10,000 * 0.032, 200 - 16) = 184
+    md_local_poverty_line_credit: 184
+
+- name: Ineligible filer receives no credit (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    is_eligible_md_poverty_line_credit: false
+    employment_income: 10_000
+    eitc: 0
+    md_local_income_tax_before_credits: 400
+  output:
+    md_local_poverty_line_credit: 0

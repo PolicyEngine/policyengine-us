@@ -1,0 +1,62 @@
+# Out-of-home relative age columns (Appendix C-18):
+#   18 months and less, over 18 months. A child at exactly 18 months stays in
+#   the lower band (threshold for the upper band is 18.0001).
+#   age_in_months = age (years) * 12.
+
+- name: Case 1, child under 18 months in out-of-home relative care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 12 months -> 18 months and less.
+    ks_ccap_relative_age_group: UNDER_18_MONTHS
+
+- name: Case 2, child at exactly 18 months stays in lower band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18 months -> still 18 months and less (upper band starts above 18).
+    ks_ccap_relative_age_group: UNDER_18_MONTHS
+
+- name: Case 3, child over 18 months in out-of-home relative care.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 24 months -> over 18 months.
+    ks_ccap_relative_age_group: OVER_18_MONTHS
+
+# Edge case: child just above the 18-month boundary moves to the upper band.
+# The upper-band threshold is 18.0001, so 18.5 months (age 1.54167 * 12) is over.
+- name: Case 4, child at 18.5 months is in the over-18-months band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1.54167  # 18.5 months
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18.5 months > 18.0001 threshold -> over 18 months.
+    ks_ccap_relative_age_group: OVER_18_MONTHS

@@ -1,0 +1,16 @@
+description: Contra Costa County considers these statuses as qualified immigrants under the General Assistance program.
+values:
+  2011-01-01:
+    - CITIZEN
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - LEGAL_PERMANENT_RESIDENT
+
+metadata:
+  label: Contra Costa County General Assistance qualified immigration statuses
+  period: year
+  unit: list
+  reference:
+    - title: Contra Costa County EHSD - General Assistance
+      href: https://ehsd.org/aging-and-adult-services/general-assistance/

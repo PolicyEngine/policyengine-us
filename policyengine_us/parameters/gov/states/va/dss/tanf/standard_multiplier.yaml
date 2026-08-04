@@ -17,14 +17,15 @@ metadata:
       href: https://budget.lis.virginia.gov/amendment/2021/2/HB1800/introduced/CR/350/2c/
     - title: HB30 Conference Report 341#2c - 2022 TANF Standards Increase
       href: https://budget.lis.virginia.gov/amendment/2022/2/HB30/Introduced/CR/341/2c/
-    - title: SB800 Budget Amendment 341#1s - 2023 TANF Standards Increase
-      href: https://budget.lis.virginia.gov/amendment/2023/1/SB800/Introduced/FA/341/1s/
 
 # Multipliers calculated relative to 2020-07-01 base values in parameter tables                                                                                             
-# Historical increases: Jan 2016 (+2.5%), Jul 2016 (+2.5%), Jul 2017 (+2.5%),                                                                                               
-# Jul 2019 (+5%), Jul 2020 (+15%), Jul 2021 (+10%), Jul 2022 (+5%), Jul 2023 (+10%)
+# Historical increases: Jan 2016 (+2.5%), Jul 2016 (+2.5%), Jul 2017 (+2.5%),
+# Jul 2019 (+5%), Jul 2020 (+15%), Jul 2021 (+10%), Jul 2022 (+5%)
+# The 10% July 2023 increase (SB800 341#1s, Senate floor-approved) was NOT
+# enacted in the final 2023 budget (HB6001, 2023 Special Session I), so the
+# multiplier stops at 1.155.
 values:
-  # Pre-2016 base (before any increases since 2016) 
+  # Pre-2016 base (before any increases since 2016)
   1996-01-01: 0.7691
   2016-01-01: 0.7883
   2016-07-01: 0.808
@@ -33,4 +34,3 @@ values:
   2020-07-01: 1.0
   2021-07-01: 1.1
   2022-07-01: 1.155
-  2023-07-01: 1.2705

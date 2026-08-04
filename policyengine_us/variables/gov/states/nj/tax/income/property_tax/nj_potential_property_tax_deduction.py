@@ -8,8 +8,8 @@ class nj_potential_property_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
-        "https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=25"
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/",
+        "https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=25",
     )
     defined_for = "nj_property_tax_deduction_eligible"
 

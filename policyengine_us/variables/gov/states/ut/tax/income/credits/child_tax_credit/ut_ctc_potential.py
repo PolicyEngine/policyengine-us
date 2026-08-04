@@ -7,6 +7,7 @@ class ut_ctc_potential(Variable):
     label = "Utah Child Tax Credit"
     unit = USD
     definition_period = YEAR
+    reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1047.html"
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):

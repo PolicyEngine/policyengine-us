@@ -16,8 +16,12 @@ class mn_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mn.tax.income.credits.cdcc
         dep_count = tax_unit("mn_cdcc_dependent_count", period)
-        # calculate qualifying care expenses
-        expenses = tax_unit("tax_unit_childcare_expenses", period)
+        # Minn. Stat. §290.067 computes the credit pursuant to IRC §21, whose
+        # employment-related expenses cover childcare plus care for a
+        # disabled adult qualifying individual (care_expenses).
+        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        adult_care = add(tax_unit, period, ["care_expenses"])
+        expenses = childcare + adult_care
         # ... cap expense by number of qualifying dependents
         eligible_count = min_(dep_count, p.maximum_dependents)
         maximum_eligible_expenses = min_(expenses, p.maximum_expense * eligible_count)

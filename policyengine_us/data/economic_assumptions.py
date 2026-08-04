@@ -1,5 +1,3 @@
-from typing import Optional
-
 import yaml
 
 from policyengine_us.data.dataset_schema import (
@@ -12,6 +10,42 @@ from policyengine_us.data.dataset_schema import (
 # is updated with new projection years, datasets will automatically
 # extend to match — no hardcoded year constant to maintain.
 CPI_U_PARAM_PATH = "gov.bls.cpi.cpi_u"
+DEFAULT_MICRODATA_UPRATING = (
+    "calibration.gov.cbo.income_by_source.adjusted_gross_income"
+)
+
+MICRODATA_UPRATING_OVERRIDES = {
+    "american_opportunity_credit": DEFAULT_MICRODATA_UPRATING,
+    "cdcc_relevant_expenses": DEFAULT_MICRODATA_UPRATING,
+    "employment_income": "calibration.gov.irs.soi.employment_income",
+    "employment_income_last_year": "calibration.gov.irs.soi.employment_income",
+    "energy_efficient_home_improvement_credit": DEFAULT_MICRODATA_UPRATING,
+    "foreign_tax_credit": DEFAULT_MICRODATA_UPRATING,
+    "interest_deduction": DEFAULT_MICRODATA_UPRATING,
+    "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",
+    "misc_deduction": DEFAULT_MICRODATA_UPRATING,
+    "partnership_income": "calibration.gov.irs.soi.partnership_s_corp_income",
+    "partnership_s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
+    "partnership_self_employment_net_earnings": "calibration.gov.irs.soi.self_employment_income",
+    "person_weight": "calibration.gov.census.populations.total",
+    "pre_tax_contributions": DEFAULT_MICRODATA_UPRATING,
+    "rent": "gov.bls.cpi.cpi_u",
+    "savers_credit": DEFAULT_MICRODATA_UPRATING,
+    "self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+    "self_employed_health_insurance_ald": DEFAULT_MICRODATA_UPRATING,
+    "self_employed_pension_contribution_ald": DEFAULT_MICRODATA_UPRATING,
+    "social_security": "calibration.gov.irs.soi.social_security",
+    "s_corp_income": "calibration.gov.irs.soi.partnership_s_corp_income",
+    "spm_unit_weight": "calibration.gov.census.populations.total",
+    "spm_unit_spm_threshold": DEFAULT_MICRODATA_UPRATING,
+    "state_and_local_sales_or_income_tax": DEFAULT_MICRODATA_UPRATING,
+    "sstb_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+    "taxable_pension_income": "calibration.gov.irs.soi.taxable_pension_income",
+    "taxable_unemployment_compensation": DEFAULT_MICRODATA_UPRATING,
+    "tax_unit_weight": "calibration.gov.census.populations.total",
+    "tax_exempt_pension_income": DEFAULT_MICRODATA_UPRATING,
+    "total_self_employment_income": "calibration.gov.irs.soi.self_employment_income",
+}
 
 
 def get_parameter_last_year(parameter) -> int:
@@ -40,14 +74,15 @@ def _get_default_end_year(system) -> int:
 
 def extend_single_year_dataset(
     dataset: USSingleYearDataset,
-    end_year: Optional[int] = None,
+    end_year: int | None = None,
     system=None,
 ) -> USMultiYearDataset:
     """Extend a single-year US dataset to multiple years via uprating.
 
-    Copies the base-year DataFrames for each year from the base year through
-    ``end_year``, then applies multiplicative uprating using growth factors
-    derived from the policyengine-us parameter tree.
+    Builds a frame set for each year from the base year through
+    ``end_year`` using shallow dataset copies, then applies multiplicative
+    uprating using growth factors derived from the policyengine-us parameter
+    tree.
 
     If ``end_year`` is not provided, it defaults to the latest year
     covered by the CPI-U parameter (gov.bls.cpi.cpi_u).
@@ -67,24 +102,37 @@ def extend_single_year_dataset(
         raise ValueError(
             f"end_year ({end_year}) must be >= dataset base year ({start_year})."
         )
-    datasets = [dataset]
+    # Copy the base year too, so the returned multi-year dataset never
+    # holds the caller's DataFrames directly. ``deep=False`` shares
+    # base-year buffers under pandas copy-on-write; uprating's whole-column
+    # assignments then materialize only the columns they replace.
+    datasets = [dataset.copy(deep=False)]
     for year in range(start_year + 1, end_year + 1):
-        next_year = dataset.copy()
+        next_year = dataset.copy(deep=False)
         next_year.time_period = str(year)
         datasets.append(next_year)
 
     multi_year_dataset = USMultiYearDataset(datasets=datasets)
-    return _apply_uprating(multi_year_dataset, system=system)
+    # Every year above is a private copy; no defensive copy needed.
+    return _apply_uprating(multi_year_dataset, system=system, copy=False)
 
 
-def _apply_uprating(dataset: USMultiYearDataset, system=None) -> USMultiYearDataset:
-    """Apply year-over-year uprating to all years in a multi-year dataset."""
+def _apply_uprating(
+    dataset: USMultiYearDataset, system=None, copy: bool = True
+) -> USMultiYearDataset:
+    """Apply year-over-year uprating to all years in a multi-year dataset.
+
+    With ``copy=False`` the input dataset is modified in place; callers
+    passing datasets they own privately (like ``extend_single_year_dataset``)
+    use this to skip a full defensive copy.
+    """
     if system is None:
         from policyengine_us.system import system as _system
 
         system = _system
 
-    dataset = dataset.copy()
+    if copy:
+        dataset = dataset.copy()
 
     years = sorted(dataset.datasets.keys())
     for year in years:
@@ -100,15 +148,14 @@ def _apply_uprating(dataset: USMultiYearDataset, system=None) -> USMultiYearData
 def _apply_single_year_uprating(current, previous, system):
     """Apply multiplicative uprating from previous year to current year.
 
-    For each variable column in each entity DataFrame, looks up the
-    variable's uprating parameter path in ``system.variables``.  If the
-    variable has an uprating parameter, computes the growth factor as
-    ``param(current_year) / param(previous_year)`` and multiplies the
-    column by that factor.
+    For each variable column in each entity DataFrame, looks up its
+    dataset-extension uprating parameter path. Formula and adds/subtracts
+    variables cannot use Core variable-level uprating, so their dataset-only
+    upraters live in ``MICRODATA_UPRATING_OVERRIDES`` instead.
 
     Variables without an uprating parameter (or whose uprating parameter
-    evaluates to 0 for the previous year) are left unchanged — they were
-    already copied forward by ``dataset.copy()``.
+    evaluates to 0 for the previous year) are left unchanged and carry the
+    base-year values forward.
     """
     current_year = int(current.time_period)
     previous_year = int(previous.time_period)
@@ -122,7 +169,9 @@ def _apply_single_year_uprating(current, previous, system):
             if col not in system.variables:
                 continue
             var = system.variables[col]
-            uprating_path = getattr(var, "uprating", None)
+            uprating_path = MICRODATA_UPRATING_OVERRIDES.get(col) or getattr(
+                var, "uprating", None
+            )
             if uprating_path is None:
                 continue
 
@@ -136,6 +185,10 @@ def _apply_single_year_uprating(current, previous, system):
                 continue
 
             factor = curr_val / prev_val
+            # Whole-column assignment is load-bearing: the year frames may
+            # be shallow copies sharing base-year buffers (pandas
+            # copy-on-write), and assignment replaces just this column in
+            # just this year's frame, leaving the shared buffers intact.
             current_df[col] = prev_df[col] * factor
 
 

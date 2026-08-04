@@ -1,0 +1,136 @@
+# IT-196 Line 40 "Total itemized deductions worksheet" (pre-TCJA IRC 68
+# overall limitation, to which NY Tax Law 615 conforms). The reduction is the
+# LESSER OF 3% of federal AGI over the Table 1 applicable amount, or 80% of the
+# deductions subject to the limitation.
+# 2025 applicable amounts (Table 1): SINGLE 340,700; JOINT 408,850.
+
+- name: SINGLE, federal AGI just below the 2025 applicable amount - not limited.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ny_itemized_deductions_max: 100_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 340_000
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: false
+    ny_itemized_deductions_phase_out: 0
+
+- name: SINGLE, federal AGI just above the 2025 applicable amount - 3% limb binds.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ny_itemized_deductions_max: 100_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 350_000
+    filing_status: SINGLE
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: true
+    # L1 = 100,000; L2 = 0; L3 = 100,000; L4 = 0.80 * 100,000 = 80,000.
+    # AGI excess = 350,000 - 340,700 = 9,300; L8 = 0.03 * 9,300 = 279.
+    # Reduction = min(80,000, 279) = 279.
+    ny_itemized_deductions_phase_out: 279
+
+- name: JOINT, federal AGI just below the 2025 applicable amount - not limited.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ny_itemized_deductions_max: 100_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 408_000
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: false
+    ny_itemized_deductions_phase_out: 0
+
+- name: JOINT, federal AGI above the 2025 applicable amount - 3% limb binds.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ny_itemized_deductions_max: 100_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 500_000
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: true
+    # L1 = 100,000; L2 = 0; L4 = 80,000.
+    # AGI excess = 500,000 - 408,850 = 91,150; L8 = 0.03 * 91,150 = 2,734.50.
+    # Reduction = min(80,000, 2,734.50) = 2,734.50.
+    ny_itemized_deductions_phase_out: 2_734.50
+
+- name: JOINT, very high AGI - 80% limb binds (cap on the reduction).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ny_itemized_deductions_max: 20_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 5_000_000
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: true
+    # L1 = 20,000; L3 = 20,000; L4 = 0.80 * 20,000 = 16,000.
+    # AGI excess = 5,000,000 - 408,850 = 4,591,150; L8 = 0.03 * that = 137,734.50.
+    # Reduction = min(16,000, 137,734.50) = 16,000 (the 80% cap binds).
+    ny_itemized_deductions_phase_out: 16_000
+
+- name: Medical, investment interest, and casualty are excluded from the 80% base (26 U.S.C. 68(c)).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # ny_itemized_deductions_max = 100,000 total, of which 40,000 is excluded
+    # (medical 25,000 + investment interest 10,000 + casualty 5,000). Only the
+    # remaining 60,000 is subject to the limitation.
+    ny_itemized_deductions_max: 100_000
+    ny_college_tuition_deduction: 0
+    medical_expense_deduction: 25_000
+    investment_interest_expense: 10_000
+    ny_casualty_loss_deduction: 5_000
+    adjusted_gross_income: 5_000_000
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: true
+    # L1 = 100,000; L2 = 25,000 + 10,000 + 5,000 = 40,000; L3 = 60,000.
+    # L4 = 0.80 * 60,000 = 48,000. AGI excess huge so L8 >> L4.
+    # Reduction = min(48,000, large) = 48,000.
+    ny_itemized_deductions_phase_out: 48_000
+
+- name: NY-only college tuition deduction is excluded from L1 (added after Line 40).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # max includes 30,000 of NY college tuition deduction that is not part of
+    # the federal Line 40 worksheet; the Pease base should ignore it.
+    ny_itemized_deductions_max: 130_000
+    ny_college_tuition_deduction: 30_000
+    medical_expense_deduction: 0
+    investment_interest_expense: 0
+    ny_casualty_loss_deduction: 0
+    adjusted_gross_income: 500_000
+    filing_status: JOINT
+    state_code: NY
+  output:
+    ny_itemized_deductions_phase_out_applies: true
+    # L1 = 130,000 - 30,000 = 100,000; L4 = 80,000; L8 = 2,734.50.
+    # Reduction = min(80,000, 2,734.50) = 2,734.50 (same as without tuition).
+    ny_itemized_deductions_phase_out: 2_734.50

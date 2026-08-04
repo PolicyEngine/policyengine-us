@@ -4,6 +4,12 @@
   reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
   input:
     gov.contrib.additional_tax_bracket.in_effect: true
+    gov.contrib.additional_tax_bracket.bracket.thresholds.1.JOINT: 24_800
+    gov.contrib.additional_tax_bracket.bracket.thresholds.2.JOINT: 100_700
+    gov.contrib.additional_tax_bracket.bracket.thresholds.3.JOINT: 203_250
+    gov.contrib.additional_tax_bracket.bracket.thresholds.4.JOINT: 309_700
+    gov.contrib.additional_tax_bracket.bracket.thresholds.5.JOINT: 553_050
+    gov.contrib.additional_tax_bracket.bracket.thresholds.6.JOINT: 624_700
     gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
     gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
     taxable_income: 1_000_000
@@ -17,6 +23,12 @@
   absolute_error_margin: 1
   input:
     gov.contrib.additional_tax_bracket.in_effect: false
+    gov.irs.income.bracket.thresholds.1.JOINT: 25_450
+    gov.irs.income.bracket.thresholds.2.JOINT: 103_450
+    gov.irs.income.bracket.thresholds.3.JOINT: 216_950
+    gov.irs.income.bracket.thresholds.4.JOINT: 414_200
+    gov.irs.income.bracket.thresholds.5.JOINT: 525_950
+    gov.irs.income.bracket.thresholds.6.JOINT: 788_950
     gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
     gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
     taxable_income: 1_000_000
@@ -31,6 +43,12 @@
   reforms: policyengine_us.reforms.additional_tax_bracket.additional_tax_bracket_reform.additional_tax_bracket
   input:
     gov.contrib.additional_tax_bracket.in_effect: true
+    gov.contrib.additional_tax_bracket.bracket.thresholds.1.JOINT: 24_800
+    gov.contrib.additional_tax_bracket.bracket.thresholds.2.JOINT: 100_700
+    gov.contrib.additional_tax_bracket.bracket.thresholds.3.JOINT: 203_250
+    gov.contrib.additional_tax_bracket.bracket.thresholds.4.JOINT: 309_700
+    gov.contrib.additional_tax_bracket.bracket.thresholds.5.JOINT: 553_050
+    gov.contrib.additional_tax_bracket.bracket.thresholds.6.JOINT: 624_700
     gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
     gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
     taxable_income: 600_000
@@ -44,6 +62,12 @@
   absolute_error_margin: 1
   input:
     gov.contrib.additional_tax_bracket.in_effect: false
+    gov.irs.income.bracket.thresholds.1.JOINT: 25_450
+    gov.irs.income.bracket.thresholds.2.JOINT: 103_450
+    gov.irs.income.bracket.thresholds.3.JOINT: 216_950
+    gov.irs.income.bracket.thresholds.4.JOINT: 414_200
+    gov.irs.income.bracket.thresholds.5.JOINT: 525_950
+    gov.irs.income.bracket.thresholds.6.JOINT: 788_950
     gov.contrib.additional_tax_bracket.bracket.thresholds.7.JOINT: 800_000
     gov.contrib.additional_tax_bracket.bracket.rates.8: 0.42
     taxable_income: 600_000

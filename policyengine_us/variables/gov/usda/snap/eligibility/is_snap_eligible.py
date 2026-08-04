@@ -21,16 +21,14 @@ class is_snap_eligible(Variable):
         # Categorical eligibility (SSI, TANF, and BBCE TANF) overrides tests.
         categorical_eligibility = spm_unit("meets_snap_categorical_eligibility", period)
         person = spm_unit.members
-        eligible_person_present = spm_unit.any(
-            ~person("is_snap_ineligible_student", period)
+        # At least one member must satisfy the student (7 USC 2015(e)),
+        # immigration (7 USC 2015(f)), and work-requirement (7 CFR 273.7,
+        # 273.24) rules simultaneously. Testing these conditions with
+        # separate any() reductions would incorrectly pass a unit where
+        # different members satisfy different rules with no single member
+        # satisfying all of them; is_snap_excluded_member already encodes
+        # the per-person disjunction of the three filters.
+        eligible_member_present = spm_unit.any(
+            ~person("is_snap_excluded_member", period)
         )
-        work_requirements_eligibility = spm_unit("meets_snap_work_requirements", period)
-        immigration_eligible_member_present = spm_unit.any(
-            person("is_snap_immigration_status_eligible", period)
-        )
-        return (
-            (normal_eligibility | categorical_eligibility)
-            & eligible_person_present
-            & work_requirements_eligibility
-            & immigration_eligible_member_present
-        )
+        return (normal_eligibility | categorical_eligibility) & eligible_member_present

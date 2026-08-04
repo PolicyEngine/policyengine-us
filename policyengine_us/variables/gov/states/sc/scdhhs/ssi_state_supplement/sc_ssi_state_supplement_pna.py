@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class sc_ssi_state_supplement_pna(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
+    definition_period = MONTH
     label = "South Carolina SSI State Supplement personal needs allowance"
     unit = USD
     reference = (
@@ -20,4 +20,4 @@ class sc_ssi_state_supplement_pna(Variable):
         # Per S.C. Code Regs. 126-910(G): SSI-only PNA if no other
         # countable income; higher PNA if other income sources exist
         ssi_only = person("ssi_countable_income", period) == 0
-        return where(ssi_only, p.ssi_only, p.other_income) * MONTHS_IN_YEAR
+        return where(ssi_only, p.ssi_only, p.other_income)

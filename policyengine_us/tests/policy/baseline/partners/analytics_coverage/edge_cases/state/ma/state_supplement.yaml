@@ -1,0 +1,170 @@
+# MA SSI State Supplement (SSP), full-cost-of-living arrangement (default),
+# single claims (gov/states/ma/dta/ssp/amount.yaml):
+# AGED 128.82/month, DISABLED 114.39/month. The supplement is reduced by any
+# amount by which countable income exceeds the federal SSI rate (994/month in 2026).
+- name: ma_state_supplement_aged_full (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Aged, no income, passes resource test: full AGED single rate
+        # 128.82 x 12 = 1,545.84.
+        ma_state_supplement: 1_545.84
+- name: ma_state_supplement_disabled_full (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Disabled, no income: full DISABLED single rate 114.39 x 12 = 1,372.68.
+        ma_state_supplement: 1_372.68
+- name: ma_state_supplement_aged_partial_ss_income (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        social_security_retirement: 13_000
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Social Security 1,083.33/month - 20 general exclusion = 1,063.33
+        # countable, which exceeds the 994 federal SSI rate by 69.33.
+        # Supplement: 128.82 - 69.33 = 59.49/month -> 713.84/year
+        # (income too high for federal SSI but still receives a partial SSP).
+        ma_state_supplement: 713.84
+- name: ma_state_supplement_resources_over_limit_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 5_000
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Resources 5,000 > 2,000 SSI limit -> fails the resource test -> no SSP.
+        ma_state_supplement: 0.0

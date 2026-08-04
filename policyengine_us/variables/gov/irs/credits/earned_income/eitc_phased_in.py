@@ -12,6 +12,6 @@ class eitc_phased_in(Variable):
     def formula(tax_unit, period, parameters):
         maximum = tax_unit("eitc_maximum", period)
         phase_in_rate = tax_unit("eitc_phase_in_rate", period)
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        earnings = tax_unit("eitc_earned_income", period)
         phased_in_amount = earnings * phase_in_rate
         return min_(maximum, phased_in_amount)

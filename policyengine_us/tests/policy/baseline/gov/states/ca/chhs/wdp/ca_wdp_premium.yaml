@@ -1,0 +1,7 @@
+- name: Case 1, California WDP premium is zero after July 2022.
+  period: 2026-01
+  input:
+    state_code: CA
+    ca_wdp_eligible: true
+  output:
+    ca_wdp_premium: 0

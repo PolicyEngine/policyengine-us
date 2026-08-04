@@ -1,0 +1,21 @@
+- name: Case 1, rental income counts as gross income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    rental_income: 6_000
+  output:
+    ca_marin_general_relief_gross_income: 6_000
+
+- name: Case 2, unearned cash income sources count as gross income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    interest_income: 100
+    dividend_income: 200
+    pension_income: 300
+    retirement_distributions: 400
+    child_support_received: 500
+  output:
+    ca_marin_general_relief_gross_income: 1_500

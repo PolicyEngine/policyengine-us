@@ -5,10 +5,14 @@ values:
     []
   # New York's 250% FPL Essential Plan expansion launched 2024-04-01 under
   # the approved section 1332 waiver; first full coverage year is 2025.
-  # The model carries that expanded ceiling forward in this BHP-like path,
-  # even though the formal BHP restarts later.
   2025-01-01:
     - NY
+  # CMS approved termination of New York's section 1332 waiver effective
+  # 2026-07-01. Because this eligibility variable is annual, we keep NY on
+  # the 250% FPL expanded ceiling through 2026 (the waiver still applies for
+  # H1 2026) and revert to the standard 200% FPL BHP ceiling starting 2027.
+  2027-01-01:
+    []
 
 metadata:
   unit: list
@@ -23,3 +27,7 @@ metadata:
       href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-suspension-appvl-ltr-mar-2024.pdf
     - title: New York BHP Blueprint revision | CMS
       href: https://www.medicaid.gov/basic-health-program/downloads/ny-bhp-blueprint-revision-feb2026.pdf
+    - title: Letter Approving Termination of New York's Section 1332 Waiver | CMS
+      href: https://www.cms.gov/files/document/1332-ny-termination-approval-letter.pdf
+    - title: New York State Department of Health Provides Update on Federal Approval to Preserve Health Coverage for 1.3 Million New Yorkers
+      href: https://www.health.ny.gov/press/releases/2026/2026-03-23_federal_approval_to_preserve_health_coverage.htm

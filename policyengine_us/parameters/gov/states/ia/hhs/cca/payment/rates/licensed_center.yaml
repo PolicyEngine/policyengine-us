@@ -1,0 +1,64 @@
+description: Iowa provides these maximum half-day-unit rates for licensed child care centers (Table 1) under the Child Care Assistance program.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Iowa CCA licensed center half-day-unit rates
+  breakdown:
+    - ia_cca_quality_rating
+    - ia_cca_age_group
+  reference:
+    - title: IAC 441-170.4(7) — Table 1, Licensed Center (effective July 1, 2024)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=14
+
+NO_RATING:
+  INFANT_TODDLER:
+    2024-07-01: 25.66
+  INFANT_TODDLER_SN:
+    2024-07-01: 51.94
+  PRESCHOOL:
+    2024-07-01: 19.50
+  PRESCHOOL_SN:
+    2024-07-01: 30.43
+  SCHOOL_AGE:
+    2024-07-01: 16.50
+  SCHOOL_AGE_SN:
+    2024-07-01: 30.34
+RATING_1_OR_2:
+  INFANT_TODDLER:
+    2024-07-01: 25.66
+  INFANT_TODDLER_SN:
+    2024-07-01: 51.94
+  PRESCHOOL:
+    2024-07-01: 20.25
+  PRESCHOOL_SN:
+    2024-07-01: 30.43
+  SCHOOL_AGE:
+    2024-07-01: 17.10
+  SCHOOL_AGE_SN:
+    2024-07-01: 30.34
+RATING_3_OR_4:
+  INFANT_TODDLER:
+    2024-07-01: 25.66
+  INFANT_TODDLER_SN:
+    2024-07-01: 51.94
+  PRESCHOOL:
+    2024-07-01: 21.50
+  PRESCHOOL_SN:
+    2024-07-01: 30.43
+  SCHOOL_AGE:
+    2024-07-01: 17.50
+  SCHOOL_AGE_SN:
+    2024-07-01: 30.34
+RATING_5:
+  INFANT_TODDLER:
+    2024-07-01: 27.00
+  INFANT_TODDLER_SN:
+    2024-07-01: 51.94
+  PRESCHOOL:
+    2024-07-01: 22.97
+  PRESCHOOL_SN:
+    2024-07-01: 30.43
+  SCHOOL_AGE:
+    2024-07-01: 18.50
+  SCHOOL_AGE_SN:
+    2024-07-01: 30.34

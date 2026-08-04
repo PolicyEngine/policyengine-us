@@ -63,3 +63,21 @@
   output:
     # Limit is 45%.
     hud_income_level: ESPECIALLY_LOW
+
+- name: Missing AMI and missing income limits are above moderate.
+  period: 2024
+  input:
+    county_fips: "99999"
+    hud_annual_income: 0
+    spm_unit_size: 4
+  output:
+    hud_income_level: ABOVE_MODERATE
+
+- name: Real HUD income limits classify a LA four-person SPM unit.
+  period: 2024
+  input:
+    county_fips: "06037"
+    hud_annual_income: 50_000
+    spm_unit_size: 4
+  output:
+    hud_income_level: VERY_LOW

@@ -1,9 +1,23 @@
-description: Income increment per step for Rhode Island's stepped CTC phaseout.
-
-values:
-  2027-01-01: 0
+description: Income increment per step for Rhode Island's stepped CTC phaseout, based on filing status.
 
 metadata:
   unit: currency-USD
   label: Rhode Island CTC stepped phaseout increment
   period: year
+  breakdown:
+    - filing_status
+
+JOINT:
+  2027-01-01: 0
+
+HEAD_OF_HOUSEHOLD:
+  2027-01-01: 0
+
+SURVIVING_SPOUSE:
+  2027-01-01: 0
+
+SINGLE:
+  2027-01-01: 0
+
+SEPARATE:
+  2027-01-01: 0

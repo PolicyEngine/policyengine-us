@@ -1,0 +1,218 @@
+# Tests for md_ccs_payment_rate (weekly rate lookup)
+# Formal rates by region/age/unit, informal rates by county/age/unit
+
+- name: Licensed center, Region X (Howard), regular age, full-time.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: HOWARD_COUNTY_MD
+  output:
+    # 2026-01 uses 5/23/22 historical schedule (current schedule effective 2026-03-01).
+    # Region X, Center, REGULAR (age 5), UNIT_3 (8hrs): $381/week
+    md_ccs_payment_rate: [0, 381]
+
+- name: Licensed family, Region Y (Baltimore Co), infant, part-time.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        md_ccs_provider_type: LICENSED_FAMILY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: BALTIMORE_COUNTY_MD
+  output:
+    # 2026-01 uses 5/23/22 historical schedule.
+    # Region Y, Family, INFANT (age 1 = 12 months < 24), UNIT_2 (4hrs):
+    # UNIT_3 base $250 * (2/3) = $166.67/week
+    md_ccs_payment_rate: [0, 166.67]
+
+- name: Informal provider, Montgomery County, regular, hourly.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: MONTGOMERY_COUNTY_MD
+  output:
+    # Informal, Montgomery Co, REGULAR (age 3 = 36 months >= 24), UNIT_1 (2hrs): $59/week
+    md_ccs_payment_rate: [0, 59]
+
+- name: Licensed center, Baltimore City, infant, full-time.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: BALTIMORE_CITY_MD
+  output:
+    # 2026-01 uses 5/23/22 historical schedule.
+    # Baltimore City (REGION_BC), Center, INFANT (age 1 = 12 months), UNIT_3 (8hrs): $303/week
+    md_ccs_payment_rate: [0, 303]
+
+- name: Licensed family, Region U (Cecil), regular, full-time.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_FAMILY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: CECIL_COUNTY_MD
+  output:
+    # 2026-01 uses 5/23/22 historical schedule.
+    # Region U, Family, REGULAR (age 4), UNIT_3 (8hrs): $176/week
+    md_ccs_payment_rate: [0, 176]
+
+- name: Informal provider, Anne Arundel, infant, full-time.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: INFORMAL
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: ANNE_ARUNDEL_COUNTY_MD
+  output:
+    # Informal, Anne Arundel, INFANT (age 1 = 12 months < 24), UNIT_3 (8hrs): $150/week
+    md_ccs_payment_rate: [0, 150]
+
+- name: Licensed family, Region W (Anne Arundel), regular, full-time — post-2026-03-01 schedule.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_FAMILY
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+        county: ANNE_ARUNDEL_COUNTY_MD
+  output:
+    # 2027-01 uses post-2026-03-01 schedule (60th percentile of 2024 MRS).
+    # Region W, Family, REGULAR (age 4), UNIT_3 (8hrs): $262/week
+    md_ccs_payment_rate: [0, 262]

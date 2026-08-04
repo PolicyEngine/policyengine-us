@@ -1,0 +1,480 @@
+# GA CAPS family fee (co-payment)
+# Tiers by FPL ratio (per CAPS Policy Manual Appendix D):
+#   <= 10% FPL: 0% (no fee)
+#   > 10% to 50% FPL: 3% of income
+#   > 50% to 100% FPL: 5% of income
+#   > 100% FPL: 7% of income
+# Bracket thresholds shifted by 0.0001 because Appendix D uses
+# strict "above X%" semantics while single_amount brackets use "at or above".
+# Weekly fee = floor(annual_income * rate / 52)
+# Monthly fee = weekly_fee * 52 / 12
+# Fee waived (§ 9.5.1) for: minor parents (age <= 17),
+# children in DFCS custody, and income <= 10% FPL.
+#
+# 2026 FPG family of 3: 15,960 + 5,680 * 2 = $27,320
+# 2026 FPG family of 2: 15,960 + 5,680 = $21,640
+
+- name: Case 1, income over 100 percent FPL pays 7 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # FPL ratio = 30,000 / 27,320 = 1.098 -> 7% rate
+    # weekly fee = floor(30,000 * 0.07 / 52) = floor(40.38) = $40
+    # monthly fee = 40 * 52 / 12 = $173.33
+    ga_caps_family_fee: 173.33
+
+- name: Case 2, income at or below 10 percent FPL pays zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # FPL ratio = 2,000 / 27,320 = 0.0732 -> 0% rate
+    # fee = 0
+    ga_caps_family_fee: 0
+
+- name: Case 3, income in 3 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # FPL ratio = 10,000 / 27,320 = 0.3660 -> 3% rate
+    # weekly fee = floor(10,000 * 0.03 / 52) = floor(5.77) = $5
+    # monthly fee = 5 * 52 / 12 = $21.67
+    ga_caps_family_fee: 21.67
+
+- name: Case 4, income in 5 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # FPL ratio = 20,000 / 27,320 = 0.7320 -> 5% rate
+    # weekly fee = floor(20,000 * 0.05 / 52) = floor(19.23) = $19
+    # monthly fee = 19 * 52 / 12 = $82.33
+    ga_caps_family_fee: 82.33
+
+- name: Case 5, zero income family has zero fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # $0 income -> FPL ratio = 0 -> 0% rate -> $0 fee
+    ga_caps_family_fee: 0
+
+- name: Case 6, minor parent fee waiver.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 30_000
+        is_tax_unit_head: true
+      person2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Parent age 17 <= 17 -> minor parent fee waiver -> $0
+    ga_caps_family_fee: 0
+
+- name: Case 7, income just below 10 percent FPL boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_731
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # FPL ratio = 2,731 / 27,320 = 0.09996 -> < 0.1 -> 0% rate
+    ga_caps_family_fee: 0
+
+- name: Case 8, income above 10 percent FPL enters 3 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 10% of FPG for family of 2 = 21,640 * 0.10 = $2,164
+        # Above the 0.1001 bracket cutoff (21,640 * 0.1001 ≈ $2,166).
+        employment_income: 2_200
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 2,200 / 21,640 = 0.10166 -> > 0.1001 -> 3% rate
+    # weekly fee = floor(2,200 * 0.03 / 52) = floor(1.27) = $1
+    # monthly fee = 1 * 52 / 12 = $4.33
+    ga_caps_family_fee: 4.33
+
+- name: Case 9, mid-range income in 3 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 5_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 5,000 / 21,640 = 0.231 -> > 0.1, < 0.5 -> 3% rate
+    # weekly fee = floor(5,000 * 0.03 / 52) = floor(2.88) = $2
+    # monthly fee = 2 * 52 / 12 = $8.67
+    ga_caps_family_fee: 8.67
+
+- name: Case 10, income one dollar below 50 percent FPL stays in 3 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 50% of FPG for family of 2 = 21,640 * 0.50 = $10,820
+        # One dollar below: $10,819
+        employment_income: 10_819
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 10,819 / 21,640 = 0.49995 -> < 0.5 -> 3% rate
+    # weekly fee = floor(10,819 * 0.03 / 52) = floor(6.24) = $6
+    # monthly fee = 6 * 52 / 12 = $26.00
+    ga_caps_family_fee: 26.00
+
+- name: Case 11, income above 50 percent FPL enters 5 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Above the 0.5001 bracket cutoff (21,640 * 0.5001 ≈ $10,822).
+        employment_income: 10_830
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 10,830 / 21,640 = 0.50046 -> > 0.5001 -> 5% rate
+    # weekly fee = floor(10,830 * 0.05 / 52) = floor(10.41) = $10
+    # monthly fee = 10 * 52 / 12 = $43.33
+    ga_caps_family_fee: 43.33
+
+- name: Case 12, income one dollar below 100 percent FPL stays in 5 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 100% of FPG for family of 2 = $21,640; one dollar below: $21,639
+        employment_income: 21_639
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 21,639 / 21,640 = 0.99995 -> < 1.0 -> 5% rate
+    # weekly fee = floor(21,639 * 0.05 / 52) = floor(20.80) = $20
+    # monthly fee = 20 * 52 / 12 = $86.67
+    ga_caps_family_fee: 86.67
+
+- name: Case 13, income above 100 percent FPL enters 7 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Above the 1.0001 bracket cutoff (21,640 * 1.0001 ≈ $21,642).
+        employment_income: 21_650
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 21,650 / 21,640 = 1.00046 -> > 1.0001 -> 7% rate
+    # weekly fee = floor(21,650 * 0.07 / 52) = floor(29.14) = $29
+    # monthly fee = 29 * 52 / 12 = $125.67
+    ga_caps_family_fee: 125.67
+
+- name: Case 14, parent age 18 does not get minor parent fee waiver.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 30_000
+      person2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Parent age 18 > 17 -> no fee waiver
+    # FPG family of 2: $21,640
+    # FPL ratio = 30,000 / 21,640 = 1.387 -> 7% rate
+    # weekly fee = floor(30,000 * 0.07 / 52) = floor(40.38) = $40
+    # monthly fee = 40 * 52 / 12 = $173.33
+    ga_caps_family_fee: 173.33
+
+- name: Case 15, larger family of 5 with lower FPL ratio.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+      person2:
+        age: 30
+      person3:
+        age: 10
+      person4:
+        age: 7
+      person5:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: GA
+  output:
+    # FPG family of 5: 15,960 + 5,680 * 4 = $38,680
+    # FPL ratio = 20,000 / 38,680 = 0.5171 -> >= 0.5001 -> 5% rate
+    # weekly fee = floor(20,000 * 0.05 / 52) = floor(19.23) = $19
+    # monthly fee = 19 * 52 / 12 = $82.33
+    ga_caps_family_fee: 82.33
+
+- name: Case 16, income at exactly 10 percent FPL stays in 0 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 10% of FPG for family of 2 = 21,640 * 0.10 = $2,164
+        employment_income: 2_164
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 2,164 / 21,640 = 0.10000 -> < 0.1001 -> 0% rate
+    ga_caps_family_fee: 0
+
+- name: Case 17, income at exactly 50 percent FPL stays in 3 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 50% of FPG for family of 2 = 21,640 * 0.50 = $10,820
+        employment_income: 10_820
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 10,820 / 21,640 = 0.50000 -> < 0.5001 -> 3% rate
+    # weekly fee = floor(10,820 * 0.03 / 52) = floor(6.24) = $6
+    # monthly fee = 6 * 52 / 12 = $26.00
+    ga_caps_family_fee: 26.00
+
+- name: Case 18, income at exactly 100 percent FPL stays in 5 percent tier.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 100% of FPG for family of 2 = $21,640
+        employment_income: 21_640
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # FPL ratio = 21,640 / 21,640 = 1.00000 -> < 1.0001 -> 5% rate
+    # weekly fee = floor(21,640 * 0.05 / 52) = floor(20.80) = $20
+    # monthly fee = 20 * 52 / 12 = $86.67
+    ga_caps_family_fee: 86.67
+
+- name: Case 19, child in DFCS custody waives the family fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+        is_in_foster_care: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA
+  output:
+    # Same income/family as Case 1 (fee would be $173.33),
+    # but child in DFCS custody triggers the § 9.5.1 waiver -> $0.
+    ga_caps_family_fee: 0

@@ -1,0 +1,1745 @@
+# WV CCAP Edge Case Tests
+# Income test: 185% FPL initial intake cap (Manual §3.2.1, Appendix A).
+# 2025 FPG (Contiguous US): first_person = 15_650, additional = 5_500.
+#   Family of 2 FPG = 21_150/yr = 1_762.50/mo; family of 3 = 26_650/yr.
+# 185% FPL family of 2  = 21_150 * 1.85 = 39_127.50/yr
+# 185% FPL family of 3  = 26_650 * 1.85 = 49_302.50/yr
+# 185% FPL family of 11 = 70_650 * 1.85 = 130_702.50/yr
+
+# ============================================================
+# Income threshold boundaries (185% FPL)
+# ============================================================
+
+- name: Case 1, income well below 185% FPL eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $24,000/yr is well below 185% FPL family of 2 ($39,127.50/yr) → eligible.
+    wv_ccap_income_eligible: true
+
+- name: Case 2, income just below 185% FPL eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 185% FPL family of 2 = $39,127.50/yr
+        employment_income: 39_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $39,000/yr ≤ $39,127.50 → eligible (just below boundary).
+    wv_ccap_income_eligible: true
+
+- name: Case 3, income just above 185% FPL ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Just above 185% FPL family of 2 ($39,127.50/yr)
+        employment_income: 39_200
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $39,200/yr > $39,127.50 → ineligible (just above boundary).
+    wv_ccap_income_eligible: false
+
+# ============================================================
+# Family of 3 boundaries
+# ============================================================
+
+- name: Case 4, family of 3 income below 185% FPL eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 185% FPL family of 3 = $49,302.50/yr
+        employment_income: 48_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # $48,000/yr ≤ $49,302.50 → eligible.
+    wv_ccap_income_eligible: true
+
+- name: Case 5, income well above 185% FPL ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $60,000/yr > $39,127.50 → ineligible.
+    wv_ccap_income_eligible: false
+
+- name: Case 6, family of 3 income above 185% FPL ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Just above 185% FPL family of 3 ($49,302.50/yr)
+        employment_income: 50_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # $50,000/yr > $49,302.50 → ineligible.
+    wv_ccap_income_eligible: false
+
+# ============================================================
+# Large family income boundaries
+# ============================================================
+
+- name: Case 7, large family income above 185% FPL ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 185% FPL family of 11 = $130,702.50/yr
+        employment_income: 131_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 9
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 32
+        immigration_status: CITIZEN
+      person8:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person10:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person11:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    # $131,000/yr > $130,702.50 → ineligible.
+    wv_ccap_income_eligible: false
+
+- name: Case 8, large family income below 185% FPL eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Below 185% FPL family of 11 ($130,702.50/yr)
+        employment_income: 100_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person5:
+        age: 9
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 11
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 32
+        immigration_status: CITIZEN
+      person8:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person10:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person11:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: WV
+  output:
+    # $100,000/yr ≤ $130,702.50 → eligible.
+    wv_ccap_income_eligible: true
+
+# ============================================================
+# Zero and very high income
+# ============================================================
+
+- name: Case 9, zero income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: true
+    # FPL ratio = 0 -> below 40% FPL -> $0 copay
+    wv_ccap_copay: 0
+    # Zero income -> zero countable income
+    wv_ccap_countable_income: 0
+
+- name: Case 10, very high income ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 500_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_income_eligible: false
+    wv_ccap: 0
+
+# ============================================================
+# Child age boundaries
+# ============================================================
+
+- name: Case 11, child at exactly age 13 ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        # Age 13 -> NOT < 13 -> ineligible (normal child)
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, false]
+    wv_ccap_eligible: false
+    wv_ccap: 0
+
+- name: Case 12, child at age 12.99 eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        # Age 12.99 -> < 13 -> eligible
+        age: 12.99
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, true]
+
+- name: Case 13, special needs child at age 17.99 eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        # Disabled child age 17.99 -> < 18 -> eligible
+        age: 17.99
+        is_tax_unit_dependent: true
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, true]
+
+- name: Case 14, special needs child at exactly age 18 ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        # Disabled child age 18 -> NOT < 18 -> ineligible
+        age: 18
+        is_tax_unit_dependent: true
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, false]
+    wv_ccap_eligible: false
+
+# ============================================================
+# Family size boundaries
+# ============================================================
+
+- name: Case 15, family size 1 single parent only no eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # No eligible child -> not eligible
+    wv_ccap_eligible: false
+    wv_ccap: 0
+
+# ============================================================
+# Copay at 40% FPL boundary (should be $0)
+# ============================================================
+
+- name: Case 16, income at exactly 40% FPL copay is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 40% FPL family of 2 = 21_150 * 0.4 = 8_460/yr
+        employment_income: 8_460
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # monthly income = 8_460 / 12 = 705
+    # FPL ratio = 705 / 1_762.50 = 0.4
+    # Threshold for non-zero copay is 0.4001, so 0.4 -> 0% bracket
+    wv_ccap_copay: 0
+
+- name: Case 17, income just above 40% FPL copay is non-zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Just above 40% FPL: need FPL ratio > 0.4001
+        # 21_150 * 0.4001 = 8_462.12/yr; use 8_475 -> ratio ~0.4008
+        employment_income: 8_475
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Monthly income = 8_475 / 12 = $706.25. FPL ratio = 0.4007 > 0.4001 → bracket
+    # "above 40% up to 50%" → Appendix A 2-person "50%" row daily fee = $2.00/child.
+    # copay = $2.00 × 22 × 1 = $44.
+    # 7% cap = $706.25 × 0.07 = $49.44; cap does not bind.
+    wv_ccap_copay: 44
+
+# ============================================================
+# Copay 7% cap behavior
+# ============================================================
+
+- name: Case 18, high FPL 2-person family copay below 7% cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # ~170% FPL family of 2: 21_150 * 1.7 = 35_955/yr.
+        employment_income: 35_955
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Monthly income = $2_996.25. FPL ratio = 1.7000 → bracket "above 160% up to 170%"
+    # → Appendix A 2-person "170%" row daily fee = $8.25/child.
+    # uncapped copay = $8.25 × 22 × 1 = $181.50.
+    # 7% cap = $2_996.25 × 0.07 = $209.74; cap does not bind.
+    wv_ccap_copay: 181.5
+
+- name: Case 19, large family with three children triggers 7 percent cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 42_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 6_000
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 6_000
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 6_000
+      person5:
+        age: 15
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person6:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person7:
+        age: 17
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WV
+  output:
+    # 7-person family, monthly income $3_500. FPG family-of-7 = $3_945; ratio = 0.887.
+    # Appendix A 7-person "90%" row daily fee = $4.50/child.
+    # 3 eligible children × 22 monthly days = 66 monthly days total.
+    # uncapped copay = $4.50 × 66 × 1 = $297.
+    # 7% cap = $3_500 × 0.07 = $245; cap binds.
+    wv_ccap_copay: 245
+
+# ============================================================
+# Activity hours boundary
+# ============================================================
+
+- name: Case 20, parent at exactly 20 hours per week activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 20 >= 20 -> meets activity requirement
+    wv_ccap_activity_eligible: true
+
+- name: Case 21, parent at 19 hours per week activity ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 19
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 19 < 20 -> does NOT meet activity requirement
+    # But person1 is head/spouse, and the formula checks:
+    # sum(is_head_or_spouse & ~individually_eligible) == 0
+    # Person1 is head, not eligible -> sum = 1 != 0 -> false
+    wv_ccap_activity_eligible: false
+
+- name: Case 22, full time student bypasses activity hours.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 22
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Full time student -> individually_eligible
+    wv_ccap_activity_eligible: true
+
+# ============================================================
+# Foster child copay always $0
+# ============================================================
+
+- name: Case 23, foster child with income copay is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Foster child -> copay = $0 regardless of income
+    # FPL ratio would be ~1.42 -> normally 3.5% bracket
+    # But foster child exemption overrides
+    wv_ccap_copay: 0
+
+- name: Case 24, foster child high income copay still zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 31_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_copay: 0
+
+# ============================================================
+# Empty SPM unit (zero eligible children)
+# ============================================================
+
+- name: Case 25, adults only no eligible children.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 28
+        employment_income: 15_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, false]
+    wv_ccap_eligible: false
+    wv_ccap: 0
+
+# ============================================================
+# All 5 provider types
+# ============================================================
+
+- name: Case 26, family home provider rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: FAMILY_HOME
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Family Home Tier I Preschool = $29/day
+    wv_ccap_daily_rate: [0, 29]
+
+- name: Case 27, family facility provider rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: FAMILY_FACILITY
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Family Facility Tier I Preschool = $33/day
+    wv_ccap_daily_rate: [0, 33]
+
+- name: Case 28, center provider rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier I Preschool = $35/day
+    wv_ccap_daily_rate: [0, 35]
+
+- name: Case 29, out of school time provider rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: OUT_OF_SCHOOL_TIME
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Out of School Time = $14.50/day (flat, no tier/age variation)
+    wv_ccap_daily_rate: [0, 14.5]
+
+- name: Case 30, informal relative provider rate under 2.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: INFORMAL_RELATIVE
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Informal/Relative Under 2 = $7.50/day
+    wv_ccap_daily_rate: [0, 7.5]
+
+- name: Case 31, informal relative provider rate age 2 and over.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: INFORMAL_RELATIVE
+        wv_ccap_quality_tier: TIER_I
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Informal/Relative 2+ = $6.00/day
+    wv_ccap_daily_rate: [0, 6]
+
+# ============================================================
+# All 3 quality tiers
+# ============================================================
+
+- name: Case 32, Tier II center rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_II
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier II Preschool = $38/day
+    wv_ccap_daily_rate: [0, 38]
+
+- name: Case 33, Tier III center rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3.25
+        # 3.25 years = 39 months -> PRESCHOOL (37-59mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_III
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier III Preschool = $41/day
+    wv_ccap_daily_rate: [0, 41]
+
+# ============================================================
+# All 4 age categories
+# ============================================================
+
+- name: Case 34, infant age category.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 0.5 = 6 months -> INFANT (0-24 months)
+        age: 0.5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_child_age_category: [SCHOOL_AGE, INFANT]
+
+- name: Case 35, toddler age category.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 2.5 = 30 months -> TODDLER (25-36 months)
+        age: 2.5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_child_age_category: [SCHOOL_AGE, TODDLER]
+
+- name: Case 36, preschool age category.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 3.25 = 39 months -> PRESCHOOL (37-59 months)
+        age: 3.25
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_child_age_category: [SCHOOL_AGE, PRESCHOOL]
+
+- name: Case 37, school age category.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 6 = 72 months -> SCHOOL_AGE (60+ months)
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap_child_age_category: [SCHOOL_AGE, SCHOOL_AGE]
+
+# ============================================================
+# TANF categorical eligibility
+# ============================================================
+
+- name: Case 38, TANF recipient categorically income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Above 185% FPL family of 2 ($39,127.50/yr); TANF enrolled bypasses.
+        employment_income: 60_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # TANF enrolled -> categorically income eligible regardless of income
+    wv_ccap_income_eligible: true
+
+# ============================================================
+# Non-traditional hours and special needs supplements
+# ============================================================
+
+- name: Case 39, non-traditional hours supplement adds to daily rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        # 3 years = 36 months -> TODDLER (25-36mo)
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        wv_ccap_non_traditional_hours: true
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier I Toddler = $37 + $6 non-trad = $43
+    # daily charge = (12_000/12) / 22 = 45.45
+    # daily benefit = min(43, 45.45) = 43
+    wv_ccap_daily_benefit: [0, 43]
+
+- name: Case 40, both special needs and non-traditional supplements.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        wv_ccap_non_traditional_hours: true
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier I School Age = $32 + $3 special needs + $6 non-trad = $41
+    # daily charge = (15_000/12) / 22 = 56.82
+    # daily benefit = min(41, 56.82) = 41
+    wv_ccap_daily_benefit: [0, 41]
+
+# ============================================================
+# Two-parent family both must meet activity requirement
+# ============================================================
+
+- name: Case 41, two parents both working activity eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 25
+      person2:
+        age: 28
+        employment_income: 10_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 20
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # Both parents >= 20 hours -> both individually eligible
+    wv_ccap_activity_eligible: true
+
+- name: Case 42, two parents one not meeting hours ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 25
+      person2:
+        age: 28
+        employment_income: 5_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 15
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    # Person2 only 15 hours < 20 and not a student -> not individually eligible
+    # sum(is_head_or_spouse & ~individually_eligible) = 1 != 0 -> false
+    wv_ccap_activity_eligible: false
+
+# ============================================================
+# Benefit capped at actual expenses
+# ============================================================
+
+- name: Case 43, benefit capped at pre-subsidy expenses minus copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 0.5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_III
+        childcare_attending_days_per_month: 22
+        # Low childcare expenses: rate will exceed daily charge
+        pre_subsidy_childcare_expenses: 3_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Center Tier III Infant = $45/day
+    wv_ccap_daily_rate: [0, 45]
+
+    # daily charge = (3_600/12) / 22 = 13.64
+    # daily benefit = min(45, 13.64) = 13.64
+    wv_ccap_daily_benefit: [0, 13.64]
+
+    # 2-person family, FPL ratio = 2_000 / 1_762.50 = 1.1348.
+    # Appendix A 2-person "120%" row daily fee = $5.75/child; 22 days.
+    # copay = $5.75 × 22 = $126.50.
+    # 22 days > 20 → per-day billing; per_child = min($45 × 22, $300) = $300.
+    # benefit = max($300 - $126.50, 0) = $173.50.
+    wv_ccap: 173.5
+
+# ============================================================
+# Zero childcare days/expenses
+# ============================================================
+
+- name: Case 44, zero childcare days results in zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_ccap: 0
+
+# ============================================================
+# Age category boundary: infant/toddler at 13 months
+# ============================================================
+
+- name: Case 45, child at exactly 12 months is infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 1.0 = 12 months -> INFANT (threshold at 25 months for TODDLER)
+        age: 1.0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 12 months < 25 threshold -> INFANT
+    wv_ccap_child_age_category: [SCHOOL_AGE, INFANT]
+
+- name: Case 46, child at exactly 24 months is infant.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 2.0 = 24 months -> INFANT (threshold for TODDLER at 25 months)
+        age: 2.0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 24 months < 25 threshold -> INFANT
+    wv_ccap_child_age_category: [SCHOOL_AGE, INFANT]
+
+- name: Case 47, child at 5 years is school age.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 5.0 = 60 months -> SCHOOL_AGE (threshold at 60 months)
+        age: 5.0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 60 months >= 60 threshold -> SCHOOL_AGE
+    wv_ccap_child_age_category: [SCHOOL_AGE, SCHOOL_AGE]
+
+# ============================================================
+# Informal age group boundaries
+# ============================================================
+
+- name: Case 48, informal age under 2 group.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 1.5 = 18 months -> UNDER_2
+        age: 1.5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 18 months < 25 -> UNDER_2
+    wv_ccap_informal_age_group: [AGE_2_AND_OVER, UNDER_2]
+
+- name: Case 49, informal age 24 months still in infant band.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        # Age 2.0 = 24 months; Appendix B INFANT covers 0-24 months
+        age: 2.0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # 24 months < 25 -> UNDER_2 (matches Appendix B INFANT 0-24mo at $7.50)
+    wv_ccap_informal_age_group: [AGE_2_AND_OVER, UNDER_2]
+
+# ============================================================
+# Multiple children in one family
+# ============================================================
+
+- name: Case 50, two eligible children different ages and providers.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: FAMILY_HOME
+        wv_ccap_quality_tier: TIER_II
+        childcare_attending_days_per_month: 22
+        pre_subsidy_childcare_expenses: 6_000
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        wv_ccap_provider_type: CENTER
+        wv_ccap_quality_tier: TIER_I
+        childcare_attending_days_per_month: 13
+        pre_subsidy_childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WV
+  output:
+    wv_ccap_eligible_child: [false, true, true]
+
+    # Person2: Family Home Tier II Infant = $33/day
+    # Person3: Center Tier I School Age = $32/day
+    wv_ccap_daily_rate: [0, 33, 32]
+
+    # Person2 age 1 = 12 months -> INFANT
+    # Person3 age 6 = 72 months -> SCHOOL_AGE
+    wv_ccap_child_age_category: [SCHOOL_AGE, INFANT, SCHOOL_AGE]
+
+    # 3-person family, FPL ratio = 1_666.67 / 2_151.67 = 0.7746 → bracket
+    # "above 70% up to 80%" → Appendix A 3-person "80%" row daily fee = $2.25/child.
+    # person2: 22 days/month; person3: 13 days/month → 35 monthly days.
+    # 2 eligible children in care → billed_share = 2/2 = 1.
+    # copay = $2.25 × 35 × 1 = $78.75.
+    wv_ccap_copay: 78.75
+
+    # Person2 (FAMILY_HOME Tier II Infant, 22 days/month, $6_000/yr expenses):
+    #   monthly expenses $500; actual_days 22 (>20 → per-day billing).
+    #   per_child = min($33 × 22, $500) = $500.
+    # Person3 (CENTER Tier I School-Age, 13 days/month, $4_000/yr expenses):
+    #   monthly expenses $333.33; actual_days 13 (in 13-20 → monthly rate, 20 days).
+    #   per_child = min($32 × 20, $333.33) = $333.33.
+    # total reimbursement = $500 + $333.33 = $833.33.
+    # benefit = max($833.33 - $78.75, 0) = $754.58.
+    wv_ccap: 754.58
+
+# ============================================================
+# Child-only SPM unit cannot pass activity test
+# ============================================================
+
+- name: Case 51, child-only SPM unit fails activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    # No head/spouse caretaker present -> activity test must fail,
+    # otherwise child-only units would pass on income + assets alone.
+    wv_ccap_activity_eligible: false
+    wv_ccap_eligible: false

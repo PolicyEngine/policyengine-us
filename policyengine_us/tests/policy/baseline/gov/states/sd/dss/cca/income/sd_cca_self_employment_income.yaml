@@ -1,0 +1,48 @@
+# Tests for sd_cca_self_employment_income (Person, YEAR, USD).
+# Subsidy Manual, Section 6: "Self-employment showing a loss shall be counted
+# as $0.00. A loss may not be deducted from other forms of income the
+# household may have." The variable floors each person's aggregate
+# self-employment income at zero; the interaction with other income is
+# exercised in the sd_cca_countable_income tests.
+
+- name: Case 1, positive self-employment income passes through.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_self_employment_income: 12_000
+
+- name: Case 2, a self-employment loss counts as zero.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_self_employment_income: 0
+
+- name: Case 3, zero self-employment income stays zero.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_self_employment_income: 0

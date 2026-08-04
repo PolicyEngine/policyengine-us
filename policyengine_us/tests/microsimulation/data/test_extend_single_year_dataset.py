@@ -15,6 +15,7 @@ from policyengine_us.data.dataset_schema import (
 )
 from policyengine_us.data.economic_assumptions import (
     _apply_single_year_uprating,
+    _apply_uprating,
     _resolve_parameter,
     get_parameter_last_year,
 )
@@ -124,6 +125,63 @@ class TestApplySingleYearUprating:
 
         # Then — age has no uprating, should be unchanged
         np.testing.assert_array_equal(current.person["age"].values, AGE_BASE)
+
+    def test_given_computed_variable_with_microdata_override_then_values_scaled(
+        self, base_dataset
+    ):
+        # Given
+        current = base_dataset.copy()
+        current.time_period = str(BASE_YEAR + 1)
+        previous = base_dataset
+        variables = {
+            "employment_income": MockVariable("employment_income", uprating=None)
+        }
+        system = MockSystem(
+            variables=variables,
+            parameters=build_mock_parameters(
+                {EMPLOYMENT_INCOME_UPRATING: EMPLOYMENT_INCOME_PARAM_VALUES}
+            ),
+        )
+
+        # When
+        _apply_single_year_uprating(current, previous, system)
+
+        # Then
+        expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
+        np.testing.assert_allclose(current.person["employment_income"].values, expected)
+
+    def test_given_legacy_partnership_s_corp_column_then_values_scaled(
+        self, base_dataset
+    ):
+        # Given
+        current = base_dataset.copy()
+        current.time_period = str(BASE_YEAR + 1)
+        previous = base_dataset.copy()
+        current.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        previous.person["partnership_s_corp_income"] = np.array([100.0] * NUM_PERSONS)
+        variables = {
+            "partnership_s_corp_income": MockVariable(
+                "partnership_s_corp_income", uprating=None
+            )
+        }
+        partnership_s_corp_uprating = (
+            "calibration.gov.irs.soi.partnership_s_corp_income"
+        )
+        system = MockSystem(
+            variables=variables,
+            parameters=build_mock_parameters(
+                {partnership_s_corp_uprating: EMPLOYMENT_INCOME_PARAM_VALUES}
+            ),
+        )
+
+        # When
+        _apply_single_year_uprating(current, previous, system)
+
+        # Then
+        np.testing.assert_allclose(
+            current.person["partnership_s_corp_income"].values,
+            np.array([110.0] * NUM_PERSONS),
+        )
 
     def test_given_household_variable_with_uprating_then_values_scaled(
         self, base_dataset, mock_system
@@ -1053,3 +1111,120 @@ class TestGetParameterLastYear:
         # CPI-U YAML currently extends to 2035; if the YAML is updated,
         # this assertion should be updated to match.
         assert last_year == 2035
+
+
+# ---------------------------------------------------------------------------
+# Shallow-copy extension (copy-on-write fast path)
+# ---------------------------------------------------------------------------
+
+
+class TestShallowExtension:
+    """Regression tests for the shallow-copy dataset extension.
+
+    The extension previously deep-copied every entity DataFrame once per
+    projected year and then deep-copied the whole multi-year set again in
+    _apply_uprating. Under pandas copy-on-write the year frames are now
+    shallow copies of the base year; these tests pin down that the change
+    is invisible in values (equivalence, isolation) while the buffer
+    sharing that makes it fast actually happens (sharing).
+    """
+
+    def test_extension_equals_deep_copy_reference(self, mock_system, base_dataset):
+        # Given a reference result built the old way: deep copies for
+        # every year, then _apply_uprating with its defensive copy.
+        reference_years = [base_dataset.copy()]
+        for year in range(BASE_YEAR + 1, END_YEAR_SHORT + 1):
+            next_year = base_dataset.copy()
+            next_year.time_period = str(year)
+            reference_years.append(next_year)
+        reference = _apply_uprating(
+            USMultiYearDataset(datasets=reference_years),
+            system=mock_system,
+            copy=True,
+        )
+
+        # When extending via the shallow fast path
+        result = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+
+        # Then every table of every year is exactly equal
+        assert result.years == reference.years
+        for year in result.years:
+            for name, result_df, reference_df in zip(
+                result[year].table_names,
+                result[year].tables,
+                reference[year].tables,
+            ):
+                pd.testing.assert_frame_equal(
+                    result_df,
+                    reference_df,
+                    check_exact=True,
+                    obj=f"{name}/{year}",
+                )
+
+    def test_extension_leaves_caller_dataset_untouched(self, mock_system, base_dataset):
+        # Given snapshots of the caller's frames
+        snapshots = [df.copy() for df in base_dataset.tables]
+
+        # When extending
+        call_extend_with_mock_system(mock_system, base_dataset, end_year=END_YEAR_SHORT)
+
+        # Then the caller's dataset is bit-identical
+        for name, df, snapshot in zip(
+            base_dataset.table_names, base_dataset.tables, snapshots
+        ):
+            pd.testing.assert_frame_equal(df, snapshot, check_exact=True, obj=name)
+
+    def test_carried_forward_columns_share_base_year_buffers(
+        self, mock_system, base_dataset
+    ):
+        # When extending
+        result = call_extend_with_mock_system(
+            mock_system, base_dataset, end_year=END_YEAR_SHORT
+        )
+
+        # Then carried-forward columns share memory with the base year —
+        # this is the performance win; if this fails, deep copies crept
+        # back into the extension path.
+        assert np.shares_memory(
+            result[BASE_YEAR + 1].person["age"].values,
+            result[BASE_YEAR].person["age"].values,
+        )
+
+        # And uprated columns are freshly materialized per year.
+        assert not np.shares_memory(
+            result[BASE_YEAR + 1].person["employment_income"].values,
+            result[BASE_YEAR].person["employment_income"].values,
+        )
+
+    def test_apply_uprating_default_still_copies(self, mock_system, base_dataset):
+        # Given a multi-year dataset the caller owns
+        next_year = base_dataset.copy()
+        next_year.time_period = str(BASE_YEAR + 1)
+        multi = USMultiYearDataset(datasets=[base_dataset.copy(), next_year])
+        snapshot = multi[BASE_YEAR + 1].person["employment_income"].copy()
+
+        # When uprating with the default copy=True
+        _apply_uprating(multi, system=mock_system)
+
+        # Then the caller's dataset is not modified in place
+        assert (multi[BASE_YEAR + 1].person["employment_income"] == snapshot).all()
+
+    def test_apply_uprating_copy_false_modifies_in_place(
+        self, mock_system, base_dataset
+    ):
+        # Given a multi-year dataset built from private copies
+        next_year = base_dataset.copy()
+        next_year.time_period = str(BASE_YEAR + 1)
+        multi = USMultiYearDataset(datasets=[base_dataset.copy(), next_year])
+
+        # When uprating with copy=False (the extension fast path)
+        result = _apply_uprating(multi, system=mock_system, copy=False)
+
+        # Then the input dataset itself is uprated in place
+        assert result is multi
+        expected = EMPLOYMENT_INCOME_BASE * EMPLOYMENT_INCOME_GROWTH_FACTOR_2024_TO_2025
+        np.testing.assert_allclose(
+            multi[BASE_YEAR + 1].person["employment_income"].values, expected
+        )

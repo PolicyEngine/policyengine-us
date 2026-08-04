@@ -1,0 +1,31 @@
+- name: Case 1, citizen is eligible.
+  period: 2026
+  input:
+    in_smc: true
+    immigration_status: CITIZEN
+  output:
+    ca_smc_general_assistance_immigration_status_eligible_person: true
+
+- name: Case 2, legal permanent resident is eligible.
+  period: 2026
+  input:
+    in_smc: true
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ca_smc_general_assistance_immigration_status_eligible_person: true
+
+- name: Case 3, refugee is eligible.
+  period: 2026
+  input:
+    in_smc: true
+    immigration_status: REFUGEE
+  output:
+    ca_smc_general_assistance_immigration_status_eligible_person: true
+
+- name: Case 4, undocumented person is ineligible.
+  period: 2026
+  input:
+    in_smc: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ca_smc_general_assistance_immigration_status_eligible_person: false

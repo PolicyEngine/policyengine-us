@@ -127,3 +127,73 @@
     or_agi: 31_550
   output:
     or_ctc: 0
+
+# Tax year 2026 values are already determined by ORS 315.273(5) and published
+# CPI-U: the COLA window (September 2024 - August 2025, averaging 319.24) is
+# 9.114% over the 2022 Q2 base (292.572). The $91.14 amount increase floors
+# to $50 (amount $1,050) and the $2,278.47 threshold increase floors to
+# $2,250 (phase-out start $27,250).
+- name: 2026 - full credit exactly at the $27,250 phase-out start.
+  period: 2026
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 27_250
+  output:
+    or_ctc: 1_050
+
+- name: 2026 - fully phased out at $32,250.
+  period: 2026
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 32_250
+  output:
+    or_ctc: 0
+
+# The credit sunsets after tax year 2028 (HB 3235 Section 11): it applies to
+# tax years beginning on or after January 1, 2023, and before January 1, 2029.
+- name: 2029 - no credit after the sunset.
+  period: 2029
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 0
+  output:
+    or_ctc: 0
+
+- name: 2029 - two qualifying children still receive nothing after the sunset.
+  period: 2029
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 3
+      child2:
+        age: 5
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OR
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        or_agi: 20_000
+  output:
+    or_ctc: 0
+
+- name: 2027 - phase-out start uprates from observed CPI-U through June 2026.
+  period: 2027
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 28_200
+  output:
+    # $28,200 exceeds the $28,100 phase-out start by $100 of the $5,000
+    # width: 1,100 x (1 - 100 / 5,000) = 1,078.
+    or_ctc: 1_078

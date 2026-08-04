@@ -1,0 +1,150 @@
+# MA EITC = 40% of the federal EITC (gov/states/ma/tax/income/credits/eitc/match.yaml).
+# 2026 federal parameters: 1-child max 4,427 (phase-out starts 23,890 at 15.98%);
+# childless max 664 (phase-out starts 10,860).
+- name: ma_eitc_single_parent_plateau_max (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Earnings 20,000 sit on the 1-child plateau (13,021 to 23,890) -> max 4,427.
+        eitc: 4_427.0
+        # MA match: 4,427 x 0.4 = 1,770.80.
+        ma_eitc: 1_770.8
+- name: ma_eitc_single_parent_phase_out (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Phase-out: 4,427 - (30,000 - 23,890) x 0.1598 = 4,427 - 976.38 = 3,450.62.
+        eitc: 3_450.62
+        # MA match: 3,450.62 x 0.4 = 1,380.25.
+        ma_eitc: 1_380.25
+- name: ma_eitc_childless_adult (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 10_000
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Earnings 10,000 sit on the childless plateau (8,680 to 10,860) -> max 664.
+        eitc: 664.0
+        # MA match: 664 x 0.4 = 265.60.
+        ma_eitc: 265.6

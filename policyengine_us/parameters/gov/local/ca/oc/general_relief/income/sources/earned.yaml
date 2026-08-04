@@ -1,0 +1,14 @@
+description: Orange County General Relief counts these available earned income sources.
+values:
+  2024-11-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Orange County General Relief earned income sources
+  reference:
+    - title: Orange County General Relief regulations, section 70.2
+      href: https://www.ssa.ocgov.com/sites/ssa/files/2025-03/Income.pdf#page=2

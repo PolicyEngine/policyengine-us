@@ -6,20 +6,277 @@
 - name: Otherwise sums components.
   period: 2022
   input:
-    market_income: 1
+    employment_income: 1
   output:
     hud_annual_income: 1
 
-- name: Default value is zero.
+- name: Sums income across multiple family members.
   period: 2022
   input:
     people:
       p1:
-        market_income: 1
+        employment_income: 1
       p2:
-        market_income: 2
+        interest_income: 2
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
     hud_annual_income: 3
+
+- name: Counts unemployment compensation (24 CFR 5.609).
+  period: 2022
+  input:
+    unemployment_compensation: 5_000
+  output:
+    hud_annual_income: 5_000
+
+- name: Counts child support received (24 CFR 5.609).
+  period: 2022
+  input:
+    child_support_received: 3_000
+  output:
+    hud_annual_income: 3_000
+
+- name: Counts veterans' benefits (24 CFR 5.609).
+  period: 2022
+  input:
+    veterans_benefits: 2_000
+  output:
+    hud_annual_income: 2_000
+
+- name: Counts disability benefits (24 CFR 5.609).
+  period: 2022
+  input:
+    disability_benefits: 4_000
+  output:
+    hud_annual_income: 4_000
+
+- name: Does not count market income, retirement distributions, or capital gains.
+  period: 2022
+  input:
+    market_income: 1_000
+    retirement_distributions: 2_000
+    capital_gains: 3_000
+  output:
+    hud_annual_income: 0
+
+- name: Excludes earned income of children under 18 but counts unearned income.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 16
+        employment_income: 2_000
+        interest_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    # Parent earnings count; the child's earned income (2_000) is excluded
+    # while the child's unearned income (1_000) counts.
+    hud_annual_income: 41_000
+
+- name: Counts only the dependent deduction amount of earned income for full-time student dependents.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 2_000
+        interest_income: 100
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # min(2_000, 480) + 100
+    hud_annual_income: 580
+
+- name: Full-time student dependent earned income below the dependent deduction counts in full.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 300
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # 300 is below the 480 dependent deduction, so it all counts.
+    hud_annual_income: 300
+
+- name: Full-time student dependent earned income exactly at the dependent deduction counts in full.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 480
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # min(480, 480) = 480
+    hud_annual_income: 480
+
+- name: Sums all counted sources across the unit.
+  period: 2022
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+        social_security: 6_000
+        ssi: 3_000
+        unemployment_compensation: 5_000
+      p2:
+        child_support_received: 3_000
+        veterans_benefits: 2_000
+        disability_benefits: 4_000
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+        tanf: 1_000
+  output:
+    # 10_000 + 6_000 + 3_000 + 5_000 + 3_000 + 2_000 + 4_000 + 1_000
+    hud_annual_income: 34_000
+
+- name: Does not count debt relief or the Alaska Permanent Fund dividend.
+  period: 2022
+  input:
+    debt_relief: 5_000
+    ak_permanent_fund_dividend: 1_000
+  output:
+    hud_annual_income: 0
+
+- name: Counts only the dependent deduction amount of earned income for HUD dependent students in separate tax units.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        is_household_head: true
+      person2:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    hud_annual_income: 480
+
+- name: Excludes all income of a foster adult.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        is_household_head: true
+      person2:
+        age: 25
+        is_in_foster_care: true
+        employment_income: 2_000
+        interest_income: 100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Foster children and adults are not family members (24 CFR 5.603), so
+    # neither their earned nor unearned income counts.
+    hud_annual_income: 0
+
+- name: Excludes all income of a foster child, but still counts family TANF.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 50
+        is_household_head: true
+      person2:
+        age: 10
+        is_in_foster_care: true
+        interest_income: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 1_000
+  output:
+    # The foster child's own unearned income is excluded, but TANF is a
+    # family-level benefit that counts in full regardless of foster members.
+    hud_annual_income: 1_000
+
+- name: A full-time student spouse is not a HUD dependent, so their earned income is not capped.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+      spouse:
+        age: 20
+        is_full_time_college_student: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+  output:
+    # A spouse is head-or-spouse of the tax unit, so is_hud_dependent is
+    # false and the $480 dependent deduction cap does not apply.
+    hud_annual_income: 2_000
+
+- name: The 2026 dependent deduction amount caps the full-time student earned income exclusion.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 50
+      spouse:
+        age: 45
+      student:
+        age: 19
+        is_full_time_college_student: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, student]
+    spm_units:
+      spm_unit:
+        members: [parent, spouse, student]
+  output:
+    # min(2_000, 500) counts; the cap follows the 2026 dependent deduction.
+    hud_annual_income: 500

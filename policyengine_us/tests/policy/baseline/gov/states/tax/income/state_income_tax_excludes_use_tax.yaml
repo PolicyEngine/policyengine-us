@@ -1,0 +1,129 @@
+- name: California state income tax excludes use tax
+  period: 2026
+  input:
+    state_code: CA
+    ca_income_tax_before_refundable_credits: 100
+    ca_use_tax: 20
+    ca_refundable_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    ca_income_tax: 95
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 100
+    state_income_tax: 95
+    household_state_tax_before_refundable_credits: 120
+    household_tax_before_refundable_credits: 120
+    household_tax: 115
+    household_net_income: 885
+    spm_unit_state_tax: 115
+    spm_unit_taxes: 115
+
+- name: Illinois state income tax before refundable credits excludes use tax
+  period: 2026
+  input:
+    state_code: IL
+    il_income_tax_before_refundable_credits: 100
+    il_use_tax: 20
+    il_refundable_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    il_total_tax: 120
+    il_income_tax: 95
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 100
+    state_income_tax: 95
+    household_state_tax_before_refundable_credits: 120
+    household_tax_before_refundable_credits: 120
+    household_tax: 115
+    household_net_income: 885
+    spm_unit_state_tax: 115
+    spm_unit_taxes: 115
+
+- name: Indiana state income tax excludes use tax
+  period: 2026
+  input:
+    state_code: IN
+    in_agi_tax: 100
+    in_529_plan_credit: 30
+    in_use_tax: 20
+    in_refundable_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    in_income_tax_before_refundable_credits: 70
+    in_income_tax: 65
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 70
+    state_income_tax: 65
+    household_state_tax_before_refundable_credits: 90
+    household_tax_before_refundable_credits: 90
+    household_tax: 85
+    household_net_income: 915
+    spm_unit_state_tax: 85
+    spm_unit_taxes: 85
+
+- name: North Carolina state income tax excludes use tax
+  period: 2026
+  input:
+    state_code: NC
+    nc_income_tax_before_credits: 100
+    nc_non_refundable_credits: 30
+    nc_use_tax: 20
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    nc_income_tax: 70
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 70
+    state_income_tax: 70
+    household_state_tax_before_refundable_credits: 90
+    household_tax_before_refundable_credits: 90
+    household_tax: 90
+    household_net_income: 910
+    spm_unit_state_tax: 90
+    spm_unit_taxes: 90
+
+- name: Oklahoma state income tax excludes use tax
+  period: 2026
+  input:
+    state_code: OK
+    ok_income_tax_before_refundable_credits: 100
+    ok_use_tax: 20
+    ok_refundable_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    ok_income_tax: 95
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 100
+    state_income_tax: 95
+    household_state_tax_before_refundable_credits: 120
+    household_tax_before_refundable_credits: 120
+    household_tax: 115
+    household_net_income: 885
+    spm_unit_state_tax: 115
+    spm_unit_taxes: 115
+
+- name: Pennsylvania state income tax excludes use tax
+  period: 2026
+  input:
+    state_code: PA
+    pa_income_tax_after_forgiveness: 100
+    pa_use_tax: 20
+    pa_refundable_tax_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    pa_income_tax_before_refundable_credits: 100
+    pa_income_tax: 95
+    state_use_tax: 20
+    state_income_tax_before_refundable_credits: 100
+    state_income_tax: 95
+    household_state_tax_before_refundable_credits: 120
+    household_tax_before_refundable_credits: 120
+    household_tax: 115
+    household_net_income: 885
+    spm_unit_state_tax: 115
+    spm_unit_taxes: 115

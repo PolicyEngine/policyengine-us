@@ -15,5 +15,5 @@ class ct_ssp_special_needs(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ct.dss.ssp.special_needs
-        has_therapeutic_diet = person("ct_ssp_has_therapeutic_diet", period.this_year)
+        has_therapeutic_diet = person("ct_ssp_has_therapeutic_diet", period)
         return has_therapeutic_diet * p.therapeutic_diet

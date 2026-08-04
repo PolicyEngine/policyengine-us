@@ -1,0 +1,248 @@
+# Kansas CCAP countable income (KEESM 6200/6300/6410).
+# Earned income counts for members aged 18+ and for any minor who is a parent
+# (is_parent, i.e. own_children_in_household > 0 — "legally responsible for
+# another person in the nuclear family" per KEESM 6410); a non-parent child
+# under 18 has their earnings exempted. Unearned income counts for everyone.
+# SSI and assigned child support are excluded.
+# MONTH-defined; annual income inputs auto-divide to monthly.
+
+- name: Case 1, single parent earned income counts.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_ccap_countable_income: 2_000
+
+- name: Case 2, non-parent child's earnings are excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # $2,000/month, counted
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        own_children_in_household: 0  # not a parent -> wages exempt (KEESM 6410)
+        employment_income: 12_000
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # Only the parent's $2,000/month counts; the 16-year-old is not a parent,
+    # so the child-earnings exemption applies to their $12,000 wages.
+    ks_ccap_countable_income: 2_000
+
+- name: Case 3, SSI is excluded but other unearned income counts.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # $2,000/month, counted
+        social_security: 6_000  # $500/month, counted
+        ssi: 9_000  # excluded for child care
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # ($24,000 employment + $6,000 social security) / 12 = $2,500; SSI excluded.
+    ks_ccap_countable_income: 2_500
+
+- name: Case 4, a minor parent's own earnings count.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        own_children_in_household: 1  # minor parent -> is_parent true
+        employment_income: 12_000  # $1,000/month, counted
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # KEESM 6410: a child's earnings are exempt UNLESS the child is legally
+    # responsible for another nuclear-family member. The 16-year-old is a parent
+    # (own_children_in_household > 0), so their wages count: $12,000 / 12 = $1,000.
+    ks_ccap_countable_income: 1_000
+
+- name: Case 5, an adult's earnings count at the age-18 boundary.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        employment_income: 18_000  # $1,500/month, adult
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # An 18-year-old is an adult, so the child-earnings exemption does not apply
+    # regardless of parent status: $18,000 / 12 = $1,500.
+    ks_ccap_countable_income: 1_500
+
+- name: Case 6, child support received is excluded.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month, counted
+        child_support_received: 6_000  # excluded when assigned to DCF (KEESM 6410)
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Only the $2,000/month employment income counts; child support is excluded.
+    ks_ccap_countable_income: 2_000
+
+# Edge case: a self-employment loss produces negative countable income. KEESM
+# countable income is not floored at zero here (the F-1 lookup handles the
+# negative gracefully downstream), so the loss flows through.
+- name: Case 7, self-employment loss yields negative countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -24_000  # -$2,000/month loss
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # -$24,000 / 12 = -$2,000/month; no flooring at the countable-income stage.
+    ks_ccap_countable_income: -2_000
+
+# Edge case: a self-employment loss partly offsets earned wages.
+- name: Case 8, self-employment loss offsets employment income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month
+        self_employment_income: -12_000  # -$1,000/month
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # ($36,000 - $12,000) / 12 = $2,000/month.
+    ks_ccap_countable_income: 2_000
+
+# Edge case: zero income gives zero countable income.
+- name: Case 9, zero-income family has zero countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    ks_ccap_countable_income: 0

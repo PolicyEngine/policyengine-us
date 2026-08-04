@@ -110,3 +110,33 @@
     state_code: TX
   output:
     lifeline: 153
+
+- name: Eligible Kansas family with phone costs receives federal Lifeline and KUSF supplement
+  period: 2025
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 200
+    phone_cost: 400
+    state_code: KS
+  output:
+    lifeline: (9.25 + 7.77) * 12
+
+- name: Eligible Kansas broadband-only family does not receive the phone-only KUSF supplement
+  period: 2025
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 200
+    phone_cost: 0
+    state_code: KS
+  output:
+    lifeline: 9.25 * 12
+
+- name: Eligible Kansas family with limited phone costs receives partial KUSF supplement
+  period: 2025
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 200
+    phone_cost: 3 * 12
+    state_code: KS
+  output:
+    lifeline: 9.25 * 12 + 3 * 12

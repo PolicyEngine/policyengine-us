@@ -1,0 +1,47 @@
+- name: Case 1, no income gives zero PAA countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_countable_income: 0
+
+- name: Case 2, OASI income applies the unearned-income disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # $1,000 monthly OASI - $20 general exclusion.
+    md_paa_countable_income: 980
+
+- name: Case 3, SSDI-only recipient does not need a separate disability flag for income counting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+        social_security_disability: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # $2,500 monthly SSDI - $20 general exclusion.
+    ssi_countable_income: 0
+    md_paa_countable_income: 2_480

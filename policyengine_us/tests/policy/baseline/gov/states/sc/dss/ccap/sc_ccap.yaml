@@ -108,8 +108,23 @@
         state_code: SC
   output:
     # Family size 2, 36,000/yr = 3,000/mo -> $0 copay
-    # FFN, HT, school age = $24/wk
-    # Annual max = $24 * 52 = $1,248
-    # Uncapped benefit = max(5,000 - 0, 0) = 5,000
-    # Annual benefit = min(5,000, 1,248) = 1,248
-    sc_ccap: 1_248
+    # FFN, HT, school age = $18/wk -> max monthly = $78
+    # Annual max = $78 * 12 = $936
+    # Capped expense = min(5000/12, 78) = $78/mo
+    # Annual benefit = max(78 - 0, 0) * 12 = $936
+    sc_ccap: 936
+
+- name: Case 4, copay deducted from capped expense when expense exceeds max rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    sc_ccap_eligible: true
+    sc_ccap_copay: 80
+    sc_ccap_maximum_weekly_benefit: 100
+    spm_unit_pre_subsidy_childcare_expenses: 10_000
+    state_code: SC
+  output:
+    # Max monthly = 100 * 52 / 12 = 433.33
+    # Monthly expense 10_000 / 12 = 833.33 > monthly max -> capped = 433.33
+    # Benefit = max(433.33 - 80, 0) = 353.33
+    sc_ccap: 353.33

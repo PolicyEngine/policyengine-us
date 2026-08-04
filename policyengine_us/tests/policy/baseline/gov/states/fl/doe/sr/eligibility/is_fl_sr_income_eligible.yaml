@@ -1,0 +1,294 @@
+# Florida School Readiness income eligibility.
+# New applicants (fl_sr_enrolled == false) enter at <= 55% SMI; enrolled
+# families (fl_sr_enrolled == true) remain eligible through <= 85% SMI.
+#
+# Family of 2, FFY2026 (instant 2025-10-01):
+#   annual SMI = 70_082.84  ->  monthly SMI = 5_840.24
+#   entry limit (55%) = 3_212.13 / month
+#   exit  limit (85%) = 4_964.20 / month
+# Income inputs are annual; the formula compares monthly countable income.
+
+- name: Case 1, applicant below 55% SMI is income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month <= 3_212.13
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 2, applicant between 55% and 85% SMI fails the entry test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_600  # 3_300 / month > 3_212.13 entry limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: false
+
+- name: Case 3, enrolled family at the same income passes the 85% SMI exit test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_600  # 3_300 / month <= 4_964.20 exit limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 4, enrolled family just below 85% SMI is income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_568  # 4_964 / month <= 4_964.20 exit limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 5, enrolled family above 85% SMI fails the exit test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000 / month > 4_964.20 exit limit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: false
+
+# Edge cases: boundaries set with a small dollar margin (not the round-trip
+# boundary) to avoid float32 drift. Family of 2 unless noted.
+#   entry (55% SMI) monthly = 3_212.13; exit (85% SMI) monthly = 4_964.20.
+
+- name: Case 6, applicant just below the 55% SMI entry limit is income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_544  # 3_212.00 / month, just below 3_212.13 entry
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 7, applicant just above the 55% SMI entry limit fails the entry test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_546  # 3_212.17 / month, just above 3_212.13 entry
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: false
+
+- name: Case 8, enrolled family just below the 85% SMI exit limit is income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_568  # 4_964.00 / month, just below 4_964.20 exit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 9, enrolled family just above the 85% SMI exit limit fails the exit test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_572  # 4_964.33 / month, just above 4_964.20 exit
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: false
+
+- name: Case 10, zero income is income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 11, single-person unit just below the size-1 entry limit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 29_472  # 2_456.00 / month, just below size-1 55% (2_456.33)
+    spm_units:
+      spm_unit:
+        members: [person1]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true
+
+- name: Case 12, large eight-person family just below the size-8 entry limit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 78_216  # 6_518.00 / month, just below size-8 55% (6_518.73)
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+      person8:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        fl_sr_enrolled: false
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        state_code: FL
+  output:
+    is_fl_sr_income_eligible: true

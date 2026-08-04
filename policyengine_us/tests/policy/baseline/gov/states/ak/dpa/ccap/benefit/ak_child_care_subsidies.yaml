@@ -1,0 +1,53 @@
+# ak_child_care_subsidies: SPMUnit, float (USD), YEAR
+# Annual aggregator that sums ak_ccap over 12 months. Registers with the
+# federal child_care_subsidy_programs list.
+
+- name: Case 1, AK CCAP recipient gets nonzero annual subsidy.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000  # 2_000/mo
+      child:
+        age: 4
+        immigration_status: CITIZEN
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # $1_200/mo, typical AK center
+    households:
+      household:
+        members: [parent, child]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Monthly ak_ccap = 939 (per ak_ccap.yaml Case 1)
+    # Annual = 939 * 12 = 11_268
+    ak_child_care_subsidies: 11_268
+
+- name: Case 2, non-AK family gets zero.
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 24_000
+      child:
+        age: 4
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    ak_child_care_subsidies: 0

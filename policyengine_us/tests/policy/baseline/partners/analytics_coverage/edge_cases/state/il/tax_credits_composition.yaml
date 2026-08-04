@@ -1,0 +1,120 @@
+# IL credit stacking — the IL CTC is derived from the IL EITC (40% in
+# 2025+), which is itself a 20% federal match. These cases pin the
+# state-specific EITC -> CTC stack at the 2-child rate and in phase-out.
+- name: statetax_single_parent_2_children_credit_stack (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1, child2]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    tax_units:
+      tax_unit:
+        # 2026 federal EITC (2 children, $20,000) = $7,316; IL EITC = 20% x
+        # 7,316 = 1,463.20; IL CTC stacks on top: 40% x 1,463.20 = 585.28
+        # (both children under 12).
+        il_eitc: 1_463.2
+        il_ctc: 585.28
+        adjusted_gross_income: 20_000.0
+- name: statetax_couple_2_children_phase_out_credit_stack (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 60_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1, child2]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    tax_units:
+      tax_unit:
+        # Deep in the joint 2-child federal phase-out: federal EITC =
+        # $1,242.30 at $60,000 -> IL EITC = 20% x 1,242.30 = 248.46 -> IL
+        # CTC = 40% x 248.46 = 99.38; the 0.4 stack ratio holds in
+        # phase-out.
+        il_eitc: 248.46
+        il_ctc: 99.38
+        adjusted_gross_income: 60_000.0

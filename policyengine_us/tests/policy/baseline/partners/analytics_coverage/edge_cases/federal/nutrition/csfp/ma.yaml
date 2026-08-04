@@ -1,0 +1,88 @@
+# MA state variant: Massachusetts restricts CSFP to covered counties
+# (ma_dese_csfp_county_eligible against gov/states/ma/dese/csfp/counties.yaml:
+# Bristol, Essex, Middlesex, Norfolk, Plymouth, Suffolk). Other states with no
+# county list default to county-eligible.
+- name: csfp_ma_covered_county_suffolk (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Age 65 >= 60 and Suffolk County is on the MA covered-county list.
+        # The zero-earnings aged single draws full SSI (994/mo x 12 = 11,928),
+        # which counts in the school-meal income base: 11,928 / 15,960 size-1
+        # FPG = 0.7474 <= 1.5 -> eligible -> flat 601
+        # (gov/usda/csfp/amount.yaml, 2025 value carried to 2026).
+        commodity_supplemental_food_program: 601.0
+- name: csfp_ma_non_covered_county_worcester (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: '01601'
+        county_str: WORCESTER_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Geographic ineligibility route: same age/income-eligible person
+        # (SSI 11,928 -> ratio 0.7474 <= 1.5), but Worcester County is not on
+        # the MA covered-county list -> $0.
+        commodity_supplemental_food_program: 0.0

@@ -1,0 +1,60 @@
+- name: Case 1, eligible when all modeled tests pass.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_eligible_person: true
+    ca_smc_general_assistance_income_eligible: true
+    ca_smc_general_assistance_property_eligible: true
+  output:
+    ca_smc_general_assistance_eligible: true
+
+- name: Case 2, ineligible when immigration test fails.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_eligible_person: false
+    ca_smc_general_assistance_income_eligible: true
+    ca_smc_general_assistance_property_eligible: true
+  output:
+    ca_smc_general_assistance_eligible: false
+
+- name: Case 3, ineligible when income test fails.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_eligible_person: true
+    ca_smc_general_assistance_income_eligible: false
+    ca_smc_general_assistance_property_eligible: true
+  output:
+    ca_smc_general_assistance_eligible: false
+
+- name: Case 4, ineligible when property test fails.
+  period: 2026-01
+  input:
+    in_smc: true
+    ca_smc_general_assistance_eligible_person: true
+    ca_smc_general_assistance_income_eligible: true
+    ca_smc_general_assistance_property_eligible: false
+  output:
+    ca_smc_general_assistance_eligible: false
+
+- name: Case 5, ineligible when unit includes a minor child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ca_smc_general_assistance_eligible_person: true
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        in_smc: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_smc_general_assistance_income_eligible: true
+        ca_smc_general_assistance_property_eligible: true
+  output:
+    ca_smc_general_assistance_eligible: false

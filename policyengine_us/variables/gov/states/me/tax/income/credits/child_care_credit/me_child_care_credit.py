@@ -21,8 +21,16 @@ class me_child_care_credit(Variable):
             "me_step_4_share_of_child_care_expenses", period
         )
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
-        # Maine matches the federal credit taken
-        cdcc = tax_unit("cdcc", period)
+        # Maine matches the federal credit taken. 36 M.R.S. § 5218 sets the
+        # credit at 25% of "the federal tax credit allowable for child and
+        # dependent care expenses," and 36 M.R.S. § 111(1-A) fixes Maine's
+        # "Code" at the IRC and amendments as of December 31, 2024. From 2026
+        # that frozen Code excludes the OBBBA section 21 rate increase, so Maine
+        # uses the pre-OBBBA federal credit.
+        if period.start.year >= 2026:
+            cdcc = tax_unit("pre_obbba_cdcc", period)
+        else:
+            cdcc = tax_unit("cdcc", period)
         # Line 2a: Column A
         cdcc_regular_portion = cdcc * (1 - step_4_share_of_expenses)
         # Line 2a, Column B

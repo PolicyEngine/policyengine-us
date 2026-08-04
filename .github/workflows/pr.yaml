@@ -22,13 +22,64 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Check for changelog fragment
+        with:
+          fetch-depth: 2
+      - name: Check changed changelog fragments
+        shell: bash
         run: |
-          FRAGMENTS=$(find changelog.d -type f ! -name '.gitkeep' | wc -l)
-          if [ "$FRAGMENTS" -eq 0 ]; then
-            echo "::error::No changelog fragment found in changelog.d/"
-            echo "Add one with: echo 'Description.' > changelog.d/\$(git branch --show-current).<type>.md"
-            echo "Types: added, changed, fixed, removed, breaking"
+          set -euo pipefail
+
+          valid_count=0
+          invalid=0
+
+          while IFS= read -r fragment; do
+            if [ "$fragment" = "changelog.d/.gitkeep" ]; then
+              continue
+            fi
+
+            if [[ "$fragment" =~ ^changelog\.d/[^/]+\.(breaking|added|changed|fixed|removed)\.md$ ]]; then
+              valid_count=$((valid_count + 1))
+            else
+              echo "::error file=${fragment}::Invalid changelog fragment path. Use changelog.d/<name>.<type>.md, where <type> is one of: breaking, added, changed, fixed, removed."
+              invalid=1
+            fi
+          done < <(
+            git diff --name-only --diff-filter=ACMR \
+              HEAD^1 \
+              HEAD \
+              -- changelog.d
+          )
+
+          if [ "$invalid" -ne 0 ]; then
+            exit 1
+          fi
+
+          if [ "$valid_count" -eq 0 ]; then
+            echo "::error::No valid changelog fragment found. Add one like: changelog.d/${{ github.head_ref }}.fixed.md"
+            exit 1
+          fi
+      - name: Validate changelog.d tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Tree-state guard: fragments at invalid paths (type subdirectories,
+          # missing .<type>. suffix) are silently ignored by towncrier and
+          # bump_version.py, so their entries never reach CHANGELOG.md (#9149).
+          # The changed-files check above only sees files touched by the PR;
+          # this step keeps the whole tree clean so strays cannot accumulate.
+          invalid=0
+          while IFS= read -r f; do
+            if [ "$f" = "changelog.d/.gitkeep" ]; then
+              continue
+            fi
+            if [[ ! "$f" =~ ^changelog\.d/[^/]+\.(breaking|added|changed|fixed|removed)\.md$ ]]; then
+              echo "::error file=${f}::Fragment at an invalid path (towncrier will ignore it). Use changelog.d/<name>.<type>.md at the top level; no type subdirectories."
+              invalid=1
+            fi
+          done < <(git ls-files -- changelog.d)
+
+          if [ "$invalid" -ne 0 ]; then
             exit 1
           fi
   BundleMetadataContract:
@@ -56,7 +107,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
@@ -66,23 +117,32 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
       - name: Install package
-        run: uv pip install --system .
+        run: uv pip install --system . pytest
       - name: Smoke-import
         run: |
           python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
+      - name: Dataset copy/extension tests (real pandas semantics per Python version)
+        # Fixture-based and requires no dataset downloads.
+        run: python -m pytest policyengine_us/tests/microsimulation/data/ -q
   Quick-Feedback:
     name: Quick Feedback (Selective Tests + Coverage)
     runs-on: ubuntu-latest
     env:
       SELECTIVE_TEST_MAX_TARGETS: 25
-      SELECTIVE_TEST_MAX_FILES: 250
+      # 100 (was 250): selective runs pack every matched yaml into ONE
+      # policyengine-core subprocess, and ~250 yaml files retained ~15 GB
+      # and OOM'd the 16 GB runner on run 28698452678. When the limit is
+      # exceeded run_selective_tests.py safely narrows to directly changed
+      # test files (or skips, deferring to the full suite jobs).
+      SELECTIVE_TEST_MAX_FILES: 100
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
         with:
           fetch-depth: 10
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }} --depth=1
+        run: git fetch origin ${{ github.base_ref }} --depth=1000
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -147,24 +207,37 @@ jobs:
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
         include:
-          - group: states-non-ny-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 1/2
-          - group: states-non-ny-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 4 --exclude ny --shard 2/2
-          - group: states-ny
-            cmd: make test-yaml-no-structural-states-ny
-          - group: irs-household
-            cmd: make test-yaml-no-structural-other-irs-household
-          - group: ssa
-            cmd: make test-yaml-no-structural-other-ssa
-          - group: rest
-            cmd: make test-yaml-no-structural-other-rest
-          - group: contrib
-            cmd: make test-yaml-no-structural-other-contrib
+          # 16 batches / 4 shards / --workers 1: the 8-batch 2-wide shards
+          # OOM'd on run 28698452678; see the Makefile memory-layout notes.
+          - group: states-shard-1
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 1/4
+          - group: states-shard-2
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 2/4
+          - group: states-shard-3
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 3/4
+          - group: states-shard-4
+            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --batches 16 --workers 1 --shard 4/4
+          - group: irs
+            cmd: make test-yaml-no-structural-other-irs
+          - group: household
+            cmd: make test-yaml-no-structural-other-household
+          - group: ssa-usda
+            cmd: make test-yaml-no-structural-other-ssa-usda
+          - group: rest-a
+            cmd: make test-yaml-no-structural-other-rest-a
+          - group: rest-b
+            cmd: make test-yaml-no-structural-other-rest-b
+          - group: contrib-hhs
+            cmd: make test-yaml-contrib-hhs
+          - group: reform
+            cmd: make test-yaml-reform
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -180,13 +253,37 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Baseline YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run ${{ matrix.cmd }}
+  HouseholdAPIPartners:
+    name: Household API Partners
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      - name: Run Household API Partners YAML tests
+        run: uv run make test-yaml-no-structural-other-partners
   Contrib:
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
       matrix:
@@ -195,10 +292,18 @@ jobs:
             target: test-yaml-structural-heavy-shard-1
           - group: states-shard-2
             target: test-yaml-structural-heavy-shard-2
+          - group: states-shard-3
+            target: test-yaml-structural-heavy-shard-3
+          - group: states-shard-4
+            target: test-yaml-structural-heavy-shard-4
           - group: other-shard-1
             target: test-yaml-structural-other
-          - group: other-shard-2
-            target: test-yaml-structural-other-shard-2
+          - group: other-shard-2a
+            target: test-yaml-structural-other-shard-2a
+          - group: other-shard-2b
+            target: test-yaml-structural-other-shard-2b
+          - group: other-shard-3
+            target: test-yaml-structural-other-shard-3
           - group: congress
             target: test-yaml-structural-congress
     steps:
@@ -216,13 +321,17 @@ jobs:
         shell: bash
         run: bash ./update_itemization.sh
       - name: Run Contrib YAML tests (${{ matrix.group }})
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make ${{ matrix.target }}
+      - name: Run Contrib Python tests
+        if: ${{ matrix.group == 'other-shard-1' }}
+        run: uv run make test-policy-contrib-python
   Rest:
-    name: Full Suite - Rest (Python + variables/ YAMLs)
+    name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -237,17 +346,34 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Python tests (code_health, core, microsimulation, utilities, top-level)
-        env:
-          PYTHONUNBUFFERED: 1
-        run: uv run make test-other
+      - name: Run Python tests (code_health, core, utilities, top-level)
+        run: uv run make test-other-python
       - name: Run tests/variables YAML tests
         if: always()
-        env:
-          PYTHONUNBUFFERED: 1
         run: uv run make test-yaml-variables
-      - name: Run tests/policy/reform YAML tests
-        if: always()
-        env:
-          PYTHONUNBUFFERED: 1
-        run: uv run make test-yaml-reform
+  Microsimulation:
+    name: Full Suite - Microsimulation
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      # Split out of the Rest job: the combined single-process pytest run
+      # was OOM-killed at ~94% on run 28698452678 once microsimulation
+      # peaks stacked on the accumulated python-test RSS.
+      - name: Run microsimulation tests
+        run: uv run make test-microsimulation

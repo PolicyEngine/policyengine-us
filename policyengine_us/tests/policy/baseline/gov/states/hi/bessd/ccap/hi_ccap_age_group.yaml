@@ -1,0 +1,73 @@
+# HI CCAP child age group (HAR 17-798.3-2). A child younger than 36 months
+# (an infant/toddler center serves six weeks to thirty-six months of age) gets
+# the infant/toddler Exhibit I rate; 36 months (3 years) and over get the older
+# rate. The threshold is a strict "< 36 months" (= age in years < 3). The
+# variable reads the YEAR-defined age with period.this_year and converts to
+# months (age x 12), so age 1 -> 12 months, age 2 -> 24, age 3 -> 36.
+
+- name: Case 1, age 1 (12 months) is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 2, age 2 (24 months) is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 3, 35 months (just under the 36-month threshold) is infant/toddler.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 35/12 = 2.9167 years -> 35 months < 36 -> INFANT_TODDLER
+        age: 2.9167
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_age_group: INFANT_TODDLER
+
+- name: Case 4, exactly 36 months (3 years) is older (strict less-than boundary).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        # 3 years = 36 months; threshold is strict <, so 36 -> OLDER
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_age_group: OLDER
+
+- name: Case 5, age 5 is older.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_age_group: OLDER

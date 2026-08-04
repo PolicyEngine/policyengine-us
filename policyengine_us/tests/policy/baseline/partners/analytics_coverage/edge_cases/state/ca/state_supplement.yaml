@@ -1,0 +1,177 @@
+# CA SSI State Supplementary Payment (SSP) partner edge cases.
+# 2026 payment standards (2025-01-01 params): aged/disabled single $1,206.94,
+# married (both aged/disabled) $2,057.83; food allowance single $128.87,
+# married $257.74 (applies when living arrangements do not allow food
+# preparation, the model default). 2026 SSI FBR: $994 single, $1,491 couple.
+# SSP = payment standard - SSI - SSI countable income.
+- name: ca_state_supplement_aged_single_no_income_max (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Standard: 1,206.94 + 128.87 food = 1,335.81; SSI = 994 FBR (no income).
+        # SSP: (1,335.81 - 994) x 12 = 341.81 x 12 = 4,101.72.
+        ca_state_supplement: 4_101.72
+- name: ca_state_supplement_aged_couple_no_income (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 0
+      spouse:
+        age: 66
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Both aged: married standard 2,057.83 + married food 257.74 = 2,315.57;
+        # SSI couple FBR 1,491. SSP: (2,315.57 - 1,491) x 12 = 824.57 x 12 = 9,894.84.
+        ca_state_supplement: 9_894.84
+- name: ca_state_supplement_aged_single_earnings_partial (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 26_400
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # $2,200/mo earned: SSI countable = (2,200 - 20 - 65) / 2 = 1,057.50
+        # > 994 FBR -> federal SSI = 0, but SSP standard is higher:
+        # SSP: (1,335.81 - 0 - 1,057.50) x 12 = 278.31 x 12 = 3,339.72.
+        ca_state_supplement: 3_339.72
+- name: ca_state_supplement_resources_above_limit_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 2_001
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Resources $2,001 exceed the $2,000 SSI individual limit -> fails the
+        # SSI resource test -> no SSP payment standard (resource route boundary).
+        ca_state_supplement: 0.0

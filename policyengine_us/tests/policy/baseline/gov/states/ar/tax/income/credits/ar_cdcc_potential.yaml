@@ -1,0 +1,130 @@
+- name: 2021 uses the pre-ARPA credit per Ark. Code Ann. 26-51-502(b)(1) and Form AR2441
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # AR2441: line 3 = min(4,000, 3,000 for one qualifying person) = 3,000
+    # line 6 = min(3,000, 50,000 earned) = 3,000; AGI 50,000 -> .20 rate
+    # line 9 = 600; line 10 = 600 * .20 = 120
+    ar_federal_cdcc: 600
+    ar_cdcc_potential: 120
+
+- name: 2021 low-income filer gets the 35 percent pre-ARPA rate
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 14_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # AR2441: line 3 = 3,000; line 6 = min(3,000, 14,000) = 3,000
+    # AGI 14,000 -> .35 rate; line 9 = 1,050; line 10 = 1,050 * .20 = 210
+    ar_federal_cdcc: 1_050
+    ar_cdcc_potential: 210
+
+- name: 2021 separate filer cannot claim, AR2441 filing status rule
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_federal_cdcc: 0
+    ar_cdcc_potential: 0
+
+- name: 2022 uses the 2013-law schedule with no federal liability limitation
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 50_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 4_000
+        # A zero liability-capped federal credit must not reduce the state
+        # credit: AR2441 has no federal-liability line, and ar_federal_cdcc
+        # never reads the capped credit.
+        cdcc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # AR2441: min(4,000, 3,000) = 3,000; AGI 50,000 -> .20 rate; line 9 = 600;
+    # line 10 = 600 * .20 = 120. Identical to the 2021 replica (2013 law).
+    ar_federal_cdcc: 600
+    ar_cdcc_potential: 120
+
+- name: 2026 stays on the 2013-law 35-to-20 percent schedule, not the scheduled federal change
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 15_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Static conformity to the January 2, 2013 IRC: the credit does not adopt
+    # the scheduled 2026 federal rate. min(3,000, 3,000) = 3,000; AGI 15,000
+    # -> .35 rate (2013 law); line 9 = 1,050; line 10 = 1,050 * .20 = 210.
+    # (Under the live 2026 federal 50 percent rate it would be 300.)
+    ar_federal_cdcc: 1_050
+    ar_cdcc_potential: 210

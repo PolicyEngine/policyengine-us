@@ -1,0 +1,1193 @@
+# Federal CDCC (IRC section 21) partner edge cases.
+# 2026 amended (OBBBA) rate structure: max rate 0.5; first phase-out starts at
+# AGI 15_000, -0.01 per (partial) 2_000 increment, floored at 0.35; amended
+# second phase-out starts at 150_000 (joint) / 75_000 (other statuses),
+# -0.01 per 4_000 (joint) / 2_000 (other) increment, floored at 0.2.
+# Expense limit: 3_000 per qualifying individual, capped at 2 (6_000), further
+# capped at the lesser of head/spouse earnings (with the IRC 21(d)(2) deemed
+# floor of 3_000/6_000 for a student or incapable-of-self-care spouse).
+# The credit is nonrefundable: cdcc = min(cdcc_potential, cdcc_credit_limit).
+#
+# AGI 15_000 joint, two earners: rate = 0.5 (first phase-out not started).
+# Expenses = min(3_000 childcare, 3_000 one-QI cap, 7_000 spouse earnings)
+# = 3_000, so cdcc_potential = 3_000 x 0.5 = 1_500. The standard deduction
+# wipes out taxable income, so cdcc_credit_limit = 0 and cdcc = 0 - this pins
+# the nonrefundability seam (state credits consume the pre-cap
+# cdcc_potential, which stays positive).
+- name: cdcc_max_rate_50pct_liability_limited (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 8_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 7_000
+        is_full_time_student: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 4_427.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 1_700.0
+        refundable_ctc: 1_700.0
+        # 3_000 x 0.5 = 1_500 pre-cap; liability cap 0 binds.
+        cdcc_potential: 1_500.0
+        cdcc_credit_limit: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 15_000.0
+        income_tax: -6_127.0
+# Joint AGI 170_000, three under-13 children: capped_count_cdcc_eligible
+# caps the expense limit at 2 x 3_000 = 6_000 (raw expenses 12_000).
+# Rate: first phase-out floors at 0.35; amended second phase-out (joint
+# start 150_000, 4_000 increments) removes ceil(20_000 / 4_000) x 0.01
+# = 0.05, so rate = 0.30 and cdcc = 6_000 x 0.30 = 1_800.
+- name: cdcc_joint_second_phase_out_30pct_three_children (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_000
+        is_full_time_student: false
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 70_000
+        is_full_time_student: false
+      child1:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child3:
+        age: 11
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 12_000
+    families:
+      family:
+        members: [head, spouse, child1, child2, child3]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+      mu_child3:
+        members: [child3]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 6_600.0
+        ctc_value: 6_600.0
+        refundable_ctc: 0.0
+        # min(12_000, 2 x 3_000) x (0.35 - 0.05) = 1_800.
+        cdcc_potential: 1_800.0
+        cdcc: 1_800.0
+        adjusted_gross_income: 170_000.0
+        income_tax: 11_340.0
+# Joint AGI 250_000: amended second phase-out removes
+# ceil(100_000 / 4_000) x 0.01 = 0.25, which drives 0.35 - 0.25 = 0.10
+# below the second minimum, so the 0.2 floor binds:
+# cdcc = 6_000 x 0.2 = 1_200.
+- name: cdcc_joint_deep_phase_out_20pct_floor (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 150_000
+        is_full_time_student: false
+      spouse:
+        age: 43
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_000
+        is_full_time_student: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 9
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+        childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 8_000
+    families:
+      family:
+        members: [head, spouse, child1, child2]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 4_400.0
+        ctc_value: 4_400.0
+        refundable_ctc: 0.0
+        # min(8_000, 6_000) x 0.2 floor = 1_200.
+        cdcc_potential: 1_200.0
+        cdcc: 1_200.0
+        adjusted_gross_income: 250_000.0
+        income_tax: 31_868.0
+# Single-parent head of household, AGI 85_000: the amended second phase-out
+# uses the non-joint 75_000 start and 2_000 increment, removing
+# ceil(10_000 / 2_000) x 0.01 = 0.05, so rate = 0.35 - 0.05 = 0.30 and
+# cdcc = 3_000 x 0.30 = 900. Pins the filing-status-dependent second-start
+# and second-increment parameters.
+- name: cdcc_hoh_second_phase_out_30pct_single_parent (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 85_000
+        is_full_time_student: false
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 0.0
+        # 3_000 x (0.35 - ceil(10_000 / 2_000) x 0.01) = 900.
+        cdcc_potential: 900.0
+        cdcc: 900.0
+        adjusted_gross_income: 85_000.0
+        income_tax: 3_848.0
+# Age-boundary pair with BOTH spouses earning, so the boundary itself (not a
+# zero-earning spouse) drives the result: at age 12 the child is a qualifying
+# individual and cdcc = min(4_000, 3_000 cap, 25_000 spouse earnings) x 0.35
+# = 1_050 (AGI 55_000 is past the first phase-out floor).
+- name: cdcc_child_age_12_two_earner_qualifying (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 25_000
+        is_full_time_student: false
+      child1:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 617.37
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 970.0
+        # 3_000 x 0.35 = 1_050.
+        cdcc_potential: 1_050.0
+        cdcc: 1_050.0
+        adjusted_gross_income: 55_000.0
+        income_tax: -1_587.37
+# Identical household but the child turns 13: no qualifying individual, so
+# cdcc = 0 (deliberate categorical-ineligibility boundary pin, the other half
+# of the age-12 case above). With no CDCC absorbing liability, more CTC is
+# used non-refundably (refundable_ctc 0 vs 970 above).
+- name: cdcc_child_age_13_two_earner_not_qualifying (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 25_000
+        is_full_time_student: false
+      child1:
+        age: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 617.37
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 0.0
+        cdcc_potential: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 55_000.0
+        income_tax: -537.37
+# Spouse with low ACTUAL earnings (2_000): the IRC 21(d) lesser-of-earnings
+# cap binds at a nonzero value (previously only exercised at 0 or via
+# deeming). Expenses = min(4_000, 3_000 cap, 2_000 spouse earnings) = 2_000;
+# AGI 62_000 -> 0.35 floor rate; cdcc = 2_000 x 0.35 = 700.
+- name: cdcc_spouse_low_actual_earnings_cap (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_000
+        is_full_time_student: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 0.0
+        # min(3_000 cap, 2_000 spouse earnings) x 0.35 = 700.
+        cdcc_potential: 700.0
+        cdcc: 700.0
+        adjusted_gross_income: 62_000.0
+        income_tax: 180.0
+# Full-time-student spouse with zero earnings (IRC 21(d)(2)): with one
+# qualifying individual the spouse is deemed to earn 3_000, so the
+# lesser-of-earnings cap is 3_000 rather than 0. AGI 60_000 -> 0.35 floor;
+# cdcc = min(4_000, 3_000 cap, 3_000 deemed) x 0.35 = 1_050. Exercises the
+# student branch and the one-QI deemed-income tier (the disabled-spouse pair
+# below uses the two-QI 6_000 tier).
+- name: cdcc_student_spouse_deemed_income_one_child (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: true
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 410.0
+        # min(3_000 cap, 3_000 deemed floor) x 0.35 = 1_050.
+        cdcc_potential: 1_050.0
+        cdcc: 1_050.0
+        adjusted_gross_income: 60_000.0
+        income_tax: -410.0
+# Incapable-of-self-care spouse (IRC 21(b)(1)(C)) with reported
+# care_expenses: two qualifying individuals (spouse + child), so expenses
+# = min(4_000 childcare + 4_000 adult care, 2 x 3_000 cap, 6_000 two-QI
+# deemed floor) = 6_000; AGI 90_000 -> 0.35; cdcc = 6_000 x 0.35 = 2_100.
+- name: cdcc_disabled_spouse_and_qualifying_child (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 90_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+        is_incapable_of_self_care: true
+        care_expenses: 4_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 0.0
+        # (4_000 + 4_000 capped to 6_000) x 0.35 = 2_100.
+        cdcc_potential: 2_100.0
+        cdcc: 2_100.0
+        adjusted_gross_income: 90_000.0
+        income_tax: 2_140.0
+# Same household as above, but the spouse doesn't report care_expenses.
+# Income is high enough in both cases that cdcc_credit_limit (tax liability)
+# isn't the binding constraint, so cdcc itself is sensitive to care_expenses:
+# 2_100 with the 4_000 adult-care expense vs 4_000 x 0.35 = 1_400 without it
+# (childcare alone). Without this pairing, a regression that stops reading
+# care_expenses (the PR #8746/#8704 pathway) wouldn't be caught by the test
+# above alone.
+- name: cdcc_disabled_spouse_no_care_expenses (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 90_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+        is_incapable_of_self_care: true
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 4_000
+        childcare_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 4_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 0.0
+        cdcc_potential: 1_400.0
+        cdcc: 1_400.0
+        adjusted_gross_income: 90_000.0
+        income_tax: 2_840.0
+# Disabled ADULT DEPENDENT route (IRC 21(b)(1)(B)): an over-13 dependent who
+# is incapable of self-care, with person-level care_expenses and NO childcare
+# expenses - the other half of the PR #8746/#8704 pathway (the pair above
+# covers only the spouse route, 21(b)(1)(C)). One qualifying individual:
+# expenses = min(5_000 care, 3_000 one-QI cap) = 3_000; AGI 70_000 is below
+# the head-of-household 75_000 amended second start, so the rate is the 0.35
+# first-phase-out floor and cdcc = 3_000 x 0.35 = 1_050. The 500 ctc is the
+# other-dependent credit.
+- name: cdcc_disabled_adult_dependent_care_expenses (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 70_000
+        is_full_time_student: false
+      adult_dependent:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+        is_incapable_of_self_care: true
+        care_expenses: 5_000
+    households:
+      household:
+        members: [head, adult_dependent]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, adult_dependent]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [head, adult_dependent]
+        tax_unit_childcare_expenses: 0
+    families:
+      family:
+        members: [head, adult_dependent]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_adult_dependent:
+        members: [adult_dependent]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 500.0
+        ctc_value: 500.0
+        refundable_ctc: 0.0
+        # min(5_000 care_expenses, 3_000 one-QI cap) x 0.35 = 1_050.
+        cdcc_potential: 1_050.0
+        cdcc: 1_050.0
+        adjusted_gross_income: 70_000.0
+        income_tax: 3_598.0
+# Married filing separately without living apart: IRC 21(e)(2) requires a
+# joint return, so cdcc = 0 (deliberate filing-status-ineligibility pin).
+# The gate applies in cdcc_potential (pre-liability-cap), which is what
+# state credits consume, so both are pinned at 0.
+- name: cdcc_separate_filer_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3_450.62
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 780.0
+        cdcc_potential: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 30_000.0
+        income_tax: -4_230.62
+# Same separate-filing parent, but living apart (is_separated) while
+# maintaining a home for the qualifying child: IRC 21(e)(4) treats them as
+# unmarried, restoring eligibility. AGI 30_000 -> first phase-out removes
+# ceil(15_000 / 2_000) x 0.01 = 0.08, so rate = 0.5 - 0.08 = 0.42 (also pins
+# an intermediate first-phase-out rate between the 0.5 max and 0.35 floor):
+# cdcc = 3_000 x 0.42 = 1_260, within the 1_420 liability limit.
+- name: cdcc_separated_parent_treated_as_unmarried (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        is_full_time_student: false
+        is_separated: true
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 3_450.62
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 1_860.0
+        refundable_ctc: 1_700.0
+        # 3_000 x (0.5 - ceil(15_000 / 2_000) x 0.01) = 1_260.
+        cdcc_potential: 1_260.0
+        cdcc: 1_260.0
+        adjusted_gross_income: 30_000.0
+        income_tax: -5_150.62
+# Robustness: a self-employment loss larger than wages drives earned income
+# negative; adjusted_earnings floors at 0, so the lesser-of-earnings cap
+# zeroes the expenses and cdcc = 0 rather than going negative (deliberate
+# earned-income-route zero pin; AGI itself stays negative).
+- name: cdcc_negative_self_employment_income_zero (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        self_employment_income_before_lsr: -35_000
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc_potential: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: -5_000.0
+        income_tax: 0.0
+# 2025 pre-OBBBA regime (materially different: max rate 0.35, floor 0.20,
+# no amended second phase-out). AGI 43_000 -> first phase-out removes
+# ceil(28_000 / 2_000) x 0.01 = 0.14, so rate = 0.35 - 0.14 = 0.21:
+# cdcc = 3_000 x 0.21 = 630 (within the 1_150 liability limit).
+- name: cdcc_2025_intermediate_rate_21pct (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 28_000
+        is_full_time_student: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        is_full_time_student: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_pre_subsidy_childcare_expenses: 3_000
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 3_000
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 2_325.71
+        eitc_eligible: true
+        ctc: 2_200.0
+        ctc_value: 2_200.0
+        refundable_ctc: 1_680.0
+        # 3_000 x (0.35 - ceil(28_000 / 2_000) x 0.01) = 630.
+        cdcc_potential: 630.0
+        cdcc: 630.0
+        adjusted_gross_income: 43_000.0
+        income_tax: -4_005.71
+# 2025 at AGI 170_000: the 0.20 floor binds and NO second phase-out exists
+# pre-OBBBA - direct cross-year contrast with the 2026 three-child case at
+# the same AGI, where the amended second phase-out yields 0.30 instead:
+# cdcc = 6_000 x 0.20 = 1_200.
+- name: cdcc_2025_rate_floor_20pct_no_second_phase_out (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_000
+        is_full_time_student: false
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 70_000
+        is_full_time_student: false
+      child1:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 7
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+        childcare_expenses: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        tax_unit_is_joint: true
+        tax_unit_childcare_expenses: 8_000
+    families:
+      family:
+        members: [head, spouse, child1, child2]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    tax_units:
+      tax_unit:
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 4_400.0
+        ctc_value: 4_400.0
+        refundable_ctc: 0.0
+        # min(8_000, 6_000) x 0.20 floor = 1_200.
+        cdcc_potential: 1_200.0
+        cdcc: 1_200.0
+        adjusted_gross_income: 170_000.0
+        income_tax: 14_698.0

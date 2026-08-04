@@ -1,0 +1,35 @@
+description: Mississippi determines a child's age group for payment rates under the Child Care Payment Program.
+# Maps age in years to the 4-band age-group index used by the rate tables:
+#   0 = INFANT (birth through 12 months, i.e. under 1 year)
+#   1 = TODDLER (12 months up to 36 months, i.e. 1 to under 3 years)
+#   2 = PRESCHOOL (3 years up to kindergarten, i.e. 3 to under 5 years)
+#   3 = SCHOOL_AGE (5 years and older)
+# Boundaries from the CCPP Policy Manual definitions of Infant (#49), Toddler
+# (#87), Preschool (#66), and School Age (#74).
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Mississippi CCPP child age group by age
+  reference:
+    - title: Mississippi CCPP Policy Manual, Definitions (Infant #49 p.13, Toddler #87 p.16, Preschool #66 p.14, School Age #74 p.15)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=13
+
+brackets:
+  - threshold:
+      2021-11-01: 0
+    amount:
+      2021-11-01: 0
+  - threshold:
+      2021-11-01: 1
+    amount:
+      2021-11-01: 1
+  - threshold:
+      2021-11-01: 3
+    amount:
+      2021-11-01: 2
+  - threshold:
+      2021-11-01: 5
+    amount:
+      2021-11-01: 3

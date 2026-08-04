@@ -1,0 +1,7 @@
+description: Apply the per-CTC-qualifying-dependent flat credit. When false, the per_ctc_dependent amount is ignored.
+metadata:
+  unit: bool
+  period: year
+  label: Refundable credit conversion apply per-CTC-dependent flat credit
+values:
+  0000-01-01: false

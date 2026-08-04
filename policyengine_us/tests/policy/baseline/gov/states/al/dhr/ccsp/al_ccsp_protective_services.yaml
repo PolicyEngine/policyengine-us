@@ -1,0 +1,71 @@
+# AL CCSP protective services tests (SPMUnit, MONTH)
+# Per scope decision: foster care OR homelessness flag the SPM unit as protective services.
+# Kinship care is EXCLUDED (per CCDF State Plan §2.2.2(f) checkbox).
+
+- name: Foster child in family triggers protective services.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_protective_services: true
+
+- name: Homeless household triggers protective services.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        is_homeless: true
+  output:
+    al_ccsp_protective_services: true
+
+- name: Family with no foster and not homeless is not in protective services.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_protective_services: false

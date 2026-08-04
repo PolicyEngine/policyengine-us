@@ -1,0 +1,162 @@
+# California Foster Youth Tax Credit (R&TC 17052.2) edge cases, 2026 parameters:
+# $1,215.95 per qualifying head/spouse aged 18-25 who was in foster care;
+# requires CalEITC eligibility; phases out above tax-unit earned income of
+# $28,046.53 by $21.71 per $100 increment.
+- name: ca_foster_youth_credit_age_25_full_amount (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: true
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Age 25 is the last eligible age (amount bracket zeroes at 26);
+        # earnings $15,000 < $28,046.53 -> full $1,215.95.
+        ca_foster_youth_tax_credit: 1_215.95
+        adjusted_gross_income: 15_000.0
+- name: ca_foster_youth_credit_age_26_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 26
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: true
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Age 26 is past the 18-25 window: base amount drops to $0 even though
+        # the filer was in foster care and remains CalEITC eligible.
+        ca_foster_youth_tax_credit: 0.0
+        adjusted_gross_income: 15_000.0
+- name: ca_foster_youth_credit_couple_both_foster_mid_phase_out (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 24
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: true
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 24
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: true
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        # The credit is per qualifying spouse: each former foster youth gets
+        # 1,215.95 - (30,000 - 28,046.53) / 100 x 21.71 = 1,215.95 - 424.10
+        # = 791.85; two qualifying spouses -> 1,583.70.
+        ca_foster_youth_tax_credit: 1_583.7
+        adjusted_gross_income: 30_000.0

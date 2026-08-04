@@ -37,7 +37,12 @@ class lifeline(Variable):
         )
         # Get TX supplement for the specific month (now properly defined as MONTH period)
         tx_supplement = spm_unit("tx_lifeline_supplement", period.first_month)
+        ks_supplement = spm_unit("ks_lifeline_supplement", period.first_month)
+        phone_cost = spm_unit("phone_cost", period)
+        # Service type is not represented separately, so standalone
+        # voice-only federal discount limits are not modeled here.
+        ks_supplement_amount = min_(phone_cost, ks_supplement * MONTHS_IN_YEAR)
         total_monthly_amount = federal_monthly_amount + tx_supplement
-        max_amount = total_monthly_amount * MONTHS_IN_YEAR
+        max_amount = total_monthly_amount * MONTHS_IN_YEAR + ks_supplement_amount
         phone_broadband_cost = add(spm_unit, period, ["phone_cost", "broadband_cost"])
         return min_(phone_broadband_cost, max_amount)

@@ -1,0 +1,18 @@
+description: Mississippi counts these self-employment income sources for eligibility and the co-payment under the Child Care Payment Program.
+# Self-employment is counted as gross income (Rule 5.3 "Total Sales and
+# Receipts"), so the variable floors the sum of these net sources at zero: a
+# business loss does not offset other income. PolicyEngine's self-employment
+# income is net, so this may still understate gross receipts.
+values:
+  2021-11-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Mississippi CCPP countable self-employment income sources
+  reference:
+    - title: Mississippi CCPP Policy Manual, Rule 5.4 (How Income is Calculated — Countable Income)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2026/01/CCPP-Policy-Manual_Final_1142025.pdf#page=28

@@ -1,0 +1,489 @@
+# ak_ccap_max_provider_rate_per_child: regional coverage tests.
+#
+# One lookup per AK rate region not pinned in
+# ak_ccap_max_provider_rate_per_child.yaml. All cases use the same
+# easy combination — LICENSED_CENTER x FT_MONTH x PRESCHOOL (age 4) —
+# so the expected value is read straight from
+# parameters/gov/states/ak/dpa/ccap/rates/licensed_center.yaml.
+#
+# Source: Alaska CCAP Provider Rate Schedule (Rev Dec 1, 2021).
+
+- name: Case 1, licensed center Aleutians West preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ALEUTIANS_WEST_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 886
+
+- name: Case 2, licensed center Bristol Bay preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: BRISTOL_BAY_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 886
+
+- name: Case 3, licensed center Denali preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: DENALI_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 900
+
+- name: Case 4, licensed center Dillingham preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: DILLINGHAM_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 975
+
+- name: Case 5, licensed center Haines preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: HAINES_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 884
+
+- name: Case 6, licensed center Hoonah-Angoon preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: HOONAH_ANGOON_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 884
+
+- name: Case 7, licensed center Juneau preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: JUNEAU_CITY_AND_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 1_071
+
+- name: Case 8, licensed center Kenai Peninsula preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KENAI_PENINSULA_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 750
+
+- name: Case 9, licensed center Ketchikan preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KETCHIKAN_GATEWAY_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 650
+
+- name: Case 10, licensed center Kodiak Island preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KODIAK_ISLAND_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 725
+
+- name: Case 11, licensed center Lake and Peninsula preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: LAKE_AND_PENINSULA_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 886
+
+- name: Case 12, licensed center Nome preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: NOME_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 905
+
+- name: Case 13, licensed center North Slope preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: NORTH_SLOPE_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 905
+
+- name: Case 14, licensed center Northwest Arctic preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: NORTHWEST_ARCTIC_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 905
+
+- name: Case 15, licensed center Petersburg preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: PETERSBURG_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 980
+
+- name: Case 16, licensed center Prince of Wales-Hyder preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 980
+
+- name: Case 17, licensed center Sitka preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: SITKA_CITY_AND_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 945
+
+- name: Case 18, licensed center Skagway preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: SKAGWAY_MUNICIPALITY_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 884
+
+- name: Case 19, licensed center Southeast Fairbanks preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: SOUTHEAST_FAIRBANKS_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 900
+
+- name: Case 20, licensed center Chugach preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: CHUGACH_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 750
+
+- name: Case 21, licensed center Kusilvak preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: KUSILVAK_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 886
+
+- name: Case 22, licensed center Wrangell preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: WRANGELL_CITY_AND_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 884
+
+- name: Case 23, licensed center Yakutat preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: YAKUTAT_CITY_AND_BOROUGH_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 884
+
+- name: Case 24, licensed center Yukon-Koyukuk preschool FT month.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: YUKON_KOYUKUK_CENSUS_AREA_AK
+  output:
+    ak_ccap_max_provider_rate_per_child: 900

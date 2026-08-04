@@ -1,0 +1,14 @@
+description: South Dakota excludes this share of earned income from countable income under the Child Care Assistance program.
+
+# A 4% standard deduction is allowed from all earned and self-employment income
+# before determining gross monthly countable income (Subsidy Manual, Section 5).
+values:
+  2026-08-01: 0.04
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA earned income disregard
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 5 Calculating Earned Income from Employment
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=12

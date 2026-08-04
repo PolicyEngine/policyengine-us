@@ -9,13 +9,15 @@ class taxable_unemployment_compensation(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # The taxable amount of unemployment compensation is decided at the tax unit level, but
-        # gross income (which contains taxable UI) is person-level. Therefore, we include the
-        # taxable UI in gross income by assigning it to the head of the tax unit: this will be
-        # not affect overall tax liability.
-
-        is_tax_unit_head = person("is_tax_unit_head", period)
+        # The taxable amount of unemployment compensation is decided at the tax
+        # unit level, but gross income (which contains taxable UI) is person-level.
+        # Allocate the tax unit's taxable UC to each person in proportion to their
+        # unemployment_compensation, so that per-person AGI reflects the actual
+        # recipient (required by states with combined-return optimization).
         tax_unit_taxable_uc = person.tax_unit(
             "tax_unit_taxable_unemployment_compensation", period
         )
-        return where(is_tax_unit_head, tax_unit_taxable_uc, 0)
+        person_uc = person("unemployment_compensation", period)
+        tax_unit_uc = person.tax_unit.sum(person_uc)
+        share = where(tax_unit_uc > 0, person_uc / tax_unit_uc, 0)
+        return tax_unit_taxable_uc * share

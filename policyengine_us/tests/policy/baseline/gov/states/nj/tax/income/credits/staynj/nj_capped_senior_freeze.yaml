@@ -1,0 +1,75 @@
+- name: Case 1, Senior Freeze below remaining property taxes is unchanged.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # ANCHOR = $1,500 (no senior homeowner bonus from 2025), leaving $8,500 before the property-tax cap.
+    nj_capped_senior_freeze: 500
+
+- name: Case 2, Senior Freeze is capped after ANCHOR.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 2_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # ANCHOR = $1,500 (no senior homeowner bonus from 2025), leaving $500 before the property-tax cap.
+    nj_capped_senior_freeze: 500
+
+- name: Case 3, no remaining property taxes after capped ANCHOR.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 100
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # ANCHOR is capped at the $100 property tax amount.
+    nj_anchor: 100
+    nj_capped_senior_freeze: 0

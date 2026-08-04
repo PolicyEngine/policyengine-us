@@ -44,7 +44,7 @@
   output:
     alimony_expense_ald: 11_000
 
-- name: All eligible
+- name: Only pre-2019 divorces remain eligible
   period: 2021
   input:
     people:
@@ -58,4 +58,4 @@
       tax_unit:
         members: [person1, person2]
   output:
-    alimony_expense_ald: 4_000
+    alimony_expense_ald: 3_000

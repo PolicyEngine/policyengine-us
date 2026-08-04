@@ -1,0 +1,277 @@
+# Tests the MN CCAP family copayment (DHS-6413N, eff Oct 13 2025). Copay is
+# looked up by household size (2-13) and gross annual income after deductions,
+# returning a biweekly dollar amount converted to monthly (x 26 / 12). The $0
+# first band embodies the below-75%-FPG no-copay rule (manual section 6.21).
+# Income inputs are annual; the monthly variable annualizes income before the
+# annual-threshold lookup.
+- name: Case 1, three-person family below the first income band pays no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # below the 19,988 first nonzero band
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 18,000 < 19,988 -> $0 biweekly -> $0 monthly.
+    mn_ccap_copay: 0
+
+- name: Case 2, three-person family in a mid income band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 30,000 lands in the 26,650-33,542 band -> $34 biweekly.
+    # Monthly = 34 * 26 / 12 = 73.67.
+    mn_ccap_copay: 73.67
+
+- name: Case 3, two-person family in its first nonzero band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Size-2 table: 15,863-21,149 band -> $2 biweekly.
+    # Monthly = 2 * 26 / 12 = 4.33.
+    mn_ccap_copay: 4.33
+
+- name: Case 4, three-person family at the top income band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # 80,000 lands in the top 78,272+ band -> $436 biweekly.
+    # Monthly = 436 * 26 / 12 = 944.67.
+    mn_ccap_copay: 944.67
+
+# Edge cases.
+- name: Case 5, two-person family one dollar below the first nonzero copay band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_862  # just below the 15,863 first nonzero threshold
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 15,862 < 15,863 -> still in the $0 band (below-75%-FPG no-copay rule).
+    mn_ccap_copay: 0
+
+- name: Case 6, two-person family exactly at the first nonzero copay band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_863  # exactly at the first nonzero threshold
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # 15,863 -> $2 biweekly (first nonzero band). Monthly = 2 * 26 / 12 = 4.33.
+    mn_ccap_copay: 4.33
+
+- name: Case 7, household larger than 13 clamps to the size-13 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+      person12:
+        age: 3
+      person13:
+        age: 2
+      person14:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        state_code: MN
+  output:
+    # 14-person household clamps to the size-13 column. 100,000 lands in the
+    # 98,922 band -> $186 biweekly. Monthly = 186 * 26 / 12 = 403.00.
+    mn_ccap_copay: 403
+
+- name: Case 8, one-person household uses the size-2 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # size <= 2 -> size-2 table. 30,000 lands in the 29,738 band -> $31 biweekly.
+    # Monthly = 31 * 26 / 12 = 67.17.
+    mn_ccap_copay: 67.17
+
+- name: Case 9, seven-person family in a mid income band uses the size-7 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 63_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: MN
+  output:
+    # Size-7 table (DHS-6413N p.8): 63,000 lands in the 61,604-64,169 band ->
+    # $72 biweekly. Monthly = 72 * 26 / 12 = 156.00.
+    mn_ccap_copay: 156
+
+- name: Case 10, ten-person family in a mid income band uses the size-10 copay table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 75_000
+      person2:
+        age: 43
+      person3:
+        age: 15
+      person4:
+        age: 13
+      person5:
+        age: 11
+      person6:
+        age: 9
+      person7:
+        age: 7
+      person8:
+        age: 5
+      person9:
+        age: 3
+      person10:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: MN
+  output:
+    # Size-10 table (DHS-6413N p.10): 75,000 lands in the 73,944-76,659 band ->
+    # $86 biweekly. Monthly = 86 * 26 / 12 = 186.33.
+    mn_ccap_copay: 186.33

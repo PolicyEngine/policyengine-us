@@ -41,3 +41,17 @@
     selected_marketplace_plan_premium_proxy: 8_000
     used_aca_ptc: 0
     marketplace_net_premium: 8_000
+
+- name: Bronze selected plan net premium uses actual bronze premium.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    pays_aca_premium: true
+    selected_marketplace_plan_category: BRONZE
+    slcsp: 10_000
+    lcbp: 5_000
+    aca_ptc: 3_000
+  output:
+    selected_marketplace_plan_premium_proxy: 5_000
+    used_aca_ptc: 3_000
+    marketplace_net_premium: 2_000

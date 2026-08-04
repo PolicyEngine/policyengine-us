@@ -21,5 +21,6 @@ class has_qdiv_or_ltcg(Variable):
             [
                 add(tax_unit, period, [income_source]) > 0
                 for income_source in INCOME_SOURCES
-            ]
+            ],
+            axis=0,
         )

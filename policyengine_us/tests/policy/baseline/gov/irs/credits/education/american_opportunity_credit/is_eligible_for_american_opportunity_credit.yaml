@@ -1,0 +1,179 @@
+- name: Meets American Opportunity Credit student eligibility requirements
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: true
+
+- name: Student must pursue a recognized credential
+  period: 2024
+  input:
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student must attend an eligible educational institution
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student must be enrolled at least half-time
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student cannot have completed the first four postsecondary years
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_completed_first_four_years_of_postsecondary_education: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student cannot have four prior AOTC or Hope Credit claim years
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    american_opportunity_credit_claimed_prior_years: 4
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student cannot have a felony drug conviction
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_felony_drug_conviction: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student must have Form 1098-T or an exception
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student must have a TIN before 2026
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: false
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Student must have a qualifying SSN starting in 2026
+  period: 2026
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+    ssn_card_type: NONE
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Filer must provide the institution EIN
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Form 1098-T and institution EIN requirements do not apply before 2016
+  period: 2015
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: true
+
+- name: Nonresident alien taxpayers cannot claim the AOTC
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+    is_nonresident_alien_for_american_opportunity_credit: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Taxpayers barred due to improper claims cannot claim the AOTC
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+    is_barred_from_american_opportunity_credit_due_to_improper_claims: true
+  output:
+    is_eligible_for_american_opportunity_credit: false
+
+- name: Married filing separately cannot claim the AOTC
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    has_tin: true
+  output:
+    is_eligible_for_american_opportunity_credit: false

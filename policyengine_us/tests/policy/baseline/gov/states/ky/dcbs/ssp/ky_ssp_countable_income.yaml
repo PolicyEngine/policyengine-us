@@ -71,3 +71,21 @@
         state_code: KY
   output:
     ky_ssp_countable_income: [0]
+
+- name: Case 5, couple computation follows monthly SSI facility separation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ssi_marital_unearned_income: 12_000
+    is_ssi_eligible_individual: true
+    is_ssi_eligible_spouse: false
+    ssi_couple_computation_applies:
+      2026-01: true
+      2026-02: false
+    state_code: KY
+  output:
+    # No $20 disregard. Couple computation splits $1,000/mo in half
+    # only for months where the federal couple computation applies.
+    ky_ssp_countable_income:
+      2026-01: 500
+      2026-02: 1_000

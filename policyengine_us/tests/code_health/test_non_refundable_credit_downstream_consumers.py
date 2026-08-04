@@ -8,9 +8,24 @@ REFORMS_ROOT = REPO / "reforms"
 
 
 REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
+    "de_cdcc": {
+        # Delaware combined separate (FS4) routes the applied CDCC to the
+        # lower-income spouse's column (PIT-RES Line 31); it is re-capped at
+        # that column's tax in de_income_tax_after_non_refundable_credits_indv.
+        "variables/gov/states/de/tax/income/credits/cdcc/de_cdcc_indv.py",
+    },
     "de_non_refundable_eitc": {
         "variables/gov/states/de/tax/income/credits/eitc/de_eitc.py",
         "variables/gov/states/de/tax/income/credits/eitc/refundability_calculation/de_income_tax_if_claiming_non_refundable_eitc.py",
+        # Combined separate (FS4) path applies the EITC to the higher-income
+        # spouse's column (PIT-RES Line 34), capped at that column's tax.
+        "variables/gov/states/de/tax/income/de_income_tax_before_refundable_credits_separate.py",
+    },
+    "ga_ctc": {
+        # Georgia refundable CTC contrib reform references "ga_ctc" only as the
+        # ordering key for state_non_refundable_credit_limit; it reads the
+        # pre-ordering ga_ctc_potential for the value, not the applied credit.
+        "reforms/states/ga/ctc/ga_ctc_reform.py",
     },
     "ky_personal_tax_credits": {
         "variables/gov/states/ky/tax/income/credits/family_size_credit/ky_family_size_tax_credit_potential.py",
@@ -21,9 +36,6 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     "md_non_refundable_eitc": {
         "variables/gov/states/md/tax/income/credits/eitc/md_eitc.py",
     },
-    "mo_wftc": {
-        "reforms/states/mo/eitc/mo_refundable_eitc_reform.py",
-    },
     "ny_household_credit": {
         "reforms/states/ny/wftc/ny_working_families_tax_credit.py",
         "variables/gov/states/ny/tax/income/credits/ny_eitc.py",
@@ -33,6 +45,9 @@ REVIEWED_APPLIED_CREDIT_EXTERNAL_REFERENCES = {
     },
     "sc_cdcc": {
         "reforms/states/sc/h3492/sc_h3492_eitc_refundable.py",
+    },
+    "sc_eitc": {
+        "reforms/states/sc/child_poverty_eitc/sc_fully_refundable_eitc_reform.py",
     },
     "sc_two_wage_earner_credit": {
         "reforms/states/sc/h3492/sc_h3492_eitc_refundable.py",

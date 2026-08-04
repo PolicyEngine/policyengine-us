@@ -1,0 +1,16 @@
+- name: Case 1, individual at the unearned income threshold qualifies.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_countable_unearned_income: 1_795.50
+  output:
+    # 2026 monthly FPL: $1,330; 135% = $1,795.50.
+    ms_wd_unearned_income_eligible: true
+
+- name: Case 2, individual just above the unearned income threshold is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_countable_unearned_income: 1_795.51
+  output:
+    ms_wd_unearned_income_eligible: false

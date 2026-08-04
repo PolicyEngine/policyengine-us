@@ -47,7 +47,7 @@
   input:
     state_code: CA
     is_chip_eligible: true
-    chip_take_up_seed: 0.99
+    takes_up_chip_if_eligible: false
   output:
     chip_federal_share: 0
 

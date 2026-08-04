@@ -7,7 +7,6 @@ class taxsim_state_agi(Variable):
     label = "State adjusted gross income"
     unit = USD
     definition_period = YEAR
-    adds = "gov.states.household.state_agis"
 
     def formula(tax_unit, period, parameters):
         # States that adopt the federal AGI

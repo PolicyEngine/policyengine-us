@@ -82,3 +82,13 @@
     spm_unit_size: 2
   output:
     snap_individual_utility_allowance: 392
+
+- name: NC TUA HH size 1 in FY2025
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: NC
+    spm_unit_size: 1
+  output:
+    snap_individual_utility_allowance: 41

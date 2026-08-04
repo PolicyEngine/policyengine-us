@@ -1,0 +1,15 @@
+description: West Virginia provides these daily reimbursement rates for informal or relative care under the Child Care Assistance Program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: West Virginia CCAP informal relative care daily rates
+  breakdown:
+    - wv_ccap_informal_age_group
+  reference:
+    - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
+      href: https://bfa.wv.gov/media/6831/download?inline#page=1
+
+UNDER_2:
+  2024-10-01: 7.5
+AGE_2_AND_OVER:
+  2024-10-01: 6

@@ -1,0 +1,82 @@
+- name: Case 1, default category mirrors the bare-input default.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: INDIVIDUAL_LIVING_ALONE
+
+- name: Case 2, user-provided arrangement passes through when not in a Medicaid facility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: INDIVIDUAL_LIVING_WITH_OTHERS
+
+- name: Case 3, federal Medicaid-facility status overrides the input arrangement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 80
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: MEDICAID_FACILITY
+
+- name: Case 4, housing-assistance eligibility applies individual living-alone category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: true
+        mn_msa_living_arrangement: INDIVIDUAL_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: true
+        ssi: 994
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_payment_category: INDIVIDUAL_LIVING_ALONE
+
+- name: Case 5, housing-assistance eligibility applies couple living-alone category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: true
+        ssi: 994
+      person2:
+        age: 70
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_payment_category: [COUPLE_LIVING_ALONE, COUPLE_LIVING_ALONE]

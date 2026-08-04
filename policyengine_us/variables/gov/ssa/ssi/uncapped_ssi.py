@@ -7,7 +7,7 @@ class uncapped_ssi(Variable):
     label = "Uncapped SSI"
     unit = USD
     documentation = "Maximum SSI, less countable income (can be below zero)."
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "is_ssi_eligible"
 
     def formula(person, period, parameters):

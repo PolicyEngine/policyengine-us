@@ -6,6 +6,6 @@
 - name: California doesn't use HHEOD, but by default having any satisfies the requirement.
   period: 2022
   input:
-    has_usda_elderly_disabled: true
+    has_snap_elderly_disabled_member: true
   output:
     is_tanf_non_cash_hheod: true

@@ -77,12 +77,12 @@
 
     # === Benefit ===
     # Monthly expenses: 12,000 / 12 = 1,000
-    # Benefit before MRR: max(1,000 - 60, 0) = $940
     # Default county ACCOMACK -> SOUTHEASTERN
     # Age 5 = 60 months -> SCHOOL_AGE, CENTER rate = $30/day
     # MRR: $30 * 23 = $690
-    # Benefit: min(940, 690) = $690
-    va_ccsp: 690
+    # Capped expenses: min(1,000, 690) = $690
+    # Benefit: max(690 - 60, 0) = $630
+    va_ccsp: 630
 
 - name: Case 2, enrolled family at redetermination income limit.
   period: 2024-01
@@ -147,9 +147,10 @@
     va_ccsp_copay: 240
 
     # === Benefit ===
-    # Monthly expenses: 18,000 / 12 = 1,500
-    # Benefit: max(1,500 - 240, 0) = $1,260
-    va_ccsp: 1_260
+    # Monthly expenses: 18,000 / 12 = 1,500 (assume within MRR cap)
+    # Capped expenses: min(1,500, MRR) = 1,380 (= 1,260 + 120 copay)
+    # Benefit: max(MRR - 240, 0) = $1,140
+    va_ccsp: 1_140
 
 - name: Case 3, TANF recipient with zero copay.
   period: 2024-01

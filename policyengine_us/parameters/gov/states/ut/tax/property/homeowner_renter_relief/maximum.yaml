@@ -1,0 +1,45 @@
+description: Utah provides this maximum credit amount under the Homeowner's/Renter's Relief program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Utah homeowner's/renter's relief maximum amount
+  reference:
+    - title: Utah State Tax Commission Homeowner's or Renter's Relief 2025 Household Income Schedule
+      href: https://tax.utah.gov/relief/homeowner-renter-relief/
+    - title: Utah Code Section 59-2a-305
+      href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=14
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 1_412
+  - threshold:
+      2025-01-01: 15_034
+    amount:
+      2025-01-01: 1_245
+  - threshold:
+      2025-01-01: 20_049
+    amount:
+      2025-01-01: 1_082
+  - threshold:
+      2025-01-01: 25_058
+    amount:
+      2025-01-01: 835
+  - threshold:
+      2025-01-01: 30_070
+    amount:
+      2025-01-01: 674
+  - threshold:
+      2025-01-01: 35_084
+    amount:
+      2025-01-01: 429
+  - threshold:
+      2025-01-01: 39_797
+    amount:
+      2025-01-01: 262
+  - threshold:
+      2025-01-01: 44_222
+    amount:
+      2025-01-01: 0

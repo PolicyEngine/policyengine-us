@@ -90,3 +90,38 @@
   output:
     ct_eitc: 2_250
     # 5,000 * 0.4 + 250 = 2,000 + 250 = 2,250 (bonus is flat $250)
+
+- name: Case 11, 2025 federal EITC with child but no CT EITC.
+  period: 2025
+  input:
+    gov.states.ct.tax.income.credits.eitc.match: 0
+    state_code: CT
+    eitc: 2_000
+    eitc_child_count: 1
+  output:
+    ct_eitc: 0
+    # The qualifying child bonus requires CT EITC eligibility, not only federal EITC eligibility.
+
+- name: Case 12, computed EITC with child but no CT EITC.
+  period: 2025
+  input:
+    gov.states.ct.tax.income.credits.eitc.match: 0
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    eitc: 4_328
+    eitc_child_count: 1
+    ct_eitc: 0
+    # Regression test: federal EITC and a qualifying child are computed from
+    # household inputs, but the CT bonus should not survive a zero CT match.

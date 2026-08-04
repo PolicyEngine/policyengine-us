@@ -16,7 +16,7 @@ class tx_ceap(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.tx.tdhca.ceap.utility_assistance
 
-        income = add(spm_unit, period, ["irs_gross_income"])
+        income = spm_unit("tx_ceap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
 
         # Determine FPG ratio for income bracket

@@ -1,0 +1,243 @@
+# NM CCAP eligible child: age 6 weeks to under 13 (8.15.2.11.F NMAC), or
+# under 18 with a developmental delay (special-supervision extension,
+# 8.15.2.11.G), AND a US citizen or qualified immigrant (8.15.2.11.E,
+# reusing is_ccdf_immigration_eligible_child).
+
+- name: Case 1, citizen child under thirteen is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Adult (35) not a child; child age 4 < 13 and citizen -> eligible.
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 2, child at exactly age thirteen is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Age 13 is NOT < 13 -> ineligible (no developmental delay)
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+- name: Case 3, child at age twelve point nine nine is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Age 12.99 < 13 -> eligible
+        age: 12.99
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 4, special needs child under eighteen is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        # Developmental delay, age 15 < 18 -> eligible via special-supervision
+        age: 15
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 5, special needs child at exactly eighteen is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        # Developmental delay, age 18 is NOT < 18 -> ineligible
+        age: 18
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+- name: Case 6, child without qualified immigration status is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Under 13 but undocumented -> fails the citizenship/qualified-immigrant test
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+# ============================================================
+# Edge cases: age-limit boundaries.
+# Regular limit is < 13 (8.15.2.11.F); the special-supervision
+# extension raises it to < 18 (8.15.2.11.G) for children with a
+# developmental delay.
+# ============================================================
+
+- name: Case 7, developmental delay child at exactly thirteen is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Age 13 fails the regular < 13 limit, but the developmental-delay
+        # extension to < 18 keeps the child eligible.
+        age: 13
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 8, developmental delay child at seventeen point nine nine is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+      person2:
+        # Just below the < 18 special-supervision limit -> eligible.
+        age: 17.99
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 9, infant at six weeks is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # 6 weeks ~= 0.115 years. The regulation's lower bound is 6 weeks, but
+        # the formula only enforces the upper age limit (no lower bound is
+        # modeled at the moment), so any citizen child below 13 is eligible.
+        age: 0.115
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]
+
+- name: Case 10, child at exactly age thirteen without delay is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Age 13 with no developmental delay -> fails the regular < 13 limit.
+        age: 13
+        has_developmental_delay: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+# ============================================================
+# Universal Child Care (from 2025-11-01) removes the child-level
+# citizenship/qualified-immigrant test (8.15.2.11.E NMAC pre-UCC;
+# ECECD Universal Child Care post-UCC). Before UCC the test bars
+# non-qualified-immigrant children; after UCC they are eligible.
+# ============================================================
+
+- name: Case 11, pre-UCC undocumented child is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Under 13 but undocumented; immigration test in effect -> ineligible.
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, false]
+
+- name: Case 12, post-UCC undocumented child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+      person2:
+        # Same undocumented child; Universal Child Care removes the immigration
+        # test, so the child is eligible on age alone.
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible_child: [false, true]

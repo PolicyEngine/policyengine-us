@@ -1,0 +1,15 @@
+description: Minnesota counts these self-employment income sources under the Child Care Assistance Program.
+values:
+  2025-01-01:
+    - self_employment_income
+    - sstb_self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota CCAP countable self-employment income sources
+  reference:
+    - title: Minn. Stat. 256P.06, subd. 3 (earned income)
+      href: https://www.revisor.mn.gov/statutes/cite/256P.06
+    - title: Minn. Rules 3400.0170, subp. 4 (gross annual income)
+      href: https://www.revisor.mn.gov/rules/3400.0170/

@@ -1,7 +1,7 @@
 - name: No cdcc
   period: 2022
   input:
-    cdcc: 0
+    ar_federal_cdcc: 0
     state_code: AR
     ar_income_tax_before_non_refundable_credits_unit: 1000000
   output:
@@ -9,8 +9,37 @@
 - name: Some cdcc, 20%
   period: 2022
   input:
-    cdcc: 1000
+    # From 2021 onward the Arkansas base is the pinned 2013-law replica
+    # (ar_federal_cdcc), matched at 20 percent.
+    ar_federal_cdcc: 1000
     state_code: AR
     ar_income_tax_before_non_refundable_credits_unit: 1000000
   output:
     ar_cdcc: 200
+
+- name: Pre-2021 uses the live federal CDCC directly (identical to 2013 law there).
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      spouse:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, child]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [parent, spouse, child]
+        state_code: AR
+  output:
+    # Federal 2020 CDCC potential: 20% (AGI $50k) x $3,000 = $600;
+    # AR match: 20% x $600 = $120.
+    ar_cdcc_potential: 120
+    ar_cdcc: 120

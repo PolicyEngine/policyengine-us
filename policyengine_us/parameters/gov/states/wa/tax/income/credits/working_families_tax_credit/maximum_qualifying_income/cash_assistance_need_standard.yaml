@@ -1,0 +1,33 @@
+description: Washington sets this monthly cash assistance need standard for the Working Families Tax Credit maximum qualifying income, by tax household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington WFTC cash assistance need standard
+  breakdown:
+    - range(1, 6)
+  breakdown_label:
+    - Tax household size
+  reference:
+    - title: ESSB 6346, Sec. 901(2)(e) - Maximum qualifying income
+      href: https://lawfilesext.leg.wa.gov/biennium/2025-26/Pdf/Bills/Senate%20Passed%20Legislature/6346-S.PL.pdf#page=59
+    - title: WAC 388-478-0015 - Need standards for cash assistance
+      href: https://app.leg.wa.gov/documents/laws/WAC/WAC%20388%20%20TITLE/WAC%20388%20-478%20%20CHAPTER/WAC%20388%20-478%20-0015.htm
+    - title: WSR 25-10-017 - WAC 388-478-0015 update effective July 1, 2025
+      href: https://lawfilesext.leg.wa.gov/law/wsrpdf/2025/10/25-10-017.pdf
+
+1:
+  2024-07-01: 3_732
+  2025-07-01: 3_816
+2:
+  2024-07-01: 5_911
+  2025-07-01: 6_044
+3:
+  2024-07-01: 7_270
+  2025-07-01: 7_433
+4:
+  2024-07-01: 9_369
+  2025-07-01: 9_579
+5:
+  2024-07-01: 11_229
+  2025-07-01: 11_481

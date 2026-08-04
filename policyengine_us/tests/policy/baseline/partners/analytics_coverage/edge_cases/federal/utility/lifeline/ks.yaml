@@ -1,0 +1,46 @@
+# Kansas Lifeline state variant: KS adds a 7.77/mo phone-service supplement
+# (gov/states/ks/kcc/lifeline/supplement, since 2025-01-01), capped at actual
+# phone costs: annual max = 9.25 * 12 + min(phone_cost, 7.77 * 12 = 93.24).
+- name: lifeline_ks_supplement_added_to_federal_max (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 20_000 / 15_960 = 1.253 < 1.35 -> income-eligible.
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: [head]
+        # Phone cost above the 93.24 supplement cap and combined expenses
+        # above the total cap so both maxima bind.
+        phone_cost: 480
+        broadband_cost: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(480 + 600, 9.25 * 12 + min(480, 7.77 * 12)) = 111 + 93.24 = 204.24.
+        lifeline: 204.24
+        is_lifeline_eligible: true

@@ -1,0 +1,18 @@
+description: Maryland sets the daily service unit count for each service unit category under the Child Care Scholarship program.
+
+metadata:
+  unit: /1
+  period: year
+  label: Maryland CCS service unit count
+  breakdown:
+    - md_ccs_service_unit
+  reference:
+    - title: COMAR 13A.14.06.11.B(3), .11.C(2), .11.D
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.11
+
+UNIT_3:
+  2022-05-01: 3
+UNIT_2:
+  2022-05-01: 2
+UNIT_1:
+  2022-05-01: 1

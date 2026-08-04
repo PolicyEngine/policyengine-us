@@ -8,5 +8,10 @@ metadata:
   period: year
   label: New York SNAP BBCE dependent care gross income limit
   reference:
+    # Section 2.I(C): categorical eligibility extends to 200% of FPL for SNAP
+    # households with out-of-pocket dependent care expenses for a member of
+    # the SNAP household.
+    - title: NY OTDA 16-ADM-06, Expansion of Categorical Eligibility for SNAP Households with Earned Income
+      href: https://otda.ny.gov/policy/directives/2016/ADM/16-ADM-06.pdf#page=2
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table

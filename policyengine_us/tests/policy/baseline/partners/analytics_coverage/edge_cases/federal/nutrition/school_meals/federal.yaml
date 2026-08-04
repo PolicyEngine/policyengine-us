@@ -1,0 +1,721 @@
+# School meals (NSLP + SBP) federal edge cases.
+# Tier thresholds (gov/usda/school_meals/income/limit): FREE <= 130% FPG,
+# REDUCED <= 185% FPG, else PAID; categorical routes (7 CFR 245.2) and state
+# universal-meals policies force FREE.
+# 2026 FPG (3-person, contiguous US) = 15,960 + 2 x 5,680 = 27,320.
+#   130% = 35,516; 185% = 50,542.
+# 2026 daily subsidies (CONTIGUOUS_US, 2025-01-01 published rates CPI-uprated
+# by ~1.0134): FREE = (4.60 + 2.46) x 1.0134 = 7.15;
+# REDUCED = (4.20 + 2.16) x 1.0134 = 6.45; PAID = (0.46 + 0.40) x 1.0134 = 0.87.
+- name: school_meals_free_tier_just_below_130pct (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 35_500
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 35,500 / 27,320 = 129.9% <= 130% -> FREE on the income route
+        # (SNAP also fires here via TX BBCE, so FREE is dual-caused; the
+        # income-only boundary is pinned by the MO SNAP-blocked cases below).
+        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0  # FREE
+- name: school_meals_free_tier_exactly_at_130pct_snap_blocked (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 35_516
+        # Over the SNAP liquid-asset limit (3,000 standard) so SNAP cannot
+        # spill into the FREE tier via categorical eligibility; MO is
+        # non-BBCE, so the asset test binds.
+        bank_account_assets: 10_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: MO
+        zip_code: '64106'
+        county_str: JACKSON_COUNTY_MO
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 35,516 / 27,320 = exactly 1.30; the tier formula uses <=, so
+        # at-threshold resolves to FREE. SNAP = 0 (assets over limit,
+        # no BBCE in MO), so this pins the pure income route inclusively.
+        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0  # FREE
+- name: school_meals_reduced_tier_onset_just_above_130pct_snap_blocked (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 35_700
+        # Blocks SNAP (assets 10,000 > 3,000 limit; MO is non-BBCE) so the
+        # FREE -> REDUCED transition at 130% is pinned on the income route.
+        bank_account_assets: 10_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: MO
+        zip_code: '64106'
+        county_str: JACKSON_COUNTY_MO
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 35,700 / 27,320 = 130.7% > 130% and <= 185% -> REDUCED; SNAP = 0.
+        # REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
+        school_meal_daily_subsidy: 6.45
+        school_meal_tier: 1  # REDUCED
+- name: school_meals_categorical_free_via_snap_just_above_130pct (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 35_600
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 35,600 / 27,320 = 130.3% > 130% on income, but the household
+        # receives SNAP (TX BBCE gross limit 165% FPG; snap ~ 1,687/yr),
+        # and SNAP receipt confers free meals categorically (7 CFR 245.2).
+        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0  # FREE
+- name: school_meals_reduced_tier_exactly_at_185pct (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_542
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 50,542 / 27,320 = exactly 1.85; the formula uses <=, so
+        # at-threshold resolves to REDUCED (not PAID). SNAP/TANF = 0 at
+        # this income. REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
+        school_meal_daily_subsidy: 6.45
+        school_meal_tier: 1  # REDUCED
+- name: school_meals_paid_tier_just_above_185pct (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_700
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 50,700 / 27,320 = 185.6% > 185% -> PAID (income-route ineligible
+        # boundary; PAID still carries the small federal reimbursement).
+        # PAID = (NSLP 0.46 + SBP 0.40) uprated = 0.87.
+        school_meal_daily_subsidy: 0.87
+        school_meal_tier: 2  # PAID
+- name: school_meals_countable_income_direct_input_reduced (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        # Partners send this aggregate directly; it must override the
+        # income derived from employment (60,000 would otherwise be PAID).
+        school_meal_countable_income: 50_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Direct input wins: 50,500 / 27,320 = 184.8% <= 185% -> REDUCED,
+        # even though employment income alone (60,000 = 219.6%) implies PAID.
+        # REDUCED = (NSLP 4.20 + SBP 2.16) uprated = 6.45.
+        school_meal_daily_subsidy: 6.45
+        school_meal_tier: 1  # REDUCED
+- name: school_meals_categorical_free_via_homeless_above_185pct (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 60,000 / 27,320 = 219.6% FPG (PAID on income), but homelessness is
+        # a categorical free-meal route (7 CFR 245.2), overriding income.
+        # FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0  # FREE
+- name: school_meals_negative_self_employment_income_free (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        self_employment_income_before_lsr: -25_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Self-employment losses offset wages in the countable-income sources
+        # (7 CFR 273.9(b)): 20,000 - 25,000 = -5,000 earnings; TANF (~5,016,
+        # itself a countable source) brings the total to ~16, so the FPG
+        # ratio is ~0 -> FREE; SNAP/TANF receipt also confers FREE
+        # categorically. FREE = (NSLP 4.60 + SBP 2.46) uprated = 7.15.
+        school_meal_daily_subsidy: 7.15
+        school_meal_tier: 0  # FREE
+- name: school_meals_2025_reduced_tier_just_below_185pct (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 49_200
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 2025 FPG(3) = 15,650 + 2 x 5,500 = 26,650; 185% = 49,302.50.
+        # 49,200 / 26,650 = 184.6% -> REDUCED. 2025 uses published rates
+        # (no uprating): REDUCED = NSLP 4.20 + SBP 2.16 = 6.36.
+        school_meal_daily_subsidy: 6.36
+        school_meal_tier: 1  # REDUCED
+- name: school_meals_2025_paid_tier_just_above_185pct (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 49_400
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 49,400 / 26,650 = 185.4% > 185% -> PAID. 2025 published rates:
+        # PAID = NSLP 0.46 + SBP 0.40 = 0.86.
+        school_meal_daily_subsidy: 0.86
+        school_meal_tier: 2  # PAID
+- name: school_meals_ak_free_tier_higher_reimbursement (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: AK
+        zip_code: '99501'
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # AK uses its own FPG and reimbursement schedule: AK FPG(3) =
+        # 19,950 + 2 x 7,100 = 34,150; 40,000 / 34,150 = 117.1% <= 130%
+        # -> FREE. AK FREE = (NSLP 7.45 + SBP 3.95) x 1.0134 uprating
+        # = 11.40 x 1.0235 = 11.67 (vs 7.15 in the contiguous US).
+        school_meal_daily_subsidy: 11.67
+        school_meal_tier: 0  # FREE

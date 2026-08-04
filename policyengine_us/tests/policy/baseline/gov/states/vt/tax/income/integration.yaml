@@ -24,7 +24,11 @@
         members: [person1]
         state_fips: 50
   output:
-    vt_income_tax: 7_963
+    # The Child Care Contribution is now computed on net self-employment
+    # earnings (Schedule SE Line 6 = $101,585) rather than gross
+    # self-employment income ($110,000), lowering it from $60.50 to $55.87 and
+    # vt_income_tax from ~$7,963 to $7,958.51. See policyengine-taxsim#1002.
+    vt_income_tax: 7_958.51
 
 # From GitHub issue #7291: VT capital gains exclusion incorrectly applies to financial instruments
 # Financial instrument gains (stocks/bonds) are NOT eligible for the 40% exclusion.

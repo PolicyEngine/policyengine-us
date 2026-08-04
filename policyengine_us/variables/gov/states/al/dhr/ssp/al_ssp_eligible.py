@@ -10,7 +10,7 @@ class al_ssp_eligible(Variable):
     reference = "https://admincode.legislature.state.al.us/api/chapter/660-2-4#page=9"
 
     def formula(person, period, parameters):
-        is_ssi_eligible = person("is_ssi_eligible", period.this_year)
+        is_ssi_eligible = person("is_ssi_eligible", period)
         receives_ssi = person("uncapped_ssi", period) > 0
         payment_category = person("al_ssp_payment_category", period)
         grandfathered = person("al_ssp_grandfathered", period)

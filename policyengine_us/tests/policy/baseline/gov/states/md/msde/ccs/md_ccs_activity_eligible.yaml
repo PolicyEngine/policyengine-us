@@ -1,0 +1,140 @@
+# Tests for md_ccs_activity_eligible
+# All parents (tax-unit head/spouse) must be working OR a full-time student.
+
+- name: Single working parent passes activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: true
+
+- name: Single full-time student parent passes activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: true
+
+- name: Single non-working non-student parent fails activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: false
+
+- name: Two-parent household — both working passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: true
+
+- name: Two-parent household — only one parent working fails (both must qualify).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: false
+
+- name: Two-parent household — one working, one full-time student passes.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: true
+
+- name: Non-working non-student parent passes via meets_ccdf_activity_test fallback.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_activity_eligible: true

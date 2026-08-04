@@ -1,0 +1,147 @@
+# Cash asset limit: $2,000 single (budget unit size < 2) / $3,000 couple
+# (budget unit size >= 2), per Title 22 Section 50420; test passes if cash
+# assets <= limit. spm_unit_cash_assets is a YEAR stock read via period.this_year.
+- name: Case 1, single adult with cash below the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_500
+  output:
+    ca_sf_caap_personal_property_eligible: true
+
+- name: Case 2, single adult with cash exactly at the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 2_000
+  output:
+    ca_sf_caap_personal_property_eligible: true
+
+- name: Case 3, single adult with cash above the limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 2_000.01
+  output:
+    ca_sf_caap_personal_property_eligible: false
+
+- name: Case 4, couple with cash exactly at the higher couple limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 3_000
+  output:
+    ca_sf_caap_personal_property_eligible: true
+
+- name: Case 5, couple with cash above the couple limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 3_000.01
+  output:
+    ca_sf_caap_personal_property_eligible: false
+
+- name: Case 6, single adult with cash a cent below the single limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 1_999.99
+  output:
+    ca_sf_caap_personal_property_eligible: true
+
+- name: Case 7, couple with cash a cent below the couple limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 2_999.99
+  output:
+    ca_sf_caap_personal_property_eligible: true
+
+- name: Case 8, couple with cash above the single limit still passes via the couple limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 2_500  # over single $2,000 but under couple $3,000
+  output:
+    # Budget unit size 2 selects the $3,000 couple limit, so $2,500 is eligible.
+    ca_sf_caap_personal_property_eligible: true

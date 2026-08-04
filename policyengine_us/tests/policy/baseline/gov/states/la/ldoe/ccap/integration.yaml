@@ -1,0 +1,175 @@
+# End-to-end scenarios for the Louisiana Child Care Assistance Program.
+# Days in care = childcare_days_per_week x 52/12 (5 days/week = 21.67/month).
+- name: Case 1, working single mother with an infant and a preschooler.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # $4,500/month.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0.5
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 15_600  # $1,300/month.
+      person3:
+        age: 4
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 9_600  # $800/month.
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 4_500
+    # 2025 scale, 3 persons: $4,500 is above the $4,292 zero-copay band top
+    # and below the $4,627 top of the $2 band.
+    la_ccap_daily_copay: 2
+    la_ccap_income_eligible: true  # $4,500 vs $5,700 limit.
+    la_ccap_activity_eligible: true
+    la_ccap_eligible: true
+    # Infant: min($1,300, $68 x 21.67 = $1,473.33) - $2 x 21.67 = $1,256.67.
+    # Preschooler: min($800, $31.50 x 21.67 = $682.50) - $43.33 = $639.17.
+    la_ccap: 1_895.83
+
+- name: Case 2, the same family under the 2024 sliding fee scale.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # $4,500/month.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0.5
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 15_600
+      person3:
+        age: 4
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # 2024 scale, 3 persons: $4,500 falls in the $3 band ($4,200-$4,503).
+    la_ccap_daily_copay: 3
+    la_ccap_income_eligible: true  # $4,500 vs $5,173 limit.
+    # Infant: $1,300 - $3 x 21.67 = $1,235; preschooler: $682.50 - $65 = $617.50.
+    la_ccap: 1_852.5
+
+- name: Case 3, foster child bypasses income and activity tests with no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 3
+        is_in_foster_care: true
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 9_600  # $800/month.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_categorically_eligible: true
+    la_ccap_activity_eligible: false
+    la_ccap_eligible: true
+    la_ccap_daily_copay: 0
+    # min($800, $31.50 x 21.67 = $682.50) with no copay.
+    la_ccap: 682.5
+
+- name: Case 4, income above the limit is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # $5,000/month vs $4,614 two-person limit.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: false
+    la_ccap_eligible: false
+    la_ccap: 0
+
+- name: Case 5, assets above the CCDF limit are disqualifying.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_eligible: false
+    la_ccap: 0
+
+- name: Case 6, non-working spouse makes the household ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+        childcare_days_per_week: 5
+        pre_subsidy_childcare_expenses: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_activity_eligible: false
+    la_ccap_eligible: false
+    la_ccap: 0

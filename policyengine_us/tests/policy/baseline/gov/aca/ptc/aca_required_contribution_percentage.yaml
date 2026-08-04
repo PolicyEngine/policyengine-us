@@ -22,13 +22,13 @@
   output:
     aca_required_contribution_percentage: 0.0314
 
-- name: Flat at 100% FPL in 2019 (pre-ARPA, should be 2%)
+- name: Flat at 100% FPL in 2019 (pre-ARPA, should be 2.08%)
   period: 2019
   absolute_error_margin: 0.0001
   input:
     aca_magi_fraction: 1.0
   output:
-    aca_required_contribution_percentage: 0.02
+    aca_required_contribution_percentage: 0.0208
 
 - name: aca_required_contribution_percentage unit test 1
   period: 2022
@@ -101,3 +101,99 @@
     aca_magi_fraction: 4.0
   output:
     aca_required_contribution_percentage: 0.0996
+
+- name: 2026 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0
+
+- name: 2018 ACA contribution percentage at 100 percent FPL.
+  period: 2018
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.0
+  output:
+    aca_required_contribution_percentage: 0.0201
+
+- name: 2018 ACA contribution percentage at 350 percent FPL.
+  period: 2018
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 3.5
+  output:
+    aca_required_contribution_percentage: 0.0956
+
+- name: 2019 ACA contribution percentage at 350 percent FPL.
+  period: 2019
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 3.5
+  output:
+    aca_required_contribution_percentage: 0.0986
+
+- name: 2020 ACA contribution percentage at 100 percent FPL.
+  period: 2020
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 1.0
+  output:
+    aca_required_contribution_percentage: 0.0206
+
+- name: 2020 ACA contribution percentage at 350 percent FPL.
+  period: 2020
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 3.5
+  output:
+    aca_required_contribution_percentage: 0.0978
+
+- name: 2018 ACA contribution percentage at 400 percent FPL.
+  period: 2018
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.0956
+
+- name: 2018 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2018
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0
+
+- name: 2019 ACA contribution percentage at 400 percent FPL.
+  period: 2019
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.0986
+
+- name: 2019 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2019
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0
+
+- name: 2020 ACA contribution percentage at 400 percent FPL.
+  period: 2020
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.0
+  output:
+    aca_required_contribution_percentage: 0.0978
+
+- name: 2020 ACA contribution percentage is zero above 400 percent FPL.
+  period: 2020
+  absolute_error_margin: 0.0001
+  input:
+    aca_magi_fraction: 4.01
+  output:
+    aca_required_contribution_percentage: 0

@@ -1,0 +1,248 @@
+# ia_cca_activity_eligible: SPMUnit, bool, MONTH.
+# IAC 441-170.2(2)"b": each parent must average at least 32 hours/week in an
+# approved activity (28 hours/week if the family includes a child with special
+# needs). Full-time students qualify; meets_ccdf_activity_test is the fallback for
+# non-derivable activities. Uses weekly_hours_worked_before_lsr (default 40) so the
+# labor-supply response does not create a circular dependency; tests that mean
+# "not working enough" set weekly_hours_worked_before_lsr explicitly.
+# Two-parent families simplify the coinciding-hours rule to a per-parent gate:
+# every head/spouse must independently qualify.
+
+- name: Single parent working 32 hours meets the activity requirement.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 32
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 32 >= 32 -> activity eligible
+    ia_cca_activity_eligible: true
+
+- name: Single parent working 31 hours does not meet the basic requirement.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 31
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 31 < 32 and no special-needs child -> not activity eligible
+    ia_cca_activity_eligible: false
+
+- name: Family with a special-needs child uses the 28-hour threshold.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 28
+      child:
+        age: 3
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Special-needs child -> 28-hour threshold; 28 >= 28 -> activity eligible
+    # (would fail the 32-hour basic threshold)
+    ia_cca_activity_eligible: true
+
+- name: Special-needs family parent below 28 hours is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 27
+      child:
+        age: 3
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 27 < 28 -> not activity eligible
+    ia_cca_activity_eligible: false
+
+- name: Two-parent family qualifies only when both parents meet the hours.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Both parents 40 >= 32 -> activity eligible
+    ia_cca_activity_eligible: true
+
+- name: Two-parent family fails when one parent is below the hours threshold.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 10
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Parent2 10 < 32 -> not all parents qualify -> not activity eligible
+    ia_cca_activity_eligible: false
+
+- name: Full-time student parent qualifies even without enough work hours.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 22
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 0 work hours but full-time student -> approved activity -> eligible
+    ia_cca_activity_eligible: true
+
+- name: Idle parent with no approved activity is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # 0 hours, not a student, no fallback activity -> not activity eligible
+    ia_cca_activity_eligible: false
+
+- name: Parent meeting the CCDF activity fallback qualifies.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Non-derivable approved activity (job search, PROMISE JOBS, training combo)
+    # routed through meets_ccdf_activity_test fallback -> eligible
+    ia_cca_activity_eligible: true

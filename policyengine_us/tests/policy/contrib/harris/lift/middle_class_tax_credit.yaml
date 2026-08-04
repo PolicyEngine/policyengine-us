@@ -36,6 +36,7 @@
       tax_unit:
         members: [person1, person2]
         adjusted_gross_income: 0
+        eitc_earned_income: 4_000
         filing_status: HEAD_OF_HOUSEHOLD
         eitc: 0
   output:

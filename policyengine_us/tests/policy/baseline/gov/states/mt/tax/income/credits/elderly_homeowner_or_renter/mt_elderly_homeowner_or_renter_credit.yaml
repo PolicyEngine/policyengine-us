@@ -92,6 +92,70 @@
   # 1000+ 9000*0.15 - (43000-12600)*0.05 = 830 # 830*10% = 83
     mt_elderly_homeowner_or_renter_credit: [83, 0, 0]
 
+- name: Multiplier uses household-aggregated gross income, not per-person
+  period: 2022
+  input:
+    people:
+      person1:
+        rent: 9_000
+        real_estate_taxes: 1_500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 22_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 700
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+      person2:
+        rent: 9_000
+        real_estate_taxes: 0
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 22_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Each person's gross household income is under the $35,000 threshold
+    # (multiplier 1.0 per-person), but the tax-unit sum is $44,000 which
+    # falls in the 0.1 multiplier bracket. capped credit = $1,150 * 0.1 = $115.
+    mt_elderly_homeowner_or_renter_credit: [115, 0]
+
+- name: MT EHRC zero at exactly the $45,000 gross household income threshold
+  period: 2022
+  input:
+    people:
+      person1:
+        rent: 9_000
+        real_estate_taxes: 1_500
+        mt_elderly_homeowner_or_renter_credit_gross_household_income: 45_000
+        mt_elderly_homeowner_or_renter_credit_net_household_income: 0
+        mt_elderly_homeowner_or_renter_credit_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+  output:
+    mt_elderly_homeowner_or_renter_credit: 0
+
+- name: MT EHRC denied when household income exceeds $45,000 due to SS
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 20_000
+        taxable_interest_income: 5_280
+        social_security_retirement: 51_792
+        rent: 17_139
+      spouse:
+        age: 75
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit: 0
+
 - name: Integration test
   period: 2022
   absolute_error_margin: 0.01

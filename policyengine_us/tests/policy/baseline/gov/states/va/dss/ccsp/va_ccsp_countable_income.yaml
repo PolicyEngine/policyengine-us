@@ -189,3 +189,25 @@
     # Only earnings (wages/self-employment) of children <18 are excluded;
     # unearned income (e.g. social_security) of minors is still countable.
     va_ccsp_countable_income: 2_500
+
+- name: Case 9, adult self-employment income counts.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+        self_employment_income: 12_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # (24,000 + 12,000) / 12 = 3,000
+    va_ccsp_countable_income: 3_000

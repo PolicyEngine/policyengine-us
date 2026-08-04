@@ -1,0 +1,401 @@
+# Florida School Readiness activity eligibility (Fla. Stat. 1002.81(14)).
+# Parents are tax-unit heads or spouses. A single parent must work >= 20 hr/wk;
+# two non-exempt parents must work >= 40 hr/wk combined; a two-parent family with
+# one age/disability-exempt parent qualifies if the other parent works >= 20
+# hr/wk. Other documented activity paths use meets_ccdf_activity_test.
+# weekly_hours_worked_before_lsr is set explicitly because it defaults to 40.
+
+- name: Case 1, single parent working 20 hours meets the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 2, single parent working 15 hours fails the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 3, two parents working 40 hours combined meet the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 4, two parents with 35 combined hours fail the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 5
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 5, asymmetric two parents with 45 combined hours meet the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 6, single disabled parent with no work hours and no fallback is not a working family.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # 1002.81(14)(a) has no single-parent exemption -- the parent must work
+    # >= 20 hr/wk. A disabled single parent who cannot work instead qualifies
+    # via the protective-services / meets_ccdf_activity_test path (Case 14).
+    is_fl_sr_activity_eligible: false
+
+- name: Case 7, one disabled parent leaves a single non-exempt parent who must work 20 hours.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 15  # only non-exempt parent, < 20 single threshold
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 11, two-parent family with one disabled parent qualifies when the other works 20 hours.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_disabled: true  # exempt under 1002.81(14)(c)
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20  # non-exempt parent meets the 20-hour bar
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 12, two-parent family with both parents disabled has no working parent and is not a working family.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # 1002.81(14)(c) excuses one exempt parent only if the OTHER works >= 20;
+    # with both exempt there is no working parent (such a family qualifies via
+    # the protective-services / meets_ccdf_activity_test fallback instead).
+    is_fl_sr_activity_eligible: false
+
+- name: Case 13, two-parent family with one senior age-exempt parent qualifies when the other works 20 hours.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 67  # age exemption proxied by is_senior under 1002.81(14)(c)
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20  # non-exempt parent meets the 20-hour bar
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+# Fallback: Fla. Stat. 1002.81(14) counts "eligible work OR education
+# activities" toward the 20/40 hours, which PolicyEngine cannot derive from
+# employment hours alone. meets_ccdf_activity_test (default false) lets a
+# family qualify through education/training/transition/grace activities.
+
+- name: Case 10, single parent under 20 work hours qualifies via meets_ccdf_activity_test (education/training).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 10  # below the 20-hour work threshold
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+# Edge cases: activity-hour boundaries (single-parent 20 hr/wk; two-parent 40
+# combined hr/wk). The just-at cases (20, 40) and the disability/age exemption
+# cases are covered above; these add the just-below boundary (19; 39).
+
+- name: Case 8, single parent working 19 hours just misses the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 19  # just below the 20-hour single threshold
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 9, two parents with 39 combined hours just miss the requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 19  # 20 + 19 = 39 < 40 combined threshold
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: false
+
+- name: Case 14, single disabled parent qualifies via the meets_ccdf_activity_test fallback (protective-services / documented exemption).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true  # protective-services / documented age-or-disability exemption
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_fl_sr_activity_eligible: true
+
+- name: Case 15, a protective-services child waives the activity requirement directly.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0  # parent not working
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # State Plan s. 2.2.2.h waives the activity requirement for a child who
+    # receives or needs protective services (the parent need not work).
+    is_fl_sr_activity_eligible: true

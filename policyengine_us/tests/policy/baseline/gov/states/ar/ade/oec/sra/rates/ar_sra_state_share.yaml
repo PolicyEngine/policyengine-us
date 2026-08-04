@@ -1,0 +1,693 @@
+# State payment share from rates/state_share_by_tier.yaml lookup
+# Keyed by (age_category, time_category, income_tier).
+#
+# Examples (from parameter):
+#   Toddler FT LE_40 = 1.00 (no copay floor)
+#   Toddler FT GT_40_LE_60 = 0.80
+#   Toddler FT GT_60 = 0.70
+#   Preschool FT LE_40 = 1.00
+#   Preschool FT GT_40_LE_60 = 0.70
+#   School-Aged FT LE_40 = 0.80 (always copay)
+#   School-Aged FT GT_60 = 0.30
+#
+# Arkansas SMI (FFY 2026, uprated to 2026-01-01, 4-person): $95,201.95/year
+# 2-person SPM: SMI = 95,201.95 * 0.68 = $64,737.33 annual
+# Tier percentages quoted in test names are computed against the uprated SMI.
+
+- name: Case 1, toddler at 30 percent SMI gets state share 1.00 (no-copay floor).
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.30 = $18,417.12
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 2, preschooler at 50 percent SMI (FT) gets state share 0.70.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.50 = $30,695.20
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool FT GT_40_LE_60 = 0.70
+    ar_sra_state_share: [0, 0.70]
+
+- name: Case 3, school-aged child at 80 percent SMI (FT) gets state share 0.30.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.80 = $49,112.32 (above 60% SMI -> GT_60 tier)
+        employment_income: 49_112
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged FT GT_60 = 0.30
+    ar_sra_state_share: [0, 0.30]
+
+- name: Case 4, school-aged child at 30 percent SMI (FT) still has copay (share 0.80).
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.30 = $18,417.12
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged FT LE_40 = 0.80 (school-aged always has copay)
+    ar_sra_state_share: [0, 0.80]
+
+- name: Case 5, infant at 30 percent SMI (FT) gets state share 1.00.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant FT LE_40 = 1.00
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 6, infant at 50 percent SMI (FT) gets state share 0.80.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.50 = $30,695.20
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant FT GT_40_LE_60 = 0.80
+    ar_sra_state_share: [0, 0.80]
+
+- name: Case 7, infant at 75 percent SMI (FT) gets state share 0.70.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        # 90,280 * 0.68 * 0.75 = $46,043
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant FT GT_60 = 0.70
+    ar_sra_state_share: [0, 0.70]
+
+- name: Case 8, infant at 30 percent SMI (PT) gets state share 1.00.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        # Below 30 hr FT threshold
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant PT LE_40 = 1.00
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 9, infant at 50 percent SMI (PT) gets state share 0.70.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant PT GT_40_LE_60 = 0.70
+    ar_sra_state_share: [0, 0.70]
+
+- name: Case 10, infant at 75 percent SMI (PT) gets state share 0.60.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Infant PT GT_60 = 0.60
+    ar_sra_state_share: [0, 0.60]
+
+- name: Case 11, toddler at 30 percent SMI (PT) gets state share 1.00.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Toddler PT LE_40 = 1.00
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 12, toddler at 50 percent SMI (PT) gets state share 0.60.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Toddler PT GT_40_LE_60 = 0.60
+    ar_sra_state_share: [0, 0.60]
+
+- name: Case 13, toddler at 75 percent SMI (PT) gets state share 0.50.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Toddler PT GT_60 = 0.50
+    ar_sra_state_share: [0, 0.50]
+
+- name: Case 14, preschooler at 30 percent SMI (PT) gets state share 1.00.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool PT LE_40 = 1.00
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 15, preschooler at 50 percent SMI (PT) gets state share 0.60.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool PT GT_40_LE_60 = 0.60
+    ar_sra_state_share: [0, 0.60]
+
+- name: Case 16, preschooler at 75 percent SMI (PT) gets state share 0.50.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool PT GT_60 = 0.50
+    ar_sra_state_share: [0, 0.50]
+
+- name: Case 17, school-aged child at 30 percent SMI (PT) gets state share 0.70.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged PT LE_40 = 0.70
+    ar_sra_state_share: [0, 0.70]
+
+- name: Case 18, school-aged child at 50 percent SMI (PT) gets state share 0.50.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged PT GT_40_LE_60 = 0.50
+    ar_sra_state_share: [0, 0.50]
+
+- name: Case 19, school-aged child at 75 percent SMI (PT) gets state share 0.30.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged PT GT_60 = 0.30
+    ar_sra_state_share: [0, 0.30]
+
+- name: Case 20, toddler at 50 percent SMI (FT) gets state share 0.80.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Toddler FT GT_40_LE_60 = 0.80
+    ar_sra_state_share: [0, 0.80]
+
+- name: Case 21, toddler at 75 percent SMI (FT) gets state share 0.70.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Toddler FT GT_60 = 0.70
+    ar_sra_state_share: [0, 0.70]
+
+- name: Case 22, preschooler at 30 percent SMI (FT) gets state share 1.00.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool FT LE_40 = 1.00
+    ar_sra_state_share: [0, 1.00]
+
+- name: Case 23, preschooler at 75 percent SMI (FT) gets state share 0.60.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Preschool FT GT_60 = 0.60
+    ar_sra_state_share: [0, 0.60]
+
+- name: Case 24, school-aged child at 50 percent SMI (FT) gets state share 0.50.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # School-Aged FT GT_40_LE_60 = 0.50
+    ar_sra_state_share: [0, 0.50]

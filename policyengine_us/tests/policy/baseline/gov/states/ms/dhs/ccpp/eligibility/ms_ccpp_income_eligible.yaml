@@ -1,0 +1,112 @@
+# ms_ccpp_income_eligible is SPMUnit, MONTH.
+# Eligible when monthly countable income <= 0.85 * monthly hhs_smi.
+# Federal hhs_smi (MS, 2024), annual / 85% annual:
+#   Family of 2: 51,204 / 43,523.40
+#   Family of 3: 63,252 / 53,764.20
+#   Family of 4: 75,300 / 64,005.00
+
+- name: Case 1, family of 2 well below 85 percent SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 24,000 < 43,523.40 -> eligible
+    ms_ccpp_income_eligible: true
+
+- name: Case 2, family of 2 just below 85 percent SMI boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_523.39  # 0.01 below 85% SMI to avoid float round-trip flip
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_income_eligible: true
+
+- name: Case 3, family of 2 just above 85 percent SMI boundary.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_523.41  # 0.01 above 85% SMI
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_income_eligible: false
+
+- name: Case 4, family of 4 below 85 percent SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 33
+      person3:
+        age: 4
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+  output:
+    # 60,000 < 64,005 (85% SMI, family of 4) -> eligible
+    ms_ccpp_income_eligible: true
+
+- name: Case 5, family of 4 above 85 percent SMI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_000
+      person2:
+        age: 33
+      person3:
+        age: 4
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+  output:
+    # 70,000 > 64,005 -> ineligible
+    ms_ccpp_income_eligible: false

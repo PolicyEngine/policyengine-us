@@ -2,6 +2,8 @@ description: Income sources in US AGI but not taxable under the PA income tax.
 values:
   2021-01-01:
     - pa_nontaxable_pension_income
+    - pa_nontaxable_retirement_distributions
+    - pa_nontaxable_roth_conversions
     - taxable_unemployment_compensation
     - taxable_social_security
     - us_govt_interest

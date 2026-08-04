@@ -18,3 +18,32 @@
     capped_count_cdcc_eligible: 0
   output:
     cdcc_limit: 0
+
+# IRC section 21(c): the dollar limit is reduced by the section 129 exclusion
+# (Form 2441 Part III, line 27 minus line 28).
+- name: Two children, limit reduced by a $5,000 section 129 exclusion
+  period: 2024
+  input:
+    capped_count_cdcc_eligible: 2
+    dependent_care_assistance_exclusion: 5_000
+  output:
+    # $6,000 - $5,000 = $1,000.
+    cdcc_limit: 1_000
+
+- name: One child, exclusion exceeding the limit floors it at zero
+  period: 2024
+  input:
+    capped_count_cdcc_eligible: 1
+    dependent_care_assistance_exclusion: 5_000
+  output:
+    # max($3,000 - $5,000, 0) = $0.
+    cdcc_limit: 0
+
+- name: Two children, exclusion reduces but does not eliminate the limit
+  period: 2024
+  input:
+    capped_count_cdcc_eligible: 2
+    dependent_care_assistance_exclusion: 2_500
+  output:
+    # $6,000 - $2,500 = $3,500.
+    cdcc_limit: 3_500

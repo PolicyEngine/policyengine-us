@@ -11,3 +11,4 @@ class csrs_retirement_pay(Variable):
         "Retirement income from the federal Civil Service Retirement System."
     )
     reference = "https://tax.vermont.gov/individuals/seniors-and-retirees"  # Exemption for Civil Service Retirement System (CSRS)
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

@@ -1,0 +1,210 @@
+# MA child and family tax credit: $440 per eligible dependent in 2026
+# (gov/states/ma/tax/income/credits/child_and_family/amount.yaml: 440 since 2024).
+# Eligible dependent = tax-unit dependent AND (age < 13 | age >= 65 | disabled);
+# no dependent cap since 2023 (dependent_cap = inf).
+- name: ma_child_family_credit_child_age_12_boundary (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+      child1:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Age 12 < child_age_limit (13) -> 1 eligible dependent x 440 = 440.
+        ma_child_and_family_credit: 440.0
+        adjusted_gross_income: 40_000.0
+# Same household, child at exactly the age-13 limit -> ineligible (age route zero).
+- name: ma_child_family_credit_child_age_13_at_limit (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+      child1:
+        age: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Age 13 is NOT < child_age_limit (13), not elderly, not disabled -> 0.
+        ma_child_and_family_credit: 0.0
+- name: ma_child_family_credit_disabled_dependent_age_20 (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+      child1:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Disabled dependent qualifies at any age -> 1 x 440 = 440.
+        ma_child_and_family_credit: 440.0
+- name: ma_child_family_credit_elderly_dependent_age_65 (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+      parent1:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - parent1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_parent1:
+        members:
+        - parent1
+  output:
+    tax_units:
+      tax_unit:
+        # Dependent aged 65 >= elderly_age_limit (65) -> 1 x 440 = 440.
+        ma_child_and_family_credit: 440.0

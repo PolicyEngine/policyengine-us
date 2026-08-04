@@ -1,0 +1,65 @@
+- name: Self-employed pension contributions are limited by the 2026 annual additions dollar limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 72_000
+    self_employed_pension_contributions: 72_000
+    self_employed_pension_contribution_ald_person: 72_000
+
+- name: Self-employed pension contributions are also limited by self-employment compensation.
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income: 50_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 50_000
+    self_employed_pension_contributions: 50_000
+    self_employed_pension_contribution_ald_person: 50_000
+
+- name: Unrelated employee elective deferrals do not reduce the self-employed pension limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 60
+        employment_income: 100_000
+        self_employment_income: 100_000
+        traditional_401k_contributions_desired: 50_000
+        self_employed_pension_contributions_desired: 72_000
+  output:
+    elective_deferral_limit: 35_750
+    traditional_401k_contributions: 35_750
+    self_employed_pension_contribution_limit: 72_000
+    self_employed_pension_contributions: 72_000
+
+- name: Annual additions cap does not apply to IRA contributions.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        self_employment_income: 100_000
+        traditional_ira_contributions_desired: 9_000
+        self_employed_pension_contributions_desired: 72_000
+  output:
+    ira_contribution_limit: 8_000
+    traditional_ira_contributions: 8_000
+    self_employed_pension_contribution_limit: 72_000
+    self_employed_pension_contributions: 72_000
+
+- name: Self-employed pension contributions use desired input.
+  period: 2026
+  input:
+    people:
+      person1:
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 72_000
+    self_employed_pension_contributions: 72_000

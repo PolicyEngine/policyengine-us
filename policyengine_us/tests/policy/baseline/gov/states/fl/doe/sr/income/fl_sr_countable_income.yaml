@@ -1,0 +1,121 @@
+# Florida School Readiness countable income = gross family income (no School
+# Readiness disregards; 6M-4.400 FAQ Q6). It sums the gross-income sources in
+# gov.states.fl.doe.sr.income.sources across the SPM unit. The variable is
+# MONTH-defined; YEAR income inputs auto-divide to a monthly value.
+
+- name: Case 1, single earner gross monthly income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # 36_000 / 12 = 3_000
+    fl_sr_countable_income: 3_000
+
+- name: Case 2, two earners plus Social Security and pension are all counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000
+        social_security_retirement: 6_000
+      person2:
+        age: 38
+        self_employment_income: 12_000
+        pension_income: 4_800
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # All sources are annual (YEAR) and auto-divide to monthly:
+    # (24_000 + 6_000 + 12_000 + 4_800) / 12 = 46_800 / 12 = 3_900
+    fl_sr_countable_income: 3_900
+
+- name: Case 3, no income yields zero countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_sr_countable_income: 0
+
+- name: Case 4, a minor's earned and unearned income is excluded (1002.81(7), 18+ only).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # adult: 2_500 / month, counted
+      person2:
+        age: 16
+        employment_income: 12_000  # minor wages: excluded
+        social_security_survivors: 6_000  # minor unearned: excluded
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Only the 35-year-old's income counts: 30_000 / 12 = 2_500. The
+    # 16-year-old's wages and survivor benefits are excluded.
+    fl_sr_countable_income: 2_500
+
+- name: Case 5, an 18-year-old's income IS counted (family income is members 18 or older).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # 2_000 / month
+      person2:
+        age: 18
+        employment_income: 12_000  # 18+ -> counted: 1_000 / month
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # Both adults (40 and 18) count: (24_000 + 12_000) / 12 = 3_000.
+    fl_sr_countable_income: 3_000

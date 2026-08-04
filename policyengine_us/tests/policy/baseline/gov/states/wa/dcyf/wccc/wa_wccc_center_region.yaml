@@ -1,0 +1,98 @@
+- name: Case 1, Adams County, no override, Region 1.
+  period: 2025-01
+  input:
+    county_str: ADAMS_COUNTY_WA
+    state_code: WA
+  output:
+    wa_wccc_center_region: REGION_1
+
+- name: Case 2, Clark County overrides to Region 3 for centers.
+  period: 2025-01
+  input:
+    county_str: CLARK_COUNTY_WA
+    state_code: WA
+  output:
+    # Clark is base Region 6 but pays Region 3 rates for centers.
+    wa_wccc_center_region: REGION_3
+
+- name: Case 3, Benton County overrides to Region 6 for centers.
+  period: 2025-01
+  input:
+    county_str: BENTON_COUNTY_WA
+    state_code: WA
+  output:
+    # Benton is base Region 2 but pays Region 6 rates for centers.
+    wa_wccc_center_region: REGION_6
+
+- name: Case 4, Walla Walla County overrides to Region 6 for centers.
+  period: 2025-01
+  input:
+    county_str: WALLA_WALLA_COUNTY_WA
+    state_code: WA
+  output:
+    wa_wccc_center_region: REGION_6
+
+- name: Case 5, Whitman County overrides to Region 6 for centers.
+  period: 2025-01
+  input:
+    county_str: WHITMAN_COUNTY_WA
+    state_code: WA
+  output:
+    # Whitman is base Region 1 but pays Region 6 rates for centers.
+    wa_wccc_center_region: REGION_6
+
+- name: Case 6, Spokane County, no override, Spokane region.
+  period: 2025-01
+  input:
+    county_str: SPOKANE_COUNTY_WA
+    state_code: WA
+  output:
+    wa_wccc_center_region: SPOKANE
+
+- name: Case 7, King County, no override, Region 4.
+  period: 2025-01
+  input:
+    county_str: KING_COUNTY_WA
+    state_code: WA
+  output:
+    wa_wccc_center_region: REGION_4
+
+- name: Case 8, Clark County still overrides before July 2026.
+  period: 2026-06
+  input:
+    county_str:
+      2026: CLARK_COUNTY_WA
+    state_code:
+      2026: WA
+  output:
+    wa_wccc_center_region: REGION_3
+
+- name: Case 9, Benton County still overrides before July 2026.
+  period: 2026-06
+  input:
+    county_str:
+      2026: BENTON_COUNTY_WA
+    state_code:
+      2026: WA
+  output:
+    wa_wccc_center_region: REGION_6
+
+- name: Case 10, Clark County no longer overrides starting July 2026.
+  period: 2026-07
+  input:
+    county_str:
+      2026: CLARK_COUNTY_WA
+    state_code:
+      2026: WA
+  output:
+    wa_wccc_center_region: REGION_6
+
+- name: Case 11, Benton County no longer overrides starting July 2026.
+  period: 2026-07
+  input:
+    county_str:
+      2026: BENTON_COUNTY_WA
+    state_code:
+      2026: WA
+  output:
+    wa_wccc_center_region: REGION_2

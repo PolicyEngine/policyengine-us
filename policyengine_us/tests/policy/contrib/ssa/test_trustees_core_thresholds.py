@@ -1,17 +1,7 @@
 import math
 from functools import lru_cache
 
-import pytest
-
 from policyengine_us import CountryTaxBenefitSystem
-from policyengine_us.parameters.uprating_extensions import (
-    round_social_security_payroll_cap,
-)
-from policyengine_us.reforms.ssa.trustees_2025 import (
-    TRUSTEES_2025_AVERAGE_WAGE_GROWTH_PCT,
-    TRUSTEES_2025_NAWI_ASSUMPTION,
-    TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS,
-)
 from policyengine_us.reforms.ssa.trustees_core_thresholds import (
     TRUSTEES_CORE_THRESHOLD_ASSUMPTION,
     create_trustees_core_thresholds_reform,
@@ -34,14 +24,9 @@ def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
     )
     assert TRUSTEES_CORE_THRESHOLD_ASSUMPTION["not_default_current_law"] is True
     assert TRUSTEES_CORE_THRESHOLD_ASSUMPTION["start_year"] == 2035
-    assert (
-        TRUSTEES_CORE_THRESHOLD_ASSUMPTION["economic_assumption"]
-        == TRUSTEES_2025_NAWI_ASSUMPTION["name"]
-    )
-    assert (
-        TRUSTEES_CORE_THRESHOLD_ASSUMPTION["income_uprating_assumption"]
-        == "trustees-2025-soi-income-nawi-v1"
-    )
+    assert "economic_assumption" not in TRUSTEES_CORE_THRESHOLD_ASSUMPTION
+    assert "income_uprating_assumption" not in TRUSTEES_CORE_THRESHOLD_ASSUMPTION
+    assert TRUSTEES_CORE_THRESHOLD_ASSUMPTION["wage_index"] == "gov.ssa.nawi"
     assert (
         "all_gov_irs_uprating_parameters"
         in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["parameter_groups"]
@@ -52,59 +37,53 @@ def test_metadata_marks_trustees_core_thresholds_as_explicit_assumption():
     assert "OACT email clarification" in TRUSTEES_CORE_THRESHOLD_ASSUMPTION["source"]
 
 
-def test_reform_applies_trustees_2025_nawi_path():
+def test_reform_leaves_long_run_economic_assumptions_unchanged():
     baseline = _parameters()
     reformed = _trustees_parameters()
 
-    baseline_nawi = baseline.gov.ssa.nawi
-    reformed_nawi = reformed.gov.ssa.nawi
+    assert reformed.gov.ssa.nawi("2100-01-01") == baseline.gov.ssa.nawi("2100-01-01")
+    assert reformed.gov.irs.payroll.social_security.cap(
+        "2100-01-01"
+    ) == baseline.gov.irs.payroll.social_security.cap("2100-01-01")
 
-    assert reformed_nawi("2033-01-01") == baseline_nawi("2033-01-01")
-    for year in [2034, 2035, 2040, 2100]:
-        growth = float(reformed_nawi(f"{year}-01-01")) / float(
-            reformed_nawi(f"{year - 1}-01-01")
-        )
-        expected_growth = 1 + TRUSTEES_2025_AVERAGE_WAGE_GROWTH_PCT[year] / 100
-        assert growth == pytest.approx(expected_growth)
-
-
-def test_reform_recomputes_payroll_cap_from_trustees_2025_nawi_path():
-    reformed = _trustees_parameters()
-    nawi = reformed.gov.ssa.nawi
-    payroll_cap = reformed.gov.irs.payroll.social_security.cap
-
-    for year in [2036, 2040, 2100]:
-        current_cap = payroll_cap(f"{year - 1}-01-01")
-        expected_cap = round_social_security_payroll_cap(
-            current_cap * nawi(f"{year - 2}-01-01") / nawi(f"{year - 3}-01-01")
-        )
-        assert payroll_cap(f"{year}-01-01") == expected_cap
-
-
-def test_reform_extends_soi_income_upraters_from_trustees_2025_nawi_path():
-    baseline = _parameters()
-    reformed = _trustees_parameters()
-
-    assert "employment_income" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
-    assert "social_security" in TRUSTEES_2025_SOI_INCOME_UPRATING_PARAMETERS
-
-    nawi = reformed.gov.ssa.nawi
     for parameter_name in [
         "employment_income",
-        "self_employment_income",
         "social_security",
+        "taxable_pension_income",
     ]:
         baseline_parameter = getattr(baseline.calibration.gov.irs.soi, parameter_name)
         reformed_parameter = getattr(reformed.calibration.gov.irs.soi, parameter_name)
+        assert reformed_parameter("2100-01-01") == baseline_parameter("2100-01-01")
 
-        assert reformed_parameter("2036-01-01") == baseline_parameter("2036-01-01")
-        assert reformed_parameter("2075-01-01") > baseline_parameter("2075-01-01")
 
-        growth = float(reformed_parameter("2075-01-01")) / float(
-            reformed_parameter("2074-01-01")
+def test_reform_only_changes_federal_irs_uprating_parameters():
+    baseline = _parameters()
+    reformed = _trustees_parameters()
+    reformed_parameters_by_name = {
+        parameter.name: parameter
+        for parameter in [reformed, *reformed.get_descendants()]
+        if parameter.__class__.__name__ == "Parameter"
+    }
+    changed_names = []
+
+    for parameter in [baseline, *baseline.get_descendants()]:
+        if parameter.__class__.__name__ != "Parameter":
+            continue
+
+        reformed_parameter = reformed_parameters_by_name[parameter.name]
+
+        if parameter("2100-01-01") == reformed_parameter("2100-01-01"):
+            continue
+
+        uprating = parameter.metadata.get("uprating")
+        uprating_parameter = (
+            uprating.get("parameter") if isinstance(uprating, dict) else uprating
         )
-        expected_growth = float(nawi("2075-01-01")) / float(nawi("2074-01-01"))
-        assert growth == pytest.approx(expected_growth)
+        assert parameter.name.startswith("gov.irs.")
+        assert uprating_parameter == "gov.irs.uprating"
+        changed_names.append(parameter.name)
+
+    assert changed_names
 
 
 def test_social_security_components_use_aggregate_ss_uprater():

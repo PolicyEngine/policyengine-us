@@ -20,4 +20,5 @@ class va_ccsp(Variable):
         daily_mrr = person("va_ccsp_daily_mrr", period)
         attending_days = person("childcare_attending_days_per_month", period.this_year)
         monthly_mrr = spm_unit.sum(daily_mrr * attending_days)
-        return min_(max_(expenses - copay, 0), monthly_mrr)
+        capped_expenses = min_(expenses, monthly_mrr)
+        return max_(capped_expenses - copay, 0)

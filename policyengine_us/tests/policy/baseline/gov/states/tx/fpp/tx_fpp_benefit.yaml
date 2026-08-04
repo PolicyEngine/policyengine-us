@@ -1,39 +1,35 @@
-- name: Benefit for eligible individual
+- name: Case 1, benefit for an eligible individual.
   period: 2026
   input:
     state_code: TX
     age: 30
-    spm_unit_size: 1
-    spm_unit_net_income: 20_000
+    employment_income: 20_000
   output:
     tx_fpp_benefit: 266.84
 
-- name: No benefit for age-ineligible individual
+- name: Case 2, no benefit for an age-ineligible individual.
   period: 2026
   input:
     state_code: TX
     age: 65
-    spm_unit_size: 1
-    spm_unit_net_income: 20_000
+    employment_income: 20_000
   output:
     tx_fpp_benefit: 0
 
-- name: No benefit for income-ineligible individual
+- name: Case 3, no benefit for an income-ineligible individual.
   period: 2026
   input:
     state_code: TX
     age: 30
-    spm_unit_size: 1
-    spm_unit_net_income: 50_000
+    employment_income: 50_000
   output:
     tx_fpp_benefit: 0
 
-- name: Benefit for eligible person at age threshold
+- name: Case 4, benefit for an eligible person at the age threshold.
   period: 2026
   input:
     state_code: TX
     age: 64
-    spm_unit_size: 2
-    spm_unit_net_income: 40_000
+    employment_income: 39_000
   output:
     tx_fpp_benefit: 266.84

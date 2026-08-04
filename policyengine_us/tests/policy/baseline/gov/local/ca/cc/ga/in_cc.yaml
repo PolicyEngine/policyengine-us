@@ -1,0 +1,13 @@
+- name: Contra Costa County is True
+  period: 2024
+  input:
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    in_cc: true
+
+- name: Not Contra Costa County is False
+  period: 2024
+  input:
+    county: ALAMEDA_COUNTY_CA
+  output:
+    in_cc: false

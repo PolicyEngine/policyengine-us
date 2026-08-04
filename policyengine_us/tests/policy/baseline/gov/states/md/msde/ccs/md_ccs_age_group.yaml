@@ -1,0 +1,54 @@
+# Tests for md_ccs_age_group (Person-level, Enum)
+# Boundary: age_months < 24 → INFANT, else REGULAR
+
+- name: Newborn (age 0) is INFANT.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_age_group: [INFANT]
+
+- name: Age 1 (12 months) is INFANT.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_age_group: [INFANT]
+
+- name: Age exactly 2 (24 months) is REGULAR — boundary uses strict `<`.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_age_group: [REGULAR]
+
+- name: Age 5 is REGULAR.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_ccs_age_group: [REGULAR]

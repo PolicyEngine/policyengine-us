@@ -53,7 +53,7 @@ def _compute_aime(person, period, parameters):
             year_period = period.this_year.offset(-int(years_ago))
 
             employment_income = person("employment_income", year_period)
-            self_employment_income = person("self_employment_income", year_period)
+            self_employment_income = person("total_self_employment_income", year_period)
             total_earnings = employment_income + self_employment_income
 
             wage_base = parameters(year_period).gov.ssa.social_security.wage_base

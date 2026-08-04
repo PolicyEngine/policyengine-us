@@ -1,0 +1,58 @@
+- name: Case 1, person with no other Medicaid or CHIP category passes.
+  period: 2026
+  input:
+    state_code: MS
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+    age: 45
+  output:
+    ms_hmw_other_coverage_ineligible: true
+
+- name: Case 2, person otherwise eligible for optional senior or disabled Medicaid fails.
+  period: 2026
+  input:
+    state_code: MS
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: true
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+    age: 45
+  output:
+    ms_hmw_other_coverage_ineligible: false
+
+- name: Case 3, person otherwise eligible for CHIP fails.
+  period: 2026
+  input:
+    state_code: MS
+    age: 10
+    medicaid_income_level: 1
+    has_esi: false
+    is_ssi_recipient_for_medicaid: false
+    is_infant_for_medicaid: false
+    is_young_child_for_medicaid: false
+    is_older_child_for_medicaid: false
+    is_pregnant_for_medicaid: false
+    is_parent_for_medicaid: false
+    is_young_adult_for_medicaid: false
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medically_needy_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: false
+  output:
+    ms_hmw_other_coverage_ineligible: false

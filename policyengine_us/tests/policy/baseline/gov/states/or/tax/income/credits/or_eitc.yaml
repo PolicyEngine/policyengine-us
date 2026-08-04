@@ -49,19 +49,107 @@
   period: 2022
   absolute_error_margin: 1
   input:
-    people: 
+    people:
       parent: {}
-      child1: 
+      child1:
         age: 2
-      child2: 
+      child2:
         age: 5
-    tax_units: 
-      tax_unit: 
+    tax_units:
+      tax_unit:
         members: [parent, child1, child2]
         eitc: 100
-    households: 
+    households:
       household:
         members: [parent, child1, child2]
         state_code: OR
   output:
     or_eitc: 12
+
+# 2025 cases pin the pre-2026 rates (9% / 12%) so an accidental effective date
+# on either match parameter would be caught.
+- name: 2025 no young child gets 9% match
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 9
+
+- name: 2025 with a dependent under 3 gets 12% match
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 12
+
+# SB 1507 (2026) raised the match to 14% / 17% (dependent under 3) from 2026.
+- name: 2026 no young child gets 14% match
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 14
+
+- name: 2026 with a dependent under 3 gets 17% match
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent: {}
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        eitc: 100
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_eitc: 17
+
+- name: 2026 no EITC, no matched credit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    eitc: 0
+  output:
+    or_eitc: 0

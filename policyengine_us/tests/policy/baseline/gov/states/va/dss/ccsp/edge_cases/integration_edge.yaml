@@ -61,9 +61,9 @@
     va_ccsp_copay: 60
 
     # === Benefit ===
-    # Monthly expenses: 12,000/12 = 1,000
-    # Benefit: max(1,000 - 60, 0) = $940
-    va_ccsp: 940
+    # Monthly expenses: 12,000/12 = 1,000; capped at MRR
+    # Capped expense - copay = 966 - 60 = $906
+    va_ccsp: 906
 
 - name: Case 2, Group I $1 above 150% FPG with older child, no SMI fallback.
   period: 2024-01
@@ -284,9 +284,9 @@
     va_ccsp_copay: 120
 
     # === Benefit ===
-    # Monthly expenses: 18,000/12 = 1,500
-    # Benefit: max(1,500 - 120, 0) = $1,380
-    va_ccsp: 1_380
+    # Monthly expenses: 18,000/12 = 1,500; capped at MRR = 1,380
+    # Benefit: max(1,380 - 120, 0) = $1,260
+    va_ccsp: 1_260
 
 - name: Case 6, disabled child age 15 still eligible.
   period: 2024-01
@@ -331,11 +331,11 @@
     va_ccsp_copay: 60
 
     # Monthly expenses: 12,000/12 = 1,000
-    # Benefit before MRR: max(1,000 - 60, 0) = $940
     # Default county ACCOMACK -> SOUTHEASTERN region
     # MRR: SCHOOL_AGE CENTER SOUTHEASTERN = $30/day * 23 days = $690
-    # Benefit: min(940, 690) = $690
-    va_ccsp: 690
+    # Capped expense: min(1,000, 690) = $690
+    # Benefit: max(690 - 60, 0) = $630
+    va_ccsp: 630
 
 - name: Case 7, TANF-enrolled family waives income test for high-income family.
   period: 2024-01

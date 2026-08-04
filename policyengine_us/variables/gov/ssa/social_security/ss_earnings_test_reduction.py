@@ -22,7 +22,7 @@ class ss_earnings_test_reduction(Variable):
 
         # Get earnings
         employment_income = person("employment_income", period)
-        self_employment_income = person("self_employment_income", period)
+        self_employment_income = person("total_self_employment_income", period)
         total_earnings = employment_income + self_employment_income
 
         p = parameters(period).gov.ssa.social_security.earnings_test

@@ -132,3 +132,102 @@
     # Unrelated household members are qualifying relatives under IRC 152(d)
     # but do not count for HOH purposes per IRC 2(b)(3)
     head_of_household_eligible: false
+
+- name: Separated married filer with a qualifying child is treated as unmarried per IRC 7703(b).
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 38
+        is_tax_unit_head: true
+        is_separated: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        # Filing as married filing separately while living apart from spouse.
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # IRC 7703(b)(1) "considered unmarried" path: separated filer with a child
+    # qualifying-person abode qualifies for HOH.
+    head_of_household_eligible: true
+
+- name: Separated married filer with only a qualifying relative does not qualify per IRC 7703(b)(1).
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_separated: true
+      grandparent:
+        age: 78
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: true
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, grandparent]
+    households:
+      household:
+        members: [head, grandparent]
+  output:
+    # IRC 7703(b)(1) refers to "a child (within the meaning of section 152(f)(1))".
+    # A qualifying relative alone is not sufficient for the treated-unmarried path,
+    # so the separated filer does not qualify for HOH.
+    head_of_household_eligible: false
+
+- name: Surviving spouse takes precedence over the separated-with-qualifying-child HoH path
+  period: 2024
+  input:
+    people:
+      head:
+        age: 38
+        is_tax_unit_head: true
+        is_separated: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        surviving_spouse_eligible: true
+    households:
+      household:
+        members: [head, child]
+  output:
+    # head_of_household_eligible returns false when surviving_spouse_eligible
+    # is true, even when the separated-with-qualifying-child path would
+    # otherwise grant HoH.
+    head_of_household_eligible: false
+
+- name: Separated JOINT filer with qualifying child is NOT eligible for HoH
+  # IRC 7703(b)(1) "considered unmarried" path requires filing a separate
+  # return. A JOINT filer who happens to be separated forfeits the
+  # treated-unmarried route by choosing joint filing status.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 38
+        is_tax_unit_head: true
+        is_separated: true
+      spouse:
+        age: 36
+        is_tax_unit_spouse: true
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, spouse, child]
+  output:
+    head_of_household_eligible: false

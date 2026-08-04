@@ -1,0 +1,32 @@
+- name: KY per-person AGI reflects UC recipient (regression test for #8494)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        unemployment_compensation: 0
+      spouse:
+        age: 40
+        employment_income: 10_000
+        unemployment_compensation: 19_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Before the fix, head's KY AGI was inflated by the spouse's UC ($19,000)
+    # and the spouse's KY AGI was deflated by the same amount. KY's combined-
+    # return optimization then gave the head an unearned standard deduction.
+    ky_agi: [0, 29_000]

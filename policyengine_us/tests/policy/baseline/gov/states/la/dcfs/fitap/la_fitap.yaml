@@ -28,3 +28,47 @@
     la_fitap_countable_income: 0
   output:
     la_fitap: 0
+
+# DCFS manual B-641-1-FITAP: the deficit is rounded down; if it is less than
+# $10 the unit is eligible but no grant is paid.
+- name: Deficit under $10 pays no grant (issue 8770 example 1)
+  # $244 flat grant - $235.50 income = $8.50 deficit < $10, so no grant.
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 244
+    la_fitap_countable_income: 235.50
+  output:
+    la_fitap: 0
+
+- name: Deficit of $10 or more is rounded down to the grant (issue 8770 example 2)
+  # $484 flat grant - $450.75 income = $33.25 deficit, rounded down to $33.
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 484
+    la_fitap_countable_income: 450.75
+  output:
+    la_fitap: 33
+
+- name: Deficit of exactly $10 pays $10
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 244
+    la_fitap_countable_income: 234
+  output:
+    la_fitap: 10
+
+- name: Deficit of $9.99 pays no grant
+  period: 2024-01
+  input:
+    state_code: LA
+    la_fitap_eligible: true
+    la_fitap_flat_grant: 244
+    la_fitap_countable_income: 234.01
+  output:
+    la_fitap: 0

@@ -1,0 +1,42 @@
+# Net income = max(gross income - mandatory withholdings, 0).
+- name: No withholdings leaves gross income unchanged
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    ca_marin_general_relief_gross_income: 12_000
+    spm_unit_paycheck_withholdings: 0
+  output:
+    ca_marin_general_relief_net_income: 12_000
+
+- name: Withholdings reduce gross income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    ca_marin_general_relief_gross_income: 12_000
+    spm_unit_paycheck_withholdings: 900
+  output:
+    ca_marin_general_relief_net_income: 11_100  # 12,000 - 900
+
+- name: Net income floors at zero
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    ca_marin_general_relief_gross_income: 1_000
+    spm_unit_paycheck_withholdings: 1_500
+  output:
+    ca_marin_general_relief_net_income: 0  # max(1,000 - 1,500, 0)
+
+- name: Negative gross income floors net income at zero
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    in_marin: true
+    ca_marin_general_relief_gross_income: -60_000_000  # very negative
+    spm_unit_paycheck_withholdings: 0
+  output:
+    # max(-60M - 0, 0) = 0; this floor prevents the grant from inflating to
+    # grant - (negative) downstream in the base amount.
+    ca_marin_general_relief_net_income: 0

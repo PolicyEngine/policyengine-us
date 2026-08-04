@@ -77,3 +77,33 @@
     # Raw = 0 - 200 = -$200
     # Countable = max(-200, 0) = $0
     wv_works_countable_earned_income: 0
+
+- name: Case 6, incapacitated adult care costs are deducted.
+  absolute_error_margin: 0.1
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        tanf_gross_earned_income: 1_000
+      person2:
+        age: 35
+        # Describes the legal scenario (IMM 4.5.2.A.2 covers incapacitated
+        # adult care); the formula pools care_expenses without an
+        # incapacity filter, symmetric with the childcare side.
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Step 1: Gross earned = $1,000/month
+    # Step 2: After 40% disregard = 1,000 * 0.60 = $600
+    # Step 3: Incapacitated adult care = 1,200 / 12 = $100/month (no cap
+    # per Section 4.5.2.A.2)
+    # Countable = 600 - 100 = $500
+    wv_works_countable_earned_income: 500

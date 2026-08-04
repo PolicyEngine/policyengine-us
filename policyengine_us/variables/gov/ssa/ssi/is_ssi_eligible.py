@@ -5,7 +5,7 @@ class is_ssi_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Is SSI eligible person"  # without income test
-    definition_period = YEAR
+    definition_period = MONTH
 
     def formula(person, period, parameters):
         abd_person = person("is_ssi_aged_blind_disabled", period)

@@ -1,0 +1,20 @@
+description: Texas deducts dependent care expenses up to this monthly amount per dependent, based on the dependent's age, under the Family Planning Program.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  period: month
+  label: Texas Family Planning Program dependent care deduction cap
+  reference:
+    - title: 1 Tex. Admin. Code § 382.109(2)(A)-(B)
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-382-109
+
+brackets:
+  - threshold:
+      2016-07-01: 0
+    amount:
+      2016-07-01: 200
+  - threshold:
+      2016-07-01: 2
+    amount:
+      2016-07-01: 175

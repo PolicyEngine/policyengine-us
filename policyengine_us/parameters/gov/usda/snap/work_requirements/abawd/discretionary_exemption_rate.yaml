@@ -1,0 +1,33 @@
+description: States may exempt individuals from the Able-Bodied Adult Without Dependents (ABAWD) time limit up to this monthly average share of covered individuals under the Supplemental Nutrition Assistance Program.
+
+values:
+  # 15% for FY1998-2019 — 7 U.S.C. 2015(o)(6)(C)-(D), added by the
+  # Balanced Budget Act of 1997 (P.L. 105-33).
+  1997-10-01: 0.15
+  # 12% for FY2020-2023 — 7 U.S.C. 2015(o)(6)(E), Agriculture Improvement
+  # Act of 2018 (P.L. 115-334, Section 4005).
+  2019-10-01: 0.12
+  # 8% for FY2024 and each subsequent fiscal year — 7 U.S.C. 2015(o)(6)(F),
+  # Fiscal Responsibility Act of 2023 (P.L. 118-5, Section 312).
+  # OBBBA (P.L. 119-21, Section 10102) did not amend 2015(o)(6).
+  2023-10-01: 0.08
+
+metadata:
+  unit: /1
+  period: year
+  label: SNAP ABAWD discretionary exemption rate
+  # Discretionary exemptions are assigned by state caseworkers and are
+  # unobservable in survey data; like takeup, they are assigned during
+  # microdata construction rather than at simulation time.
+  economy: false
+  reference:
+    - title: 7 U.S.C. 2015(o)(6) - Exemptions from the ABAWD time limit
+      href: https://www.law.cornell.edu/uscode/text/7/2015#o_6
+    - title: 7 C.F.R. § 273.24(g) - Discretionary exemptions
+      href: https://www.law.cornell.edu/cfr/text/7/273.24#g
+    - title: Fiscal Responsibility Act of 2023 (P.L. 118-5), Section 312
+      href: https://www.congress.gov/118/plaws/publ5/PLAW-118publ5.pdf
+    - title: Agriculture Improvement Act of 2018 (P.L. 115-334), Section 4005
+      href: https://www.congress.gov/115/plaws/publ334/PLAW-115publ334.pdf
+    - title: Balanced Budget Act of 1997 (P.L. 105-33), Section 1001
+      href: https://www.congress.gov/105/plaws/publ33/PLAW-105publ33.pdf

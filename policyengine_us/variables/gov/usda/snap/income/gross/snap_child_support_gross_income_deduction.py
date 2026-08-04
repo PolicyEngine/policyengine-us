@@ -13,7 +13,7 @@ class snap_child_support_gross_income_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_4"
 
     def formula(spm_unit, period, parameters):
-        child_support = add(spm_unit, period, ["child_support_expense"])
+        child_support = spm_unit("snap_countable_child_support_expense", period)
         state = spm_unit.household("state_code_str", period)
         is_deductible = parameters(
             period

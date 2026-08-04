@@ -1,0 +1,220 @@
+- name: Case 1, exempt benefits such as SSI and TANF are not counted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        ssi: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 24_000
+
+- name: Case 2, dividends, interest, and veterans benefits are exempt.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        dividend_income: 5_000
+        interest_income: 2_000
+        veterans_benefits: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 20_000
+
+- name: Case 3, child support received below the monthly disregard counts as zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 600
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # max(600 - 75 x 12, 0) = 0
+    tx_fpp_countable_income: 0
+
+- name: Case 4, the earned income of a child is exempt.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 16
+        employment_income: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 30_000
+
+- name: Case 5, child support received is counted after the $75 monthly disregard.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_received: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2,400 - 75 x 12 = 1,500
+    tx_fpp_countable_income: 1_500
+
+- name: Case 6, dependent care expenses are deducted up to the monthly cap by age.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 1
+        pre_subsidy_childcare_expenses: 3_600
+      person3:
+        age: 5
+        pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Child under two: min(3,600, 200 x 12) = 2,400
+    # Dependent age five: min(1,200, 175 x 12) = 1,200
+    # 30,000 - 2,400 - 1,200 = 26,400
+    tx_fpp_countable_income: 26_400
+
+- name: Case 7, child support payments made are deducted.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        child_support_expense: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 21_000
+
+- name: Case 8, countable income does not go below zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_000
+        child_support_expense: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 0
+
+- name: Case 9, dependent exactly age two gets the lower care cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 2
+        pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Age two falls in the $175 bracket: min(3,000, 175 x 12) = 2,100
+    # 30,000 - 2,100 = 27,900
+    tx_fpp_countable_income: 27_900
+
+- name: Case 10, care expenses of a non-disabled adult are not deductible.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 35
+        is_disabled: false
+        is_tax_unit_dependent: true
+        care_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 30_000
+
+- name: Case 11, care expenses of a dependent adult with a disability are deductible up to the cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 35
+        is_disabled: true
+        is_tax_unit_dependent: true
+        care_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # min(2,400, 175 x 12) = 2,100; 30,000 - 2,100 = 27,900
+    tx_fpp_countable_income: 27_900
+
+- name: Case 12, self-employment losses net against wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        self_employment_income: -10_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_fpp_countable_income: 20_000

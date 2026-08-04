@@ -1,0 +1,28 @@
+- name: Case 1, 2024 Alaska Permanent Fund Dividend excludes energy relief.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_403.83
+
+- name: Case 2, 2025 Alaska Permanent Fund Dividend.
+  period: 2025
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 3, 2026 Alaska Permanent Fund Dividend.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_permanent_fund_dividend: 1_000
+
+- name: Case 4, Alaska Permanent Fund Dividend is zero outside Alaska.
+  period: 2026
+  input:
+    state_code: WA
+  output:
+    ak_permanent_fund_dividend: 0

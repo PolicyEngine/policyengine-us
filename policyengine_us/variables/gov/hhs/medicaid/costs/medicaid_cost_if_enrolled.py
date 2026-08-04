@@ -1,32 +1,22 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.medicaid.costs.medicaid_group import (
-    MedicaidGroup,
-)
-from policyengine_us.variables.gov.hhs.medicaid.costs.per_capita_cost_helpers import (
-    calculate_per_capita_cost,
-)
 
 
 class medicaid_cost_if_enrolled(Variable):
     value_type = float
     entity = Person
-    label = "Per capita Medicaid cost by eligibility group & state"
+    label = "Medicaid cost if enrolled"
     unit = USD
     definition_period = YEAR
-    defined_for = "is_medicaid_eligible"
 
     def formula(person, period, parameters):
-        group = person("medicaid_group", period)
-        return calculate_per_capita_cost(
-            person,
-            period,
-            parameters,
-            group,
-            MedicaidGroup,
-            groups=[
-                MedicaidGroup.AGED_DISABLED,
-                MedicaidGroup.CHILD,
-                MedicaidGroup.EXPANSION_ADULT,
-                MedicaidGroup.NON_EXPANSION_ADULT,
-            ],
+        state_code = person.household("state_code", period)
+        spending = parameters(period).calibration.gov.hhs.medicaid.totals.spending
+        cost_index = person("medicaid_slcsp_cost_index_filled", period)
+        denominator = person("medicaid_slcsp_state_denominator", period)
+
+        return np.divide(
+            spending[state_code] * cost_index,
+            denominator,
+            out=np.zeros_like(denominator),
+            where=denominator > 0,
         )

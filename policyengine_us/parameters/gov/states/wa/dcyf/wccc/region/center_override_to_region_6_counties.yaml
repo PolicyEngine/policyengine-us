@@ -1,0 +1,17 @@
+description: Washington uses Region 6 rates for licensed center providers in these counties under the Working Connections Child Care program.
+values:
+  2023-07-01:
+    - BENTON_COUNTY_WA
+    - WALLA_WALLA_COUNTY_WA
+    - WHITMAN_COUNTY_WA
+  2026-07-01: []
+
+metadata:
+  unit: list
+  period: year
+  label: Washington WCCC center-rate Region 6 override counties
+  reference:
+    - title: WAC 110-15-0200(1)(b)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0200
+    - title: DCYF Subsidy Rate Increase for Child Care Centers
+      href: https://dcyf.wa.gov/news/subsidy-rate-increase-child-care-centers

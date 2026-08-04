@@ -115,3 +115,25 @@
         state_code: KS
   output:
     ks_tanf_eligible: false
+
+- name: Case 7, only member is an SSI recipient, empty assistance unit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: true
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf_gross_income_eligible: true
+        ks_tanf_income_eligible: true
+        ks_tanf_resources_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # All other conditions pass, but the assistance unit is empty (size 0 < 1)
+    # because the only member receives SSI, so the unit is ineligible.
+    ks_tanf_eligible: false

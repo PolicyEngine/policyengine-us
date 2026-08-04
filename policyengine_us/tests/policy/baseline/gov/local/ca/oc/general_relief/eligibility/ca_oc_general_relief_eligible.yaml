@@ -1,0 +1,49 @@
+# ca_oc_general_relief_eligible = categorical & income & resources. Each case
+# isolates a single failing gate while the other two pass, so flipping an "&"
+# to "|" would be caught.
+- name: All gates pass, the unit is eligible.
+  period: 2026-01
+  input:
+    age: 30
+    in_oc: true
+  output:
+    ca_oc_general_relief_eligible_person_count: 1
+    ca_oc_general_relief_income_eligible: true
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief_eligible: true
+
+- name: Only the categorical gate fails, the unit is ineligible.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    in_oc: true
+  output:
+    ca_oc_general_relief_eligible_person_count: 0
+    ca_oc_general_relief_income_eligible: true
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief_eligible: false
+
+- name: Only the income gate fails, the unit is ineligible.
+  period: 2026-01
+  input:
+    age: 30
+    employment_income: 12_000  # 1,000/mo -> countable 800 > size-1 MAP 355
+    in_oc: true
+  output:
+    ca_oc_general_relief_eligible_person_count: 1
+    ca_oc_general_relief_income_eligible: false
+    ca_oc_general_relief_resources_eligible: true
+    ca_oc_general_relief_eligible: false
+
+- name: Only the resource gate fails, the unit is ineligible.
+  period: 2026-01
+  input:
+    age: 30
+    spm_unit_cash_assets: 1_500  # > $1,000 personal property limit
+    in_oc: true
+  output:
+    ca_oc_general_relief_eligible_person_count: 1
+    ca_oc_general_relief_income_eligible: true
+    ca_oc_general_relief_resources_eligible: false
+    ca_oc_general_relief_eligible: false

@@ -1,0 +1,24 @@
+description: Georgia provides this quality bonus rate under the Childcare and Parent Services program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Georgia CAPS Quality Rated bonus rate
+  reference:
+    - title: Georgia CCDF Plan FFY 2025-2027, Section 4.3.3 (Quality Rated Differential)
+      href: https://www.decal.ga.gov/documents/attachments/CCDFStatePlan25-27.pdf#page=69
+
+brackets:
+  - threshold:
+      2024-09-29: 0
+    amount:
+      2024-09-29: 0
+  - threshold:
+      2024-09-29: 2
+    amount:
+      2024-09-29: 0.05
+  - threshold:
+      2024-09-29: 3
+    amount:
+      2024-09-29: 0.1

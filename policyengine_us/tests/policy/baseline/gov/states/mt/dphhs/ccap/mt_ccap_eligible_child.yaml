@@ -1,0 +1,150 @@
+# Unit tests for mt_ccap_eligible_child (Person, MONTH).
+# A child is eligible if under the age limit (13, or 19 if disabled) and meets
+# CCDF immigration eligibility (is_ccdf_immigration_eligible_child).
+# person1 is a parent in each case so the child is a tax-unit dependent.
+- name: Case 1, young child under the age limit is an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, true]
+    # person1 is an adult (over the age limit); person2 is an eligible child.
+
+- name: Case 2, child at the age limit (13) is not eligible (non-disabled).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13  # at the limit; eligibility is age < 13
+        is_disabled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, false]
+
+- name: Case 3, child just under the age limit (12) is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12
+        is_disabled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, true]
+
+- name: Case 4, disabled child aged 14 is eligible under the special-needs limit (19).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, true]
+
+- name: Case 5, disabled child at the special-needs limit (19) is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 19  # at the special-needs limit; eligibility is age < 19
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, false]
+
+- name: Case 6, undocumented child fails CCDF immigration eligibility.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, false]
+
+# --- Edge cases: newborn, and the special-needs age limit boundary at limit-1. ---
+- name: Case 7, newborn (age 0) is an eligible child.
+  period: 2026-01
+  # youngest possible child; age 0 < 13 limit.
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, true]
+
+- name: Case 8, disabled child aged 18 (just under the special-needs limit) is eligible.
+  period: 2026-01
+  # special-needs boundary at limit-1; age 18 < 19 limit for disabled children.
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, true]
+
+- name: Case 9, non-disabled child aged 14 exceeds the standard limit (only disabled get the higher limit).
+  period: 2026-01
+  # confirms the disabled vs non-disabled age-limit branch; 14 >= 13 standard limit.
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 14
+        is_disabled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ccap_eligible_child: [false, false]

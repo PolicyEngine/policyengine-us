@@ -12,7 +12,6 @@ class long_term_capital_gains(Variable):
         title="26 U.S. Code § 1222(3)",
         href="https://www.law.cornell.edu/uscode/text/26/1222#3",
     )
-    uprating = "calibration.gov.irs.soi.long_term_capital_gains"
     adds = [
         "long_term_capital_gains_before_response",
         "capital_gains_behavioral_response",

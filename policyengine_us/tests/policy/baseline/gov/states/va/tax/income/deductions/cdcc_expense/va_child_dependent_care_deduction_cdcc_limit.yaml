@@ -13,3 +13,26 @@
     state_code: VA
   output:
     va_child_dependent_care_deduction_cdcc_limit: 3_000
+
+# Va. Code § 58.1-322.03(3) deducts the amount on which the federal credit is
+# based (Form 2441 line 31), which IRC § 21(c) reduces by § 129 employer
+# benefits. The Virginia limit inherits that reduction.
+- name: Section 129 employer benefits reduce the Virginia limit
+  period: 2024
+  input:
+    capped_count_cdcc_eligible: 2
+    dependent_care_assistance_exclusion: 5_000
+    state_code: VA
+  output:
+    # $6,000 two-child limit less the $5,000 exclusion.
+    va_child_dependent_care_deduction_cdcc_limit: 1_000
+
+- name: Section 129 benefits exceeding the limit floor it at zero
+  period: 2024
+  input:
+    capped_count_cdcc_eligible: 1
+    dependent_care_assistance_exclusion: 5_000
+    state_code: VA
+  output:
+    # max($3,000 - $5,000, 0) = $0.
+    va_child_dependent_care_deduction_cdcc_limit: 0

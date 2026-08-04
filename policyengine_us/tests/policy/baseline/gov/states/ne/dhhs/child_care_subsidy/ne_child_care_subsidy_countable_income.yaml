@@ -1,0 +1,143 @@
+- name: Case 1, adult earnings and SSI both count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        ssi: 5_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # 20,000 employment income + 5,000 SSI
+    ne_child_care_subsidy_countable_income: 25_000
+
+- name: Case 2, earnings of an in-school child age 18 or younger are excluded.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 17
+        is_in_k12_school: true
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Only the parent's 30,000; the in-school child's 6,000 is excluded
+    ne_child_care_subsidy_countable_income: 30_000
+
+- name: Case 3, earnings of an out-of-school child are counted.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+      person2:
+        age: 17
+        is_in_k12_school: false
+        employment_income: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # 30,000 + 6,000
+    ne_child_care_subsidy_countable_income: 36_000
+
+- name: Case 4, capital gains are excluded.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        long_term_capital_gains: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_countable_income: 0
+
+- name: Case 5, unearned sources count.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 4_000
+        child_support_received: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # 4,000 unemployment compensation + 3,600 child support
+    ne_child_care_subsidy_countable_income: 7_600
+
+- name: Case 6, a self-employment loss does not produce negative countable income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -5_000
+        unemployment_compensation: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    # max(-5,000 + 2,000, 0)
+    ne_child_care_subsidy_countable_income: 0
+
+- name: Case 7, active farm operations income counts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        farm_operations_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_countable_income: 18_000

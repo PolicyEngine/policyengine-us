@@ -1,0 +1,215 @@
+- name: Earnings credit applies per worker up to the per-worker cap
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 3_000
+      spouse:
+        age: 33
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 1_600  # 0.2 * (3_000 + min(10_000, 5_000)) = 1_600
+
+- name: Earnings credit toggle off — rate and cap ignored
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: false
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0
+
+- name: Self-employment income counts toward earnings credit (EITC convention)
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        self_employment_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 800  # 0.2 * min(4_000, 5_000)
+
+- name: Earnings exactly at the cap — credit applies to the full cap
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 1_000  # 0.2 * 5_000
+
+- name: Zero earnings — earnings credit is zero
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0
+
+- name: Negative self-employment income — max_ guard floors at zero earnings
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        self_employment_income: -1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0
+
+- name: Both workers above cap — per-person cap applies before aggregation
+  # Regression guard for the sum(min(earnings, cap)) vs min(sum(earnings), cap)
+  # ordering. If the cap were applied to the tax-unit total instead of
+  # per-worker, this case would return 0.2 * 5_000 = 1_000 instead of 2_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 50_000
+      spouse:
+        age: 33
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [filer, spouse]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 2_000  # 0.2 * (5_000 + 5_000)
+
+- name: Earnings one dollar above cap — boundary credits exactly the cap
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 5_001
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 1_000  # 0.2 * min(5_001, 5_000)
+
+- name: Combined wages and self-employment on one worker — sum then cap
+  # earned_income includes employment_income + self_employment_income, so
+  # cap applies to the per-worker total of $3,000 + $3,000 = $6,000,
+  # capped at $5,000.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 3_000
+        self_employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 1_000  # 0.2 * min(6_000, 5_000)
+
+- name: Dependent with earnings — credited under per-tax-unit aggregation
+  # Pins the current behavior: every tax unit member's earnings, capped
+  # individually, feed into the credit. A teen dependent with summer
+  # wages contributes their own capped credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.use_earnings_credit: true
+    gov.contrib.refundable_credit_conversion.earnings_credit.rate: 0.2
+    gov.contrib.refundable_credit_conversion.earnings_credit.cap: 5_000
+    people:
+      filer:
+        age: 35
+        employment_income: 5_000
+      teen:
+        age: 16
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [filer, teen]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 1_400  # 0.2 * (5_000 + 2_000)

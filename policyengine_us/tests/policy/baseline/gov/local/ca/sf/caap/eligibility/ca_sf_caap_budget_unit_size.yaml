@@ -1,0 +1,116 @@
+# Budget unit size = SPM unit size minus the count of ineligible persons
+# (SSI recipients / disqualified immigration status).
+- name: Case 1, two eligible adults.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_sf_caap_budget_unit_size: 2
+
+- name: Case 2, two-person unit with one SSI recipient.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        # Age 70 with no income -> the system computes ssi > 0, so person2 is an
+        # SSI recipient and does not count toward the budget unit.
+        age: 70
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_sf_caap_budget_unit_size: 1
+
+- name: Case 3, single undocumented adult (no eligible persons).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_budget_unit_size: 0
+
+- name: Case 4, single eligible adult (minimum unit size).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_budget_unit_size: 1
+
+- name: Case 5, three eligible adults.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: CITIZEN
+      person2:
+        immigration_status: CITIZEN
+      person3:
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    ca_sf_caap_budget_unit_size: 3
+
+- name: Case 6, ten eligible adults (largest charted grant size).
+  period: 2025-01
+  input:
+    people:
+      person1: {immigration_status: CITIZEN}
+      person2: {immigration_status: CITIZEN}
+      person3: {immigration_status: CITIZEN}
+      person4: {immigration_status: CITIZEN}
+      person5: {immigration_status: CITIZEN}
+      person6: {immigration_status: CITIZEN}
+      person7: {immigration_status: CITIZEN}
+      person8: {immigration_status: CITIZEN}
+      person9: {immigration_status: CITIZEN}
+      person10: {immigration_status: CITIZEN}
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+  output:
+    ca_sf_caap_budget_unit_size: 10

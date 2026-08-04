@@ -12,7 +12,7 @@ class ak_ssp_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "Alaska Adult Public Assistance living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     possible_values = AKSSPLivingArrangement
     default_value = AKSSPLivingArrangement.INDEPENDENT

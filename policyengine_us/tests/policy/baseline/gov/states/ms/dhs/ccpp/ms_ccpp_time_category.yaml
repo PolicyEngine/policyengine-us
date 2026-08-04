@@ -1,0 +1,75 @@
+# ms_ccpp_time_category is a Person enum derived from childcare_hours_per_day:
+#   FULL_TIME  hours/day >= 6
+#   PART_TIME  hours/day < 6
+
+- name: Case 1, full time at 6 hours per day (lower boundary).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 6
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_ccpp_time_category: FULL_TIME
+
+- name: Case 2, full time at 8 hours per day.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_ccpp_time_category: FULL_TIME
+
+- name: Case 3, part time at 5 hours per day.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_ccpp_time_category: PART_TIME
+
+- name: Case 4, part time at 3 hours per day.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_ccpp_time_category: PART_TIME
+
+# Edge case: just below the 6-hour full-time threshold (see Case 1 at exactly 6).
+- name: Case 5, part time at 5.99 hours per day (just below full-time boundary).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_day: 5.99
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    # 5.99 < 6 -> part time (full time begins at exactly 6 hours, see Case 1)
+    ms_ccpp_time_category: PART_TIME

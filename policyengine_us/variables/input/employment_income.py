@@ -13,4 +13,3 @@ class employment_income(Variable):
         "employment_income_behavioral_response",
     ]
     reference = "https://www.law.cornell.edu/uscode/text/26/3401#a"
-    uprating = "calibration.gov.irs.soi.employment_income"

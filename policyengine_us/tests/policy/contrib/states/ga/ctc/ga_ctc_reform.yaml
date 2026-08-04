@@ -1,0 +1,129 @@
+# Georgia refundable CTC contributed reform (gov.contrib.states.ga.ctc).
+# The baseline ga_ctc ($250 per child under 6) is nonrefundable; the reform
+# adds a refundable ga_refundable_ctc paying the unused portion up to a
+# per-child cap. Tests stub ga_income_tax_before_non_refundable_credits to
+# isolate the credit math.
+
+- name: Baseline Georgia refundable credits are zero without the reform
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_refundable_credits: 0
+
+- name: Refundable option pays unused GA CTC to a no-liability family
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # potential 250, no liability so unused 250, cap 250 -> full refund.
+    ga_refundable_ctc: 250
+    ga_refundable_credits: 250
+
+- name: Cap of zero reproduces the nonrefundable baseline
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    gov.contrib.states.ga.ctc.refundable.amount: 0
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_refundable_ctc: 0
+
+- name: Partial cap refunds only up to the cap
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    gov.contrib.states.ga.ctc.refundable.amount: 100
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    ga_refundable_ctc: 100
+
+- name: No refund when liability fully absorbs the GA CTC
+  period: 2026
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ga.ctc.ga_ctc_reform.ga_ctc_reform
+  input:
+    gov.contrib.states.ga.ctc.refundable.in_effect: true
+    people:
+      parent:
+        age: 30
+      child:
+        age: 2
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        ga_income_tax_before_non_refundable_credits: 10_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: GA
+  output:
+    # $10k liability fully absorbs the $250 nonrefundable credit, leaving
+    # nothing unused to refund.
+    ga_refundable_ctc: 0

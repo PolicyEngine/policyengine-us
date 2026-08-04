@@ -1,0 +1,598 @@
+# ms_ccpp_maximum_weekly_rate is Person, MONTH.
+# Per-child weekly max rate by provider type x age band x full/part time x
+# metro/non-metro, with a flat all-ages special-needs rate set. Gated to 0 when
+# the child is not actually in care (childcare_hours_per_week < 1) or is not an
+# eligible child. childcare_hours_per_day drives full/part time (>=6 = FT);
+# childcare_hours_per_week drives the in-care gate.
+# Operative weekly grid (eff 2023-07-01):
+#   Center metro    FT: Infant 152 Toddler 145 Preschool 135 School-age 130
+#   Center metro    PT: Infant 90  Toddler 90  Preschool 75  School-age 80
+#   Center nonmetro FT: Infant 125 Toddler 120 Preschool 120 School-age 110
+#   Center nonmetro PT: Infant 80  Toddler 75  Preschool 75  School-age 74
+#   Home metro    FT: Infant 115 Toddler 120 Preschool 120 School-age 95
+#   Home metro    PT: Infant 68  Toddler 75  Preschool 60  School-age 58
+#   Home nonmetro FT: Infant 94  Toddler 98  Preschool 106 School-age 79
+#   Home nonmetro PT: Infant 60  Toddler 61  Preschool 60  School-age 53
+#   Special-needs center FT 145 / PT 87 (metro = non-metro)
+#   Special-needs home   FT 125 / PT 63 (metro = non-metro)
+
+# === Center, metro (Hinds County), full time — all 4 age bands ===
+- name: Case 1, center metro full time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # infant
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:  # toddler
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person4:  # preschool
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person5:  # school age
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Parent: not an eligible child -> 0
+    # Infant 152, Toddler 145, Preschool 135, School-age 130
+    ms_ccpp_maximum_weekly_rate: [0, 152, 145, 135, 130]
+
+# === Center, metro, part time — all 4 age bands ===
+- name: Case 2, center metro part time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Infant 90, Toddler 90, Preschool 75, School-age 80
+    ms_ccpp_maximum_weekly_rate: [0, 90, 90, 75, 80]
+
+# === Center, non-metro (Bolivar County), full time — all 4 age bands ===
+- name: Case 3, center non-metro full time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Infant 125, Toddler 120, Preschool 120, School-age 110
+    ms_ccpp_maximum_weekly_rate: [0, 125, 120, 120, 110]
+
+# === Center, non-metro, part time — all 4 age bands ===
+- name: Case 4, center non-metro part time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Infant 80, Toddler 75, Preschool 75, School-age 74
+    ms_ccpp_maximum_weekly_rate: [0, 80, 75, 75, 74]
+
+# === Family home, metro, full time — all 4 age bands ===
+- name: Case 5, family home metro full time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Infant 115, Toddler 120, Preschool 120, School-age 95
+    ms_ccpp_maximum_weekly_rate: [0, 115, 120, 120, 95]
+
+# === Family home, metro, part time — all 4 age bands ===
+- name: Case 6, family home metro part time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Infant 68, Toddler 75, Preschool 60, School-age 58
+    ms_ccpp_maximum_weekly_rate: [0, 68, 75, 60, 58]
+
+# === Family home, non-metro, full time — all 4 age bands ===
+- name: Case 7, family home non-metro full time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Infant 94, Toddler 98, Preschool 106, School-age 79
+    ms_ccpp_maximum_weekly_rate: [0, 94, 98, 106, 79]
+
+# === Family home, non-metro, part time — all 4 age bands ===
+- name: Case 8, family home non-metro part time, all age bands.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person3:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Infant 60, Toddler 61, Preschool 60, School-age 53
+    ms_ccpp_maximum_weekly_rate: [0, 60, 61, 60, 53]
+
+# === Special needs — center and home, full and part time ===
+- name: Case 9, special-needs child center full time draws flat special-needs rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # disabled school-age child -> special-needs center rate, not age-band rate
+        age: 8
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Special-needs center FT = 145 (flat all-ages; overrides the school-age 130)
+    ms_ccpp_maximum_weekly_rate: [0, 145]
+
+- name: Case 10, special-needs child center part time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 1
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Special-needs center PT = 87 (metro = non-metro)
+    ms_ccpp_maximum_weekly_rate: [0, 87]
+
+- name: Case 11, special-needs (in-home) child draws home-based special-needs rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # disabled child in family-home/in-home setting
+        age: 3
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Special-needs home FT = 125
+    ms_ccpp_maximum_weekly_rate: [0, 125]
+
+- name: Case 12, special-needs home part time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 0
+        is_disabled: true
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        ms_ccpp_provider_type: FAMILY_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    # Special-needs home PT = 63
+    ms_ccpp_maximum_weekly_rate: [0, 63]
+
+# === In-care gate ===
+- name: Case 13, child not in care draws no rate.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 0  # not in care
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_maximum_weekly_rate: [0, 0]
+
+# === Age-group rate-band transitions (edge cases; see Cases 1-13 above) ===
+# The center metro full-time rate changes at each age-band boundary. Each case
+# places two children straddling one boundary so the rate band on each side is
+# verified directly. Boundaries: infant<1, toddler 1-<3, preschool 3-<5,
+# school-age >=5 (whole-year cuts).
+- name: Case 14, infant-to-toddler rate transition (age 0 vs 1), center metro full time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # infant (age 0)
+        age: 0
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:  # toddler (age 1, lower boundary)
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Infant FT 152 -> Toddler FT 145 at age 1
+    ms_ccpp_maximum_weekly_rate: [0, 152, 145]
+
+- name: Case 15, toddler-to-preschool rate transition (age 2 vs 3), center metro full time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # toddler (age 2)
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:  # preschool (age 3, lower boundary)
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Toddler FT 145 -> Preschool FT 135 at age 3
+    ms_ccpp_maximum_weekly_rate: [0, 145, 135]
+
+- name: Case 16, preschool-to-school-age rate transition (age 4 vs 5), center metro full time.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:  # preschool (age 4)
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+      person3:  # school-age (age 5, lower boundary)
+        age: 5
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        ms_ccpp_provider_type: CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    # Preschool FT 135 -> School-age FT 130 at age 5
+    ms_ccpp_maximum_weekly_rate: [0, 135, 130]

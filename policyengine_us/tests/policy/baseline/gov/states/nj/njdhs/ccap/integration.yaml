@@ -316,10 +316,10 @@
 
     # === Benefit ===
     # Expenses: 22_000 / 12 = 1_833.33/mo
-    # Uncapped: 1_833.33 - 198 = 1_635.33
     # Max reimbursement: 391.32 * 52 / 12 = 1_695.72
-    # Benefit = min(1_635.33, 1_695.72) = 1_635.33
-    nj_ccap: 1_635.33
+    # Capped expenses: min(1_833.33, 1_695.72) = 1_695.72
+    # Benefit = max(1_695.72 - 198, 0) = 1_497.72
+    nj_ccap: 1_497.72
 
 - name: Case 6, enrolled family at 230% FPL continuing eligible.
   period: 2026-01
@@ -377,12 +377,10 @@
     nj_ccap_maximum_weekly_benefit: [0, 0, 391.32]
 
     # === Benefit ===
-    # max annual = 391.32 * 52 = 20_348.64
-    # annual copay = 62_836 * 0.03 = 1_885.08
-    # uncapped = max(22_000 - 1_885.08, 0) = 20_114.92
-    # annual benefit = min(20_114.92, 20_348.64) = 20_114.92
-    # monthly = 20_114.92 / 12 = 1_676.24
-    nj_ccap: 1_676.24
+    # max annual = 391.32 * 52 = 20_348.64; monthly max = 1_695.72
+    # Monthly expenses = 22_000 / 12 = 1_833.33 > monthly max -> capped at 1_695.72
+    # Benefit = max(1_695.72 - 157.09, 0) = 1_538.63
+    nj_ccap: 1_538.63
 
 - name: Case 7, child exactly age 13 is ineligible unless special needs.
   period: 2026-01

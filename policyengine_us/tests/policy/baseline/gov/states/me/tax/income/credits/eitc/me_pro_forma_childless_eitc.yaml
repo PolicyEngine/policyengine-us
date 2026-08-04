@@ -1,0 +1,42 @@
+# 36 M.R.S. § 5219-S(5): the credit for the 18-24 childless cohort is computed
+# as if the individual were eligible for a federal earned income credit. The
+# pro forma equals the federal phase-in/reduction with the age gate removed.
+- name: 2025 childless couple aged 23 and 24 with $10,476 earnings gets full childless max
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 10_476
+      spouse:
+        age: 24
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    # Earnings above the childless phase-in end and AGI below the MFJ phase-out
+    # start yield the 2025 childless maximum of $649.
+    me_pro_forma_childless_eitc: 649
+
+- name: Pro forma is zero for tax units outside the expansion cohort
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_476
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_pro_forma_childless_eitc: 0

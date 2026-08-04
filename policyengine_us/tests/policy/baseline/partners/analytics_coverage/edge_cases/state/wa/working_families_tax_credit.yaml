@@ -1,0 +1,487 @@
+# WA Working Families Tax Credit (RCW 82.08.0206), pinned to the federal
+# EITC rules as in effect 2022-06-09. 2026 maximum amounts (2025 statutory
+# values uprated by gov.irs.uprating, no rounding applied at runtime):
+# 0 kids $342.59, 1 kid $674.96, 2 kids $1,017.55, 3+ kids $1,360.14;
+# $50 minimum. Income ceiling = frozen-2022 EITC maximum AGI; the credit
+# phases from the maximum down to $50 over the last $2,500 (0 kids) /
+# $5,000 (1+ kids) of income below that ceiling.
+- name: wa_wftc_joint_1_child_max_amount (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-kid joint phase-out starts at (20,130 + 6,130 + 3,733/0.1598)
+        # - 5,000 = 44,620; income 20,000 is below it -> full 2026 maximum
+        # 660 x 1.02266 uprating = 674.96.
+        wa_working_families_tax_credit: 674.96
+        adjusted_gross_income: 20_000.0
+- name: wa_wftc_childless_mid_phase_out (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Childless ceiling = 9,160 + 560/0.0765 = 16,480.26; phase-out
+        # starts 2,500 below at 13,980.26; rate = (342.59 - 50)/2,500 =
+        # 0.11704; 342.59 - (15,000 - 13,980.26) x 0.11704 = 223.24.
+        wa_working_families_tax_credit: 223.25
+        adjusted_gross_income: 15_000.0
+- name: wa_wftc_1_child_min_amount_near_ceiling (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 43_490
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-kid single ceiling = 20,130 + 3,733/0.1598 = 43,490.45; income
+        # 43,490 sits $0.45 below it; rate = (674.96 - 50)/5,000 = 0.12499;
+        # 674.96 - 4,999.55 x 0.12499 = 50.06 (the $50 statutory minimum
+        # region, RCW 82.08.0206(3)(c)).
+        wa_working_families_tax_credit: 50.06
+        adjusted_gross_income: 43_490.0
+- name: wa_wftc_1_child_above_income_ceiling (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 43_495
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Income-route zero: 43,495 exceeds the 43,490.45 frozen-EITC
+        # ceiling by $4.55 -> $0 (cliff from the $50 minimum below it).
+        wa_working_families_tax_credit: 0.0
+        adjusted_gross_income: 43_495.0
+- name: wa_wftc_age_18_before_2029_expansion (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Demographic-route zero: frozen 2022 EITC childless age window is
+        # 25-64; the ESSB 6346 age-18 expansion is not in effect until 2029.
+        wa_working_families_tax_credit: 0.0
+        adjusted_gross_income: 15_000.0
+- name: wa_wftc_itin_filer_state_only_path (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        ssn_card_type: NONE
+        has_tin: true
+        employment_income_before_lsr: 20_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id006
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # WA-specific state-only path: an ITIN filer (no SSN, has TIN)
+        # fails the federal EITC identification test (eitc = 0) but
+        # qualifies for the WFTC with 1 TIN-holding child -> full 674.96.
+        wa_working_families_tax_credit: 674.96
+        eitc: 0.0
+        adjusted_gross_income: 20_000.0
+- name: wa_wftc_3_children_max_amount (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child2:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child3:
+        age: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        - child1
+        - child2
+        - child3
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+      mu_child3:
+        members:
+        - child3
+  output:
+    tax_units:
+      tax_unit:
+        # Top child bracket: 3+ kids 2026 maximum = 1,330 x 1.02266
+        # uprating = 1,360.14; income 20,000 is below the joint 3-kid
+        # phase-out start (20,130 + 6,130 + 6,935/0.2106 - 5,000 = 54,190).
+        wa_working_families_tax_credit: 1_360.14
+        adjusted_gross_income: 20_000.0

@@ -37,16 +37,56 @@
 - name: OK STC - 2021 - TANF recipient excluded
   period: 2021
   input:
-    filing_status: HEAD_OF_HOUSEHOLD
-    greater_age_head_spouse: 30
-    tax_unit_dependents: 1
-    tax_unit_size: 2
-    ok_gross_income: 18_000
-    ok_tanf: 2_000
-    state_code: OK
+    people:
+      head:
+        age: 30
+        employment_income: 18_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [head, child]
+        state_code: OK
   output:
-    # TANF recipients excluded (TANF includes sales tax relief)
+    # Actual TANF recipients excluded (TANF includes sales tax relief)
     ok_stc: 0
+
+- name: OK STC - 2025 - modeled-TANF-eligible family still gets credit
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 12_573
+        taxable_interest_income: 132
+      spouse:
+        age: 40
+      child1: {age: 10}
+      child2: {age: 10}
+      child3: {age: 10}
+      child4: {age: 10}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3, child4]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2, child3, child4]
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3, child4]
+        state_code: OK
+  output:
+    # Family is not enrolled in TANF (is_tanf_enrolled defaults to false),
+    # so the credit applies even though the model would impute TANF
+    # eligibility. 6 exemptions * $40 = $240. See policyengine-taxsim#988.
+    ok_stc: 240
 
 # 2025 Sales Tax Credit Tests
 
@@ -146,3 +186,36 @@
     # Exactly at $20,000 limit = eligible
     # 1 exemption * $40 = $40
     ok_stc: 40
+
+- name: OK STC - 2024 - capital losses offset capital gains
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        short_term_capital_gains: -6_155.5
+        long_term_capital_gains: 9_356.39
+        dividend_income: 3_048.11
+        interest_income: 775.49
+        social_security: 12_258.43
+        is_tax_unit_head: true
+      person2:
+        age: 58
+        short_term_capital_gains: -6_155.5
+        long_term_capital_gains: 9_356.39
+        dividend_income: 3_048.11
+        interest_income: 775.49
+        social_security: 12_258.43
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Net capital gains are $6,401.78, putting gross income below the
+    # elderly $50,000 limit and restoring the $40-per-person credit.
+    ok_gross_income: 38_565.84
+    ok_stc: 80

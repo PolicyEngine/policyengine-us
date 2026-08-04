@@ -1,0 +1,17 @@
+description: Contra Costa County accounts for these income sources when determining eligibility for the General Assistance program.
+values:
+  2011-01-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - social_security
+    - unemployment_compensation
+    - veterans_benefits
+
+metadata:
+  unit: list
+  period: year
+  label: Contra Costa County General Assistance income sources
+  reference:
+    - title: Contra Costa County EHSD - General Assistance
+      href: https://ehsd.org/aging-and-adult-services/general-assistance/

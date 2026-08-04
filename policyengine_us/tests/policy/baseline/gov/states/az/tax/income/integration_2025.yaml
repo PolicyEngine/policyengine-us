@@ -252,10 +252,10 @@
   output:
     # Federal AGI = $50,000
     adjusted_gross_income: 50_000
-    # AZ AGI = $50,000 - $2,100 = $47,900
-    az_agi: 47_900
-    # Taxable income = $47,900 - $15,750 = $32,150
-    az_taxable_income: 32_150
+    # AZ AGI = $50,000 - $2,100 (aged) - $6,000 (MCTCP senior, EO 2025-15) = $41,900
+    az_agi: 41_900
+    # Taxable income = $41,900 - $15,750 = $26,150
+    az_taxable_income: 26_150
 
 - name: Joint elderly couple 2025 with aged exemptions
   period: 2025
@@ -277,12 +277,12 @@
   output:
     # Federal AGI = $45,000
     adjusted_gross_income: 45_000
-    # AZ AGI = $45,000 - (2 * $2,100) = $40,800
-    az_agi: 40_800
-    # Taxable income = $40,800 - $31,500 = $9,300
-    az_taxable_income: 9_300
-    # Tax = $9,300 * 2.5% = $232.50
-    az_income_tax_before_non_refundable_credits: 232.5
+    # AZ AGI = $45,000 - (2 × $2,100 aged) - (2 × $6,000 MCTCP senior, EO 2025-15) = $28,800
+    az_agi: 28_800
+    # Taxable income = max(0, $28,800 - $31,500) = $0 (zero-clamped by AZ standard ded)
+    az_taxable_income: 0
+    # Tax on $0 = $0
+    az_income_tax_before_non_refundable_credits: 0
 
 - name: Elderly person at threshold age (65) 2025
   period: 2025
@@ -299,8 +299,9 @@
         members: [person1]
         state_code: AZ
   output:
-    # Age exactly 65 qualifies for aged exemption
-    az_agi: 37_900
+    # Age exactly 65 qualifies for aged exemption + MCTCP senior deduction (EO 2025-15)
+    # $40,000 - $2,100 (aged) - $6,000 (MCTCP) = $31,900
+    az_agi: 31_900
 
 - name: Person just under aged exemption threshold (64)
   period: 2025
@@ -386,8 +387,8 @@
   output:
     # Blind exemption = $1,500
     az_blind_exemption: 1_500
-    # Total exemptions reduce AGI: $45,000 - $2,100 - $1,500 = $41,400
-    az_agi: 41_400
+    # Total exemptions: $45,000 - $2,100 (aged) - $1,500 (blind) - $6,000 (MCTCP senior, EO 2025-15) = $35,400
+    az_agi: 35_400
 
 # =============================================================================
 # SECTION 4: Dependent Tax Credit Tests (with phase-out)
@@ -1259,3 +1260,28 @@
     az_increased_excise_tax_credit: 0
     az_family_tax_credit_eligible: false
     az_family_tax_credit: 0
+
+- name: AZ 2025 senior with capital gains receives MCTCP enhanced senior deduction (issue #8503 / TaxSim #914)
+  # Mirrors the reproduction in the issue:
+  #   additional_senior_deduction -> 6000 (federal computed)
+  #   az_subtractions -> includes the 6000 via MCTCP wiring
+  #   az_income_tax -> 653.75 (was 803.75 pre-fix; delta = $6,000 × 2.5% AZ flat rate)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 75
+        is_tax_unit_head: true
+        long_term_capital_gains: 100_000
+        short_term_capital_gains: -25_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    additional_senior_deduction: 6_000
+    az_subtractions: 31_000  # $25,000 az_long_term_capital_gains_subtraction + $6,000 MCTCP senior
+    az_income_tax: 653.75

@@ -1,0 +1,90 @@
+description: New Mexico provides these full-time monthly reimbursement rates for licensed child care centers under the Child Care Assistance Program.
+# Full-time base rates. Part-time rates are these multiplied by the
+# service-unit fractions in rates/service_unit_fraction.yaml (PT1 0.75,
+# PT2 0.50, PT3 0.25). The 2+Star FOCUS and 3-Star FOCUS rates are identical
+# in both the 2023 flyer and the 2025-11-04 NMAC schedule.
+# The 2025-11-04 amendment to 8.9.3.17 NMAC raised these base rates (e.g. the
+# 5-Star infant rate rose from 1_925 to 2_175). Only full-time base rates are
+# stored here; the NMAC schedule's separate Part-Time and Wrap-Around columns
+# and the accreditation/staff-pay "Enhanced Rate" tables are not modeled (see
+# the PR description).
+metadata:
+  period: month
+  unit: currency-USD
+  label: New Mexico CCAP licensed center monthly rates
+  breakdown:
+    - nm_ccap_focus_level
+    - nm_ccap_age_group
+  reference:
+    - title: ECECD Child Care Assistance Rates, Licensed Center Monthly Rates (Effective August 2023)
+      href: https://www.nmececd.org/wp-content/uploads/2024/05/Cost-Model-Reimbursement-Rate-Flyer-English-and-Spanish-Revised-May-2024.pdf#page=2
+    - title: 8.9.3.17(G) NMAC, LICENSED CENTERS (2 STAR), effective 11/04/2025 (integrated full text)
+      href: https://www.nmececd.org/wp-content/uploads/2025/11/8.9.3_integrated_FULL-TEXT.pdf#page=16
+    - title: 8.9.3.17(J) NMAC, LICENSED CENTERS (2+/3/4/5 Star), effective 11/04/2025 (integrated full text)
+      href: https://www.nmececd.org/wp-content/uploads/2025/11/8.9.3_integrated_FULL-TEXT.pdf#page=17
+
+TWO_STAR:
+  INFANT:
+    2023-08-01: 1_075
+    2025-11-04: 1_200
+  TODDLER:
+    2023-08-01: 775
+    2025-11-04: 875
+  PRESCHOOL:
+    2023-08-01: 700
+    2025-11-04: 735
+  SCHOOL_AGE:
+    2023-08-01: 500
+    2025-11-04: 689
+TWO_PLUS_STAR:
+  INFANT:
+    2023-08-01: 1_150
+    2025-11-04: 1_300
+  TODDLER:
+    2023-08-01: 865
+    2025-11-04: 975
+  PRESCHOOL:
+    2023-08-01: 800
+    2025-11-04: 840
+  SCHOOL_AGE:
+    2023-08-01: 550
+    2025-11-04: 758
+THREE_STAR:
+  INFANT:
+    2023-08-01: 1_150
+    2025-11-04: 1_300
+  TODDLER:
+    2023-08-01: 865
+    2025-11-04: 975
+  PRESCHOOL:
+    2023-08-01: 800
+    2025-11-04: 840
+  SCHOOL_AGE:
+    2023-08-01: 550
+    2025-11-04: 758
+FOUR_STAR:
+  INFANT:
+    2023-08-01: 1_500
+    2025-11-04: 1_650
+  TODDLER:
+    2023-08-01: 1_100
+    2025-11-04: 1_250
+  PRESCHOOL:
+    2023-08-01: 1_000
+    2025-11-04: 1_051
+  SCHOOL_AGE:
+    2023-08-01: 650
+    2025-11-04: 895
+FIVE_STAR:
+  INFANT:
+    2023-08-01: 1_925
+    2025-11-04: 2_175
+  TODDLER:
+    2023-08-01: 1_500
+    2025-11-04: 1_700
+  PRESCHOOL:
+    2023-08-01: 1_125
+    2025-11-04: 1_182
+  SCHOOL_AGE:
+    2023-08-01: 750
+    2025-11-04: 1_033

@@ -1,0 +1,326 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# CO Works / TANF (9 CCR 2503-6), 2026 parameters (eff. 7/1/2025):
+# need standard 2 adults + 1 child = 439/mo (5,268/yr), 1 adult + 2 children
+# = 421/mo (5,052/yr); grant standard 2 adults + 1 child = 649/mo (7,788/yr),
+# 1 adult + 2 children = 620/mo (7,440/yr). New-applicant need test excludes
+# a 90/mo (1,080/yr) flat amount from earnings; the grant calculation
+# excludes 67% of earnings.
+- name: tanf_income_just_below_need_standard (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_347
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Need test (new applicant): 6,347 - 1,080 flat = 5,267 < 5,268 need
+        # standard -> eligible. Grant: 7,788 - 6,347 x (1 - 0.67)
+        # = 7,788 - 2,094.51 = 5,693.49.
+        co_tanf: 5_693.49
+        tanf: 5_693.49
+- name: tanf_income_at_need_standard_ineligible (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_348
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income-route zero pin ($1 above the previous case): countable
+        # 6,348 - 1,080 = 5,268 is NOT < 5,268 need standard -> ineligible.
+        co_tanf: 0.0
+        tanf: 0.0
+- name: tanf_youngest_child_age_17_max_grant (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Age 17 still counts as a child; no income -> full grant standard
+        # for 2 adults + 1 child: 649 x 12 = 7,788.
+        co_tanf: 7_788.0
+        tanf: 7_788.0
+- name: tanf_only_child_age_18_ineligible (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Demographic-route zero pin (boundary pair with the age-17 case):
+        # an 18-year-old is no longer a minor child -> no TANF child in unit.
+        co_tanf: 0.0
+        tanf: 0.0
+- name: tanf_single_parent_2_children_with_earnings (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - child1
+        - child2
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Need test: 6,000 - 1,080 = 4,920 < 5,052 (1 adult + 2 children)
+        # -> eligible. Grant: 7,440 - 6,000 x (1 - 0.67)
+        # = 7,440 - 1,980 = 5,460 (pins the 1-caretaker grant table row).
+        co_tanf: 5_460.0
+        tanf: 5_460.0

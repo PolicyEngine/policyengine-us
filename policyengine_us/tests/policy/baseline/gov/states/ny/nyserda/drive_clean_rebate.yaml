@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 30_000
     ny_drive_clean_vehicle_electric_range: 5
   output:
@@ -11,6 +12,7 @@
   period: 2022
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 30_000
     ny_drive_clean_vehicle_electric_range: 40
   output:
@@ -20,6 +22,7 @@
   period: 2022
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 30_000
     ny_drive_clean_vehicle_electric_range: 200
   output:
@@ -29,6 +32,7 @@
   period: 2022
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 50_000
     ny_drive_clean_vehicle_electric_range: 40
   output:
@@ -38,6 +42,7 @@
   period: 2022
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 50_000
     ny_drive_clean_vehicle_electric_range: 200
   output:
@@ -47,6 +52,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 42_000
     ny_drive_clean_vehicle_electric_range: 10
   output:
@@ -56,6 +62,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 42_000
     ny_drive_clean_vehicle_electric_range: 20
   output:
@@ -65,6 +72,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 42_000
     ny_drive_clean_vehicle_electric_range: 40
   output:
@@ -74,6 +82,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 42_000
     ny_drive_clean_vehicle_electric_range: 120
   output:
@@ -83,6 +92,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 70_000
     ny_drive_clean_vehicle_electric_range: 20
   output:
@@ -92,6 +102,7 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 70_000
     ny_drive_clean_vehicle_electric_range: 40
   output:
@@ -101,7 +112,18 @@
   period: 2019
   input:
     state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
     ny_drive_clean_vehicle_cost: 70_000
     ny_drive_clean_vehicle_electric_range: 200
   output:
     ny_drive_clean_rebate: 500
+
+- name: No qualifying purchase
+  period: 2022
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: false
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    ny_drive_clean_rebate: 0

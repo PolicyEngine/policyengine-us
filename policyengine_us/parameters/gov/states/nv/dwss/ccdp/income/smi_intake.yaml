@@ -1,0 +1,17 @@
+description: Nevada limits new applicants to income at or below this share of state median income under the Child Care and Development Program.
+values:
+  2024-10-01: 0.41
+
+metadata:
+  unit: /1
+  period: year
+  label: Nevada CCDP intake income limit share of state median income
+  reference:
+    - title: Nevada DWSS Policy Transmittal CC PT 06-25 (Oct 2, 2025) — Annual Income Changes
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/CC_PT_06-25_ANNUAL_INCOME_CHANGES_10.02.2025.pdf#page=1
+    - title: Nevada CCDF State Plan FFY 2025-2027, Section 2.5.5 — Eligibility income thresholds (initial and graduated)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=35
+
+# The flat $0/$90/$150 copay and two-tier 41%/49% SMI eligibility took effect
+# Oct 1, 2024 (State Plan Section 2.4.v); CC PT 06-25 is the Oct 1, 2025 annual
+# income-chart refresh that restates the same percentages and bands.

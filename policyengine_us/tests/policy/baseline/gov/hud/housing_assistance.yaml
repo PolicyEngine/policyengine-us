@@ -13,3 +13,12 @@
     hud_hap: 1
   output:
     housing_assistance: 0
+
+- name: Zero if eligible but not taking up housing assistance.
+  period: 2022
+  input:
+    is_eligible_for_housing_assistance: true
+    takes_up_housing_assistance_if_eligible: false
+    hud_hap: 1
+  output:
+    housing_assistance: 0

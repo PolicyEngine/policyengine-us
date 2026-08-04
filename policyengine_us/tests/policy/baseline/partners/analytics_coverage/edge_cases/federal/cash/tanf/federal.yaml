@@ -1,0 +1,791 @@
+# TANF partner edge cases (federal wrapper; all cases exercise tx_tanf, matching
+# MyFriendBen TX traffic). All households: Dallas County, TX.
+# 2026 TX TANF parameters (2025-10-01 entries, constant through CY2026):
+#   Payment standard: with-2nd-parent size 3 = 418/mo; w/o-2nd-parent size 2 = 331,
+#     size 3 = 382; non-caretaker size 1 = 130.
+#   Budgetary needs (1994-03-01, frozen): with-2nd size 3 = 824; w/o-2nd size 2 = 650,
+#     size 3 = 751; non-caretaker size 1 = 256. Recognizable needs = 25% of budgetary.
+#   Deductions/disregards: $120/mo work expense; applicant disregard 33% of net earnings;
+#     continuing-recipient disregard 90% (cap $1,400/mo); child support deduction $75/mo.
+#   Resources: $1,000 countable limit; $4,650 vehicle exemption.
+- name: tanf_two_parent_zero_income_max_grant_child_17 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        # Age 17 < minor-child threshold 18: eligible-side age boundary.
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Max grant, caretaker-with-second-parent size 3: 418/mo x 12 = 5_016.
+        tx_tanf: 5_016.0
+        tanf: 5_016.0
+- name: tanf_two_parent_partial_grant_income_just_below_cliff (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_087
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Mid-phase-out partial grant. Monthly earnings 5_087 / 12 = 423.92;
+        # minus $120 work expense = 303.92; applicant countable = 303.92 x (1 - 0.33)
+        # = 203.62 < recognizable needs 206 (0.25 x 824) -> eligible.
+        # Grant = (418 - 203.62) x 12 = 2_572.51.
+        tx_tanf: 2_572.51
+        tanf: 2_572.51
+- name: tanf_two_parent_income_just_above_cliff (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_136
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Income-cliff ineligible-side pin. Monthly earnings 5_136 / 12 = 428;
+        # applicant countable = (428 - 120) x 0.67 = 206.36 >= recognizable needs 206
+        # -> fails recognizable needs test (annual cliff is at ~5_129.55).
+        tx_tanf: 0.0
+        tanf: 0.0
+- name: tanf_single_parent_two_children_zero_income_max_grant (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1, child2]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    spm_units:
+      spm_unit:
+        # Max grant, caretaker-WITHOUT-second-parent size 3: 382/mo x 12 = 4_584.
+        # Pins the single-parent payment-standard column.
+        tx_tanf: 4_584.0
+        tanf: 4_584.0
+- name: tanf_single_parent_child_support_deduction (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        child_support_received: 1_800
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Unearned income path. Child support 1_800 / 12 = 150/mo; minus $75/mo
+        # deduction -> countable unearned 75 < recognizable needs 162.50 (0.25 x 650).
+        # Grant = (331 - 75) x 12 = 3_072 (w/o-second-parent size 2 standard).
+        tx_tanf: 3_072.0
+        tanf: 3_072.0
+- name: tanf_child_age_18_not_student_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        # Age 18 >= minor-child threshold 18 and not a full-time student:
+        # demographic ineligible-side boundary pin.
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # No age-eligible child in the unit -> ineligible.
+        tx_tanf: 0.0
+        tanf: 0.0
+- name: tanf_child_age_18_full_time_student_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        # Age 18 full-time student < student-dependent threshold 19: eligible.
+        # Companion of the age-18 non-student zero case.
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Max grant, w/o-second-parent size 2: 331/mo x 12 = 3_972.
+        tx_tanf: 3_972.0
+        tanf: 3_972.0
+- name: tanf_continuing_recipient_90_percent_disregard (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_840
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+        is_tanf_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Continuing-recipient path (recognizable-needs test only, 90% disregard).
+        # Monthly earnings 15_840 / 12 = 1_320; minus $120 work expense = 1_200;
+        # disregard = min(0.9 x 1_200, 1_400) = 1_080; countable = 120 <
+        # recognizable needs 162.50 -> eligible. Grant = (331 - 120) x 12 = 2_532.
+        # An APPLICANT with identical earnings would be ineligible
+        # (countable 1_200 x 0.67 = 804 > 162.50), pinning the enrolled-path split.
+        tx_tanf: 2_532.0
+        tanf: 2_532.0
+- name: tanf_resources_at_1000_limit_vehicle_exemption (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        household_vehicles_value: 5_150
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Inclusive resource boundary: countable resources = 500 cash +
+        # max(5_150 vehicle - 4_650 exemption, 0) = 1_000 <= 1_000 limit -> still
+        # eligible; zero income -> max grant 418/mo x 12 = 5_016.
+        tx_tanf: 5_016.0
+        tanf: 5_016.0
+- name: tanf_resources_above_1000_limit_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+        spm_unit_cash_assets: 1_100
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Resource-cliff ineligible-side pin: 1_100 cash > 1_000 limit -> 0.
+        tx_tanf: 0.0
+        tanf: 0.0
+- name: tanf_undocumented_parent_child_only_non_caretaker (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        # Undocumented parent is excluded from the certified group; the citizen
+        # child remains eligible -> child-only (NON_CARETAKER) case.
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # NON_CARETAKER payment standard, certified-group size 1 (child only):
+        # 130/mo x 12 = 1_560.
+        tx_tanf: 1_560.0
+        tanf: 1_560.0
+- name: tanf_ssi_child_excluded_no_eligible_child (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        # Disabled child receiving SSI is excluded from the certified group;
+        # with no other child the unit is categorically ineligible.
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    people:
+      child1:
+        # Child receives full SSI federal benefit rate (no countable income):
+        # 994/mo x 12 = 11_928 in 2026.
+        ssi: 11_928.0
+    spm_units:
+      spm_unit:
+        # Categorical ineligible-side pin: SSI child excluded -> no eligible child.
+        tx_tanf: 0.0
+        tanf: 0.0
+- name: tanf_two_parent_max_grant_2025_grant_step (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # 2025 blends two grant levels across the Oct 1 step (405 -> 418):
+        # 9 x 405 + 3 x 418 = 4_899. Protects the annual grant-step blending.
+        tx_tanf: 4_899.0
+        tanf: 4_899.0
+- name: tanf_negative_self_employment_income_max_grant_cap (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        # Robustness: negative self-employment income must not inflate the
+        # benefit above the family's maximum grant.
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        self_employment_income_before_lsr: -2_000
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Countable earned income floors at 0, so the grant equals (not exceeds)
+        # the size-3 with-second-parent maximum: 418/mo x 12 = 5_016.
+        tx_tanf: 5_016.0
+        tanf: 5_016.0

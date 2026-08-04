@@ -16,7 +16,7 @@
   output:
     ga_income_tax_before_non_refundable_credits: 0
 
-- name: Joint filer 
+- name: Joint filer
   period: 2022
   input:
     ga_taxable_income: 1_100
@@ -25,7 +25,7 @@
   output:
     ga_income_tax_before_non_refundable_credits: 12
 
-- name: Separate filer 
+- name: Separate filer
   period: 2022
   input:
     ga_taxable_income: 600
@@ -42,6 +42,71 @@
     state_code: GA
   output:
     ga_income_tax_before_non_refundable_credits: 12
+
+- name: Surviving spouse 2023 progressive bracket structure
+  # Locks the pre-2024 SURVIVING_SPOUSE branch — flat_applies is false in 2023.
+  period: 2023
+  input:
+    ga_taxable_income: 1_100
+    filing_status: SURVIVING_SPOUSE
+    state_code: GA
+  output:
+    ga_income_tax_before_non_refundable_credits: 12
+
+- name: Single filer 2023 still uses progressive bracket structure
+  # 2023 is the last year with flat_applies false. Locks the formula
+  # branch boundary: 2023 -> progressive, 2024 -> flat.
+  # 750*0.01 + 1_500*0.02 + 750*0.03 = 7.5 + 30 + 22.5 = 60
+  period: 2023
+  input:
+    ga_taxable_income: 3_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    ga_income_tax_before_non_refundable_credits: 60
+
+- name: Single filer 2024 flat tax (5.39% rate)
+  period: 2024
+  input:
+    ga_taxable_income: 50_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    # 50,000 * 0.0539 = 2,695
+    ga_income_tax_before_non_refundable_credits: 2_695
+
+- name: Head of household filer 2024 flat tax (5.39% rate)
+  # Refactor regression case — confirms HoH gets flat treatment in 2024.
+  period: 2024
+  input:
+    ga_taxable_income: 60_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: GA
+  output:
+    # 60,000 * 0.0539 = 3,234
+    ga_income_tax_before_non_refundable_credits: 3_234
+
+- name: Separate filer 2024 flat tax (5.39% rate)
+  # Refactor regression case — confirms MFS gets flat treatment in 2024.
+  period: 2024
+  input:
+    ga_taxable_income: 40_000
+    filing_status: SEPARATE
+    state_code: GA
+  output:
+    # 40,000 * 0.0539 = 2,156
+    ga_income_tax_before_non_refundable_credits: 2_156
+
+- name: Surviving spouse 2024 flat tax (5.39% rate)
+  # Refactor regression case — confirms SURVIVING_SPOUSE gets flat treatment in 2024.
+  period: 2024
+  input:
+    ga_taxable_income: 80_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: GA
+  output:
+    # 80,000 * 0.0539 = 4,312
+    ga_income_tax_before_non_refundable_credits: 4_312
 
 - name: Single filer 2025 flat tax (5.19% rate)
   period: 2025
@@ -63,12 +128,63 @@
     # 100,000 * 0.0519 = 5,190
     ga_income_tax_before_non_refundable_credits: 5_190
 
-- name: Single filer 2024 flat tax (5.39% rate)
-  period: 2024
+- name: Head of household filer 2025 flat tax (5.19% rate)
+  period: 2025
+  input:
+    ga_taxable_income: 60_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: GA
+  output:
+    # 60,000 * 0.0519 = 3,114
+    ga_income_tax_before_non_refundable_credits: 3_114
+
+- name: GA HB463 - single filer 2026 flat tax at 4.99%
+  period: 2026
   input:
     ga_taxable_income: 50_000
     filing_status: SINGLE
     state_code: GA
   output:
-    # 50,000 * 0.0539 = 2,695
-    ga_income_tax_before_non_refundable_credits: 2_695
+    # HB463 Section 2-1: flat rate drops to 4.99% in TY 2026.
+    # 50,000 * 0.0499 = 2,495
+    ga_income_tax_before_non_refundable_credits: 2_495
+
+- name: GA HB463 - joint filer 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 100_000
+    filing_status: JOINT
+    state_code: GA
+  output:
+    # 100,000 * 0.0499 = 4,990
+    ga_income_tax_before_non_refundable_credits: 4_990
+
+- name: GA HB463 - head of household 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 75_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: GA
+  output:
+    # 75,000 * 0.0499 = 3,742.5
+    ga_income_tax_before_non_refundable_credits: 3_742.5
+
+- name: GA HB463 - separate filer 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 40_000
+    filing_status: SEPARATE
+    state_code: GA
+  output:
+    # 40,000 * 0.0499 = 1,996
+    ga_income_tax_before_non_refundable_credits: 1_996
+
+- name: GA HB463 - surviving spouse 2026 flat tax at 4.99%
+  period: 2026
+  input:
+    ga_taxable_income: 90_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: GA
+  output:
+    # 90,000 * 0.0499 = 4,491
+    ga_income_tax_before_non_refundable_credits: 4_491

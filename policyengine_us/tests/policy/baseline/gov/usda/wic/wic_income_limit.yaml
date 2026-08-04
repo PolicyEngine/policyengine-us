@@ -42,3 +42,16 @@
         state_code: GU
   output:
     wic_income_limit: 39_128
+
+- name: Twin pregnancy increases the WIC income unit by two.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        current_pregnancies: 2
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    wic_income_limit: 49_303

@@ -7,5 +7,6 @@ class household_vehicles_equity(Variable):
     label = "Vehicle equity"
     documentation = "Net equity in household vehicles after secured vehicle debt."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

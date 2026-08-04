@@ -15,7 +15,10 @@ class mi_homestead_property_tax_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income.credits.homestead_property_tax
-        # Line 38 & 39 & 41
-        return (
+        property_value_eligible = (
             add(tax_unit, period, ["assessed_property_value"]) <= p.property_value_limit
         )
+        household_resources_eligible = (
+            tax_unit("mi_household_resources", period) <= p.household_resources_limit
+        )
+        return property_value_eligible & household_resources_eligible

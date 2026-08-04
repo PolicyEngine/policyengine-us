@@ -8,3 +8,4 @@ class tax_exempt_ira_distributions(Variable):
     unit = USD
     documentation = "Tax-exempt distributions from individual retirement accounts (qualifying Roth distributions)."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.tax_exempt_pension_income"

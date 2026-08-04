@@ -1,0 +1,64 @@
+description: Maryland provides these weekly full-time reimbursement rates for licensed child care centers under the Child Care Scholarship program.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Maryland CCS licensed center weekly UNIT_3 rates
+  breakdown:
+    - md_ccs_region
+    - md_ccs_age_group
+  reference:
+    - title: Maryland CCS Scholarship Rates as of 3/1/26
+      href: https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
+    - title: Maryland CCS Scholarship Rates as of 5/23/22 (Wayback Machine snapshot)
+      href: https://web.archive.org/web/20220616202551/https://earlychildhood.marylandpublicschools.org/families/child-care-scholarship-program/child-care-scholarship-rates
+
+REGION_U:
+  REGULAR:
+    2022-05-23: 205
+    2026-03-01: 244
+  INFANT:
+    2022-05-23: 296
+    2026-03-01: 325
+REGION_V:
+  REGULAR:
+    2022-05-23: 175
+    2026-03-01: 200
+  INFANT:
+    2022-05-23: 242
+    2026-03-01: 264
+REGION_W:
+  REGULAR:
+    2022-05-23: 262
+    2026-03-01: 305
+  INFANT:
+    2022-05-23: 370
+    2026-03-01: 420
+REGION_X:
+  REGULAR:
+    2022-05-23: 381
+    2026-03-01: 424
+  INFANT:
+    2022-05-23: 481
+    2026-03-01: 554
+REGION_Y:
+  REGULAR:
+    2022-05-23: 278
+    2026-03-01: 312
+  INFANT:
+    2022-05-23: 378
+    2026-03-01: 427
+REGION_Z:
+  REGULAR:
+    2022-05-23: 183
+    2026-03-01: 207
+  INFANT:
+    2022-05-23: 262
+    2026-03-01: 297
+REGION_BC:
+  REGULAR:
+    2022-05-23: 250
+    2026-03-01: 282
+  INFANT:
+    2022-05-23: 303
+    2026-03-01: 376

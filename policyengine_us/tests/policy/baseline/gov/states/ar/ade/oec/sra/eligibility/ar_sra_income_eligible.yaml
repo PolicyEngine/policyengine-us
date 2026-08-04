@@ -1,0 +1,134 @@
+# Period 2026 resolves to the 2025-10-01 (FFY 2026) hhs_smi entry.
+# AR base amount = $90,280
+# Household-size adjustment for 2 persons: 0.52 + 0.16 = 0.68
+# SMI(2) annual = 90,280 * 0.68 = $61,390.40
+# 85% income limit annual = $61,390.40 * 0.85 = $52,181.84
+
+- name: Case 1, family income at 84.9 percent SMI is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 61,390.40 * 0.849 = $52,120.45 (below 85% SMI)
+        employment_income: 52_120
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true
+
+- name: Case 2, family income just at 85 percent SMI is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 61,390.40 * 0.85 = $52,181.84; use the whole dollar just below to
+        # avoid float32 round-trip precision loss during MONTH/YEAR conversion.
+        employment_income: 52_181
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true
+
+- name: Case 3, family income at 85.1 percent SMI is not income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 61,390.40 * 0.851 = $52,243.23 (above 85% SMI)
+        employment_income: 52_243
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: false
+
+- name: Case 4, family with zero income is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true
+
+- name: Case 5, family income one dollar below the 85 percent SMI cap is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 61,390.40 * 0.85 = $52,181.84; just-below boundary at $52,180.
+        employment_income: 52_180
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_income_eligible: true

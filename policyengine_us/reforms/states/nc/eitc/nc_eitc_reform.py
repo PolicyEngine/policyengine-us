@@ -36,14 +36,15 @@ def create_nc_eitc() -> Reform:
         defined_for = StateCode.NC
 
         def formula(tax_unit, period, parameters):
-            tax_before_credits = add(
-                tax_unit, period, ["nc_income_tax_before_credits", "nc_use_tax"]
-            )
+            # Mirror baseline nc_income_tax, which uses
+            # nc_income_tax_before_credits and does NOT add nc_use_tax. This
+            # reform's only change is subtracting the new refundable EITC;
+            # adding use tax here would raise tax for every filer (even those
+            # with no EITC). See #8775.
+            tax_before_credits = tax_unit("nc_income_tax_before_credits", period)
             non_refundable_credits = tax_unit("nc_non_refundable_credits", period)
             tax_before_refundable = max_(0, tax_before_credits - non_refundable_credits)
-
             refundable_credits = tax_unit("nc_refundable_credits", period)
-
             return tax_before_refundable - refundable_credits
 
     class reform(Reform):

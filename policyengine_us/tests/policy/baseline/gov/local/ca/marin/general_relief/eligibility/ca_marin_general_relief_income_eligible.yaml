@@ -1,0 +1,133 @@
+# Income eligibility: monthly net income at or below the max grant qualifies.
+# A single, unmarried unit has a max grant of $387/month.
+# Net income is YEAR-defined; the formula divides the annual value by 12.
+- name: Monthly net income below the grant is eligible
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_net_income: 1_200  # 100/month < 387
+  output:
+    ca_marin_general_relief_income_eligible: true
+
+- name: Monthly net income at the grant boundary is eligible
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_net_income: 4_644  # 387/month == 387 (inclusive)
+  output:
+    ca_marin_general_relief_income_eligible: true
+
+- name: Monthly net income above the grant is ineligible
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_net_income: 4_656  # 388/month > 387
+  output:
+    ca_marin_general_relief_income_eligible: false
+
+# A married couple where both members are immigration-eligible has a max grant
+# of $636/month; income at or below that qualifies (inclusive boundary).
+- name: Couple monthly net income below the couple grant is eligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_net_income: 7_620  # 635/month < 636
+  output:
+    ca_marin_general_relief_income_eligible: true
+
+- name: Couple monthly net income at the couple grant boundary is eligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_net_income: 7_632  # 636/month == 636 (inclusive)
+  output:
+    ca_marin_general_relief_income_eligible: true
+
+- name: Couple monthly net income above the couple grant is ineligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    families:
+      family:
+        members: [person1, person2]
+        is_married: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_net_income: 7_644  # 637/month > 636
+  output:
+    ca_marin_general_relief_income_eligible: false

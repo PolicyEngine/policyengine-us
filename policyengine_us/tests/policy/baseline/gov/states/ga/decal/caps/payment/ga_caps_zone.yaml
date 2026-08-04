@@ -1,0 +1,120 @@
+# GA CAPS zone assignment
+# Zone 1: 14 counties (Fulton, Cobb, DeKalb, etc.)
+# Zone 2: 46 counties (Chatham, Bibb, etc.)
+# Zone 3: ~99 remaining Georgia counties (Appling, etc.) — residual default
+
+- name: Case 1, Fulton County is Zone 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: FULTON_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_1
+
+- name: Case 2, Cobb County is Zone 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: COBB_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_1
+
+- name: Case 3, Chatham County is Zone 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: CHATHAM_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_2
+
+- name: Case 4, Bibb County is Zone 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: BIBB_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_2
+
+- name: Case 5, Appling County is Zone 3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: APPLING_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_3
+
+- name: Case 6, Camden County is Zone 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: CAMDEN_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_1
+
+- name: Case 7, Tift County is Zone 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: TIFT_COUNTY_GA
+  output:
+    ga_caps_zone: ZONE_2
+
+# The three zone lists partition all 154 GA counties in PolicyEngine's County
+# enum, so the default=ZONE_3 arm is only reached by an unknown/unmapped county.
+# This is the residual path the enum-absent counties would take — Zone 2 (Bryan,
+# Dawson) and Zone 3 (Ben Hill, Johnson, Toombs) — and Zone 3 is the safe floor.
+- name: Case 8, unmapped county falls to the Zone 3 default.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        county_str: UNKNOWN
+  output:
+    ga_caps_zone: ZONE_3

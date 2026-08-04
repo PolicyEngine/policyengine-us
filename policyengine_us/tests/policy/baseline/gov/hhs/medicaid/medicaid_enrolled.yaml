@@ -4,6 +4,7 @@
 
 - name: Case 1, undocumented adult in CA 2026 existing enrollee retains coverage.
   period: 2026
+  absolute_error_margin: 0.1
   input:
     people:
       person1:
@@ -28,7 +29,8 @@
     is_ca_medicaid_immigration_status_eligible: [true]
     is_medicaid_eligible: [true]
     medicaid_enrolled: [true]
-    medicaid: [6_439.11]
+    # Computed CA per-capita cost under the SLCSP-index allocation (not injected).
+    medicaid: [9_236.48]
 
 - name: Case 2, undocumented adult in CA 2024 enrolled and eligible.
   period: 2024

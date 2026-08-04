@@ -10,12 +10,11 @@ At the START of each session, ask the user:
 1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
 2. "No, skip" - Proceed without loading skills
 
-**If Option 1 selected, load ALL of these:**
-- /policyengine-code-style
-- /policyengine-parameter-patterns
-- /policyengine-period-patterns
-- /policyengine-testing-patterns
-- /policyengine-variable-patterns
+**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
+- /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
+- /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
+
+If these skills are unavailable (plugin not installed), skip loading and proceed.
 
 ---
 
@@ -44,15 +43,23 @@ policyengine-core test path/to/tests -c policyengine_us [-v]
 # Run microsimulation test
 pytest policyengine_us/tests/microsimulation/test_microsim.py
 
-# Run YAML-specific tests
-make test-yaml-structural
-make test-yaml-no-structural
+# Run YAML-specific tests (the suites are sharded; there is no single
+# `test-yaml-no-structural` target — see the Makefile for all shards)
+make test-yaml-structural            # contrib reforms, non-states
+make test-yaml-no-structural-states  # baseline state YAML tests
+make test-yaml-no-structural-other-irs   # e.g. IRS shard; other shards: household, ssa-usda, rest-a, rest-b, hhs, ...
 
 # Generate documentation
 make documentation
 ```
 
 ## GitHub Workflow
+- **Default branch is `main`, NOT `master`.** Base new work on `main`:
+  `git fetch upstream main && git checkout -b <branch> upstream/main`. A personal
+  fork's `origin/master` is often stale or absent — `git checkout master` can
+  silently land you on an ancient commit (e.g. a 1.44.x-era tree missing recent
+  contribs), so always branch from `upstream/main` (or `origin/main` when the fork
+  is current). Note the upstream remote uses `main` and has no `master` ref.
 - Checkout a PR: `gh pr checkout [PR-NUMBER]`
 - View PR list: `gh pr list`
 - View PR details: `gh pr view [PR-NUMBER]`
@@ -67,11 +74,24 @@ echo "Description of change." > changelog.d/<branch-name>.<type>.md
 ```
 Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (minor), `breaking` (major)
 
+The fragment must be a top-level file in `changelog.d/`. Do not create type subdirectories.
+
+Correct:
+```text
+changelog.d/medicaid-ce-exclusions.added.md
+```
+
+Incorrect:
+```text
+changelog.d/added/medicaid-ce-exclusions.md
+changelog.d/medicaid-ce-exclusions.md
+```
+
 **DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
 
 ## Project Requirements
-- Python >= 3.11, < 3.15
-- Follow GitHub Flow with PRs targeting master branch
+- Python >= 3.9, < 3.15 (`requires-python` in pyproject.toml; CI smoke-imports the package on 3.9–3.14)
+- Follow GitHub Flow with PRs targeting the `main` branch (the default branch is `main`, **not** `master`)
 - Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
 
@@ -90,7 +110,7 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
 - `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata
 - Served via the `/us/metadata` API and consumed by the model coverage page
 - **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
-- **When extending year coverage**: update `verified_years` (e.g., `"2022-2026"`) after verifying parameters and tests cover the new year
+- **When extending year coverage**: update the entry's year field — most entries use `verified_start_year`, a few use a `verified_years` range (e.g., `"2022-2026"`) — after verifying parameters and tests cover the new year
 - **When adding state implementations**: add to `state_implementations` list under the parent federal program
 - **Status values**: `complete`, `partial`, `in_progress`
 - Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local
@@ -115,6 +135,17 @@ Types: `added` (minor bump), `changed` (patch), `fixed` (patch), `removed` (mino
   - Grep for all callers: `grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`
   - Code that lives near dead code is not necessarily dead — verify each piece independently
   - Existing tests may bypass the code being removed (e.g. providing a variable as direct input rather than testing its derivation) — passing tests ≠ safe to delete
+
+- **PARTNER API CONTRACT TESTS ARE NOT ORDINARY SNAPSHOTS**
+  - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
+  - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
+  - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
+  - Before editing files in this folder, flag the partner-facing risk to the user and use the `AskUserQuestion` tool to ask these three questions in a single call:
+    1. Are you sure you want to edit this test file?
+    2. Have you notified a team member about this change?
+    3. Have you notified the API partner about this change?
+  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent runs the three-question gate with the user before any edit is made.
+  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations

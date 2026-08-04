@@ -1,0 +1,7 @@
+- name: SSTB self-employment income is included in Iowa gross income
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+    state_code: IA
+  output:
+    ia_gross_income: 100_000

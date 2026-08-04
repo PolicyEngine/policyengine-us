@@ -1,0 +1,558 @@
+# Integration tests for Maryland Public Assistance to Adults (PAA).
+# Verifies the prospective SSI cascade method: PAA equals combined need minus
+# SSI countable income and imputed federal SSI. Period 2026-01: federal
+# individual FBR = $994, couple FBR = $1,491, medical-facility rate = $30,
+# PNA = $106.
+
+- name: Case 1, single SSI in CARE_HOME_LEVEL_B — federal SSI exceeds combined need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    is_ssi_eligible: [true]
+    ssi: [994]
+    md_paa_eligible: [true]
+    # combined_need = 875 + 106 = 981. imputed SSI = 994.
+    # PAA = max(981 - 994, 0) = 0.
+    md_paa_provider_rate: [875]
+    md_paa_personal_needs_allowance: [106]
+    md_paa_total_cost_of_care: [981]
+    md_paa: [0]
+
+- name: Case 2, SSI recipient with $200/mo earned income in CARE_HOME_LEVEL_C.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 2_400  # $200/mo
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Federal countable = max(0, 200 - 65 - 20) * 0.5 = 57.50.
+    # SSI = 994 - 57.50 = 936.50.
+    is_ssi_eligible: [true]
+    ssi: [936.50]
+    md_paa_eligible: [true]
+    # combined_need = 1173 + 106 = 1279. imputed SSI = 936.50.
+    # countable = 57.50. PAA = 1279 - 936.50 - 57.50 = 285.
+    md_paa_total_cost_of_care: [1_279]
+    md_paa: [285]
+
+- name: Case 3, SSI recipient with $400/mo OASI in ASSISTED_LIVING.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        social_security: 4_800  # $400/mo OASI
+        employment_income: 0
+        md_paa_living_arrangement: ASSISTED_LIVING
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Federal countable unearned = 400 - 20 = 380. SSI = 994 - 380 = 614.
+    is_ssi_eligible: [true]
+    ssi: [614]
+    md_paa_eligible: [true]
+    # combined = 894 + 106 = 1000. imputed SSI = 614.
+    # countable = 380. PAA = 1000 - 614 - 380 = 6.
+    md_paa_total_cost_of_care: [1_000]
+    md_paa: [6]
+
+- name: Case 4, REHAB_RESIDENCE recipient — state fills gap from $30 medical SSI to PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        # MDH rehab is a Title XIX medical treatment facility for SSI;
+        # federal SSI is capped at $30/mo. md_paa_eligible requires both.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    is_ssi_eligible: [true]
+    # Federal SSI = $30/mo medical-facility rate.
+    ssi: [30]
+    md_paa_eligible: [true]
+    # combined = 0 + 106 = 106. imputed SSI = $30.
+    # countable = 0. PAA = 76.
+    md_paa_provider_rate: [0]
+    md_paa_personal_needs_allowance: [106]
+    md_paa: [76]
+
+- name: Case 5, married couple both SSI-eligible in CARE_HOME_LEVEL_A.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Imputed federal SSI uses couple_FBR/2 = $1,491 / 2 = $745.50 per
+    # spouse. Combined need per person = 776 + 106 = 882, so Maryland fills
+    # the $136.50 gap for each spouse.
+    ssi_amount_if_eligible: [745.50, 745.50]
+    ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
+    md_paa_eligible: [true, true]
+    md_paa: [136.50, 136.50]
+
+- name: Case 6, person not in PAA facility (NONE) is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    is_ssi_eligible: [true]
+    ssi: [994]
+    md_paa_eligible: [false]
+    md_paa: [0]
+
+- name: Case 7, applicant with only earned income (no SSA receipt) is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        employment_income: 36_000  # $3,000/mo
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # No federal cash benefit (SSI / SSDI / OASI) → PAA-ineligible per
+    # COMAR 07.03.07.03(A)(2).
+    md_paa_eligible: [false]
+    md_paa: [0]
+
+- name: Case 8, SSDI recipient with $1,000/mo SSDI in CARE_HOME_LEVEL_C.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi: 0  # Force off; SSDI alone gates eligibility.
+        ssi_countable_resources: 500
+        social_security_disability: 12_000  # $1,000/mo
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: [true]
+    # combined = 1173 + 106 = 1279. countable = 1000 - 20 = 980.
+    # Imputed SSI = max(994 - 980, 0) = 14. PAA = 1279 - 980 - 14 = 285.
+    md_paa: [285]
+
+- name: Case 9, asymmetric married couple — only one spouse PAA-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 800  # gates eligibility
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+      person2:
+        age: 60
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        ssi_countable_resources: 0
+        employment_income: 0
+        md_paa_living_arrangement: NONE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # person2 not in PAA facility → ineligible. person1 eligible via SSI.
+    # person1 cascade: combined = 1173 + 106 = 1279. ssi_amount_if_eligible
+    # for an aged spouse paired with a non-ABD spouse falls back to the
+    # individual FBR ($994). Own SSI receipt is excluded from PAA countable
+    # income by design, so countable = 0 and imputed SSI = 994. PAA =
+    # 1279 - 994 = 285. Locked intermediates below guard against regressions
+    # in either assumption. Note:
+    # ssi_amount_if_eligible returns the maximum federal SSI amount a
+    # person *would* receive if categorically eligible; it does not gate
+    # on receipt, so person2 also returns $994.
+    ssi_amount_if_eligible: [994, 994]
+    ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [994, 0]
+    md_paa_eligible: [true, false]
+    md_paa_provider_rate: [1_173, 0]
+    md_paa_personal_needs_allowance: [106, 0]
+    md_paa: [285, 0]
+
+- name: Case 10, married couple with asymmetric living arrangements (CARE Home A vs C).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_A
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Imputed federal SSI uses couple_FBR/2 = $745.50 per spouse.
+    # Per-person cascade:
+    #   person1 (CARE_HOME_LEVEL_A): combined = 776 + 106 = 882;
+    #     PAA = 882 - 745.50 = 136.50.
+    #   person2 (CARE_HOME_LEVEL_C): combined = 1173 + 106 = 1279;
+    #     PAA = 1279 - 745.50 = 533.50.
+    # Verifies per-person evaluation produces different PAA amounts within
+    # one marital unit.
+    ssi_amount_if_eligible: [745.50, 745.50]
+    ssi_countable_income: [0, 0]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
+    md_paa_eligible: [true, true]
+    md_paa: [136.50, 533.50]
+
+- name: Case 11, OASI recipient who is not aged/blind/disabled is PAA-ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50  # Not aged, not blind, not disabled.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000  # $1,000/mo OASI (e.g., survivor benefits)
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # COMAR 07.03.07.03(A)(2): OASI receipt qualifies a person ONLY if
+    # they also meet aged/blind/disabled. A 50-year-old surviving spouse
+    # is not categorically qualifying, so PAA must reject — exercises
+    # the `(social_security > 0) & is_categorically_qualifying` branch
+    # of md_paa_eligible separately from Case 7's no-federal-benefit case.
+    md_paa_eligible: [false]
+    md_paa: [0]
+
+- name: Case 12, aged OASI recipient with $1,000/mo OASI in CARE_HOME_LEVEL_C — positive PAA via OASI pathway.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged → OASI receipt qualifies for PAA.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000  # $1,000/mo OASI
+        social_security_disability: 0
+        ssi_countable_resources: 500
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: [true]
+    # combined = 1173 + 106 = 1279. countable = 1000 - 20 = 980.
+    # Imputed SSI = max(994 - 980, 0) = 14. PAA = 1279 - 980 - 14 = 285.
+    md_paa: [285]
+
+- name: Case 13, married couple both SSI-eligible in CARE_HOME_LEVEL_C — symmetric positive output.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Imputed federal SSI uses couple_FBR/2 = $745.50 per spouse.
+    # combined per spouse = 1173 + 106 = 1279, so PAA = 533.50 each.
+    # Both spouses receive a positive PAA — verifies the symmetric path.
+    md_paa_eligible: [true, true]
+    md_paa_imputed_federal_ssi: [745.50, 745.50]
+    md_paa: [533.50, 533.50]
+
+- name: Case 14, pending §300.5 applicant with no income in CARE_HOME_LEVEL_C — positive PAA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70  # Categorically aged.
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 0
+        social_security_disability: 0
+        ssi_countable_resources: 1_000
+        employment_income: 0
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+        md_paa_pending_federal_benefit: true
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Pending pathway gates eligibility; cascade then runs normally.
+    # combined = 1173 + 106 = 1279. imputed SSI = 994.
+    # countable = 0. PAA = 285.
+    md_paa_eligible: [true]
+    md_paa: [285]

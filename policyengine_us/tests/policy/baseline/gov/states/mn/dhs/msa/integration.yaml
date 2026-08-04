@@ -1,0 +1,473 @@
+- name: Case 1, single SSI recipient living alone with no other income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        ssi: 994  # $994/mo
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        employment_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    mn_msa_assistance_standard: 1_055
+    mn_msa_eligible_person: true
+    # Need $1,055 - max($994 SSI - $20 general, 0) - countable $0 = $81.
+    mn_msa_person: 81
+    mn_msa: 81
+
+- name: Case 2, SSI couple living with others gets the couple-rate gating.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        ssi_claim_is_joint: true
+        ssi: 745.50  # $745.50/mo (couple FBR $1,491 / 2)
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        ssi_claim_is_joint: true
+        ssi: 745.50
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_msa_living_arrangement: [COUPLE_LIVING_WITH_OTHERS, COUPLE_LIVING_WITH_OTHERS]
+    mn_msa_assistance_standard: [1_058, 1_058]
+    # Couple SSI track countable = $1,491 FBR + $0 unearned - $20 = $1,471.
+    # Standard $1,058 < $1,471, so the net-income test fails -> not eligible
+    # and no state supplement (couple FBR exceeds the CLWO standard).
+    mn_msa_eligible_person: [false, false]
+    mn_msa_person: [0, 0]
+    mn_msa: 0
+
+- name: Case 3, non-SSI track recipient with income above SSI but below MSA standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 5_000  # above $2k SSI cap, below $10k non-SSI cap
+        ssi: 0
+        ssi_earned_income: 0
+        ssi_unearned_income: 12_000  # $1,000/mo
+        employment_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    mn_msa_assistance_standard: 1_055
+    mn_msa_eligible_person: true
+    # Standard $1,055 - countable ($1,000 - $20 general) = $1,055 - $980 = $75.
+    mn_msa_person: 75
+    mn_msa: 75
+
+- name: Case 4, Medicaid facility recipient receives PNA-only state portion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi: 30  # $30/mo FLA-D
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # The bare-input mn_msa_living_arrangement defaults to INDIVIDUAL_LIVING_ALONE;
+    # the federal medical-facility status is detected by mn_msa_payment_category,
+    # which the assistance_standard formula reads.
+    mn_msa_payment_category: MEDICAID_FACILITY
+    mn_msa_assistance_standard: 132
+    mn_msa_eligible_person: true
+    # Combined PNA standard $132 - federal SSI FBR $30 = $102 state supplement.
+    mn_msa_person: 102
+    mn_msa: 102
+
+- name: Case 5, recipient with MSA Housing Assistance add-on.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_housing_assistance_eligible: true
+        ssi: 994
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    mn_msa_assistance_standard: 1_055
+    mn_msa_housing_assistance: 497
+    mn_msa_eligible_person: true
+    # Base: $1,055 - max($994 SSI - $20, 0) = $81; plus $497 housing add-on = $578.
+    mn_msa_person: 578
+    mn_msa: 578
+
+- name: Case 6, negative countable income does not inflate benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 994
+        self_employment_income: -60_000_000  # extreme negative
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Countable income components are floored at 0; benefit cannot exceed need - SSI.
+    # $1,055 - max($994 SSI - $20 general, 0) = $1,055 - $974 = $81.
+    mn_msa_assistance_standard: 1_055
+    mn_msa_person: 81
+    mn_msa: 81
+
+- name: Case 7, non-ABD adult is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        ssi: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_eligible_person: false
+    mn_msa_person: 0
+    mn_msa: 0
+
+- name: Case 8, 2024 single SSI recipient living alone uses 2024 rates.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        ssi: 943  # $943/mo (2024 federal individual FBR)
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_living_arrangement: INDIVIDUAL_LIVING_ALONE
+    mn_msa_assistance_standard: 1_004
+    mn_msa_eligible_person: true
+    # Need $1,004 - max($943 SSI - $20 general, 0) = $1,004 - $923 = $81.
+    mn_msa_person: 81
+    mn_msa: 81
+
+- name: Case 9, asymmetric eligibility couple — only one spouse SSI-eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        ssi_claim_is_joint: false
+        ssi: 994  # eligible spouse, full FBR
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 40
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 800
+        ssi_claim_is_joint: false
+        ssi: 0  # ineligible spouse, not aged/blind/disabled
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # Only one spouse is SSI-eligible -> individual rate, not couple rate.
+    # Both spouses default to INDIVIDUAL_LIVING_ALONE; ineligible spouse is
+    # zeroed out by the mn_msa_eligible_person filter.
+    mn_msa_living_arrangement: [INDIVIDUAL_LIVING_ALONE, INDIVIDUAL_LIVING_ALONE]
+    mn_msa_eligible_person: [true, false]
+    # person1: $1,055 - max($994 SSI - $20 general, 0) = $1,055 - $974 = $81.
+    # person2: not categorically eligible.
+    mn_msa_person: [81, 0]
+    mn_msa: 81
+
+- name: Case 10, couple living-with-others where one spouse has housing assistance triggers couple "living alone" upgrade.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: true
+        ssi_claim_is_joint: true
+        ssi: 745.50  # $745.50/mo each
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+      person2:
+        age: 68
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        mn_msa_living_arrangement: COUPLE_LIVING_WITH_OTHERS
+        mn_msa_housing_assistance_eligible: false
+        ssi_claim_is_joint: true
+        ssi: 745.50
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    # marital_unit.any(housing_assistance_eligible) -> True for both spouses.
+    # COUPLE_LIVING_WITH_OTHERS upgrades to COUPLE_LIVING_ALONE standard ($1,582).
+    mn_msa_payment_category: [COUPLE_LIVING_ALONE, COUPLE_LIVING_ALONE]
+    mn_msa_assistance_standard: [1_582, 1_582]
+    # Couple SSI track countable = $1,491 FBR + 0 unearned - $20 = $1,471.
+    # Supplement = max(0, $1,582 - $1,471) / 2 = $55.50 each.
+    # Housing add-on (0.5 * $994) goes only to person1 (the eligible spouse).
+    mn_msa_housing_assistance: [497, 0]
+    mn_msa_person: [552.50, 55.50]
+    mn_msa: 608
+
+- name: Case 11, non-SSI track recipient with earned income, rep payee, and guardian fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500  # under $10k non-SSI track cap
+        mn_msa_uses_representative_payee: true
+        mn_msa_has_guardian: true
+        # $2,000/mo earned exceeds the federal SSI cap, so the recipient
+        # qualifies for MSA via the non-SSI track. Force ssi: 0 explicitly
+        # to make the test deterministic.
+        ssi: 0
+        employment_income: 24_000
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_msa_assistance_standard: 1_055
+    mn_msa_representative_payee_fee: 57
+    # Guardian fee: 5% of $2,000 gross monthly income = $100 (at cap).
+    mn_msa_guardian_fee: 100
+    # Non-SSI track countable: $20 disregard hits unearned ($0), so all
+    # $20 + $65 = $85 plus 1/2 remainder applies to earned. Countable
+    # earned = ($2,000 - $85) * 0.5 = $957.50. Base supp = $1,055 - $957.50
+    # = $97.50; plus $57 payee fee + $100 guardian fee = $254.50.
+    mn_msa_person: 254.50
+    mn_msa: 254.50
+
+- name: Case 12, person not lawfully present is ineligible regardless of resources or income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: UNDOCUMENTED
+        ssi_countable_resources: 500
+        ssi: 0
+        ssi_unearned_income: 0
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Not receiving SSI and not citizen/legal immigrant -> immigration test fails.
+    mn_msa_eligible_person: false
+    mn_msa_person: 0
+    mn_msa: 0

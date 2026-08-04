@@ -99,3 +99,16 @@
     az_property_tax_credit_eligible: true
 
 
+
+- name: filer at 50 with reported SSI receipt and zero computed SSI meets criteria
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head_or_spouse: true
+    age: 50
+    ssi: 0
+    receives_ssi: true
+    real_estate_taxes: 100
+    rent: 0
+  output:
+    az_property_tax_credit_eligible: true

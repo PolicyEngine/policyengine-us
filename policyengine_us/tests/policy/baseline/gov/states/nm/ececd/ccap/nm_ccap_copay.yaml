@@ -1,0 +1,121 @@
+# NM CCAP copayment (8.15.2.13 NMAC; ECECD Co-payments Waived flyer; LFC brief).
+# The copay is $0 for every modeled period, but for different reasons across
+# eras (LFC Policy Brief, Dec 9 2025, p.2):
+#   - 2022-05-01 to 2023-06-30 and 2025-11-01 onward: all copays waived -> $0;
+#   - 2023-07-01 to 2025-10-31: copays reinstated only for families above 200%
+#     FPL, using an unencoded published schedule (8.15.2.24), APPROXIMATED as $0;
+#   - before 2022-05-01: the pre-2022 copay formula (8.15.2.13.B) is not modeled -> $0.
+
+- name: Case 1, copay is zero during the 2023-07 partial reinstatement window.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # 2025-01 is in the 2023-07-01 partial-reinstatement window (waived = false);
+    # the >200% FPL copay uses an unencoded schedule, approximated as $0.
+    nm_ccap_copay: 0
+
+- name: Case 2, copay is zero even for a higher income family in the reinstatement window.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 40_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_copay: 0
+
+- name: Case 3, copay is zero before the waiver because the formula is deferred.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Pre-2022 era: the waiver is not yet in effect (waived = false), but the
+    # pre-2022 copay formula (8.15.2.13.B) is not modeled, so the copay is
+    # still $0.
+    nm_ccap_copay: 0
+
+- name: Case 4, copay is zero in the full-waiver window before the 2023-07 reinstatement.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 33
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # 2023-01 is in the all-copays-waived window (2022-05-01 to 2023-06-30,
+    # waived = true) -> $0.
+    nm_ccap_copay: 0
+
+- name: Case 5, copay is zero under Universal Child Care in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # High income, but Universal Child Care waives all copays from 2025-11-01.
+        employment_income: 200_000
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # 2026 is under UCC (waived = true) -> $0.
+    nm_ccap_copay: 0

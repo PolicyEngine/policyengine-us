@@ -1,0 +1,32 @@
+description: Georgia taxes all taxable income at this flat rate when gov.states.ga.tax.income.main.flat_applies is true (otherwise the per-filing-status progressive bracket structure applies).
+# Georgia HB1015 (2023-2024) replaced the progressive bracket structure
+# with a flat rate beginning tax year 2024. Subsequent reductions are made
+# by amending O.C.G.A. section 48-7-20(a.1).
+#
+# Georgia HB463 (2025-2026), Section 2-1 lowers the flat rate from 5.19%
+# to 4.99% effective tax year 2026. The bill also provides for prospective
+# 0.125% annual rate cuts (target 3.99%) subject to the revenue triggers
+# in O.C.G.A. section 48-7-20(a.1)(2). The model does not predict whether
+# the triggers will be met, so the prospective annual cuts are NOT
+# modeled here.
+
+values:
+  2024-01-01: 0.0539
+  2025-01-01: 0.0519
+  2026-01-01: 0.0499
+
+metadata:
+  unit: /1
+  period: year
+  label: Georgia flat income tax rate
+  reference:
+    - title: Georgia Department of Revenue - Tax Tables & Georgia Tax Rate Schedule
+      href: https://dor.georgia.gov/tax-tables-georgia-tax-rate-schedule
+    - title: Official Code of Georgia Annotated | O.C.G.A. § 48-7-20(a.1)
+      href: https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20/
+    - title: Georgia HB1015 (2023-2024), Section 1 - flat-tax transition
+      href: https://www.legis.ga.gov/legislation/66260
+    - title: 2025 IT-511 Individual Income Tax Booklet, Page 9
+      href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=9
+    - title: Georgia HB463 (2025-2026), Section 2-1 amending O.C.G.A. § 48-7-20(a.1)
+      href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=2

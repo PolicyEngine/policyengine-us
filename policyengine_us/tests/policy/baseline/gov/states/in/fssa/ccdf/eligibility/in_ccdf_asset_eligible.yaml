@@ -1,0 +1,71 @@
+# Tests for in_ccdf_asset_eligible (SPMUnit, MONTH, bool).
+# Eligible when SPM unit assets <= $1,000,000 (Indiana-specific limit).
+# Policy Manual "Assets Greater Than One Million Dollars".
+
+- name: Case 1, assets below limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 500_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_asset_eligible: true
+
+- name: Case 2, assets exactly at limit, eligible (at or below).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_asset_eligible: true
+
+- name: Case 3, assets above limit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 1_000_001
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_asset_eligible: false
+
+- name: Case 4, assets one dollar under limit, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_assets: 999_999
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ccdf_asset_eligible: true

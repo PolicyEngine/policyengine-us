@@ -1,0 +1,15 @@
+description: Vermont limits the Child and Dependent Care Credit to filers with adjusted gross income at or below the low-income threshold when this is in effect.
+values:
+  # 2022 Act 138, Sec. 3 retained the 5828c low-income adjusted gross income
+  # cap for 2022; 2023 Act 72, Sec. 14 removed it effective 2023.
+  2022-01-01: true
+  2023-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Vermont CDCC income limit in effect
+  reference:
+    - title: 2022 Act 138, Sec. 3 (amending 32 V.S.A. § 5828c)
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=3
+    - title: 2023 Act 72, Sec. 14 (amending 32 V.S.A. § 5828c)
+      href: https://legislature.vermont.gov/Documents/2024/Docs/ACTS/ACT072/ACT072%20As%20Enacted.pdf#page=14

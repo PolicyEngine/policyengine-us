@@ -1,0 +1,84 @@
+# Liquid asset limit: pre-reform $200 single and $400 married couple;
+# post-reform $400 single and $800 married couple (effective 2025-07-01). The
+# variable is month-defined so the July 1, 2025 increase is applied mid-year
+# rather than being masked by the January value of the calendar year. The couple
+# rate requires two adults in the tax unit (a head and a spouse).
+- name: Pre-reform single filer limit is 200
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 200
+
+- name: Pre-reform married couple limit is 400
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 400
+
+- name: Post-reform single filer limit is 400
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 400
+
+- name: Post-reform married couple limit is 800
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_liquid_asset_limit: 800

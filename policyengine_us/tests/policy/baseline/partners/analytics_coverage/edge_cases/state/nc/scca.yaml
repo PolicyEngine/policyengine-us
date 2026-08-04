@@ -1,0 +1,451 @@
+# NC Subsidized Child Care Assistance (nc_scca) — Wake County 4-star center market rates
+# (childcare_market_rates.yaml, WAKE_COUNTY_NC): infant (group 1) $1,525/mo, toddler
+# (group 2, age 2) $1,343/mo, preschool (group 3, ages 3-5) $1,256/mo, school age
+# (group 4, ages 6+) $455/mo. Parent fee = round(10% of gross monthly income)
+# (parent_fee_rate.yaml). Entry income limits (entry/fpg_limit): monthly income must be
+# strictly below 200% FPG if any preschool/disabled child, 133% FPG if school-age-only.
+# 2026 FPG size 2 = 15_960 + 5_680 = 21_640/yr = 1_803.33/mo.
+# nc_scca = min(childcare expenses - parent fee, market rate - parent fee).
+- name: nc_scca_infant_max_payment_binds (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id001
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income 20_000/12 = 1_666.67/mo < 200% FPG (3_606.67/mo) -> eligible.
+        # Parent fee = round(0.10 x 1_666.67) = 167. Infant market rate 1_525.
+        # Max payment = (1_525 - 167) x 12 = 1_358 x 12 = 16_296.
+        nc_scca_maximum_payment: 16_296
+        # Expenses 24_000/12 = 2_000/mo; uncapped 2_000 - 167 = 1_833 > 1_358,
+        # so the market-rate cap binds: nc_scca = 16_296.
+        nc_scca: 16_296
+- name: nc_scca_toddler_expense_cap_binds (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 24_000
+      child1:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id002
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income 24_000/12 = 2_000/mo; fee = 200. Toddler market rate 1_343.
+        # Max payment = (1_343 - 200) x 12 = 1_143 x 12 = 13_716.
+        nc_scca_maximum_payment: 13_716
+        # Expenses 9_600/12 = 800/mo; uncapped 800 - 200 = 600 < 1_143,
+        # so actual expenses bind: nc_scca = 600 x 12 = 7_200.
+        nc_scca: 7_200
+- name: nc_scca_preschool_age_5 (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id003
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Age 5 -> preschool group 3, market rate 1_256. Fee = round(20_000/12 x 0.10) = 167.
+        # Max payment = (1_256 - 167) x 12 = 1_089 x 12 = 13_068.
+        nc_scca_maximum_payment: 13_068
+        # Expenses 18_000/12 = 1_500/mo; uncapped 1_500 - 167 = 1_333 > 1_089 -> cap binds.
+        nc_scca: 13_068
+- name: nc_scca_school_age_income_just_below_133_pct_fpg (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 28_000
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id004
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # School-age-only family -> 133% FPG limit = 21_640 x 1.33 = 28_781.20/yr
+        # (2_398.43/mo). Income 28_000/12 = 2_333.33/mo < 2_398.43 -> eligible.
+        # Fee = round(233.33) = 233. School-age market rate 455.
+        # Max payment = (455 - 233) x 12 = 222 x 12 = 2_664.
+        nc_scca_maximum_payment: 2_664
+        # Expenses 6_000/12 = 500/mo; uncapped 500 - 233 = 267 > 222 -> cap binds.
+        nc_scca: 2_664
+- name: nc_scca_school_age_only_income_above_133_pct_fpg (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id005
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Income 30_000/12 = 2_500/mo is above the school-age-only 133% FPG limit
+        # (2_398.43/mo) but below the 200% preschool limit (3_606.67/mo), so this
+        # zero binds the 133% rate specifically: income-ineligible -> 0.
+        nc_scca: 0
+- name: nc_scca_preschool_income_just_above_200_pct_fpg (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 44_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id006
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Preschool family -> 200% FPG limit = 21_640 x 2.0 = 43_280/yr (3_606.67/mo).
+        # Income 44_000/12 = 3_666.67/mo >= 3_606.67 -> income-ineligible -> 0.
+        nc_scca: 0
+- name: nc_scca_nondisabled_child_age_13_age_ineligible (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id007
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id007
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Non-disabled age limit is 13 (age/limit/non_disabled.yaml, exclusive):
+        # a 13-year-old without a disability is age-ineligible -> 0, despite
+        # low income and positive childcare expenses.
+        nc_scca: 0
+- name: nc_scca_disabled_child_age_13_eligible (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 13
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id008
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id008
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Disabled age limit is 18 (age/limit/disabled.yaml): the same 13-year-old
+        # with a disability IS eligible (200% FPG limit applies). Age 13 >= school
+        # age 6 -> group 4 rate 455. Fee = round(20_000/12 x 0.10) = 167.
+        # Max payment = (455 - 167) x 12 = 288 x 12 = 3_456.
+        nc_scca_maximum_payment: 3_456
+        # Expenses 6_000/12 = 500/mo; uncapped 500 - 167 = 333 > 288 -> cap binds.
+        nc_scca: 3_456

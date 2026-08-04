@@ -1,0 +1,39 @@
+description: Kansas provides these maximum hourly rates for child care centers under the Child Care Assistance Program.
+metadata:
+  period: hour
+  unit: currency-USD
+  label: Kansas CCAP child care center maximum hourly rates
+  breakdown:
+    - ks_ccap_rate_group
+    - ks_ccap_center_age_group
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+GROUP_1:
+  INFANT:
+    2024-10-01: 7.33
+  TODDLER:
+    2024-10-01: 6.25
+  PRESCHOOL:
+    2024-10-01: 5.51
+  SCHOOL_AGE:
+    2024-10-01: 4.81
+GROUP_2:
+  INFANT:
+    2024-10-01: 6.28
+  TODDLER:
+    2024-10-01: 5.28
+  PRESCHOOL:
+    2024-10-01: 4.13
+  SCHOOL_AGE:
+    2024-10-01: 3.65
+GROUP_3:
+  INFANT:
+    2024-10-01: 6.28
+  TODDLER:
+    2024-10-01: 5.26
+  PRESCHOOL:
+    2024-10-01: 4.27
+  SCHOOL_AGE:
+    2024-10-01: 3.16

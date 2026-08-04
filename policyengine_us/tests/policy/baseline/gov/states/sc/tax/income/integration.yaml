@@ -83,3 +83,49 @@
         state_fips: 45
   output:
     sc_income_tax: 117
+
+- name: SC joint 2025 pension with OBBBA addback
+  # TaxAct adds back $7,500 on SC1040 line 2e:
+  #   $1,500 OBBBA standard deduction increase (MFJ $30K → $31.5K)
+  #   $6,000 OBBBA senior deduction (1 eligible person age 65)
+  absolute_error_margin: 5
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        taxable_private_pension_income: 100_000
+        social_security_retirement: 5_000
+        is_tax_unit_head: true
+      person2:
+        age: 54
+        social_security_retirement: 5_000
+        is_tax_unit_spouse: true
+      person3:
+        age: 11
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4:
+        age: 4
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_fips: 45
+  output:
+    sc_obbba_addback: 7_500
+    sc_income_tax: 1_677

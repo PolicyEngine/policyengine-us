@@ -1,0 +1,119 @@
+- name: Case 1, wages plus capital gain distributions without Schedule D.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    # Distributions enter AGI: 60,000 + 5,000.
+    adjusted_gross_income: 65_000
+    # And the preferential-rate base, so ordinary tax excludes them.
+    net_capital_gain: 5_000
+    dwks10: 5_000
+    # They are net investment income (below the NIIT MAGI threshold here).
+    net_investment_income: 5_000
+    net_investment_income_tax: 0
+
+- name: Case 1b, distributions are taxed at preferential rates, not ordinary rates.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 60_000
+        non_sch_d_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    # Taxable income 70,000 - 16,100 = 53,900; ordinary part 43,900 taxes
+    # identically to a wages-only return (5,020).
+    income_tax_main_rates: 5_020
+    # Distributions straddle the 49,450 zero-rate breakpoint: 5,550 at 0%
+    # and 4,450 at 15% = 667.50.
+    capital_gains_tax: 667.50
+    income_tax: 5_687.50
+
+- name: Case 1c, distributions alone in the zero-rate bracket owe no tax.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        non_sch_d_capital_gains: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    adjusted_gross_income: 30_000
+    # Taxable income 13,900 is entirely adjusted net capital gain below the
+    # 49,450 zero-rate breakpoint.
+    capital_gains_tax: 0
+    income_tax: 0
+
+- name: Case 2, capital gain distributions below the standard deduction owe no tax.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        non_sch_d_capital_gains: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    adjusted_gross_income: 5_000
+    income_tax: 0
+
+- name: Case 3, capital gain distributions are subject to NIIT above the MAGI threshold.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 45
+        employment_income: 300_000
+        non_sch_d_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    adjusted_gross_income: 310_000
+    dwks10: 10_000
+    net_investment_income: 10_000
+    # 3.8% x min(NII 10,000, MAGI 310,000 - 200,000 threshold) = 380.
+    net_investment_income_tax: 380

@@ -46,4 +46,44 @@
     count_cdcc_eligible: 4
     min_head_spouse_earned: 40_000
   output:
-    ca_cdcc_relevant_expenses: 6_000 
+    ca_cdcc_relevant_expenses: 6_000
+
+- name: test 6, disabled adult dependent's care expenses enter the base
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        age: 18
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+        pre_subsidy_care_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 0
+        min_head_spouse_earned: 50_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    # One qualifying individual at the pre-ARPA $3,000 cap:
+    # min(10_000 adult care, 3_000, 50_000) = 3_000.
+    ca_cdcc_relevant_expenses: 3_000
+
+# FTB 3506 Part IV reduces the $3,000 / $6,000 dollar limit by the IRC § 129
+# employer-provided dependent care benefits excluded from income, matching the
+# federal § 21(c) reduction.
+- name: Section 129 employer benefits reduce the California base
+  period: 2024
+  input:
+    state_code: CA
+    tax_unit_childcare_expenses: 10_000
+    count_cdcc_eligible: 2
+    min_head_spouse_earned: 50_000
+    dependent_care_assistance_exclusion: 5_000
+  output:
+    # min(10_000 expenses, $6,000 two-child cap - $5,000 exclusion, 50_000) = 1_000.
+    ca_cdcc_relevant_expenses: 1_000

@@ -5,7 +5,7 @@ class tx_ssi_state_supplement_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Texas SSI State Supplement eligible"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.TX
     reference = (
         "https://statutes.capitol.texas.gov/Docs/HR/htm/HR.32.htm",
@@ -13,6 +13,6 @@ class tx_ssi_state_supplement_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        ssi_eligible = person("is_ssi_eligible_individual", period)
+        ssi_eligible = person("is_ssi_eligible_individual", period.this_year)
         in_facility = person("is_in_medicaid_facility", period)
         return ssi_eligible & in_facility

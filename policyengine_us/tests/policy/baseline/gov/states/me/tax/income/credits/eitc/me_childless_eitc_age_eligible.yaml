@@ -1,0 +1,107 @@
+# 36 M.R.S. § 5219-S(6): childless filers aged 18-24 (up to the federal
+# maximum childless age of 64) are treated as eligible individuals.
+- name: Childless single aged 18 is age-eligible for the Maine expansion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: Childless single aged 24 is age-eligible for the Maine expansion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 24
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: true
+
+- name: Childless single aged 17 is below the Maine floor
+  period: 2025
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: Childless single aged 25 has attained 25 and is outside the added cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    # Age 25+ childless filers are already federally eligible (no expansion
+    # needed); the added cohort is only 18-24.
+    me_childless_eitc_age_eligible: false
+
+- name: Childless single aged 65 is outside the added cohort
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+
+- name: Filer aged 20 with a qualifying child is not in the childless expansion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 8_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false

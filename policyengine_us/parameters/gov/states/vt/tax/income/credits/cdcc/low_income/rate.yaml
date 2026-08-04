@@ -1,15 +1,21 @@
-description: Vermont matches this percent of the federal Child and Dependent Care Credit for low-income filers. 
+description: Vermont matches this percent of the federal Child and Dependent Care Credit for low-income filers.
 values:
   2005-01-01: 0.5
+  # 2022 Act 138, Sec. 3 replaced the 50 percent low-income credit with the
+  # 72 percent credit in 32 V.S.A. § 5828c effective 2022.
+  2022-01-01: 0
 metadata:
   unit: /1
+  period: year
   label: Vermont low-income CDCC match
   reference:
+    - title: 2022 Act 138, Sec. 3 (amending 32 V.S.A. § 5828c)
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=3
     - title: 2021 Form IN-112 Vermont Tax Adjustments and Credits
       href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2
     - title: 2021 Vermont Statutes, Title 32 - Taxation and Finance, Chapter 151 - Income Taxes, §5828c. Low-income child and dependent care credit
       href: https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5828c/
     - title: 2020 Form IN-112 Vermont Tax Adjustments and Credits
-      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2020.pdf#page=2#
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2020.pdf#page=2
     - title: 2020 Vermont Statutes, Title 32 - Taxation and Finance, Chapter 151 - Income Taxes, §5828c. Low-income child and dependent care credit
       href: https://law.justia.com/codes/vermont/2020/title-32/chapter-151/section-5828c/

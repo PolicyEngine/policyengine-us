@@ -61,14 +61,13 @@ values:
   2023-01-01: 160_200
   2024-01-01: 168_600
   2025-01-01: 176_100
+  2026-01-01: 184_500
 metadata:
   unit: currency-USD
   period: year
   label: Social Security wage base
-  uprating: gov.ssa.uprating
   reference:
     - title: Contribution and Benefit Base
       href: https://www.ssa.gov/OACT/COLA/cbb.html
     - title: 42 USC 430 - Adjustment of contribution and benefit base
       href: https://www.law.cornell.edu/uscode/text/42/430
-

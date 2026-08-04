@@ -1,0 +1,41 @@
+- name: Case 1, prior-year Ohio modified adjusted gross income controls total income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_modified_agi:
+          2025: 35_000
+          2026: 99_000
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: OH
+          2026: OH
+  output:
+    oh_homestead_exemption_total_income: 35_000
+
+- name: Case 2, current-year Ohio modified adjusted gross income is ignored.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_modified_agi:
+          2025: 39_000
+          2026: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: OH
+          2026: OH
+  output:
+    oh_homestead_exemption_total_income: 39_000

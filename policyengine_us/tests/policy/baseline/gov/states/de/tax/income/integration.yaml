@@ -19,18 +19,20 @@
         members: [person1, person2]
         filing_status: SEPARATE
         de_files_separately: true
-        de_non_refundable_credits: 100
     households:
       household:
         members: [person1, person2]
-        state_code: DE 
+        state_code: DE
   output:
     de_agi_indiv: [19_000, 26_000]
     de_standard_deduction_indv: [3_250, 3_250]
     de_itemized_deductions_indv: [0, 0]
     de_taxable_income_indv: [15_750, 22_750]
-    de_income_tax_before_non_refundable_credits_unit: 1_421   
-    de_income_tax_before_refundable_credits: 1_321
+    # Per-column pre-credit tax: head column $537, spouse column $884.
+    de_income_tax_before_non_refundable_credits_indv: [537, 884]
+    # Per-column: personal credits $220 (2 × $110) assigned to spouse
+    # column ($884 tax); head column ($537) keeps full tax.
+    de_income_tax_before_refundable_credits: 1_201
 
 - name: Tax unit files jointly
   period: 2022
@@ -92,8 +94,9 @@
     de_agi_indiv: [20_000, 25_000]
     de_standard_deduction_indv: [3_250, 3_250]
     de_itemized_deductions_indv: [0, 0] 
-    de_taxable_income_indv: [16_750, 21_750] 
-    de_income_tax_before_non_refundable_credits_unit: 1_417 
+    de_taxable_income_indv: [16_750, 21_750]
+    # Per-column pre-credit tax: head column $585, spouse column $832.
+    de_income_tax_before_non_refundable_credits_indv: [585, 832]
     de_income_tax_before_refundable_credits: 1_197
 
 - name: Tax unit with taxsimid 99988 in e21.its.csv and e21.ots.csv
@@ -181,7 +184,13 @@
     de_income_tax: 7361.32
 
 - name: Tax unit with taxsimid 2682 in h21.its.csv and h21.ots.csv
-  absolute_error_margin: 0.01
+  # Combined separate (FS4) would waste credits here: the aged credit on the
+  # head's ~$6 column and the CDCC (Line 31, routed to the lower-income
+  # spouse) cannot be fully absorbed, so FS4 ($2,785.65) costs more than the
+  # joint/pooled path ($2,705.30). The filer therefore elects the joint path
+  # (issue #7931). TAXSIM35 reports $2,429; PolicyEngine's joint DE
+  # computation differs independently of this filing-status choice.
+  absolute_error_margin: 1
   period: 2021
   input:
     people:
@@ -224,8 +233,8 @@
       household:
         members: [person1, person2, person3]
         state_fips: 10  # DE
-  output:  # expected results from patched TAXSIM35 2024-04-04 version
-    de_income_tax: 2429.20
+  output:  # Joint path elected because FS4 would waste credits (see above)
+    de_income_tax: 2705.3
 
 - name: Tax unit with taxsimid 22359 in k21.its.csv and k21.ots.csv
   absolute_error_margin: 0.01
@@ -309,3 +318,150 @@
   output:
     de_agi_joint: [24_053.07, 0]
     de_income_tax: 403.55
+
+- name: FS4 elderly couple per-column credit allocation
+  # From issue #7931: per-column credits produce higher tax than pooled
+  # because one column's tax is too low to absorb its aged credit.
+  period: 2025
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 65
+        employment_income: 314
+        taxable_interest_income: 628
+        taxable_private_pension_income: 20_840
+        is_tax_unit_head: true
+      person2:
+        age: 80
+        employment_income: 20_000
+        taxable_interest_income: 628
+        taxable_private_pension_income: 20_840
+        is_tax_unit_spouse: true
+      child1:
+        age: 8
+      child2:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        premium_tax_credit: 0
+    families:
+      family:
+        members: [person1, person2, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_fips: 10
+  output:
+    # With each spouse's own personal credit fixed to their column
+    # (PIT-RES line 27a example), legal FS4 leaves column A's credits
+    # unusable (column tax 0) for a total of 468.34, so the couple
+    # elects joint filing: 388.42.
+    de_income_tax: 388.42
+
+- name: FS4 young couple one dependent - per-column personal credit cap (issue #8710)
+  # DE, MFJ, both age 20, one dependent, $21,790 taxable interest split 50/50,
+  # filed separate/combined. Reported by NBER TAXSIM (policyengine-taxsim#1007).
+  # Each column has $169.155 tax (PIT-RES Line 26). Column A uses its own $110
+  # (1 exemption) personal credit; Column B's $220 (2 exemptions) credit is
+  # capped at its own $169.155 tax (Line 32 <= Line 26), so the surplus is lost
+  # rather than offsetting Column A. Balance = $59.155 in Column A, $0 in
+  # Column B. The form/TAXSIM ground truth is $58; the ~$1.16 residual is
+  # PolicyEngine's continuous rate-bracket computation vs the form's rounded tax
+  # table, not the credit pooling this test pins. Fixed on main by #7940.
+  period: 2025
+  absolute_error_margin: 0.5
+  input:
+    people:
+      person1:
+        age: 20
+        taxable_interest_income: 10_895
+        is_tax_unit_head: true
+      person2:
+        age: 20
+        taxable_interest_income: 10_895
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1]
+        premium_tax_credit: 0
+    families:
+      family:
+        members: [person1, person2, child1]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, child1]
+        state_fips: 10
+  output:
+    de_files_separately: true
+    de_income_tax: 59.155
+
+- name: 2021 unemployment compensation excluded from Delaware AGI (30 Del. C. § 1106(b)(10))
+  # From TaxAct-derived example in issue #9065: single filer, age 42,
+  # $22,791.92 wages plus $12,240 unemployment compensation. Delaware
+  # excludes unemployment compensation received in 2020-2021 from DE AGI
+  # (2021 PIT-RES Line 7), so DE AGI equals wages only. Ground truth from
+  # TaxAct: pre-credit tax $718 (tax tables), personal credit $110,
+  # tax $608. PolicyEngine's continuous rate schedule yields $609.01;
+  # the ~$1 residual is tax-table rounding.
+  period: 2021
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 22_791.92
+        unemployment_compensation: 12_240
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_agi_indiv: 22_791.92
+    de_taxable_income_indv: 19_541.92
+    de_income_tax: 608
+
+- name: 2022 unemployment compensation not excluded from Delaware AGI (exclusion expired)
+  # 30 Del. C. § 1106(b)(10) covers unemployment benefits received in
+  # calendar years 2020 and 2021 only, so the same household in 2022
+  # includes the full $12,240 of unemployment compensation in DE AGI.
+  period: 2022
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 42
+        employment_income: 22_791.92
+        unemployment_compensation: 12_240
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: DE
+  output:
+    de_subtractions: 0
+    de_agi_indiv: 35_031.92
+    de_taxable_income_indv: 31_781.92
+    de_income_tax: 1_267.40

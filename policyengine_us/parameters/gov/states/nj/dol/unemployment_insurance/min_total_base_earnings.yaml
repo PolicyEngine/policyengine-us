@@ -1,0 +1,20 @@
+description: New Jersey requires at least this amount in total base year earnings as an alternative unemployment insurance eligibility path.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Jersey UI minimum total base year earnings
+  reference:
+    - title: N.J.S.A. 43:21-4(e)(4)(B) - Alternative earnings eligibility test
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=18
+    - title: NJ Division of Unemployment Insurance - Who is eligible for benefits?
+      href: https://www.nj.gov/labor/myunemployment/before/about/who/
+    - title: NJ Department of Labor - 2025 UI Benefit Rates
+      href: https://www.nj.gov/labor/lwdhome/press/2024/20241217_new_benefit_rates.shtml
+    - title: NJ Department of Labor - 2026 UI Benefit Rates
+      href: https://www.nj.gov/labor/lwdhome/press/2025/20251229_newbenefitrates2026.shtml
+
+values:
+  2024-01-01: 14_200
+  2025-01-01: 15_200
+  2026-01-01: 15_500

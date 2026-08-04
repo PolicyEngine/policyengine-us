@@ -93,7 +93,7 @@
   output:
     is_chip_fcep_eligible_person: False
 
-- name: Undocumented immigrant not eligible
+- name: FCEP eligibility does not screen the pregnant parent's immigration status
   period: 2023
   input:
     people:
@@ -110,7 +110,7 @@
         state_code: CA
         members: [head]
   output:
-    is_chip_fcep_eligible_person: False
+    is_chip_fcep_eligible_person: True
 
 # Boundary tests to verify 5% FPL disregard is correctly included in limits
 # AR has statutory limit of 209% FPL, effective limit with disregard is 214%
@@ -190,3 +190,142 @@
         members: [head]
   output:
     is_chip_fcep_eligible_person: False
+
+# Alabama phases in FCEP ("ALL Babies") by county. Its income limit is only
+# positive from 2024, and coverage becomes statewide on 2024-10-01, so the
+# county gate binds only in the 2024-01-01 to 2024-09-30 window. Year-period
+# tests resolve parameters at the start of the year: 2024 sees the 36-county
+# regime, 2025 sees statewide coverage.
+
+# 2024 (36-county regime): a covered county is eligible.
+- name: Alabama FCEP is available in a covered county (Montgomery, 2024)
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00  # Within AL's 2024 limit of 3.17
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county_str: MONTGOMERY_COUNTY_AL
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+# 2024 (36-county regime): a county outside the 36 is not yet covered.
+# Jefferson County (Birmingham) is not in the ADPH August 2023 eligible-county
+# map, so it only gains coverage with the 2024-10-01 statewide expansion.
+- name: Alabama FCEP is not available outside the covered counties (Jefferson, 2024)
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
+
+# 2025 (statewide): every Alabama county is covered, including Jefferson.
+- name: Alabama FCEP is available statewide from 2024-10-01 (Jefferson, 2025)
+  period: 2025
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+# 2025 (statewide): a household whose county is unknown still qualifies once
+# coverage is statewide, since the county gate no longer restricts eligibility.
+# (Household inputs that omit the county resolve to the first county in the
+# state, so the county is set to UNKNOWN explicitly to exercise this path.)
+- name: Alabama FCEP covers an unknown-county household once statewide (2025)
+  period: 2025
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county: UNKNOWN
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True
+
+# 2024 (36-county regime): a household whose county is unknown is not covered
+# before the statewide expansion, because the gate cannot place it in a covered
+# county. This is the graceful degradation for unknown-county records.
+- name: Alabama FCEP excludes an unknown-county household before statewide (2024)
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: AL
+        county: UNKNOWN
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: False
+
+# The Alabama county gate must not affect other FCEP states: California covers
+# its whole territory, so an unknown-county California household stays eligible.
+- name: County gate does not restrict non-Alabama FCEP states (California, 2024)
+  period: 2024
+  input:
+    people:
+      head:
+        is_pregnant: True
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 3.00  # Within CA's limit of 3.22
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        state_code: CA
+        members: [head]
+  output:
+    is_chip_fcep_eligible_person: True

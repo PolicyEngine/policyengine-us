@@ -207,3 +207,49 @@
     # 3 children age 2+: 3 * $175 = $525
     # Expenses $800 > $525, capped at $525
     de_tanf_dependent_care_deduction: 525
+
+- name: Case 11, incapacitated adult care expenses count toward the deduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Per DSSM 4004.2(4): incapacitated adult care capped at $175/month.
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    de_tanf_dependent_care_deduction: 100
+
+- name: Case 12, adult care expenses without incapacity are not deducted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    de_tanf_dependent_care_deduction: 0

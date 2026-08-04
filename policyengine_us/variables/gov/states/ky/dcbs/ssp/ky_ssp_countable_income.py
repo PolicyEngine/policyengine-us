@@ -35,7 +35,7 @@ class ky_ssp_countable_income(Variable):
         countable_earned = max_(earned - p.earned, 0) * (1 - p.earned_share)
         personal_countable = unearned + countable_earned
 
-        both_eligible = person("ssi_couple_computation_applies", period.this_year)
+        both_eligible = person("ssi_couple_computation_applies", period)
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
         is_eligible = person("is_ssi_eligible_individual", period.this_year) | person(
             "is_ssi_eligible_spouse", period.this_year

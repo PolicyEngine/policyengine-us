@@ -1,0 +1,45 @@
+description: Utah provides this percentage of gross rent under the Homeowner's/Renter's Relief program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: Utah homeowner's/renter's relief renter rate
+  reference:
+    - title: 2025 Utah TC-90CB Renter Refund Application
+      href: https://files.tax.utah.gov/tax/forms/current/tc-90cb.pdf#page=4
+    - title: Utah Code Section 59-2a-205
+      href: https://le.utah.gov/xcode/Title59/Chapter2A/C59-2a_2026010120250507.pdf#page=11
+brackets:
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 0.095
+  - threshold:
+      2025-01-01: 15_034
+    amount:
+      2025-01-01: 0.085
+  - threshold:
+      2025-01-01: 20_049
+    amount:
+      2025-01-01: 0.07
+  - threshold:
+      2025-01-01: 25_058
+    amount:
+      2025-01-01: 0.055
+  - threshold:
+      2025-01-01: 30_070
+    amount:
+      2025-01-01: 0.04
+  - threshold:
+      2025-01-01: 35_084
+    amount:
+      2025-01-01: 0.03
+  - threshold:
+      2025-01-01: 39_797
+    amount:
+      2025-01-01: 0.025
+  - threshold:
+      2025-01-01: 44_222
+    amount:
+      2025-01-01: 0

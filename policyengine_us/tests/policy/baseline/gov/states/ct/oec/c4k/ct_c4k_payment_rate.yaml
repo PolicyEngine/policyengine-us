@@ -336,3 +336,18 @@
   output:
     # Jan 2024 center FTP Eastern infant/toddler = $344
     ct_c4k_payment_rate: 344
+
+- name: Case 23, Jan 2026 relative full-time rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ct_c4k_eligible_child: true
+    ct_c4k_provider_type: RELATIVE
+    ct_c4k_care_level: FULL_TIME
+    ct_c4k_age_group: INFANT_TODDLER
+    ct_c4k_region: EASTERN
+    is_disabled: false
+    ct_c4k_provider_accredited: false
+    state_code: CT
+  output:
+    ct_c4k_payment_rate: 268

@@ -1,0 +1,22 @@
+description: Nebraska counts these income sources as earned income under the Child Care Subsidy program.
+values:
+  2011-06-28:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: Nebraska Child Care Subsidy earned income sources
+  reference:
+    - title: 392 NAC 3-005.02(3), (27)-(28)
+      href: https://dhhs.ne.gov/Documents/Title-392-Complete.pdf#page=13
+    - title: Nebraska DHHS Title 392 Guidance Document, 392 NAC 2-010.01(A)
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=3
+# 392 NAC 3-005.02B applies a standard 49% deduction to gross self-employment
+# income when the household reports at least one allowable expense. We use net
+# self-employment income at the moment because we do not track gross
+# self-employment receipts or reported expenses.
+# We do not track in-kind income received in lieu of wages (item 5) or
+# work-study income (item 4) at the moment.

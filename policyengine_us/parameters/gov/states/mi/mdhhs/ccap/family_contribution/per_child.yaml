@@ -1,0 +1,28 @@
+description: Michigan charges this flat family contribution per child per two-week pay period under the Child Development and Care program, based on the family income band.
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Michigan CDC family contribution per child per two-week pay period
+  breakdown:
+    - range(0, 7)
+  breakdown_labels:
+    - Income band
+  reference:
+    - title: RFT 270, CDC Income Eligibility Scale (effective September 21, 2025)
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EX/RF/Public/RFT/270.pdf#page=3
+
+0:
+  2025-09-21: 0
+1:
+  2025-09-21: 15
+2:
+  2025-09-21: 30
+3:
+  2025-09-21: 45
+4:
+  2025-09-21: 60
+5:
+  2025-09-21: 69
+6:
+  2025-09-21: 78

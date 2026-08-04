@@ -1,0 +1,15 @@
+- name: Ordinary dividend income is qualified plus non-qualified dividend income.
+  period: 2024
+  input:
+    qualified_dividend_income: 600
+    non_qualified_dividend_income: 400
+  output:
+    ordinary_dividend_income: 1_000
+    dividend_income: 1_000
+
+- name: Legacy dividend income alias follows ordinary dividend income when supplied directly.
+  period: 2024
+  input:
+    ordinary_dividend_income: 1_200
+  output:
+    dividend_income: 1_200

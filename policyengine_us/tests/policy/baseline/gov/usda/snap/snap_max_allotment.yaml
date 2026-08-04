@@ -1,0 +1,38 @@
+- name: FY2026 max allotment for a 4-person contiguous-US household (explicit FY2026 COLA value).
+  period: 2026-01
+  input:
+    snap_region_str: CONTIGUOUS_US
+    snap_unit_size: 4
+  output:
+    snap_max_allotment: 994
+
+- name: FY2027 max allotment uprates the FY2026 value by June 2026 over June 2025 CPI-U actuals.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    snap_region_str: CONTIGUOUS_US
+    snap_unit_size: 4
+  output:
+    # 994 * 333.952 / 322.561
+    snap_max_allotment: 1029.1
+
+- name: FY2027 max allotment for a 1-person household.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    snap_region_str: CONTIGUOUS_US
+    snap_unit_size: 1
+  output:
+    # 298 * 333.952 / 322.561
+    snap_max_allotment: 308.52
+
+- name: FY2028 max allotment retains the CBO forecast index level over the June 2025 actual base.
+  period: 2027-11
+  absolute_error_margin: 0.01
+  input:
+    snap_region_str:
+      2027: CONTIGUOUS_US
+    snap_unit_size: 4
+  output:
+    # 994 * 335.5 / 322.561
+    snap_max_allotment: 1033.87

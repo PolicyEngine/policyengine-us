@@ -1,0 +1,106 @@
+# IRC section 129 dependent care assistance exclusion, as reconciled on
+# Form 2441 Part III. The exclusion is the lesser of the employer benefits,
+# the section 129(a)(2)(A) dollar cap (by filing status), and the section
+# 129(b) earned-income limit.
+
+- name: No employer dependent care benefits gives no exclusion
+  period: 2024
+  input:
+    dependent_care_employer_benefits: 0
+    filing_status: JOINT
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 0
+
+- name: Benefits below the cap and earned income are excluded in full
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 4_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # min($4,000 benefits, $5,000 cap, lesser earnings) = $4,000.
+    dependent_care_assistance_exclusion: 4_000
+
+- name: Section 129(a)(2)(A) dollar cap limits the exclusion (joint)
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 6_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # min($6,000 benefits, $5,000 cap, lesser earnings) = $5,000.
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Section 129(b) earned-income limit caps the exclusion
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # min($5,000 benefits, $5,000 cap, $2,000 lesser earnings) = $2,000.
+    dependent_care_assistance_exclusion: 2_000
+
+- name: Married filing separately uses the $2,500 cap
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+  output:
+    # min($5,000 benefits, $2,500 MFS cap, earnings) = $2,500.
+    dependent_care_assistance_exclusion: 2_500
+
+- name: OBBBA raises the joint cap to $7,500 for 2026
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # Benefits ($7,000) below the new $7,500 cap and below earnings, so the
+    # full amount is excluded. (Input uprating is disabled for a clean check.)
+    dependent_care_assistance_exclusion: 7_000

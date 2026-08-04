@@ -12,3 +12,17 @@
     gi_cash_assistance: 4
   output:
     ssi_unearned_income: 1 + 2 + 3 + 4
+
+- name: SSI unearned income ignores taxable Roth conversions.
+  period: 2022
+  input:
+    taxable_roth_conversions: 1_000
+  output:
+    ssi_unearned_income: 0
+
+- name: SSI unearned income still counts retirement distributions.
+  period: 2022
+  input:
+    retirement_distributions: 1_000
+  output:
+    ssi_unearned_income: 1_000

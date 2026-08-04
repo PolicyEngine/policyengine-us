@@ -1,0 +1,19 @@
+description: Arkansas uses this indicator to determine whether the School Readiness Assistance program applies.
+# The SRA program legally launched 2025-10-01, but the Oct 2025 rate schedule
+# (higher rates plus a one-month Quality Enhancement Payment) was replaced on
+# 2025-11-01 by the rate sheet currently encoded. We gate the program to the
+# Nov 1, 2025 rate-aligned period; the Oct 2025 transitional month is not
+# modeled because its rates and QEP supplement are not in the parameter tree.
+values:
+  1900-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Arkansas SRA in effect
+  reference:
+    - title: OEC Rights & Responsibilities (Nov 2025)
+      href: https://dese.ade.arkansas.gov/Files/R_&_R__Nov_2025_(English)_(1)_OEC.pdf#page=1
+    - title: OEC SRA Announcement Regarding Rates and Copays Effective November 1
+      href: https://dese.ade.arkansas.gov/Files/OEC_SRA_Announcement_Regarding_Rates_and_Copays_Effective_November_1_OEC.pdf

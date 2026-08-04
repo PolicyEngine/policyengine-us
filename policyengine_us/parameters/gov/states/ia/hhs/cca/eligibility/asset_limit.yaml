@@ -1,0 +1,11 @@
+description: Iowa limits Child Care Assistance to families whose resources do not exceed this amount.
+values:
+  2024-07-01: 1_000_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Iowa CCA resource limit
+  reference:
+    - title: IAC 441-170.2(1)"g" — Resource limit ($1 million)
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=5

@@ -1,0 +1,34 @@
+description: New Mexico provides these full-time monthly reimbursement rates for registered and in-home child care under the Child Care Assistance Program.
+# Full-time base rates for registered homes / in-home care (also covering
+# family, friend, or neighbor care), which receive a single rate with no FOCUS
+# star levels. Part-time rates are these multiplied by the service-unit
+# fractions in rates/service_unit_fraction.yaml.
+# The 2025-11-04 amendment to 8.9.3.17 NMAC raised the registered-home rates
+# substantially (infant 425 -> 750). The "REGISTERED HOMES AND FFN" table is
+# still a single 2-Star rate with no higher star levels. Only full-time base
+# rates are stored here; the schedule's separate Part-Time and Wrap-Around
+# columns are not modeled.
+metadata:
+  period: month
+  unit: currency-USD
+  label: New Mexico CCAP registered home monthly rates
+  breakdown:
+    - nm_ccap_age_group
+  reference:
+    - title: ECECD Child Care Assistance Rates, Registered Home Monthly Rates (Effective August 2023)
+      href: https://www.nmececd.org/wp-content/uploads/2024/05/Cost-Model-Reimbursement-Rate-Flyer-English-and-Spanish-Revised-May-2024.pdf#page=4
+    - title: 8.9.3.17(G) NMAC, REGISTERED HOMES AND FFN (2 STAR), effective 11/04/2025 (integrated full text)
+      href: https://www.nmececd.org/wp-content/uploads/2025/11/8.9.3_integrated_FULL-TEXT.pdf#page=16
+
+INFANT:
+  2023-08-01: 425
+  2025-11-04: 750
+TODDLER:
+  2023-08-01: 425
+  2025-11-04: 750
+PRESCHOOL:
+  2023-08-01: 375
+  2025-11-04: 425
+SCHOOL_AGE:
+  2023-08-01: 350
+  2025-11-04: 459

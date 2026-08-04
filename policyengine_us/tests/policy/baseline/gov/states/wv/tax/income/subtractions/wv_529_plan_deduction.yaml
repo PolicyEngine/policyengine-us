@@ -1,0 +1,37 @@
+- name: West Virginia deducts full 529 contributions
+  period: 2024
+  input:
+    state_code: WV
+    investment_in_529_plan_indv: 5_000
+  output:
+    wv_529_plan_deduction: 5_000
+    wv_subtractions: 5_000
+
+- name: West Virginia sums 529 contributions across joint filers
+  period: 2024
+  input:
+    people:
+      person1:
+        investment_in_529_plan_indv: 7_000
+      person2:
+        investment_in_529_plan_indv: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    wv_529_plan_deduction: 10_000
+    wv_subtractions: 10_000
+
+- name: West Virginia 529 deduction is zero without contributions
+  period: 2024
+  input:
+    state_code: WV
+    investment_in_529_plan_indv: 0
+  output:
+    wv_529_plan_deduction: 0
+    wv_subtractions: 0

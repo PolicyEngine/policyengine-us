@@ -45,3 +45,16 @@
     state_code: MD
   output:
     md_pension_subtraction_amount: 0
+
+- name: Case 5, 2026 published maximum subtraction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    is_tax_unit_dependent: false
+    age: 66
+    is_disabled: false
+    taxable_pension_income: 50_000
+    social_security: 0
+    state_code: MD
+  output:
+    md_pension_subtraction_amount: 40_600

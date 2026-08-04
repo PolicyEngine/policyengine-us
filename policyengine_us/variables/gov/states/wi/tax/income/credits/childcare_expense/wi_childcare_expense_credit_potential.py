@@ -27,7 +27,13 @@ class wi_childcare_expense_credit_potential(Variable):
             # federal per-individual limit under IRC §21(c).
             count_eligible = tax_unit("capped_count_cdcc_eligible", period)
             wi_expense_limit = wi_max_expense * count_eligible
-            raw_expenses = tax_unit("tax_unit_childcare_expenses", period)
+            # §71.07(9g)(b)2. swaps only the §21(c) dollar cap for the (c)5.
+            # limits, so the §21 employment-related expense definition
+            # applies: childcare plus care for a disabled adult qualifying
+            # individual (care_expenses).
+            childcare = tax_unit("tax_unit_childcare_expenses", period)
+            adult_care = add(tax_unit, period, ["care_expenses"])
+            raw_expenses = childcare + adult_care
             # Cap to WI limit, then also cap to min head/spouse earned (§21(d))
             wi_capped_expenses = min_(raw_expenses, wi_expense_limit)
             wi_relevant_expenses = min_(
@@ -35,7 +41,11 @@ class wi_childcare_expense_credit_potential(Variable):
                 tax_unit("min_head_spouse_earned", period),
             )
             cdcc_rate = tax_unit("cdcc_rate", period)
-            return wi_relevant_expenses * cdcc_rate * p_wi.fraction
+            # §71.07(9g)(c)4.: a claimant is subject to the special rules in
+            # IRC §21(e)(2) and (4), so a married claimant must file jointly
+            # unless treated as unmarried.
+            eligible = tax_unit("cdcc_filing_status_eligible", period)
+            return eligible * wi_relevant_expenses * cdcc_rate * p_wi.fraction
         else:
             # Pre-2024: Wisconsin matches the potential federal credit
             us_cdcc = tax_unit("cdcc_potential", period)

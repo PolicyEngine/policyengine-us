@@ -7,6 +7,16 @@ metadata:
   # 2023 values only appear in the Individual Income Tax Guide
   - title: C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)(p)
     href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-upon-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal
+  # 2023-2025: C.R.S. 39-22-104(3)(p.5)(I)(A)-(B) ($12,000 single / $16,000 joint)
+  - title: C.R.S. 39-22-104(3)(p.5)(I) (Colorado Revised Statutes 2025, official compilation, p. 382)
+    href: https://olls.info/crs/crs2025-title-39.pdf
+  # 2026+: C.R.S. 39-22-104(3)(p.7)(I)(A)-(B) ($1,000 single / $2,000 joint),
+  # added by HB25-1274 SECTION 18, effective because Proposition MM passed in
+  # November 2025.
+  - title: C.R.S. 39-22-104(3)(p.7)(I) (Colorado Revised Statutes 2025, official compilation, pp. 383-384)
+    href: https://olls.info/crs/crs2025-title-39.pdf
+  - title: HB25-1274 SECTION 18 (Session Laws of Colorado 2025, Chapter 402)
+    href: https://leg.colorado.gov/bills/hb25-1274
   - title: 2022 Colorado Individual Income Tax Filing Guide, 104 Book - Additions - Line 4
     href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5
   - title: 2023 Colorado Individual Income Tax Filing Guide, 104 Book - Additions - Line 4
@@ -19,18 +29,25 @@ metadata:
     href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=9
   breakdown:
     - filing_status
+# (3)(p.7) names only "single return" and "joint return"; non-joint statuses
+# follow the existing convention of using the single-return amount.
 JOINT:
   2022-01-01: 60_000
   2023-01-01: 16_000
+  2026-01-01: 2_000
 SINGLE:
   2022-01-01: 30_000
   2023-01-01: 12_000
+  2026-01-01: 1_000
 SEPARATE:
   2022-01-01: 30_000
   2023-01-01: 12_000
+  2026-01-01: 1_000
 HEAD_OF_HOUSEHOLD:
   2022-01-01: 30_000
   2023-01-01: 12_000
+  2026-01-01: 1_000
 SURVIVING_SPOUSE:
   2022-01-01: 30_000
   2023-01-01: 12_000
+  2026-01-01: 1_000

@@ -5,6 +5,7 @@ class il_aabd_countable_assets(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = MONTH
+    quantity_type = STOCK
     label = "Illinois Aid to the Aged, Blind or Disabled (AABD) countable assets"
     reference = (
         "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.140",

@@ -8,14 +8,22 @@ DATASETS = [
 YEARS = list(range(2024, 2026))
 
 
-@pytest.mark.parametrize("dataset", DATASETS)
-@pytest.mark.parametrize("year", YEARS)
-def test_microsim_runs(dataset: str, year: int):
-    import numpy as np
+@pytest.fixture(scope="module", params=DATASETS)
+def dataset_sim(request):
+    """One subsampled Microsimulation per dataset, shared across the
+    parametrized years (the tests only read via calc, so sharing is safe)."""
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation(dataset=dataset)
+    sim = Microsimulation(dataset=request.param)
     sim.subsample(1_000)
+    return sim
+
+
+@pytest.mark.parametrize("year", YEARS)
+def test_microsim_runs(dataset_sim, year: int):
+    import numpy as np
+
+    sim = dataset_sim
     hnet = sim.calc("household_net_income", period=year)
     assert not hnet.isna().any(), "Some households have NaN net income."
     # Deciles are 1-10, with -1 for negative income.
@@ -78,4 +86,26 @@ def test_county_persists_across_periods():
 
     assert not np.any(county_2025 == County.ALBANY_COUNTY_NY.index), (
         "Should not fall back to Albany county"
+    )
+
+
+def test_default_dataset_loads_and_runs():
+    """The no-argument default (certified Populace build) resolves via the
+    hf://datasets/ path and entity-level interception, and produces sane
+    aggregates."""
+    import numpy as np
+    from policyengine_us import Microsimulation
+    from policyengine_us.system import DEFAULT_DATASET
+
+    assert "populace" in DEFAULT_DATASET, (
+        "Default dataset should be the certified Populace build."
+    )
+
+    sim = Microsimulation()  # no dataset -> DEFAULT_DATASET (hf://datasets/...)
+    sim.subsample(1_000)
+    for year in (2024, 2026):
+        hnet = sim.calc("household_net_income", period=year)
+        assert not hnet.isna().any(), f"NaN household net income in {year}."
+    assert sim.calc("adjusted_gross_income", period=2026).sum() > 0, (
+        "Total AGI should be positive on the default dataset."
     )

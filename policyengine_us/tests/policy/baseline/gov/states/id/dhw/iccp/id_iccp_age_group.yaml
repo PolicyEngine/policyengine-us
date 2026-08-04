@@ -1,0 +1,51 @@
+- name: Case 1, infant age group applies below 24 months.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_iccp_age_group: INFANT
+
+- name: Case 2, toddler age group applies at age 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_iccp_age_group: TODDLER
+
+- name: Case 3, preschool age group applies at age 3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_iccp_age_group: PRESCHOOL
+
+- name: Case 4, school-age group applies at age 5.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_iccp_age_group: SCHOOL_AGE

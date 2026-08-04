@@ -10,4 +10,4 @@ class is_usda_disabled(Variable):
 
     def formula(person, period, parameters):
         programs = parameters(period).gov.usda.disabled_programs
-        return np.any([person(program, period) for program in programs])
+        return np.logical_or.reduce([person(program, period) for program in programs])

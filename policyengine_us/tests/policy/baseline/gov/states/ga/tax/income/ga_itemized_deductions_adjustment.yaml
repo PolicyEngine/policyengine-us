@@ -1,0 +1,25 @@
+- name: Georgia itemized deductions adjustment defaults to zero when not provided.
+  period: 2023
+  input:
+    tax_unit_itemizes: true
+    ga_standard_deduction: 10_000
+    itemized_taxable_income_deductions: 18_000
+    state_code: GA
+  output:
+    # No ga_itemized_deductions_adjustment input, so it defaults to 0
+    # and Georgia deductions equal the federal itemized amount unchanged.
+    ga_itemized_deductions_adjustment: 0
+    ga_deductions: 18_000
+
+- name: Setting Georgia itemized deductions adjustment reduces Georgia deductions by that amount.
+  period: 2023
+  input:
+    tax_unit_itemizes: true
+    ga_standard_deduction: 10_000
+    itemized_taxable_income_deductions: 18_000
+    ga_itemized_deductions_adjustment: 500
+    state_code: GA
+  output:
+    # ga_deductions = itemized 18_000 - ga_itemized_deductions_adjustment 500.
+    ga_itemized_deductions_adjustment: 500
+    ga_deductions: 17_500

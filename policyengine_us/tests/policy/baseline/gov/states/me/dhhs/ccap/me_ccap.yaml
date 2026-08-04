@@ -26,10 +26,9 @@
     # Market rate (weekly): $300 => monthly = 300 * 52/12 = $1,300.
     # Parent fee (monthly): $216.67.
     # Expenses (monthly): 20800/12 = $1,733.33.
-    # Uncapped: max(1733.33 - 216.67, 0) = $1,516.67.
-    # Max reimbursement: $1,300.
-    # Benefit = min(1516.67, 1300) = $1,300.
-    me_ccap: 1_300
+    # Capped expenses = min(1733.33, 1300) = $1,300.
+    # Benefit = max(1300 - 216.67, 0) = $1,083.33.
+    me_ccap: 1_083.33
 
 - name: Case 2, ineligible family, zero benefit.
   period: 2026-01
@@ -147,10 +146,9 @@
     # Weekly market rate: $95.51 => monthly = 95.51 * 52/12 = $413.88.
     # Parent fee (monthly): $650.
     # Expenses (monthly): 10000/12 = $833.33.
-    # Uncapped: max(833.33 - 650, 0) = $183.33.
-    # Max reimbursement: $413.88.
-    # Benefit = min(183.33, 413.88) = $183.33.
-    me_ccap: 183.33
+    # Capped expenses = min(833.33, 413.88) = $413.88.
+    # Benefit = max(413.88 - 650, 0) = $0.
+    me_ccap: 0
 
 - name: Case 6, multiple children, different age groups, one fee for family.
   period: 2026-01
@@ -185,9 +183,9 @@
     # Max reimbursement: 544 * 52/12 = $2,357.33.
     # Expenses (monthly): 30000/12 = $2,500.
     # Parent fee (monthly): $216.67.
-    # Uncapped: max(2500 - 216.67, 0) = $2,283.33.
-    # Benefit = min(2283.33, 2357.33) = $2,283.33.
-    me_ccap: 2_283.33
+    # Capped expenses = min(2500, 2357.33) = $2,357.33.
+    # Benefit = max(2357.33 - 216.67, 0) = $2,140.67.
+    me_ccap: 2_140.67
 
 - name: Case 7, multiple children, parent fee exceeds market rate for one child only.
   period: 2026-01
@@ -222,9 +220,9 @@
     # Max reimbursement: 370.51 * 52/12 = $1,605.54.
     # Expenses (monthly): 25000/12 = $2,083.33.
     # Parent fee (monthly): $520.
-    # Uncapped: max(2083.33 - 520, 0) = $1,563.33.
-    # Benefit = min(1563.33, 1605.54) = $1,563.33.
-    me_ccap: 1_563.33
+    # Capped expenses = min(2083.33, 1605.54) = $1,605.54.
+    # Benefit = max(1605.54 - 520, 0) = $1,085.54.
+    me_ccap: 1_085.54
 
 - name: Case 8, zero childcare expenses, benefit capped at zero.
   period: 2026-01
@@ -284,10 +282,10 @@
     # Weekly market rate: $200 => monthly = 200 * 52/12 = $866.67.
     # Parent fee (monthly): $866.67.
     # Expenses (monthly): 15000/12 = $1,250.
-    # Uncapped: max(1250 - 866.67, 0) = $383.33.
     # Max reimbursement: $866.67.
-    # Benefit = min(383.33, 866.67) = $383.33.
-    me_ccap: 383.33
+    # Capped expenses = min(1250, 866.67) = $866.67.
+    # Benefit = max(866.67 - 866.67, 0) = $0.
+    me_ccap: 0
 
 - name: Case 10, negative countable income does not inflate benefit.
   period: 2026-01

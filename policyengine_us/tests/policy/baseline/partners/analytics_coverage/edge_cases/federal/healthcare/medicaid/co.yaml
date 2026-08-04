@@ -1,0 +1,122 @@
+# Colorado Medicaid expansion cases (outputs differ from the federal.yaml
+# TX non-expansion baseline). CO also carries the suite's cross-year pin:
+# the same $22,000 adult is eligible in 2026 but ineligible in 2025 because
+# the FPG changed (1.38 x 15,960 = 22,024.80 in 2026 vs 1.38 x 15,650 =
+# 21,597 in 2025).
+# CO Medicaid per capita: $12,959,433,815 / 1,185,011 enrolled = $10,936.13.
+- name: medicaid_adult_below_138pct_fpl_expansion (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Expansion state: 22,000 / 15,960 = 1.378 FPL < 1.38 -> ADULT
+        # (the identical household is ineligible in the TX baseline).
+        # Single enrollee: medicaid = CO per capita 10,936.13.
+        medicaid: 10_936.13
+        is_medicaid_eligible: true
+        medicaid_category: 4  # ADULT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_adult_22k_above_138pct_fpl_2025 (co)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Cross-year income boundary pin: in 2025 the same $22,000 is
+        # 22,000 / 15,650 = 1.406 FPL > 1.38, flipping the adult from
+        # Medicaid (2026 case above) to the ACA PTC.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        medicaid_category: 9  # NONE
+        chip: 0.0
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        aca_ptc: 4_664.75
+        premium_tax_credit: 4_664.75

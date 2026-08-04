@@ -1,0 +1,67 @@
+# Florida School Readiness eligible child = age eligible (< 13) AND CCDF
+# immigration eligible (8 USC 1641, 45 CFR 98.20; citizens and qualified
+# noncitizens). Exercises the AND truth table directly.
+
+- name: Case 1, age eligible and citizen is an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_fl_sr_age_eligible: true
+    is_ccdf_immigration_eligible_child: true
+    is_fl_sr_child_eligible: true
+
+- name: Case 2, age eligible but undocumented is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_fl_sr_age_eligible: true
+    is_ccdf_immigration_eligible_child: false
+    is_fl_sr_child_eligible: false
+
+- name: Case 3, citizen but too old is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 14
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_fl_sr_age_eligible: false
+    is_ccdf_immigration_eligible_child: true
+    is_fl_sr_child_eligible: false
+
+- name: Case 4, refugee qualified noncitizen child is an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_fl_sr_age_eligible: true
+    is_ccdf_immigration_eligible_child: true
+    is_fl_sr_child_eligible: true

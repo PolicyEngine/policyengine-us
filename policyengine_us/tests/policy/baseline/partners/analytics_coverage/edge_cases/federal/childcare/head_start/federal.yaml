@@ -1,0 +1,783 @@
+# Head Start (gov/hhs/head_start) federal edge cases — TX-shaped template.
+# Per-slot amount = state spending (2023-09-01, uprated by gov.hhs.uprating) / state enrollment.
+# TX 2026: 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27
+# TX 2025: 540_532_752 x (321.9 / 304.7) / 47_286 = 12_076.41
+# Eligibility: age in [3, 6) AND (AGI <= tax_unit_fpg OR categorical via SNAP/TANF/SSI/homeless/foster).
+# Model tax_unit_fpg (size 2): 21_640 in 2026; 21_150 in 2025.
+- name: head_start_child_age_2_too_young (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id001
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        # Deliberate demographic (too-young) boundary zero: age 2 < age_range lower
+        # threshold of 3, so head_start is 0 despite $0 income. The positive amount
+        # this child would receive is early_head_start, pinned in the sibling
+        # early_head_start suite.
+        head_start: 0.0
+      child1:
+        head_start: 0.0
+- name: head_start_child_age_3_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id002
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Lower age boundary (age 3, first eligible year) at $0 income (AGI 0 <= FPG
+        # 21_640): TX per-slot amount = 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_child_age_3_eligible_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id003
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # 2025 regime differs from 2026 via the HHS uprating factor applied to the
+        # 2023-09-01 spending: 540_532_752 x (321.9 / 304.7) / 47_286 = 12_076.41.
+        head_start: 12076.41
+- name: head_start_child_age_5_last_eligible_year (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id004
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Age 5 is the last eligible year (age_range bracket is [3, 6)):
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_child_age_6_aged_out (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id005
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Deliberate demographic (aged-out) boundary zero: age 6 is the first
+        # ineligible age (age_range upper threshold), despite $0 income.
+        head_start: 0.0
+- name: head_start_income_at_fpg_boundary (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 21_640
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id006
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # AGI 21_640 == size-2 FPG 21_640: pins the <= comparison in
+        # is_head_start_income_eligible (eligible exactly AT the guideline).
+        is_head_start_income_eligible: true
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_income_just_above_fpg_snap_categorical (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 21_700
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id007
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # AGI 21_700 > size-2 FPG 21_640: the income route flips off just above the
+        # guideline (paired with the at-boundary case)...
+        is_head_start_income_eligible: false
+        # ...but the family still receives TX SNAP at this income (well under the
+        # 130%-FPG gross limit), so the SNAP/TANF/SSI categorical OR-branch keeps
+        # the child eligible.
+        is_head_start_categorically_eligible: true
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_foster_child_above_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        was_in_foster_care: true
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id008
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Person-level categorical route: was_in_foster_care keeps the child
+        # eligible even though AGI 50_000 is ~231% of FPG and SNAP is 0.
+        is_head_start_categorically_eligible: true
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_homeless_household_above_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id009
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        is_homeless: true
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Household-level categorical route: is_homeless keeps the child eligible
+        # even though AGI 50_000 is ~231% of FPG and SNAP is 0.
+        is_head_start_categorically_eligible: true
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27
+- name: head_start_negative_self_employment_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 25_000
+        self_employment_income_before_lsr: -30_000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id010
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Self-employment loss drives AGI negative (25_000 - 30_000 = -5_000 <= FPG),
+        # so the child is income-eligible; the benefit is exactly the per-slot
+        # amount and does not inflate with more-negative income:
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        is_head_start_income_eligible: true
+        head_start: 12_320.27
+- name: head_start_above_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id011
+          - head
+          - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_head:
+        members:
+          - head
+      mu_child1:
+        members:
+          - child1
+  output:
+    people:
+      head:
+        head_start: 0.0
+      child1:
+        # Deliberate income-route zero: AGI 50_000 is ~231% of FPG, SNAP/TANF/SSI
+        # are all 0 at this income, and no homeless/foster flag is set, so neither
+        # the income nor the categorical branch applies.
+        is_head_start_income_eligible: false
+        is_head_start_categorically_eligible: false
+        head_start: 0.0
+- name: head_start_size_4_couple_2_children (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_ccdf_reason_for_care_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: false
+    households:
+      household:
+        members: &id012
+          - head
+          - spouse
+          - child1
+          - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id012
+    tax_units:
+      tax_unit:
+        members: *id012
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id012
+    marital_units:
+      mu_couple:
+        members:
+          - head
+          - spouse
+      mu_child1:
+        members:
+          - child1
+      mu_child2:
+        members:
+          - child2
+  output:
+    people:
+      head:
+        head_start: 0.0
+      spouse:
+        head_start: 0.0
+      child1:
+        # Age 8 sibling is outside the [3, 6) age range.
+        head_start: 0.0
+      child2:
+        # Canonical 4-person composition: AGI 20_000 is below the size-4 FPG, and
+        # only the age-eligible child receives the per-slot amount:
+        # 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27.
+        head_start: 12_320.27

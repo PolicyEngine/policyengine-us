@@ -1,0 +1,62 @@
+# KY CCAP day length: FULL_DAY when hours/day >= 5 (Section 1(13)), else PART_DAY.
+
+- name: Case 1, five or more hours per day is a full day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 8
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_day_length: FULL_DAY
+
+- name: Case 2, exactly five hours per day is a full day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 5
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_day_length: FULL_DAY
+
+- name: Case 3, fewer than five hours per day is a part day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 4
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_day_length: PART_DAY
+
+- name: Case 4, just under five hours per day is a part day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 4.99
+        # 4.99 < 5 -> PART_DAY (just below the full-day boundary)
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_day_length: PART_DAY
+
+- name: Case 5, zero hours of care is a part day.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 0
+    households:
+      household:
+        state_code: KY
+  output:
+    ky_ccap_day_length: PART_DAY

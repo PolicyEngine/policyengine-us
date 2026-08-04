@@ -27,3 +27,14 @@
     state_code: OR
   output:
     or_cdcc_relevant_expenses: 24_000 # min(24000,30000)
+
+- name: Care expenses for a disabled adult qualifying individual enter the expense base
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 0
+    care_expenses: 5_000
+    capped_count_cdcc_eligible: 1
+    min_head_spouse_earned: 30_000
+    state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 5_000 # min(5000, 12000, 30000)

@@ -1,0 +1,43 @@
+# ia_child_care_subsidies: SPMUnit, USD, YEAR (federal aggregator registration).
+# Adds the monthly ia_cca benefit to an annual total so it flows into the federal
+# child_care_subsidies variable.
+
+- name: Annual subsidy is twelve times the monthly CCA benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 18_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 12_000
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+        spm_unit_assets: 5_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Preschool licensed center NO_RATING ceiling = 19.50 * monthly_units(40)
+    #   = 19.50 * 34.6667 = 676.00; expense 12_000/yr -> 1_000/mo capped at 676.00.
+    # Income 1_500/mo <= Level A (family 2, 1_619) -> copay 0.
+    # Monthly benefit = 676.00. Read at a YEAR period, the MONTH-defined ia_cca
+    # sums across the 12 months -> 676.00 * 12 = 8_112.00, and the YEAR aggregator
+    # adds it through to the same total.
+    ia_cca: 8_112
+    ia_child_care_subsidies: 8_112

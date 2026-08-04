@@ -1,0 +1,13 @@
+- name: Marin County is True
+  period: 2026
+  input:
+    county_str: MARIN_COUNTY_CA
+  output:
+    in_marin: true
+
+- name: Not Marin County is False
+  period: 2026
+  input:
+    county_str: SHASTA_COUNTY_CA
+  output:
+    in_marin: false

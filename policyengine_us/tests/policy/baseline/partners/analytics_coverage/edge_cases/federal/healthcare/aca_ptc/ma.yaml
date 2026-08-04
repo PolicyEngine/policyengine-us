@@ -1,0 +1,116 @@
+# Massachusetts variant — differs from the federal.yaml TX baseline for
+# state-policy reasons: MA uses its own state age curve (2:1 compression;
+# age 35 -> 1.8003, age 33 -> 1.7763 vs federal 1.5974 / 1.566), and the
+# 5-year-old lands in MA CHIP at 183% of poverty. Suffolk County is rating
+# area 5 (2026 age-0 SLCSP $266.00/month).
+- name: aca_ptc_family_no_employer_offer_state_age_curve (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # MA CHIP per-capita amount; CHIP is disqualifying coverage, so the
+        # child is excluded from the SLCSP.
+        is_chip_eligible: true
+        chip: 4_021.53
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        # Adults-only SLCSP = 266.00 x (1.8003 + 1.7763) x 12 = 11,416.51.
+        # MAGI fraction = floor(100 x 50,000 / 26,650) / 100 = 1.87; figure
+        # = 0.0419 + (1.87 - 1.50) / 0.50 x (0.066 - 0.0419) = 0.059734.
+        # PTC = 11,416.51 - 0.059734 x 50,000 = 8,429.81.
+        aca_ptc: 8_429.81
+        premium_tax_credit: 8_429.81

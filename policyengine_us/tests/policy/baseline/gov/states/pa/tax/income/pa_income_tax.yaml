@@ -237,3 +237,53 @@
         state_code: PA
   output:  # expected results from TAXSIM35
     pa_income_tax: 1308.44
+
+
+- name: Case 4, retired household with IRA distributions and Social Security.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: true
+        taxable_pension_income: 40_000
+        taxable_ira_distributions: 30_000
+        social_security: 30_000
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        taxable_pension_income: 20_000
+        social_security: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        pa_use_tax: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    pa_total_taxable_income: 0
+    pa_income_tax: 0
+
+- name: Case 5, Roth conversions are not taxable in Pennsylvania before retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        taxable_roth_conversions: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        pa_use_tax: 0
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_total_taxable_income: 0
+    pa_income_tax: 0

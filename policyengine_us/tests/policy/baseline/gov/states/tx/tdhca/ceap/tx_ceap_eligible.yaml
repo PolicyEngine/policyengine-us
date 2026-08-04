@@ -2,7 +2,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 20_000
+    employment_income: 20_000
     spm_unit_size: 1
     state_code: TX
   output:
@@ -14,7 +14,7 @@
   input:
     # 150% FPG for HH of 4 = $46,800; 60% SMI ~ $56,680
     # Income must exceed both limits to be ineligible
-    irs_gross_income: 60_000
+    employment_income: 60_000
     spm_unit_size: 4
     state_code: TX
     is_snap_eligible: false
@@ -25,7 +25,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 0
+    employment_income: 0
     spm_unit_size: 1
     state_code: TX
   output:
@@ -35,7 +35,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 10_000
+    employment_income: 10_000
     spm_unit_size: 1
     state_code: CA
   output:
@@ -46,7 +46,7 @@
   period: 2024
   input:
     # 50% FPG for HH of 1 = $7,580 (FPG 2024 = $15,060 * 0.5)
-    irs_gross_income: 7_580
+    employment_income: 7_580
     spm_unit_size: 1
     state_code: TX
   output:
@@ -57,7 +57,7 @@
   period: 2025
   input:
     # In FY 2025, only 150% FPG applies (SMI threshold removed)
-    irs_gross_income: 50_000
+    employment_income: 50_000
     spm_unit_size: 4
     state_code: TX
     is_snap_eligible: false
@@ -68,7 +68,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 80_000
+    employment_income: 80_000
     spm_unit_size: 1
     state_code: TX
     is_snap_eligible: true

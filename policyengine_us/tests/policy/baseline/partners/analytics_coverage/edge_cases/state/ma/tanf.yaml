@@ -1,0 +1,274 @@
+# MA TAFDC (= tanf in MA). Private-housing payment standards, 2025-04-01
+# (gov/states/ma/dta/tcap/tafdc/eligibility/income_limit/base/private_housing.yaml):
+# size 1 = 604, size 2 = 753, size 3 = 901 per month.
+# Plus 500/year clothing allowance per eligible dependent child (under 18).
+- name: tanf_max_benefit_size_3_no_income (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        - child2
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Zero income: full size-3 payment standard 901 x 12 = 10,812
+        # + 2 children x 500 clothing allowance = 11,812.
+        ma_tafdc: 11_812.0
+        tanf: 11_812.0
+- name: tanf_partial_benefit_with_earnings_size_2 (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Earnings 500/mo (income < 200% FPG -> 100% disregard for 6 months):
+        # countable earned = 6 months x 0 + 6 months x [(500 - 200) x 50%] = 900/yr
+        # = 75/mo. Grant: 753 - 75 = 678/mo -> 8,136 + 500 clothing = 8,636.
+        ma_tafdc: 8_636.0
+        tanf: 8_636.0
+- name: tanf_youngest_child_age_17_eligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Child at 17 < 18 dependent age limit -> eligible:
+        # size-2 payment standard 753 x 12 = 9,036 + 500 clothing = 9,536.
+        ma_tafdc: 9_536.0
+        tanf: 9_536.0
+- name: tanf_only_child_age_18_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Child at 18 fails the under-18 dependent age limit and nobody is
+        # pregnant -> no eligible dependent -> categorically ineligible.
+        ma_tafdc: 0.0
+        tanf: 0.0
+- name: tanf_pregnant_adult_no_children (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        # Partner-sent input: pregnancy-based TAFDC eligibility flag.
+        ma_tafdc_pregnancy_eligible: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Pregnant adult with no children qualifies via the pregnancy route:
+        # size-1 payment standard 604 x 12 = 7,248 (no clothing allowance,
+        # since no dependent child under 18 is present).
+        ma_tafdc: 7_248.0
+        tanf: 7_248.0

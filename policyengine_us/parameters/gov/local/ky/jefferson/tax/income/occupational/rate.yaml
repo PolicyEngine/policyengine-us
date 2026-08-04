@@ -1,0 +1,16 @@
+description: Louisville Metro (Jefferson County), Kentucky levies an occupational license fee on earnings at this rate.
+# Resident occupational license fee rate, assigned by residence (county_str).
+# Combines the 1.25% Louisville Metro government fee, 0.20% TARC transit fee,
+# and the 0.75% Louisville/JCPS school board fee for a 2.20% resident rate
+# (nonresidents pay 1.45%). The JCPS 0.75% portion is subject to a wage cap
+# that is not modeled, so the flat 2.20% slightly overstates earners above
+# that cap.
+values:
+  2021-01-01: 0.022
+metadata:
+  unit: /1
+  period: year
+  label: Louisville Metro occupational license fee rate
+  reference:
+    - title: Louisville Metro Revenue Commission Form W-1KJC instructions — occupational license fee rates
+      href: https://louisvilleky.gov/sites/default/files/2024-12/w-1kjc_instructions_2025.pdf

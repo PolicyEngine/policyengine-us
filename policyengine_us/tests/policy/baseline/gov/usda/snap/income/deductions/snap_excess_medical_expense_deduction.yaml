@@ -98,3 +98,50 @@
         state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 0
+
+- name: Prorated ineligible elderly member's medical expenses are excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: UNDOCUMENTED
+        other_medical_expenses: 6_000
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # The prorated member is not a household member (7 CFR 273.9(d)(3),
+    # 271.2), so their $500 monthly expenses do not count, and with zero
+    # excess the standard medical deduction is not claimable either.
+    snap_excess_medical_expense_deduction: 0
+
+- name: Eligible elderly member's medical expenses remain deductible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        other_medical_expenses: 6_000
+      person2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # $500 monthly expenses less the $35 disregard, above Texas's $135
+    # standard medical deduction.
+    snap_excess_medical_expense_deduction: 465

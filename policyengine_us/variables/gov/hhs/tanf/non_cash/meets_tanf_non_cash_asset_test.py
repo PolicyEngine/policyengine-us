@@ -12,5 +12,18 @@ class meets_tanf_non_cash_asset_test(Variable):
         assets = spm_unit("snap_assets", period)
         state = spm_unit.household("state_code_str", period)
         limits = parameters(period).gov.hhs.tanf.non_cash
+        vehicle_value = spm_unit.household("household_vehicles_value", period)
+        vehicles_owned = spm_unit.household("household_vehicles_owned", period)
+        # Preserve the historical one-vehicle assumption when vehicle value is
+        # provided without a vehicle count.
+        vehicle_count = max_(vehicles_owned, vehicle_value > 0)
+        vehicle_exemption = where(
+            vehicle_count > 0,
+            limits.tx_vehicle_exemption
+            + max_(vehicle_count - 1, 0) * limits.tx_additional_vehicle_exemption,
+            0,
+        )
+        tx_vehicle_value = max_(vehicle_value - vehicle_exemption, 0)
+        assets = assets + where(state == "TX", tx_vehicle_value, 0)
         asset_limit = limits.asset_limit[state]
         return assets <= asset_limit

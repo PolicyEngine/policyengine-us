@@ -1,0 +1,142 @@
+# Colorado cases that differ from the federal.yaml (TX) baseline for
+# state-policy reasons: CO elected a 200%-FPG BBCE gross limit (TX uses 165%)
+# with no BBCE net test, is an always-SUA state (SUA $594 FY2026), and the
+# same $46,000 income that is ineligible in TX is eligible here.
+- name: snap_income_46000_eligible_under_200_pct_bbce_limit (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 46_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        housing_cost: 18_000
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # $46,000 exceeds the TX/IL 165% BBCE limit (FY2026: $43,972.50) but
+        # stays under CO's 200% limit all year (Jan-Sep: 2 x 26,650 = 53,300).
+        # Jan-Sep: pre-shelter net = 46,000/12 x 0.8 - 209 = 2,857.67; shelter
+        # expense = 1,500 housing + 594 CO SUA = 2,094 - 1,428.83 = 665.17 ->
+        # net = 2,192.50 -> EC 657.60 -> 785 - 657.60 = 127.40/month; Oct-Dec:
+        # 812.72 - 654.30 = 158.42. Annual = 9 x 127.40 + 3 x 158.42 = 1,621.86.
+        snap: 1621.86
+        is_snap_eligible: true
+- name: snap_income_above_200_pct_bbce_limit_54740 (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 54_740
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+        snap_assets: 500
+        housing_cost: 18_000
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side pin of CO's 200% BBCE upper boundary:
+        # 54,740 exceeds 200% of the FPG in every month (Jan-Sep: 53,300;
+        # Oct-Dec: 54,640) and the federal 130% gross test, so the unit is
+        # ineligible all year.
+        snap: 0.0
+        is_snap_eligible: false

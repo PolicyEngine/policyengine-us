@@ -8,4 +8,4 @@ class ut_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.UT
-    reference = ""
+    adds = "gov.states.ut.tax.income.credits.refundable"

@@ -1,0 +1,14 @@
+description: Mississippi counts these income sources as earned income under the Working Disabled program.
+values:
+  1999-07-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Mississippi Working Disabled earned income sources
+  reference:
+    - title: Mississippi Division of Medicaid Administrative Code Part 104, Income
+      href: https://www.medicaid.ms.gov/wp-content/uploads/2014/01/Admin-Code-Part-104.pdf#page=20

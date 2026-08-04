@@ -1,0 +1,461 @@
+# Maryland CCS Edge Case Tests
+# Edge cases not covered by md_ccs_eligible.yaml, md_ccs_eligible_child.yaml,
+# md_ccs_income_eligible.yaml, md_ccs_countable_income.yaml, md_ccs_weekly_copay.yaml,
+# md_ccs.yaml, integration.yaml.
+
+- name: Case 7, zero income family is income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 0 <= 75% SMI -> eligible
+    md_ccs_income_eligible: true
+
+# === Very high income ===
+
+- name: Case 8, very high income family is not income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 500_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 500,000/12 = 41,666.67 >> 75% SMI -> not eligible
+    md_ccs_income_eligible: false
+
+# === Family size: minimum (1 person, adult only) ===
+
+- name: Case 10, large family of 8 with 6 children.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 120_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 38
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person5:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person6:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person7:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        md_ccs_provider_type: LICENSED_CENTER
+      person8:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: MD
+  output:
+    # All 6 children under 13 -> all eligible
+    md_ccs_eligible_child: [false, false, true, true, true, true, true, true]
+
+    # hhs_smi for fam 8 = 149,249 * (0.52 + 0.16*5 + 0.03*2) = 149,249 * 1.38 = 205,963.62
+    # monthly 75% SMI = 205,963.62 * 0.75 / 12 = 12,872.73
+    # monthly countable: 120,000 / 12 = 10,000
+    # 10,000 <= 12,872.73 -> eligible
+    md_ccs_income_eligible: true
+
+# === Self-employment income edge cases ===
+
+- name: Case 11, family with 100 percent self-employment income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 60_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # self_employment_income: 60,000 * (1 - 0.30) = 42,000
+    # monthly: 42,000 / 12 = 3,500
+    md_ccs_countable_income: 3_500
+
+- name: Case 12, family with zero self-employment income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        self_employment_income: 0
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # employment: 50,000, self_employment: 0 * 0.70 = 0
+    # monthly: 50,000 / 12 = 4,166.67
+    md_ccs_countable_income: 4_166.67
+
+# === Age boundary: child exactly age 13 (non-disabled) ===
+
+- name: Case 19, four children copay capped at 3 children.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person5:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MD
+  output:
+    # 4 eligible children, each full-time -> raw total = $3*4 = $12/week
+    # capped_count = min(4, 3) = 3, scale = 3/4 = 0.75
+    # scaled total = $12 * 0.75 = $9/week
+    md_ccs_weekly_copay: 9
+
+- name: Case 24, zero childcare expenses results in zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # expenses = 0, copay = $3 * 52 / 12 = $13/month
+    # benefit = max(0 - 13, 0) = 0
+    md_ccs: 0
+
+# === Expenses less than copay ===
+
+- name: Case 25, expenses less than copay results in zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # annual copay = $3 * 52 = $156
+    # annual expenses = $100
+    # benefit = max(100 - 156, 0) = 0 (floored at 0)
+    md_ccs: 0
+
+# === Service unit boundary: hours per day ===
+
+- name: Case 31, undocumented child is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # CCDF immigration check fails for undocumented children
+    md_ccs_eligible_child: [false, false]
+    md_ccs_eligible: false
+
+# === Non-dependent child ===
+
+- name: Case 35, federal 7 percent cap applies with three children.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_600
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # 3 children, each full-time -> raw = $3 * 3 = $9/week
+    # capped_count = min(3, 3) = 3, scale = 1
+    # monthly countable = 3,600 / 12 = 300
+    # weekly income = 300 * 12 / 52 = 69.23
+    # 7% cap = 69.23 * 0.07 = 4.85
+    # min($9, $4.85) = $4.85 -> cap applies
+    md_ccs_weekly_copay: 4.85
+
+# === Zero childcare hours ===
+
+- name: Case 36, zero childcare hours per day gets hourly rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 0
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # 0 hrs/day -> 1 unit (hourly) -> $1/week
+    md_ccs_weekly_copay: 1
+
+# === Benefit floor at zero: copay exceeds expenses ===
+
+- name: Case 37, negative countable income from self-employment does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000_000
+        is_tax_unit_head_or_spouse: true
+        weekly_hours_worked: 40
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # TCA -> copay exempt -> $0 copay
+    # benefit = max(10,000 - 0, 0) = 10,000
+    # monthly: 10,000 / 12 = 833.33
+    # Negative self-employment income does not inflate benefit (benefit formula
+    # uses expenses - copay, not income-based formula)
+    md_ccs: 793

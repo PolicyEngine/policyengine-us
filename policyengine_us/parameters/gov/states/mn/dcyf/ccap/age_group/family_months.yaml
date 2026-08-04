@@ -1,0 +1,36 @@
+description: Minnesota assigns children in family child care to age groups by age in months under the Child Care Assistance Program.
+# Amount is the index into the MNCCAPAgeGroup enum (0 Infant, 1 Toddler, 2 PreSchool, 3 SchoolAge).
+# School age starts at kindergarten eligibility, modeled as 60 months (age 5).
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Minnesota CCAP family child care age group by months
+  reference:
+    - title: Minn. Rules 9502.0315 (family day care definitions)
+      href: https://www.revisor.mn.gov/rules/9502.0315/
+    - title: Minn. Stat. 142B.01, subd. 13 (toddler, preschooler, and school age definitions)
+      href: https://www.revisor.mn.gov/statutes/cite/142B.01
+
+brackets:
+  # Infant: up to 12 months
+  - threshold:
+      2025-01-01: 0
+    amount:
+      2025-01-01: 0
+  # Toddler: 12 up to 24 months
+  - threshold:
+      2025-01-01: 12
+    amount:
+      2025-01-01: 1
+  # PreSchool: 24 months up to kindergarten eligibility
+  - threshold:
+      2025-01-01: 24
+    amount:
+      2025-01-01: 2
+  # School Age: kindergarten eligibility (60 months) onward
+  - threshold:
+      2025-01-01: 60
+    amount:
+      2025-01-01: 3

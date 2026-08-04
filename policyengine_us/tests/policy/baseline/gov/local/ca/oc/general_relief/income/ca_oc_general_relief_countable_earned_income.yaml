@@ -1,0 +1,24 @@
+- name: Countable earned income applies the twenty percent deduction.
+  period: 2026-01
+  input:
+    employment_income: 1_000 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_gross_earned_income: 1_000
+    ca_oc_general_relief_countable_earned_income: 800
+
+- name: Zero earned income produces zero countable earned income.
+  period: 2026-01
+  input:
+    in_oc: true
+  output:
+    ca_oc_general_relief_countable_earned_income: 0
+
+- name: Negative self-employment income does not reduce countable earned income below zero.
+  period: 2026-01
+  input:
+    self_employment_income: -1_000 * 12
+    in_oc: true
+  output:
+    ca_oc_general_relief_gross_earned_income: -1_000
+    ca_oc_general_relief_countable_earned_income: 0

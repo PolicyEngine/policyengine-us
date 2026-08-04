@@ -27,5 +27,37 @@
   input:
     older_spouse_birth_year: 1954
     state_code: MI
-  output: 
+  output:
     mi_standard_deduction_tier_three_eligible: true
+
+- name: 2025 filer born 1958 reaches age 67, at the tier 3 age threshold
+  period: 2025
+  input:
+    older_spouse_birth_year: 1958
+    state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: true
+
+- name: 2025 filer born 1959 below the tier 3 age threshold
+  period: 2025
+  input:
+    older_spouse_birth_year: 1959
+    state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: false
+
+- name: 2026 filer born 1959 reaches age 67, at the tier 3 age threshold
+  period: 2026
+  input:
+    older_spouse_birth_year: 1959
+    state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: true
+
+- name: 2026 filer born 1960 below the tier 3 age threshold
+  period: 2026
+  input:
+    older_spouse_birth_year: 1960
+    state_code: MI
+  output:
+    mi_standard_deduction_tier_three_eligible: false

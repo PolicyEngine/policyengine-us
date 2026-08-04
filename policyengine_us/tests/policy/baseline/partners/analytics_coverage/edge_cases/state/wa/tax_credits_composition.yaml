@@ -1,0 +1,123 @@
+# WA state tax stacking. Washington has no wage income tax:
+# wa_income_tax = (capital gains tax + millionaires tax) - refundable
+# credits, and the only refundable credit is the Working Families Tax
+# Credit. These cases pin the WA-specific composition; per-credit behavior
+# lives in working_families_tax_credit.yaml.
+- name: statetax_wftc_flows_through_refundable_credits (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        capital_gains: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-kid WFTC 2026 maximum = 660 x 1.02266 uprating = 674.96; no
+        # capital gains -> tax before credits 0; net WA income tax =
+        # 0 - 674.96 = -674.96.
+        wa_working_families_tax_credit: 674.96
+        wa_refundable_credits: 674.96
+        wa_income_tax: -674.96
+        adjusted_gross_income: 20_000.0
+- name: statetax_capital_gains_below_deduction_no_tax (wa)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_000
+        long_term_capital_gains_before_response: 20_000
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # $20,000 LTCG is below the 2026 WA capital gains standard
+        # deduction ($284,000, RCW 82.87.060 uprated) -> capital gains tax
+        # 0; wages are untaxed in WA; AGI 120,000 exceeds every WFTC
+        # ceiling -> refundable credits 0; net WA income tax 0.
+        wa_capital_gains_tax: 0.0
+        wa_income_tax_before_refundable_credits: 0.0
+        wa_working_families_tax_credit: 0.0
+        wa_refundable_credits: 0.0
+        wa_income_tax: 0.0
+        adjusted_gross_income: 120_000.0

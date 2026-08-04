@@ -35,13 +35,15 @@ def create_tax_exempt() -> Reform:
         unit = USD
 
         def formula(person, period, parameters):
-            income = person("irs_employment_income", period)
+            employment_income = person("employment_income", period)
+            fica_deductions = person("fica_pre_tax_contributions", period)
             p = parameters(period).gov.contrib.tax_exempt
             exempt_income = 0
             if p.tip_income.payroll_tax_exempt:
                 exempt_income += person("tip_income", period)
             if p.overtime.payroll_tax_exempt:
                 exempt_income += person("fsla_overtime_premium", period)
+            income = max_(0, employment_income - fica_deductions)
             return max_(income - exempt_income, 0)
 
     class reform(Reform):

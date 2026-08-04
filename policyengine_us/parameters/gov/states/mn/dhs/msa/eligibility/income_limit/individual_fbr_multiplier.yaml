@@ -1,0 +1,14 @@
+description: Minnesota limits individual gross income to this multiple of the federal Supplemental Security Income individual benefit rate under the Minnesota Supplemental Aid program.
+
+values:
+  1989-01-01: 3
+
+metadata:
+  unit: /1
+  period: year
+  label: Minnesota Supplemental Aid individual gross income FBR multiplier
+  reference:
+    - title: MN DHS Combined Manual 0019.06 - Gross Income Limits (MSA)
+      href: https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&RevisionSelectionMethod=LatestReleased&dDocName=cm_001906
+    - title: MN House Research Department - Minnesota Supplemental Aid (October 2024), Income standards and treatment of income
+      href: https://www.house.mn.gov/hrd/pubs/pap_MSA.pdf#page=3

@@ -5,7 +5,6 @@ class sc_tuition_credit(Variable):
     value_type = float
     entity = Person
     label = "South Carolina Tuition Credit"
-    defined_for = "sc_tuition_credit_eligible"
     unit = USD
     definition_period = YEAR
     reference = (

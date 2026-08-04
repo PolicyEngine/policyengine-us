@@ -1,0 +1,210 @@
+- name: Per-CTC-dependent credit counts CTC-qualifying children only
+  # MFJ with a 5-year-old (CTC + EITC qualifying) and a 17-year-old
+  # (EITC-qualifying but past the CTC age cutoff). With only the CTC
+  # toggle on, only the 5-year-old should count.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 1_000
+    people:
+      filer:
+        age: 35
+      spouse:
+        age: 33
+      young_child:
+        age: 5
+      older_child:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, young_child, older_child]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 1_000  # only the 5yo is CTC-qualifying
+
+- name: Per-other-dependent credit counts non-CTC dependent children
+  # Same family — with only the other-dependent toggle on, only the
+  # 17-year-old dependent child past the CTC age cutoff should count.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 35
+      spouse:
+        age: 33
+      young_child:
+        age: 5
+      older_child:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, young_child, older_child]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 500  # only the 17yo, dependent but not CTC
+
+- name: Both per-dependent toggles split the credit by CTC eligibility
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 1_000
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 35
+      spouse:
+        age: 33
+      young_child:
+        age: 5
+      older_child:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, young_child, older_child]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 1_500  # 1*1_000 + 1*500
+
+- name: CTC age boundary — 16-year-old still counts as CTC-qualifying
+  # IRC §24(c) age cutoff is "under 17" at end of tax year. Pins the
+  # boundary on the qualifying side.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 1_000
+    people:
+      filer:
+        age: 38
+      sixteen_year_old:
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [filer, sixteen_year_old]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 1_000  # 16yo is CTC-qualifying
+
+- name: CTC age boundary — 17-year-old is past the CTC cutoff
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 1_000
+    people:
+      filer:
+        age: 38
+      seventeen_year_old:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [filer, seventeen_year_old]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0  # 17yo fails the "under 17" cutoff
+
+- name: Set-difference clamp — CTC kid failing EITC ID requirements does not net negative
+  # If a single child is CTC-qualifying but fails the EITC identification
+  # requirements (e.g., ITIN-only), the other-dependent count is still
+  # max_(dependent_count - ctc_count, 0) = max_(1 - 1, 0) = 0; we never
+  # net negative.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 38
+      child:
+        age: 5
+        meets_eitc_identification_requirements: false
+        meets_ctc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0  # max_(dependent_count - ctc_count, 0) = 0
+
+- name: Per-dependent toggles off — amounts ignored even with kids present
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: false
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: false
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 1_000
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 0
+
+- name: Per-other-dependent credit counts adult dependents
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 500
+    people:
+      filer:
+        age: 45
+      adult_parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, adult_parent]
+        filing_status: SINGLE
+  output:
+    flat_refundable_credit: 500
+
+- name: Taxpayer and dependent credits can cover every tax-unit member once
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_other_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 500
+    gov.contrib.refundable_credit_conversion.credit.per_other_dependent: 250
+    people:
+      filer:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+      adult_parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child, adult_parent]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 2_750  # 2 taxpayers + 1 CTC child + 1 other dependent

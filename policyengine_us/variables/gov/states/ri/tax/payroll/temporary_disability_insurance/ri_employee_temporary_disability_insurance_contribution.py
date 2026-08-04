@@ -12,7 +12,6 @@ class ri_employee_temporary_disability_insurance_contribution(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ri.tax.payroll.temporary_disability_insurance
-        taxable_wages = min_(
-            person("payroll_tax_gross_wages", period), p.taxable_wage_base
+        return p.employee_rate * person(
+            "ri_temporary_disability_insurance_taxable_wages", period
         )
-        return p.employee_rate * taxable_wages

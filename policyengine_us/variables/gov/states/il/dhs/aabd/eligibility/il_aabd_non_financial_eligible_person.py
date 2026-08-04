@@ -26,7 +26,7 @@ class il_aabd_non_financial_eligible_person(Variable):
         # is_ssi_eligible checks categorical (aged/blind/disabled), resources,
         # and immigration status for SSI. If True, person qualifies for IL AABD
         # regardless of whether they actually receive SSI (income may be too high).
-        ssi_status_eligible = person("is_ssi_eligible", period.this_year)
+        ssi_status_eligible = person("is_ssi_eligible", period)
 
         # IL AABD has additional qualified noncitizen categories beyond SSI
         # (e.g., abuse victims, trafficking victims, military families per

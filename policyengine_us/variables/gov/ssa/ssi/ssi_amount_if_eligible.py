@@ -9,7 +9,7 @@ class ssi_amount_if_eligible(Variable):
     entity = Person
     label = "SSI amount if eligible"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     reference = "https://www.law.cornell.edu/uscode/text/42/1382#b"
 
     def formula(person, period, parameters):
@@ -26,7 +26,7 @@ class ssi_amount_if_eligible(Variable):
         # SSI-eligible. ssi_claim_is_joint remains true for state SSPs.
 
         couple_computation = person("ssi_couple_computation_applies", period)
-        deeming_applies = person("is_ssi_spousal_deeming_applies", period)
+        deeming_applies = person("is_ssi_spousal_deeming_applies", period.this_year)
 
         individual_or_deeming_amount = where(
             deeming_applies,
@@ -44,7 +44,9 @@ class ssi_amount_if_eligible(Variable):
         # files a joint claim with parents — joint claims are between
         # spouses only. Adults 18+ (including students) go through normal
         # couple/deeming logic since they may be married.
-        base_amount = where(person("is_child", period), p.individual, base_amount)
+        base_amount = where(
+            person("is_child", period.this_year), p.individual, base_amount
+        )
 
         is_medical_facility = (
             arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
@@ -65,6 +67,4 @@ class ssi_amount_if_eligible(Variable):
 
         # 42 USC § 1382(e)(1)(A), 20 CFR § 416.414: Medical treatment
         # facility, $30/month per person.
-        base_amount = where(is_medical_facility, p.medical_facility, base_amount)
-
-        return base_amount * MONTHS_IN_YEAR
+        return where(is_medical_facility, p.medical_facility, base_amount)

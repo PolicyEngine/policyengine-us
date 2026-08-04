@@ -1,0 +1,113 @@
+# IL Medicaid Presumptive Eligibility — pregnant with Medicaid income level
+# at or below 200% FPG (89 Ill. Admin. Code 120.66). Pregnancy adds the
+# unborn child to the Medicaid unit, so a single applicant uses the
+# 2-person FPG. Boolean-only outputs, so no error margin.
+- name: il_mpe_pregnant_income_just_below_limit (il)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_female: true
+        is_pregnant: true
+        employment_income_before_lsr: 43_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # 43,000 / 21,640 (2-person FPG incl. unborn child) = 1.99 <= 2.0
+        # limit -> eligible (binding boundary).
+        il_mpe_eligible: true
+- name: il_mpe_pregnant_income_above_limit (il)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_female: true
+        is_pregnant: true
+        employment_income_before_lsr: 44_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Income-route ineligible: 44,000 / 21,640 = 2.03 > 2.0 limit.
+        il_mpe_eligible: false
+- name: il_mpe_not_pregnant_ineligible (il)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_female: true
+        is_pregnant: false
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Categorical-route ineligible: MPE covers pregnant applicants only.
+        il_mpe_eligible: false

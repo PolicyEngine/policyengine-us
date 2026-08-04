@@ -1,10 +1,12 @@
-description: Income sources that count as earned income for SNAP
+description: Person-level income sources that count as earned income for SNAP
 
 values:
   2009-01-01:
     - employment_income
-    - snap_self_employment_income_after_expense_deduction
+    # Self-employment income after the expense deduction is computed at the
+    # SPM unit level and attributed to members in snap_earned_income and
+    # snap_gross_test_income.
 metadata:
   reference:
-    - title: United States Code, Title 7, Subsection 273.9(b)(1)
+    - title: 7 CFR 273.9(b)(1)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b_1

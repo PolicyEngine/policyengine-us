@@ -1,0 +1,137 @@
+- name: New York two adults take the two-adult multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        medicaid_enrolled: true
+      person2:
+        age: 35
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 2
+
+- name: Vermont one adult with a child takes the one-adult-with-children multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        medicaid_enrolled: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    medicaid_slcsp_family_tier_multiplier: 1.93
+
+- name: New York three adults add the one-adult multiplier for each extra adult.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        medicaid_enrolled: true
+      person2:
+        age: 35
+        medicaid_enrolled: true
+      person3:
+        age: 35
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 3
+
+- name: New York applies the age-29 dependent loading to the family tier multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        medicaid_enrolled: true
+      person2:
+        age: 35
+        medicaid_enrolled: true
+      person3:
+        age: 29
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Two adults + one age-29 dependent child: 2.85 x 1.05 loading.
+    medicaid_slcsp_family_tier_multiplier: 2.9925
+
+- name: New York does not apply the age-29 loading for a younger dependent child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        medicaid_enrolled: true
+      person2:
+        age: 35
+        medicaid_enrolled: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Two adults + one young child: 2.85 with no loading.
+    medicaid_slcsp_family_tier_multiplier: 2.85
+
+- name: New York ignores non-Medicaid adults when applying the child-only multiplier.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_tax_unit_dependent: true
+        medicaid_enrolled: true
+      person2:
+        age: 40
+      person3:
+        age: 40
+      person4:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NY
+  output:
+    medicaid_slcsp_family_tier_multiplier: 0.412

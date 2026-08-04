@@ -6,6 +6,7 @@ values:
     - social_security
     - disability_benefits
     - veterans_benefits
+    - survivor_benefits
     - workers_compensation
     - unemployment_compensation
     - retirement_distributions
@@ -13,6 +14,7 @@ values:
     # (b) Alimony and support payments.
     - alimony_income
     - child_support_received
+    - financial_assistance
     # (c) Dividends, interest, and certain royalties.
     - dividend_income
     - interest_income

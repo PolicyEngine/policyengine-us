@@ -1,0 +1,15 @@
+description: Texas excludes up to this value for each additional vehicle after the first vehicle from the TANF non-cash asset test used for SNAP broad-based categorical eligibility.
+
+values:
+  2015-10-01: 0
+  2023-09-01: 8_700
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Texas TANF non-cash additional vehicle exemption for SNAP BBCE
+  reference:
+    - title: 88(R) HB 1287 - Enrolled version
+      href: https://capitol.texas.gov/tlodocs/88R/billtext/html/HB01287F.htm
+    - title: Texas Works Handbook 24-3, A-1210 General Policy
+      href: https://www.hhs.texas.gov/sites/default/files/documents/twh_24-3.pdf

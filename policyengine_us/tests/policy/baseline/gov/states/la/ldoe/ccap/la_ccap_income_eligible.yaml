@@ -1,0 +1,101 @@
+# Limits are the 85% SMI column of the LDOE sliding fee scale. January 2026
+# uses the 2025 scale (effective February 3, 2025): $4,614/month for a
+# 2-person household and $5,700/month for a 3-person household.
+- name: Case 1, three-person household just below the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_388  # $5,699/month vs $5,700 limit.
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: true
+
+- name: Case 2, three-person household just above the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 68_424  # $5,702/month vs $5,700 limit.
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: false
+
+- name: Case 3, two-person household below the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_200  # $4,600/month vs $4,614 limit.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: true
+
+- name: Case 4, two-person household above the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_512  # $4,626/month vs $4,614 limit.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: false
+
+- name: Case 5, 2024 era uses the 2024 scale limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_200  # $4,600/month vs $4,187 limit (2024 scale).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_income_eligible: false

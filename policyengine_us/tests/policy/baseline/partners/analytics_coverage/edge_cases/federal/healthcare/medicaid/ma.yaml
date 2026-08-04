@@ -1,0 +1,253 @@
+# Massachusetts-specific Medicaid policy (only cases whose outputs differ
+# from the federal.yaml TX baseline for MA-policy reasons):
+# - MA covers young adults aged 19-20 (young_adult limit 1.55; -inf in most
+#   states, including every other state in this suite).
+# - MA sets the optional senior/disabled income limit at 1.00 FPL (vs 0.75
+#   in TX) with a $2,000 individual asset limit, giving a positive senior
+#   pathway plus an exact asset-boundary pin.
+# MA Medicaid per capita: $23,407,486,687 / 1,658,082 enrolled = $14,117.21.
+- name: medicaid_ma_young_adult_age_19_covered (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Zero income <= MA parent limit 1.38 -> PARENT.
+        # Household avg SLCSP index = (478.88 + 472.50 + 266.00) / 3 = 405.79;
+        # 14,117.21 x 478.88 / 405.79 = 16,659.88.
+        medicaid: 16_659.88
+        is_medicaid_eligible: true
+        medicaid_category: 5  # PARENT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 14,117.21 x 472.50 / 405.79 = 16,437.79.
+        medicaid: 16_437.79
+        is_medicaid_eligible: true
+        medicaid_category: 5  # PARENT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # MA-only YOUNG_ADULT: age 19 with zero income < MA young adult
+        # limit 1.55 (the same person is NONE in the TX baseline case).
+        # 14,117.21 x 266.00 / 405.79 = 9,253.95.
+        medicaid: 9_253.95
+        is_medicaid_eligible: true
+        medicaid_category: 3  # YOUNG_ADULT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_ma_senior_optional_pathway_below_asset_limit (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 66
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        social_security_retirement: 13_000
+        is_medicare_eligible: true
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 1_999
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Categorically/resource SSI-eligible (aged 66, resources under
+        # $2,000) but countable income 13,000 - 240 = 12,760 exceeds the
+        # 2026 federal benefit rate 994 x 12 = 11,928, so no SSI payment.
+        ssi: 0.0
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        # QMB: countable income 12,760 < 15,960 (100% FPG) -> MSP pays
+        # Part A + Part B premiums: (565.00 + 202.90) x 12 = 9,214.80.
+        msp: 9_214.8
+        msp_eligible: true
+        # Optional senior/disabled pathway: income under MA's 1.00 FPL
+        # limit (0.75 in TX would also fail here: 12,760 > 11,970) and
+        # resources 1,999 < 2,000 asset limit. Single enrollee:
+        # medicaid = MA per capita 14,117.21.
+        medicaid: 14_117.21
+        is_medicaid_eligible: true
+        medicaid_category: 8  # SENIOR_OR_DISABLED
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_ma_senior_at_asset_limit_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 66
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        social_security_retirement: 13_000
+        is_medicare_eligible: true
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 2_000
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        # MSP is unaffected by the Medicaid asset boundary.
+        msp: 9_214.8
+        msp_eligible: true
+        # Resource boundary pin: the asset test is strict (assets < limit),
+        # so exactly $2,000 fails the $2,000 MA senior asset limit and the
+        # only $1 difference from the case above removes Medicaid.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        medicaid_category: 9  # NONE
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0

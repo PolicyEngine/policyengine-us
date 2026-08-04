@@ -6,12 +6,35 @@ class meets_snap_general_work_requirements(Variable):
     entity = Person
     label = "Person is eligible for SNAP benefits via general work requirements"
     definition_period = MONTH
-    reference = "https://www.law.cornell.edu/cfr/text/7/273.7"
+    documentation = (
+        "Working 30 or more hours weekly is an exemption from SNAP work "
+        "registration under 7 CFR 273.7(b)(1)(vii), not an affirmative "
+        "requirement. Non-exempt registrants remain eligible unless they "
+        "affirmatively fail to comply without good cause (refuse suitable "
+        "employment, employment and training noncompliance, or voluntary "
+        "quit/reduction under 7 CFR 273.7(j)). Because those 'without good "
+        "cause' noncompliance events are not observable in survey data, the "
+        "baseline assumes registration compliance; the "
+        "is_snap_work_registration_noncompliant hook can be set true to "
+        "model sanctions under 7 CFR 273.7(f)(1)-(2). Work program "
+        "participation under 7 CFR 273.7(a)(1)(ii) is affirmative "
+        "compliance and overrides the noncompliance hook."
+    )
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.7#a_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#b_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#f_1",
+        "https://www.law.cornell.edu/cfr/text/7/273.7#j",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
         age = person("monthly_age", period)
+        # 7 CFR 273.7(b)(1)(vii) exempts persons working 30 or more hours
+        # per week, determined monthly. Annual average weekly hours are
+        # used as a proxy since survey data lack monthly work histories.
         weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        # Exemptions under 7 CFR 273.7(b)(1):
         # Under 16 or 60 years of age or older are exempted
         worked_exempted_age = p.age_threshold.exempted.calc(age)
         # Unable to work due to a physical or mental limitation
@@ -25,11 +48,18 @@ class meets_snap_general_work_requirements(Variable):
         )
         # Work at least 30 hours a week
         is_working = weekly_hours_worked >= p.weekly_hours_threshold
-
-        return (
+        exempted = (
             worked_exempted_age
             | is_disabled
             | has_child
             | has_incapacitated_person
             | is_working
         )
+        # Non-exempt registrants comply by participating in, or otherwise
+        # complying with, a work program under 7 CFR 273.7(a)(1). Absent
+        # an affirmative noncompliance determination (unobservable in
+        # survey data), registrants are assumed compliant.
+        compliant = person("is_snap_work_program_participant", period) | ~person(
+            "is_snap_work_registration_noncompliant", period
+        )
+        return exempted | compliant

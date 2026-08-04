@@ -103,3 +103,32 @@
   output:
     income_tax: -733
     ct_income_tax: 2_415
+
+- name: CT 2021 joint filer with federal AGI above the 100k cliff gets no pension and annuity subtraction (taxsim 1077)
+  period: 2021
+  absolute_error_margin: 2
+  input:
+    people:
+      head:
+        age: 71
+        taxable_private_pension_income: 46_772.66
+        taxable_interest_income: 955.58
+        social_security_retirement: 10_204.63
+      spouse:
+        age: 69
+        taxable_private_pension_income: 46_772.66
+        taxable_interest_income: 955.58
+        social_security_retirement: 10_204.63
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CT
+  output:
+    adjusted_gross_income: 112_804
+    ct_pension_annuity_subtraction: 0
+    ct_social_security_benefit_adjustment: 12_246
+    ct_agi: 100_559
+    ct_income_tax: 4_671

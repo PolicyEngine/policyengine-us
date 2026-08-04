@@ -1,0 +1,124 @@
+- name: Case 1, expenses below copay, benefit is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_max_monthly_reimbursement: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_wccc_eligible: true
+        wa_wccc_copay: 100
+        # Annual expenses; auto-divides to ~33.33/mo, below copay.
+        spm_unit_pre_subsidy_childcare_expenses: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # max(33.33 - 100, 0) = 0; min(0, 1200) = 0.
+    wa_wccc: 0
+
+- name: Case 2, expenses between copay and max reimbursement, uncapped path.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_max_monthly_reimbursement: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_wccc_eligible: true
+        wa_wccc_copay: 100
+        # Annual 12,000 → 1,000/mo.
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # max(1000 - 100, 0) = 900; min(900, 1500) = 900.
+    wa_wccc: 900
+
+- name: Case 3, expenses exceed max reimbursement, capped at max reimbursement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_max_monthly_reimbursement: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wa_wccc_eligible: true
+        wa_wccc_copay: 100
+        # Annual 36,000 → 3,000/mo.
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # max(3000 - 100, 0) = 2900; min(2900, 1000) = 1000.
+    wa_wccc: 1_000
+
+- name: Case 4, two eligible children sum max reimbursements via add().
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_max_monthly_reimbursement: 1_000
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+        wa_wccc_max_monthly_reimbursement: 800
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wa_wccc_eligible: true
+        wa_wccc_copay: 100
+        # Annual 30,000 → 2,500/mo.
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    # Max reimbursement = 1000 + 800 = 1800.
+    # max(2500 - 100, 0) = 2400; min(2400, 1800) = 1800.
+    wa_wccc: 1_800

@@ -1,0 +1,252 @@
+# Daily state payment per child = daily_base_rate * state_share.
+#
+# Arkansas SMI (2025-10-01, FFY 2026, 4-person): $90,280/year
+# 2-person SPM: SMI = $61,390.40 annual
+
+- name: Case 1, Toddler Statewide FT at LE_40 SMI pays full base rate (no-copay).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 30% SMI -> LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / REGULAR / FT base = $35.00; share = 1.00
+    # daily state payment = $35.00 * 1.00 = $35.00
+    ar_sra_daily_state_payment: [0, 35.00]
+
+- name: Case 2, School-Aged Statewide FT at LE_40 SMI has positive copay (share 0.80).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 30% SMI -> LE_40 tier
+        employment_income: 18_417
+        immigration_status: CITIZEN
+      person2:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / School-Aged / REGULAR / FT base = $28.00; share = 0.80
+    # daily state payment = $28.00 * 0.80 = $22.40
+    ar_sra_daily_state_payment: [0, 22.40]
+
+- name: Case 3, Infant Benton/Washington FT at GT_60 SMI gets reduced share.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 75% SMI -> GT_60 tier
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: BENTON_COUNTY_AR
+  output:
+    # Benton/Washington / Infant / REGULAR / FT base = $38.00; share = 0.70
+    # daily state payment = $38.00 * 0.70 = $26.60
+    ar_sra_daily_state_payment: [0, 26.60]
+
+- name: Case 4, Toddler Statewide PT at GT_40_LE_60 SMI uses the PT base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        # 50% SMI -> GT_40_LE_60 tier
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        # Below the 7-hr FT threshold -> PART_TIME
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / REGULAR / PT base = $17.50; share = 0.60
+    # daily state payment = $17.50 * 0.60 = $10.50
+    ar_sra_daily_state_payment: [0, 10.50]
+
+- name: Case 5, Infant Statewide FT NIGHT_WEEKEND at GT_60 SMI shows the 10 percent supplement flows to state payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 0
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: NIGHT_WEEKEND
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Infant / NIGHT_WEEKEND / FT base = $39.60; share = 0.70
+    # daily state payment = $39.60 * 0.70 = $27.72
+    ar_sra_daily_state_payment: [0, 27.72]
+
+- name: Case 6, Toddler Statewide FT SN2 at GT_40_LE_60 SMI shows the 40 percent special-needs supplement flows to state payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 30_695
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / SN2 / FT base = $49.00; share = 0.80
+    # daily state payment = $49 * 0.80 = $39.20
+    ar_sra_daily_state_payment: [0, 39.20]
+
+- name: Case 7, Toddler Statewide FT SN3 at GT_60 SMI confirms SN3 rates match SN2.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        ar_sra_care_type: SN3
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: PULASKI_COUNTY_AR
+  output:
+    # Statewide / Toddler / SN3 / FT base = $49.00; share = 0.70
+    # daily state payment = $49 * 0.70 = $34.30
+    ar_sra_daily_state_payment: [0, 34.30]
+
+- name: Case 8, Preschool Benton/Washington PT at GT_60 SMI uses B/W PT rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 46_043
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+        county_str: BENTON_COUNTY_AR
+  output:
+    # B/W preschool PT rate matches Statewide ($16.50); share = 0.50
+    # daily state payment = $16.50 * 0.50 = $8.25
+    ar_sra_daily_state_payment: [0, 8.25]

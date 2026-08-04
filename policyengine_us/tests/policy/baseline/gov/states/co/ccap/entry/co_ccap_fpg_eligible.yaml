@@ -27,3 +27,13 @@
     spm_unit_fpg: 12
   output:
     co_ccap_fpg_eligible: false
+
+- name: Unknown county fallback does not overwrite valid county rows
+  period: 2023-01
+  input:
+    state_code_str: [CO, CO]
+    co_ccap_countable_income: [2.3, 0]
+    county_str: [BACA_COUNTY_CO, UNKNOWN]
+    spm_unit_fpg: [12, 12]
+  output:
+    co_ccap_fpg_eligible: [false, true]

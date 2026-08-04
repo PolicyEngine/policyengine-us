@@ -1,0 +1,14 @@
+description: All state use tax calculations.
+values:
+  0000-01-01:
+    - ca_use_tax
+    - il_use_tax
+    - in_use_tax
+    - nc_use_tax
+    - ok_use_tax
+    - pa_use_tax
+
+metadata:
+  unit: list
+  period: year
+  label: State use tax

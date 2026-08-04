@@ -13,9 +13,13 @@ class mt_elderly_homeowner_or_renter_credit(Variable):
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
-        gross_household_income = person(
-            "mt_elderly_homeowner_or_renter_credit_gross_household_income",
+        # § 15-30-2337(4) defines gross household income at the household
+        # (tax-unit) level, so the multiplier phase-out must be applied to
+        # the aggregated amount rather than each person's share.
+        gross_household_income = add(
+            person.tax_unit,
             period,
+            ["mt_elderly_homeowner_or_renter_credit_gross_household_income"],
         )
         # Get net_household_income and allocate it to the head
         head = person("is_tax_unit_head", period)

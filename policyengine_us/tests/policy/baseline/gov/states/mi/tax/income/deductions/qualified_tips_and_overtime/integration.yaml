@@ -1,0 +1,48 @@
+# Integration: the Michigan qualified tips and overtime deductions flow through
+# mi_subtractions into mi_taxable_income (PA 24 of 2025, TY2026-2028).
+
+- name: 2026 both deductions flow into Michigan subtractions
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tip_income_deduction: 2_000
+        overtime_income_deduction: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # No other Michigan subtractions apply to this filer, so subtractions = $5,000.
+    mi_qualified_tips_deduction: 2_000
+    mi_qualified_overtime_deduction: 3_000
+    mi_subtractions: 5_000
+
+- name: 2026 deductions reduce positive Michigan taxable income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tip_income_deduction: 2_000
+        overtime_income_deduction: 3_000
+        # Exemptions fixed to isolate the deduction's effect on taxable income.
+        mi_exemptions: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # AGI 50,000 - 5,000 tips/overtime subtraction - 0 exemptions = 45,000.
+    mi_subtractions: 5_000
+    mi_taxable_income: 45_000

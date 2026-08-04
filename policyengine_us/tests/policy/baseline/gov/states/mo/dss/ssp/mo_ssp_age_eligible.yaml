@@ -1,0 +1,113 @@
+- name: SAB age 17 is below the 18+ threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: false
+
+- name: SAB age 18 exactly meets the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: true
+
+- name: SAB age 19 is above the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: true
+
+- name: SNC RCF_LEVEL_I age 20 is below the 21+ threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: false
+
+- name: SNC RCF_LEVEL_I age 21 exactly meets the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: true
+
+- name: SNC RCF_LEVEL_II_OR_ALF age 21 meets the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: true
+
+- name: SNC SNF_OR_ICF_NON_MEDICAID age 21 meets the threshold.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_age_eligible: true
+
+- name: NONE arrangement at age 21 falls to the SNC 21+ threshold and passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 21
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Non-SAB arrangements use the SNC threshold; the category gate (tested
+    # separately in mo_ssp_category_eligible) rejects NONE downstream.
+    mo_ssp_age_eligible: true

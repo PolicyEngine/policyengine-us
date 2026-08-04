@@ -1,0 +1,19 @@
+description: Texas counts these earned income sources when determining countable income under the Family Planning Program.
+values:
+  2016-07-01:
+    # Wages, salaries, tips and commissions, counted gross; military
+    # pay flows through employment income
+    - employment_income
+    # Gross earnings minus the allowable costs of production
+    - self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Texas Family Planning Program countable earned income sources
+  reference:
+    - title: 1 Tex. Admin. Code § 382.109
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-382-109
+    - title: Texas HHSC Family Planning Program Policy Manual, Definition of Income, Revision 24-2
+      href: https://www.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=1

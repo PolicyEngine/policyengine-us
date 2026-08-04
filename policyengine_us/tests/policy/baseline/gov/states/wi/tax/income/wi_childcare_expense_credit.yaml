@@ -124,3 +124,88 @@
         members: [head, child]
   output:
     wi_childcare_expense_credit_potential: 2_000 # min(12000, 10000) * 0.20 * 1.0
+
+- name: WI CDCC 2024 separate filer is not eligible per Wis. Stat. 71.07(9g)(c)4.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 2_000
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, child]
+  output:
+    wi_childcare_expense_credit_potential: 0
+
+- name: WI CDCC 2024 separated filer maintaining a home for a qualifying child keeps the credit, IRC 21(e)(4)
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 2_000
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, child]
+  output:
+    wi_childcare_expense_credit_potential: 400 # 2000 * 0.20 * 1.0
+
+- name: WI CDCC 2024 includes care expenses for a disabled adult qualifying individual
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+      adult:
+        age: 30
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, adult]
+        tax_unit_childcare_expenses: 0
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [head, adult]
+        state_code: WI
+    spm_units:
+      spm_unit:
+        members: [head, adult]
+  output:
+    wi_childcare_expense_credit_potential: 1_000 # min(5000, 10000, 60000) * 0.20 * 1.0

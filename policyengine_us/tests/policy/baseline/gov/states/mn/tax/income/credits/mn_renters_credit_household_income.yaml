@@ -1,0 +1,69 @@
+- name: Case 1, household income with age and dependent subtractions.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_dependent: true
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_renters_credit_household_income: 30_760
+
+- name: Case 2, separate filer household income includes spouse separate AGI proxy.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_renters_credit_household_income: 80_000
+
+- name: Case 3, other adult household income counts.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_renters_credit_household_income: [64_800, 70_000]

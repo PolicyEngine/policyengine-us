@@ -6,7 +6,7 @@ values:
     - snap
     # Medicaid includes MassHealth CarePlus, MassHealth Family Assistance,
     # MassHealth Limited, and MassHealth Standard
-    - medicaid
+    - medicaid_enrolled
 metadata:
   unit: list
   label: Massachusetts Bay Transportation Authority (MBTA) reduced fare program categorical eligibility applicable programs

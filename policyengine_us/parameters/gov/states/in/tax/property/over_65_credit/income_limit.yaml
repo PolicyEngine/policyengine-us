@@ -1,0 +1,22 @@
+description: Indiana limits adjusted gross income to this amount under the Over 65 Credit program.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Indiana Over 65 Credit income limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: Monroe County Auditor | Over 65
+      href: https://www.in.gov/counties/monroe/Departments/auditor/over-65/
+    - title: Indiana Department of Local Government Finance | Legislation Affecting Deductions and Exemptions
+      href: https://www.in.gov/dlgf/files/2025-memos/250612-Cockerill-Memo-Legislation-Affecting-Deductions%2C-Exemptions%2C-and-Credits.pdf#page=2
+SINGLE:
+  2026-01-01: 60_000
+HEAD_OF_HOUSEHOLD:
+  2026-01-01: 60_000
+JOINT:
+  2026-01-01: 70_000
+SURVIVING_SPOUSE:
+  2026-01-01: 70_000
+SEPARATE:
+  2026-01-01: 60_000

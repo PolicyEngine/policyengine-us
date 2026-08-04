@@ -21,12 +21,7 @@ class gross_medicare_part_b_premium(Variable):
         is_head_of_household = filing_status == status.HEAD_OF_HOUSEHOLD
         is_surviving_spouse = filing_status == status.SURVIVING_SPOUSE
         is_separated = filing_status == status.SEPARATE
-        # Medicare Part B IRMAA is based on MAGI from 2 years prior.
-        # MAGI = AGI + tax-exempt interest.
-        prior_period = period.offset(-2, "year")
-        agi = tax_unit("adjusted_gross_income", prior_period)
-        tax_exempt_interest = tax_unit("tax_exempt_interest_income", prior_period)
-        magi = agi + tax_exempt_interest
+        magi = tax_unit("medicare_irmaa_magi_two_years_prior", period)
         base = person("base_part_b_premium", period)
 
         p = parameters(period).gov.hhs.medicare.part_b.irmaa

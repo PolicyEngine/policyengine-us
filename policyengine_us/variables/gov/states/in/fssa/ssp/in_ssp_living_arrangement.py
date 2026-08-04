@@ -12,7 +12,7 @@ class in_ssp_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "Indiana SSP living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.IN
     possible_values = INSSPLivingArrangement
     default_value = INSSPLivingArrangement.NONE

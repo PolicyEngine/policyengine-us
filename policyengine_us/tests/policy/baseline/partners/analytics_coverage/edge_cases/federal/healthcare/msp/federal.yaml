@@ -1,0 +1,572 @@
+# MSP shared parameters (2026, contiguous US):
+#   FPG single = 15_960/yr (1_330/mo); FPG couple = 15_960 + 5_680 = 21_640/yr (1_803.33/mo)
+#   Income limits (share of FPG, monthly): QMB <= 1_330; SLMB < 1_596 (120%); QI < 1_795.50 (135%)
+#   Countable income uses SSI methodology: unearned - $20/mo; earned - $65/mo (+$20 leftover), then 50% excluded
+#   Part B premium = 202.90/mo (2_434.80/yr); Part A full = 565/mo (6_780/yr), reduced (30-39 quarters) = 311/mo (3_732/yr), free at 40+ quarters
+#   Asset limits (TX applies test): individual 9_950; couple 14_910
+#   msp_category is an Enum; the YAML runner compares raw indices: NONE=0, QMB=1, SLMB=2, QI=3
+- name: msp_qmb_at_100pct_fpl_earned_income_boundary (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 32_940
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Countable income: (32_940 / 12 - 85) x 0.5 = 1_330/mo = exactly 100% FPL -> QMB (<=)
+        # QMB with 0 quarters pays full Part A + Part B: (565 + 202.90) x 12 = 9_214.80
+        msp: 9_214.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+        # SSI countable 15_960 > FBR 11_928 -> no SSI cash payment
+        ssi: 0.0
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: msp_slmb_just_above_qmb_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 33_000
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Countable income: (33_000 / 12 - 85) x 0.5 = 1_332.50/mo, above QMB 1_330 and below SLMB 1_596 -> SLMB
+        # SLMB pays Part B only: 202.90 x 12 = 2_434.80 (even with 0 quarters, Part A is not covered)
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 2  # SLMB
+- name: msp_qi_between_120_and_135pct_fpl_not_medicaid_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Countable income: (40_000 / 12 - 85) x 0.5 = 1_624.17/mo, in [1_596, 1_795.50) -> QI
+        # QI additionally requires NOT Medicaid-eligible (42 CFR 435.125); TX aged adult at this income is not
+        is_medicaid_eligible: false
+        # QI pays Part B only: 202.90 x 12 = 2_434.80
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 3  # QI
+- name: msp_income_above_135pct_fpl_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 44_160
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Countable income: (44_160 / 12 - 85) x 0.5 = 1_797.50/mo >= 135% FPL (1_795.50) -> no MSP category
+        # Deliberate income-ineligibility boundary pin (income route)
+        msp: 0.0
+        msp_eligible: false
+        msp_category: 0  # NONE
+- name: msp_qmb_premium_free_part_a_at_asset_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 14_400
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 9_950
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Unearned SS retirement 1_200/mo - $20 general exclusion = 1_180/mo countable <= 1_330 -> QMB
+        # Resources exactly at the 2026 individual limit (9_950) remain eligible (<=)
+        # 40 quarters -> premium-free Part A, so QMB covers Part B only: 202.90 x 12 = 2_434.80
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+- name: msp_qmb_reduced_part_a_premium_30_to_39_quarters (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 66
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 12_000
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 32
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id006
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Unearned 1_000/mo - 20 = 980/mo countable <= 1_330 -> QMB
+        # 32 quarters -> reduced Part A premium 311/mo: (311 + 202.90) x 12 = 6_166.80
+        msp: 6_166.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+- name: msp_resources_above_limit_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 14_400
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 9_951
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id007
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Income identical to the eligible asset-limit case, but resources 9_951 > 9_950 (2026 TX individual limit)
+        # Deliberate resource-ineligibility boundary pin (resource route)
+        msp: 0.0
+        msp_eligible: false
+        msp_category: 0  # NONE
+- name: msp_couple_both_medicare_eligible_qmb (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 68
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 10_200
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 7_000
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 66
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 10_200
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 7_000
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id008
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+        - spouse
+  output:
+    people:
+      head:
+        # Both spouses Medicare-eligible -> SSI couple rules: combined unearned 20_400/yr (1_700/mo) - 20 = 1_680/mo
+        # Couple FPG monthly = 21_640 / 12 = 1_803.33; 1_680 <= 1_803.33 -> both QMB
+        # Combined resources 14_000 <= couple limit 14_910; 40 quarters each -> Part B only: 2_434.80 each
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+      spouse:
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+- name: msp_negative_self_employment_income_does_not_inflate_benefit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 14_400
+        self_employment_income_before_lsr: -5_000
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id009
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Negative self-employment earned income is floored at 0 in msp_countable_income;
+        # countable = unearned 1_200/mo - 20 = 1_180 <= 1_330 -> QMB, same as without the loss
+        # 40 quarters -> Part B only: 202.90 x 12 = 2_434.80 (benefit is not inflated by the loss)
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 1  # QMB
+- name: msp_no_medicare_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+        is_medicare_eligible: false
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id010
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # SSI: countable (15_000 - 1_020) x 0.5 = 6_990; FBR 11_928 - 6_990 = 4_938
+        ssi: 4_938.0
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        # Not Medicare-eligible -> no MSP category regardless of income/assets (categorical route)
+        msp: 0.0
+        msp_eligible: false
+        msp_category: 0  # NONE
+        # SSI recipient -> Medicaid. TX per-capita aged cost (calibration.gov.hhs.medicaid.totals
+        # spending[TX] x cost index / state denominator); the previous pin 9_236.48 was the CA-default
+        # artifact of setting state_code_str instead of state_code (wiring fix)
+        medicaid: 13_708.5
+        is_medicaid_eligible: true
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: msp_qmb_premium_free_part_a_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 14_400
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 9_660
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id011
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # 2025 regime: FPG 15_650 (1_304.17/mo); countable 1_200 - 20 = 1_180 <= 1_304.17 -> QMB
+        # Resources exactly at the 2025 individual limit (9_660) remain eligible
+        # 40 quarters -> premium-free Part A; 2025 Part B 185/mo -> 185 x 12 = 2_220
+        msp: 2_220.0
+        msp_eligible: true
+        msp_category: 1  # QMB

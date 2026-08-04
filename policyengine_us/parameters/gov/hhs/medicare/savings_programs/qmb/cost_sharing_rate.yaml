@@ -1,0 +1,13 @@
+description: The Department of Health and Human Services uses this share to approximate Qualified Medicare Beneficiary cost sharing under the Medicare Savings Programs.
+values:
+  1989-01-01: 0.2
+
+metadata:
+  unit: /1
+  period: year
+  label: QMB cost-sharing approximation rate
+  reference:
+    - title: 42 U.S.C. 1396d(p)(3) - Medicare cost-sharing definition
+      href: https://www.law.cornell.edu/uscode/text/42/1396d#p_3
+    - title: Medicare.gov - Medicare Part B costs
+      href: https://www.medicare.gov/basics/costs/medicare-costs

@@ -1,0 +1,77 @@
+description: Mississippi provides these maximum weekly payment rates for licensed child care centers under the Child Care Payment Program.
+# Two rate eras, keyed by the facility's location (metro / non-metro); we use the
+# household's county as a proxy for facility location.
+#   - 2023-07-01 = July-2023 "Current CCPP Rates" (2024 Market Rate Survey Table 1, p.9).
+#   - 2024-10-01 = FY2025-2027 State Plan adopted full-time base rates. The State Plan
+#     reports rates by "most populous region" (encoded in the METRO slot) and "lowest
+#     region" (NON_METRO slot); the most-populous figure equals the statewide 75th
+#     percentile.
+# The FY2025-2027 State Plan publishes FULL-TIME base rates only; the adopted part-time
+# rates for that era are not publicly available (only the family copay fee scale is
+# published), so the part-time leaves below retain their 2023-07 values — a documented
+# limitation we don't track at the moment. Special-needs children are paid the flat
+# all-ages special-needs rate (see special_needs_center).
+metadata:
+  period: week
+  unit: currency-USD
+  label: Mississippi CCPP center weekly rates
+  breakdown:
+    - ms_ccpp_facility_location
+    - ms_ccpp_age_group
+    - ms_ccpp_time_category
+  reference:
+    - title: 2024 Mississippi Child Care Market Rate Survey, Table 1 (Current CCPP Rates, Licensed Centers)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=9
+    - title: Mississippi FFY 2025-2027 CCDF State Plan, §4.3.2 (adopted full-time base rates, most-populous region pp.59-60); effective date §4.3.1(b) p.57
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2025/01/ACF-118-CCDF-FFY-2025-2027-For-Mississippi.pdf#page=59
+
+METRO:
+  INFANT:
+    FULL_TIME:
+      2023-07-01: 152
+      2024-10-01: 167
+    PART_TIME:
+      2023-07-01: 90
+  TODDLER:
+    FULL_TIME:
+      2023-07-01: 145
+      2024-10-01: 160
+    PART_TIME:
+      2023-07-01: 90
+  PRESCHOOL:
+    FULL_TIME:
+      2023-07-01: 135
+      2024-10-01: 150
+    PART_TIME:
+      2023-07-01: 75
+  SCHOOL_AGE:
+    FULL_TIME:
+      # Unchanged across eras (FY2025-2027 adopted full-time value is also $130).
+      2023-07-01: 130
+    PART_TIME:
+      2023-07-01: 80
+NON_METRO:
+  INFANT:
+    FULL_TIME:
+      2023-07-01: 125
+      2024-10-01: 140
+    PART_TIME:
+      2023-07-01: 80
+  TODDLER:
+    FULL_TIME:
+      2023-07-01: 120
+      2024-10-01: 135
+    PART_TIME:
+      2023-07-01: 75
+  PRESCHOOL:
+    FULL_TIME:
+      2023-07-01: 120
+      2024-10-01: 125
+    PART_TIME:
+      2023-07-01: 75
+  SCHOOL_AGE:
+    FULL_TIME:
+      2023-07-01: 110
+      2024-10-01: 120
+    PART_TIME:
+      2023-07-01: 74

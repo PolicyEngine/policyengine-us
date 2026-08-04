@@ -18,7 +18,7 @@ class de_ssp_eligible(Variable):
         # levels. Income overspill is handled in de_ssp via the
         # uncapped_ssi reduction formula, so is_ssi_eligible is used
         # without an uncapped_ssi > 0 gate.
-        is_ssi_eligible = person("is_ssi_eligible", period.this_year)
+        is_ssi_eligible = person("is_ssi_eligible", period)
         is_adult = person("is_adult", period.this_year)
         living_arrangement = person.household("de_ssp_living_arrangement", period)
         in_certified_residential_care_home = (

@@ -15,6 +15,25 @@ class in_eitc(Variable):
         if not ip.earned_income.decoupled:
             federal_eitc = tax_unit("eitc", period)
             return federal_eitc * ip.earned_income.match_rate
+        if ip.earned_income.static_conformity_in_effect:
+            # Schedule IN-EIC (State Form 49469) Section A applies to every
+            # filer: "Enter the earned income credit from your federal
+            # income tax return," multiplied by 10%. There is no frozen-IRC
+            # recomputation on the form. Section B is a qualifying-child
+            # information schedule (names, SSNs, ages), not a computation
+            # path, so it does not carve out childless filers.
+            #
+            # DOR Information Bulletin #92 describes the IRC section 32
+            # January 1, 2023 conformity freeze (IC 6-3-1-11) uniformly for
+            # "the Indiana EITC," with no childless-specific language. The
+            # ARPA childless EITC expansion expired January 1, 2022, so for
+            # TY2023 onward the freeze's only operative effect is that
+            # Indiana does not automatically adopt post-snapshot federal
+            # EITC changes -- and those changes are inflation indexing only.
+            # The current-year federal EITC therefore satisfies the freeze
+            # for all filers, with or without children.
+            federal_eitc = tax_unit("eitc", period)
+            return federal_eitc * ip.earned_income.match_rate
         # if Indiana EITC is decoupled from federal EITC
         fp = parameters(period).gov.irs.credits
         # ... cap child count
@@ -25,8 +44,9 @@ class in_eitc(Variable):
         pi_rate = fp.eitc.phase_in_rate.calc(kids)
         po_start = fp.eitc.phase_out.start.calc(kids)  # no JOINT bonus
         po_rate = fp.eitc.phase_out.rate.calc(kids)
-        if str(period) == "2021":
-            # ... additional decoupling of parameters for childless taxpayers
+        if ip.earned_income.childless.in_effect:
+            # 2021-only decoupled-childless-parameter branch, gated by
+            # gov.states.in.tax.income.credits.earned_income.childless.in_effect.
             maximum0 = ip.earned_income.childless.maximum
             pi_rate0 = ip.earned_income.childless.phase_in_rate
             po_start0 = ip.earned_income.childless.phase_out_start

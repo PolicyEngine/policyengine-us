@@ -1,0 +1,397 @@
+# CSFP federal-route edge cases. Households are placed in CO (partner-traffic
+# state with no CSFP-specific state rules) so the federal fpg_limit branch of
+# commodity_supplemental_food_program_eligible is actually executed; TX-specific
+# (130% FPG) and MA-specific (county gating) rules are pinned in tx.yaml/ma.yaml.
+# NOTE: school_meal_countable_income (the CSFP income base) includes computed
+# ssi. Income-boundary singles therefore use age 62 (CSFP-age-eligible but
+# below the SSI aged threshold of 65) so the pinned boundary is the CSFP FPG
+# cutoff itself; the 65+ cases document the SSI interaction explicitly.
+- name: csfp_age_59_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 59
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Demographic ineligibility boundary: age 59 < min_age 60
+        # (gov/usda/csfp/min_age.yaml) -> $0 despite $0 income.
+        commodity_supplemental_food_program: 0.0
+- name: csfp_age_60_max_benefit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Eligible-side age boundary (60 >= min_age 60) at $0 income.
+        # Full flat benefit: gov/usda/csfp/amount.yaml 2025 value 601,
+        # carried into 2026 (no uprating metadata).
+        commodity_supplemental_food_program: 601.0
+- name: csfp_income_between_130_and_150_fpg (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 23_900
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Federal 150% route, just-below-boundary and inside the 130-150% band
+        # that distinguishes the federal rule from the TX 130% rule:
+        # 2026 size-1 FPG (contiguous) = 15,960; ratio 23,900 / 15,960 = 1.4975
+        # <= 1.5 federal fpg_limit -> eligible -> 601. Age 62 keeps ssi = 0
+        # (below SSI aged threshold 65) so earnings alone set the ratio.
+        commodity_supplemental_food_program: 601.0
+- name: csfp_income_just_above_150_fpg_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 24_000
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Income ineligibility boundary: ratio 24,000 / 15,960 = 1.5038 > 1.5
+        # federal fpg_limit (150% cutoff = 23,940) -> $0. Age 62 keeps
+        # ssi = 0 so earnings alone set the ratio.
+        commodity_supplemental_food_program: 0.0
+- name: csfp_elderly_couple_both_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    people:
+      head:
+        # Benefit is per eligible person, not per household: both spouses are
+        # 60+ with $0 earnings. The zero-income aged couple picks up SSI
+        # (couple FBR 1,491/mo x 12 = 17,892), which counts in the school-meal
+        # income base: ratio 17,892 / 21,640 size-2 FPG = 0.8268 <= 1.5 ->
+        # each receives the flat 601 (household total 1,202).
+        commodity_supplemental_food_program: 601.0
+      spouse:
+        commodity_supplemental_food_program: 601.0
+- name: csfp_elderly_parent_in_family_of_4 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      grandparent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        - grandparent
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_grandparent:
+        members:
+        - grandparent
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      # Age is person-level, income is SPM-unit-level against size-scaled FPG:
+      # 2026 size-4 FPG = 15,960 + 3 x 5,680 = 33,000. The zero-income
+      # 70-year-old draws full SSI (FBR 994/mo x 12 = 11,928), which counts in
+      # the school-meal income base: (30,000 + 11,928) / 33,000 = 1.2705
+      # <= 1.5 -> income-eligible; only the 70-year-old passes the age gate ->
+      # grandparent 601, under-60 members 0.
+      grandparent:
+        commodity_supplemental_food_program: 601.0
+      head:
+        commodity_supplemental_food_program: 0.0
+      spouse:
+        commodity_supplemental_food_program: 0.0
+      child1:
+        commodity_supplemental_food_program: 0.0
+- name: csfp_negative_self_employment_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        self_employment_income_before_lsr: -5_000
+    households:
+      household:
+        members: &id007
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Robustness: negative self-employment income gives a negative FPG
+        # ratio (-5,000 / 15,960 = -0.31 <= 1.5) -> still exactly the flat
+        # 601, no inflation or sign artifact from negative income (age 62
+        # keeps ssi = 0 out of the income base).
+        commodity_supplemental_food_program: 601.0
+- name: csfp_income_within_150_fpg_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+    households:
+      household:
+        members: &id008
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # 2025 regime pin (the year both the amount 531 -> 601 and the federal
+        # fpg_limit 1.3 -> 1.5 changed): 2025 size-1 FPG = 15,650; ratio
+        # 22,000 / 15,650 = 1.4058 <= 1.5 -> eligible -> 601. Under the prior
+        # 1.3 limit this income (141% FPG) would have been ineligible. Age 62
+        # keeps ssi = 0 so earnings alone set the ratio.
+        commodity_supplemental_food_program: 601.0

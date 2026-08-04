@@ -1,0 +1,175 @@
+# WA Apple Health for Kids eligibility (RCW 74.09.470; WAC 182-505-0100).
+# wa_apple_health_kids_eligible is requested ~158/week by MyFriendBen WA
+# with no prior coverage. Children under 19 qualify regardless of
+# immigration status when MAGI income is at or below 317% FPL (312%
+# statutory + 5pp disregard built into the published threshold).
+# 2026 FPG (contiguous US): $15,960 first person + $5,680 each additional.
+- name: apple_health_kids_age_boundary_18_vs_19 (wa)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      dep18:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      dep19:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - dep18
+        - dep19
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_dep18:
+        members:
+        - dep18
+      mu_dep19:
+        members:
+        - dep19
+  output:
+    people:
+      # Income 30,000 / FPG(3) 27,320 = 110% FPL, well under 317%: the
+      # age-under-19 test binds. Age 18 qualifies; 19 and the adult do not.
+      head:
+        wa_apple_health_kids_eligible: false
+      dep18:
+        wa_apple_health_kids_eligible: true
+      dep19:
+        wa_apple_health_kids_eligible: false
+- name: apple_health_kids_income_below_317_fpl (wa)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 68_500
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      # MAGI 68,500 / FPG(2) 21,640 = 316.5% FPL, just below the 317%
+      # Tier 2 ceiling (68,598.80) -> eligible.
+      child1:
+        wa_apple_health_kids_eligible: true
+- name: apple_health_kids_income_above_317_fpl (wa)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 68_700
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      # MAGI 68,700 / FPG(2) 21,640 = 317.5% FPL, just above the 317%
+      # Tier 2 ceiling (68,598.80) -> ineligible (income route).
+      child1:
+        wa_apple_health_kids_eligible: false

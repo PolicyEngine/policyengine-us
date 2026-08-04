@@ -23,6 +23,8 @@ class market_income(Variable):
             "illicit_income",
             "farm_operations_income",
             "miscellaneous_income",
+            "alimony_income",
+            "strike_benefits",
             "retirement_distributions",
         ]
         return add(person, period, COMPONENTS)

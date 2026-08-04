@@ -1,0 +1,109 @@
+# fl_sr_care_level maps a child's age (years) to the FY2025-26 School Readiness
+# reimbursement care level (6M-4.500; SPB 2502). The bands are single-year:
+#   <1 INFANT, 1 TODDLER, 2 TWO_YEAR_OLD, 3 PRESCHOOL_3, 4 PRESCHOOL_4,
+#   5 PRESCHOOL_5, >=6 SCHOOL_AGE.
+# Enum output, so no error margin (exact match).
+
+- name: Case 1, infant under one year old.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: INFANT
+
+- name: Case 2, one year old is a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: TODDLER
+
+- name: Case 3, two year old.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: TWO_YEAR_OLD
+
+- name: Case 4, three year old is preschool 3.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: PRESCHOOL_3
+
+- name: Case 5, four year old is preschool 4.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: PRESCHOOL_4
+
+- name: Case 6, five year old is preschool 5.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: PRESCHOOL_5
+
+- name: Case 7, six year old is school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: SCHOOL_AGE
+
+- name: Case 8, twelve year old is school age (upper band).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_sr_care_level: SCHOOL_AGE

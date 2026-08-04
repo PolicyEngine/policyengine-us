@@ -1,0 +1,1491 @@
+# Federal SNAP edge cases, anchored to TX (BBCE state, 165% FPG gross limit, no
+# BBCE net test, $5,000 BBCE asset limit, not an always-SUA state).
+# Key FY2026 parameters (Oct 2025 - Sep 2026): max allotment $298/$546/$785/$994
+# (sizes 1-4), standard deduction $209 (sizes 1-3) / $223 (size 4), shelter cap
+# $744, TX SUA $445, TX LUA $400, earned income deduction 20%, expected food
+# contribution 30% of floored net income, minimum allotment 8% of the 1-person
+# maximum. Oct-Dec 2026 use uprated FY2027 values: max $308.52/$565.28/$812.72/
+# $1,029.10, standard deduction $216.38/$230.88, shelter cap $770.27 (SUA is not
+# uprated; LUA is, to $414.13).
+# SNAP compares income to the poverty guideline in effect at the preceding
+# Oct 1 (snap_fpg): Jan-Sep 2026 use the 2025 FPG (1p $15,650 / 2p $21,150 /
+# 3p $26,650), Oct-Dec 2026 use the 2026 FPG (1p $15,960 / 2p $21,640 /
+# 3p $27,320). Boundary incomes below are chosen so eligibility does not flip
+# mid-year.
+- name: snap_income_just_below_fy2026_bbce_gross_limit_43972 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 43_872
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+        snap_assets: 500
+        housing_cost: 18_000
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # TX BBCE gross limit (3 people), Jan-Sep 2026: 1.65 x 26,650 = 43,972.50;
+        # monthly income 43,872/12 = 3,656.00 <= 3,664.38 -> eligible; also below
+        # the Oct-Dec limit (1.65 x 27,320 / 12 = 3,756.55). Fails the federal 130%
+        # gross test (ratio 1.65 > 1.3), so BBCE is the binding route.
+        # Jan-Sep benefit: net income pre-shelter = 3,656.00 x 0.8 - 209 = 2,715.80;
+        # shelter expense = 1,500 housing + 445 SUA (heating/cooling expense present)
+        # = 1,945 - 0.5 x 2,715.80 = 587.10 (< 744 cap); net = 2,128.70 ->
+        # contribution = floor(2,128) x 0.3 = 638.40 -> 785 - 638.40 = 146.60/month.
+        # Oct-Dec: std ded 216.38 -> net 2,117.63 -> EC 635.10 -> 812.72 - 635.10
+        # = 177.62/month. Annual = 9 x 146.60 + 3 x 177.62 = 1,852.26.
+        snap: 1852.26
+        is_snap_eligible: true
+- name: snap_income_at_fy2026_bbce_gross_limit_43972 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 43_972
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+        snap_assets: 500
+        housing_cost: 18_000
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # At the binding FY2026 TX BBCE gross limit: monthly 43,972/12 = 3,664.33,
+        # limit 1.65 x 26,650 / 12 = 3,664.38 -> still eligible.
+        # Jan-Sep: pre-shelter net = 3,664.33 x 0.8 - 209 = 2,722.47; shelter =
+        # 1,945 - 1,361.23 = 583.77 -> net = 2,138.70 -> EC 641.40 ->
+        # 785 - 641.40 = 143.60/month. Oct-Dec: 812.72 - 638.10 = 174.62/month.
+        # Annual = 9 x 143.60 + 3 x 174.62 = 1,816.26.
+        snap: 1816.26
+        is_snap_eligible: true
+- name: snap_income_above_bbce_gross_limit_all_year_45178 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 45_178
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+        snap_assets: 500
+        housing_cost: 18_000
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side income boundary pin: monthly 45,178/12 =
+        # 3,764.83 exceeds the TX BBCE gross limit in every month of 2026
+        # (Jan-Sep limit 3,664.38; Oct-Dec limit 3,756.55) and the federal 130%
+        # gross test, so the unit is ineligible all year.
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_zero_income_childless_couple_max_allotment (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Zero-income childless couple pins the 2-person maximum allotment
+        # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr defaults
+        # to 40, so work requirements are met). Net income 0 -> contribution 0 ->
+        # benefit = max allotment: 9 x 546 + 3 x 565.28 = 6,609.84.
+        snap: 6609.85
+        is_snap_eligible: true
+- name: snap_minimum_allotment_single_adult_20k (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Minimum allotment path: net = 20,000/12 x 0.8 - 209 = 1,124.33 ->
+        # contribution 337.20 exceeds the 1-person maximum (298), so the normal
+        # allotment is negative and the minimum allotment applies (8% of the
+        # 1-person maximum, rounded to the nearest whole dollar per 7 CFR
+        # 273.10(e)(2)(ii)(C), units of 1-2 people only): Jan-Sep
+        # 0.08 x 298 = 23.84 -> 24/month; Oct-Dec 0.08 x 308.52 = 24.68 ->
+        # 25/month. Annual = 291.
+        snap: 291
+        is_snap_eligible: true
+- name: snap_single_elderly_65_ssi_counts_as_unearned_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Zero-income aged-65 single receives SSI (2026 federal benefit rate
+        # $994/month), which counts as SNAP unearned income:
+        # Jan-Sep: net = 994 - 209 = 785 -> EC 235.50 -> 298 - 235.50 =
+        # 62.50/month. Oct-Dec: net = 994 - 216.38 = 777.62 -> EC floor(777) x
+        # 0.3 = 233.10 -> 308.52 - 233.10 = 75.42/month.
+        # Annual = 9 x 62.50 + 3 x 75.42 = 788.76.
+        snap: 788.77
+        is_snap_eligible: true
+- name: snap_childless_couple_20k (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # 2-person baseline: net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC 337.20
+        # -> 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: net 1,116.95 -> EC
+        # 334.80 -> 565.28 - 334.80 = 230.48. Annual = 9 x 208.80 + 3 x 230.48
+        # = 2,570.64. (Also the benchmark for the excluded-immigrant cases below.)
+        snap: 2570.64
+        is_snap_eligible: true
+- name: snap_single_parent_1_child_15k_mid_phase_out (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 15_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id008
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Mid-phase-out partial benefit: net = 15,000/12 x 0.8 - 209 = 791.00 ->
+        # EC 237.30 -> 546 - 237.30 = 308.70/month Jan-Sep; Oct-Dec: net 783.62
+        # -> EC 234.90 -> 565.28 - 234.90 = 330.38. Annual = 9 x 308.70 +
+        # 3 x 330.38 = 3,769.44. (TX TANF is 0 at this income.)
+        snap: 3769.44
+        is_snap_eligible: true
+- name: snap_size_4_couple_2_children_20k (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id009
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Size 4 uses the higher standard deduction ($223): net = 1,666.67 x 0.8
+        # - 223 = 1,110.33 -> EC 333.00 -> 994 - 333.00 = 661.00/month Jan-Sep;
+        # Oct-Dec: net 1,102.46 -> EC 330.60 -> 1,029.10 - 330.60 = 698.50.
+        # Annual = 9 x 661.00 + 3 x 698.50 = 8,044.50.
+        snap: 8044.51
+        is_snap_eligible: true
+- name: snap_shelter_deduction_capped_non_elderly (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 24_000
+      child1:
+        age: 9
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id010
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+        snap_assets: 500
+        housing_cost: 14_400
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Excess shelter deduction hits the cap for a non-elderly unit:
+        # pre-shelter net = 24,000/12 x 0.8 - 209 = 1,391.00; shelter expense =
+        # 1,200 housing + 445 SUA = 1,645 - 0.5 x 1,391 = 949.50 -> capped at
+        # 744 -> net = 647.00 -> EC 194.10 -> 546 - 194.10 = 351.90/month
+        # Jan-Sep; Oct-Dec (cap 770.27): 565.28 - 183.90 = 381.38.
+        # Annual = 9 x 351.90 + 3 x 381.38 = 4,311.24.
+        snap: 4311.24
+        is_snap_eligible: true
+- name: snap_shelter_deduction_uncapped_elderly (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 24_000
+      child1:
+        age: 9
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id011
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+        snap_assets: 500
+        housing_cost: 14_400
+        heating_cooling_expense: 2_400
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Same unit as the previous case but the head is 60+, so the shelter
+        # deduction is NOT capped: full 949.50 deducted -> net = 1,391.00 -
+        # 949.50 = 441.50 -> EC 132.30 -> 546 - 132.30 = 413.70/month Jan-Sep;
+        # Oct-Dec: net 430.43 -> EC 129.00 -> 565.28 - 129.00 = 436.28.
+        # Annual = 9 x 413.70 + 3 x 436.28 = 5,032.14 (vs 4,311.24 capped).
+        snap: 5032.15
+        is_snap_eligible: true
+- name: snap_head_immigration_lpr (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id012
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id012
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id012
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id012
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # LPR head remains a full unit member post-OBBB (size 3): net =
+        # 1,666.67 x 0.8 - 209 = 1,124.33 -> EC 337.20 -> 785 - 337.20 =
+        # 447.80/month Jan-Sep; Oct-Dec: 812.72 - 334.80 = 477.92.
+        # Annual = 9 x 447.80 + 3 x 477.92 = 5,463.96.
+        snap: 5463.97
+        is_snap_eligible: true
+- name: snap_head_immigration_refugee_excluded_post_obbb (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: REFUGEE
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id013
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id013
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id013
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id013
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # OBBB (PL 119-21, eff. 2025-07-04) removed refugees from SNAP-eligible
+        # immigration statuses: the refugee head is excluded (unit size 2, max
+        # allotment 546) and their earnings count at the 2/3 prorated share
+        # under 7 CFR 273.11(c)(2)-(3) (TX prorates): counted earnings
+        # 1,111.11/mo, net income 679.89 -> EC = floor(679.89) x 0.3 = 203.70
+        # -> 546 - 203.70 = 342.30/month Jan-Sep; Oct-Dec (FY2027): 565.28 -
+        # 201.60 = 363.68. Annual = 9 x 342.30 + 3 x 363.68 = 4,171.74.
+        snap: 4171.75
+        is_snap_eligible: true
+- name: snap_head_immigration_undocumented_excluded (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id014
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id014
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id014
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id014
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Undocumented head is excluded from the unit (size 2) with earnings
+        # counted at the 2/3 prorated share; identical arithmetic to the
+        # refugee case: annual = 9 x 342.30 + 3 x 363.68 = 4,171.74.
+        snap: 4171.75
+        is_snap_eligible: true
+- name: snap_abawd_zero_hours_fails_work_requirements (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 0
+    households:
+      household:
+        members: &id015
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id015
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id015
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id015
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side work-requirement pin: a 30-year-old
+        # childless adult working 0 hours/week (weekly_hours_worked_before_lsr
+        # must be set explicitly; it defaults to 40) is neither exempt from nor
+        # compliant with the general work requirement (30h/week) and fails the
+        # post-HR1 ABAWD requirement (20h/week, exempt only under 18 or 65+),
+        # so the unit is ineligible despite zero income.
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_work_program_participant_25_hours_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 13_000
+        weekly_hours_worked_before_lsr: 25
+        is_snap_work_program_participant: true
+    households:
+      household:
+        members: &id016
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id016
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id016
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id016
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # 25 hours/week satisfies the ABAWD work requirement (>= 20h) but not
+        # the general one (>= 30h); E&T work program participation
+        # (is_snap_work_program_participant, a partner-sent input) supplies
+        # general-requirement compliance, flipping the unit to eligible
+        # (without it this person is ineligible). Benefit: net = 13,000/12 -
+        # 20% - 209 = 657.67 -> EC 197.10 -> 298 - 197.10 = 100.90/month
+        # Jan-Sep; Oct-Dec: 308.52 - 195.00 = 113.52.
+        # Annual = 9 x 100.90 + 3 x 113.52 = 1,248.66.
+        snap: 1248.67
+        is_snap_eligible: true
+- name: snap_ineligible_student_sole_member (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_000
+        is_snap_ineligible_student: true
+    households:
+      household:
+        members: &id017
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id017
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id017
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id017
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side student pin: is_snap_ineligible_student
+        # (partner-sent input) marks the sole member as an ineligible higher-ed
+        # student, so no eligible person is present and the unit is ineligible
+        # despite passing every income/asset test.
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_assets_above_bbce_and_federal_limits (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id018
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id018
+        snap_assets: 6_000
+    tax_units:
+      tax_unit:
+        members: *id018
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id018
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side resource pin: $6,000 in countable assets
+        # exceeds both the TX BBCE asset limit ($5,000) and the federal
+        # standard limit ($3,000 for non-elderly/disabled units), so the unit
+        # fails the asset test with no categorical rescue.
+        snap: 0.0
+        is_snap_eligible: false
+- name: snap_tanf_receipt_categorical_eligibility_overrides_asset_test (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id019
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id019
+        snap_assets: 6_000
+        tanf: 2_400
+    tax_units:
+      tax_unit:
+        members: *id019
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id019
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Same unit as the previous (asset-test-failing) case but receiving
+        # TANF cash ($2,400/year override): TANF receipt confers categorical
+        # eligibility, overriding the failed asset test. TANF also counts as
+        # unearned income ($200/month): net = 1,124.33 + 200 = 1,324.33 -> EC
+        # 397.20 -> 785 - 397.20 = 387.80/month Jan-Sep; Oct-Dec: 812.72 -
+        # 394.80 = 417.92. Annual = 9 x 387.80 + 3 x 417.92 = 4,743.96.
+        snap: 4743.97
+        is_snap_eligible: true
+- name: snap_partner_override_snap_earned_and_unearned_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 18_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id020
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id020
+        snap_assets: 500
+        snap_earned_income: 15_000
+        snap_unearned_income: 2_400
+    tax_units:
+      tax_unit:
+        members: *id020
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id020
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Partner-style direct override of the SNAP income aggregates: the
+        # snap_earned_income (15,000/year) and snap_unearned_income
+        # (2,400/year) inputs replace the model's own aggregation, so SNAP sees
+        # earned 1,250/month (not the 1,500 implied by employment income) and
+        # unearned 200/month. Net = 1,250 - 250 (20%) + 200 - 209 = 991.00 ->
+        # EC 297.30 -> 785 - 297.30 = 487.70/month Jan-Sep; Oct-Dec: 812.72 -
+        # 294.90 = 517.82. Annual = 9 x 487.70 + 3 x 517.82 = 5,942.76.
+        snap: 5942.77
+        is_snap_eligible: true
+- name: snap_negative_self_employment_income_robustness (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 18_000
+        self_employment_income_before_lsr: -6_000
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id021
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id021
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id021
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id021
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Robustness: a $6,000 self-employment LOSS does not offset wages in
+        # SNAP earned income (floored at zero), so the benefit equals the
+        # wages-only case: net = 18,000/12 x 0.8 - 209 = 991.00 -> EC 297.30 ->
+        # 546 - 297.30 = 248.70/month Jan-Sep; Oct-Dec: 565.28 - 294.90 =
+        # 270.38. Annual = 9 x 248.70 + 3 x 270.38 = 3,049.44 (no benefit
+        # inflation from negative income).
+        snap: 3049.44
+        is_snap_eligible: true
+- name: snap_2025_single_parent_2_children_20k (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id022
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id022
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id022
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id022
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # 2025 regime pin (partners query 2025 and 2026; FY2025/FY2026 COLA
+        # split): Jan-Sep 2025 use FY2025 values (max 3-person 768, std ded
+        # 204): net = 1,666.67 x 0.8 - 204 = 1,129.33 -> EC 338.70 -> 768 -
+        # 338.70 = 429.30/month; Oct-Dec 2025 use FY2026 values: 785 - 337.20
+        # = 447.80. Annual = 9 x 429.30 + 3 x 447.80 = 5,207.10.
+        snap: 5_207.10
+        is_snap_eligible: true
+- name: snap_limited_utility_allowance_two_utilities (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id023
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id023
+        snap_assets: 500
+        housing_cost: 7_200
+        pre_subsidy_electricity_expense: 1_800
+        water_expense: 600
+    tax_units:
+      tax_unit:
+        members: *id023
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id023
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Two non-heating utility bills (electricity + water, partner-sent
+        # expense inputs) select TX's Limited Utility Allowance ($400 FY2026)
+        # instead of the SUA: shelter expense = 600 housing + 400 LUA = 1,000 -
+        # 0.5 x 1,124.33 = 437.83 (uncapped) -> net = 686.50 -> EC 205.80 ->
+        # 785 - 205.80 = 579.20/month Jan-Sep; Oct-Dec (LUA uprated to 414.13):
+        # 812.72 - 198.30 = 614.42. Annual = 9 x 579.20 + 3 x 614.42 = 7,056.06.
+        snap: 7056.07
+        is_snap_eligible: true
+
+- name: snap_ineligible_student_income_excluded_mixed_household (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+        employment_income_before_lsr: 10_000
+    households:
+      household:
+        members: &id903
+        - head
+        - student
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id903
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id903
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id903
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_student:
+        members:
+        - student
+  output:
+    spm_units:
+      spm_unit:
+        # The ineligible student is a nonhousehold member (7 CFR 273.11(d)):
+        # their $10,000 earnings are excluded entirely and the unit size is 1;
+        # the 130%-FPG gross test passes only because of the exclusion, and
+        # the unit receives the 1-2 person minimum allotment, rounded to the
+        # nearest whole dollar ($24/month Jan-Sep, $25/month Oct-Dec).
+        snap: 291
+        is_snap_eligible: true

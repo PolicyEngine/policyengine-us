@@ -1,0 +1,12 @@
+description: Florida does not issue Temporary Cash Assistance benefits for monthly amounts below this threshold; a deficit of at least this amount is required to issue a benefit.
+
+values:
+  1996-01-01: 10
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Florida TCA minimum benefit
+  reference:
+    - title: FL DCF ESS Program Policy Manual 2620.0111.01 - Income Test and Benefit Determination (TCA), Step 6 "If a deficit of at least $10 results, the remainder is the amount of the benefit to be issued" and Note "Cash benefits are not issued for amounts less than $10."
+      href: https://ffic.myflfamilies.com/manual/2600.pdf

@@ -8,3 +8,4 @@ class ga_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.GA
+    adds = "gov.states.ga.tax.income.credits.refundable"

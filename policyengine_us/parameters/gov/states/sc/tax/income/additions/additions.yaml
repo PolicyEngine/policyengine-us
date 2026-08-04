@@ -7,6 +7,10 @@ values:
     # - Interest income on obligations of states and political subdivisions other than South Carolina
     # - Other additions to income
     - qualified_business_income_deduction
+  2025-01-01:
+    - sc_state_tax_addback
+    - qualified_business_income_deduction
+    - sc_obbba_addback
 
 metadata:
   unit: list
@@ -14,7 +18,7 @@ metadata:
   label: South Carolina federal taxable income additions  
   reference:
     - title: SC 1040 tax form instructions (2025)
-      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=3
+      href: https://dor.sc.gov/sites/dor/files/forms/SC1040Instr_2025.pdf#page=5
     - title: SC 1040 tax form (2021)
       href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf#page=2
     - title: SC 1040 tax form instructions (2021)

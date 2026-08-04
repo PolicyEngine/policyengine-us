@@ -12,7 +12,7 @@ class tax_unit_taxable_social_security(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
-        gross_ss = tax_unit("tax_unit_social_security", period)
+        gross_ss = tax_unit("tax_unit_social_security_for_taxability", period)
 
         # The legislation directs the usage of an income definition that is
         # a particularly modified AGI, plus half of gross Social Security

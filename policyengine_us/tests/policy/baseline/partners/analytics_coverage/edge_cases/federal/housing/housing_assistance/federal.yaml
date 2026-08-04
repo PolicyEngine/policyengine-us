@@ -1,0 +1,612 @@
+# HUD housing assistance (Section 8 / HCV HAP) partner edge cases.
+# Geography: Dallas County, TX (county_fips 48113, ZIP 75201).
+# ZIP 75201 is in the Dallas SAFMR-mandated metro, so the payment standard is
+# the Small Area FMR (2026 schedule: 0bd $2,380 / 1bd $2,470 / 2bd $2,900 /
+# 3bd $3,650 per month). Dallas County FY2025 Section 8 income limits
+# (section8_income_limits.csv, used for 2025 and 2026): size 1 = 24,650 EL /
+# 41,100 VL / 65,700 low; size 3 = 31,700 EL; size 4 low = 93,850.
+# HAP = min(payment_standard - TTP, gross_rent - TTP), floored at 0, where
+# TTP = max(10% annual income, 30% adjusted income, minimum rent 25).
+- name: housing_assistance_zero_income_near_max_subsidy (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 0
+        pre_subsidy_rent: 18_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 1
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 0 <= 24,650 extremely-low limit -> eligible renter.
+        # TTP = max(0, 0, 25 minimum rent) = 25.
+        # Payment standard = 1bd SAFMR 2,470 x 12 = 29,640 -> max subsidy 29,615.
+        # Gross rent 18,000 - TTP 25 = 17,975 (rent side binds).
+        housing_assistance: 17_975.0
+- name: housing_assistance_mid_phase_out_single_parent_two_children (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 30_000
+        pre_subsidy_rent: 21_600
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 2
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Income 30,000 <= 31,700 size-3 extremely-low limit -> eligible.
+        # Adjusted income = 30,000 - 2 x 500 dependent deduction (HOTMA
+        # CY2026 amount) = 29,000.
+        # TTP = max(10% x 30,000 = 3,000; 30% x 29,000 = 8,700; 25) = 8,700.
+        # Payment standard = 2bd SAFMR 2,900 x 12 = 34,800 -> max subsidy 26,100.
+        # Gross rent 21,600 - TTP 8,700 = 12,900 (rent side binds).
+        housing_assistance: 12_900.0
+- name: housing_assistance_mid_phase_out_single_parent_two_children_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 30_000
+        pre_subsidy_rent: 21_600
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 2
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # 2025 twin of the previous case: 2025 is the last year directly in
+        # section8_income_limits.csv (2026 exercises the <=year fallback).
+        # Same FY2025 Dallas limits and 2026 SAFMR schedule (the only SAFMR
+        # year on file), but the $480 dependent deduction still applies in
+        # 2025 (the CY2026 $500 starts 2026): adjusted income 29,040,
+        # TTP 8,712, rent side binds: 21,600 - 8,712 = 12,888.
+        housing_assistance: 12_888.0
+- name: housing_assistance_high_rent_payment_standard_cap_binds (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 20_000
+        pre_subsidy_rent: 36_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 0
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 20,000 <= 25,450 extremely-low limit (FY2026) -> eligible.
+        # TTP = max(10% x 20,000 = 2,000; 30% x 20,000 = 6,000; 25) = 6,000.
+        # Payment standard = 0bd SAFMR 2,380 x 12 = 28,560 -> max subsidy
+        # 28,560 - 6,000 = 22,560. Gross rent 36,000 - TTP = 30,000, so the
+        # payment-standard cap binds: HAP = 22,560.
+        housing_assistance: 22_560.0
+- name: housing_assistance_income_at_low_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 67_850
+        pre_subsidy_rent: 24_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 1
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 67,850 = size-1 low-income limit exactly (FY2026) -> LOW ->
+        # eligible.
+        # TTP = max(10% x 67,850 = 6,785; 30% x 67,850 = 20,355; 25) = 20,355.
+        # Payment standard = 1bd SAFMR 29,640 -> max subsidy 9,285.
+        # Gross rent 24,000 - TTP 20,355 = 3,645 (rent side binds).
+        housing_assistance: 3_645.0
+- name: housing_assistance_income_above_low_income_limit_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 67_851
+        pre_subsidy_rent: 24_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 1
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate income-route ineligible boundary pin: 67,851 exceeds the
+        # FY2026 size-1 low-income limit of 67,850 by $1 (MODERATE, not LOW),
+        # and receives_housing_assistance is not set -> ineligible despite
+        # rent.
+        housing_assistance: 0.0
+- name: housing_assistance_receives_flag_income_above_limits (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 100_000
+        pre_subsidy_rent: 48_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 3
+    spm_units:
+      spm_unit:
+        members: *id003
+        receives_housing_assistance: true
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Direct-receipt route: income 100,000 exceeds the size-4 low-income
+        # limit (93,850), so the income route fails and only the
+        # receives_housing_assistance flag confers eligibility.
+        # Adjusted income = 100,000 - 2 x 500 (HOTMA CY2026) = 99,000
+        # -> 30% = 29,700. TTP = max(10,000; 29,700; 25) = 29,700.
+        # Payment standard = 3bd SAFMR 3,650 x 12 = 43,800 -> max subsidy
+        # 14,100. Gross rent 48,000 - TTP = 18,300 -> payment standard binds.
+        housing_assistance: 14_100.0
+- name: housing_assistance_homeowner_tenure_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 20_000
+        pre_subsidy_rent: 18_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 1
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate tenure-route ineligible pin: income 20,000 is below the
+        # extremely-low limit and rent is set, but the unit is an owner with
+        # mortgage (not a renter) and no receives flag -> ineligible.
+        housing_assistance: 0.0
+- name: housing_assistance_negative_self_employment_minimum_rent_floor (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        self_employment_income_before_lsr: -5_000
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 0
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Robustness: HUD annual income = -5,000 (negative self-employment).
+        # 10% income share = -500; adjusted income floors at 0 -> 30% = 0;
+        # the 25 minimum rent binds: TTP = 25. Benefit stays capped by rent:
+        # gross rent 12,000 - 25 = 11,975 (< max subsidy 28,560 - 25), so the
+        # benefit does not inflate as income goes negative.
+        housing_assistance: 11_975.0
+- name: housing_assistance_elderly_medical_expense_deduction (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 68
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        social_security_retirement: 18_000
+        other_medical_expenses: 4_000
+        pre_subsidy_rent: 15_600
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 1
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Elderly family (age 68 >= 62): HUD annual income = 18,000 Social
+        # Security (SSI = 0: 1,500/month unearned exceeds the FBR).
+        # Post-HOTMA (2026): medical deduction = 4,000 - 10% x 18,000
+        # (1,800) = 2,200; elderly deduction 550 (CY2026).
+        # Adjusted income = 18,000 - 550 - 2,200 = 15,250.
+        # TTP = max(10% x 18,000 = 1,800; 30% x 15,250 = 4,575; 25) = 4,575.
+        # Payment standard 1bd 29,640 -> max subsidy 25,065.
+        # Gross rent 15,600 - TTP 4,575 = 11,025 (rent side binds).
+        housing_assistance: 11_025.0
+- name: housing_assistance_tx_tenant_pays_utilities_no_allowance (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 20_000
+        pre_subsidy_rent: 21_600
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+        county_fips: '48113'
+        bedrooms: 2
+        tenant_pays_utilities: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Guards the utility-allowance surface: the current model only encodes
+        # an LA County utility allowance schedule, so a Dallas tenant paying
+        # utilities gets hud_utility_allowance = 0 and gross rent = 21,600.
+        # TTP = max(2,000; 6,000; 25) = 6,000. Payment standard 2bd 34,800 ->
+        # max subsidy 28,800. Gross rent - TTP = 15,600 (rent side binds).
+        # County-keyed TX utility allowance schedules (issue #8784) would
+        # raise this value; that change must surface as a reviewed diff here.
+        housing_assistance: 15_600.0

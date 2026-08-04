@@ -1,0 +1,75 @@
+# WV CCAP countable income tests
+# wv_ccap_countable_income uses adds = sources parameter list
+# Sources: employment_income, self_employment_income, social_security, ssi,
+#   unemployment_compensation, workers_compensation, pension_income,
+#   alimony_income, child_support_received, dividend_income, interest_income,
+#   rental_income, veterans_benefits, military_retirement_pay
+# Note: tanf excluded from sources to break circular dependency
+# (TANF recipients are categorically eligible via is_tanf_enrolled)
+
+- name: Case 1, employment and unearned income counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        social_security: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Monthly: employment 24,000/12 = 2,000 + SS 6,000/12 = 500
+    # Total monthly = 2,500
+    wv_ccap_countable_income: 2_500
+
+- name: Case 2, SNAP is excluded from countable income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Monthly: employment 18,000/12 = 1,500
+    # SNAP (2,400/yr) is excluded -> not counted
+    wv_ccap_countable_income: 1_500
+
+- name: Case 3, self-employment income counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 36_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Monthly: self_employment 36,000/12 = 3,000
+    wv_ccap_countable_income: 3_000

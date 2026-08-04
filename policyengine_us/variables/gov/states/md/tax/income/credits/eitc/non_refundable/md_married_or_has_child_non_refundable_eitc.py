@@ -11,7 +11,17 @@ class md_married_or_has_child_non_refundable_eitc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("eitc", period)
+        # Childless filers who fail only the federal minimum-age test may still
+        # claim the Maryland credit, computed on a pro forma federal EITC that
+        # disregards the § 32 minimum-age requirement (2025 Resident Booklet,
+        # Instruction 18). With-child filers face no federal age test, so the
+        # actual federal EITC applies to them.
+        childless = tax_unit("eitc_child_count", period) == 0
+        federal_eitc = where(
+            childless,
+            tax_unit("federal_eitc_without_age_minimum", period),
+            tax_unit("eitc", period),
+        )
         md_income_tax = tax_unit("md_income_tax_before_credits", period)
 
         p = parameters(

@@ -1,0 +1,63 @@
+# CalEITC follows the federal EITC qualifying-child rules (RTC 17052).
+# IRC 152(c)(3)(B) waives the age test for permanently and totally disabled
+# dependents, so such a dependent is a CalEITC qualifying child at any age.
+
+- name: Child under the age test is a CalEITC qualifying child.
+  period: 2026
+  input:
+    people:
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [child]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: true
+
+- name: Disabled adult dependent is a CalEITC qualifying child.
+  period: 2026
+  input:
+    people:
+      disabled_adult:
+        age: 29
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: true
+        has_tin: true
+    households:
+      household:
+        members: [disabled_adult]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: true
+
+- name: Non-disabled adult dependent over the age test is not a CalEITC qualifying child.
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 29
+        is_tax_unit_dependent: true
+        is_permanently_and_totally_disabled: false
+    households:
+      household:
+        members: [adult]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: false
+
+- name: Disabled non-dependent adult is not a CalEITC qualifying child.
+  period: 2026
+  input:
+    people:
+      disabled_nondependent:
+        age: 29
+        is_tax_unit_dependent: false
+        is_permanently_and_totally_disabled: true
+    households:
+      household:
+        members: [disabled_nondependent]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: false

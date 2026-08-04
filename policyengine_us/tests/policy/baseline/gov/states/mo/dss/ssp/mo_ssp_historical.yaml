@@ -1,0 +1,106 @@
+# Historical (2017-2019) Missouri State Supplementary Payment values.
+# Missouri's SSP standards were set effective 07/01/2000 (Supplemental Nursing
+# Care) and carried the same amounts through 2017-2019 as shown in the SSA
+# January 2011 report (verified) and confirmed unchanged by MO DSS MHABD
+# Appendix J. These cases pin the backdated oracle baseline.
+#
+# Supplemental Nursing Care (SNC) monthly maximum grants (SSA 2011 Table 1,
+# state-supplementation column): Residential Care Facility Level I = $156,
+# Level II/ALF = $292, non-Medicaid SNF/ICF = $390, plus a $50 personal-needs
+# allowance for all SNC participants (model value effective 2015-01-01).
+#
+# Supplemental Aid to the Blind (SAB) maximum combined federal+state payment
+# was $510/individual in 2011-2019. Because the federal SSI benefit rate
+# ($735 in 2017, $750 in 2018, $771 in 2019) already exceeded the $510 SAB
+# maximum, the SAB top-up (max($510 - federal SSI, 0)) was $0 in these years.
+#
+# Sources:
+#   SSA, State Assistance Programs for SSI Recipients, January 2011 - Missouri,
+#     Table 1 (SNC Level I $156, Level II $292, SNF/ICF $390; SAB max $510)
+#     https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mo.html
+#   SSA, State Assistance Programs for SSI Recipients, January 2017 - Missouri
+#     (POMS SI 01415.049) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415049
+#   SSA, State Assistance Programs for SSI Recipients, January 2018 - Missouri
+#     (POMS SI 01415.050) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415050
+#   SSA, State Assistance Programs for SSI Recipients, January 2019 - Missouri
+#     (POMS SI 01415.051) https://secure.ssa.gov/apps10/poms.nsf/lnx/0501415051
+#   MO DSS MHABD Appendix J (effective 07/01/2000)
+#     https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=4
+
+- name: 2017 Missouri SNC RCF Level I grant is $156 max plus $50 PNA.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        # $12,000/yr = $1,000/mo unearned income, enough to zero out federal SSI
+        # (2017-2019 FBR $735-$771) so the SNC grant is independent of SSI.
+        social_security: 12_000
+        mo_snc_facility_base_charge: 1_200  # Monthly facility charge.
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # min(max(1200 - 1000, 0), 156) + 50 PNA = 156 + 50 = 206.
+    ssi: 0
+    mo_ssp: 206
+
+- name: 2018 Missouri SNC RCF Level I grant is $156 max plus $50 PNA.
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        social_security: 12_000
+        mo_snc_facility_base_charge: 1_200
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    ssi: 0
+    mo_ssp: 206
+
+- name: 2019 Missouri SNC RCF Level I grant is $156 max plus $50 PNA.
+  period: 2019-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        is_disabled: true
+        social_security: 12_000
+        mo_snc_facility_base_charge: 1_200
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    ssi: 0
+    mo_ssp: 206
+
+- name: 2017 Missouri SAB top-up is zero because the $510 max is below federal SSI.
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Federal SSI (2017) = $735 > $510 SAB maximum, so max(510 - 735, 0) = 0.
+    ssi: 735
+    mo_ssp: 0

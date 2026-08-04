@@ -1,0 +1,93 @@
+# Arkansas SRA countable income sums the parameterized list of income
+# sources across adults only; income of children (<18) is excluded.
+# The variable is MONTH-defined; YEAR-period income sources (e.g.,
+# employment_income) are auto-divided by 12 when accessed monthly.
+
+- name: Case 1, parent employment income is fully counted (annual $30,000 = $2,500/month).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_countable_income: 2_500
+
+- name: Case 2, child SSI is excluded (annual $25,000 parent earnings = $2,083.33/month).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Only parent's $25,000 annual counts; child's SSI is excluded.
+    # Monthly: 25,000 / 12 = $2,083.33
+    ar_sra_countable_income: 2_083.33
+
+- name: Case 3, two adults combine earnings (annual $40,000 = $3,333.33/month).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 22_000
+      person2:
+        age: 30
+        employment_income: 18_000
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_sra_countable_income: 3_333.33
+
+- name: Case 4, zero-income family produces zero countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_sra_countable_income: 0

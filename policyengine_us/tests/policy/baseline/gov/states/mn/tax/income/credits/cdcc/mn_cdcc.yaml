@@ -276,3 +276,38 @@
         state_code: MN
   output:
     mn_cdcc: 0.32 * 6_000
+
+- name: MN CDCC includes care expenses for a disabled adult dependent
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 40
+        employment_income: 6_000
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    # Expenses = 5,000 adult care; capped at 3,000 (one qualifying dependent)
+    # then at min head/spouse earnings (6,000); AGI 26,000 -> 29% fraction
+    # Credit = 3,000 * 0.29 = 870 (below the 53,630 phaseout threshold)
+    mn_cdcc: 870

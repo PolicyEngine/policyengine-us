@@ -1,0 +1,26 @@
+description: Florida sets this full-time copay share of family income by state median income bracket under the School Readiness program.
+# The statewide State Median Income sliding fee schedule charges 4.0% of gross
+# income for families up through 55% SMI and 6.0% from above 55% SMI up to the
+# 85% SMI eligibility ceiling. The lowest bracket charges 4.0% (the schedule shows
+# no zero-copay bracket; its "$0" cells are the income floor of the first bracket,
+# not a copay amount). The 6.0% bracket begins above 55% SMI, so its threshold is
+# set just above 0.55.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Florida School Readiness full-time copay share by SMI bracket
+  reference:
+    - title: Florida Division of Early Learning, Sliding Fee Schedule for School Readiness Program (effective October 1, 2025), Full-Time column
+      href: https://www.elclc.org/wp-content/uploads/2025/10/2025-2026-Sliding-Fee-Schedule-for-10012025-4-and-6-Percent.pdf#page=1
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0.04
+  - threshold:
+      2025-10-01: 0.5501
+    amount:
+      2025-10-01: 0.06

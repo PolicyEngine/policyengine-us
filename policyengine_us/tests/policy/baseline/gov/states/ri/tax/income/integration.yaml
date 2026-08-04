@@ -195,3 +195,77 @@
     tax_unit_itemizes: true
     ri_cdcc: 0
     ri_income_tax: -398
+
+# Locks the "no-op for covered years" claim behind PR #9123: for 2021+,
+# refundable_percent = 1, so ri_refundable_eitc == ri_eitc and the swap to
+# ri_refundable_eitc in refundable.yaml leaves 2015+ behavior unchanged. Low
+# earner produces a real federal EITC that matches at 15% (ri_eitc), is fully
+# refundable, and flows through ri_refundable_credits into a negative
+# ri_income_tax. Existing RI integration cases are high-income with ~zero EITC,
+# so this exercises the ri_eitc -> ri_refundable_eitc -> ri_income_tax chain.
+- name: 2023 RI low-earner HOH with 1 child - refundable EITC flows to negative income tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: RI
+  output:
+    # Federal EITC = 3,995; RI match = 15% -> ri_eitc = 599.25.
+    # 2023 refundable_percent = 1, so ri_refundable_eitc == ri_eitc, it flows
+    # through ri_refundable_credits, and with zero pre-credit liability drives
+    # ri_income_tax to -599.25.
+    ri_eitc: 599.25
+    ri_refundable_eitc: 599.25
+    ri_income_tax: -599.25
+
+- name: 2027 RI CTC and high-income surtax apply in the same tax unit
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        birth_year: 1990
+        social_security: 20_000
+        taxable_social_security: 10_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
+        ri_agi: 0
+        ri_taxable_income: 1_250_000
+    households:
+      household:
+        members: [person1, child]
+        state_code: RI
+  output:
+    ri_ctc: 330
+    ri_high_earner_tax: 2_500
+    ri_social_security_modification: 10_000
+    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
+    # thresholds, gov.irs.uprating-projected for 2027 from the official 2026
+    # thresholds (84,450 / 192,000): 71,649.70 before credits, + 2,500 surtax,
+    # - 330 CTC = 73,819.70.
+    ri_income_tax: 73_819.70

@@ -1,0 +1,57 @@
+- name: Case 1, QMB MSP-only beneficiary receives premium and cost-sharing value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    # Part B premium: $202.90 * 12 = $2,434.80.
+    # QMB cost sharing: $14,500 * 20% = $2,900.
+    msp_cost: 5_334.8
+
+- name: Case 2, SLMB MSP-only beneficiary receives Part B premium value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: SLMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    msp_cost: 2_434.8
+
+- name: Case 3, QI MSP-only beneficiary receives Part B premium value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QI
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    msp_cost: 2_434.8
+
+- name: Case 4, full Medicaid enrollee does not double count MSP cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: true
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 2_434.8
+  output:
+    msp_cost: 0

@@ -20,7 +20,7 @@ class ct_ssp_shelter_allowance(Variable):
         # not the $0 in the parameter table.  Modeling the facility
         # rate requires a per-facility input variable.
         p = parameters(period).gov.states.ct.dss.ssp
-        arrangement = person("ct_ssp_living_arrangement", period.this_year)
+        arrangement = person("ct_ssp_living_arrangement", period)
         rent = person("rent", period)
         max_allowance = p.shelter_allowance[arrangement]
         return min_(rent, max_allowance)

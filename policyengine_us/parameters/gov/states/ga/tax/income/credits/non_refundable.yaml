@@ -1,13 +1,9 @@
 description: Georgia provides these non-refundable income tax credits.
 values:
+  # The HB 162 surplus tax rebate is not listed here: O.C.G.A. 48-7-20.2 caps
+  # it at Form 500 Line 16 (tax before credits) and pays it out past a zero
+  # balance, so it is applied as a refundable amount (ga_refundable_credits).
   2007-01-01:
-    - ga_cdcc
-    - ga_low_income_credit
-  2021-01-01:
-    - ga_cdcc
-    - ga_low_income_credit
-    - ga_surplus_tax_rebate
-  2022-01-01:
     - ga_cdcc
     - ga_low_income_credit
   2024-01-01:

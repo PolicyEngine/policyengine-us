@@ -1,0 +1,458 @@
+# NC TANF (Work First, nc_tanf) — need standard (need_standard/main.yaml, monthly):
+# size 2 = 472, size 3 = 544, size 4 = 594. Benefit = 50% of (need standard -
+# countable earned + unearned income) (benefit/payment_percentage.yaml).
+# Income-eligible only if reduced need standard per person >= 25/mo = 300/yr
+# (eligibility/average_reduced_need_standard_threshold.yaml). Demographic
+# eligibility requires a child under 18 (eligibility/age_limit.yaml).
+- name: tanf_max_benefit_youngest_child_age_17 (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Child age 17 < 18 limit -> demographically eligible. No income, so
+        # reduced need standard = full size-3 standard = 544 x 12 = 6_528
+        # (per person 2_176 >= 300 -> income-eligible).
+        # nc_tanf = 6_528 x 0.5 = 3_264.
+        nc_tanf: 3_264
+        tanf: 3_264
+- name: tanf_only_child_age_18_demographically_ineligible (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 38
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Same household as the age-17 case but the child is 18 (not < 18 limit):
+        # demographically ineligible -> 0. Pins the age boundary against the
+        # positive age-17 case.
+        nc_tanf: 0
+        tanf: 0
+- name: tanf_max_benefit_size_4_couple_2_children (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    spm_units:
+      spm_unit:
+        # Size-4 need standard row = 594 x 12 = 7_128; no income ->
+        # nc_tanf = 7_128 x 0.5 = 3_564 (pins a different table row than size 3).
+        nc_tanf: 3_564
+        tanf: 3_564
+- name: tanf_mid_phaseout_earned_income (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 3_000
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Earned income 3_000 (no disregard in NC countable earned income):
+        # reduced need standard = 6_528 - 3_000 = 3_528 (per person 1_176 >= 300).
+        # nc_tanf = 3_528 x 0.5 = 1_764.
+        nc_tanf: 1_764
+        tanf: 1_764
+- name: tanf_self_employment_income_counted_as_earned (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        self_employment_income_before_lsr: 2_400
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        self_employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+        - head
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Self-employment income is in the NC earned-income source list
+        # (income/earned.yaml). Size-2 need standard = 472 x 12 = 5_664;
+        # reduced = 5_664 - 2_400 = 3_264 (per person 1_632 >= 300).
+        # nc_tanf = 3_264 x 0.5 = 1_632.
+        nc_tanf: 1_632
+        tanf: 1_632
+- name: tanf_income_at_min_benefit_boundary_eligible (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_628
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Exact eligibility cliff for size 3: reduced = 6_528 - 5_628 = 900;
+        # per person 900 / 3 = 300 >= 300 (25/mo x 12) -> still eligible.
+        # nc_tanf = 900 x 0.5 = 450. Binds the >= comparison.
+        nc_tanf: 450
+        tanf: 450
+- name: tanf_income_just_above_min_benefit_boundary (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_629
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id007
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # One dollar past the cliff: reduced = 6_528 - 5_629 = 899;
+        # per person 899 / 3 = 299.67 < 300 -> income-ineligible -> 0.
+        # (The prior file's names claimed a 5_687 threshold; the actual
+        # cliff sits between 5_628 and 5_629.)
+        nc_tanf: 0
+        tanf: 0

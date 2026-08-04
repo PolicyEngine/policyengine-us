@@ -13,12 +13,19 @@ class ks_tanf_max_benefit_standard(Variable):
         "https://www.cbpp.org/research/family-income-support/tanf-benefits-remain-low-despite-recent-increases-in-some-states",
     )
     defined_for = StateCode.KS
-    documentation = """
-    Returns the Group IV non-shared-living payment standard (basic + $135
-    shelter), matching the CBPP and Welfare Rules Database convention for
-    cross-state comparison. Group IV covers Johnson County (the most populous
-    in Kansas). This is the same value returned by ks_tanf_maximum_benefit,
-    exposed here under the cross-state naming convention.
-    """
 
-    adds = ["ks_tanf_maximum_benefit"]
+    def formula(spm_unit, period, parameters):
+        # Returns the Group IV non-shared-living standard, matching the CBPP and
+        # Welfare Rules Database convention for cross-state comparison. Unlike
+        # ks_tanf_maximum_benefit, this always uses the Group IV standard, the
+        # full household size, and the non-shared arrangement, independent of
+        # the household's actual county, SSI status, or living arrangement.
+        p = parameters(period).gov.states.ks.dcf.tanf
+        size = spm_unit("spm_unit_size", period.this_year)
+        capped_size = min_(size, p.max_family_size_in_table)
+        additional_people = max_(size - p.max_family_size_in_table, 0)
+        ps = p.payment_standard
+        return (
+            ps.non_shared.GROUP_IV[capped_size]
+            + additional_people * ps.additional_person_amount
+        )

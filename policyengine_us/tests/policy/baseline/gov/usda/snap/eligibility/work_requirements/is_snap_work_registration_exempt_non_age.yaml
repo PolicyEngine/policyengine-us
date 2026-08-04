@@ -115,9 +115,79 @@
   output:
     is_snap_work_registration_exempt_non_age: true
 
+# --- (iii) Subject to and complying with TANF work requirements ---
+
+- name: Case 9, TANF enrollee complying with TANF work requirements is exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_complying_with_tanf_work_requirements: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+- name: Case 10, complying with TANF work requirements but not enrolled in TANF is not exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_complying_with_tanf_work_requirements: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: false
+  output:
+    is_snap_work_registration_exempt_non_age: false
+
+- name: Case 11, TANF enrollee not complying with TANF work requirements is not exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+        is_complying_with_tanf_work_requirements: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+  output:
+    is_snap_work_registration_exempt_non_age: false
+
+# --- (v) Applied for but not yet receiving unemployment compensation ---
+
+- name: Case 12, UC applicant not yet receiving UI is exempt.
+  period: 2026-01
+  input:
+    age: 30
+    is_disabled: false
+    unemployment_compensation: 0
+    has_applied_for_unemployment_compensation: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+# --- (vi) Participant in drug/alcohol treatment program ---
+
+- name: Case 13, participant in a drug or alcohol treatment program is exempt.
+  period: 2026-01
+  input:
+    age: 30
+    is_disabled: false
+    is_in_substance_use_treatment_program: true
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
 # --- Non-exempt baseline ---
 
-- name: Case 9, able-bodied adult with no exempting conditions.
+- name: Case 14, able-bodied adult with no exempting conditions.
   period: 2026-01
   input:
     age: 30
@@ -125,5 +195,8 @@
     unemployment_compensation: 0
     is_full_time_college_student: false
     is_part_time_college_student: false
+    is_complying_with_tanf_work_requirements: false
+    has_applied_for_unemployment_compensation: false
+    is_in_substance_use_treatment_program: false
   output:
     is_snap_work_registration_exempt_non_age: false

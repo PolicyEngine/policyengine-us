@@ -1,0 +1,35 @@
+- name: Case 1, all eligibility components pass.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_work_eligible: true
+    ms_wd_disability_eligible: true
+    ms_wd_income_eligible: true
+    ms_wd_resource_eligible: true
+    is_medicaid_immigration_status_eligible: true
+  output:
+    ms_wd_eligible: true
+
+- name: Case 2, immigration ineligibility fails WD eligibility.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_work_eligible: true
+    ms_wd_disability_eligible: true
+    ms_wd_income_eligible: true
+    ms_wd_resource_eligible: true
+    is_medicaid_immigration_status_eligible: false
+  output:
+    ms_wd_eligible: false
+
+- name: Case 3, failing work test fails WD eligibility.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_work_eligible: false
+    ms_wd_disability_eligible: true
+    ms_wd_income_eligible: true
+    ms_wd_resource_eligible: true
+    is_medicaid_immigration_status_eligible: true
+  output:
+    ms_wd_eligible: false

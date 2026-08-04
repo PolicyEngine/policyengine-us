@@ -23,7 +23,7 @@
       person1:
         age: 25
         is_disabled: false
-        medicaid: 1
+        medicaid_enrolled: true
     households:
       household:
         members: [person1]
@@ -132,7 +132,7 @@
       person1:
         age: 30
         employment_income: 12_000
-        medicaid: 1
+        medicaid_enrolled: true
     spm_units:
       spm_unit:
         members: [person1]

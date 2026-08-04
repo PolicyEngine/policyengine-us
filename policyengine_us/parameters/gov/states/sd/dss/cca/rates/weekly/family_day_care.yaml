@@ -1,0 +1,101 @@
+description: South Dakota provides these weekly maximum reimbursement rates for family day care providers under the Child Care Assistance program.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: South Dakota CCA family day care weekly rates
+  breakdown:
+    - sd_cca_region
+    - sd_cca_age_group
+    - sd_cca_time_category
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026 (Family Day Care)
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf
+
+URBAN:
+  INFANT:
+    FULL_TIME:
+      2026-08-01: 180
+    PART_TIME:
+      2026-08-01: 90
+    LIMITED_TIME:
+      2026-08-01: 45
+  TODDLER:
+    FULL_TIME:
+      2026-08-01: 177.5
+    PART_TIME:
+      2026-08-01: 88.75
+    LIMITED_TIME:
+      2026-08-01: 44.5
+  PRESCHOOL:
+    FULL_TIME:
+      2026-08-01: 175
+    PART_TIME:
+      2026-08-01: 87.5
+    LIMITED_TIME:
+      2026-08-01: 43.75
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-08-01: 170
+    PART_TIME:
+      2026-08-01: 85
+    LIMITED_TIME:
+      2026-08-01: 42.5
+SUBURBAN:
+  INFANT:
+    FULL_TIME:
+      2026-08-01: 153
+    PART_TIME:
+      2026-08-01: 76.5
+    LIMITED_TIME:
+      2026-08-01: 38.25
+  TODDLER:
+    FULL_TIME:
+      2026-08-01: 150
+    PART_TIME:
+      2026-08-01: 75
+    LIMITED_TIME:
+      2026-08-01: 37.5
+  PRESCHOOL:
+    FULL_TIME:
+      2026-08-01: 150
+    PART_TIME:
+      2026-08-01: 75
+    LIMITED_TIME:
+      2026-08-01: 37.5
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-08-01: 145
+    PART_TIME:
+      2026-08-01: 72.5
+    LIMITED_TIME:
+      2026-08-01: 36.25
+RURAL:
+  INFANT:
+    FULL_TIME:
+      2026-08-01: 140
+    PART_TIME:
+      2026-08-01: 70
+    LIMITED_TIME:
+      2026-08-01: 35
+  TODDLER:
+    FULL_TIME:
+      2026-08-01: 145
+    PART_TIME:
+      2026-08-01: 72.5
+    LIMITED_TIME:
+      2026-08-01: 36.25
+  PRESCHOOL:
+    FULL_TIME:
+      2026-08-01: 135
+    PART_TIME:
+      2026-08-01: 67.5
+    LIMITED_TIME:
+      2026-08-01: 33.75
+  SCHOOL_AGE:
+    FULL_TIME:
+      2026-08-01: 140
+    PART_TIME:
+      2026-08-01: 70
+    LIMITED_TIME:
+      2026-08-01: 35

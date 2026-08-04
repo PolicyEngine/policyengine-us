@@ -1,0 +1,870 @@
+# SSI federal partner edge-case contract tests.
+# All amounts derived from gov/ssa/ssi parameters for 2026:
+#   individual FBR $994/mo (amount/individual.yaml), couple FBR $1,491/mo
+#   (amount/couple.yaml), $20 general + $65 earned exclusions and 50%
+#   earned share (income/exclusions/*), resource limits $2,000 / $3,000
+#   (eligibility/resources/limit/*), non-blind SGA $1,690/mo (gov/ssa/sga).
+- name: ssi_age_64_disabled_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Disabled route, no income: full individual FBR $994/mo x 12 = $11,928.
+        ssi: 11_928
+        is_ssi_eligible: true
+        is_ssi_aged: false
+        msp: 0
+        msp_eligible: false
+        # TX is a Section 1634 state: positive SSI confers Medicaid
+        # (SSI_RECIPIENT category). $13,708.50 is the calibration-derived
+        # TX adult per-capita cost (calibration/gov/hhs/medicaid/totals/
+        # spending[TX] scaled by the person's cost index); the same value
+        # recurs in every TX adult enrollee case below.
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_age_65_aged_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Aged route (65 >= aged_threshold), no income: $994/mo x 12 = $11,928.
+        ssi: 11_928
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        meets_ssi_disability_criteria: false
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_blind_negative_self_employment_full_benefit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_blind: true
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        self_employment_income_before_lsr: -6_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Blind categorical route (SGA screen does not apply to blind).
+        # Negative self-employment income (-$500/mo) is floored at $0 in
+        # _apply_ssi_exclusions, so countable income is 0 and the benefit
+        # must equal (not exceed) the full FBR: $994/mo x 12 = $11,928.
+        ssi: 11_928
+        is_ssi_eligible: true
+        is_ssi_aged: false
+        ssi_countable_income: 0
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_earned_income_partial_benefit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 13_020
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Mid-phase-out: wages $1,085/mo. Countable = (1,085 - $20 - $65)
+        # x 50% = $500/mo -> $6,000/yr.
+        ssi_earned_income: 13_020
+        ssi_countable_income: 6_000
+        # SSI = $994 - $500 = $494/mo x 12 = $5,928.
+        ssi: 5_928
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_earned_income_at_breakeven_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 24_876
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Earned break-even: wages 2 x FBR + $85 = $2,073/mo ($24,876/yr).
+        # Countable = (2,073 - 85) x 50% = $994/mo = FBR, so payment is
+        # exactly $0 while categorical/resource eligibility remains true
+        # (is_ssi_eligible excludes the income test).
+        ssi_countable_income: 11_928
+        ssi: 0
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        # Despite $0 SSI, still Medicaid-eligible via TX's optional
+        # senior-or-disabled pathway: SSI-method countable income $11,928
+        # <= 75% of FPG (0.75 x $15,960 = $11,970), so the calibration-
+        # derived TX adult per-capita cost applies.
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_unearned_income_reduction (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        social_security_retirement: 6_240
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Social Security retirement $520/mo flows into SSI unearned income
+        # (income/sources/unearned includes social_security).
+        ssi_unearned_income: 6_240
+        # Countable = 520 - $20 general exclusion = $500/mo -> $6,000/yr.
+        ssi_countable_income: 6_000
+        # SSI = $994 - $500 = $494/mo x 12 = $5,928.
+        ssi: 5_928
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_use_reported_passthrough (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_reported: 6_000
+        use_reported_ssi: true
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Calculated entitlement is unaffected by the reported amount:
+        # full FBR $994/mo x 12 = $11,928.
+        ssi: 11_928
+        # Programs that count SSI see the reported amount instead when
+        # use_reported_ssi is true: applicable_ssi = ssi_reported = $6,000.
+        applicable_ssi: 6_000
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_resources_at_2000_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 2_000
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Resources exactly at the $2,000 individual limit still pass the
+        # test (<= semantics, 20 CFR 416.1205): full FBR $994/mo x 12.
+        ssi: 11_928
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_resources_above_2000_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 2_001
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Resource-route ineligibility pin: $2,001 > $2,000 limit.
+        ssi: 0
+        is_ssi_eligible: false
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 0
+        is_medicaid_eligible: false
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_aged_couple_resources_at_3000 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 1_500
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 1_500
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse]
+    marital_units:
+      mu_head_spouse:
+        members: [head, spouse]
+  output:
+    people:
+      head:
+        # Joint claim: combined resources $3,000 are exactly at the couple
+        # limit (still eligible). Couple FBR $1,491/mo splits evenly:
+        # $745.50/mo x 12 = $8,946 per spouse ($17,892 total).
+        ssi: 8_946
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+      spouse:
+        ssi: 8_946
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_disabled_child_parental_deeming (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 48_000
+        own_children_in_household: 1
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        own_children_in_household: 1
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child]
+    marital_units:
+      mu_head_spouse:
+        members: [head, spouse]
+      mu_child:
+        members: [child]
+  output:
+    people:
+      head:
+        ssi: 0
+        is_ssi_eligible: false
+        msp: 0
+        msp_eligible: false
+        medicaid: 0
+        is_medicaid_eligible: false
+        chip: 0
+      spouse:
+        ssi: 0
+        is_ssi_eligible: false
+        msp: 0
+        msp_eligible: false
+        medicaid: 0
+        is_medicaid_eligible: false
+        chip: 0
+      child:
+        # Parental deeming (20 CFR 416.1165): parents' wages $4,000/mo.
+        # Deemed earned after exclusions: (4,000 - 85) x 50% = $1,957.50/mo.
+        # Less two-parent living allocation (couple FBR $1,491/mo):
+        # 1,957.50 - 1,491 = $466.50/mo deemed to the child as unearned.
+        # Child countable = 466.50 - $20 = $446.50/mo -> $5,358/yr.
+        ssi_countable_income: 5_358
+        # SSI = $994 - $446.50 = $547.50/mo x 12 = $6,570.
+        ssi: 6_570
+        is_ssi_eligible: true
+        meets_ssi_disability_criteria: true
+        msp: 0
+        msp_eligible: false
+        # TX is a Section 1634 state: the child's positive SSI confers
+        # Medicaid (SSI_RECIPIENT category). Calibration-derived TX child
+        # per-capita cost: spending[TX] $57,284,033,548 x cost index 414
+        # / state denominator 2,400,882,400 = $9,877.86.
+        medicaid: 9_877.86
+        is_medicaid_eligible: true
+        # Medicaid-eligible child is not CHIP-eligible.
+        chip: 0
+    tax_units:
+      tax_unit:
+        # Parents (TX non-expansion, not Medicaid-eligible at $48,000 MAGI
+        # = 180% FPG) get marketplace PTC: benchmark SLCSP $15,715.77 less
+        # required contribution $2,705.28 (5.64% of MAGI) = $13,010.49.
+        aca_ptc: 13_010.49
+        premium_tax_credit: 13_010.49
+- name: ssi_non_aged_non_disabled_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Demographic-route ineligibility pin: age 30, not aged, blind, or
+        # disabled.
+        ssi: 0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0
+        msp_eligible: false
+        medicaid: 0
+        is_medicaid_eligible: false
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_aged_undocumented_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Immigration-route ineligibility pin: undocumented aged person is
+        # neither a citizen nor a qualified noncitizen.
+        ssi: 0
+        is_ssi_eligible: false
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 0
+        is_medicaid_eligible: false
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0
+- name: ssi_aged_lpr_status (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: LEGAL_PERMANENT_RESIDENT
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    people:
+      head:
+        # Qualified noncitizen (LPR) aged route: full FBR $994/mo x 12.
+        ssi: 11_928
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        msp: 0
+        msp_eligible: false
+        medicaid: 13_708.50
+        is_medicaid_eligible: true
+        chip: 0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        premium_tax_credit: 0

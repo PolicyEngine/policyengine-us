@@ -74,7 +74,7 @@
     filing_status: JOINT
     state_code: MT
   output:
-    mt_capital_gains_tax_joint: 410
+    mt_capital_gains_tax_joint: 388
 
 - name: No CG tax when net capital gains are negative
   # LTCG=50K but STCG=-80K → net=-30K → no preferential treatment
@@ -100,7 +100,26 @@
     state_code: MT
   output:
     # lesser_of_cg_and_taxable = min(30K, 100K) = 30K
-    # excess_over_taxable = max(100K - 30K, 0) = 70K
-    # excess_over_threshold = max(41K - 70K, 0) = 0
-    # All 30K taxed at higher rate: 30K * 0.041 = 1230
-    mt_capital_gains_tax_joint: 1_230
+    # all 30K is below the 41K remaining threshold: 30K * 0.03 = 900
+    mt_capital_gains_tax_joint: 900
+
+- name: Case 10, ordinary income is not subtracted twice.
+  period: 2025
+  absolute_error_margin: 2
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 25_340.57
+        short_term_capital_gains: 1_717.07
+        long_term_capital_gains: 12_595.03
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_capital_gains_tax_joint: 409

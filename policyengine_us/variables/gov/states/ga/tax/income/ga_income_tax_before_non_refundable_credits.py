@@ -11,9 +11,12 @@ class ga_income_tax_before_non_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ga.tax.income.main
+        income = tax_unit("ga_taxable_income", period)
+        if p.flat_applies:
+            return p.flat_rate * income
+        # Pre-2024 progressive bracket structure by filing status.
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        income = tax_unit("ga_taxable_income", period)
         return select(
             [
                 filing_status == status.SINGLE,

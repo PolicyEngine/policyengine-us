@@ -1,0 +1,40 @@
+description: Kentucky applies the same Child Care Assistance Program maximum daily payment rates to each of these counties, whose identical DCC-300 rate rows PolicyEngine groups as rate region 2.
+values:
+  2022-10-01:
+    - ADAIR_COUNTY_KY
+    - ANDERSON_COUNTY_KY
+    - BULLITT_COUNTY_KY
+    - CARROLL_COUNTY_KY
+    - CASEY_COUNTY_KY
+    - CLINTON_COUNTY_KY
+    - ESTILL_COUNTY_KY
+    - GALLATIN_COUNTY_KY
+    - GARRARD_COUNTY_KY
+    - GRANT_COUNTY_KY
+    - GREEN_COUNTY_KY
+    - HARRISON_COUNTY_KY
+    - HENRY_COUNTY_KY
+    - LINCOLN_COUNTY_KY
+    - MCCREARY_COUNTY_KY
+    - MERCER_COUNTY_KY
+    - NICHOLAS_COUNTY_KY
+    - OLDHAM_COUNTY_KY
+    - OWEN_COUNTY_KY
+    - PENDLETON_COUNTY_KY
+    - POWELL_COUNTY_KY
+    - RUSSELL_COUNTY_KY
+    - SCOTT_COUNTY_KY
+    - SHELBY_COUNTY_KY
+    - SPENCER_COUNTY_KY
+    - TRIMBLE_COUNTY_KY
+    - WAYNE_COUNTY_KY
+    - WOODFORD_COUNTY_KY
+    # - CUMBERLAND_COUNTY_KY  # Cumberland County not in PolicyEngine county_enum at the moment
+
+metadata:
+  unit: list
+  period: year
+  label: Kentucky CCAP rate region 2 counties
+  reference:
+    - title: DCC-300 Kentucky Child Care Maximum Payment Rate Chart (R.10/22), pp.1-4
+      href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc300kymaxpaymentchart.pdf#page=1

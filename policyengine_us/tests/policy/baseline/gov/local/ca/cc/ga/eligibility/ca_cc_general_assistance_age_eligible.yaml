@@ -1,0 +1,23 @@
+- name: Adult aged 18 meets the age threshold.
+  period: 2024-01
+  input:
+    age: 18
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_age_eligible: true
+
+- name: Adult aged 30 meets the age threshold.
+  period: 2024-01
+  input:
+    age: 30
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_age_eligible: true
+
+- name: Minor aged 17 does not meet the age threshold.
+  period: 2024-01
+  input:
+    age: 17
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_age_eligible: false

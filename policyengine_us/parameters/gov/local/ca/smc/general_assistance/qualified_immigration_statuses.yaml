@@ -1,0 +1,17 @@
+description: San Mateo County limits General Assistance to these immigration statuses.
+values:
+  2023-10-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - DEPORTATION_WITHHELD
+    - CUBAN_HAITIAN_ENTRANT
+    - CONDITIONAL_ENTRANT
+metadata:
+  unit: list
+  period: year
+  label: San Mateo County General Assistance qualified immigration statuses
+  reference:
+    - title: San Mateo County Human Services Agency General Assistance Program Fact Sheet, Immigration Eligibility
+      href: https://www.smcgov.org/media/153295/download?inline=#page=1

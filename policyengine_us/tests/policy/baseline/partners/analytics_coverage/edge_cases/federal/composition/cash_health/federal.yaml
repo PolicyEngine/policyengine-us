@@ -1,0 +1,596 @@
+# Composition template: joint SSI + Medicaid + CHIP + MSP + ACA PTC surface per person.
+# All cases Dallas, TX (zip 75201) — non-expansion state, so the adult coverage gap
+# (100% FPL PTC floor with no expansion Medicaid) is exercised alongside the
+# child-Medicaid/CHIP ladder and the SSI categorical Medicaid link (TX is a 1634 state).
+# Dollar values derived in comments; medicaid/chip dollar values are the model's
+# calibration-based per-person allocations (see per-case notes).
+- name: cashhealth_size_1_single_adult_age_30_ptc (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # TX non-expansion: 30-year-old non-parent adult has no Medicaid pathway.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # $20,000 / $15,650 FPG (size 1) = 127.8% FPL -> PTC-eligible (100-400%).
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # 2026 applicable pct below 133% FPL = 2.10% (gov/aca/required_contribution_percentage).
+        # Contribution = 20,000 x 0.021 = 420.00; Dallas age-30 SLCSP (slcsp) = 7,371.02.
+        # PTC = 7,371.02 - 420.00 = 6,951.02.
+        aca_ptc: 6_951.02
+        premium_tax_credit: 6_951.02
+- name: cashhealth_size_1_elderly_medicare_qmb_ssi_stack (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        # Partners send is_medicare_eligible: true at 65 — enables the MSP branch.
+        is_medicare_eligible: true
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Full 2026 federal benefit rate: $994/month x 12 = $11,928
+        # (gov/ssa/ssi/amount/individual.yaml, zero countable income).
+        ssi: 11_928.0
+        is_ssi_eligible: true
+        is_ssi_aged: true
+        # QMB (countable income $0 <= 100% FPL, assets $0): covers Part A + Part B premiums.
+        # medicare_quarters_of_coverage is pinned to 0 above, so Part A is not
+        # premium-free: ($565 Part A full + $202.90 Part B) x 12 = $9,214.80
+        # (gov/hhs/medicare/part_a/full_premium.yaml, part_b/base_premium.yaml, 2026).
+        msp: 9_214.8
+        msp_eligible: true
+        # SSI recipient -> categorically Medicaid-eligible (TX is a 1634 state).
+        # Dollar value = TX total Medicaid spending ($57.284B, calibration
+        # .gov.hhs.medicaid.totals.spending) allocated by the person's SLCSP-age-rated
+        # cost index / state denominator (medicaid_cost_if_enrolled) = 13,708.50.
+        medicaid: 13_708.5
+        is_medicaid_eligible: true
+        chip: 0.0
+        # Medicare/Medicaid coverage: not PTC-eligible.
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: cashhealth_size_1_disabled_partial_ssi_earner (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        # $14,000/yr = $1,166.67/mo, below the 2026 non-blind SGA limit of $1,690/mo
+        # (gov/ssa/sga/non_blind.yaml), so the disability screen is passed.
+        employment_income_before_lsr: 14_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # SSI earned-income phase-out (disabled route, mid-phase-out partial amount):
+        # countable = (14,000/12 - $20 general - $65 earned) / 2 = $540.83/mo.
+        # SSI = ($994 FBR - $540.83) x 12 = $453.17 x 12 = $5,438.00.
+        ssi: 5_438.0
+        is_ssi_eligible: true
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # SSI recipient -> categorically Medicaid-eligible (TX 1634 state); same
+        # calibration allocation as the aged case (AGED_DISABLED group) = 13,708.50.
+        medicaid: 13_708.5
+        is_medicaid_eligible: true
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: cashhealth_size_3_single_parent_2_children_coverage_gap (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Coverage-gap pin (income route): $20,000 / $26,650 FPG (size 3) = 75.1% FPL —
+        # above the TX parent/caretaker Medicaid limit but below the 100% FPL PTC floor,
+        # so the parent gets neither Medicaid nor PTC in non-expansion TX.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Children at 75.1% FPL are below the TX child Medicaid limits: eligible.
+        # Dollar value = TX total Medicaid spending ($57.284B) allocated by the child's
+        # SLCSP-based cost index (medicaid_cost_if_enrolled) = 11,805.12 per child.
+        medicaid: 11_805.12
+        is_medicaid_eligible: true
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child2:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 11_805.12
+        is_medicaid_eligible: true
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: cashhealth_size_2_married_couple_just_above_100_fpl (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        # $21,300 / $21,150 FPG (size 2) = 100.7% FPL: just above the 100% floor,
+        # exiting the TX coverage gap pinned in the single-parent case.
+        employment_income_before_lsr: 21_300
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # 2026 applicable pct below 133% FPL = 2.10%; contribution = 21,300 x 0.021 = 447.30.
+        # Dallas SLCSP for ages 30 + 28 (slcsp) = 14,430.05.
+        # PTC = 14,430.05 - 447.30 = 13,982.75.
+        aca_ptc: 13_982.75
+        premium_tax_credit: 13_982.75
+- name: cashhealth_size_2_single_parent_1_child_chip_and_ptc (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        # $38,000 / $21,150 FPG (size 2) = 179.7% FPL: child is above the TX child
+        # Medicaid limits but under the TX CHIP ceiling (~201% FPL); parent is in
+        # PTC range — the classic mixed-coverage composition.
+        employment_income_before_lsr: 38_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id006
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # TX separate-CHIP per-capita = spending / enrollment
+        # = $522,954,572 / 359,047 (calibration.gov.hhs.cms.chip) = $1,456.51.
+        chip: 1_456.51
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        # CHIP-eligible child is excluded from the PTC coverage unit, so SLCSP is the
+        # parent-only Dallas age-30 premium = 7,371.02. Form 8962 FPL fraction rounds
+        # to 1.79; 2026 applicable pct = 4.19% + (6.60% - 4.19%) x (1.79 - 1.50)/0.50
+        # = 5.5878%; contribution = 38,000 x 0.055878 = 2,123.36.
+        # PTC = 7,371.02 - 2,123.36 = 5,247.66.
+        aca_ptc: 5_247.66
+        premium_tax_credit: 5_247.66
+- name: cashhealth_size_1_single_adult_above_400_fpl_cliff (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        # $63,000 / $15,650 FPG (size 1) = 402.6% FPL: just above the 400% cliff,
+        # which returns in 2026 after the enhanced-subsidy years.
+        employment_income_before_lsr: 63_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id007
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # Income-route ineligibility pin: above 400% FPL, the 2026 cliff zeroes the PTC.
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: cashhealth_size_1_single_adult_age_30_ptc_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id008
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        # $20,000 / $15,060 FPG (2024, size 1) = 132.8% FPL -> eligible; 2025 has no cliff.
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # 2025 enhanced-subsidy regime: applicable pct = 0% below 150% FPL
+        # (gov/aca/required_contribution_percentage), so PTC = full Dallas
+        # age-30 SLCSP for 2025 = 5,109.86.
+        aca_ptc: 5_109.86
+        premium_tax_credit: 5_109.86

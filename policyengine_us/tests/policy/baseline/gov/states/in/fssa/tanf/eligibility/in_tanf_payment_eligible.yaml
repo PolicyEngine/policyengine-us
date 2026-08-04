@@ -1,6 +1,6 @@
 # Tests for in_tanf_payment_eligible
 # Uses payment disregards: 75% earned income (only 25% counts)
-# Compares to payment standard
+# Compares to the maximum benefit (IC 12-14-2-5)
 
 - name: Family of 3 with zero countable income - eligible
   period: 2024-01
@@ -10,9 +10,9 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: true
-    # Countable income ($0) < standard of need ($320) → eligible
+    # Countable income ($0) < maximum benefit ($320) → eligible
 
-- name: Family of 3 with income below standard of need - eligible
+- name: Family of 3 with income below maximum benefit - eligible
   period: 2024-01
   input:
     spm_unit_size: 3
@@ -20,9 +20,9 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: true
-    # Countable income ($300) < standard of need ($320) → eligible
+    # Countable income ($300) < maximum benefit ($320) → eligible
 
-- name: Family of 3 with income at standard of need - not eligible
+- name: Family of 3 with income at maximum benefit - not eligible
   period: 2024-01
   input:
     spm_unit_size: 3
@@ -30,9 +30,9 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: false
-    # Countable income ($320) >= standard of need ($320) → not eligible
+    # Countable income ($320) >= maximum benefit ($320) → not eligible
 
-- name: Family of 3 with income above standard of need - not eligible
+- name: Family of 3 with income above maximum benefit - not eligible
   period: 2024-01
   input:
     spm_unit_size: 3
@@ -40,9 +40,9 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: false
-    # Countable income ($400) > standard of need ($320) → not eligible
+    # Countable income ($400) > maximum benefit ($320) → not eligible
 
-- name: Family of 1 below standard of need - eligible
+- name: Family of 1 below maximum benefit - eligible
   period: 2024-01
   input:
     spm_unit_size: 1
@@ -50,9 +50,9 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: true
-    # Countable income ($150) < standard of need ($155) → eligible
+    # Countable income ($150) < maximum benefit ($155) → eligible
 
-- name: Family of 2 below standard of need - eligible
+- name: Family of 2 below maximum benefit - eligible
   period: 2024-01
   input:
     spm_unit_size: 2
@@ -60,4 +60,25 @@
     state_code: IN
   output:
     in_tanf_payment_eligible: true
-    # Countable income ($250) < standard of need ($255) → eligible
+    # Countable income ($250) < maximum benefit ($255) → eligible
+
+- name: Family of 3 with income above old standard of need now eligible in 2026
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 400
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: true
+    # Countable income ($400) < 2025-07-01 maximum benefit ($513) → eligible,
+    # whereas $400 exceeded the standard of need ($320)
+
+- name: Family of 3 with income at increased maximum benefit - not eligible
+  period: 2026-01
+  input:
+    spm_unit_size: 3
+    in_tanf_countable_income_for_payment: 513
+    state_code: IN
+  output:
+    in_tanf_payment_eligible: false
+    # Countable income ($513) >= maximum benefit ($513) → not eligible

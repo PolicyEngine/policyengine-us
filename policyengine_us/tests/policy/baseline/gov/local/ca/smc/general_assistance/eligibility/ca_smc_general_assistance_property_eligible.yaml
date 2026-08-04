@@ -1,0 +1,31 @@
+- name: Case 1, property below limit is eligible.
+  period: 2026
+  input:
+    in_smc: true
+    ca_smc_general_assistance_countable_property: 1_463
+  output:
+    ca_smc_general_assistance_property_eligible: true
+
+- name: Case 2, property at limit is ineligible.
+  period: 2026
+  input:
+    in_smc: true
+    ca_smc_general_assistance_countable_property: 1_464
+  output:
+    ca_smc_general_assistance_property_eligible: false
+
+- name: Case 3, property clearly above limit is ineligible.
+  period: 2026
+  input:
+    in_smc: true
+    ca_smc_general_assistance_countable_property: 5_000
+  output:
+    ca_smc_general_assistance_property_eligible: false
+
+- name: Case 4, flat limit also applies in earlier years.
+  period: 2024
+  input:
+    in_smc: true
+    ca_smc_general_assistance_countable_property: 1_463
+  output:
+    ca_smc_general_assistance_property_eligible: true

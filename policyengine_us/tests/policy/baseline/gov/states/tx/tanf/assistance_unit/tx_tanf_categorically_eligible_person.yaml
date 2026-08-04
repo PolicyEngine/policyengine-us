@@ -47,3 +47,13 @@
   output:
     tx_tanf_categorically_eligible_person: false
     # Fails both immigration & SSI requirements → excluded
+
+- name: Case 6, reported SSI receipt excludes the person despite zero computed SSI.
+  period: 2025-01
+  input:
+    immigration_status: CITIZEN
+    ssi: 0
+    receives_ssi: true
+    state_code: TX
+  output:
+    tx_tanf_categorically_eligible_person: false

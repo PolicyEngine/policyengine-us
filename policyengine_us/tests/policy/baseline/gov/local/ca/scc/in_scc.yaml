@@ -1,0 +1,13 @@
+- name: Santa Clara County is True
+  period: 2026
+  input:
+    county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    in_scc: true
+
+- name: Not Santa Clara County is False
+  period: 2026
+  input:
+    county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    in_scc: false

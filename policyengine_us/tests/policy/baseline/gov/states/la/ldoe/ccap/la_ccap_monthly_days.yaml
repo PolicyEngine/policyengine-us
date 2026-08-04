@@ -1,0 +1,81 @@
+# Paid day units per LAC 28:CLXV.103: full-time care in day units (max 22
+# per month); part-time care prorated against the 30-hour threshold; the
+# lesser of day-based and hours-based billing when both are reported.
+- name: Case 1, five attendance days per week bills 21.67 days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_days_per_week: 5
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 5 x 52/12 = 21.67.
+    la_ccap_monthly_days: 21.67
+
+- name: Case 2, fifteen weekly hours bill eleven day-equivalents.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 22 x 15/30 = 11.
+    la_ccap_monthly_days: 11
+
+- name: Case 3, part-time schedule with attendance days bills the lesser units.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 3  # Derives 15 hours/week.
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # min(21.67 day units, 11 hour units) = 11.
+    la_ccap_monthly_days: 11
+
+- name: Case 4, seven attendance days per week cap at 22 days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_days_per_week: 7
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    # 7 x 52/12 = 30.33, capped at the 22-day monthly maximum.
+    la_ccap_monthly_days: 22
+
+- name: Case 5, no reported schedule bills nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_monthly_days: 0

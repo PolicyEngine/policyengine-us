@@ -1,0 +1,109 @@
+description: Nevada provides these daily reimbursement rates for family child care providers under the Child Care and Development Program, by region, age group, and provider quality star rating.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Nevada CCDP family child care daily rates
+  breakdown:
+    - nv_ccdp_region
+    - nv_ccdp_age_group
+    - nv_ccdp_provider_star_rating
+  reference:
+    - title: Nevada Child Care Policy Manual, MS 633.2 Licensed Provider Daily Rates (Family), Clark and Washoe areas (p.107)
+      href: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/Child_Care_Manual_July_2024.pdf#page=107
+
+# Manual MS 633.2 Licensed Provider Daily Rates (Family), per day, by Nevada
+# Silver State Stars QRIS tier (STAR_1 = base, through STAR_5). MOST_POPULOUS =
+# Clark area; LOWEST_PERCENTILE = Washoe area, used as the representative
+# lowest-percentile rate for every non-Clark county. The STAR_1 column matches
+# the CCDF State Plan FFY 2025-2027 base table; the per-star increments come
+# from MS 633.2.
+MOST_POPULOUS:
+  INFANT:
+    STAR_1:
+      2024-10-01: 45
+    STAR_2:
+      2024-10-01: 46
+    STAR_3:
+      2024-10-01: 47
+    STAR_4:
+      2024-10-01: 48
+    STAR_5:
+      2024-10-01: 49
+  TODDLER:
+    STAR_1:
+      2024-10-01: 45
+    STAR_2:
+      2024-10-01: 46
+    STAR_3:
+      2024-10-01: 47
+    STAR_4:
+      2024-10-01: 48
+    STAR_5:
+      2024-10-01: 49
+  PRESCHOOL:
+    STAR_1:
+      2024-10-01: 46.50
+    STAR_2:
+      2024-10-01: 47.50
+    STAR_3:
+      2024-10-01: 48.50
+    STAR_4:
+      2024-10-01: 49.50
+    STAR_5:
+      2024-10-01: 50.50
+  SCHOOL_AGE:
+    STAR_1:
+      2024-10-01: 46
+    STAR_2:
+      2024-10-01: 47
+    STAR_3:
+      2024-10-01: 48
+    STAR_4:
+      2024-10-01: 49
+    STAR_5:
+      2024-10-01: 50
+LOWEST_PERCENTILE:
+  INFANT:
+    STAR_1:
+      2024-10-01: 40.50
+    STAR_2:
+      2024-10-01: 41.50
+    STAR_3:
+      2024-10-01: 42.50
+    STAR_4:
+      2024-10-01: 43.50
+    STAR_5:
+      2024-10-01: 44.50
+  TODDLER:
+    STAR_1:
+      2024-10-01: 40
+    STAR_2:
+      2024-10-01: 41
+    STAR_3:
+      2024-10-01: 42
+    STAR_4:
+      2024-10-01: 43
+    STAR_5:
+      2024-10-01: 44
+  PRESCHOOL:
+    STAR_1:
+      2024-10-01: 40
+    STAR_2:
+      2024-10-01: 41
+    STAR_3:
+      2024-10-01: 42
+    STAR_4:
+      2024-10-01: 43
+    STAR_5:
+      2024-10-01: 44
+  SCHOOL_AGE:
+    STAR_1:
+      2024-10-01: 40
+    STAR_2:
+      2024-10-01: 41
+    STAR_3:
+      2024-10-01: 42
+    STAR_4:
+      2024-10-01: 43
+    STAR_5:
+      2024-10-01: 44

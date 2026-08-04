@@ -25,6 +25,8 @@ spm_unit_medical_out_of_pocket_expenses = (
 |---|---|---|
 | Other health insurance premiums | In via `other_health_insurance_premiums` from data construction | No once data are built with baseline modeled premiums removed |
 | Medicare Part B | Computed by `medicare_part_b_premium` (base + IRMAA) | No |
+| Medicare Part A | Computed by `medicare_part_a_premium` (base premium net of QMB coverage) | No in baseline microdata: `medicare_quarters_of_coverage` defaults to 40 (premium-free), so the modeled premium is zero unless quarters are observed. Data construction must subtract the baseline modeled premium before populating quarters. |
+| Medicare Part D IRMAA (`income_adjusted_part_d_premium_surcharge`) | Computed from prior-prior-year MAGI | Yes for IRMAA-band enrollees whose CPS-reported premiums include Part D payments, until data construction subtracts the baseline modeled surcharge |
 | CHIP premium (`chip_premium`) | Computed by state schedules | No once data are built with baseline modeled premiums removed |
 | Medicaid premium (`medicaid_premium`) | Computed by state schedules | No once data are built with baseline modeled premiums removed |
 | Marketplace net premium (`marketplace_net_premium`) | Computed from selected plan premium minus used PTC | No once data are built with baseline modeled premiums removed |
@@ -41,7 +43,9 @@ Once the CPS-imputation side strips each premium's baseline share from the repor
 ```
 spm_unit_MOOP = other_health_insurance_premiums
               + computed_chip_premium
+              + computed_medicare_part_a_premium
               + computed_medicare_part_b_premium
+              + computed_part_d_irmaa_surcharge
               + computed_marketplace_net_premium
               + computed_medicaid_premium
               + other_medical_expenses
@@ -62,7 +66,9 @@ where `baseline_computed_premium_sum` is evaluated under the CPS reference year'
 | Component | Variable | Entity | Status |
 |---|---|---|---|
 | CHIP premium | `chip_premium` | TaxUnit | 17 states encoded with the federal 5 % income cap applied to modeled premiums (see [CHIP](../programs/chip.qmd)) |
+| Medicare Part A | `medicare_part_a_premium` | Person | Rules-based (full/reduced premium by quarters of coverage, net of QMB coverage via `msp_part_a_premium_coverage`) |
 | Medicare Part B | `medicare_part_b_premium` | Person | Rules-based (base + IRMAA tiers) |
+| Medicare Part D IRMAA | `income_adjusted_part_d_premium_surcharge` | Person | Rules-based (IRMAA tiers on prior-prior-year MAGI); the base Part D plan premium is not modeled |
 | Marketplace net premium | `marketplace_net_premium` | TaxUnit | `SLCSP × benchmark_ratio − used_PTC`; benchmark ratio imputed per-household via CPS back-out |
 | Medicaid expansion premium | `medicaid_premium` | TaxUnit | IN HIP POWER Account, Michigan Healthy Michigan contributions, and Montana HELP premiums; historical MI/MT schedules end when those programs eliminated premiums |
 
@@ -74,6 +80,8 @@ CPS private-premium reports conflate Marketplace, employer, and direct-purchase 
 
 - **Copays** — the federal 5 % of income CHIP cost-sharing cap (42 CFR 457.560) binds on premiums + copays combined. `chip_premium` applies the cap to modeled premiums and enrollment fees, but CHIP copayments remain unmodeled.
 - **Employer plan employee share** — stays in `other_health_insurance_premiums`; employer plans aren't statutory and can't be computed from rules without a separate employer-plan model.
+- **Base Part D plan premium** — only the IRMAA surcharge is modeled. The underlying Part D plan premium varies by plan choice rather than statute, so it stays in `other_health_insurance_premiums`; MOOP therefore only responds to Part D policy for IRMAA-band (high-income) enrollees.
+- **Data-side residual for the new Medicare components** — `derive_other_health_insurance_premiums` in the data pipeline subtracts baseline CHIP, Marketplace, and Medicaid premiums from CPS-reported non-Medicare premiums, but not yet `medicare_part_a_premium` or `income_adjusted_part_d_premium_surcharge`. Those must be added to the subtraction list (in the Populace successor pipeline) before Part A quarters of coverage are populated in microdata, or the modeled amounts will double count against reported premiums.
 
 ## See also
 

@@ -1,0 +1,284 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# Dallas Area Rapid Transit (DART), 2026 parameters: 31-day pass 126/month
+# full fare, 63/month reduced. Free ride for children under 5 -> value
+# 126 x 12 = 1,512/year. Reduced fare (ages 5-14, seniors 65+, disabled,
+# veterans, students, or enrollment in SNAP/Medicaid/Medicare/CHIP/TANF/WIC
+# via Discount GoPass) -> value (126 - 63) x 12 = 756/year.
+- name: tx_dart_age_4_free_ride (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 4
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Under 5 rides free: full-fare pass value 126 x 12 = 1,512.
+        tx_dart_benefit_person: 1_512.0
+- name: tx_dart_age_5_free_to_reduced_fare_boundary (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 5
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # At 5 the free ride ends; child reduced fare (5-14) applies:
+        # (126 - 63) x 12 = 756.
+        tx_dart_benefit_person: 756.0
+- name: tx_dart_age_14_reduced_fare_high_income (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        # High income blocks the Discount GoPass program route
+        # (SNAP/Medicaid/CHIP), isolating the age route.
+        employment_income_before_lsr: 60_000
+      child1:
+        age: 14
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      child1:
+        # Age 14 is the last child reduced-fare age: (126 - 63) x 12 = 756.
+        tx_dart_benefit_person: 756.0
+- name: tx_dart_age_15_full_fare_high_income (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+      child1:
+        # Age 15 exits the child reduced-fare bracket (5-14); non-student,
+        # non-disabled, and household income blocks the program route.
+        age: 15
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        # Working-age adult with no qualifying route pays full fare.
+        tx_dart_benefit_person: 0.0
+      child1:
+        # Age route ends at 15 -> full fare.
+        tx_dart_benefit_person: 0.0
+- name: tx_dart_age_65_senior_reduced_fare_high_income (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        # Senior threshold 65 (Medicare eligibility also begins at 65, so
+        # both the age and program routes fire; the value is identical).
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Senior reduced fare: (126 - 63) x 12 = 756.
+        tx_dart_benefit_person: 756.0
+- name: tx_dart_snap_enrollment_discount_gopass_route (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        # Age 30 has no age route; zero income makes the household
+        # SNAP-eligible, which qualifies for the Discount GoPass.
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_full_time_student: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Program-enrollment route: reduced fare (126 - 63) x 12 = 756.
+        tx_dart_benefit_person: 756.0

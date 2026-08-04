@@ -124,6 +124,7 @@ from .states.ut import (
     create_ut_refundable_eitc_reform,
     create_ut_hb210_reform,
     create_ut_hb210_s2_reform,
+    create_ut_ctc_reform,
 )
 from .additional_tax_bracket import (
     create_additional_tax_bracket_reform,
@@ -140,6 +141,80 @@ from .states.ri.ctc.ri_ctc_reform import create_ri_ctc_reform
 from .states.ri.exemption.ri_exemption_reform import (
     create_ri_exemption_reform_fn,
 )
+from .states.ok.dependent_exemption.ok_dependent_exemption_reform import (
+    create_ok_dependent_exemption_reform_fn,
+)
+from .states.vt.dependent_exemption.vt_dependent_exemption_reform import (
+    create_vt_dependent_exemption_reform_fn,
+)
+from .states.mi.dependent_exemption.mi_dependent_exemption_reform import (
+    create_mi_dependent_exemption_reform_fn,
+)
+from .states.ne.dependent_exemption.ne_dependent_exemption_reform import (
+    create_ne_dependent_exemption_reform_fn,
+)
+from .states.wv.dependent_exemption.wv_dependent_exemption_reform import (
+    create_wv_dependent_exemption_reform_fn,
+)
+from .states.wi.dependent_exemption.wi_dependent_exemption_reform import (
+    create_wi_dependent_exemption_reform_fn,
+)
+from .states.hi.dependent_exemption.hi_dependent_exemption_reform import (
+    create_hi_dependent_exemption_reform_fn,
+)
+from .states.ny.dependent_exemption.ny_dependent_exemption_reform import (
+    create_ny_dependent_exemption_reform_fn,
+)
+from .states.il.dependent_exemption.il_dependent_exemption_reform import (
+    create_il_dependent_exemption_reform_fn,
+)
+from .states.ms.dependent_exemption.ms_dependent_exemption_reform import (
+    create_ms_dependent_exemption_reform_fn,
+)
+from .states.nj.dependent_exemption.nj_dependent_exemption_reform import (
+    create_nj_dependent_exemption_reform_fn,
+)
+from .states.sc.dependent_exemption.sc_dependent_exemption_reform import (
+    create_sc_dependent_exemption_reform_fn,
+)
+from .states.ks.dependent_exemption.ks_dependent_exemption_reform import (
+    create_ks_dependent_exemption_reform_fn,
+)
+from .states.ga.dependent_exemption.ga_dependent_exemption_reform import (
+    create_ga_dependent_exemption_reform_fn,
+)
+from .states.mn.dependent_exemption.mn_dependent_exemption_reform import (
+    create_mn_dependent_exemption_reform_fn,
+)
+from .states.al.dependent_exemption.al_dependent_exemption_reform import (
+    create_al_dependent_exemption_reform_fn,
+)
+from .states.ca.dependent_credit.ca_dependent_credit_reform import (
+    create_ca_dependent_credit_reform_fn,
+)
+from .states.ia.dependent_credit.ia_dependent_credit_reform import (
+    create_ia_dependent_credit_reform_fn,
+)
+from .states.az.dependent_credit.az_dependent_credit_reform import (
+    create_az_dependent_credit_reform_fn,
+)
+from .states.md.dependent_exemption.md_dependent_exemption_reform import (
+    create_md_dependent_exemption_reform_fn,
+)
+from .states.oh.dependent_exemption.oh_dependent_exemption_reform import (
+    create_oh_dependent_exemption_reform_fn,
+)
+from .states.ar.dependent_credit.ar_dependent_credit_reform import (
+    create_ar_dependent_credit_reform_fn,
+)
+import importlib as _importlib
+
+# Indiana's module dir is `in`, a Python keyword, so it can't be imported with
+# a dotted ``from .states.in...`` path; load it dynamically instead.
+create_in_dependent_exemption_reform_fn = _importlib.import_module(
+    "policyengine_us.reforms.states.in.dependent_exemption."
+    "in_dependent_exemption_reform"
+).create_in_dependent_exemption_reform_fn
 from .states.de.dependent_credit.de_dependent_credit_reform import (
     create_de_dependent_credit_reform_fn,
 )
@@ -185,17 +260,17 @@ from .states.ct.hb5009 import (
 from .states.ct.hb5114 import (
     create_ct_hb5114_reform,
 )
+from .states.tx.rebate import (
+    create_tx_rebate_reform,
+)
 from .congress.watca import (
     create_watca_reform,
 )
 from .congress.mcdonald_rivet import (
     create_working_parents_tax_relief_act_reform,
 )
-from .states.nj.stay_nj import (
-    create_nj_stay_nj_reform,
-)
-from .states.nj.anchor import (
-    create_nj_anchor_reform,
+from .refundable_credit_conversion import (
+    create_refundable_credit_conversion_reform,
 )
 
 
@@ -235,6 +310,15 @@ from .states.id.eitc import (
 from .states.id.s1450 import (
     create_id_s1450_reform,
 )
+from .states.id.ctc import (
+    create_id_ctc_reform,
+)
+from .states.ga.ctc import (
+    create_ga_ctc_reform,
+)
+from .states.il.sb3567 import (
+    create_il_sb3567_reform,
+)
 from .states.ky.eitc import (
     create_ky_eitc_reform,
 )
@@ -255,6 +339,9 @@ from .states.oh.eitc import (
 )
 from .states.ut.child_poverty_eitc import (
     create_ut_fully_refundable_eitc_reform,
+)
+from .states.sc.child_poverty_eitc import (
+    create_sc_fully_refundable_eitc_reform,
 )
 from policyengine_core.reforms import Reform
 import warnings
@@ -383,6 +470,8 @@ def create_structural_reforms_from_parameters(parameters, period):
 
     ut_hb210_s2 = create_ut_hb210_s2_reform(parameters, period)
 
+    ut_ctc = create_ut_ctc_reform(parameters, period)
+
     american_worker_rebate_act = create_american_worker_rebate_act_reform(
         parameters, period
     )
@@ -393,6 +482,29 @@ def create_structural_reforms_from_parameters(parameters, period):
     )
     ri_ctc = create_ri_ctc_reform(parameters, period)
     ri_exemption = create_ri_exemption_reform_fn(parameters, period)
+    ok_dependent_exemption = create_ok_dependent_exemption_reform_fn(parameters, period)
+    vt_dependent_exemption = create_vt_dependent_exemption_reform_fn(parameters, period)
+    in_dependent_exemption = create_in_dependent_exemption_reform_fn(parameters, period)
+    mi_dependent_exemption = create_mi_dependent_exemption_reform_fn(parameters, period)
+    ne_dependent_exemption = create_ne_dependent_exemption_reform_fn(parameters, period)
+    wv_dependent_exemption = create_wv_dependent_exemption_reform_fn(parameters, period)
+    wi_dependent_exemption = create_wi_dependent_exemption_reform_fn(parameters, period)
+    hi_dependent_exemption = create_hi_dependent_exemption_reform_fn(parameters, period)
+    ny_dependent_exemption = create_ny_dependent_exemption_reform_fn(parameters, period)
+    il_dependent_exemption = create_il_dependent_exemption_reform_fn(parameters, period)
+    ms_dependent_exemption = create_ms_dependent_exemption_reform_fn(parameters, period)
+    nj_dependent_exemption = create_nj_dependent_exemption_reform_fn(parameters, period)
+    sc_dependent_exemption = create_sc_dependent_exemption_reform_fn(parameters, period)
+    ks_dependent_exemption = create_ks_dependent_exemption_reform_fn(parameters, period)
+    ga_dependent_exemption = create_ga_dependent_exemption_reform_fn(parameters, period)
+    mn_dependent_exemption = create_mn_dependent_exemption_reform_fn(parameters, period)
+    al_dependent_exemption = create_al_dependent_exemption_reform_fn(parameters, period)
+    ca_dependent_credit = create_ca_dependent_credit_reform_fn(parameters, period)
+    ia_dependent_credit = create_ia_dependent_credit_reform_fn(parameters, period)
+    az_dependent_credit = create_az_dependent_credit_reform_fn(parameters, period)
+    md_dependent_exemption = create_md_dependent_exemption_reform_fn(parameters, period)
+    oh_dependent_exemption = create_oh_dependent_exemption_reform_fn(parameters, period)
+    ar_dependent_credit = create_ar_dependent_credit_reform_fn(parameters, period)
     de_dependent_credit = create_de_dependent_credit_reform_fn(parameters, period)
     or_dependent_exemption_credit = create_or_dependent_exemption_credit_reform_fn(
         parameters, period
@@ -420,6 +532,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ct_tax_rebate_2026 = create_ct_tax_rebate_2026_reform(parameters, period)
     ct_hb5009 = create_ct_hb5009_reform(parameters, period)
     ct_hb5114 = create_ct_hb5114_reform(parameters, period)
+    tx_rebate = create_tx_rebate_reform(parameters, period)
     al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
         parameters, period
     )
@@ -436,6 +549,9 @@ def create_structural_reforms_from_parameters(parameters, period):
     ga_eitc = create_ga_eitc_reform(parameters, period)
     id_eitc = create_id_eitc_reform(parameters, period)
     id_s1450 = create_id_s1450_reform(parameters, period)
+    id_ctc = create_id_ctc_reform(parameters, period)
+    ga_ctc = create_ga_ctc_reform(parameters, period)
+    il_sb3567 = create_il_sb3567_reform(parameters, period)
     ky_eitc = create_ky_eitc_reform(parameters, period)
     ms_eitc = create_ms_eitc_reform(parameters, period)
     nd_eitc = create_nd_eitc_reform(parameters, period)
@@ -445,9 +561,13 @@ def create_structural_reforms_from_parameters(parameters, period):
     ut_fully_refundable_eitc = create_ut_fully_refundable_eitc_reform(
         parameters, period
     )
-    nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
-    nj_anchor = create_nj_anchor_reform(parameters, period)
+    sc_fully_refundable_eitc = create_sc_fully_refundable_eitc_reform(
+        parameters, period
+    )
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
+        parameters, period
+    )
+    refundable_credit_conversion = create_refundable_credit_conversion_reform(
         parameters, period
     )
 
@@ -508,6 +628,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ut_refundable_eitc,
         ut_hb210,
         ut_hb210_s2,
+        ut_ctc,
         additional_tax_bracket,
         american_worker_rebate_act,
         ctc_per_child_phase_out,
@@ -515,6 +636,29 @@ def create_structural_reforms_from_parameters(parameters, period):
         ctc_minimum_refundable_amount,
         ri_ctc,
         ri_exemption,
+        ok_dependent_exemption,
+        vt_dependent_exemption,
+        in_dependent_exemption,
+        mi_dependent_exemption,
+        ne_dependent_exemption,
+        wv_dependent_exemption,
+        wi_dependent_exemption,
+        hi_dependent_exemption,
+        ny_dependent_exemption,
+        il_dependent_exemption,
+        ms_dependent_exemption,
+        nj_dependent_exemption,
+        sc_dependent_exemption,
+        ks_dependent_exemption,
+        ga_dependent_exemption,
+        mn_dependent_exemption,
+        al_dependent_exemption,
+        ca_dependent_credit,
+        ia_dependent_credit,
+        az_dependent_credit,
+        md_dependent_exemption,
+        oh_dependent_exemption,
+        ar_dependent_credit,
         de_dependent_credit,
         or_dependent_exemption_credit,
         va_dependent_exemption,
@@ -534,6 +678,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_hb5114,
         ct_sb100,
         ct_tax_rebate_2026,
+        tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
         ga_sb520,
@@ -548,6 +693,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         ga_eitc,
         id_eitc,
         id_s1450,
+        id_ctc,
+        ga_ctc,
+        il_sb3567,
         ky_eitc,
         ms_eitc,
         nd_eitc,
@@ -555,9 +703,9 @@ def create_structural_reforms_from_parameters(parameters, period):
         mo_refundable_eitc,
         oh_refundable_eitc,
         ut_fully_refundable_eitc,
-        nj_stay_nj,
-        nj_anchor,
+        sc_fully_refundable_eitc,
         working_parents_tax_relief_act,
+        refundable_credit_conversion,
     ]
     reforms = tuple(filter(lambda x: x is not None, reforms))
 

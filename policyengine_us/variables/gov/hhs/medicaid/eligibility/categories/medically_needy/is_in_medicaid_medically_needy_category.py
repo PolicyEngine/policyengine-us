@@ -35,7 +35,7 @@ class is_in_medicaid_medically_needy_category(Variable):
             is_pregnant,
             is_senior,
         ]
-        return np.any(
+        return np.logical_or.reduce(
             [
                 person_in_category & category_is_covered
                 for person_in_category, category_is_covered in zip(

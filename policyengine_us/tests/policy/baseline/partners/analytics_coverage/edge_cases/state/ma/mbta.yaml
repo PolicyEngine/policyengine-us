@@ -1,0 +1,128 @@
+# MBTA reduced-fare categories (all boolean outputs -> no error margin):
+# - Senior CharlieCard: age >= 65.
+# - TAP CharlieCard: disabled or Medicare-eligible.
+# - Income-eligible reduced fare: age 18-64 AND enrolled in EAEDC/TAFDC/SNAP/Medicaid
+#   (these zero-income adults qualify for SNAP, which confers enrollment).
+- name: ma_mbta_age_64_not_senior (ma)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Age 64 < 65 -> no senior card; not disabled/Medicare -> no TAP;
+        # in the 18-64 bracket and SNAP-enrolled -> income-eligible reduced fare.
+        ma_mbta_senior_charlie_card_eligible: false
+        ma_mbta_tap_charlie_card_eligible: false
+        ma_mbta_income_eligible_reduced_fare_eligible: true
+- name: ma_mbta_age_65_senior (ma)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Age 65 -> senior card; Medicare-eligible at 65 -> TAP;
+        # 65 falls outside the 18-64 income-eligible age bracket.
+        ma_mbta_senior_charlie_card_eligible: true
+        ma_mbta_tap_charlie_card_eligible: true
+        ma_mbta_income_eligible_reduced_fare_eligible: false
+- name: ma_mbta_disabled_tap_eligible (ma)
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Disabled at 30 -> TAP but not senior; in the 18-64 bracket and
+        # program-enrolled -> income-eligible reduced fare.
+        ma_mbta_senior_charlie_card_eligible: false
+        ma_mbta_tap_charlie_card_eligible: true
+        ma_mbta_income_eligible_reduced_fare_eligible: true

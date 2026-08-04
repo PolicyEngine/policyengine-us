@@ -409,3 +409,24 @@
         tax_unit_id: 12345
   output:
     taxsim_taxsimid: 12345
+
+- name: Total FICA - TAXSIM fica output
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        is_tax_unit_head: true
+    households:
+      household:
+        members: [head]
+        state_code: TX
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+  output:
+    taxsim_tfica: 7_650
+    taxsim_fica: 15_300

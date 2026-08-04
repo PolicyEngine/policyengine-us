@@ -221,3 +221,25 @@
     # applicant/co-applicant-only rule; an adult family member's
     # earnings still contribute to household countable income.
     nj_ccap_countable_income: 3_500
+
+- name: Case 10, adult self-employment income counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+        self_employment_income: 12_000
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    # (24,000 + 12,000) / 12 = 3,000
+    nj_ccap_countable_income: 3_000

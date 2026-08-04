@@ -1,0 +1,49 @@
+description: West Virginia counts these income sources under the Child Care Assistance Program.
+values:
+  2024-01-01:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - workers_compensation
+    - pension_income
+    - alimony_income
+    - child_support_received
+    - dividend_income
+    - interest_income
+    - rental_income
+    - veterans_benefits
+    # PolicyEngine records military retirement separately from pension_income,
+    # so include it under Manual Sec. 5.2.4.4 pensions and annuities.
+    - military_retirement_pay
+    # TANF is countable per Manual Sec 5.2.4.3 but excluded here to avoid
+    # a circular dependency:
+    #   wv_ccap_countable_income -> tanf -> wv_works
+    #     -> wv_works_countable_earned_income (deducts childcare_expenses)
+    #     -> childcare_expenses -> wv_ccap -> wv_ccap_income_eligible
+    #     -> wv_ccap_countable_income
+    # The is_tanf_enrolled bypass in wv_ccap_income_eligible already
+    # makes TANF-active families categorically income-eligible.
+    # - tanf  # would belong here
+    #
+    # Provisions we don't model at the moment:
+    # - §5.2.5.11 child-earnings exclusion (under-18 earnings of non-head/spouse)
+    #   — we don't filter income sources by age of earner.
+    # - §5.2.4.3 sub-categories beyond TANF/SSI: Relative Caretaker Pay, WV
+    #   Employment Assistance Program, WV Works Post-Employment Supplements
+    #   — these don't have PolicyEngine variables at the moment.
+    # - §5.2.4.10 vocational-rehabilitation payments and §5.2.4.13 DoD
+    #   Transitional Compensation (parent-directed portion) — no corresponding
+    #   PolicyEngine variables at the moment.
+    # - §5.2.4.11 catch-all "any other monies received on a regular basis"
+    #   — open-ended residual category we can't enumerate exhaustively.
+
+metadata:
+  unit: list
+  period: year
+  label: West Virginia CCAP countable income sources
+  reference:
+    - title: WV Child Care Subsidy Policy & Procedures Manual, Chapter 5, Sections 5.2.1-5.2.4 — Countable Income
+      href: https://bfa.wv.gov/media/6766/download?inline#page=51

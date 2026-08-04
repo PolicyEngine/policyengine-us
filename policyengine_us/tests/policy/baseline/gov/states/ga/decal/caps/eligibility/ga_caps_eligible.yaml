@@ -1,0 +1,158 @@
+# GA CAPS family eligibility
+# Requires: eligible child, income eligible, activity eligible, asset eligible
+#
+# GA SMI for 4-person household at 2026-01: $116,773.19 (uprated)
+# Family of 2: 116,773.19 * 0.68 = $79,405.77
+#   50% SMI = $39,702.88
+
+- name: Case 1, eligible family with child under 13 and low income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible: true
+
+- name: Case 2, ineligible due to income above 50 percent SMI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # income 40,000 > 39,702.88 (50% SMI for family of 2) -> ineligible
+    ga_caps_eligible: false
+
+- name: Case 3, ineligible with no eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    # no child in unit -> ineligible
+    ga_caps_eligible: false
+
+- name: Case 4, ineligible due to assets above limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible: false
+
+- name: Case 5, ineligible when child is undocumented.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_caps_eligible: false
+
+- name: Case 6, ineligible due to insufficient activity hours.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 20
+        is_full_time_student: false
+      person2:
+        age: 5
+
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # 20 hrs/wk < 24 required -> activity ineligible -> ineligible
+    ga_caps_eligible: false

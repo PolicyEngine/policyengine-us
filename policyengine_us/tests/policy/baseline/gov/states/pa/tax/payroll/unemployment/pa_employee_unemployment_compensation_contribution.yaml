@@ -1,0 +1,19 @@
+- name: Pennsylvania employee unemployment compensation contribution is included in employee payroll tax.
+  period: 2026
+  input:
+    employment_income: 27_000
+    state_code: PA
+  output:
+    pa_employee_unemployment_compensation_contribution: 18.90
+    pa_employee_state_payroll_tax: 18.90
+    employee_state_payroll_tax: 18.90
+    employee_payroll_tax: 2_084.40
+
+- name: Pennsylvania employee unemployment compensation contribution uses the 2018-2022 rate.
+  period: 2022
+  input:
+    employment_income: 27_000
+    state_code: PA
+  output:
+    pa_employee_unemployment_compensation_contribution: 16.20
+    pa_employee_state_payroll_tax: 16.20

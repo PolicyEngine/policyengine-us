@@ -1,0 +1,94 @@
+# Tests for in_tanf_gross_income
+# Sum of gross earned and gross unearned income (no disregards), used by the
+# post-2025 initial gross income screen.
+
+- name: No income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_gross_income: 0
+
+- name: Earned income only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_gross_income: 400
+    # Gross income has no disregards applied
+
+- name: Unearned income only
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 0
+        tanf_gross_unearned_income: 300
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_gross_income: 300
+
+- name: Both earned and unearned income
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 500
+        tanf_gross_unearned_income: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_tanf_gross_income: 700
+    # $500 earned + $200 unearned = $700
+
+- name: Multiple people in unit
+  period: 2024-01
+  input:
+    people:
+      person1:
+        tanf_gross_earned_income: 200
+      person2:
+        tanf_gross_unearned_income: 100
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IN
+  output:
+    in_tanf_gross_income: 300
+    # $200 (person1 earned) + $100 (person2 unearned) = $300

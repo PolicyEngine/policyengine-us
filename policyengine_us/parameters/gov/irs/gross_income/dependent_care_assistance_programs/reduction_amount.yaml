@@ -1,18 +1,25 @@
-description: IRS reduces the dependent care benefit limit by this amount, based on filing status.
+description: The IRS limits the amount of dependent care assistance excludable from gross income to this amount, based on filing status.
 SINGLE:
   2018-01-01: 5_000
+  2026-01-01: 7_500
 JOINT:
   2018-01-01: 5_000
+  2026-01-01: 7_500
 SEPARATE:
   2018-01-01: 2_500
+  2026-01-01: 3_750
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 5_000
+  2026-01-01: 7_500
 SURVIVING_SPOUSE:
   2018-01-01: 5_000
+  2026-01-01: 7_500
 metadata:
   breakdown: filing_status
   unit: currency-USD
-  label: IRS reduction amount from gross income for dependent care assistance
+  label: IRS dependent care assistance exclusion cap
   reference:
-    - title: 26 U.S. Code § 129 - Dependent care assistance programs, (a)(2)(A)
+    - title: 26 U.S. Code § 129(a)(2)(A)
       href: https://www.law.cornell.edu/uscode/text/26/129#a_2_A
+    - title: One Big Beautiful Bill Act, Pub. L. No. 119-21, § 70404 (2025) # Raises the § 129(a)(2)(A) exclusion cap to $7,500 ($3,750 MFS) for tax years beginning after 2025-12-31.
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm

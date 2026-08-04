@@ -1,0 +1,28 @@
+description: Virginia limits income to this amount under the Medicaid Low Income Families With Children program.
+1:
+  2025-07-01: 3_948
+2:
+  2025-07-01: 5_940
+3:
+  2025-07-01: 7_584
+4:
+  2025-07-01: 9_168
+5:
+  2025-07-01: 10_752
+6:
+  2025-07-01: 12_120
+7:
+  2025-07-01: 13_704
+8:
+  2025-07-01: 15_312
+metadata:
+  unit: currency-USD
+  period: year
+  label: Virginia Medicaid LIFC Group I income limit
+  breakdown:
+    - range(1, 9)
+  breakdown_label:
+    - Household size
+  reference:
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 3
+      href: https://www.dmas.virginia.gov/media/0aynyhxk/m04-1-1-26a.pdf#page=51

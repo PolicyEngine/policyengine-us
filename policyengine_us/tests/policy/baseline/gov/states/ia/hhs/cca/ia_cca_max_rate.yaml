@@ -1,0 +1,435 @@
+# ia_cca_max_rate: Person, USD per half-day unit, MONTH.
+# Looks up the maximum half-day-unit rate by provider type x quality rating x
+# age group (with the special-needs variant baked into the age-group enum). Only
+# defined for an eligible child (defined_for = ia_cca_eligible_child), so each
+# person here is an age-/dependency-/immigration-eligible child. In-home care is
+# paid only when at least three children in the family need care, so the in-home
+# cases use a family of three children in care; with fewer the rate is zeroed.
+# Rates effective 2024-07-01 (IAC 441-170.4(7) Tables 1-5).
+
+# ===== Table 1: Licensed Center (4 quality tiers x 3 age groups x Basic/SN) =====
+
+- name: Licensed center, no rating, all age groups, basic and special needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      it_sn:
+        age: 1
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      pre_sn:
+        age: 4
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+      sa_sn:
+        age: 8
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: NO_RATING
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa, it_sn, pre_sn, sa_sn]
+    households:
+      household:
+        members: [it, pre, sa, it_sn, pre_sn, sa_sn]
+        state_code: IA
+  output:
+    # INFANT_TODDLER 25.66 / PRESCHOOL 19.50 / SCHOOL_AGE 16.50
+    # SN: INFANT_TODDLER_SN 51.94 / PRESCHOOL_SN 30.43 / SCHOOL_AGE_SN 30.34
+    ia_cca_max_rate: [25.66, 19.50, 16.50, 51.94, 30.43, 30.34]
+
+- name: Licensed center, quality rating 5, basic age groups.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: RATING_5
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: RATING_5
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: RATING_5
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa]
+    households:
+      household:
+        members: [it, pre, sa]
+        state_code: IA
+  output:
+    # RATING_5: INFANT_TODDLER 27.00 / PRESCHOOL 22.97 / SCHOOL_AGE 18.50
+    ia_cca_max_rate: [27.00, 22.97, 18.50]
+
+- name: Licensed center, quality rating 1 or 2 and 3 or 4, preschool.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      pre12:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: RATING_1_OR_2
+      pre34:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: LICENSED_CENTER
+        ia_cca_quality_rating: RATING_3_OR_4
+    tax_units:
+      tax_unit:
+        members: [pre12, pre34]
+    households:
+      household:
+        members: [pre12, pre34]
+        state_code: IA
+  output:
+    # PRESCHOOL: RATING_1_OR_2 20.25 / RATING_3_OR_4 21.50
+    ia_cca_max_rate: [20.25, 21.50]
+
+# ===== Table 2: Child Development Home A or B =====
+
+- name: Child development home A or B, no rating and rating 5, all age groups.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: NO_RATING
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: NO_RATING
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: NO_RATING
+      it5:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_5
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa, it5]
+    households:
+      household:
+        members: [it, pre, sa, it5]
+        state_code: IA
+  output:
+    # NO_RATING: IT 16.63 / PRE 15.00 / SA 15.00; RATING_5 IT 17.50
+    ia_cca_max_rate: [16.63, 15.00, 15.00, 17.50]
+
+- name: Child development home A or B, rating 1 or 2, all age groups.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_1_OR_2
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_1_OR_2
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_1_OR_2
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa]
+    households:
+      household:
+        members: [it, pre, sa]
+        state_code: IA
+  output:
+    # RATING_1_OR_2: IT 16.63 / PRE 15.50 / SA 15.25
+    ia_cca_max_rate: [16.63, 15.50, 15.25]
+
+- name: Child development home A or B, rating 3 or 4, basic age groups and special needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_3_OR_4
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_3_OR_4
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_3_OR_4
+      pre_sn:
+        age: 4
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_AB
+        ia_cca_quality_rating: RATING_3_OR_4
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa, pre_sn]
+    households:
+      household:
+        members: [it, pre, sa, pre_sn]
+        state_code: IA
+  output:
+    # RATING_3_OR_4: IT 16.63 / PRE 16.00 / SA 15.50 / PRESCHOOL_SN 24.00
+    ia_cca_max_rate: [16.63, 16.00, 15.50, 24.00]
+
+# ===== Table 3: Child Development Home C =====
+
+- name: Child development home C, rating 3 or 4, all age groups.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_3_OR_4
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_3_OR_4
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_3_OR_4
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa]
+    households:
+      household:
+        members: [it, pre, sa]
+        state_code: IA
+  output:
+    # CDH C RATING_3_OR_4: IT 18.00 / PRE 17.50 / SA 16.44
+    ia_cca_max_rate: [18.00, 17.50, 16.44]
+
+- name: Child development home C, rating 1 or 2, basic age groups and special needs.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_1_OR_2
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_1_OR_2
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_1_OR_2
+      it_sn:
+        age: 1
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_DEVELOPMENT_HOME_C
+        ia_cca_quality_rating: RATING_1_OR_2
+    tax_units:
+      tax_unit:
+        members: [it, pre, sa, it_sn]
+    households:
+      household:
+        members: [it, pre, sa, it_sn]
+        state_code: IA
+  output:
+    # RATING_1_OR_2: IT 18.00 / PRE 17.00 / SA 15.75 / INFANT_TODDLER_SN 27.00
+    ia_cca_max_rate: [18.00, 17.00, 15.75, 27.00]
+
+# ===== Table 4: Child Care Home (Not Registered) — no quality dimension =====
+
+- name: Not-registered child care home, basic and special needs, no quality effect.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_CARE_HOME_NOT_REGISTERED
+        ia_cca_quality_rating: NO_RATING
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_CARE_HOME_NOT_REGISTERED
+        ia_cca_quality_rating: NO_RATING
+      it_sn:
+        age: 1
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        ia_cca_provider_type: CHILD_CARE_HOME_NOT_REGISTERED
+        ia_cca_quality_rating: RATING_5
+    tax_units:
+      tax_unit:
+        members: [it, pre, it_sn]
+    households:
+      household:
+        members: [it, pre, it_sn]
+        state_code: IA
+  output:
+    # No quality dimension: IT basic 16.63 / PRE basic 15.00 / IT_SN 24.95
+    # (RATING_5 on the SN child is ignored — Table 4 has no quality tier)
+    ia_cca_max_rate: [16.63, 15.00, 24.95]
+
+# ===== Table 5: In-Home provider (minimum wage), only with 3+ children in care =====
+
+- name: In-home provider rate applies when three children are in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        ia_cca_provider_type: IN_HOME
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        ia_cca_provider_type: IN_HOME
+      sa:
+        age: 8
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        ia_cca_provider_type: IN_HOME
+    tax_units:
+      tax_unit:
+        members: [parent, it, pre, sa]
+    spm_units:
+      spm_unit:
+        members: [parent, it, pre, sa]
+    households:
+      household:
+        members: [parent, it, pre, sa]
+        state_code: IA
+  output:
+    # 3 children in care -> in-home allowed; flat 36.25 per unit for all ages
+    # (parent is not an eligible child -> max_rate not defined -> 0)
+    ia_cca_max_rate: [0, 36.25, 36.25, 36.25]
+
+- name: In-home provider rate is zero when fewer than three children are in care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      it:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        ia_cca_provider_type: IN_HOME
+      pre:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        ia_cca_provider_type: IN_HOME
+    tax_units:
+      tax_unit:
+        members: [parent, it, pre]
+    spm_units:
+      spm_unit:
+        members: [parent, it, pre]
+    households:
+      household:
+        members: [parent, it, pre]
+        state_code: IA
+  output:
+    # Only 2 children in care -> in-home not allowed -> rate zeroed
+    ia_cca_max_rate: [0, 0, 0]

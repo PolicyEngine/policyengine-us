@@ -1,0 +1,13 @@
+description: Indiana limits initial applicants' countable net income to this share of the maximum benefit under the Temporary Assistance for Needy Families program.
+
+values:
+  1997-10-01: 0  # Standard of need governs initial net income before 2025-07-01
+  2025-07-01: 1
+
+metadata:
+  unit: /1
+  period: month
+  label: Indiana TANF initial eligibility net income maximum benefit rate
+  reference:
+    - title: FSSA DFR Chapter 3000, Section 3010.15.00 (net income standard equal to the maximum grant)
+      href: https://www.in.gov/fssa/dfr/files/3000.pdf#page=4

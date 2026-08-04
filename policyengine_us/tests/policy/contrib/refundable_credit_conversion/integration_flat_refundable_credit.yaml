@@ -1,0 +1,27 @@
+- name: Reform integration — flat refundable credit fires end-to-end
+  # Smoke test that the reform applies and the flat credit computes to
+  # its expected value across taxpayer + CTC-dependent + household
+  # components.
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_ctc_dependent_credit: true
+    gov.contrib.refundable_credit_conversion.credit.use_household_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    gov.contrib.refundable_credit_conversion.credit.per_ctc_dependent: 500
+    gov.contrib.refundable_credit_conversion.credit.per_household: 200
+    people:
+      filer:
+        age: 35
+      spouse:
+        age: 33
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child]
+        filing_status: JOINT
+  output:
+    flat_refundable_credit: 2_700  # 2 * 1_000 + 1 * 500 + 200

@@ -7,12 +7,13 @@ class ne_child_care_subsidy(Variable):
     entity = SPMUnit
     label = "Nebraska Child Care Subsidy"
     definition_period = YEAR
+    reference = "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=4"
     defined_for = "ne_child_care_subsidy_eligible"
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         childcare_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
-        income = spm_unit("spm_unit_net_income", period)
+        income = spm_unit("ne_child_care_subsidy_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
         fpg_fraction = fpg * p.fpg_fraction.fee_free_limit
         income_above_fpg_fraction = income > fpg_fraction

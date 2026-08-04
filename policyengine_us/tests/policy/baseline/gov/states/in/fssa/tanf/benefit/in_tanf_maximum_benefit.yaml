@@ -1,0 +1,79 @@
+# Tests for in_tanf_maximum_benefit (amount of assistance, IC 12-14-2-5)
+# Maximum benefit by assistance unit size across the 2023 and 2025 increases.
+
+- name: Family of 2 pre-2023 amount
+  period: 2022-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 2
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 229
+
+- name: Family of 2 January 2024 amount
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 2
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 255
+    # 2023-07-01 amount
+
+- name: Family of 2 January 2025 still pre-July-2025 amount
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 2
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 255
+    # 2023-07-01 amount; the 2025-07-01 increase is not yet effective
+
+- name: Family of 2 January 2026 amount
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 2
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 409
+
+- name: Family of 3 January 2026 amount
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 3
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 513
+
+- name: Family of 10 January 2026 amount
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 10
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 1_241
+
+- name: Family of 11 January 2026 adds one additional member increment
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 11
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 1_345
+    # Size-10 amount ($1,241) + $104 for the 11th member
+
+- name: Family of 11 January 2024 has no additional member increment
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    spm_unit_size: 11
+    state_code: IN
+  output:
+    in_tanf_maximum_benefit: 775
+    # Before 2025-07-01 the additional member amount is $0, so size 11 is
+    # capped at the size-10 standard-of-need amount ($775)

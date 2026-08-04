@@ -1,0 +1,42 @@
+# Marin County General Relief (gov/local/ca/marin/general_relief).
+# Cash aid of $387/month (single) / $636 (married couple) minus net income,
+# for adults without dependent children who meet liquid-asset and
+# personal-property limits. Amplifi expansion county (in_marin).
+- name: ca_marin_single_no_income_max_grant (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '94901'
+        county_str: MARIN_COUNTY_CA
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Single rate $387/month with zero net income: 387 x 12 = 4,644.
+        ca_marin_general_relief: 4_644
+        ca_marin_general_relief_eligible: true

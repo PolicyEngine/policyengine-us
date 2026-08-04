@@ -1,0 +1,27 @@
+description: Michigan limits total household resources to this amount under the homestead property tax credit.
+metadata:
+  unit: currency-USD
+  period: year
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 100
+  label: Michigan homestead property tax credit household resources limit
+  reference:
+    - title: Michigan Income Tax Act 206.520 - (8)
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-520
+    - title: 2024 MI-1040CR Tax Form, Line 33
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040CR.pdf#page=2
+    - title: 2025 MI-1040CR Tax Form, Line 33
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040CR.pdf#page=2
+    - title: 2025 MI-1040 Instructions, MI-1040CR Table B
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=33
+values:
+  2016-01-01: 50_000
+  2018-01-01: 60_000
+  2021-01-01: 60_600
+  2022-01-01: 63_000
+  2023-01-01: 67_300
+  2024-01-01: 69_700
+  2025-01-01: 71_500

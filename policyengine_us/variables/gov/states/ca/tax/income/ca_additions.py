@@ -9,3 +9,4 @@ class ca_additions(Variable):
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
     defined_for = StateCode.CA
+    adds = ["ca_hsa_addition"]

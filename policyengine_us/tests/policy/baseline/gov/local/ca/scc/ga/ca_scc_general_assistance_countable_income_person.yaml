@@ -1,0 +1,104 @@
+- name: Case 1, head with unearned income only, no deductions applied.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    social_security: 1_200
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # Unearned income flows through unchanged; 1_200 / 12 = 100.
+    ca_scc_general_assistance_countable_income_person: 100
+
+- name: Case 2, head with multiple unearned sources sums correctly.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    social_security: 2_400
+    workers_compensation: 600
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # (2_400 + 600) / 12 = 250.
+    ca_scc_general_assistance_countable_income_person: 250
+
+- name: Case 3, non head or spouse contributes zero.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: false
+    employment_income: 12_000
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 4, head with zero income.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 5, head with negative self-employment income floors at zero earned, no unearned.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    self_employment_income: -12_000
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # max_(earned - deductions, 0) floors negative earned at 0; no unearned -> 0.
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 6, head with multiple unearned sources including pension.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    social_security: 1_200
+    workers_compensation: 600
+    taxable_pension_income: 2_400
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # (1_200 + 600 + 2_400) / 12 = 350.
+    ca_scc_general_assistance_countable_income_person: 350
+
+- name: Case 7, head with truly zero income across all sources.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    employment_income: 0
+    self_employment_income: 0
+    social_security: 0
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 8, head with SSI receipt zeroes out all countable income.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    ssi: 500
+    social_security: 12_000
+    workers_compensation: 6_000
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # SSI recipient — all income excluded per Responsible Relatives chapter.
+    ca_scc_general_assistance_countable_income_person: 0
+
+- name: Case 9, head with disability benefits, railroad benefits, and CA SDI.
+  period: 2024-01
+  input:
+    is_tax_unit_head_or_spouse: true
+    disability_benefits: 1_200
+    railroad_benefits: 2_400
+    ca_state_disability_insurance: 600
+    in_scc: true
+  absolute_error_margin: 0.1
+  output:
+    # (1_200 + 2_400 + 600) / 12 = 350.
+    ca_scc_general_assistance_countable_income_person: 350

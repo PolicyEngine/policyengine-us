@@ -1,0 +1,164 @@
+- name: Case 1, age-eligible renter.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true
+
+- name: Case 2, surviving spouse under the age threshold.
+  period: 2025
+  input:
+    age_head: 45
+    adjusted_gross_income: 15_000
+    filing_status: SURVIVING_SPOUSE
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true
+
+- name: Case 3, income above the limit.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 44_222
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 4, no rent or property tax paid.
+  period: 2025
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 0
+    real_estate_taxes: 0
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 5, age 66 after the transition year.
+  period: 2026
+  input:
+    age_head: 66
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 6, age 67 after the transition year.
+  period: 2026
+  input:
+    age_head: 67
+    adjusted_gross_income: 15_000
+    rent: 12_000
+    state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: true
+
+- name: Case 7, claimed dependent claimant is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 10_000
+        pre_subsidy_rent: 12_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 8, other adult household income counts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 10_000
+        pre_subsidy_rent: 12_000
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 60_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_homeowner_renter_relief_household_income: 70_000
+    ut_homeowner_renter_relief_eligible: [false, false]
+
+- name: Case 9, nontaxable income counts.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 40_000
+        tax_exempt_interest_income: 5_000
+        pre_subsidy_rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_homeowner_renter_relief_household_income: 45_000
+    ut_homeowner_renter_relief_eligible: false
+
+- name: Case 10, only one claimant is eligible per household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 10_000
+        pre_subsidy_rent: 10_000
+        is_tax_unit_head: true
+      person2:
+        age: 66
+        employment_income: 10_000
+        pre_subsidy_rent: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_homeowner_renter_relief_eligible: [true, false]

@@ -15,3 +15,12 @@
     spm_unit_fpg: 21_330
   output:
     spm_unit_total_ccdf_copay: 52
+
+- name: Westchester county, New York state, copay percent 0.27 of income above FPL
+  period: 2022
+  input:
+    county_str: WESTCHESTER_COUNTY_NY
+    ccdf_income: 35_750
+    spm_unit_fpg: 25_750
+  output:
+    spm_unit_total_ccdf_copay: 2_700

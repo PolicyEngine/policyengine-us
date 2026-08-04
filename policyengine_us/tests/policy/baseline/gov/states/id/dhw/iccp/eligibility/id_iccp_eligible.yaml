@@ -1,0 +1,116 @@
+- name: Case 1, ICCP eligibility is true when all four conjuncts are met.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_iccp_countable_income: 1_000
+        spm_unit_fpg: 24_000
+        spm_unit_assets: 0
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: true
+
+- name: Case 2, ICCP eligibility fails with no eligible child (child over the age limit).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 13
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_iccp_countable_income: 1_000
+        spm_unit_fpg: 24_000
+        spm_unit_assets: 0
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: false
+
+- name: Case 3, ICCP eligibility fails when income is above the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_iccp_countable_income: 10_000
+        spm_unit_fpg: 24_000
+        spm_unit_assets: 0
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: false
+
+- name: Case 4, ICCP eligibility fails when assets exceed the CCDF limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_iccp_countable_income: 1_000
+        spm_unit_fpg: 24_000
+        spm_unit_assets: 2_000_000
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: false
+
+- name: Case 5, ICCP eligibility fails when no parent meets an activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        id_iccp_countable_income: 1_000
+        spm_unit_fpg: 24_000
+        spm_unit_assets: 0
+        meets_ccdf_activity_test: false
+  output:
+    id_iccp_eligible: false

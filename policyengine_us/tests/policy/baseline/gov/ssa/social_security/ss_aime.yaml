@@ -29,11 +29,19 @@
   output:
     ss_aime: 119.048  # $50,000 / 420 = 119.047...
 
+- name: Worker with current year SSTB self-employment earnings only
+  period: 2024
+  input:
+    age: 62
+    sstb_self_employment_income:
+      2024-01-01: 42_000
+  output:
+    ss_aime: 100
+
 # Note: Full AIME calculation requires:
 # 1. Up to 35 years of earnings history
 # 2. Wage indexing to age 60
 # 3. Selection of highest 35 years
 # 4. Division by 420 months
 # These tests will be expanded once period-spanning is implemented
-
 

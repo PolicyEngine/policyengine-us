@@ -1,0 +1,45 @@
+# California LifeLine state variant: CA replaces the 9.25/mo federal base
+# with a 19/mo state maximum (gov/states/ca/fcc/lifeline, in effect 2024-01-01),
+# so the annual cap is 19 * 12 = 228 instead of 111.
+- name: lifeline_ca_state_max_amount (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 20_000 / 15_960 = 1.253 < 1.35 -> income-eligible.
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: CA
+        zip_code: '90012'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [head]
+        # Expenses above the CA cap so the state maximum binds.
+        phone_cost: 480
+        broadband_cost: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(480 + 600, 19 * 12 = 228) = 228 (vs 111 federally).
+        lifeline: 228
+        is_lifeline_eligible: true

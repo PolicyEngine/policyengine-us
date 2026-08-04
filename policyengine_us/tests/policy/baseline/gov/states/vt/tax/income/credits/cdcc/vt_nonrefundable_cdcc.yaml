@@ -1,0 +1,28 @@
+- name: Vermont 2021 nonrefundable CDCC is 24 percent of the federal credit above the low-income threshold
+  period: 2021
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 50_000
+    state_code: VT
+  output:
+    vt_nonrefundable_cdcc: 240 # 1,000 * 0.24
+    vt_non_refundable_credits: 240
+
+- name: Vermont 2021 low-income filer takes the 5828c credit in lieu of the nonrefundable credit
+  period: 2021
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 20_000
+    state_code: VT
+  output:
+    vt_low_income_cdcc: 500 # 1,000 * 0.5
+    vt_nonrefundable_cdcc: 0
+
+- name: Vermont nonrefundable CDCC ends after 2021, 2022 Act 138 Sec. 2
+  period: 2022
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 50_000
+    state_code: VT
+  output:
+    vt_nonrefundable_cdcc: 0

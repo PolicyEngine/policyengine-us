@@ -1,0 +1,142 @@
+# CCDF Massachusetts edge cases: the 85%-of-SMI means test is state-dependent
+# (hhs_smi keys on state_code), and MyFriendBen MA is the heaviest CCDF consumer.
+# hhs_smi(MA, 2026) reads the 2025-10-01 entry (period start 2026-01-01):
+#   4-person base $165,955; size-2 adjustment 0.52 + 0.16 = 0.68
+#   -> SMI(2) = 165,955 x 0.68 = $112,849.40; 85% limit = $95,921.99.
+# Both cases are state-policy-dependent: $95,921 is CCDF-eligible only because of
+# the MA SMI table (the same income is ineligible in federal.yaml's TX households,
+# where the 2-person cutoff is $62,588.15).
+- name: ccdf_income_just_below_ma_85pct_smi_eligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 95_921
+        is_ccdf_reason_for_care_eligible: true
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: true
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: MA
+        zip_code: '02108'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # MA 2026 SMI, 2-person unit: 165,955 x 0.68 = 112,849.40 -- pins the MA
+        # table row partners actually depend on.
+        hhs_smi: 112_849.4
+        # 95,921 / 112,849.40 = 0.849991 <= 0.85 ($0.99 below the MA cutoff).
+        is_ccdf_income_eligible: true
+    people:
+      head:
+        is_ccdf_eligible: false
+        is_ccdf_reason_for_care_eligible: true
+      child1:
+        # Eligible under the MA SMI; the same income is ineligible in TX
+        # (cutoff $62,588.15) -- state-dependent boundary.
+        is_ccdf_eligible: true
+        is_ccdf_reason_for_care_eligible: true
+- name: ccdf_income_just_above_ma_85pct_smi_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 95_923
+        is_ccdf_reason_for_care_eligible: true
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_ccdf_reason_for_care_eligible: true
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: MA
+        zip_code: '02108'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # 95,923 / 112,849.40 = 0.850009 > 0.85 ($1.01 above the MA cutoff).
+        is_ccdf_income_eligible: false
+    people:
+      head:
+        is_ccdf_eligible: false
+        is_ccdf_reason_for_care_eligible: true
+      child1:
+        # Deliberate income-route zero pinning the MA-specific upper boundary.
+        is_ccdf_eligible: false
+        is_ccdf_reason_for_care_eligible: true

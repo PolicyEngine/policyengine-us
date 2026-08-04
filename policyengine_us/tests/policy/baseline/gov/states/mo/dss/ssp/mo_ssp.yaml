@@ -1,0 +1,513 @@
+- name: Case 1, SAB recipient with low SSI receives maximum payment minus SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 9_768  # Produces $200/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 maximum SAB payment $917 - $200 SSI = $717.
+    ssi: 200
+    mo_ssp: 717
+
+- name: Case 2, SAB recipient with SSI above the maximum payment gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 564  # Produces $967/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 maximum SAB payment $917; max(917 - 967, 0) = 0.
+    ssi: 967
+    mo_ssp: 0
+
+- name: Case 3, SAB recipient with $1 SSI receives maximum payment minus SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 12_156  # Produces $1/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 maximum SAB payment $917 - $1 SSI = $916.
+    ssi: 1
+    mo_ssp: 916
+
+- name: Case 3b, SAB applicant with no SSI receives the full maximum payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2026 maximum SAB payment $917 - $0 SSI = $917.
+    mo_ssp: 917
+
+- name: Case 4, SNC RCF Level I recipient receives flat amount plus PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC RCF Level I $156 + PNA $50 = $206.
+    mo_ssp: 206
+
+- name: Case 5, SNC RCF Level II or ALF recipient receives flat amount plus PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: RCF_LEVEL_II_OR_ALF
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC RCF Level II or ALF $292 + PNA $50 = $342.
+    mo_ssp: 342
+
+- name: Case 6, SNC SNF non-Medicaid resident receives base plus PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC SNF/ICF base $390 plus PNA $50 = $440.
+    mo_ssp: 440
+
+- name: Case 7, person not in Missouri receives zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # defined_for = StateCode.MO filters output to zero.
+    mo_ssp: 0
+
+- name: Case 8, SNC applicant with no SSI but income below facility charge gets a grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        social_security: 14_400  # $1,200/month annualized
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC need: $1,300 - $1,200 = $100, below the $156 RCF Level I cap.
+    # Plus $50 PNA (paid to all SNC tiers). $100 + $50 = $150.
+    mo_ssp: 150
+
+- name: Case 9, FY2024 SAB recipient with $788.50 SSI receives minimum payment.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 2_094  # Produces $788.50/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2024 maximum SAB payment $789 - $788.50 SSI = $0.50,
+    # rounded to the $1 minimum payment.
+    ssi: 788.5
+    mo_ssp: 1
+
+- name: Case 10, child under 18 in SAB arrangement is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 16
+        is_blind: true
+        ssi: 200
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Age below SAB threshold (18) => mo_ssp_age_eligible false.
+    mo_ssp: 0
+
+- name: Case 11, person in NONE arrangement receives zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # NONE arrangement is not category-eligible.
+    mo_ssp: 0
+
+- name: Case 12, FY2025 SAB recipient with low SSI uses FY2025 maximum payment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 9_444  # Produces $200/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 maximum SAB payment $828 - $200 SSI = $628.
+    ssi: 200
+    mo_ssp: 628
+
+- name: Case 13, FY2025 SAB grant with near-maximum SSI uses minimum payment.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 1_920  # Produces $827/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 maximum SAB payment $828 - $827 SSI = $1.
+    ssi: 827
+    mo_ssp: 1
+
+- name: Case 14, FY2025 SAB grant with SSI 200 uses maximum payment minus SSI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 9_444  # Produces $200/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 maximum SAB payment $828 - $200 SSI = $628.
+    ssi: 200
+    mo_ssp: 628
+
+- name: Case 15, FY2025 SAB grant with SSI exactly equal to maximum payment is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 1_908  # Produces $828/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 maximum SAB payment $828; max(828 - 828, 0) = 0.
+    ssi: 828
+    mo_ssp: 0
+
+- name: Case 16, FY2025 SAB grant with SSI exceeding maximum payment is zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        # No countable income produces the full $967/month federal SSI
+        # amount, which exceeds the FY2025 SAB maximum payment.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2025 maximum SAB payment $828; max(828 - 967, 0) = 0.
+    ssi: 967
+    mo_ssp: 0
+
+- name: Case 17, negative self-employment income does not inflate SAB benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 12_156  # Produces $1/month federal SSI.
+        self_employment_income: -60_000_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # mo_ssp formula reads ssi only. Negative SE income cannot inflate output;
+    # benefit is bounded by max(maximum payment - ssi, 0) = $916.
+    ssi: 1
+    mo_ssp: 916
+
+- name: Case 18, FY2024 SAB grant with near-maximum SSI uses minimum payment.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 2_100  # Produces $788/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # FY2024 maximum SAB payment $789 - $788 SSI = $1.
+    ssi: 788
+    mo_ssp: 1
+
+- name: Case 18b, FY2026 SAB grant with sub-dollar remainder uses minimum payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        social_security: 1_167.60  # Produces $916.70/month federal SSI.
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.130 gives a $1 payment when the SAB remainder is positive
+    # but below 50 cents; $917 - $916.70 = $0.30, so payment is $1.
+    ssi: 916.70
+    mo_ssp: 1
+
+- name: Case 19, SNF resident before PNA effective date receives base only.
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # PNA effective 2015-01-01; pre-effective period gives SNF base $390 + $0 PNA.
+    mo_ssp: 390
+
+- name: Case 20, SNF resident at PNA effective date receives base plus PNA.
+  period: 2015-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: SNF_OR_ICF_NON_MEDICAID
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # SNC SNF/ICF base $390 + PNA $50 effective 2015-01-01 = $440.
+    mo_ssp: 440
+
+- name: Case 21, resident in a Medicaid facility receives zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # MOSSPLivingArrangement has no enum value for Title XIX Medicaid
+    # facilities; residents of those facilities are recorded as NONE and
+    # excluded from category eligibility, so SNC pays nothing.
+    mo_ssp: 0
+
+- name: Case 22, intermediate care without LOC determination receives $342 (RCF II rate plus PNA).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 500
+        mo_ssp_living_arrangement: INTERMEDIATE_OR_SKILLED_NO_LOC
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Intermediate or skilled facility without level-of-care determination
+    # is paid the same SNC rate as RCF Level II / ALF = $292, plus PNA $50.
+    mo_ssp: 342
+
+- name: Case 23, RCF Level I resident with OASDI and partial SSI has no SNC need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        social_security: 914 * 12
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $914 OASDI + $100 SSI = $1,014 income, above the $1,000 facility base
+    # charge, so the SNC need test fails.
+    ssi: 100
+    mo_ssp_eligible: false
+    mo_ssp: 0
+
+- name: Case 24, RCF Level I resident with OASDI and partial SSI has partial SNC need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        social_security: 914 * 12
+        mo_ssp_living_arrangement: RCF_LEVEL_I
+        mo_snc_facility_base_charge: 1_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,100 facility base charge - $1,014 income = $86 SNC grant, plus $50 PNA.
+    ssi: 100
+    mo_ssp_eligible: true
+    mo_ssp: 136
+
+- name: Case 25, SAB applicant above the resource limit receives no grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        ssi: 0
+        ssi_countable_resources: 100_000
+        mo_ssp_living_arrangement: SAB
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ssp_eligible: false
+    mo_ssp: 0

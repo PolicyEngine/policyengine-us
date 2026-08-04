@@ -1,0 +1,43 @@
+# Orange County General Relief (gov/local/ca/oc/general_relief).
+# Maximum aid payment ($355/month for one eligible person) minus net
+# countable income, for adults not receiving SSI/CalWORKs/CAPI who meet the
+# resource limits. Amplifi expansion county (in_oc).
+- name: ca_oc_single_no_income_max_aid (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '92701'
+        county_str: ORANGE_COUNTY_CA
+        in_oc: true
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Size-1 maximum aid payment $355/month with zero countable income:
+        # 355 x 12 = 4,260.
+        ca_oc_general_relief: 4_260
+        ca_oc_general_relief_eligible: true

@@ -1,0 +1,20 @@
+description: San Francisco County considers these immigration statuses as lawfully residing under the County Adult Assistance Programs.
+values:
+  2017-01-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+    - CONDITIONAL_ENTRANT
+    - PAROLED_ONE_YEAR
+    - DACA
+    - TPS
+metadata:
+  unit: list
+  period: year
+  label: San Francisco County CAAP qualified immigration statuses
+  reference:
+    - title: CAAP Eligibility Manual, 91-4 United States Citizenship & Alienage (pp. 123-133; eligible aliens and PRUCOL enumeration p. 125, deferred-action status p. 127, TPS countries p. 133)
+      href: https://www.sfhsa.org/sites/default/files/media/document/2026-06/manual_caap_eligibility_6_9_2026_v2.pdf#page=123

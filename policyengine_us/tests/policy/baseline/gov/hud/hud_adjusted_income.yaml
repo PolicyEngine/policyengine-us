@@ -86,9 +86,31 @@
   period: 2022
   input:
     hud_annual_income: 10_000
+    employment_income: 10_000
     childcare_expenses: 300
   output:
     hud_adjusted_income: 9_700
+
+- name: Childcare expense deduction is capped at employment income.
+  period: 2024
+  input:
+    hud_annual_income: 10_000
+    employment_income: 3_000
+    childcare_expenses: 8_000
+  output:
+    # Childcare deduction limited to $3,000 of employment income.
+    hud_adjusted_income: 7_000
+
+- name: Childcare expense deduction is zero when earned income is negative.
+  period: 2024
+  input:
+    hud_annual_income: 10_000
+    self_employment_income: -1_000
+    childcare_expenses: 500
+  output:
+    # A self-employment loss cannot turn the cap into a negative deduction
+    # that would raise adjusted income above annual income.
+    hud_adjusted_income: 10_000
 
 - name: Single elderly person with medical expenses will have elderly-disabled deduction and medical expense deduction.
   period: 2022
@@ -124,3 +146,172 @@
     other_medical_expenses: 20_000
   output:
     hud_adjusted_income: 10_000
+
+- name: Post-HOTMA elderly or disabled deduction applies in 2024 while the medical expense threshold remains 3 percent.
+  period: 2024
+  input:
+    hud_annual_income: 10_000
+    age: 65
+    other_medical_expenses: 1_500
+  output:
+    # $10,000 - $525 elderly/disabled - ($1,500 - 3% * $10,000) medical.
+    hud_adjusted_income: 8_275
+
+- name: Medical expense threshold is 10 percent from 2026 after mandatory HOTMA compliance.
+  period: 2026
+  input:
+    hud_annual_income: 10_000
+    age: 65
+    other_medical_expenses: 1_500
+  output:
+    # $10,000 - $550 elderly/disabled - ($1,500 - 10% * $10,000) medical.
+    hud_adjusted_income: 8_950
+
+- name: Medical expenses at exactly the 10 percent threshold are not deductible.
+  period: 2026
+  input:
+    hud_annual_income: 10_000
+    age: 65
+    other_medical_expenses: 1_000
+  output:
+    # $10,000 - $550 elderly/disabled; medical deduction is zero at the threshold.
+    hud_adjusted_income: 9_450
+
+- name: A disabled adult dependent receives the dependent deduction.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 25
+        is_disabled: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 10_000
+  output:
+    # $10,000 - $480 dependent - $525 elderly/disabled (disabled adult member).
+    hud_adjusted_income: 8_995
+
+- name: A disabled adult dependent is counted when no household head is designated.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+      person:
+        age: 25
+        is_disabled: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 10_000
+  output:
+    # The oldest member (45) is treated as the family head, so the disabled
+    # 25-year-old counts as a dependent, matching the designated-head case:
+    # $10,000 - $480 dependent - $525 elderly/disabled (disabled adult member).
+    hud_adjusted_income: 8_995
+
+- name: An adult full-time student dependent receives the dependent deduction.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+      person:
+        age: 20
+        is_full_time_student: true
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 10_000
+  output:
+    # $10,000 - $480 dependent; family is not elderly or disabled.
+    hud_adjusted_income: 9_520
+
+- name: Attendant care expenses for a disabled adult dependent are deductible above the income threshold.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+        employment_income: 30_000
+      person:
+        age: 25
+        is_disabled: true
+        care_expenses: 5_000
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 30_000
+  output:
+    # $30,000 - $500 dependent - $550 elderly/disabled - ($5,000 attendant
+    # care - 10% * $30,000) = $30,000 - $500 - $550 - $2,000.
+    hud_adjusted_income: 26_950
+
+- name: Attendant care expenses are capped at employment income before the threshold applies.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        is_household_head: true
+        employment_income: 2_000
+      person:
+        age: 25
+        is_disabled: true
+        care_expenses: 5_000
+    tax_units:
+      tax_unit1:
+        members: [head]
+      tax_unit2:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 10_000
+  output:
+    # Attendant care capped at $2,000 employment income; $2,000 - 10% *
+    # $10,000 = $1,000 deductible. $10,000 - $500 - $550 - $1,000.
+    hud_adjusted_income: 7_950
+
+- name: 2026 inflation-adjusted deduction amounts apply.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        is_household_head: true
+      person:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [head, person]
+        hud_annual_income: 10_000
+  output:
+    # $10,000 - $500 dependent - $550 elderly/disabled.
+    hud_adjusted_income: 8_950

@@ -1,7 +1,17 @@
 description: Georgia issues the following exemption amount for each dependent.
+# Georgia HB463 (2025-2026), Section 2-2 raises the per-dependent exemption
+# from $4,000 to $5,000 effective tax year 2026.
+#
+# Bill also provides for prospective $125 annual increases beginning
+# 2027-01-01, capped at $6,000, subject to the same revenue triggers that
+# delay the standard-deduction increases (Governor's revenue estimate, prior-
+# year net revenue, Revenue Shortfall Reserve coverage). The model does not
+# predict whether the triggers will be met, so the prospective annual
+# increases are NOT modeled here.
 values:
   2003-01-01: 3_000
   2024-01-01: 4_000
+  2026-01-01: 5_000
 metadata:
   period: year
   unit: currency-USD
@@ -21,3 +31,5 @@ metadata:
     href: https://gov.georgia.gov/press-releases/2024-04-18/gov-kemp-signs-historic-tax-cut-package-law # Not mentioned in legal code
   - title: 2025 IT-511 Individual Income Tax Booklet - page 17 - FORM 500, LINE 14
     href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=17
+  - title: Georgia HB463 (2025-2026), Section 2-2 amending O.C.G.A. § 48-7-26(b)
+    href: https://www.legis.ga.gov/api/legislation/document/20252026/249080#page=3

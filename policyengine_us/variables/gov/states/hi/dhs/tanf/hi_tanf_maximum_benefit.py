@@ -21,7 +21,9 @@ class hi_tanf_maximum_benefit(Variable):
         # Standard of Need (SON) = 100% of 2006 Hawaii FPG.
         son = p.standard_of_need.amount[capped_size]
 
-        # Standard of Assistance (SOA) = SON × 48% per HI TANF State Plan 11.1.
+        # Standard of Assistance (SOA) = SON × the standard-of-assistance
+        # rate (48% per HI TANF State Plan 11.1; raised to 62% effective
+        # March 1, 2025 per the DHS BESSD § 346-51.5 HRS report).
         soa = son * p.standard_of_assistance.rate
 
         # Per HI TANF State Plan 11.1 footnote 4: SOA is further reduced by 20%

@@ -1,0 +1,267 @@
+# Lifeline (47 CFR 54.400-54.409) federal edge cases.
+# 2026 FPG (contiguous, size 1) = 15_960; federal income limit = 135% -> 21_546.
+# Federal benefit = min(phone_cost + broadband_cost, 9.25/mo * 12 = 111/yr).
+# TN is used for boundary cases because it has no Medicaid expansion and no
+# SNAP BBCE, so categorical eligibility (medicaid_enrolled/snap/ssi) cannot
+# mask the federal 135% income cutoff.
+- name: lifeline_max_amount_income_just_below_135pct_fpg (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 21_500 / 15_960 = 1.347 < 1.35 -> income-eligible.
+        employment_income_before_lsr: 21_500
+    households:
+      household:
+        members: [head]
+        state_code: TN
+        zip_code: '37201'
+        county_str: DAVIDSON_COUNTY_TN
+    spm_units:
+      spm_unit:
+        members: [head]
+        # Expenses above the cap so the federal maximum binds.
+        phone_cost: 480
+        broadband_cost: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(480 + 600, 9.25 * 12 = 111) = 111.
+        lifeline: 111
+        is_lifeline_eligible: true
+- name: lifeline_income_ineligible_just_above_135pct_fpg (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 21_600 / 15_960 = 1.353 > 1.35 -> income-ineligible.
+        # TN: no Medicaid expansion (childless adult ineligible), no SNAP
+        # BBCE, and 135.3% FPG fails the 130% SNAP gross test -> no
+        # categorical route either.
+        employment_income_before_lsr: 21_600
+    households:
+      household:
+        members: [head]
+        state_code: TN
+        zip_code: '37201'
+        county_str: DAVIDSON_COUNTY_TN
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 480
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side boundary pin (income route):
+        # phone expense is set, so the zero comes only from ineligibility.
+        lifeline: 0
+        is_lifeline_eligible: false
+- name: lifeline_partial_amount_broadband_below_cap (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 15_000 / 15_960 = 0.94 < 1.35 -> income-eligible.
+        employment_income_before_lsr: 15_000
+    households:
+      household:
+        members: [head]
+        state_code: TN
+        zip_code: '37201'
+        county_str: DAVIDSON_COUNTY_TN
+    spm_units:
+      spm_unit:
+        members: [head]
+        # Expenses below the annual cap so the benefit is expense-limited.
+        broadband_cost: 60
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(60, 111) = 60: benefit cannot exceed actual expenses.
+        lifeline: 60
+        is_lifeline_eligible: true
+- name: lifeline_categorical_medicaid_snap_above_135pct_fpg (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 21_800 / 15_960 = 1.366 > 1.35 -> income-ineligible for Lifeline,
+        # but below WA's 138% FPG Medicaid adult-group limit
+        # (medicaid_enrolled) and WA's 200% FPG SNAP BBCE limit (snap > 0),
+        # so the non-tribal categorical route applies.
+        employment_income_before_lsr: 21_800
+    households:
+      household:
+        members: [head]
+        state_code: WA
+        zip_code: '98101'
+        county_str: KING_COUNTY_WA
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 480
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(480, 9.25 * 12 = 111) = 111 via categorical eligibility.
+        lifeline: 111
+        is_lifeline_eligible: true
+- name: lifeline_tribal_rural_supplement_fdpir (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 30_000 / 15_960 = 1.88 -> income-ineligible; eligibility must
+        # come from the tribal categorical route (fdpir + tribal land).
+        employment_income_before_lsr: 30_000
+    households:
+      household:
+        members: [head]
+        state_code: OK
+        zip_code: '73102'
+        county_str: OKLAHOMA_COUNTY_OK
+        # Rural tribal land unlocks the 25/mo supplement (47 CFR 54.403(a)(3)).
+        is_on_tribal_land: true
+        is_rural: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        # FDPIR participation is a tribal qualifying program (47 CFR 54.409).
+        fdpir: 1_200
+        phone_cost: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(600, (9.25 + 25) * 12 = 411) = 411.
+        lifeline: 411
+        is_lifeline_eligible: true
+- name: lifeline_self_employment_loss_not_deducted (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # Net income 27_000 - 5_500 = 21_500 (< 21_546), but the FCC ratio
+        # uses irs_gross_income, which floors each source at zero (losses
+        # deducted elsewhere), so gross = 27_000 -> 27_000 / 15_960 = 1.69
+        # -> ineligible. A self-employment loss cannot buy eligibility.
+        employment_income_before_lsr: 27_000
+        self_employment_income_before_lsr: -5_500
+    households:
+      household:
+        members: [head]
+        state_code: TN
+        zip_code: '37201'
+        county_str: DAVIDSON_COUNTY_TN
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 480
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # Robustness pin: negative self-employment income does not lower
+        # the FCC FPG ratio below 1.35, so the benefit stays zero.
+        lifeline: 0
+        is_lifeline_eligible: false

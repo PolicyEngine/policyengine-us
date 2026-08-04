@@ -10,6 +10,14 @@
   output:
     nm_modified_gross_income: 80_000
 
+- name: NM modified gross income includes SSTB self-employment income
+  period: 2024
+  input:
+    state_code: NM
+    sstb_self_employment_income: 100_000
+  output:
+    nm_modified_gross_income: 100_000
+
 - name: NM business loss should not reduce modified gross income
   period: 2024
   input:
@@ -57,6 +65,24 @@
     # capital_gains: max(10000 + -15000, 0) = max(-5000, 0) = 0
     # dividends: max(5000, 0) = 5000
     nm_modified_gross_income: 105_000
+
+- name: NM modified gross income includes retirement distributions for rebate eligibility
+  period: 2026
+  input:
+    state_code: NM
+    age: 72
+    social_security_retirement: 13_632
+    taxable_ira_distributions: 42_000
+    self_employment_income: 144
+    taxable_interest_income: 1
+    real_estate_taxes: 1_250
+    filing_status: SINGLE
+  output:
+    nm_modified_gross_income: 55_777
+    nm_property_tax_rebate_eligible: false
+    nm_low_income_comprehensive_tax_rebate: 0
+    nm_property_tax_rebate: 0
+    state_refundable_credits: 0
 
 - name: NM zero income
   period: 2024

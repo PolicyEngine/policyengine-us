@@ -1,0 +1,18 @@
+description: Ohio disallows net losses from these income sources under the Publicly Funded Child Care program.
+values:
+  2022-02-27:
+    - self_employment_income
+    - farm_operations_income
+    - rental_income
+
+metadata:
+  unit: list
+  period: year
+  label: Ohio PFCC net-loss income sources
+  # 5180:2-16-03(D)(1) defines gross self-employment earnings as the total
+  # profit from a business enterprise, and (D)(4)(a) excludes net losses from
+  # the allowable deductions, so a loss from these signed net-flow sources is
+  # floored at zero per person rather than offsetting other income.
+  reference:
+    - title: OAC 5180:2-16-03(D) — Income eligibility requirements (self-employment income)
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-03

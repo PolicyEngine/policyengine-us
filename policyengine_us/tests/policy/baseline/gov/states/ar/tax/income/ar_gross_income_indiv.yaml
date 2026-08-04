@@ -14,3 +14,12 @@
         state_code: AR
   output:
     ar_gross_income_indiv: 50_000
+
+- name: Arkansas gross income includes SSTB self-employment income
+  period: 2024
+  input:
+    sstb_self_employment_income: 100_000
+    state_code: AR
+  output:
+    ar_gross_income_indiv: 100_000
+    ar_gross_income_joint: 100_000

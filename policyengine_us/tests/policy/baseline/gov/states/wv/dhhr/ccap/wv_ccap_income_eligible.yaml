@@ -1,0 +1,99 @@
+# WV CCAP Income Eligibility Tests
+# Initial intake cap: 185% FPL (Manual §3.2.1, Appendix A)
+# 185% FPL for a 2-person family (2025) = $39,127.50/yr
+
+- name: Case 1, income below 185% FPL eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $24,000/yr < $39,127.50 → eligible
+    wv_ccap_income_eligible: true
+
+- name: Case 2, income above 185% FPL ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $60,000/yr > $39,127.50 → ineligible
+    wv_ccap_income_eligible: false
+
+- name: Case 3, income just below 185% FPL boundary eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 2-person family: 185% FPL ≈ $39,127.50
+        employment_income: 39_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # $39,000/yr ≤ $39,127.50 → eligible
+    wv_ccap_income_eligible: true
+
+- name: Case 4, TANF recipients categorically eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+  output:
+    # Income above 185% FPL but TANF bypass applies per Manual §3.2.1.
+    # NOTE: we don't model "TANF children-only" cases (§3.2.1.4) that must
+    # still meet the income test at the moment.
+    wv_ccap_income_eligible: true

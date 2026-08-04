@@ -77,11 +77,11 @@
 
     # === Benefit ===
     # Monthly expenses: 12,000 / 12 = 1,000
-    # Uncapped: max(1,000 - 138.67, 0) = 861.33
     # MCCA max: 847
-    # Benefit: min(861.33, 847) = 847
-    # 847 >= 21.67 (min dept payment) -> OK
-    pa_ccw: 847
+    # Capped expenses: min(1,000, 847) = 847
+    # Benefit: max(847 - 138.67, 0) = 708.33
+    # 708.33 >= 21.67 (min dept payment) -> OK
+    pa_ccw: 708.33
 
 - name: Case 2, enrolled family at redetermination level.
   period: 2025-01
@@ -249,10 +249,10 @@
 
     # === Benefit ===
     # Monthly expenses: 20,000 / 12 = 1,666.67
-    # Uncapped: max(1,666.67 - 208, 0) = 1,458.67
     # MCCA max: 927.60 + 558.20 = 1,485.80
-    # Benefit: min(1,458.67, 1,485.80) = 1,458.67
-    pa_ccw: 1_458.67
+    # Capped expenses: min(1,666.67, 1,485.80) = 1,485.80
+    # Benefit: max(1,485.80 - 208, 0) = 1,277.80
+    pa_ccw: 1_277.80
 
 - name: Case 5, MCCA rate lookup high-rate region 17.
   period: 2025-01

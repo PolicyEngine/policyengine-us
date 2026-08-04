@@ -1,0 +1,477 @@
+- name: Case 1, family size four full-time copay is 20 dollars in the first tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 2_680
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 20]
+
+- name: Case 2, family size four full-time copay rises to 75 dollars at the top published tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Case 3, family size four full-time copay stays capped above the highest published tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 4_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Case 4, family size four part-time copay uses the part-time scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 12
+        id_iccp_time_category: PART_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 2_949
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Case 5, TANF families below 100 percent FPG have no ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 1_000  # below 100% FPG
+        spm_unit_fpg: 24_000  # 2,000/month
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 0]
+
+- name: Case 6, TANF families at or above 100 percent FPG still pay the ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # above 100% FPG
+        spm_unit_fpg: 24_000  # 2,000/month
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Case 7, family size two full-time copay uses the minimum-size scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 2
+        id_iccp_countable_income: 1_900  # 1,764-1,940 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Case 8, family size eight full-time copay uses the maximum-listed scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 8
+        id_iccp_countable_income: 4_600  # 4,513-4,965 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Case 9, family size one clips up to the minimum-size copay scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 1  # clipped to size 2 scale
+        id_iccp_countable_income: 1_900  # size-2 1,764-1,940 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Case 10, family size nine shifts the income band down by the additional-member step.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 9  # one member above the listed max of 8
+        id_iccp_countable_income: 5_000
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # adjusted income 5,000 - 596 = 4,404 < 4,513 -> size-8 first band = 20
+    id_iccp_copay_per_child: [0, 20]
+
+- name: Case 11, negative self-employment income floors the copay in the lowest band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        self_employment_income: -60_000_000
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # countable income floors at 0 -> size-4 first band = 20
+    id_iccp_copay_per_child: [0, 20]
+
+- name: Case 12, guardians of foster children have no ICCP copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # would otherwise owe a 75 copay
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # IDAPA 16.06.12.503 exempts guardians of foster children from the copay
+    id_iccp_copay_per_child: [0, 0]
+
+- name: Case 13, child with zero childcare hours is not in care and owes no copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 0  # not in care
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # would otherwise owe a 75 copay
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # in_care is false -> copay floors to 0
+    id_iccp_copay_per_child: [0, 0]
+
+- name: Case 14, family size five full-time copay uses the size-five scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 5
+        id_iccp_countable_income: 3_500  # 3,453-3,766 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # size-5 full-time third band = 50
+    id_iccp_copay_per_child: [0, 50]
+
+- name: Case 15, family size six full-time copay uses the size-six scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 6
+        id_iccp_countable_income: 3_700  # 3,597-3,957 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # size-6 full-time second band = 25
+    id_iccp_copay_per_child: [0, 25]
+
+- name: Case 16, family size seven full-time copay uses the size-seven scale.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_size: 7
+        id_iccp_countable_income: 4_900  # >= 4,866 band
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true]
+    # size-7 full-time top band = 75
+    id_iccp_copay_per_child: [0, 75]
+
+- name: Case 17, a foster child exempts every sibling's copay at the family level.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+        is_in_foster_care: true
+      person3:
+        age: 4
+        childcare_hours_per_week: 40
+        id_iccp_time_category: FULL_TIME
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_size: 4
+        id_iccp_countable_income: 3_216  # would otherwise owe a 75 copay each
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_iccp_eligible_child: [false, true, true]
+    # family-level foster exemption zeroes both the foster child's and the
+    # non-foster sibling's copays
+    id_iccp_copay_per_child: [0, 0, 0]

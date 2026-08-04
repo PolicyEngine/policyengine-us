@@ -1,0 +1,128 @@
+- name: Case 1, center infant benefit with copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # min($20,000 / 12, $64.15 * 20) - ($0.50 * 20) = $1,273.
+    az_ccap: 1_273
+
+- name: Case 2, copay exempt family receives full capped reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_copay_exempt: true
+    az_ccap: 1_283
+
+- name: Case 3, expenses below reimbursement cap limit the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # min($6,000 / 12, $42 * 20) - ($0.50 * 20) = $490.
+    az_ccap: 490
+
+- name: Case 4, family with no working, student, or disabled adult is ineligible on activity.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Eligible child, income eligible, and asset eligible, but the parent has no
+    # qualifying activity, so the binding failure is activity eligibility.
+    az_ccap_eligible_child: [false, true]
+    az_ccap_income_eligible: true
+    az_ccap_activity_eligible: false
+    az_ccap_eligible: false
+    az_ccap: 0
+
+- name: Case 5, family above the CCDF asset limit is ineligible on assets.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0
+        childcare_attending_days_per_month: 20
+        az_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 2_000_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # Eligible child, income eligible, and activity eligible, but assets exceed the
+    # $1,000,000 CCDF asset limit, so the binding failure is asset eligibility.
+    az_ccap_income_eligible: true
+    az_ccap_activity_eligible: true
+    is_ccdf_asset_eligible: false
+    az_ccap_eligible: false
+    az_ccap: 0

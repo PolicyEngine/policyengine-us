@@ -1,0 +1,30 @@
+description: Texas counts these unearned income sources when determining countable income under the Family Planning Program.
+values:
+  2016-07-01:
+    # Retirement, survivors and disability insurance (RSDI and SSDI)
+    - social_security
+    - pension_income
+    # Employment-based disability insurance benefits
+    - disability_benefits
+    - unemployment_compensation
+    - workers_compensation
+  # 1 TAC 382.109(3)(L) and (3)(M) have exempted dividends, interest
+  # and royalties, and Veteran's Administration payments since the
+  # 2016 adoption; the May 16, 2024 amendment (49 TexReg 3199) did
+  # not change the exemption list. The HHSC Policy Manual Revision
+  # 24-2 income descriptions still describe regular VA payments as
+  # countable; the regulation controls.
+  # Child support received is counted separately with a monthly
+  # disregard; cash gifts over $300 per federal fiscal quarter,
+  # mineral rights, recurring lump sums, non-educational loans, and
+  # reimbursements are not tracked at the moment
+
+metadata:
+  unit: list
+  period: year
+  label: Texas Family Planning Program countable unearned income sources
+  reference:
+    - title: 1 Tex. Admin. Code § 382.109(3)
+      href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-382-109
+    - title: Texas HHSC Family Planning Program Policy Manual, Definition of Income, Revision 24-2
+      href: https://www.hhs.texas.gov/sites/default/files/documents/fpppm-9000-definitions-of-income.pdf#page=1

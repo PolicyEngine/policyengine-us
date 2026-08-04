@@ -1,0 +1,45 @@
+- name: Zero income gives zero SAB countable income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 0
+
+- name: $12,000 annual employment income gives ~$5,490 annual SAB countable income after SSI-style exclusions.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $1,000. After $20 general + $65 earned exclusion =
+    # $915, then 50% remainder = $457.50/month, annualized to $5,490.
+    mo_sab_countable_income: 5_490
+
+- name: $30,000 annual employment income gives ~$14,490 annual SAB countable income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $2,500. After $20 + $65 = $2,415, then 50% = $1,207.50,
+    # annualized to $14,490. Monthly $1,207.50 exceeds $1,073 SAB limit.
+    mo_sab_countable_income: 14_490

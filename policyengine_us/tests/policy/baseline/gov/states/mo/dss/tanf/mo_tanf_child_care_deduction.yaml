@@ -185,3 +185,73 @@
         state_code: MO
   output:
     mo_tanf_child_care_deduction: 0
+
+- name: Incapacitated adult care expenses count toward the deduction
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Per 13 CSR 40-2.120(6)(A)5: incapacitated individual care at the
+    # $175/month age-2+ tier. Expenses = 1,200 / 12 = 100/month.
+    mo_tanf_child_care_deduction: 100
+
+- name: Incapacitated adult care expenses above the cap are limited to the age-2+ tier
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Expenses = 3,600 / 12 = 300/month. The incapacitated adult's cap is
+    # the $175 age-2+ tier (not the $200 under-2 tier, and not the $0
+    # over-18 bracket): min(300, 175) = 175.
+    mo_tanf_child_care_deduction: 175
+
+- name: Adult care expenses without incapacity are not deducted
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    mo_tanf_child_care_deduction: 0

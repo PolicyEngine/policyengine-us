@@ -1,0 +1,44 @@
+description: Maryland provides this amount as the monthly provider rate by living arrangement under the Public Assistance to Adults program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Maryland PAA provider rate
+  breakdown:
+    - md_paa_living_arrangement
+  reference:
+    - title: COMAR 07.03.07.04(B)(2), (C)(2), and (D) Need Requirements
+      href: https://regs.maryland.gov/us/md/exec/comar/07.03.07.04
+    - title: COMAR 07.03.07.09A Amount of Grant
+      href: https://regs.maryland.gov/us/md/exec/comar/07.03.07.09
+    - title: Maryland DHS-FIA Action Transmittal 18-11, 2018 COLA Increase
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2018/18-11%20AT%20COLA%20Increase%202018.doc
+    - title: Maryland DHS-FIA Action Transmittal 23-02, FFY23 COLA Mass Mod (PAA rates remain the same)
+      href: https://dhs.maryland.gov/documents/FIA/Action%20Transmittals-AT%20-%20Information%20Memo-IM/AT-IM2023/23-02%20AT%20-%20COLA%20Mass%20Mod%20FFY23.pdf#page=3
+
+# 2009-01-01 values from COMAR 07.03.07.04(B)(2) (CARE Home Levels A-D) and
+# (C)(2) (Licensed Assisted Living). 2018-01-01 values first documented in
+# AT 18-11 and unchanged through every subsequent COLA Mass Mod (AT 19-08,
+# 20-10, 21-18, 22-09, 23-02 — all say "PAA Rates remain the same").
+# REHAB_RESIDENCE provider_rate is $0 because PAA Manual §900.3 / AT 23-02
+# treat MDH Rehabilitative Residence as PNA-only (the $54/day cost is paid
+# directly by MHA, not by PAA). Do not "fix" REHAB to 54 * 30.
+CARE_HOME_LEVEL_A:
+  2009-01-01: 740
+  2018-01-01: 776
+CARE_HOME_LEVEL_B:
+  2009-01-01: 849
+  2018-01-01: 875
+CARE_HOME_LEVEL_C:
+  2009-01-01: 1_137
+  2018-01-01: 1_173
+CARE_HOME_LEVEL_D:
+  2009-01-01: 1_340
+  2018-01-01: 1_376
+ASSISTED_LIVING:
+  2009-01-01: 858
+  2018-01-01: 894
+REHAB_RESIDENCE:
+  2009-01-01: 0
+NONE:
+  2009-01-01: 0

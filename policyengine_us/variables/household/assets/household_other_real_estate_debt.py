@@ -7,5 +7,6 @@ class household_other_real_estate_debt(Variable):
     label = "Other real estate debt"
     documentation = "Debt secured by non-homestead real estate held by the household."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

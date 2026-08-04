@@ -1,3 +1,8 @@
+# These cases use the minimal default household, which does not trigger any of
+# Idaho's baseline refundable credits (the grocery credit requires residency
+# details these synthetic cases don't set), so id_refundable_credits equals the
+# new EITC alone. Preservation of the baseline refundable credits when they DO
+# apply is covered by id_eitc_preserves_baseline_credits.yaml. See #8775.
 - name: Case 1 - ID EITC with 10% match
   period: 2024
   reforms: policyengine_us.reforms.states.id.eitc.id_eitc

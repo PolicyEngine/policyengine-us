@@ -89,3 +89,59 @@
   output:
     vt_renter_credit: 874
     
+
+- name: test 8, Act 169 - claim year 2026 baseline 10% rate (full credit)
+  period: 2026
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 1_692
+
+- name: test 9, Act 169 - claim year 2027 expansion to 12.5% rate (full credit)
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 2_115
+
+# Cap-binding case: a subsidized renter with very high rent drives the
+# rate-based amount (rent * 12.5%) well above the statutory maximum, so the
+# 2027 $3,250 cap binds. This exercises the min_(credit, max_credit) path.
+- name: test 9b, Act 169 - claim year 2027 cap binds for high subsidized rent
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 50
+    rent: 100_000
+    state_code: VT
+  output:
+    # rent * 12.5% = 12,500, capped at the 2027 maximum of 3,250
+    vt_renter_credit: 3_250
+
+- name: test 10, Act 169 - claim year 2028 reverts to 10% rate (full credit)
+  period: 2028
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    vt_renter_credit: 1_692

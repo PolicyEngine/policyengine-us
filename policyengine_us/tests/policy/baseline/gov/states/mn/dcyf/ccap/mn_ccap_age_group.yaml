@@ -1,0 +1,170 @@
+# Tests the MN CCAP age-group classification. Family child care and child
+# care centers use DIFFERENT month boundaries (family_months.yaml vs
+# center_months.yaml). Enum index: 0 INFANT, 1 TODDLER, 2 PRESCHOOL, 3 SCHOOL_AGE.
+- name: Case 1, family child care infant (under 12 months).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: INFANT
+
+- name: Case 2, family child care toddler (exactly 12 months = age 1).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: TODDLER
+
+- name: Case 3, family child care preschool (age 2, 24 months).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: PRESCHOOL
+
+- name: Case 4, family child care school age (age 5, 60 months = kindergarten).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: SCHOOL_AGE
+
+- name: Case 5, child care center infant uses wider band (age 1 = 12 months, still infant under 16).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Center infant band is up to 16 months, so a 12-month-old is still INFANT
+    # in a center (would be TODDLER in family child care). Confirms the two
+    # month-boundary tables diverge.
+    mn_ccap_age_group: INFANT
+
+- name: Case 6, child care center preschool (age 3, 36 months, above 33-month center boundary).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: PRESCHOOL
+
+# Edge cases at the month-boundary cutoffs, which differ between family child
+# care (12/24/60 months) and centers (16/33/60 months). Ages are floats; age x
+# 12 gives months, so values are chosen to land cleanly on the intended side of
+# each integer-month boundary.
+- name: Case 7, family child care toddler just below the 24-month preschool boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.99  # 23.88 months, just under the family 24-month boundary
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Family preschool starts at 24 months; 23.88 months is still TODDLER.
+    mn_ccap_age_group: TODDLER
+
+- name: Case 8, child care center toddler just below the 33-month preschool boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.74  # 32.88 months, just under the center 33-month boundary
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Center preschool starts at 33 months; 32.88 months is still TODDLER. The
+    # same child would be PRESCHOOL in family child care (24-month boundary).
+    mn_ccap_age_group: TODDLER
+
+- name: Case 9, child care center preschool just above the 33-month boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.76  # 33.12 months, just over the center 33-month boundary
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_age_group: PRESCHOOL
+
+- name: Case 10, child care center toddler at 18 months (above the 16-month center boundary).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5  # 18 months, above the center 16-month toddler boundary
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # Center toddler starts at 16 months; an 18-month-old is TODDLER in a center
+    # (and also TODDLER in family child care, whose boundary is 12 months).
+    mn_ccap_age_group: TODDLER
+
+- name: Case 11, preschool just below the shared 60-month school-age boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4.99  # 59.88 months, just under the 60-month school-age boundary
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # School age starts at 60 months for both provider types; 59.88 months is
+    # still PRESCHOOL.
+    mn_ccap_age_group: PRESCHOOL

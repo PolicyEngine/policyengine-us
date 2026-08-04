@@ -1,0 +1,57 @@
+- name: Case 1, family at or below the poverty line has waived copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000  # YEAR -> 1,500/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_copay_waived: true
+
+- name: Case 2, TANF family has waived copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_copay_waived: true
+
+- name: Case 3, family above the poverty line without waiver category does not have waived copay.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # YEAR -> 2,000/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_copay_waived: false

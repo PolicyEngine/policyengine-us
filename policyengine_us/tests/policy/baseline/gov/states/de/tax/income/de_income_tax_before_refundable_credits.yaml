@@ -1,17 +1,124 @@
-- name: Calculation before cap
+- name: Joint path - calculation before cap
   period: 2022
   input:
     state_code: DE
+    de_files_separately: false
     de_income_tax_before_non_refundable_credits_unit: 2_000
     de_non_refundable_credits: 1_000
   output:
     de_income_tax_before_refundable_credits: 1_000
 
-- name: Capped at 0
+- name: Joint path - capped at 0
   period: 2022
   input:
     state_code: DE
+    de_files_separately: false
     de_income_tax_before_non_refundable_credits_unit: 1_000
     de_non_refundable_credits: 2_000
   output:
     de_income_tax_before_refundable_credits: 0
+
+- name: FS4 path - EITC to higher-income spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_after_non_refundable_credits_indv: 200
+        de_taxable_income_indv: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_after_non_refundable_credits_indv: 800
+        de_taxable_income_indv: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_files_separately: true
+        de_non_refundable_eitc: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Spouse has higher taxable income; gets all $100 EITC
+    # Head line33: $200, Spouse line33: $800 - $100 = $700
+    de_income_tax_before_refundable_credits: 900
+
+- name: FS4 path - EITC capped at higher-income column tax
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_after_non_refundable_credits_indv: 500
+        de_taxable_income_indv: 60_000
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_after_non_refundable_credits_indv: 30
+        de_taxable_income_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_files_separately: true
+        de_non_refundable_eitc: 200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head has higher taxable income; gets all $200 EITC (capped at $500)
+    # Head: $500 - $200 = $300, Spouse: $30 (no EITC)
+    de_income_tax_before_refundable_credits: 330
+
+- name: FS4 path - EITC exceeds higher-income column tax (waste)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_after_non_refundable_credits_indv: 200
+        de_taxable_income_indv: 50_000
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_after_non_refundable_credits_indv: 100
+        de_taxable_income_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_files_separately: true
+        de_non_refundable_eitc: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head has higher taxable income; EITC ($1000) capped at head $200
+    # Excess $800 wasted (NOT redistributed to spouse).
+    # Head: $200 - $200 = $0, Spouse: $100 (no EITC)
+    de_income_tax_before_refundable_credits: 100
+
+- name: FS4 path - tied taxable incomes route EITC to head
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_after_non_refundable_credits_indv: 500
+        de_taxable_income_indv: 25_000
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_after_non_refundable_credits_indv: 500
+        de_taxable_income_indv: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        de_files_separately: true
+        de_non_refundable_eitc: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # On tie, head is treated as higher-income; gets all $100 EITC
+    # Head: $500 - $100 = $400, Spouse: $500
+    de_income_tax_before_refundable_credits: 900

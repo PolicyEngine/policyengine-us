@@ -1,0 +1,611 @@
+description: Indiana provides these full-time weekly reimbursement rates by provider type, Paths to QUALITY level, and age group under the Child Care and Development Fund program.
+
+# Marion County Fiscal Year 2023 rates (effective July 30, 2023), used as a
+# statewide proxy ceiling. Only full-time (weekly) rates are modeled. Provider
+# families that publish no separate Paths to QUALITY Level 1 row (every family
+# except Registered Ministry) carry their base row's value at PTQ_1; families that
+# publish only a base row (Exempt Center, Accredited Exempt Center, Exempt Home)
+# carry their base value across all Paths to QUALITY levels.
+# OECOSL cut reimbursement rates effective October 5, 2025 (infants and
+# toddlers -10%, preschoolers -15%, school age including kindergarten -35%).
+# The official post-cut dollar tables are only published on the Provider
+# Portal, so the 2025-10-05 entries are derived from the FY2023 Marion values
+# (x 0.90 / 0.85 / 0.65 by age group) per the OECOSL announcement.
+
+metadata:
+  period: week
+  unit: currency-USD
+  label: Indiana CCDF full-time weekly reimbursement rates
+  breakdown:
+    - in_ccdf_provider_type
+    - in_ccdf_ptq_level
+    - in_ccdf_age_group
+  reference:
+    - title: Marion County CCDF Reimbursement Rates, Fiscal Year 2023 (Licensed Center p. 1, Licensed Home and Registered Ministry p. 2, Exempt providers p. 3)
+      href: https://www.in.gov/fssa/carefinder/files/MarionReimbRateCCDF.pdf#page=1
+    - title: OECOSL press release, Updated Child Care Voucher Rates (Sept. 4, 2025; percentage cuts by age group)
+      href: https://www.in.gov/fssa/carefinder/files/Updated-Child-Care-Voucher-Rates-.pdf
+    - title: OECOSL bulletin, CCDF reimbursement rate changes effective Oct. 5, 2025
+      href: https://content.govdelivery.com/accounts/INOECOSL/bulletins/3f4db24
+
+LICENSED_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 416
+      2025-10-05: 374.4
+    TODDLER:
+      2023-07-30: 327
+      2025-10-05: 294.3
+    THREE_TO_FIVE:
+      2023-07-30: 231
+      2025-10-05: 196.35
+    KINDERGARTEN:
+      2023-07-30: 220
+      2025-10-05: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+      2025-10-05: 71.5
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 218
+      2025-10-05: 141.7
+  PTQ_1:
+    INFANT:
+      2023-07-30: 416
+      2025-10-05: 374.4
+    TODDLER:
+      2023-07-30: 327
+      2025-10-05: 294.3
+    THREE_TO_FIVE:
+      2023-07-30: 231
+      2025-10-05: 196.35
+    KINDERGARTEN:
+      2023-07-30: 220
+      2025-10-05: 143
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+      2025-10-05: 71.5
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 218
+      2025-10-05: 141.7
+  PTQ_2:
+    INFANT:
+      2023-07-30: 429
+      2025-10-05: 386.1
+    TODDLER:
+      2023-07-30: 337
+      2025-10-05: 303.3
+    THREE_TO_FIVE:
+      2023-07-30: 253
+      2025-10-05: 215.05
+    KINDERGARTEN:
+      2023-07-30: 227
+      2025-10-05: 147.55
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 132
+      2025-10-05: 85.8
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_3:
+    INFANT:
+      2023-07-30: 449
+      2025-10-05: 404.1
+    TODDLER:
+      2023-07-30: 352
+      2025-10-05: 316.8
+    THREE_TO_FIVE:
+      2023-07-30: 275
+      2025-10-05: 233.75
+    KINDERGARTEN:
+      2023-07-30: 245
+      2025-10-05: 159.25
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 144
+      2025-10-05: 93.6
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 259
+      2025-10-05: 168.35
+  PTQ_4:
+    INFANT:
+      2023-07-30: 468
+      2025-10-05: 421.2
+    TODDLER:
+      2023-07-30: 374
+      2025-10-05: 336.6
+    THREE_TO_FIVE:
+      2023-07-30: 295
+      2025-10-05: 250.75
+    KINDERGARTEN:
+      2023-07-30: 264
+      2025-10-05: 171.6
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 155
+      2025-10-05: 100.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 278
+      2025-10-05: 180.7
+
+LICENSED_HOME:
+  BASE:
+    INFANT:
+      2023-07-30: 156
+      2025-10-05: 140.4
+    TODDLER:
+      2023-07-30: 150
+      2025-10-05: 135
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+      2025-10-05: 59.8
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_1:
+    INFANT:
+      2023-07-30: 156
+      2025-10-05: 140.4
+    TODDLER:
+      2023-07-30: 150
+      2025-10-05: 135
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+      2025-10-05: 59.8
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_2:
+    INFANT:
+      2023-07-30: 187
+      2025-10-05: 168.3
+    TODDLER:
+      2023-07-30: 180
+      2025-10-05: 162
+    THREE_TO_FIVE:
+      2023-07-30: 153
+      2025-10-05: 130.05
+    KINDERGARTEN:
+      2023-07-30: 153
+      2025-10-05: 99.45
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 110
+      2025-10-05: 71.5
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 153
+      2025-10-05: 99.45
+  PTQ_3:
+    INFANT:
+      2023-07-30: 203
+      2025-10-05: 182.7
+    TODDLER:
+      2023-07-30: 196
+      2025-10-05: 176.4
+    THREE_TO_FIVE:
+      2023-07-30: 157
+      2025-10-05: 133.45
+    KINDERGARTEN:
+      2023-07-30: 157
+      2025-10-05: 102.05
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 120
+      2025-10-05: 78
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 157
+      2025-10-05: 102.05
+  PTQ_4:
+    INFANT:
+      2023-07-30: 218
+      2025-10-05: 196.2
+    TODDLER:
+      2023-07-30: 210
+      2025-10-05: 189
+    THREE_TO_FIVE:
+      2023-07-30: 168
+      2025-10-05: 142.8
+    KINDERGARTEN:
+      2023-07-30: 165
+      2025-10-05: 107.25
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 130
+      2025-10-05: 84.5
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 168
+      2025-10-05: 109.2
+
+REGISTERED_MINISTRY:
+  BASE:
+    INFANT:
+      2023-07-30: 351
+      2025-10-05: 315.9
+    TODDLER:
+      2023-07-30: 277
+      2025-10-05: 249.3
+    THREE_TO_FIVE:
+      2023-07-30: 185
+      2025-10-05: 157.25
+    KINDERGARTEN:
+      2023-07-30: 178
+      2025-10-05: 115.7
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 73
+      2025-10-05: 47.45
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 173
+      2025-10-05: 112.45
+  PTQ_1:
+    INFANT:
+      2023-07-30: 351
+      2025-10-05: 315.9
+    TODDLER:
+      2023-07-30: 277
+      2025-10-05: 249.3
+    THREE_TO_FIVE:
+      2023-07-30: 185
+      2025-10-05: 157.25
+    KINDERGARTEN:
+      2023-07-30: 178
+      2025-10-05: 115.7
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 92
+      2025-10-05: 59.8
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 173
+      2025-10-05: 112.45
+  PTQ_2:
+    INFANT:
+      2023-07-30: 381
+      2025-10-05: 342.9
+    TODDLER:
+      2023-07-30: 322
+      2025-10-05: 289.8
+    THREE_TO_FIVE:
+      2023-07-30: 253
+      2025-10-05: 215.05
+    KINDERGARTEN:
+      2023-07-30: 226
+      2025-10-05: 146.9
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 132
+      2025-10-05: 85.8
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_3:
+    INFANT:
+      2023-07-30: 411
+      2025-10-05: 369.9
+    TODDLER:
+      2023-07-30: 348
+      2025-10-05: 313.2
+    THREE_TO_FIVE:
+      2023-07-30: 275
+      2025-10-05: 233.75
+    KINDERGARTEN:
+      2023-07-30: 245
+      2025-10-05: 159.25
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 144
+      2025-10-05: 93.6
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 259
+      2025-10-05: 168.35
+  PTQ_4:
+    INFANT:
+      2023-07-30: 435
+      2025-10-05: 391.5
+    TODDLER:
+      2023-07-30: 374
+      2025-10-05: 336.6
+    THREE_TO_FIVE:
+      2023-07-30: 295
+      2025-10-05: 250.75
+    KINDERGARTEN:
+      2023-07-30: 264
+      2025-10-05: 171.6
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 155
+      2025-10-05: 100.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 278
+      2025-10-05: 180.7
+
+EXEMPT_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+      2025-10-05: 61.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_1:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+      2025-10-05: 61.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_2:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+      2025-10-05: 61.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_3:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+      2025-10-05: 61.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_4:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 95
+      2025-10-05: 61.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+
+ACCREDITED_EXEMPT_CENTER:
+  BASE:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+      2025-10-05: 74.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_1:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+      2025-10-05: 74.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_2:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+      2025-10-05: 74.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_3:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+      2025-10-05: 74.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+  PTQ_4:
+    INFANT:
+      2023-07-30: 532
+      2025-10-05: 478.8
+    TODDLER:
+      2023-07-30: 418
+      2025-10-05: 376.2
+    THREE_TO_FIVE:
+      2023-07-30: 274
+      2025-10-05: 232.9
+    KINDERGARTEN:
+      2023-07-30: 254
+      2025-10-05: 165.1
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 115
+      2025-10-05: 74.75
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 239
+      2025-10-05: 155.35
+
+EXEMPT_HOME:
+  BASE:
+    INFANT:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    TODDLER:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+      2025-10-05: 52
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_1:
+    INFANT:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    TODDLER:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+      2025-10-05: 52
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_2:
+    INFANT:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    TODDLER:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+      2025-10-05: 52
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_3:
+    INFANT:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    TODDLER:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+      2025-10-05: 52
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95
+  PTQ_4:
+    INFANT:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    TODDLER:
+      2023-07-30: 143
+      2025-10-05: 128.7
+    THREE_TO_FIVE:
+      2023-07-30: 143
+      2025-10-05: 121.55
+    KINDERGARTEN:
+      2023-07-30: 143
+      2025-10-05: 92.95
+    SCHOOL_AGE_BEFORE_AFTER:
+      2023-07-30: 80
+      2025-10-05: 52
+    SCHOOL_AGE_OTHER:
+      2023-07-30: 143
+      2025-10-05: 92.95

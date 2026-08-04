@@ -1,0 +1,9 @@
+- name: Case 1, California unemployment taxable earnings add back HSA payroll contributions.
+  period: 2026
+  input:
+    employment_income: 6_000
+    pre_tax_health_insurance_premiums: 1_000
+    health_savings_account_payroll_contributions: 1_000
+    state_code: CA
+  output:
+    taxable_earnings_for_state_unemployment_tax: 5_000

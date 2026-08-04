@@ -41,6 +41,30 @@
     # 939 * 0.48 * 0.80 = 360.58
     hi_tanf_max_benefit_standard: 360.58
 
+- name: Case 4, family of 3 after the March 1 2025 rate increase (48% to 62%).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # SON (size 3): 1590
+    # SOA = 1590 * 0.62 = 985.80
+    # After 20% mandatory-work reduction: 985.80 * 0.80 = 788.64
+    hi_tanf_max_benefit_standard: 788.64
+
 - name: Case 3, non-Hawaii household returns zero.
   period: 2024-01
   absolute_error_margin: 0.01

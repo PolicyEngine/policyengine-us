@@ -1,0 +1,10 @@
+description: The refundable credit conversion contrib reform is in effect when this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Refundable credit conversion in effect
+  reference:
+    - title: PolicyEngine-US PR #8219 — Add refundable credit conversion contrib reform
+      href: https://github.com/PolicyEngine/policyengine-us/pull/8219
+values:
+  0000-01-01: false

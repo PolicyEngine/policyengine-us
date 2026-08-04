@@ -14,6 +14,19 @@
   output:
     american_opportunity_credit: 1_000
 
+- name: Eligibility formula, under first threshold of expenses
+  period: 2024
+  input:
+    is_pursuing_credential_for_american_opportunity_credit: true
+    attends_eligible_educational_institution_for_american_opportunity_credit: true
+    is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+    has_american_opportunity_credit_1098_t_or_exception: true
+    has_american_opportunity_credit_institution_ein: true
+    qualified_tuition_expenses: 1_000
+  output:
+    is_eligible_for_american_opportunity_credit: true
+    american_opportunity_credit: 1_000
+
 - name: Over phase_out, no entitlement
   period: 2020
   input:

@@ -14,5 +14,5 @@ class wa_employee_paid_leave_contribution(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wa.tax.payroll.paid_leave
-        taxable_wages = person("taxable_earnings_for_social_security", period)
+        taxable_wages = person("wa_paid_leave_taxable_wages", period)
         return p.total_rate * (1 - p.employer_share) * taxable_wages

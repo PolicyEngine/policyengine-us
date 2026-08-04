@@ -1,0 +1,15 @@
+description: Santa Clara County deducts these person-level involuntary withholdings from gross earned income under the General Assistance program.
+values:
+  2016-04-01:
+    - employee_social_security_tax
+    - employee_medicare_tax
+    - ca_employee_state_disability_insurance_contribution
+metadata:
+  unit: list
+  period: year
+  label: Santa Clara County General Assistance person-level earned income deductions
+  reference:
+    - title: Santa Clara County General Assistance Handbook, GA 204 (Exempt Income)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/01Policy/Policy.htm
+    - title: Santa Clara County General Assistance Handbook, Verification of Income — Earned Income Deductions
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Verification_Income.htm

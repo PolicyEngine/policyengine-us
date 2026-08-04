@@ -11,11 +11,18 @@ class eitc_child_count(Variable):
     reference = (
         # IRC 32(c)(3)(D)(i) specifies qualifying children need a taxpayer identification number.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_D_i",
+        # IRC 152(c)(3)(B) waives the qualifying-child age test for permanently and totally disabled individuals.
+        "https://www.law.cornell.edu/uscode/text/26/152#c_3_B",
     )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_child = person("is_qualifying_child_dependent", period)
+        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
+            "is_permanently_and_totally_disabled", period
+        )
+        is_child = (
+            person("is_qualifying_child_dependent", period) | is_disabled_dependent
+        )
         meets_eitc_identification_requirements = person(
             "meets_eitc_identification_requirements", period
         )

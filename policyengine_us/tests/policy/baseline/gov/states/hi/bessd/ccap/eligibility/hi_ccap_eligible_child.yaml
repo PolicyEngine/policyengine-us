@@ -1,0 +1,165 @@
+# HI CCAP eligible-child tests (HAR 17-798.2-9(a)).
+# Under 13, OR disabled 13-17, OR receiving court-ordered protective
+# services (any age), AND CCDF immigration eligible.
+
+- name: Case 1, child under 13 who is a citizen.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 2, child exactly age 12 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 3, child exactly age 13 without disability is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, false]
+
+- name: Case 4, disabled child age 13 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 13
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 5, disabled child age 17 is eligible (up through 17).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 17
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 6, disabled child age 18 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 18
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, false]
+
+- name: Case 7, child of any age receiving protective services is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 15
+        receives_or_needs_protective_services: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 8, undocumented child under 13 is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, false]
+
+- name: Case 9, qualified refugee child under 13 is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false, true]
+
+- name: Case 10, adult is never an eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_eligible_child: [false]

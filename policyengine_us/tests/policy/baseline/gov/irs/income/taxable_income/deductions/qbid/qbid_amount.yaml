@@ -298,3 +298,23 @@
     # wage_cap (reduced) = 0.50 * 25_000 = 12_500.
     # min(10_000, 12_500) = 10_000.
     qbid_amount: 10_000
+
+- name: Mixed negative non-SSTB and positive SSTB QBI uses explicit SSTB wages
+  period: 2024
+  input:
+    self_employment_income: -1
+    qualified_business_income: 0
+    sstb_qualified_business_income: 100_000
+    w2_wages_from_qualified_business: 100_000
+    sstb_w2_wages_from_qualified_business: 0
+    unadjusted_basis_qualified_property: 0
+    sstb_unadjusted_basis_qualified_property: 0
+    taxable_income_less_qbid: 216_950
+    qualified_reit_and_ptp_income: 0
+    business_is_sstb: false
+    filing_status: SINGLE
+  output:
+    # Non-SSTB gross income is negative, so the wage pool is mixed even though
+    # non-SSTB QBI is zero. With no SSTB allocable wages, the SSTB component
+    # is limited by the zero wage/property cap during phase-in.
+    qbid_amount: 5_000

@@ -1,0 +1,54 @@
+description: Alaska sets this share of monthly family income as the family copay by State Median Income band under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Alaska CCAP copay as share of income by SMI band
+  reference:
+    - title: Family Income and Contribution Schedule (Revised February 21, 2022)
+      href: https://health.alaska.gov/media/okdlx2xm/alaska-fics.pdf#page=1
+    - title: Alaska CCAP Policies and Procedures Manual §4080-1 Income
+      href: https://health.alaska.gov/media/igiccwuf/child-care-assistance-program-policies-and-procedures.pdf#page=203
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 0.01
+    amount:
+      2022-01-01: 0.01
+  - threshold:
+      2022-01-01: 0.09
+    amount:
+      2022-01-01: 0.02
+  - threshold:
+      2022-01-01: 0.18
+    amount:
+      2022-01-01: 0.03
+  - threshold:
+      2022-01-01: 0.26
+    amount:
+      2022-01-01: 0.04
+  - threshold:
+      2022-01-01: 0.35
+    amount:
+      2022-01-01: 0.05
+  - threshold:
+      2022-01-01: 0.43
+    amount:
+      2022-01-01: 0.06
+  - threshold:
+      2022-01-01: 0.52
+    amount:
+      2022-01-01: 0.07
+  - threshold:
+      2022-01-01: 0.61
+    amount:
+      2022-01-01: 0.08
+  - threshold:
+      2022-01-01: 0.73
+    amount:
+      2022-01-01: 0.09

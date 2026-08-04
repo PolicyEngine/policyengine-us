@@ -1,13 +1,14 @@
 - name: Contributions larger than distributions
   period: 2023
   input:
-    traditional_ira_contributions: 1_000
-    traditional_401k_contributions: 3_000
-    traditional_403b_contributions: 2_000
-    roth_ira_contributions: 1_000
-    roth_401k_contributions: 1_000
-    roth_403b_contributions: 1_000
-    self_employed_pension_contributions: 1_000
+    traditional_ira_contributions_desired: 1_000
+    traditional_401k_contributions_desired: 3_000
+    traditional_403b_contributions_desired: 2_000
+    roth_ira_contributions_desired: 1_000
+    roth_401k_contributions_desired: 1_000
+    roth_403b_contributions_desired: 1_000
+    self_employment_income: 1_000
+    self_employed_pension_contributions_desired: 1_000
     able_contributions_person: 100
     retirement_distributions: 1_000
   output:
@@ -16,14 +17,23 @@
 - name: Contributions smaller than distributions
   period: 2023
   input:
-    traditional_ira_contributions: 1_000
-    traditional_401k_contributions: 0
-    traditional_403b_contributions: 0
-    roth_ira_contributions: 0
-    roth_401k_contributions: 0
-    roth_403b_contributions: 0
-    self_employed_pension_contributions: 0
+    traditional_ira_contributions_desired: 1_000
+    traditional_401k_contributions_desired: 0
+    traditional_403b_contributions_desired: 0
+    roth_ira_contributions_desired: 0
+    roth_401k_contributions_desired: 0
+    roth_403b_contributions_desired: 0
+    self_employed_pension_contributions_desired: 0
     able_contributions_person: 500
     retirement_distributions: 2_000
   output:
     savers_credit_qualified_contributions: 0
+
+- name: Self-employed pension contributions count after applying the annual additions cap
+  period: 2026
+  input:
+    self_employment_income: 100_000
+    self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contributions: 72_000
+    savers_credit_qualified_contributions: 72_000

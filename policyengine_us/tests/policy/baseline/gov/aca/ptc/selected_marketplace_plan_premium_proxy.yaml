@@ -63,3 +63,26 @@
     pays_aca_premium: true
     is_aca_ptc_eligible: false
     selected_marketplace_plan_premium_proxy: 8_000
+
+- name: Case 6, bronze selected plan uses the lowest-cost bronze premium.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    pays_aca_premium: true
+    selected_marketplace_plan_category: BRONZE
+    slcsp: 10_000
+    lcbp: 6_500
+  output:
+    selected_marketplace_plan_premium_proxy: 6_500
+
+- name: Case 7, silver selected plan keeps the benchmark-ratio proxy.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    pays_aca_premium: true
+    selected_marketplace_plan_category: SILVER
+    slcsp: 10_000
+    lcbp: 6_500
+    selected_marketplace_plan_benchmark_ratio: 0.9
+  output:
+    selected_marketplace_plan_premium_proxy: 9_000

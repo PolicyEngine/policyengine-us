@@ -12,5 +12,5 @@ class ok_income_tax(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
     )
     defined_for = StateCode.OK
-    adds = ["ok_income_tax_before_refundable_credits", "ok_use_tax"]
+    adds = ["ok_income_tax_before_refundable_credits"]
     subtracts = ["ok_refundable_credits"]

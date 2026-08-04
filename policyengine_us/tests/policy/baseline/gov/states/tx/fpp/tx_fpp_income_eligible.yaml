@@ -1,53 +1,87 @@
-- name: Income eligible - at limit for household of 1
+- name: Case 1, income well below the limit for a household of one.
   period: 2026
   input:
     state_code: TX
-    spm_unit_size: 1
-    spm_unit_net_income: 39_125  # 250% of 2025 FPG for size 1
+    age: 30
+    employment_income: 20_000
   output:
     tx_fpp_income_eligible: true
 
-- name: Income eligible - below limit for household of 1
+- name: Case 2, income just below 250 percent of the poverty guideline.
   period: 2026
   input:
     state_code: TX
-    spm_unit_size: 1
-    spm_unit_net_income: 20_000
+    age: 30
+    # Limit is 2.5 x 15,960 = 39,900 for a household of one.
+    employment_income: 39_800
   output:
     tx_fpp_income_eligible: true
 
-- name: Income ineligible - above limit for household of 1
+- name: Case 3, income just above 250 percent of the poverty guideline.
   period: 2026
   input:
     state_code: TX
-    spm_unit_size: 1
-    spm_unit_net_income: 42_000
+    age: 30
+    employment_income: 40_100
   output:
     tx_fpp_income_eligible: false
 
-- name: Income eligible - at limit for household of 4
+- name: Case 4, SSI is exempt so an SSI-only household is income eligible.
   period: 2026
   input:
     state_code: TX
-    spm_unit_size: 4
-    spm_unit_net_income: 80_375  # 250% of 2025 FPG for size 4
+    age: 40
+    ssi: 12_000
   output:
     tx_fpp_income_eligible: true
 
-- name: Income eligible - below limit for household of 4
+- name: Case 5, household of four below the limit.
   period: 2026
   input:
-    state_code: TX
-    spm_unit_size: 4
-    spm_unit_net_income: 60_000
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+        employment_income: 25_000
+      person3:
+        age: 10
+      person4:
+        age: 7
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
   output:
     tx_fpp_income_eligible: true
 
-- name: Income ineligible - above limit for household of 4
+- name: Case 6, household of four above the limit.
   period: 2026
   input:
-    state_code: TX
-    spm_unit_size: 4
-    spm_unit_net_income: 90_000
+    people:
+      person1:
+        age: 40
+        employment_income: 90_000
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 7
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
   output:
     tx_fpp_income_eligible: false
+
+- name: Case 7, income exactly at the limit is eligible.
+  period: 2026
+  input:
+    state_code: TX
+    age: 30
+    # Exactly 2.5 x 15,960 = 39,900 for a household of one.
+    employment_income: 39_900
+  output:
+    tx_fpp_income_eligible: true

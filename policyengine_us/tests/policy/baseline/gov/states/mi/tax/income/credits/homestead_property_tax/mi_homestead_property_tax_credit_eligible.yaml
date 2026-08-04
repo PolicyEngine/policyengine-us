@@ -104,3 +104,27 @@
   output:
     # Half of limit: $82,700 < $165,400 = eligible
     mi_homestead_property_tax_credit_eligible: true
+
+- name: Case 7, 2025 household resources at limit.
+  period: 2025
+  input:
+    mi_household_resources: 71_500
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_eligible: true
+
+- name: Case 8, 2025 household resources above limit.
+  period: 2025
+  input:
+    mi_household_resources: 71_501
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_eligible: false
+
+- name: Case 9, 2024 household resources above limit.
+  period: 2024
+  input:
+    mi_household_resources: 69_701
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_eligible: false

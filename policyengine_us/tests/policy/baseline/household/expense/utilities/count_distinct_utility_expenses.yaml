@@ -1,0 +1,25 @@
+- name: Counts utility expense categories with positive expenses.
+  period: 2024
+  input:
+    heating_cooling_expense: 600
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 0
+    phone_expense: 360
+    trash_expense: 0
+    water_expense: 240
+    sewage_expense: 180
+  output:
+    count_distinct_utility_expenses: 5
+
+- name: Returns zero with no utility expenses.
+  period: 2024
+  input:
+    heating_cooling_expense: 0
+    pre_subsidy_electricity_expense: 0
+    gas_expense: 0
+    phone_expense: 0
+    trash_expense: 0
+    water_expense: 0
+    sewage_expense: 0
+  output:
+    count_distinct_utility_expenses: 0

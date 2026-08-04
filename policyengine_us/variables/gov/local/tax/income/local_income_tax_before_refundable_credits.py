@@ -16,4 +16,6 @@ class local_income_tax_before_refundable_credits(Variable):
         "pa_philadelphia_wage_tax",
         "mo_kansas_city_earnings_tax",
         "mo_st_louis_earnings_tax",
+        "ny_yonkers_income_tax",
+        "de_wilmington_earned_income_tax",
     ]

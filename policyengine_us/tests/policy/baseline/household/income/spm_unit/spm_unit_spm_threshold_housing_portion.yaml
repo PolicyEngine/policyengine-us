@@ -1,0 +1,13 @@
+- name: Housing portion isolates the geographically adjusted housing share.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    # Renter housing share is 0.443. A 1.5 local-rent ratio implies:
+    # geoadj = 1 - 0.443 + 0.443 * 1.5 = 1.2215.
+    # For a $40,000 unadjusted threshold, the adjusted threshold is $48,860
+    # and the adjusted housing portion is $40,000 * 0.443 * 1.5 = $26,580.
+    spm_unit_unadjusted_spm_threshold: 40_000
+    spm_unit_geographic_adjustment: 1.2215
+    spm_unit_tenure_type: RENTER
+  output:
+    spm_unit_spm_threshold_housing_portion: 26_580

@@ -7,3 +7,4 @@ class keogh_distributions(Variable):
     label = "Keogh plan distributions"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

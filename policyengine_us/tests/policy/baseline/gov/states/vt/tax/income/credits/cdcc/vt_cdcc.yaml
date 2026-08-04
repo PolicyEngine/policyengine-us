@@ -13,3 +13,45 @@
     state_code: VT
   output:
     vt_cdcc: 1440 
+
+- name: Vermont CDCC 2022 above the low-income AGI cap gets no credit, 2022 Act 138 Sec. 3
+  period: 2022
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 50_000
+    state_code: VT
+  output:
+    vt_cdcc: 0
+
+- name: Vermont CDCC 2022 joint filer at the 40,000 AGI threshold keeps the credit
+  period: 2022
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 40_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+    vt_cdcc: 720
+
+- name: Vermont CDCC 2023 has no AGI cap, 2023 Act 72 Sec. 14
+  period: 2023
+  input:
+    capped_cdcc: 1_000
+    adjusted_gross_income: 50_000
+    state_code: VT
+  output:
+    vt_cdcc: 720
+
+# 32 V.S.A. § 5824 freezes Vermont's IRC at December 31, 2024, so from 2026 the
+# credit is 72% of the pre-OBBBA federal credit (pre_obbba_capped_cdcc), not the
+# OBBBA-inflated live capped_cdcc. Inject both to confirm the pin reads the
+# frozen variable.
+- name: Vermont CDCC 2026 uses the pre-OBBBA federal credit under static conformity
+  period: 2026
+  input:
+    capped_cdcc: 2_000
+    pre_obbba_capped_cdcc: 1_000
+    state_code: VT
+  output:
+    # 72% of the frozen $1,000, ignoring the $2,000 live credit.
+    vt_cdcc: 720

@@ -1,0 +1,63 @@
+- name: Case 1, citizen is eligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: CITIZEN
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: true
+
+- name: Case 2, legal permanent resident is eligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: true
+
+- name: Case 3, refugee is eligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: REFUGEE
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: true
+
+- name: Case 4, asylee is eligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: ASYLEE
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: true
+
+- name: Case 5, Cuban/Haitian entrant is eligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: true
+
+- name: Case 6, paroled one year is ineligible because SCC requires indefinite parole.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: PAROLED_ONE_YEAR
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: false
+
+- name: Case 7, undocumented is ineligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: UNDOCUMENTED
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: false
+
+- name: Case 8, DACA is ineligible.
+  period: 2024
+  input:
+    in_scc: true
+    immigration_status: DACA
+  output:
+    ca_scc_general_assistance_immigration_status_eligible: false

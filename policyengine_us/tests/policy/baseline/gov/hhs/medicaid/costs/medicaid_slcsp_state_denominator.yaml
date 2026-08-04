@@ -1,0 +1,33 @@
+- name: Single household scales state enrollment by the state-average index.
+  period: 2026
+  absolute_error_margin: 1_000
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 1_000
+  output:
+    # TX enrollment (4,178,724) x the household's index (1,670.6).
+    medicaid_slcsp_state_denominator: 6_980_976_640
+
+- name: Missing premium falls back to a unit index, so the denominator stays positive.
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        age: 40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 0
+  output:
+    # No positive index -> state average falls back to 1, so denominator = TX enrollment.
+    medicaid_slcsp_state_denominator: 4_178_724

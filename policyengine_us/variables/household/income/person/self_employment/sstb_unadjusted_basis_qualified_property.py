@@ -6,6 +6,7 @@ class sstb_unadjusted_basis_qualified_property(Variable):
     entity = Person
     label = "SSTB allocable UBIA of qualified property"
     unit = USD
+    quantity_type = STOCK
     documentation = (
         "Portion of unadjusted_basis_qualified_property allocable to "
         "specified service trades or businesses for section 199A. Used to "

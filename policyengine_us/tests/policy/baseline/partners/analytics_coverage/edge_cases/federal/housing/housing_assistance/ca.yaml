@@ -1,0 +1,61 @@
+# California variant: Los Angeles County is the one geography with its own
+# encoded payment-standard and utility-allowance schedules (in_la path), so
+# this case's expected output differs from federal.yaml for state-policy
+# reasons. Amplifi sends CA households.
+- name: housing_assistance_la_county_payment_standard_with_utility_allowance (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 25_000
+        pre_subsidy_rent: 21_000
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        state_code: CA
+        zip_code: '90011'
+        county_str: LOS_ANGELES_COUNTY_CA
+        county_fips: '06037'
+        bedrooms: 1
+        tenant_pays_utilities: true
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    spm_units:
+      spm_unit:
+        # Income 25,000 <= LA County size-2 extremely-low limit 36,400 ->
+        # eligible (childless couple, so no CalWORKs enters HUD income).
+        # LA utility allowance 1bd (LACDA FY2025 schedule) = 290 x 12 = 3,480
+        # -> gross rent = 21,000 + 3,480 = 24,480.
+        # TTP = max(10% x 25,000 = 2,500; 30% x 25,000 = 7,500; 25) = 7,500.
+        # LA payment standard 1bd = 2,096 x 12 = 25,152 -> max subsidy 17,652.
+        # Gross rent 24,480 - TTP 7,500 = 16,980 (rent side binds).
+        housing_assistance: 16_980.0

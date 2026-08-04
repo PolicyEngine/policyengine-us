@@ -15,15 +15,20 @@ from policyengine_us import Microsimulation
 
 YEAR = 2026
 DATE_RANGE = "2020-01-01.2100-12-31"
+# Subsample size for the default dataset. Larger than the 1,000 used in
+# test_microsim.py because the reforms here mostly affect top-bracket and
+# high-capital-gains households, which a smaller sample can miss entirely.
+# subsample() seeds from the dataset name, so every simulation in this
+# module draws the same households and the impacts stay comparable; the
+# assertions are ratio-based, so they are subsample-scale-free.
+SUBSAMPLE_SIZE = 10_000
 
 
-def _federal_tax_impact(reform_tuple):
-    """Calculate federal tax revenue impact for a reform."""
-    sim_baseline = Microsimulation()
-    sim_reform = Microsimulation(reform=reform_tuple)
-    tax_baseline = sim_baseline.calculate("income_tax", period=YEAR, map_to="household")
-    tax_reform = sim_reform.calculate("income_tax", period=YEAR, map_to="household")
-    return float((tax_reform - tax_baseline).sum())
+def _federal_tax(reform_tuple=None):
+    """Total federal income tax on a fixed subsample, optionally reformed."""
+    sim = Microsimulation(reform=reform_tuple)
+    sim.subsample(SUBSAMPLE_SIZE)
+    return float(sim.calculate("income_tax", period=YEAR, map_to="household").sum())
 
 
 def _make_tax_reform():
@@ -89,9 +94,12 @@ def _assert_combined_bounded(reform_tuple, label):
     lsr = _make_lsr_reform()
     cg = _make_cg_reform()
 
-    impact_lsr = _federal_tax_impact(reform_tuple + (lsr,))
-    impact_cg = _federal_tax_impact(reform_tuple + (cg,))
-    impact_both = _federal_tax_impact(reform_tuple + (lsr, cg))
+    # The deterministic subsample makes the baseline identical for all
+    # three impacts, so compute it once.
+    tax_baseline = _federal_tax()
+    impact_lsr = _federal_tax(reform_tuple + (lsr,)) - tax_baseline
+    impact_cg = _federal_tax(reform_tuple + (cg,)) - tax_baseline
+    impact_both = _federal_tax(reform_tuple + (lsr, cg)) - tax_baseline
 
     individual_sum = abs(impact_lsr) + abs(impact_cg)
     assert abs(impact_both) < 3 * individual_sum, (
@@ -105,7 +113,7 @@ def _assert_combined_bounded(reform_tuple, label):
 
 @pytest.mark.skipif(
     os.environ.get("RUN_HEAVY_TESTS") != "1",
-    reason="Requires ~60min for 3 microsimulations; set RUN_HEAVY_TESTS=1",
+    reason="Heavy: builds 4 default-dataset microsimulations; set RUN_HEAVY_TESTS=1",
 )
 def test_combined_lsr_cg_parametric_reform():
     """Parameter-only reform: combined LSR+CG should be bounded."""
@@ -114,7 +122,7 @@ def test_combined_lsr_cg_parametric_reform():
 
 @pytest.mark.skipif(
     os.environ.get("RUN_HEAVY_TESTS") != "1",
-    reason="Requires ~80min for 3 microsimulations; set RUN_HEAVY_TESTS=1",
+    reason="Heavy: builds 4 default-dataset microsimulations; set RUN_HEAVY_TESTS=1",
 )
 def test_combined_lsr_cg_structural_reform():
     """Structural reform (WATCA): combined LSR+CG should be bounded.

@@ -1,0 +1,18 @@
+- name: SURVIVING_SPOUSE filer counts as one taxpayer
+  period: 2026
+  reforms: policyengine_us.reforms.refundable_credit_conversion.refundable_credit_conversion
+  input:
+    gov.contrib.refundable_credit_conversion.in_effect: true
+    gov.contrib.refundable_credit_conversion.credit.use_taxpayer_credit: true
+    gov.contrib.refundable_credit_conversion.credit.per_taxpayer: 1_000
+    people:
+      filer:
+        age: 35
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SURVIVING_SPOUSE
+  output:
+    flat_refundable_credit: 1_000  # SURVIVING_SPOUSE is one taxpayer

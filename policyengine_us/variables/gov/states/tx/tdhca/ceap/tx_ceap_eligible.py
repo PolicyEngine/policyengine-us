@@ -16,7 +16,7 @@ class tx_ceap_eligible(Variable):
         p = parameters(period).gov.states.tx.tdhca.ceap
         p_hhs = parameters(period).gov.hhs.liheap
 
-        income = add(spm_unit, period, ["irs_gross_income"])
+        income = spm_unit("tx_ceap_countable_income", period)
 
         # FPG-based limit (always applies)
         fpg = spm_unit("spm_unit_fpg", period)
@@ -33,7 +33,7 @@ class tx_ceap_eligible(Variable):
 
         # Categorical eligibility per 42 USC 8624(b)(2)(A)
         # and FY 2024 State Plan Section 1.4
-        tanf = spm_unit("is_tanf_enrolled", period)
+        tanf = spm_unit("is_tanf_enrolled", period.first_month)
         snap = spm_unit("is_snap_eligible", period)
         person = spm_unit.members
         ssi = spm_unit.any(person("is_ssi_eligible", period))

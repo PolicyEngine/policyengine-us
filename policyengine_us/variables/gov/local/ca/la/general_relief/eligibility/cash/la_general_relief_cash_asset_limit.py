@@ -6,6 +6,7 @@ class la_general_relief_cash_asset_limit(Variable):
     entity = SPMUnit
     unit = USD
     definition_period = YEAR
+    quantity_type = STOCK
     label = "Limit for the Los Angeles County General Relief cash asset requirements"
     # Person has to be a resident of LA County
     defined_for = "in_la"

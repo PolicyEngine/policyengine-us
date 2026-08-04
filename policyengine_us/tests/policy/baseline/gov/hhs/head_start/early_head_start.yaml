@@ -25,3 +25,14 @@
     takes_up_early_head_start_if_eligible: false
   output:
     early_head_start: 0
+
+- name: Case 4, eligible in KS using FY2024 data (2023-09-01 entry).
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code: KS
+    is_early_head_start_eligible: true
+  output:
+    # FY2024 (2023-09-01): 22,139,720 / 1,791 = 12,361.65 per child,
+    # uprated to the 2024 period by gov.hhs.uprating.
+    early_head_start: 12_722.72

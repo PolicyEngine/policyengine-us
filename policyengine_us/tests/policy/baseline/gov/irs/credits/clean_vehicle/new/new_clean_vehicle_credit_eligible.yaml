@@ -46,3 +46,25 @@
     adjusted_gross_income: 150_000
   output:
     new_clean_vehicle_credit_eligible: false
+
+- name: Qualifying household is eligible in 2025, before the One Big Beautiful Bill Act termination.
+  period: 2025
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 80_000
+    adjusted_gross_income: 150_000
+  output:
+    new_clean_vehicle_credit_eligible: true
+
+- name: Otherwise-qualifying household is ineligible in 2026, terminated by the One Big Beautiful Bill Act (Pub. L. 119-21).
+  period: 2026
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 80_000
+    adjusted_gross_income: 150_000
+  output:
+    new_clean_vehicle_credit_eligible: false

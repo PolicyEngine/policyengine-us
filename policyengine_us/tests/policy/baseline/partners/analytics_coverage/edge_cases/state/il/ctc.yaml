@@ -1,0 +1,95 @@
+# IL Child Tax Credit — 40% of the IL EITC (2025+) when a qualifying child
+# under 12 is present (35 ILCS 5/244). Pins the age-12 boundary.
+- name: il_ctc_child_age_11_eligible (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 11
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        # 2026 federal EITC (1 child, $20,000 earned) = $4,427 in phase-out;
+        # IL EITC = 20% x 4,427 = 885.40; IL CTC = 40% x 885.40 = 354.16
+        # (child age 11 < 12 limit).
+        il_eitc: 885.4
+        il_ctc: 354.16
+        adjusted_gross_income: 20_000.0
+- name: il_ctc_child_age_12_at_state_age_limit (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, child1]
+    tax_units:
+      tax_unit:
+        members: [head, child1]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+  output:
+    tax_units:
+      tax_unit:
+        # Boundary pin: age 12 is NOT under the age-12 limit, so the CTC is
+        # zero while the IL EITC is unchanged at 885.40.
+        il_eitc: 885.4
+        il_ctc: 0.0
+        adjusted_gross_income: 20_000.0

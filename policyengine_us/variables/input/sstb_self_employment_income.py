@@ -23,4 +23,3 @@ class sstb_self_employment_income(Variable):
         "sstb_self_employment_income_before_lsr",
         "sstb_self_employment_income_behavioral_response",
     ]
-    uprating = "calibration.gov.irs.soi.self_employment_income"

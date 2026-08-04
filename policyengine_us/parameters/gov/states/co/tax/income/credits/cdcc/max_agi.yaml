@@ -1,0 +1,19 @@
+description: Colorado allows the child and dependent care credit only to filers with federal adjusted gross income at or below this amount, for tax years beginning in 2026 or later. The limit is adjusted for inflation beginning in tax year 2027.
+values:
+  2026-01-01: 60_000
+metadata:
+  period: year
+  unit: currency-USD
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 1_000
+  label: Colorado child and dependent care credit maximum AGI
+  reference:
+    - title: C.R.S. 39-22-119(1.7)(b) and (1.7)(c) (as amended by HB24-1134, SECTION 1)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=3
+    - title: "Colorado Revised Statutes 39-22-119. Expenses related to child care - credits against state tax"
+      href: https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-119/
+    - title: "Income Tax Topics: Child and Dependent Care Expenses Credit (Revised January 2026) - Income limits"
+      href: https://tax.colorado.gov/sites/tax/files/documents/ITT_Child_and_Dependent_Care_Expenses_Credit_Jan_2026.pdf

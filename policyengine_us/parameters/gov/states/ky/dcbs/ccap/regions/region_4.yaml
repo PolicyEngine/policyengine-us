@@ -1,0 +1,23 @@
+description: Kentucky applies the same Child Care Assistance Program maximum daily payment rates to each of these counties, whose identical DCC-300 rate rows PolicyEngine groups as rate region 4.
+values:
+  2022-10-01:
+    - BOONE_COUNTY_KY
+    - BOURBON_COUNTY_KY
+    - BOYLE_COUNTY_KY
+    - FAYETTE_COUNTY_KY
+    - FRANKLIN_COUNTY_KY
+    - JEFFERSON_COUNTY_KY
+    - JESSAMINE_COUNTY_KY
+    - KENTON_COUNTY_KY
+    - MADISON_COUNTY_KY
+    - PULASKI_COUNTY_KY
+    - TAYLOR_COUNTY_KY
+    # - CLARK_COUNTY_KY  # Clark County not in PolicyEngine county_enum at the moment
+
+metadata:
+  unit: list
+  period: year
+  label: Kentucky CCAP rate region 4 counties
+  reference:
+    - title: DCC-300 Kentucky Child Care Maximum Payment Rate Chart (R.10/22), pp.1-4
+      href: https://www.chfs.ky.gov/agencies/dcbs/dcc/Documents/dcc300kymaxpaymentchart.pdf#page=1

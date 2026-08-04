@@ -20,6 +20,7 @@ class count_distinct_utility_expenses(Variable):
             "water",
             "sewage",
         ]
-        return sum(
-            [spm_unit(variable + "_expense", period) > 0 for variable in UTILITIES]
-        )
+        has_expense = [
+            spm_unit(variable + "_expense", period) > 0 for variable in UTILITIES
+        ]
+        return sum(has_expense)
