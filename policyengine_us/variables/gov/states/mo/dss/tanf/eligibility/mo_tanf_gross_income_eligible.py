@@ -14,8 +14,10 @@ class mo_tanf_gross_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.mo.dss.tanf
-        gross_income = spm_unit("mo_tanf_gross_earned_income", period) + spm_unit(
-            "mo_tanf_gross_unearned_income", period
+        gross_income = add(
+            spm_unit,
+            period,
+            ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
         standard_of_need = spm_unit("mo_tanf_standard_of_need", period)
         limit = standard_of_need * p.income_limit.rate
