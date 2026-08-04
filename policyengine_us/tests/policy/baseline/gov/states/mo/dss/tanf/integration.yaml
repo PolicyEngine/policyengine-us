@@ -37,7 +37,7 @@
     people:
       person1:
         age: 35
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -66,7 +66,7 @@
     people:
       person1:
         age: 35
-        employment_income: 3_000
+        employment_income_before_lsr: 3_000
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -89,7 +89,9 @@
     mo_tanf_maximum_benefit: 3_505.08
     mo_tanf_income_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 3_505.08
+    # Monthly: $250 earned - $172.80 deductions = $77.20 countable;
+    # $292.09 - $77.20 = $214.89 benefit; * 12 = $2,578.68.
+    mo_tanf: 2_578.68
 
 - name: Family of 3 income at exact 185% limit
   period: 2024
@@ -97,7 +99,7 @@
     people:
       person1:
         age: 35
-        employment_income: 18_780
+        employment_income_before_lsr: 18_780
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -253,7 +255,7 @@
     people:
       person1:
         age: 30
-        employment_income: 1_080
+        employment_income_before_lsr: 1_080
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -273,3 +275,35 @@
     mo_tanf_maximum_benefit: 2_809.035
     mo_tanf_eligible: true
     mo_tanf: 2_809.035
+
+- name: A 19-year-old non-student household member is excluded from the unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      adult_child:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+      tax_unit_2:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10 excludes siblings age 19 and over from the
+    # unit's needs: size-2 payment standard, not size-3.
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_standard_of_need: 678
+    mo_tanf_maximum_benefit: 234.086
+    mo_tanf: 234.086

@@ -1,0 +1,1 @@
+Restrict the Missouri TANF assistance unit to dependent children and their caretaker parents per DSS Manual 0210.005.10 and 13 CSR 40-2.325, excluding household members age 19 and over who are not dependent children from the unit's needs and counting only unit members' income.
