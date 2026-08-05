@@ -116,3 +116,17 @@
     state_code: AK
   output:
     is_snap_abawd_hr1_in_effect: true
+
+# Boundary at the end of the AK good-faith exemption window. The AK
+# hr1_in_effect parameter flips false -> true at 2026-11-01, so 2026-10 is
+# the last exempt month (false) and 2026-11 is the first in-effect month
+# (true). state_code is a YEAR variable read via period.this_year, so
+# non-January month periods require year-keyed inputs (2026: AK) to avoid a
+# period-parsing error in policyengine-core input storage.
+- name: Case 16, AK still exempt in the last month of the exemption window.
+  period: 2026-10
+  input:
+    state_code:
+      2026: AK
+  output:
+    is_snap_abawd_hr1_in_effect: false

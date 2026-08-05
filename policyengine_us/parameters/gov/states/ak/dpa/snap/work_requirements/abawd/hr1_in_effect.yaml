@@ -3,11 +3,18 @@
 # per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). FNS approved Alaska's
 # good-faith exemption effective 2025-11-01 through 2026-10-31, deferring
 # the HR1 ABAWD rules in all areas except the Municipality of Anchorage,
-# which applies them from 2025-11-01. This parameter approximates all of
-# Alaska as exempt through the window; the Anchorage split requires
-# borough-level geography, tracked separately. The 2026-11-01 date assumes
-# the exemption is not renewed; renewals are permitted through 2028-12-31.
-# Borough-level high-unemployment waivers are not modeled here.
+# which applies them from 2025-11-01. The exemption determination is
+# area-based; Anchorage is the only Alaska area to which the HR1 rules
+# currently apply, and it holds roughly 40% of Alaska's population. This
+# statewide parameter approximates all of Alaska as exempt through the
+# window (treating the exemption as in effect for the ~60% of the
+# population outside Anchorage as well), because the Anchorage split
+# requires borough-level geography, tracked separately. Under
+# 7 U.S.C. 2015(o)(7)(D)(i) (as amended by HR1) a good-faith exemption,
+# once granted, may be renewed but expires no later than 2028-12-31 and
+# may not be renewed beyond that date; the 2026-11-01 date assumes the
+# exemption is not renewed. Borough-level high-unemployment waivers are
+# not modeled here.
 description: Alaska implements the HR1 changes to Able-Bodied Adult Without Dependents work requirements under the Supplemental Nutrition Assistance Program when this is true.
 
 values:
@@ -23,7 +30,7 @@ metadata:
       href: https://health.alaska.gov/en/education/hr-1-ak-impacts/
     - title: 7 U.S.C. 2015(o)(7) - Good faith exemptions for Alaska and Hawaii
       href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim
-    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
-      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: Public Law 119-21, Section 10102(c) - Exemption for noncontiguous States
+      href: https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=12
     - title: USDA FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Waivers Implementation Memorandum (October 3, 2025)
       href: https://www.fns.usda.gov/snap/obbb-ABAWD-Waivers-Implementation-Memo
