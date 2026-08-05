@@ -22,9 +22,7 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # (receives_ssi) also excludes, covering people the model computes
         # as $0. Their resources cannot be excluded because assets are
         # modeled at the SPM-unit level only.
-        is_ssi_recipient = (person("ssi", period) > 0) | (
-            add(person, period, ["receives_ssi"]) > 0
-        )
+        is_ssi_recipient = (person("ssi", period) > 0) | person("receives_ssi", period)
         dependent_child = person("mo_tanf_dependent_child", period)
         eligible_child = dependent_child & ~is_ssi_recipient
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
