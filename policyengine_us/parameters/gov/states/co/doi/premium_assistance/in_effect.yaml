@@ -1,0 +1,25 @@
+description: Colorado provides state premium assistance when this is true under the Colorado Premium Assistance program.
+values:
+  # HB25B-1006 (2025 First Extraordinary Session) authorized CPA only if Congress
+  # did not extend the enhanced federal Premium Tax Credit by 2025-12-31; that
+  # trigger condition occurred, so the program went live for plan year 2026.
+  # The 2028-01-01 end date is VERIFIED, not a carry-forward assumption: SB26-178
+  # (enacted July 2026) extends CPA "at its current levels" through plan year
+  # 2027, so PY2026 and PY2027 are in effect and PY2028+ is unfunded/unknown.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Colorado Premium Assistance in effect
+  reference:
+    - title: Connect for Health Colorado - Colorado Premium Assistance
+      href: https://connectforhealthco.com/financial-help/colorado-premium-assistance/
+    - title: C.R.S. 10-16-1207(4)(c.5) (Colorado Premium Assistance rule hook)
+      href: https://content.leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_01.pdf#page=5
+    - title: C.R.S. 10-16-1209(1) (effective only if Congress does not extend the enhanced PTC by 2025-12-31)
+      href: https://content.leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_01.pdf#page=8
+    - title: SB26-178 (extends Colorado Premium Assistance at current levels through plan year 2027)
+      href: https://connectforhealthco.com/senate-bill-26-178-becoming-law/

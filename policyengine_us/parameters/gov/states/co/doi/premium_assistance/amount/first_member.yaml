@@ -1,0 +1,22 @@
+description: Colorado provides this amount for the first household member under the Colorado Premium Assistance program.
+values:
+  # The $80/$29/5-member/100-400% FPL design is administrative (HIAE board /
+  # Connect for Health Colorado), not verbatim in HB25B-1006 or the DOI
+  # regulations. The Connect for Health Colorado page 403's to bots, so its
+  # values are corroborated by Boulder County (gov), healthinsurance.org, ACA
+  # Signups, and the Spanish-language mirror of the same site.
+  # Do NOT use the $50 first-member figure from DOI Emergency Regulation 25-E-03:
+  # that was a superseded pre-launch rate-filing contingency (<=200% FPL).
+  2026-01-01: 80
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado Premium Assistance first member amount
+  reference:
+    - title: Connect for Health Colorado - Colorado Premium Assistance
+      href: https://connectforhealthco.com/financial-help/colorado-premium-assistance/
+    - title: Boulder County - Open enrollment for Connect for Health Colorado begins Nov 1 2025
+      href: https://bouldercounty.gov/news/open-enrollment-for-connect-for-health-colorado-begins-nov-1-2025/
+    - title: healthinsurance.org - Colorado marketplace guide
+      href: https://www.healthinsurance.org/aca-marketplace/colorado/
