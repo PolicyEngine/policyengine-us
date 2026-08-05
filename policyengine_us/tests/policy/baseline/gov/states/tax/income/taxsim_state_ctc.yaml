@@ -1,3 +1,39 @@
+- name: NY additional CTC is included in the state CTC aggregate in 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        ny_ctc: 330
+        ny_additional_ctc: 82.5
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    taxsim_state_ctc: 412.5
+
+- name: NY additional CTC is excluded in 2022, a year without supplemental payments
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        ny_ctc: 330
+        ny_additional_ctc: 100
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    taxsim_state_ctc: 330
+
 - name: NY additional CTC is included in the state CTC aggregate in 2023
   period: 2023
   input:
@@ -18,6 +54,24 @@
 
 - name: NY additional CTC is excluded in 2024, a year without supplemental payments
   period: 2024
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        ny_ctc: 330
+        ny_additional_ctc: 100
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    taxsim_state_ctc: 330
+
+- name: NY additional CTC remains excluded in 2027
+  period: 2027
   input:
     people:
       parent:
