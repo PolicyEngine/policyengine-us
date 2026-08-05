@@ -21,8 +21,10 @@ VARIABLE = "tanf_non_cash_gross_income_limit"
 WA_LIMIT_ON_2025_GUIDELINES = 2_608
 WA_LIMIT_ON_2026_GUIDELINES = 2_660
 # Colorado takes the federal October cycle and publishes no rounding
-# convention of its own.
-CO_LIMIT_ON_2025_GUIDELINES = 2_608.33
+# convention of its own, so its standard carries the repeating cents of
+# 200% x 15,650 / 12 and needs a tolerance the whole-dollar states do not.
+CO_LIMIT_ON_2025_GUIDELINES = 15_650 / 12 * 2
+CENT = 0.01
 
 
 def one_person_limit(state_code, period, year=2026):
@@ -58,5 +60,6 @@ def test_wa_limit_holds_the_new_guidelines_through_september():
 def test_wa_leads_october_cycle_states_between_april_and_september():
     # Guard against a vacuous pass: an October-cycle state stays on the
     # 2025 guidelines in the months where Washington has already moved.
-    assert one_person_limit("CO", "2026-04") == CO_LIMIT_ON_2025_GUIDELINES
+    co_limit = one_person_limit("CO", "2026-04")
+    assert abs(co_limit - CO_LIMIT_ON_2025_GUIDELINES) < CENT
     assert one_person_limit("WA", "2026-04") > one_person_limit("CO", "2026-04")
