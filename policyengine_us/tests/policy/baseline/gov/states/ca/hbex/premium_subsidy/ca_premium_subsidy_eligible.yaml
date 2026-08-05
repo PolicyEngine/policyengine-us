@@ -1,0 +1,253 @@
+# Unit tests for California Premium Subsidy eligibility
+# (REQ-001/003/004/024). Eligible when: the program is in effect (PY2026-2027),
+# the household is in California, at least one tax-unit member is eligible for
+# the federal ACA premium tax credit (which embeds on-Marketplace enrollment,
+# the married-filing-separately exclusion, and the federal required-contribution
+# income test), and ACA MAGI is at or above the 100% FPL floor and at or below
+# the 165% FPL limit. is_aca_ptc_eligible and aca_magi_fraction are supplied
+# directly so the gate logic is tested in isolation from the premium-data lookup.
+#   fpl_floor = 1.0, fpl_limit = 1.65
+
+# ---- Income-band boundaries ----
+
+- name: Case 1, just below the 100% FPL floor (0.99) is ineligible.
+  # aca_magi_fraction 0.99 < fpl_floor 1.0 -> income test fails.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+- name: Case 2, exactly at the 100% FPL floor (1.0) is eligible.
+  # aca_magi_fraction 1.0 >= fpl_floor 1.0 and <= fpl_limit 1.65.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.00
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+- name: Case 3, mid-band (140% FPL) is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+- name: Case 4, exactly at the 165% FPL limit (1.65) is eligible.
+  # aca_magi_fraction 1.65 <= fpl_limit 1.65 (at the limit, not above).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.65
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+- name: Case 5, just above the 165% FPL limit (1.66) is ineligible.
+  # aca_magi_fraction 1.66 > fpl_limit 1.65 -> above the band (federal APTC only).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.66
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+# ---- Federal APTC gate ----
+
+- name: Case 6, no member is federal-APTC-eligible -> ineligible (REQ-003).
+  # In-band on income, but is_aca_ptc_eligible is false for the only member, so
+  # tax_unit.any(is_aca_ptc_eligible) is false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+- name: Case 7, one of two members federal-APTC-eligible -> eligible (any gate).
+  # tax_unit.any(is_aca_ptc_eligible) is true when at least one member qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: false
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+# ---- State gate ----
+
+- name: Case 8, in-band APTC-eligible unit outside California -> ineligible.
+  # defined_for StateCode.CA zeroes the (bool) eligibility outside California.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ca_premium_subsidy_eligible: false
+
+# ---- In-effect window ----
+
+- name: Case 9, in-band CA unit in 2025 (before the program) -> ineligible.
+  # in_effect is false before 2026-01-01, so the program does not apply.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+- name: Case 10, in-band CA unit in 2028 (after the window) -> ineligible.
+  # in_effect ends 2028-01-01 (carry-forward covers PY2026-2027 only).
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+
+- name: Case 11, in-band CA unit in 2027 (carry-forward) -> eligible.
+  # in_effect is true through PY2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+
+# ---- Zero-income edge ----
+
+- name: Case 12, zero-income household (aca_magi_fraction 0) is ineligible.
+  # aca_magi_fraction 0 < fpl_floor 1.0 -> income test fails. A tax unit with no
+  # income (0% FPL) sits below the CA 100% floor and receives federal APTC only,
+  # even with an APTC-eligible member. Confirms the fraction-0 edge is on the
+  # ineligible side of the floor rather than a spurious pass-through.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false

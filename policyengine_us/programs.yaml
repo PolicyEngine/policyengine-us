@@ -1133,6 +1133,17 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
+  - id: ca_premium_subsidy
+    name: California Premium Subsidy
+    full_name: California Premium Subsidy (Individual Market Assistance)
+    category: Healthcare
+    agency: HBEX (Covered California)
+    status: complete
+    coverage: CA
+    variable: ca_premium_subsidy
+    parameter_prefix: gov.states.ca.hbex.premium_subsidy
+    verified_years: "2026-2027"
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
