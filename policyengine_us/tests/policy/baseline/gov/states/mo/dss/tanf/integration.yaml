@@ -37,7 +37,7 @@
     people:
       person1:
         age: 35
-        employment_income: 12_000
+        employment_income_before_lsr: 12_000
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -66,7 +66,7 @@
     people:
       person1:
         age: 35
-        employment_income: 3_000
+        employment_income_before_lsr: 3_000
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -89,7 +89,10 @@
     mo_tanf_maximum_benefit: 3_505.08
     mo_tanf_income_eligible: true
     mo_tanf_eligible: true
-    mo_tanf: 3_505.08
+    # Monthly: $250 earned - ($90 + $30 + $130 / 3) deductions leaves
+    # $86.67 countable; $292.09 - $86.67 = $205.42 benefit; * 12 =
+    # $2,465.08.
+    mo_tanf: 2_465.08
 
 - name: Family of 3 income at exact 185% limit
   period: 2024
@@ -97,7 +100,7 @@
     people:
       person1:
         age: 35
-        employment_income: 18_780
+        employment_income_before_lsr: 18_780
       person2:
         age: 8
         is_tax_unit_dependent: true
@@ -253,7 +256,7 @@
     people:
       person1:
         age: 30
-        employment_income: 1_080
+        employment_income_before_lsr: 1_080
       person2:
         age: 5
         is_tax_unit_dependent: true
@@ -273,3 +276,175 @@
     mo_tanf_maximum_benefit: 2_809.035
     mo_tanf_eligible: true
     mo_tanf: 2_809.035
+
+- name: A 19-year-old non-student household member is excluded from the unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      adult_child:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+      tax_unit_2:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10 excludes siblings age 19 and over from the
+    # unit's needs: size-2 payment standard, not size-3.
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_standard_of_need: 678
+    mo_tanf_maximum_benefit: 234.086
+    mo_tanf: 234.086
+
+- name: Pregnancy alone does not create eligibility without a dependent child
+  period: 2024-01
+  input:
+    people:
+      pregnant_adult:
+        age: 25
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [pregnant_adult]
+    households:
+      household:
+        members: [pregnant_adult]
+        state_code: MO
+  output:
+    # RSMo 208.040 pays only on behalf of a dependent child; unlike the
+    # federal default demographic test, pregnancy alone does not qualify.
+    mo_tanf_eligible: false
+    mo_tanf: 0
+
+- name: Full-time-student child's earnings do not affect the grant
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+      student_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        employment_income_before_lsr: 15_600  # $1,300/month
+    tax_units:
+      tax_unit:
+        members: [parent, student_child]
+    spm_units:
+      spm_unit:
+        members: [parent, student_child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, student_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.015.35.10 excludes a student child's earnings: the
+    # $1,300/month would otherwise fail the 185% test ($1,254.30 for two).
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_gross_income_eligible: true
+    mo_tanf_eligible: true
+    mo_tanf: 234.086
+
+- name: Student teen parent's earnings do not affect the grant
+  period: 2024-01
+  input:
+    people:
+      teen_parent:
+        age: 18
+        is_in_secondary_school: true
+        employment_income_before_lsr: 15_600  # $1,300/month
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [teen_parent, infant]
+        spm_unit_cash_assets: 200
+    households:
+      household:
+        members: [teen_parent, infant]
+        state_code: MO
+  output:
+    # DSS Manual 0210.015.35.15 excludes the earnings of a parent under 19
+    # who is a full-time secondary-school student.
+    mo_tanf_gross_earned_income: 0
+    mo_tanf_eligible: true
+    mo_tanf: 234.086
+
+- name: An SSI-recipient parent is excluded from needs and income
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        ssi: 750
+        social_security: 3_600  # $300/month, excluded with the recipient
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(1)(F) and DSS Manual 0210.005.10: the SSI
+    # recipient's needs and income are excluded, leaving a child-only
+    # case at the size-1 payment level.
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_standard_of_need: 393
+    mo_tanf_gross_unearned_income: 0
+    mo_tanf_countable_income: 0
+    mo_tanf_maximum_benefit: 135.687
+    mo_tanf_eligible: true
+    mo_tanf: 135.687
+
+- name: A family whose only child receives SSI has no eligible case
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # The SSI child cannot be in the unit, and without a dependent child
+    # in the unit there is no Temporary Assistance case.
+    mo_tanf_assistance_unit_size: 0
+    mo_tanf_eligible: false
+    mo_tanf: 0

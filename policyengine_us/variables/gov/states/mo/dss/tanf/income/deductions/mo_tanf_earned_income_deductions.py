@@ -10,25 +10,32 @@ class mo_tanf_earned_income_deductions(Variable):
     reference = (
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30-10/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30-20/",
     )
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # Note: Missouri has time-limited earned income disregards ($30+1/3 for
-        # first 4 months, $30-only for next 8 months, 2/3 for up to 12 months).
-        # This simplified implementation does not model these month limits.
+        # Note: Missouri time-limits these disregards ($30 plus one-third
+        # for four consecutive months, $30-only for the following eight
+        # months, and the two-thirds disregard for up to 12 consecutive
+        # months). These month counts are not modeled.
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
+        gross_earned = spm_unit("mo_tanf_gross_earned_income", period)
         is_enrolled = spm_unit("is_tanf_enrolled", period)
-        work_expense = min_(gross_earned, p.amount)
         child_care = spm_unit("mo_tanf_child_care_deduction", period)
+        # Not an active TA participant when employment began (DSS Manual
+        # 0210.015.30.10): deduct the standard work exemption first, then
+        # $30, then one-third of the remainder.
+        work_expense = min_(gross_earned, p.amount)
         after_work_expense = max_(gross_earned - p.amount, 0)
-        two_thirds = after_work_expense * p.two_thirds_disregard.percentage
-        thirty_one_third = where(
-            gross_earned > 0,
-            p.thirty_plus_one_third.flat_amount
-            + after_work_expense * p.thirty_plus_one_third.percentage,
-            0,
-        )
-        earned_disregard = where(is_enrolled, two_thirds, thirty_one_third)
-        return work_expense + earned_disregard + child_care
+        thirty = min_(after_work_expense, p.thirty_plus_one_third.flat_amount)
+        one_third = (after_work_expense - thirty) * p.thirty_plus_one_third.percentage
+        new_applicant = work_expense + thirty + one_third
+        # Active TA participant when employment began (DSS Manual
+        # 0210.015.30.20; 13 CSR 40-2.310(9)(D)): apply the two-thirds
+        # disregard to gross earnings first, then the work exemption.
+        two_thirds = gross_earned * p.two_thirds_disregard.percentage
+        enrolled_work_expense = min_(gross_earned - two_thirds, p.amount)
+        enrolled = two_thirds + enrolled_work_expense
+        return where(is_enrolled, enrolled, new_applicant) + child_care
