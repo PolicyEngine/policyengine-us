@@ -34,5 +34,14 @@ class meets_tanf_non_cash_gross_income_test(Variable):
         # counting of certain ineligible aliens' income under the gross
         # income test (7 CFR 273.11(c)(3)(i)) apply it to this categorical
         # eligibility screen as well.
-        gross_income = spm_unit("snap_gross_test_income_fpg_ratio", period)
-        return gross_income <= gross_limit
+        gross_income_fpg_ratio = spm_unit("snap_gross_test_income_fpg_ratio", period)
+        standard_result = gross_income_fpg_ratio <= gross_limit
+        # WAC 388-414-0001(2)(a)(ii): Washington re-bases its standard on
+        # the current-year poverty guidelines each April 1 rather than the
+        # federal October fiscal-year schedule, and publishes whole-dollar
+        # monthly limits, so its screen compares dollars against a
+        # WA-specific limit instead of the fiscal-year FPG ratio.
+        wa_limit = spm_unit("wa_snap_bbce_gross_income_limit", period)
+        gross_income = spm_unit("snap_gross_test_income", period)
+        wa_result = gross_income <= wa_limit
+        return where(state == "WA", wa_result, standard_result)

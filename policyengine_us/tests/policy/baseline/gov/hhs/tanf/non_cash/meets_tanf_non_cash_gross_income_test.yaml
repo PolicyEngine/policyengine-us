@@ -239,3 +239,175 @@
     snap_gross_income: 2_666.67
     snap_gross_test_income: 4_000
     meets_tanf_non_cash_gross_income_test: false
+
+# Washington boundary tests: WAC 388-414-0001(2)(a)(ii) re-bases the
+# 200% standard on the current-year poverty guidelines each April 1
+# (whole-dollar limits), not the federal October fiscal-year schedule.
+- name: WA March 2025, income at the $2,510 limit passes
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2025-03: 2_510
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: WA March 2025, $2,511 fails
+  period: 2025-03
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2025-03: 2_511
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA April 2025, income at the new $2,608 limit passes
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2025-04: 2_608
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: WA April 2025, $2,609 fails
+  period: 2025-04
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2025-04: 2_609
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2025: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA March 2026, $2,660 still fails under the 2025 guidelines
+  period: 2026-03
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2026-03: 2_660
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA April 2026, $2,660 passes once the 2026 guidelines apply
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2026-04: 2_660
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: WA April 2026, $2,661 fails
+  period: 2026-04
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_gross_test_income:
+          2026-04: 2_661
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA April 2026, four-person unit at the $5,500 limit passes
+  period: 2026-04
+  input:
+    people:
+      parent1:
+        age:
+          2026: 35
+      parent2:
+        age:
+          2026: 34
+      child1:
+        age:
+          2026: 8
+      child2:
+        age:
+          2026: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        snap_gross_test_income:
+          2026-04: 5_500
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code:
+          2026: WA
+  output:
+    meets_tanf_non_cash_gross_income_test: true
