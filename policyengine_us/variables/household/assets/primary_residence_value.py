@@ -12,6 +12,7 @@ class primary_residence_value(Variable):
     quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
+    # VALP (property value) in the ACS PUMS data dictionary.
     reference = (
         "https://www.census.gov/programs-surveys/acs/microdata/documentation.html"
     )
