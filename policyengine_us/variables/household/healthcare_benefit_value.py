@@ -26,4 +26,5 @@ class healthcare_benefit_value(Variable):
         "md_premium_assistance",
         "assigned_nm_premium_assistance",
         "or_healthier_oregon_cost",
+        "wa_cascade_care_savings",
     ]

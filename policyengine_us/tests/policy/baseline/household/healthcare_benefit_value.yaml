@@ -276,3 +276,22 @@
     assigned_aca_ptc: 10_197.50
     ct_covered_connecticut: 988.84
     healthcare_benefit_value: 11_186.34
+
+- name: Case 16, Washington Cascade Care Savings flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+    wa_cascade_care_savings: 660
+  output:
+    healthcare_benefit_value: 660
