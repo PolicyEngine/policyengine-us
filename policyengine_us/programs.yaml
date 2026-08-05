@@ -1123,16 +1123,6 @@ programs:
     parameter_prefix: gov.states.co.hcpf.chp
     verified_start_year: 2023
 
-  - id: co_omnisalud
-    name: Colorado OmniSalud
-    full_name: Colorado OmniSalud
-    category: Healthcare
-    agency: State
-    status: complete
-    coverage: CO
-    variable: co_omnisalud
-    parameter_prefix: gov.states.co.hcpf.omnisalud
-
   - id: ca_premium_subsidy
     name: California Premium Subsidy
     full_name: California Premium Subsidy (Individual Market Assistance)
@@ -1143,6 +1133,16 @@ programs:
     variable: ca_premium_subsidy
     parameter_prefix: gov.states.ca.hbex.premium_subsidy
     verified_years: "2026-2027"
+
+  - id: co_omnisalud
+    name: Colorado OmniSalud
+    full_name: Colorado OmniSalud
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_omnisalud
+    parameter_prefix: gov.states.co.hcpf.omnisalud
 
   - id: dc_power
     name: DC Power
