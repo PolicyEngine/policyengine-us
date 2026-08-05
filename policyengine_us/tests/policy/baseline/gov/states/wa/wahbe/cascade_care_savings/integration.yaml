@@ -301,3 +301,113 @@
     aca_ptc: 5_000
     wa_cascade_care_savings_eligible: true
     wa_cascade_care_savings: 660
+
+- name: Scenario 10, undocumented Apple-Health-for-Kids child adds no $250 member.
+  # End-to-end guard on the post-C1 gate. person1: Group 1 adult ($55). person2:
+  # age 10, UNDOCUMENTED, wa_apple_health_kids_income_eligible true -> the child
+  # has state MEC through Apple Health for Kids, so wa_apple_health_kids_eligible
+  # is true and the child is EXCLUDED from Group 3. n_group1=1, n_group3=0 ->
+  # base_annual = 12*55 = 660 (the ADULT ONLY; a child counted as Group 3 would
+  # have produced 12*(55+250) = 3_660). frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    aca_magi_fraction: 1.4
+    slcsp: 6_000
+    aca_ptc: 5_000
+    # wa_apple_health_kids_eligible is a Person-level flag: true for the child
+    # (person2, the Group-3 exclusion under test) but false for the adult
+    # (person1). A top-level assertion broadcasts to every person and cannot
+    # hold for the adult, so the child's Group-3 exclusion is guarded end-to-end
+    # by the household-level wa_cascade_care_savings total below (660 = adult
+    # only; a child counted as Group 3 would have produced 3_660).
+    wa_cascade_care_savings_eligible: true
+    wa_cascade_care_savings: 660
+
+- name: Scenario 11, dual-flagged member yields $55 (Group 1), not $305 (no stacking).
+  # End-to-end mutual-exclusivity pin. person1 is set both is_aca_ptc_eligible
+  # true AND UNDOCUMENTED (wa_apple_health_expansion_eligible false). The FIXED
+  # contract makes Groups 1 and 3 structurally exclusive (Group 3 adds
+  # ~is_aca_ptc_eligible), so this person is Group 1 ONLY. n_group1=1, n_group3=0
+  # -> base_annual = 12*55 = 660 (NOT 3_660). frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 1.4
+    slcsp: 6_000
+    aca_ptc: 5_000
+    wa_cascade_care_savings_eligible: true
+    wa_cascade_care_savings: 660
+
+- name: Scenario 12, above 250% FPL with a Group-3 member drops CCS to zero.
+  # Closes the income-gate matrix for Group 3 (Scenario 7 used Group 1). person1
+  # is Group 3 (UNDOCUMENTED, not Apple-Health-eligible, is_aca_ptc_eligible false
+  # explicitly). frac 2.6 > 2.5 (fpl_limit) -> not eligible -> CCS 0 despite the
+  # $250 base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.6
+        slcsp: 12_000
+        aca_ptc: 0
+        assigned_aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    aca_magi_fraction: 2.6
+    aca_ptc: 0
+    wa_cascade_care_savings_eligible: false
+    wa_cascade_care_savings: 0

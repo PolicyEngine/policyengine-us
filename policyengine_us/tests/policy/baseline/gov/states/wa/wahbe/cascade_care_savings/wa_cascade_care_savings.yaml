@@ -445,6 +445,193 @@
   output:
     wa_cascade_care_savings: 4_320
 
+# --- Group 3 gate: undocumented CHILD covered by Apple Health for Kids is NOT
+#     a $250 member (post-fix gate excludes wa_apple_health_kids_eligible). An
+#     undocumented child ABOVE the kids income limit still qualifies for
+#     Group 3. Also pins the Group 1 / Group 3 mutual-exclusivity contract and
+#     the above-2.5-FPL ineligibility with a Group-3 member. ---
+
+- name: Case 17, undocumented Apple-Health-for-Kids child does not add a $250 member.
+  # person1: age 40, is_aca_ptc_eligible -> Group 1 ($55). person2: age 10,
+  # UNDOCUMENTED, wa_apple_health_kids_income_eligible true -> under 19 and
+  # income-eligible so wa_apple_health_kids_eligible is true -> the child has
+  # state MEC and is EXCLUDED from Group 3 (post-C1 gate adds
+  # ~wa_apple_health_kids_eligible). n_group1=1, n_group3=0 -> base reflects the
+  # ADULT ONLY. base_annual = 12*55 = 660. frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # (A child counted as Group 3 would have produced 12*(55+250) = 3_660.)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 18, undocumented child ABOVE the kids income limit is a Group 3 member.
+  # person1: age 40, is_aca_ptc_eligible -> Group 1 ($55). person2: age 10,
+  # UNDOCUMENTED, wa_apple_health_kids_income_eligible false -> NOT Apple Health
+  # for Kids eligible (income above the kids limit), and undocumented children
+  # cannot get expansion (age < 19) -> the child IS a Group 3 member ($250).
+  # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 3_660.
+  # frac 1.4 -> expectation 0. cap = max(0, 12_000 - 5_000 - 0) = 7_000.
+  # annual = min(3_660, 7_000) = 3_660. Companion to Case 17: the ONLY difference
+  # is the child's kids income eligibility, and it toggles the $250 member in/out.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_660
+
+- name: Case 19, member flagged both APTC-eligible AND undocumented yields $55, not $305.
+  # Mutual-exclusivity pin against the FIXED contract: Groups 1 and 3 cannot
+  # stack. person1 is set is_aca_ptc_eligible true AND UNDOCUMENTED with
+  # wa_apple_health_expansion_eligible false. Under the post-fix gate Group 3 adds
+  # ~is_aca_ptc_eligible, so this person is Group 1 ONLY. n_group1=1, n_group3=0
+  # -> base_annual = 12*55 = 660 (NOT 12*(55+250) = 3_660). frac 1.4 ->
+  # expectation 0. cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 20, explicit CITIZEN APTC enrollee is a $55 Group 1 member (hygiene).
+  # Guards S6: prior Group 1 cases relied on the default immigration_status not
+  # being UNDOCUMENTED. Here immigration_status CITIZEN is set explicitly and the
+  # person is is_aca_ptc_eligible -> Group 1 only ($55), never $305.
+  # n_group1=1 -> base_annual = 660. frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 21, explicit is_aca_ptc_eligible false Group 3 member is $250 (hygiene).
+  # Guards S6: prior Group 3 cases relied on the default is_aca_ptc_eligible being
+  # false. Here it is set false explicitly, immigration_status UNDOCUMENTED,
+  # wa_apple_health_expansion_eligible false -> Group 3 only ($250).
+  # n_group3=1 -> base_annual = 12*250 = 3_000. frac 1.4 -> expectation 0.
+  # cap = max(0, 12_000 - 0 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_000
+
+- name: Case 22, income above 250% FPL with a Group 3 member yields zero.
+  # Closes the matrix: prior above-limit cases used Group 1 members only. Here the
+  # sole eligible member is Group 3 (UNDOCUMENTED, not Apple-Health-eligible),
+  # is_aca_ptc_eligible false explicitly. frac 2.6 > 2.5 (fpl_limit) -> not
+  # wa_cascade_care_savings_eligible -> amount 0 despite the $250 base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.6
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
 # --- Temporal: open-ended in_effect carries the PY2026 design into PY2027 ---
 
 - name: Case 16, program still in effect in 2027 with unchanged amounts.
