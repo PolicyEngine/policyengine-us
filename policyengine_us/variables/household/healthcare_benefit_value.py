@@ -23,6 +23,7 @@ class healthcare_benefit_value(Variable):
         "co_omnisalud",
         "assigned_co_premium_assistance",
         "ct_covered_connecticut",
+        "ma_connector_care",
         "md_premium_assistance",
         "assigned_nm_premium_assistance",
         "or_healthier_oregon_cost",

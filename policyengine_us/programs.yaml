@@ -1385,6 +1385,17 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
+  - id: ma_connector_care
+    name: ConnectorCare
+    full_name: Massachusetts ConnectorCare (state premium assistance wrap)
+    category: Healthcare
+    agency: HIC (Massachusetts Health Connector)
+    status: complete
+    coverage: MA
+    variable: ma_connector_care
+    parameter_prefix: gov.states.ma.hic.connector_care
+    verified_start_year: 2026
+
   - id: nj_unemployment_insurance
     name: New Jersey Unemployment Insurance
     full_name: New Jersey Unemployment Insurance
