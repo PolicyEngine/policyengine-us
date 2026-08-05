@@ -1,0 +1,148 @@
+# The BBCE gross standard uses the poverty guideline vintage each state
+# adopts under fpg_year_start_month (October default) and the rounding of
+# the state's published chart. In January, Maine is the only state whose
+# standard has already moved to the current calendar year's guidelines;
+# Massachusetts (February), Oregon (March), and Washington (April)
+# re-base later in the year.
+- name: WA one person in January 2026 uses the 2025 guidelines
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,650 / 12 = 2,608.33, rounded to the nearest dollar.
+    tanf_non_cash_gross_income_limit: 2_608
+
+- name: WA one person in January 2025 uses the 2024 guidelines
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,060 / 12 = 2,510.
+    tanf_non_cash_gross_income_limit: 2_510
+
+- name: WA four persons in January 2026
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: WA
+  output:
+    # 200% x (15,650 + 3 x 5,500) / 12 = 5,358.33, rounded to 5,358.
+    tanf_non_cash_gross_income_limit: 5_358
+
+- name: ME one person in January 2026 already uses the 2026 guidelines
+  # 10-144 CMR Ch. 301 Sec. 999-3 Chart 4 re-bases when HHS publishes the
+  # guidelines each January, so Maine leads the October states by a full
+  # guideline year from January onward.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: ME
+  output:
+    # 200% x 15,960 / 12 = 2,660.
+    tanf_non_cash_gross_income_limit: 2_660
+
+- name: ME one person in January 2025 already uses the 2025 guidelines
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: ME
+  output:
+    # 200% x 15,650 / 12 = 2,608.33, rounded up to 2,609, while the
+    # October states are still at 2,510.
+    tanf_non_cash_gross_income_limit: 2_609
+
+- name: CO one person in January 2026 uses the unrounded standard
+  # Colorado follows the federal October cycle and publishes no rounding
+  # convention of its own.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: CO
+  output:
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: CT one person in January 2026 rounds the standard up
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: CT
+  output:
+    # 2,608.33 -> 2,609 per the DSS Program Standards Chart.
+    tanf_non_cash_gross_income_limit: 2_609
+
+- name: VA one person in January 2026 rounds the standard down
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: VA
+  output:
+    # 2,608.33 -> 2,608 per the SNAP certification manual.
+    tanf_non_cash_gross_income_limit: 2_608
+
+- name: NJ one person in January 2026 applies the 185% standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: NJ
+  output:
+    # 185% x 15,650 / 12 = 2,412.71, rounded up to 2,413.
+    tanf_non_cash_gross_income_limit: 2_413
+
+- name: AZ one person in January 2026 still applies the 185% standard
+  # Arizona raised the standard to 200% during 2026; January precedes the
+  # change.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AZ
+  output:
+    tanf_non_cash_gross_income_limit: 2_413
+
+- name: AK one person in January 2026 uses the Alaska guidelines
+  # Alaska adopted BBCE on 2025-07-01 at 200% of the Alaska guidelines.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AK
+  output:
+    # 200% x 19,550 / 12 = 3,258.33.
+    tanf_non_cash_gross_income_limit: 3_258.33
+
+- name: WA one person in January 2027 carries the 2026 guidelines
+  # By the following January, Washington's April 2026 re-basing to the
+  # 2026 guidelines is in force.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,960 / 12 = 2,660.
+    tanf_non_cash_gross_income_limit: 2_660

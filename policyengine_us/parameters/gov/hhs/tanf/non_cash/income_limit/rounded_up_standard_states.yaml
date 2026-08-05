@@ -1,0 +1,49 @@
+description: States publishing their TANF non-cash (SNAP BBCE) gross income standard rounded up to the next whole dollar.
+values:
+  2015-10-01:
+    # Connecticut DSS Program Standards Chart rounds the 200% standard up
+    # (e.g., 7-person 8,108.33 -> 8,109 effective 2025-10-01).
+    # Maine 10-144 CMR Ch. 301 Sec. 999-3 Chart 4 rounds up (CY2025
+    # 1-person 2,608.33 -> 2,609).
+    # Minnesota Combined Manual October 2025 revisions and New Hampshire
+    # BFA program income limits both publish 2,608.33 -> 2,609.
+    # Louisiana DCFS B-640 and Oregon OAR 461-155-0180 both publish the
+    # ceiling of the exact computation (2,608.33 -> 2,609; Oregon 2-person
+    # 3,606.67 -> 3,607).
+    # New Jersey (NJ SNAP eligibility chart) and Vermont (3SquaresVT
+    # income guidelines) publish the 185% computation rounded up
+    # (4,956.46 -> 4,957).
+    # Arizona's CNAP expanded categorical eligibility standard rounds the
+    # exact computation up (185%: 2,412.71 -> 2,413).
+    - AZ
+    - CT
+    - LA
+    - ME
+    - MN
+    - NH
+    - NJ
+    - OR
+    - VT
+metadata:
+  unit: list
+  period: year
+  label: SNAP BBCE rounded-up standard states
+  reference:
+    - title: Connecticut DSS Program Standards Chart (10/1/2025)
+      href: https://portal.ct.gov/dss/-/media/departments-and-agencies/dss/fact-sheets-and-issue-briefs/fact-sheets/dss-program-standards-chart.pdf
+    - title: Maine 10-144 CMR Ch. 301 Sec. 999-3 Chart 4 (SNAP Rule 244 rule pages)
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2026-02/SNAP%20244P%20Rule%20Pages%20%28TC%29.pdf#page=5
+    - title: Minnesota Combined Manual October 2025 revisions (200% FPG BBCE gross test)
+      href: https://www.dhs.state.mn.us/main/groups/county_access/documents/pub/mndhs-072723.pdf#page=11
+    - title: New Hampshire BFA Program Net Monthly Income Limits
+      href: https://www.dhhs.nh.gov/sites/g/files/ehbemt476/files/documents2/bfa-program-net-monthly-income-limits.pdf#page=1
+    - title: Louisiana DCFS B-640 SNAP Income Limits
+      href: https://public.powerdms.com/LADCFS/documents/399187#page=2
+    - title: OAR 461-155-0180(6) (Oregon 200% standard)
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0180.pdf#page=2
+    - title: New Jersey SNAP income eligibility (October 2025 chart)
+      href: https://www.nj.gov/humanservices/njsnap/apply/eligibility/
+    - title: Vermont 3SquaresVT income guidelines (October 2025 chart)
+      href: https://dcf.vermont.gov/benefits/3SquaresVT/income-guidelines
+    - title: Arizona CNAP NA Expanded Categorical Eligibility Standard (eff. 10/01/2025)
+      href: https://dbmefaapolicy.azdes.gov/FAA6/NA_Expanded_Categorical_Eligibility_Standard.html

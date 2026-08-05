@@ -1,0 +1,17 @@
+description: States publishing their TANF non-cash (SNAP BBCE) gross income standard rounded to the nearest whole dollar.
+values:
+  2015-10-01:
+    # Massachusetts DTA Helpful Charts and Figures rounds the 200%
+    # standard to the nearest dollar (2,608.33 -> 2,608; 3,606.67 ->
+    # 3,607).
+    - MA
+    - WA
+metadata:
+  unit: list
+  period: year
+  label: SNAP BBCE whole-dollar standard states
+  reference:
+    - title: WAC 388-414-0001 clarifying information (whole-dollar chart)
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=388-414-0001
+    - title: Massachusetts DTA Helpful Charts and Figures
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/olg%20docs/guides/Helpful%20Charts%20and%20Figures.pdf#page=1

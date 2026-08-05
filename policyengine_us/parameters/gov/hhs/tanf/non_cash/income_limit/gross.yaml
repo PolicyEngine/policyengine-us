@@ -6,9 +6,18 @@ AK:
   # Alaska is not in the list, indicating it has not elected to BBCE.
   # Non-BBCE states are entered as negative .infinity gross income limit.
   2015-10-01: -.inf
+  # Alaska adopted BBCE for applications and recertifications on or after
+  # 2025-07-01: https://health.alaska.gov/media/vw0lsl2m/bbce-faq.pdf
   2025-07-01: 2
 AZ:
   2015-10-01: 1.85
+  # The USDA BBCE chart carried Arizona at 185% in its 2025-12-29
+  # revision and at 200% in its 2026-06-29 revision. The CNAP manual's
+  # "What's Changed on 04/13/2026" entry is the only dated signal inside
+  # that window, so the increase is dated there; confirm the effective
+  # date against the CNAP expanded categorical eligibility standard when
+  # azdes.gov is reachable.
+  2026-04-13: 2
 AR:
   2015-10-01: -.inf # Non-BBCE.
 CA:
@@ -120,7 +129,10 @@ UT:
 VT:
   2015-10-01: 1.85
 VI:
-  2015-10-01: 1.75
+  # DHS announced the increase from 130% to 175% effective 2024-10-01:
+  # https://www.vi.gov/department-of-human-services-announces-change-to-snap-income-guidelines/
+  2015-10-01: 1.3
+  2024-10-01: 1.75
 VA:
   2015-10-01: -.inf # Non-BBCE per ERS data through Sep 2020.
   2021-07-01: 2
