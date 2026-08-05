@@ -19,6 +19,7 @@ class healthcare_benefit_value(Variable):
         "chip",
         "assigned_aca_ptc",
         "basic_health_program",
+        "ca_premium_subsidy",
         "co_omnisalud",
         "md_premium_assistance",
         "or_healthier_oregon_cost",

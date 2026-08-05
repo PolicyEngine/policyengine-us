@@ -1,0 +1,17 @@
+description: California sets the federal poverty line thresholds for the applicable percentage brackets under the California Premium Subsidy program.
+values:
+  # PY2026 values carried forward through PY2027.
+  2026-01-01:
+    - 1.0
+    - 1.5
+    - 1.65
+
+metadata:
+  unit: /1
+  period: year
+  label: California Premium Subsidy applicable percentage bracket thresholds
+  reference:
+    - title: 2026 California Premium Subsidy Program Design, subdiv. (d)(4) and (d)(7)
+      href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+    - title: 2026 California State Premium Subsidy Policy Explainer, Table 1
+      href: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2
