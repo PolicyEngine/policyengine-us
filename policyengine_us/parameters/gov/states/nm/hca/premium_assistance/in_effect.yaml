@@ -1,0 +1,17 @@
+description: New Mexico provides state premium assistance under the Health Insurance Marketplace Affordability Program when this is true.
+values:
+  # PY2026 authoritative values are carried forward through PY2027, matching the
+  # Maryland approach (in effect from 2026-01-01, ending 2028-01-01). The
+  # verified schedule window is PY2026 only; the LFC Table 8 confirms the same
+  # scale for PY2025, but no 2025 backdating is applied here.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico Premium Assistance in effect
+  reference:
+    - title: PY2026 MAP Policy and Procedures Manual, Program Parameters - Effective Date
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4

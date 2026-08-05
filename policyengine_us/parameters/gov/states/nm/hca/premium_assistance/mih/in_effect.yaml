@@ -1,0 +1,19 @@
+description: New Mexico provides Middle Income Household premium assistance above 400% of the federal poverty line under the Health Insurance Marketplace Affordability Program when this is true.
+values:
+  # The Addendum contains a sunset clause: if the federal government extended the
+  # program capping premiums at 8.5% of income for individuals over 400% FPL
+  # before January 1, 2026, the Addendum would not take effect. Congress did not
+  # extend the enhanced federal premium tax credit, so the Middle Income
+  # Household component is in effect for PY2026. PY2026 values carried forward
+  # through PY2027.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico Premium Assistance Middle Income Household component in effect
+  reference:
+    - title: Addendum 1 to PY2026 MAP Policy and Procedures Manual, Effective Date and sunset clause
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P&P%20Middle%20Income%20Household.pdf#page=2

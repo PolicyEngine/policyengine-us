@@ -21,5 +21,6 @@ class healthcare_benefit_value(Variable):
         "basic_health_program",
         "co_omnisalud",
         "md_premium_assistance",
+        "nm_premium_assistance",
         "or_healthier_oregon_cost",
     ]
