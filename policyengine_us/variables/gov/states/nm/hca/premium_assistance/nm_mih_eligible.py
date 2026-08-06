@@ -27,7 +27,7 @@ class nm_mih_eligible(Variable):
         in_effect = p.mih.in_effect
         # Reuse the non-income internals of is_aca_ptc_eligible: on-Marketplace
         # enrollment and the married-filing-separately exclusion.
-        pays_premium = tax_unit.any(tax_unit.members("pays_aca_premium", period))
+        pays_premium = add(tax_unit, period, ["pays_aca_premium"]) > 0
         filing_status = tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
         magi_frac = tax_unit("aca_magi_fraction", period)

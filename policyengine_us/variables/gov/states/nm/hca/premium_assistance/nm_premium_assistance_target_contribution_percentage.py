@@ -27,6 +27,13 @@ class nm_premium_assistance_target_contribution_percentage(Variable):
         initial_rates = np.array(p.initial)
         final_rates = np.array(p.final)
 
+        # The New Mexico target percentage interpolates linearly *within* each
+        # FPL band (from the band's initial rate to its final rate), which a
+        # core single_amount/rate scale parameter cannot express - scales return
+        # a flat value per bracket. We therefore hand-roll the bracket lookup
+        # and within-band interpolation with searchsorted. Do not "simplify"
+        # this into a scale parameter; it would drop the within-band slope.
+        #
         # Find which bracket each tax unit falls into. searchsorted returns
         # the index where magi_frac would be inserted; subtract 1 to get the
         # bracket index, clamped to the valid range.
@@ -38,6 +45,11 @@ class nm_premium_assistance_target_contribution_percentage(Variable):
 
         bracket_start = thresholds[bracket_idx]
         next_idx = min_(bracket_idx + 1, len(thresholds) - 1)
+        # bracket_idx is clipped to len(initial_rates) - 1, one short of the
+        # final threshold index, so the where always takes the true branch for
+        # any in-range value; the bracket_start + 1 fallback is a defensive
+        # guard against a zero-width final bracket and is not reached with the
+        # current parameter table.
         bracket_end = where(
             bracket_idx < len(thresholds) - 1,
             thresholds[next_idx],

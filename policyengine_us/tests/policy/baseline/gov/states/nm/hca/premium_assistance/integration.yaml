@@ -337,3 +337,53 @@
     nm_mih_eligible: true
     nm_premium_assistance_target_contribution_percentage: 0.085
     nm_premium_assistance: 6_390
+
+# ---- Derived-from-raw-income scenario (SA3) ----
+# Unlike every scenario above, this one does NOT inject aca_magi,
+# aca_magi_fraction, or is_aca_ptc_eligible. It supplies raw employment_income
+# and pays_aca_premium and lets the federal ACA chain derive:
+#   employment_income -> aca_magi -> aca_magi_fraction (floored to whole-% of the
+#   prior-year FPG) -> is_aca_ptc_eligible (Marketplace enrollment + not-separate
+#   + 100-400% FPL income test). This locks the NM base gate to the REAL
+#   is_aca_ptc_eligible internals rather than an injected boolean.
+#
+# A POSITIVE slcsp (7_000 annual, a realistic benchmark) is injected so the
+# asserted amount is a genuine derived state top-up, not a $0 floor. Everything
+# on the federal ACA side is still derived from the raw $30,000 wage:
+#   employment_income 30_000 -> aca_magi_fraction derives to 1.91 (single-filer,
+#   ~191% of the prior-year FPG), which is <= the 200% gross-up limit, so the
+#   benchmark is grossed up: benchmark = 7_000 * 1.1 = 7_700. The federal
+#   aca_ptc derives to 5_150.14, and the 0-200% target% is 0.
+#   base_amount = max(0, 7_700 - 5_150.14 - 0 * aca_magi) = 2_549.86.
+# 1.0 <= magi_frac (1.91) <= 4.0 with a Marketplace-enrolled, non-separate filer
+# who is income-eligible for the federal PTC, so nm_premium_assistance_eligible
+# derives to true and nm_mih_eligible to false. Asserting the non-zero amount
+# locks the whole derived chain (aca_magi_fraction 1.91, aca_ptc 5_150.14, the
+# 1.1 gross-up on the injected 7_000 benchmark) down to the dollar.
+
+- name: Scenario 12, derived-from-income single base-band top-up (SA3).
+  # Raw employment_income drives aca_magi/aca_magi_fraction/is_aca_ptc_eligible
+  # and aca_ptc; only slcsp (7_000 annual benchmark) is injected. Derived
+  # aca_magi_fraction 1.91 (<= 2.0 gross-up), derived aca_ptc 5_150.14:
+  # amount = max(0, 7_000*1.1 - 5_150.14 - 0*aca_magi) = 2_549.86.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        slcsp: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true
+    nm_mih_eligible: false
+    nm_premium_assistance: 2_549.86

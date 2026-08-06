@@ -1,7 +1,9 @@
 description: New Mexico provides state premium assistance under the Health Insurance Marketplace Affordability Program when this is true.
 values:
-  # PY2026 authoritative values are carried forward through PY2027, matching the
-  # Maryland approach (in effect from 2026-01-01, ending 2028-01-01). The
+  # The source manual authoritatively covers PY2026 only. PY2027 (in effect
+  # through 2027-12-31) is a modeling carry-forward assumption, not a sourced
+  # value, matching the Maryland approach (in effect from 2026-01-01, ending
+  # 2028-01-01). The 2028-01-01 sunset is likewise a modeling convention. The
   # verified schedule window is PY2026 only; the LFC Table 8 confirms the same
   # scale for PY2025, but no 2025 backdating is applied here.
   0000-01-01: false

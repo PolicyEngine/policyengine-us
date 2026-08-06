@@ -180,3 +180,26 @@
         state_code: NM
   output:
     nm_mih_eligible: false
+
+- name: Case 9, MIH component sunset in 2028 -> ineligible (post-sunset, SA2).
+  # mih.in_effect flips to false at 2028-01-01, so the gate fails despite an
+  # above-400% Marketplace payer. Pairs the pre-start 2025 case (Case 8) with the
+  # post-sunset 2028 case, closing the in-effect window on both sides. Same inputs
+  # as Case 1 (MIH-eligible in 2026); only the year changes.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_mih_eligible: false
