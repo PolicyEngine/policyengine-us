@@ -1,1 +1,0 @@
-NY supplemental EITC in the state EITC aggregate (from 2019) and the Ohio CDCC in the state CDCC aggregate (from 2021), with structural tests guarding aggregate lists against undefined members, missing state gates, and silent year-block drops.
