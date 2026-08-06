@@ -411,3 +411,101 @@
     aca_ptc: 0
     wa_cascade_care_savings_eligible: false
     wa_cascade_care_savings: 0
+
+# --- Derived-from-raw-income scenarios: no ACA input is stubbed. These prove the
+#     wiring (employment_income -> aca_magi -> aca_magi_fraction ->
+#     is_aca_ptc_eligible -> CCS), not just the arithmetic given inputs. King
+#     County is ACA rating area 1 (2026 age-0 SLCSP $357.00/month); SLCSP is the
+#     summed per-person age-curve amount (WA is not a family-tier state). ---
+
+- name: Scenario 13, single WA King County Group 1 adult, ACA chain derived from wages.
+  # Nothing is stubbed: employment_income 25_000 drives the whole chain.
+  # aca_magi = adjusted_gross_income (25_000, no adjustments/MAGI additions).
+  # 2025 (prior-year) single FPG = 15_650. aca_magi_fraction =
+  # floor(100 * 25_000 / 15_650) / 100 = floor(159.74)/100 = 1.59.
+  # 1.59 is within the ACA PTC income range and <= 2.5, so is_aca_ptc_eligible is
+  # true -> Group 1 ($55). base_annual = 12*55 = 660. expectation at 1.59 (in
+  # (1.5001, 2.0001]) = 10/mo -> 120/yr. SLCSP (age 35, King County) = 357.00 *
+  # 1.5974 * 12 = 6_843.28; required contribution % at 1.59 = 0.0419 +
+  # (1.59-1.50)/0.50*(0.066-0.0419) = 0.046238; aca_ptc = 6_843.28 - 25_000*
+  # 0.046238 = 5_687.33; cap = max(0, 6_843.28 - 5_687.33 - 120) = 1_035.95.
+  # annual = min(660, 1_035.95) = 660 (base binds with a wide margin, so the
+  # amount is robust to small premium/MAGI variation).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        employment_income: 25_000
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        zip_code: "98101"
+        county_str: KING_COUNTY_WA
+  output:
+    aca_magi_fraction: 1.59
+    is_aca_ptc_eligible: [true]
+    wa_cascade_care_savings_eligible: true
+    wa_cascade_care_savings: 660
+
+- name: Scenario 14, WA King County Group 1 couple, MAGI derived from combined wages.
+  # Multi-member derivation: two 40-year-old citizens filing jointly, combined
+  # employment_income 40_000 (20_000 each), nothing stubbed. aca_magi = 40_000.
+  # 2025 (prior-year) 2-person FPG = 15_650 + 5_500 = 21_150. aca_magi_fraction =
+  # floor(100 * 40_000 / 21_150) / 100 = floor(189.12)/100 = 1.89. Both are
+  # is_aca_ptc_eligible -> two Group 1 members. base_annual = 12*(55*2) = 1_320.
+  # expectation at 1.89 = 10/mo each -> 12*10*2 = 240/yr. SLCSP (two age-40
+  # adults, King County) = 357.00 * (1.6706 + 1.6706) * 12 = 14_313.70; required
+  # contribution % at 1.89 = 0.0419 + (1.89-1.50)/0.50*(0.066-0.0419) = 0.060698;
+  # aca_ptc = 14_313.70 - 40_000*0.060698 = 11_885.78; cap = max(0, 14_313.70 -
+  # 11_885.78 - 240) = 2_187.92. annual = min(1_320, 2_187.92) = 1_320 (base
+  # binds). Catches an aggregation/entity bug a single-person derived case cannot.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+        employment_income: 20_000
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        zip_code: "98101"
+        county_str: KING_COUNTY_WA
+  output:
+    aca_magi_fraction: 1.89
+    is_aca_ptc_eligible: [true, true]
+    wa_cascade_care_savings_eligible: true
+    wa_cascade_care_savings: 1_320

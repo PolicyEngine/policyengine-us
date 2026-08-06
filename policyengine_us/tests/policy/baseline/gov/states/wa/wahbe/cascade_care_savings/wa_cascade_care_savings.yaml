@@ -658,3 +658,102 @@
         state_code: WA
   output:
     wa_cascade_care_savings: 660
+
+- name: Case 23, married-filing-separately couple is excluded via real filing_status.
+  # MFS exclusion driven end-to-end, not stubbed: filing_status SEPARATE makes
+  # is_aca_ptc_eligible false for both citizen spouses (the variable ANDs in
+  # ~separate), so neither is a Group 1 member. Both are citizens, so neither is
+  # a Group 3 (undocumented) member either. With no eligible member the tax unit
+  # is ineligible and the amount is 0, even though income (1.4) is within the
+  # 250% FPL limit. aca_magi_fraction is supplied so the exclusion is isolated to
+  # the SEPARATE filing status (removing SEPARATE would make both Group 1 and
+  # produce 12*(55*2) = 1_320 before the cap).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    is_aca_ptc_eligible: [false, false]
+    wa_cascade_care_savings_eligible: false
+    wa_cascade_care_savings: 0
+
+- name: Case 24, expectation is still $10 at exactly 200.01% FPL (2.0001 threshold).
+  # Top-tier boundary pin. Single Group 3 member, cap binds so the expectation
+  # value is observable. At frac EXACTLY 2.0001 the $15 tier has not yet engaged
+  # (the bracket requires strictly above 2.0001), so expectation is 10/mo ->
+  # 120/yr. base_annual = 12*250 = 3_000. cap = max(0, 1_000 - 0 - 120) = 880.
+  # annual = min(3_000, 880) = 880. Pairs with Case 3 (frac 2.0, also $10): the
+  # $15 tier engages only ABOVE 2.0001 (see Case 25 at frac 2.5).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0001
+        slcsp: 1_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 880
+
+- name: Case 25, exactly 250% FPL ceiling is eligible with a non-zero $15-tier amount.
+  # Ties the eligibility ceiling (fpl_limit 2.5, inclusive) to a real payout.
+  # frac 2.5 <= 2.5 -> eligible. Single Group 3 member -> base_annual = 12*250 =
+  # 3_000. frac 2.5 > 2.0001 -> expectation 15/mo -> 180/yr.
+  # cap = max(0, 12_000 - 0 - 180) = 11_820. annual = min(3_000, 11_820) = 3_000
+  # (base binds). Confirms the top of the income range still produces the full
+  # base amount rather than dropping to 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.5
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_000
