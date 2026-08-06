@@ -81,3 +81,16 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 1_200
+
+- name: Case 7, New Mexico Premium Assistance flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 900
