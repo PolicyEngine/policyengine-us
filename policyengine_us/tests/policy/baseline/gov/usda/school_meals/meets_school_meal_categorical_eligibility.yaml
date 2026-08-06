@@ -105,3 +105,18 @@
       is_head_start_eligible: false
   output:
       meets_school_meal_categorical_eligibility: true
+
+- name: Reported TANF receipt qualifies even when the modeled benefit is zero.
+  period: 2022
+  input:
+      snap: 0
+      tanf: 0
+      receives_tanf: true
+      fdpir: 0
+      was_in_foster_care: false
+      is_homeless: false
+      is_runaway_child: false
+      is_migratory_child: false
+      is_head_start_eligible: false
+  output:
+      meets_school_meal_categorical_eligibility: true
