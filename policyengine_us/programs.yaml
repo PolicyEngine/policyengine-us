@@ -1385,6 +1385,17 @@ programs:
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
 
+  - id: wa_cascade_care_savings
+    name: Cascade Care Savings
+    full_name: Washington Cascade Care Savings (State Premium Assistance Program)
+    category: Healthcare
+    agency: WAHBE
+    status: complete
+    coverage: WA
+    variable: wa_cascade_care_savings
+    parameter_prefix: gov.states.wa.wahbe.cascade_care_savings
+    verified_start_year: 2026
+
   # --- Local programs ---
   - id: ez_save
     name: Los Angeles County EZ Save
