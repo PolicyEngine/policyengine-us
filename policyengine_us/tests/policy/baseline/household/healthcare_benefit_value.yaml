@@ -81,3 +81,48 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 1_200
+
+- name: Case 7, Vermont Premium Assistance flows through to the healthcare benefit value.
+  # vt_premium_assistance is in the adds list, so a direct 585 state top-up (with
+  # all other components zeroed) surfaces as the household healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    assigned_aca_ptc: 0
+    basic_health_program: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+    vt_premium_assistance: 585
+  output:
+    healthcare_benefit_value: 585
+
+- name: Case 8, Vermont Premium Assistance derived from a real VT household flows into the benefit value.
+  # Gap B. Unlike Case 7 (which injects vt_premium_assistance directly), this case
+  # DERIVES vt_premium_assistance end-to-end from employment_income for a 40-year-old
+  # single Vermont enrollee (~249% FPL, as in the integration Scenario 1), proving
+  # the aca_magi -> VPA -> adds wiring against a computed value. Because
+  # healthcare_benefit_value also adds the federal assigned_aca_ptc, the household
+  # total is assigned_aca_ptc + vt_premium_assistance; both derived figures are
+  # placeholders for the ci-fixer to fill from the model.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 39_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # assigned_aca_ptc (12_310.752) + vt_premium_assistance (585.00) = 12_895.752.
+    vt_premium_assistance: 585.00 # derived
+    healthcare_benefit_value: 12_895.752 # derived

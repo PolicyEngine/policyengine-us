@@ -1,0 +1,18 @@
+description: Vermont provides premium assistance when this is true under the Vermont Premium Assistance program.
+values:
+  # Vermont Premium Assistance is a standing statutory obligation under
+  # 33 V.S.A. § 1812 with no sunset date, unlike the annually-appropriated
+  # California and Maryland programs. The provision is therefore open-ended
+  # from the verified program year (2026).
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Vermont Premium Assistance in effect
+  reference:
+    - title: 33 V.S.A. § 1812(a)
+      href: https://legislature.vermont.gov/statutes/section/33/018/01812
+    - title: Vermont Health Connect 2026 Eligibility Income Thresholds for QHP Subsidies (2026 benefit year, based on 2025 FPL)
+      href: https://info.healthconnect.vermont.gov/sites/hcexchange/files/documents/2026-Eligibility-Income-Thresholds-for-QHP-Subsidies.pdf#page=1
