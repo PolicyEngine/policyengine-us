@@ -1323,6 +1323,17 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
+  - id: nj_njhps
+    name: NJ Health Plan Savings
+    full_name: New Jersey Health Plan Savings (NJHPS)
+    category: Healthcare
+    agency: DOBI (Get Covered New Jersey)
+    status: complete
+    coverage: NJ
+    variable: nj_njhps
+    parameter_prefix: gov.states.nj.dobi.njhps
+    verified_start_year: 2026
+
   - id: nj_unemployment_insurance
     name: New Jersey Unemployment Insurance
     full_name: New Jersey Unemployment Insurance
