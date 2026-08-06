@@ -374,3 +374,109 @@
   output:
     co_premium_assistance_eligible: true
     co_premium_assistance: 960
+
+- name: Case 14, mixed eligibility 2-of-3 members -> amount uses eligible COUNT (n=2).
+  # Guards that the amount reads add(is_aca_ptc_eligible) (the eligible COUNT),
+  # NOT household size: 3-member unit, only person1 and person2 are
+  # is_aca_ptc_eligible (person3 false). count = 2, n = min(2, 5) = 2 ->
+  # flat_monthly = 80 + 29*(2-1) = 109 -> 12*109 = 1_308. If the formula used
+  # household size (3) it would give 80 + 29*2 = 138 -> 1_656, so this case
+  # distinguishes the two. residual 14_000-3_000 = 11_000 >= 1_308.
+  # Eligibility still holds via any(is_aca_ptc_eligible) = true.
+  # amount = min(1_308, 11_000) = 1_308.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 3.00
+        slcsp: 14_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_308
+
+- name: Case 15, PY2027 two APTC-eligible members -> $29 additional-member carries forward.
+  # The existing 2027 coverage is n=1 only (integration Scenario 6, eligible.yaml
+  # Case 11), so the $29 additional-member amount is untested in the second
+  # in-window year. All amount params (first_member $80, additional_member $29,
+  # member_cap 5) carry forward from their single 2026-01-01 value into PY2027.
+  # n=2 -> flat_monthly = 80 + 29*1 = 109 -> 12*109 = 1_308.
+  # residual 14_000-3_000 = 11_000 >= 1_308. in_effect true for 2027 (SB26-178).
+  # amount = min(1_308, 11_000) = 1_308.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 3.00
+        slcsp: 14_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_308
+
+- name: Case 16, PY2027 five APTC-eligible members -> member_cap 5 carries forward.
+  # Locks the cap and the full $80/$29 schedule in PY2027: n=5 ->
+  # flat_monthly = 80 + 29*4 = 196 -> 12*196 = 2_352.
+  # residual 22_000-4_000 = 18_000 >= 2_352. in_effect true for 2027.
+  # amount = min(2_352, 18_000) = 2_352 (max build-up under the 5-member cap).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        is_aca_ptc_eligible: true
+      person2:
+        age: 45
+        is_aca_ptc_eligible: true
+      person3:
+        age: 17
+        is_aca_ptc_eligible: true
+      person4:
+        age: 15
+        is_aca_ptc_eligible: true
+      person5:
+        age: 12
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 3.00
+        slcsp: 22_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_352
