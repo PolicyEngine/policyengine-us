@@ -276,3 +276,50 @@
     ma_connector_care_member_eligible: true
     ma_connector_care_eligible: true
     ma_connector_care: 5_900
+
+- name: Scenario 9, married couple deriving the multi-member ACA chain from raw income.
+  # Complements Scenario 6 (single, n=1) with a two-member derivation: only slcsp
+  # (12_000 annual) is supplied; aca_magi_fraction, aca_required_contribution_percentage,
+  # aca_ptc, and is_aca_ptc_eligible all compute from combined employment_income and the
+  # two-person household size, so the per-member multiplier is exercised on a derived chain.
+  #   2025 CONTIGUOUS_US FPG (prior year, per aca_magi_fraction) for size 2:
+  #     15_650 + 5_500 = 21_150.
+  #   aca_magi = 40_000 (wage-only MFJ, AGI == employment_income).
+  #   aca_magi_fraction = floor(100 * 40_000 / 21_150) / 100 = floor(189.12) / 100 = 1.89.
+  #   applicable figure (2026 bracket [1.50, 2.00): initial 0.0419, final 0.066):
+  #     position = (1.89 - 1.50) / 0.50 = 0.78 -> 0.0419 + 0.78 * 0.0241 = 0.060698.
+  #   aca_ptc = 12_000 - 40_000 * 0.060698 = 12_000 - 2_427.92 = 9_572.08.
+  #   is_aca_ptc_eligible derives true for both spouses (in-band, not MFS, pays ACA premium)
+  #     -> ma_connector_care_member_eligible true for each -> n_members = 2.
+  #   band 2B (1.89 in [1.5001, 2.0001)) -> per_person 53. contribution = 12 * 53 * 2 = 1_272.
+  #   subsidy = max(0, 12_000 - 9_572.08 - 1_272) = 1_155.92 (positive residual, no floor).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+      person2:
+        age: 43
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+        ma_connector_care_member_eligible: true
+      person2:
+        is_aca_ptc_eligible: true
+        ma_connector_care_member_eligible: true
+    aca_magi_fraction: 1.89
+    aca_ptc: 9_572.08
+    ma_connector_care_eligible: true
+    ma_connector_care: 1_155.92

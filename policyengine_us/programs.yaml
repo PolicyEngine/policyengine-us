@@ -1325,14 +1325,15 @@ programs:
 
   - id: ma_connector_care
     name: ConnectorCare
-    full_name: Massachusetts ConnectorCare (state premium assistance wrap)
+    full_name: Massachusetts ConnectorCare
     category: Healthcare
-    agency: HIC (Massachusetts Health Connector)
-    status: complete
+    agency: State
+    status: partial
     coverage: MA
     variable: ma_connector_care
     parameter_prefix: gov.states.ma.hic.connector_care
     verified_start_year: 2026
+    notes: Models the premium-assistance axis only; cost-sharing reductions, dental, and non-emergency medical transportation are out of scope.
 
   - id: nj_unemployment_insurance
     name: New Jersey Unemployment Insurance
