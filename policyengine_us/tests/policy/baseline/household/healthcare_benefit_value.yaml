@@ -81,3 +81,21 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 1_200
+
+- name: Case 7, Vermont Premium Assistance flows through to the healthcare benefit value.
+  # vt_premium_assistance is in the adds list, so a direct 585 state top-up (with
+  # all other components zeroed) surfaces as the household healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    assigned_aca_ptc: 0
+    basic_health_program: 0
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+    vt_premium_assistance: 585
+  output:
+    healthcare_benefit_value: 585

@@ -21,4 +21,5 @@ class healthcare_benefit_value(Variable):
         "basic_health_program",
         "co_omnisalud",
         "or_healthier_oregon_cost",
+        "vt_premium_assistance",
     ]
