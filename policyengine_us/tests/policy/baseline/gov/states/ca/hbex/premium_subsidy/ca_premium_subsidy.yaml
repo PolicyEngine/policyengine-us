@@ -344,3 +344,157 @@
         state_code: CA
   output:
     ca_premium_subsidy: 0
+
+# ---- Applicable-percentage clamp region cross-checked against the amount gate ----
+
+- name: Case 14, above the 165% limit (1.66) clamps pct to 3.91% but amount is $0.
+  # aca_magi_fraction 1.66 clamps ca_premium_subsidy_applicable_percentage to the
+  # top-bracket 0.0391 (see the pct file Case 10), and slcsp - aca_ptc = 4_000 is a
+  # positive residual, yet ca_premium_subsidy_eligible is false above fpl_limit 1.65
+  # so the where() gate zeroes the amount. Confirms the out-of-band pct clamp is
+  # unreachable through the eligibility gate (the raw residual + clamped pct never
+  # pay out above the band).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_000
+        aca_magi_fraction: 1.66
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0391
+    ca_premium_subsidy: 0
+
+- name: Case 15, below the 100% floor (0.99) clamps pct to 0% and amount is $0.
+  # aca_magi_fraction 0.99 clamps ca_premium_subsidy_applicable_percentage to the
+  # first-bracket 0 (see the pct file Case 9), and slcsp - aca_ptc = 4_000 is a
+  # positive residual, yet ca_premium_subsidy_eligible is false below fpl_floor 1.0
+  # so the where() gate zeroes the amount. Cross-checks the below-floor clamp
+  # region against the eligibility gate from the low side.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 14_850
+        aca_magi_fraction: 0.99
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+    ca_premium_subsidy: 0
+
+# ---- PY2027 carry-forward (positive amount) ----
+
+- name: Case 16, PY2027 carry-forward pays a positive subsidy at 157.5% FPL.
+  # in_effect is true through PY2027 and the schedule carries forward, so
+  # magi_frac 1.575 -> pct 0.0319 + 0.5*0.0072 = 0.0355. income 25_000.
+  # amount = max(0, 6_000 - 2_000 - 0.0355*25_000) = 6_000 - 2_000 - 887.50 = 3_112.50.
+  # The amount file otherwise covers 2025/2026/2028; this confirms the carry-forward
+  # window produces dollars (not just the boolean eligibility already in the eligible
+  # file's 2027 case).
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 25_000
+        aca_magi_fraction: 1.575
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy: 3_112.50
+
+# ---- Floor from the SLCSP == APTC direction ----
+
+- name: Case 17, benchmark exactly covered by federal APTC with positive pct -> $0.
+  # slcsp - aca_ptc = 6_000 - 6_000 = 0 (federal PTC already reaches the benchmark)
+  # while pct 0.0355 > 0 (157.5% FPL, in the paying band). income 25_000.
+  # amount = max(0, 0 - 0.0355*25_000) = max(0, -887.50) = 0. Documents the floor
+  # from the "benchmark exactly covered but a positive contribution is required"
+  # direction: with no residual left, the -pct*income term drives the raw amount
+  # negative and the max_(0, ...) floor returns 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 25_000
+        aca_magi_fraction: 1.575
+        slcsp: 6_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy: 0
+
+# ---- Multi-member asymmetric eligibility pays the full tax-unit subsidy ----
+
+- name: Case 18, two adults, one APTC-eligible one not, in the paying band -> full subsidy.
+  # person1 is_aca_ptc_eligible true, person2 false. The eligibility gate uses
+  # add(is_aca_ptc_eligible) > 0, which fires on any eligible member, so the tax
+  # unit is eligible. The amount uses tax-unit slcsp/aca_ptc (not per-member), so
+  # the asymmetry does NOT halve or zero the payout. magi_frac 1.575 -> pct 0.0355.
+  # income 30_000. amount = max(0, 8_000 - 3_000 - 0.0355*30_000) = 5_000 - 1_065 = 3_935.
+  # Confirms the add()>0 gate + defined_for + person->tax_unit aggregation produce
+  # the full subsidy rather than a per-eligible-member proration.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi: 30_000
+        aca_magi_fraction: 1.575
+        slcsp: 8_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy: 3_935

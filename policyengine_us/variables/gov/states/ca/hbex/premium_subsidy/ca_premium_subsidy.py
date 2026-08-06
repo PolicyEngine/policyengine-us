@@ -21,7 +21,12 @@ class ca_premium_subsidy(Variable):
         "statutory cap at the enrolled-plan premiums is approximated by the "
         "benchmark SLCSP residual, matching the federal PTC and New Mexico "
         "conventions. FTB reconciliation, repayment caps, the annual "
-        "appropriation cap, and advance-payment mechanics are not modeled."
+        "appropriation cap, and advance-payment mechanics are not modeled. "
+        "This raw (ungated) subsidy is added to healthcare_benefit_value "
+        "without an ACA take-up gate, following the sibling state marketplace "
+        "convention (co_omnisalud, or_healthier_oregon_cost); a take-up-gated "
+        "assigned_ variant (parallel to assigned_aca_ptc) is a possible "
+        "future refinement."
     )
 
     def formula(tax_unit, period, parameters):

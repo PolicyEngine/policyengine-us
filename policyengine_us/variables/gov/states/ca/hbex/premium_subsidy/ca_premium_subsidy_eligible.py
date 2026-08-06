@@ -8,6 +8,7 @@ class ca_premium_subsidy_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
     reference = (
+        "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1",
         "https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2",
         "https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=GOV&division=&title=25.&part=&chapter=&article=",
     )
@@ -32,7 +33,7 @@ class ca_premium_subsidy_eligible(Variable):
         # At least one member must be eligible for the federal ACA PTC. This
         # gate embeds on-Marketplace enrollment (pays_aca_premium), the MFS
         # exclusion, and the federal required-contribution income test.
-        aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
+        aptc_eligible = add(tax_unit, period, ["is_aca_ptc_eligible"]) > 0
         magi_frac = tax_unit("aca_magi_fraction", period)
         income_eligible = (magi_frac >= p.fpl_floor) & (magi_frac <= p.fpl_limit)
         return in_effect & aptc_eligible & income_eligible
