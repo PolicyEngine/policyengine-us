@@ -32,6 +32,10 @@ class co_premium_assistance_eligible(Variable):
         # income test.
         aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
         magi_frac = tax_unit("aca_magi_fraction", period)
+        # The 100% FPL floor is load-bearing and NOT redundant with the
+        # is_aca_ptc_eligible gate above: that gate admits a below_fpl_exception
+        # (lawfully-present immigrants below 100% FPL), so this explicit floor is
+        # what enforces the published 100%-400% band. Do not simplify it away.
         income_eligible = (magi_frac >= p.fpl_limit.lower) & (
             magi_frac <= p.fpl_limit.upper
         )

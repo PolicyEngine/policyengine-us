@@ -210,3 +210,56 @@
   output:
     co_premium_assistance_eligible: false
     co_premium_assistance: 0
+
+- name: Scenario 8, fully DERIVED from raw employment_income (dependency-chain wiring).
+  # Unlike every other case here, this supplies ONLY raw inputs and lets the model
+  # derive aca_magi_fraction, is_aca_ptc_eligible, aca_ptc and slcsp through the
+  # real chain, guarding against a wiring bug (wrong entity, wrong variable name,
+  # MAGI-fraction convention mismatch, or a CO rating-area slcsp lookup returning 0)
+  # that every injected-input case would miss.
+  #
+  # Single CO filer, employment_income 30_000, age 40, no ESHI -> marketplace enrollee.
+  # DERIVED (hand-traced against the model source):
+  #   aca_magi        = AGI = 30_000 (wages only, no adjustments/additions)
+  #   prior-year FPG  = 15_650 (2025 CONTIGUOUS_US, single; the fraction uses last_year)
+  #   aca_magi_fraction = floor(100 * 30_000 / 15_650) / 100
+  #                     = floor(191.69) / 100 = 1.91  -> inside the 100%-400% band
+  #   pays_aca_premium  = true (citizen adult, has TIN, no ineligible coverage)
+  #   is_aca_ptc_eligible = pays_aca_premium & not-MFS & income-eligible = true
+  #   co_premium_assistance_eligible = in_effect(2026) & any(is_aca_ptc_eligible)
+  #                     & 1.0 <= 1.91 <= 4.0 = true
+  # slcsp and aca_ptc derive from the CO (Denver) rating-area premium table and the
+  # required-contribution curve; the final amount is min(12*80, slcsp_annual - aca_ptc).
+  # Values below read from the model run (slcsp is a MONTH-period variable; asserting
+  # it at the YEAR period returns the annual sum of the 12 monthly benchmarks):
+  #   slcsp (annual)  = 6_114.40  (Denver rating-area benchmark, summed over 12 months)
+  #   aca_ptc         = 4_264.54  (federal PTC at 1.91 FPL required-contribution)
+  #   residual        = 6_114.40 - 4_264.54 = 1_849.86 > 12*80 = 960
+  #   n=1 flat cap binds -> co_premium_assistance = min(960, 1_849.86) = 960
+  # The derived residual comfortably exceeds the flat build-up, so the wrap is the
+  # full positive n=1 amount (12*$80 = 960), confirming the end-to-end chain
+  # (aca_magi_fraction -> is_aca_ptc_eligible -> slcsp/aca_ptc -> amount) is wired.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+        three_digit_zip_code: 802
+  output:
+    aca_magi_fraction: 1.91
+    is_aca_ptc_eligible: [true]
+    co_premium_assistance_eligible: true
+    slcsp: 6_114.40 # annual sum of the 12 monthly Denver benchmarks
+    aca_ptc: 4_264.54 # federal PTC at 1.91 FPL required contribution
+    co_premium_assistance: 960 # min(12*$80, 1_849.86 residual) -> flat cap binds
