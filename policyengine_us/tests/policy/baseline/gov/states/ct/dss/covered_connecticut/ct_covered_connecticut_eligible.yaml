@@ -184,3 +184,71 @@
         state_code: CT
   output:
     ct_covered_connecticut_eligible: true
+
+# ---- T1 [C1]: tightest epsilon above the inclusive 1.75 ceiling ----
+- name: Case 10, 175.01% FPL just above the inclusive ceiling is ineligible.
+  # aca_magi_fraction 1.7501 > 1.75 (fpl_limit) -> income-ineligible even at the
+  # tightest epsilon above the inclusive ceiling -> not eligible. Complements the
+  # existing 1.75 (eligible) and 1.76 (ineligible) boundary cases.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.7501
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- T2 [C2]: MFS-driven ineligibility via a real filing_status input ----
+- name: Case 11, married-filing-separately drives the derived federal PTC gate to ineligible.
+  # filing_status = SEPARATE is a REAL input; is_aca_ptc_eligible is NOT injected.
+  # The federal PTC formula returns pays_aca_premium & ~separate & income_eligible,
+  # so SEPARATE forces the person-level gate to False regardless of income. Income
+  # is inside the 175% band (1.50 <= 1.75), so only the MFS gate drives the result:
+  # any(is_aca_ptc_eligible) is False -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- T5 [G1]: pays_aca_premium-false arm via a real immigration-status input ----
+- name: Case 12, an immigration-ineligible enrollee fails pays_aca_premium and is ineligible.
+  # is_aca_ptc_immigration_status_eligible = false is a REAL input; is_aca_ptc_eligible
+  # is NOT injected. pays_aca_premium requires is_status_eligible, so the immigration
+  # gate drives pays_aca_premium -> False -> is_aca_ptc_eligible -> False, even though
+  # income is inside the 175% band (1.50 <= 1.75) -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_immigration_status_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false

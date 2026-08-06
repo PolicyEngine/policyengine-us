@@ -333,3 +333,39 @@
     aca_ptc: 10_197.50
     ct_covered_connecticut_eligible: true
     ct_covered_connecticut: 988.84
+
+# ---- Scenario 12 [T3]: full federal derivation, ~140% FPL single CT enrollee is Medicaid, not marketplace ----
+- name: Scenario 12, single CT enrollee at 22k derives into Medicaid and gets no CT residual.
+  # Raw input: employment_income 22_000 for a 40-year-old single Connecticut filer,
+  #   NO injected ACA inputs -- the full federal chain derives everything and the
+  #   federal PTC gate itself governs eligibility.
+  # aca_magi = 22_000; aca_magi_fraction = 1.40 (~140% FPL). In Connecticut (a
+  #   Medicaid-expansion state, HUSKY up to 138% FPL for adults, with an adult
+  #   coverage group extending above it) a single adult at this income is
+  #   Medicaid-eligible, so is_aca_ptc_eligible derives to False (Medicaid coverage
+  #   precludes marketplace APTC). With no APTC-eligible member, slcsp returns 0 for
+  #   the ineligible and the CT residual is 0. This scenario documents that CT's
+  #   ~138% effective lower bound is inherited from the federal Medicaid/APTC split:
+  #   below the split, enrollees are on Medicaid rather than the Covered CT program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 22_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi: 22_000
+    aca_magi_fraction: 1.40
+    is_aca_ptc_eligible: false
+    slcsp: 0
+    aca_ptc: 0
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0
