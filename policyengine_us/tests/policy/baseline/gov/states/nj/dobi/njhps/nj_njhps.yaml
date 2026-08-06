@@ -737,3 +737,58 @@
         state_code: NJ
   output:
     nj_njhps: 3_000
+
+# --- Inclusive 138% floor: $20 band engages at exactly the floor ---
+
+- name: Case 30, exactly at the 138% FPL floor engages the $20 band.
+  # notes: inclusive-floor edge (mirrors the 6.0 ceiling Case 14). frac 1.38 ==
+  # fpl_floor is in the [1.38, 1.5] band -> pmpm 20. n=1 -> base = 12*20 = 240.
+  # slcsp 6_000, aca_ptc 3_000 -> residual = max(0, 6_000 - 3_000) = 3_000, large
+  # enough that the cap does NOT bind -> annual = min(240, 3_000) = 240.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+        slcsp: 6_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 240
+
+# --- Negative pre-floor residual: aca_ptc exceeds slcsp -> clamp to 0 ---
+
+- name: Case 31, APTC exceeds SLCSP so the residual clamps to zero.
+  # notes: negative pre-floor residual edge (existing cases only hit residual == 0
+  # exactly). frac 2.2 -> pmpm 50, n=1 -> base = 12*50 = 600. slcsp 5_000,
+  # aca_ptc 6_000 -> slcsp - aca_ptc = -1_000 < 0, so max(0, -1_000) = 0 ->
+  # annual = min(600, 0) = 0. Band-eligible but the APTC already exceeds the
+  # benchmark premium, so the clamp forces a zero subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.2
+        slcsp: 5_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 0

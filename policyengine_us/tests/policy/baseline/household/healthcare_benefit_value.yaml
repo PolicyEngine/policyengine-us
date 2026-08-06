@@ -295,3 +295,37 @@
     nj_njhps: 480
   output:
     healthcare_benefit_value: 480
+
+- name: Case 17, DERIVED New Jersey Health Plan Savings flows into healthcare benefit value.
+  # notes: proves the nj_njhps wiring against a COMPUTED value rather than a forced
+  # nj_njhps (Case 7 forces 480; this derives). A real NJ single-adult household in
+  # the $20 band: frac 1.4 in [1.38, 1.5] -> pmpm 20, n=1 -> base = 12*20 = 240.
+  # slcsp 6_000, aca_ptc 5_000 -> residual = max(0, 6_000 - 5_000) = 1_000 ->
+  # nj_njhps = min(240, 1_000) = 240. All other health channels are forced to 0, so
+  # healthcare_benefit_value = the derived nj_njhps = 240. Does NOT alter Case 7 or
+  # the nj wiring.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+        medicaid_cost: 0
+        msp_cost: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 240
+    healthcare_benefit_value: 240
