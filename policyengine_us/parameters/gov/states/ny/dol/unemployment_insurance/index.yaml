@@ -1,0 +1,8 @@
+# Household-calculator scope only. The claim-week input variables
+# (ny_ui_weekly_hours_worked, ny_ui_gross_weekly_earnings, and the base-period
+# wage inputs) default to 0, so this program is inert in microsimulation and is
+# marked economy: false / household: true.
+metadata:
+  propagate_metadata_to_children: true
+  economy: false
+  household: true
