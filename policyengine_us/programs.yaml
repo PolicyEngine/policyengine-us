@@ -1133,6 +1133,18 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
+  - id: ct_covered_connecticut
+    name: Covered Connecticut
+    full_name: Covered Connecticut Program
+    category: Healthcare
+    agency: DSS (Access Health CT)
+    status: partial
+    coverage: CT
+    variable: ct_covered_connecticut
+    parameter_prefix: gov.states.ct.dss.covered_connecticut
+    verified_start_year: 2026
+    notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
