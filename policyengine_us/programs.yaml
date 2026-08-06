@@ -1447,6 +1447,17 @@ programs:
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
 
+  - id: vt_premium_assistance
+    name: Vermont Premium Assistance
+    full_name: Vermont Premium Assistance
+    category: Healthcare
+    agency: DVHA (Vermont Health Connect)
+    status: complete
+    coverage: VT
+    variable: vt_premium_assistance
+    parameter_prefix: gov.states.vt.dvha.premium_assistance
+    verified_start_year: 2026
+
   # --- Local programs ---
   - id: ez_save
     name: Los Angeles County EZ Save
