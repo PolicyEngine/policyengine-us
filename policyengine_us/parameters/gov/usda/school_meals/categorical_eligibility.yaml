@@ -3,6 +3,7 @@ description: Program participation that qualifies families for free school meals
 values:
   2009-09-01:
     - snap # Supplemental Nutrition Assistance Program.
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - tanf # Temporary Assistance to Needy Families. Currently only available in CA and IL.
     - fdpir # Food Distribution Program on Indian Reservations.
     - was_in_foster_care

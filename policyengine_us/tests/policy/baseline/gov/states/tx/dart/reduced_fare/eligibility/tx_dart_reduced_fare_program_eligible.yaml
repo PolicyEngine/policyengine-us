@@ -204,3 +204,39 @@
         state_code: CA  # California, not Texas
   output:
     tx_dart_reduced_fare_program_eligible: false
+
+- name: Person reporting SNAP receipt with a zero modeled allotment is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person reporting WIC receipt with a zero modeled benefit is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      mother:
+        age: 28
+        is_disabled: false
+        wic: 0
+        receives_wic: true
+    households:
+      household:
+        members: [mother]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true

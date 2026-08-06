@@ -3,6 +3,7 @@ values:
   2016-12-01:
     - medicaid_enrolled
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - ssi
     # Also not implemented:
     # - Veterans and Survivors Pension Benefit

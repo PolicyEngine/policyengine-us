@@ -28,3 +28,31 @@
     head_start: false
   output:
     ca_care_categorically_eligible: false
+
+- name: Household reporting SNAP receipt with a zero modeled allotment is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    receives_snap: true
+    ssi: 0
+    tanf: 0
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Household reporting WIC receipt with a zero modeled benefit is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    medicaid_enrolled: 0
+    wic: 0
+    receives_wic: true
+    snap: 0
+    ssi: 0
+    tanf: 0
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
