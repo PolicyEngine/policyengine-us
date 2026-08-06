@@ -1,0 +1,22 @@
+description: California provides state premium subsidies when this is true under the California Premium Subsidy program.
+values:
+  # PY2026 board-adopted values are carried forward through PY2027, matching the
+  # New Mexico and Maryland approach (in effect from 2026-01-01, ending
+  # 2028-01-01). The verified schedule window is PY2026 only; a PY2027 Program
+  # Design exists (Covered California board, May 21, 2026), confirming
+  # continuation, but its values are unverified. Section 100825 creates no
+  # entitlement and the appropriation is annual, so the provision ends
+  # 2028-01-01 absent a verified PY2028 design.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: California Premium Subsidy in effect
+  reference:
+    - title: 2026 California Premium Subsidy Program Design, preamble
+      href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=1
+    - title: CA Gov. Code Title 25 Section 100825
+      href: https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=GOV&division=&title=25.&part=&chapter=&article=

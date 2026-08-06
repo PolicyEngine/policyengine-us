@@ -1123,6 +1123,17 @@ programs:
     parameter_prefix: gov.states.co.hcpf.chp
     verified_start_year: 2023
 
+  - id: ca_premium_subsidy
+    name: California Premium Subsidy
+    full_name: California Premium Subsidy (Individual Market Assistance)
+    category: Healthcare
+    agency: HBEX (Covered California)
+    status: complete
+    coverage: CA
+    variable: ca_premium_subsidy
+    parameter_prefix: gov.states.ca.hbex.premium_subsidy
+    verified_years: "2026-2027"
+
   - id: co_omnisalud
     name: Colorado OmniSalud
     full_name: Colorado OmniSalud
