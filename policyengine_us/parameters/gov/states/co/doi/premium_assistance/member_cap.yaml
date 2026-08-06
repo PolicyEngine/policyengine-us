@@ -1,0 +1,16 @@
+description: Colorado limits the household member count to this amount under the Colorado Premium Assistance program.
+values:
+  # At most 5 household members count toward the flat build-up, so the maximum
+  # monthly amount is 80 + 4 x 29 = $196. Corroborated by ACA Signups and the
+  # Connect for Health Colorado page.
+  2026-01-01: 5
+
+metadata:
+  unit: person
+  period: year
+  label: Colorado Premium Assistance member cap
+  reference:
+    - title: Connect for Health Colorado - Colorado Premium Assistance
+      href: https://connectforhealthco.com/financial-help/colorado-premium-assistance/
+    - title: ACA Signups - Colorado extends supplemental state ACA subsidies through 2027
+      href: https://acasignups.net/26/07/22/colorado-state-legislature-extends-supplemental-state-aca-subsides-thru-2027
