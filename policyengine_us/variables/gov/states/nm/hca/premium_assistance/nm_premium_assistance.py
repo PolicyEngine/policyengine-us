@@ -51,8 +51,14 @@ class nm_premium_assistance(Variable):
         base_amount = max_(0, benchmark - aca_ptc - target_percentage * income)
 
         # Middle Income Household: cap the plain benchmark SLCSP at the MIH
-        # rate of household income. aca_ptc is zero above 400% FPL in the 2026
-        # baseline but is subtracted for robustness to reform scenarios.
+        # rate of household income. The printed MAP Addendum formula (PDF-2 p.3)
+        # is SLCSP - (Applicable% * Income)/12, with no APTC term. The
+        # subtraction of aca_ptc here is intentional and inert in the PY2026
+        # baseline: federal APTC is $0 above 400% FPL, so slcsp - 0 - rate*income
+        # reproduces the Addendum exactly. The term is retained so the state
+        # subsidy correctly nets out any APTC that a future reform restores above
+        # 400% FPL (reform-robustness); it only diverges from the printed formula
+        # under such a reform. Do not remove.
         mih_amount = max_(0, slcsp - aca_ptc - p.mih.rate * income)
 
         base_eligible = tax_unit("nm_premium_assistance_eligible", period)

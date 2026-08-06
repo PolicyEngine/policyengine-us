@@ -516,3 +516,126 @@
         state_code: NM
   output:
     nm_premium_assistance: 2_750
+
+# ---- Post-sunset (2028) amount = 0 through the select (SA1) ----
+
+- name: Case 20, base-band unit in 2028 (post-sunset) -> $0 through the select.
+  # in_effect is false at 2028-01-01, so nm_premium_assistance_eligible is false
+  # and the select falls through to default 0. Same 300% FPL base-band inputs as
+  # Case 4 (which pays 2_750 in 2026); the only change is the year, proving the
+  # 2028 sunset propagates through select() to the dollar amount, not just the
+  # eligibility boolean. Amount-level complement to the 2027->2028 closing edge
+  # (Case 19 pays in 2027; this pays 0 in 2028).
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 45_000
+        aca_magi_fraction: 3.00
+        slcsp: 9_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance: 0
+
+- name: Case 21, MIH-band unit in 2028 (post-sunset) -> $0 through the select.
+  # mih.in_effect is false at 2028-01-01, so nm_mih_eligible is false and the
+  # select falls through to default 0. Same 405% FPL MIH inputs as Case 7 (which
+  # pays 4_730 in 2026); only the year changes, proving the MIH sunset also
+  # propagates through select() to the amount.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        aca_magi: 62_000
+        aca_magi_fraction: 4.05
+        slcsp: 10_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance: 0
+
+# ---- MIH with a non-zero APTC exercises the - aca_ptc term (SA4) ----
+
+- name: Case 22, MIH band with a non-zero aca_ptc exercises the - aca_ptc term.
+  # In the PY2026 baseline federal APTC is $0 above 400% FPL, so the - aca_ptc
+  # term in the MIH branch is never exercised by any other case. Here aca_ptc is
+  # injected non-zero (a reform-style input restoring APTC above 400% FPL) to
+  # drive the subtraction. magi_frac 4.50 > 4.0 -> MIH; no gross-up on MIH.
+  # amount = max(0, 10_000 - 2_000 - 0.085*70_000)
+  #        = max(0, 10_000 - 2_000 - 5_950) = 2_050.
+  # Documents the reform-scenario behavior: the state subsidy nets any restored
+  # APTC (2_050 here vs 4_050 if the - aca_ptc term were dropped).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        aca_magi: 70_000
+        aca_magi_fraction: 4.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance: 2_050
+
+# ---- Mid-bracket target interpolation (base band) ----
+
+- name: Case 23, mid-bracket interpolation at 275% FPL (target 3.5%).
+  # magi_frac 2.75 lands mid-way in the 250-300% band (initial 2%, final 5%):
+  # position = (2.75 - 2.5) / (3.0 - 2.5) = 0.5, so target% = 0.02 + 0.5*0.03
+  # = 0.035. No gross-up (2.75 > 2.0). benchmark = 8_000.
+  # amount = max(0, 8_000 - 1_000 - 0.035*43_000)
+  #        = max(0, 8_000 - 1_000 - 1_505) = 5_495.
+  # Exercises the within-band searchsorted interpolation at a non-endpoint FPL,
+  # complementing the band-endpoint cases (200/250/300/400% FPL) above.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 43_000
+        aca_magi_fraction: 2.75
+        slcsp: 8_000
+        aca_ptc: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance: 5_495

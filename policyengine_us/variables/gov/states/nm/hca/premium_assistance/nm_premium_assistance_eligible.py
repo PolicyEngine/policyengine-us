@@ -25,7 +25,7 @@ class nm_premium_assistance_eligible(Variable):
         # At least one member must be eligible for the federal ACA PTC. This
         # gate embeds on-Marketplace enrollment (pays_aca_premium), the MFS
         # exclusion, and the 100-400% FPL required-contribution income test.
-        aptc_eligible = tax_unit.any(tax_unit.members("is_aca_ptc_eligible", period))
+        aptc_eligible = add(tax_unit, period, ["is_aca_ptc_eligible"]) > 0
         magi_frac = tax_unit("aca_magi_fraction", period)
         income_eligible = magi_frac <= p.fpl_limit
         return in_effect & aptc_eligible & income_eligible
