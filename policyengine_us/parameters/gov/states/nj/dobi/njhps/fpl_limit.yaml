@@ -4,14 +4,16 @@ values:
   # The dollar ceilings ($93,900 individual / $192,900 family of four in 2026)
   # auto-derive from the federal poverty line and are not hard-coded. The DOBI
   # FY2026 budget confirms the program continues "up to 600% FPL" for PY2026.
-  2026-01-01: 6.0
+  2026-01-01: 6
 
 metadata:
   unit: /1
   period: year
   label: New Jersey Health Plan Savings income limit as a share of the federal poverty line
   reference:
-    - title: Get Covered NJ - New Jersey Health Plan Savings
-      href: https://www.nj.gov/getcoverednj/financialhelp/premiums/
+    - title: Treasury Office of Tax Analysis Section 1332 methodology addendum, Table 2 (Enhanced subsidy schedule, 600% FPL ceiling)
+      href: https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=12
     - title: NJ DOBI FY2025-2026 Budget Discussion Points
       href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=6
+    - title: Get Covered NJ - New Jersey Health Plan Savings
+      href: https://www.nj.gov/getcoverednj/financialhelp/premiums/

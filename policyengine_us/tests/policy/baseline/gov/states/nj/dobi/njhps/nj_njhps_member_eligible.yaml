@@ -242,3 +242,28 @@
         state_code: NJ
   output:
     nj_njhps_member_eligible: [true, true, false, false]
+
+# --- Negative aca_magi_fraction guard (below the 138% floor) ---
+
+- name: Case 12, negative aca_magi_fraction is below band, member ineligible.
+  # notes: below-band guard for a negative fraction (e.g. from a self-employment
+  # loss driving MAGI toward zero and the floor comparison failing). frac -0.5 <
+  # 1.38 fpl_floor, so the band test (1.38 <= frac <= 6.0) is False -> ineligible
+  # despite paying an ACA premium. Confirms the floor holds for negative inputs,
+  # not just the 1.37 near-floor case (Case 4).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: -0.5
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false

@@ -7,7 +7,7 @@ class nj_njhps(Variable):
     label = "New Jersey Health Plan Savings"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NJ
+    defined_for = "nj_njhps_eligible"
     reference = (
         "https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=8",
         "https://pub.njleg.gov/bills/2020/AL20/61_.HTM",
@@ -52,6 +52,4 @@ class nj_njhps(Variable):
         slcsp_annual = add(tax_unit, period, ["slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         residual = max_(0, slcsp_annual - aca_ptc)
-        annual = min_(base_annual, residual)
-        eligible = tax_unit("nj_njhps_eligible", period)
-        return where(eligible, annual, 0)
+        return min_(base_annual, residual)
