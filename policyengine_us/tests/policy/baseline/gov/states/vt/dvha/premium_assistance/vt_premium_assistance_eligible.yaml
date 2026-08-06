@@ -179,3 +179,23 @@
         state_code: VT
   output:
     vt_premium_assistance_eligible: true
+
+- name: Case 10, 300.01% FPL just barely above the ceiling is ineligible.
+  # 3.0001 > 3.0 -> ineligible. Tightest just-above-ceiling case (REQ-2 boundary),
+  # complementing the inclusive 3.00 eligible case and the coarser 3.01 case.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.0001
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: false

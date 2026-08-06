@@ -35,8 +35,21 @@ class vt_premium_assistance(Variable):
         # Clamp income to zero so a negative ACA MAGI cannot inflate the gap.
         income = max_(tax_unit("aca_magi", period), 0)
         federal_percentage = tax_unit("aca_required_contribution_percentage", period)
+        # Statute 33 V.S.A. § 1812(a)(2) says "reduce the premium contribution
+        # ... by 1.5 percent" and defers the applicable-percentage table to
+        # federal section 36B; DVHA operationalizes this as a 1.5
+        # PERCENTAGE-POINT cut to that section 36B applicable percentage, not a
+        # proportional scaling. That is why 0.015 is SUBTRACTED from
+        # aca_required_contribution_percentage rather than multiplied — this is
+        # intentional, not a units bug.
         reduction = p.applicable_percentage_reduction
-        # The reduction floors at zero at very low income.
+        # The reduction floors at zero: if the federal applicable percentage is
+        # already below 1.5%, the Vermont percentage bottoms out at 0 so the
+        # gap factor below becomes the FULL federal percentage (VPA then covers
+        # the entire enrollee contribution). This branch is organically
+        # unreachable in the 2026 baseline because the federal applicable
+        # percentage floors at 2.10% > 1.5%, but is retained for robustness and
+        # future contribution schedules.
         vt_percentage = max_(0, federal_percentage - reduction)
         # Incremental contribution gap between the federal applicable
         # percentage and the lower Vermont percentage.

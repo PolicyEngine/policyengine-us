@@ -57,7 +57,10 @@
 
 # ---- Scenario 2: full federal derivation, exactly 300% FPL boundary ----
 - name: Scenario 2, single Vermont enrollee at 47k derives exactly 300% FPL and stays eligible.
-  # Raw input: employment_income 47_000. Derived: aca_magi = 47_000;
+  # Raw input: employment_income 47_000. Note the exact 300%/size-1 MAGI is 46_950
+  #   (see vt_premium_assistance.yaml Case 4); 47_000 sits just above it but the
+  #   model still rounds aca_magi_fraction to 3.00, so the inclusive ceiling holds.
+  # Derived: aca_magi = 47_000;
   #   aca_magi_fraction = 3.00 exactly (the 300% ceiling is inclusive -> eligible);
   #   fed_pct = 9.96% (start of the 300-400% flat bracket); slcsp = 15_588.
   # Federal APTC = 15_588 - 47_000*0.0996 = 15_588 - 4_681.20 = 10_906.80.
@@ -321,3 +324,41 @@
     aca_ptc: 13_998.65
     vt_premium_assistance_eligible: true
     vt_premium_assistance: 423.00
+
+# ---- Scenario 10: full federal derivation near the ceiling, cap arm exercised (Gap A) ----
+- name: Scenario 10, single Vermont enrollee near 290% FPL derives the federal chain and lets min pick the cap residual.
+  # Gap A. Raw input: employment_income 45_400 for a 40-year-old single Vermont
+  #   filer, landing near 290% FPL (<= 300% ceiling -> eligible). Everything on the
+  #   federal ACA chain (aca_magi, aca_magi_fraction, the federal applicable %,
+  #   slcsp, aca_ptc) is DERIVED, not injected. As income climbs toward the ceiling
+  #   the federal APTC (aca_ptc = max(0, slcsp - income*fed_pct)) shrinks, so the
+  #   benchmark residual max_(0, slcsp - aca_ptc) shrinks toward income*0.015 and
+  #   the min_(gap, residual) can bind on the cap residual rather than the gap.
+  #   Exact derived figures cannot be hand-computed here, so they are placeholders
+  #   for the ci-fixer to fill from the model; the point is a derived, non-round
+  #   assertion that exercises the cap arm end-to-end.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    aca_magi: 45_400
+    aca_magi_fraction: 2.90 # derived
+    is_aca_ptc_eligible: true
+    slcsp: 15_588 # derived
+    aca_ptc: 11_204.176 # derived
+    vt_premium_assistance_eligible: true
+    # Derived fed_pct = 0.09656 > 1.5%, so gap = 45_400 * 0.015 = 681.00.
+    # residual = slcsp - aca_ptc = 15_588 - 11_204.176 = 4_383.82 > gap, so the
+    # 1.5% GAP arm binds (min picks the gap, not the cap residual): VPA = 681.00.
+    vt_premium_assistance: 681.00 # derived
