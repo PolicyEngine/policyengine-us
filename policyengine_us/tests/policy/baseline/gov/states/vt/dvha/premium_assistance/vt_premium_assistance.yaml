@@ -377,3 +377,32 @@
         state_code: VT
   output:
     vt_premium_assistance: 0
+
+# ---- Exact zero MAGI clamp (Gap D): income == 0 -> gap 0 -> VPA 0 ----
+
+- name: Case 14, exact zero ACA MAGI produces a zero gap and no VPA.
+  # income = max(aca_magi, 0) = max(0, 0) = 0, so gap = 0 * min(fed_pct, 0.015)
+  # = 0 and VPA = min(0, residual) = 0. Distinct from the negative-MAGI clamp
+  # (Case 9): here the boundary itself (aca_magi = 0) yields a zero gap even
+  # though the residual (10_000 - 5_000 = 5_000) is positive and the unit is
+  # otherwise eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_magi_fraction: 0.00
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
