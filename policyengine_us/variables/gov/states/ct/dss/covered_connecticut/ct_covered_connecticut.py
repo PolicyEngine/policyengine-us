@@ -9,7 +9,8 @@ class ct_covered_connecticut(Variable):
     definition_period = YEAR
     defined_for = "ct_covered_connecticut_eligible"
     reference = (
-        "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=21",
+        "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=22",
+        "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=24",
         "https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program",
     )
     documentation = (
@@ -29,8 +30,11 @@ class ct_covered_connecticut(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # slcsp is a MONTH-period variable; annualize it to match aca_ptc.
+        # slcsp is a MONTH-period variable; add() annualizes it to match the
+        # YEAR-period aca_ptc so both sides of the residual are annual.
         slcsp_annual = add(tax_unit, period, ["slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
-        # Residual benchmark premium after the federal APTC, floored at zero.
+        # Residual benchmark premium after the federal APTC. The max_(0, ...)
+        # floor is defensive and redundant in the baseline, where aca_ptc never
+        # exceeds the benchmark slcsp, but is retained for robustness.
         return max_(0, slcsp_annual - aca_ptc)

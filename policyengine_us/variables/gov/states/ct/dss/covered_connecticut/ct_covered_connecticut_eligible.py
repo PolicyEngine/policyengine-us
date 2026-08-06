@@ -8,7 +8,7 @@ class ct_covered_connecticut_eligible(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
     reference = (
-        "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=21",
+        "https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=22",
         "https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program",
     )
     documentation = (
@@ -23,10 +23,12 @@ class ct_covered_connecticut_eligible(Variable):
         "from the federal ACA PTC gate, which already excludes Medicaid-eligible "
         "people. The benchmark-silver-enrollment requirement is represented by "
         "using the second-lowest-cost silver plan premium as the modeled "
-        "premium in the amount variable, and is not separately gated here. No "
-        "explicit age gate (18-64, or dependents 26 and under) is applied, "
-        "matching sibling state premium-assistance programs, because the "
-        "MAGI and federal PTC structure captures the population."
+        "premium in the amount variable, and is not separately gated here. The "
+        "statutory eligibility cohorts (adults aged 18 to 64, dependents aged 26 "
+        "and under, and parents and caretaker relatives) are deliberately NOT "
+        "separately gated, matching sibling state premium-assistance programs, "
+        "because the ACA MAGI test and the federal PTC structure already capture "
+        "the eligible population."
     )
 
     def formula(tax_unit, period, parameters):

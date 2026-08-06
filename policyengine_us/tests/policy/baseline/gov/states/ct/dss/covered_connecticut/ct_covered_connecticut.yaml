@@ -321,3 +321,53 @@
         state_code: CT
   output:
     ct_covered_connecticut: 5_000
+
+# ---- T6 [G2]: 2027 amount assertion confirms in_effect carry-forward ----
+- name: Case 14, 2027 later year retains the same residual (standing statute, no sunset).
+  # in_effect stays true from 2026 onward, so a 2027 eligible unit with the same
+  # forced inputs as Case 1 keeps the same residual: slcsp 8_000 - aca_ptc 7_500 =
+  # 500. Confirms the carry-forward of the in_effect toggle past the launch year.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 500
+
+# ---- T7 [G3]: negative-income low end -> residual behavior holds ----
+- name: Case 15, negative employment income at the low end retains the eligible residual.
+  # A self-employment loss drives income negative; aca_magi_fraction is forced to
+  # the low-end floor and the member is APTC-eligible, so the unit stays eligible
+  # via the federal gate and the residual is max(0, slcsp - aca_ptc) = 8_000 -
+  # 7_500 = 500. Guards against negative income inflating or zeroing the residual.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 500  # verified: negative income does not disturb the injected residual
