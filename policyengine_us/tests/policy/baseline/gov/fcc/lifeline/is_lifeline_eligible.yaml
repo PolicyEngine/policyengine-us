@@ -52,3 +52,13 @@
     state_code: TX
   output:
     is_lifeline_eligible: true
+
+- name: Family reporting SNAP receipt with a zero modeled allotment is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    receives_snap: true
+    medicaid_enrolled: false
+  output:
+    is_lifeline_eligible: true

@@ -204,3 +204,78 @@
         state_code: CA  # California, not Texas
   output:
     tx_dart_reduced_fare_program_eligible: false
+
+- name: Person reporting SNAP receipt with a zero modeled allotment is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: Person reporting WIC receipt with a zero modeled benefit is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      mother:
+        age: 28  # Too young for Medicare, and not disabled.
+        is_disabled: false
+        wic: 0
+        receives_wic: true
+        chip: 0
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [mother]
+        snap: 0
+        receives_snap: false
+        tanf: 0
+    households:
+      household:
+        members: [mother]
+        state_code: TX
+  output:
+    # Every other qualifying program is zeroed, so only receives_wic can qualify her.
+    tx_dart_reduced_fare_program_eligible: true
+
+- name: SNAP receipt reported at the SPM unit qualifies every member of a multi-person unit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        is_disabled: false
+        wic: 0
+        chip: 0
+        medicaid_enrolled: false
+      child:
+        age: 8
+        is_disabled: false
+        wic: 0
+        chip: 0
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        snap: 0
+        receives_snap: true
+        tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # receives_snap is SPM-unit-level, so it projects to both members.
+    tx_dart_reduced_fare_program_eligible: [true, true]
