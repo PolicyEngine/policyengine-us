@@ -37,13 +37,12 @@ class md_premium_assistance_target_contribution_percentage(Variable):
             len(initial_rates) - 1,
         )
 
+        # Interpolate within the bracket, mirroring the canonical
+        # aca_required_contribution_percentage.py idiom. bracket_idx is clipped
+        # to [0, len(initial_rates) - 1] = [0, 4], and len(thresholds) - 1 = 5,
+        # so bracket_idx + 1 is always a valid threshold index (<= 5).
         bracket_start = thresholds[bracket_idx]
-        next_idx = min_(bracket_idx + 1, len(thresholds) - 1)
-        bracket_end = where(
-            bracket_idx < len(thresholds) - 1,
-            thresholds[next_idx],
-            bracket_start + 1,
-        )
+        bracket_end = thresholds[bracket_idx + 1]
 
         bracket_width = bracket_end - bracket_start
         position = where(

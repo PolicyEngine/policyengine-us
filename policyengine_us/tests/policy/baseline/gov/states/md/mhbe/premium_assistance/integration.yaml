@@ -295,3 +295,89 @@
   output:
     md_premium_assistance_eligible: false
     md_premium_assistance: 0
+
+- name: Scenario 10, fully income-derived young-adult subsidy (no forced intermediates).
+  # A single age-30 enrollee in MD with only employment_income set. aca_magi,
+  # aca_magi_fraction, the federal applicable %, slcsp and aca_ptc are ALL derived
+  # from the rating-area premium lookup and the federal PTC engine; the young-adult
+  # 2.5pp reduction flows through the MD target %. Asserts a derived non-round
+  # subsidy rather than a forced arithmetic identity. Derived intermediates:
+  # aca_magi 35_000, aca_magi_fraction 2.23, federal 7.4464%, md target
+  # (2.23 FPL base minus the 2.5pp young-adult floor) 1.4412%; cap not binding.
+  # gap = (0.074464 - 0.014412) * 35_000 = 2_101.82.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance: 2_101.82  # derived, verified
+
+- name: Scenario 11a, age-36 young adult at 250% FPL flowing through the target-% subtraction.
+  # base target 6.22% - age-36 reduction 1.0pp = 5.22% md_pct; federal 8.44%.
+  # gap = (0.0844 - 0.0522) * 39_125 = 0.0322 * 39_125 = 1_259.825; cap
+  # (6_000 - 2_698 = 3_302) not binding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.01
+    md_premium_assistance_target_contribution_percentage: 0.0522
+    md_premium_assistance: 1_259.83
+
+- name: Scenario 11b, age-37 young adult at 250% FPL flowing through the target-% subtraction.
+  # base target 6.22% - age-37 reduction 0.5pp = 5.72% md_pct; federal 8.44%.
+  # gap = (0.0844 - 0.0572) * 39_125 = 0.0272 * 39_125 = 1_064.20; cap not binding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 37
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.005
+    md_premium_assistance_target_contribution_percentage: 0.0572
+    md_premium_assistance: 1_064.20
