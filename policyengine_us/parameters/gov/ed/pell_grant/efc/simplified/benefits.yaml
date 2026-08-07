@@ -2,9 +2,11 @@ description: The Department of Education will used a simplified formula if a hou
 values:
   2023-01-01:
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - school_meal_net_subsidy
     - tanf
     - wic
+    - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
     - medicaid_enrolled
     - ssi
 metadata:
