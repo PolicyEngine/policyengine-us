@@ -1,1 +1,0 @@
-Added Montana's unemployment compensation subtraction for tax years before 2024, when SB 399 repealed the exemption; previously unemployment income was incorrectly taxed by Montana and inflated Montana-taxable Social Security.
