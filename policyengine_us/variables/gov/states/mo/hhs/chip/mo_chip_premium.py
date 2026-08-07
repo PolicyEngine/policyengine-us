@@ -5,17 +5,19 @@ from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 class mo_chip_premium(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Missouri MO HealthNet for Kids annual CHIP premium"
+    label = "Missouri MO HealthNet for Kids monthly CHIP premium"
     unit = USD
     documentation = (
-        "Annual Missouri MO HealthNet for Kids (separate CHIP) premium "
+        "Monthly Missouri MO HealthNet for Kids (separate CHIP) premium "
         "paid by the tax unit. The state sets one household-level monthly "
         "premium that varies by both family size and three FPL tiers, "
         "assigned by comparing monthly income to the Appendix E chart's "
         "dollar boundaries: each FPL percentage converted to monthly "
-        "dollars and rounded up to the next whole dollar."
+        "dollars and rounded up to the next whole dollar. Defined monthly "
+        "because Missouri revises the Appendix E schedule every July 1, so "
+        "a calendar year spans two schedules."
     )
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MO
     reference = (
         "https://mydss.mo.gov/childrens-health-insurance-program-chip-premium-chart",
@@ -23,11 +25,18 @@ class mo_chip_premium(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        has_chip_member = add(tax_unit, period, ["is_chip_eligible"]) > 0
-        income_level = tax_unit("tax_unit_medicaid_income_level", period)
-        family_size = tax_unit("tax_unit_size", period)
-        pregnant_count = add(tax_unit, period, ["current_pregnancies"])
-        state_group = tax_unit.household("state_group_str", period)
+        # Every input below is annually defined: eligibility and the pregnancy
+        # count are counts, and the income level is a ratio, so none of them
+        # should be divided into a monthly value.
+        year = period.this_year
+        has_chip_member = add(tax_unit, year, ["is_chip_eligible"]) > 0
+        income_level = tax_unit("tax_unit_medicaid_income_level", year)
+        family_size = tax_unit("tax_unit_size", year)
+        pregnant_count = add(tax_unit, year, ["current_pregnancies"])
+        state_group = tax_unit.household("state_group_str", year)
+        # The FPG parameters are annual dollars, and parameters are never
+        # auto-divided, so both FPG figures below are converted to monthly
+        # dollars explicitly.
         # tax_unit_medicaid_income_level divides income by an FPG that
         # counts children a pregnant member is expected to deliver;
         # multiply by that same FPG to recover monthly dollar income.
@@ -61,4 +70,4 @@ class mo_chip_premium(Variable):
             ],
             default=0,
         )
-        return has_chip_member * monthly_premium * MONTHS_IN_YEAR
+        return has_chip_member * monthly_premium
