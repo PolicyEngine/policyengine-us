@@ -54,7 +54,7 @@
   output:
     chip_premium: 180
 
-- name: Federal chip_premium aggregates Missouri family-size premium.
+- name: Federal chip_premium sums Missouri's monthly premium across the two schedules a calendar year spans.
   period: 2024
   input:
     people:
@@ -76,7 +76,9 @@
         members: [p, c1, c2]
         state_code: MO
   output:
-    chip_premium: 300
+    # Size-3 tier 1: 6 x 25 through June 2024, then 6 x 30 from July 1.
+    # Well under the 5 percent cap on 100,000 dollars of income.
+    chip_premium: 330
 
 - name: Federal chip_premium caps Missouri tier 3 premium at 5 percent of income.
   period: 2024

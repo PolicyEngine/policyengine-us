@@ -1,3 +1,53 @@
+# New York's schedule changes take effect in February, so a calendar year
+# spans two schedules. The 2023 restructuring eliminated the 9 dollar tier and
+# raised the free threshold from 160 to 222 percent FPL, so a child at 180
+# percent FPL pays only for January 2023.
+- name: New York Child Health Plus charges 9 dollars for January 2023 only, before the February 2023 restructuring.
+  period: 2023
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium:
+      2023-01: 9
+      2023-02: 0
+      2023: 9
+
+# The 2026 schedule takes effect on 2026-02-17. Monthly resolution reads
+# parameters at the start of each month, so February 2026 still charges the
+# prior schedule and the new thresholds first bind in March 2026.
+- name: New York Child Health Plus at 222.5 percent FPL loses its 15 dollar premium when the 2026 thresholds bind in March.
+  period: 2026
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.225
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium:
+      2026-01: 15
+      2026-02: 15
+      2026-03: 0
+      2026: 30 # 2 x 15
+
 - name: New York Child Health Plus in 2022 charges 9 dollars per child between 160 and 222 percent FPL.
   period: 2022
   input:
@@ -104,7 +154,9 @@
         members: [person1, person2, person3, person4]
         state_code: NY
   output:
-    ny_chip_premium: 12_966.72
+    ny_chip_premium: 12_966.72 # 12 x 4 x 270.14
+  # Summing twelve monthly premiums accumulates float32 rounding.
+  absolute_error_margin: 0.01
 
 - name: Case 6, New York Child Health Plus above 400 percent FPL with one child pays the per-child full premium.
   period: 2026
@@ -122,4 +174,6 @@
         members: [person1]
         state_code: NY
   output:
-    ny_chip_premium: 3_241.68
+    ny_chip_premium: 3_241.68 # 12 x 270.14
+  # Summing twelve monthly premiums accumulates float32 rounding.
+  absolute_error_margin: 0.01
