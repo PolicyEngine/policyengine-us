@@ -1133,6 +1133,17 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
+  - id: md_premium_assistance
+    name: Maryland Premium Assistance
+    full_name: Maryland State-Based Health Insurance Subsidies Program
+    category: Healthcare
+    agency: MHBE
+    status: complete
+    coverage: MD
+    variable: md_premium_assistance
+    parameter_prefix: gov.states.md.mhbe.premium_assistance
+    verified_years: "2026-2027"
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
