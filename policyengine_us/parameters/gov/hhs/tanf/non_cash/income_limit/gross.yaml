@@ -11,13 +11,12 @@ AK:
   2025-07-01: 2
 AZ:
   2015-10-01: 1.85
-  # The USDA BBCE chart carried Arizona at 185% in its 2025-12-29
-  # revision and at 200% in its 2026-06-29 revision. The CNAP manual's
-  # "What's Changed on 04/13/2026" entry is the only dated signal inside
-  # that window, so the increase is dated there; confirm the effective
-  # date against the CNAP expanded categorical eligibility standard when
-  # azdes.gov is reachable.
-  2026-04-13: 2
+  # "Starting the benefit month of 03/2026, the gross income limit for
+  # the NA Expanded Categorical Eligibility changed from 185% of the FPL
+  # to 200% of the FPL." The same note confirms Arizona re-bases each
+  # October ("increased for FFY 2026 starting 10/01/2025"), so
+  # fpg_year_start_month keeps its default of 10.
+  2026-03-01: 2
 AR:
   2015-10-01: -.inf # Non-BBCE.
 CA:

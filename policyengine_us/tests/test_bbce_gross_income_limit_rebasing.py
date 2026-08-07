@@ -25,13 +25,21 @@ WA_LIMIT_ON_2026_GUIDELINES = 2_660
 # 200% x 15,650 / 12 and needs a tolerance the whole-dollar states do not.
 CO_LIMIT_ON_2025_GUIDELINES = 15_650 / 12 * 2
 CENT = 0.01
+# Arizona stays on the October cycle, so both standards derive from the
+# 2025 guidelines: 185% x 1,304.17 = 2,412.71 and 200% x 1,304.17 =
+# 2,608.33, each rounded up. CNAP publishes 2,610 for the 200% standard
+# because it applies the rate to the whole-dollar guideline; that
+# derivation is tracked separately and is not modeled here.
+AZ_LIMIT_AT_185_PERCENT = 2_413
+AZ_LIMIT_AT_200_PERCENT = 2_609
 
 
-def one_person_limit(state_code, period, year=2026):
+def one_person_limit(state_code, period, year=2026, elderly=False):
     from policyengine_us import Simulation
 
+    age = 70 if elderly else 30
     situation = {
-        "people": {"person1": {"age": {year: 30}}},
+        "people": {"person1": {"age": {year: age}}},
         "spm_units": {"spm_unit": {"members": ["person1"]}},
         "households": {
             "household": {
@@ -55,6 +63,20 @@ def test_wa_limit_holds_the_new_guidelines_through_september():
     # standard, which already moved in April.
     for month in ["04", "05", "09", "10", "12"]:
         assert one_person_limit("WA", f"2026-{month}") == WA_LIMIT_ON_2026_GUIDELINES
+
+
+def test_az_raises_the_standard_to_200_percent_in_march_2026():
+    # "Starting the benefit month of 03/2026, the gross income limit for
+    # the NA Expanded Categorical Eligibility changed from 185% of the
+    # FPL to 200% of the FPL." February is still on the 185% standard.
+    assert one_person_limit("AZ", "2026-02") == AZ_LIMIT_AT_185_PERCENT
+    assert one_person_limit("AZ", "2026-03") == AZ_LIMIT_AT_200_PERCENT
+
+
+def test_az_applies_the_new_standard_to_elderly_or_disabled_households():
+    # The March 2026 increase raises the elderly or disabled standard
+    # too, so an elderly household sees the same 200% limit.
+    assert one_person_limit("AZ", "2026-03", elderly=True) == AZ_LIMIT_AT_200_PERCENT
 
 
 def test_wa_leads_october_cycle_states_between_april_and_september():
