@@ -1,3 +1,10 @@
+## [1.789.0] - 2026-08-07
+
+### Added
+
+- Add FNS FY2025 Q1 partial-state ABAWD waiver county coverage with litigation-aware termination dates.
+
+
 ## [1.788.0] - 2026-08-07
 
 ### Added
