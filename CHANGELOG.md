@@ -1,3 +1,24 @@
+## [1.790.0] - 2026-08-07
+
+### Added
+
+- Added Montana's unemployment compensation subtraction for tax years before 2024, when SB 399 repealed the exemption; previously unemployment income was incorrectly taxed by Montana and inflated Montana-taxable Social Security.
+
+
+## [1.789.2] - 2026-08-07
+
+### Fixed
+
+- Count reported SNAP and WIC receipt toward categorical eligibility in the school meals, Lifeline, ACP, MA MBTA reduced fare, CA CARE, TX DART, and Pell Grant simplified formula program lists.
+
+
+## [1.789.1] - 2026-08-07
+
+### Fixed
+
+- Model Alaska's SNAP ABAWD good-faith-effort exemption (7 U.S.C. 2015(o)(7)) as a separate window overlay: Alaska adopts HR1 statewide from 2025-11-01 (keeping the new Alaska Native/Indian exception in effect), and during 2025-11-01 through 2026-10-31 temporarily retains only the approved pre-HR1 exceptions (ages 56-64, households with children aged 14-17, veterans, people experiencing homelessness, and former foster youth aged 18-24) on top of the post-HR1 exception set, rather than deferring the statewide HR1 toggle.
+
+
 ## [1.789.0] - 2026-08-07
 
 ### Added

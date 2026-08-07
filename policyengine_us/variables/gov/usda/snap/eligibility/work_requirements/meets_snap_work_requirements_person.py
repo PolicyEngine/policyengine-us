@@ -29,14 +29,24 @@ class meets_snap_work_requirements_person(Variable):
         # threshold to 14 ("a parent or other member of a household with
         # responsibility for a dependent child under 14"), implemented
         # household-wide.
-        # The threshold differs: pre-HR1 (18) vs post-HR1 (14).
+        # The threshold differs: pre-HR1 (18) vs post-HR1 (14). During an
+        # approved good-faith-effort exemption window (7 U.S.C. 2015(o)(7);
+        # currently Alaska, 2025-11-01 through 2026-10-31), the State
+        # temporarily retains the pre-HR1 dependent-child threshold (18), so a
+        # household with a child aged 14-17 keeps the exemption even though HR1
+        # is otherwise in effect.
         hr1_in_effect = person("is_snap_abawd_hr1_in_effect", period)
+        in_good_faith_window = person(
+            "is_snap_abawd_in_good_faith_exemption_window", period
+        )
         p = parameters(period).gov.usda.snap.work_requirements.abawd.age_threshold
         # Snapshot pre-HR1 values (last month before 2025-07-04 effective date).
         p_pre = parameters(
             "2025-06-01"
         ).gov.usda.snap.work_requirements.abawd.age_threshold
-        dep_threshold = where(hr1_in_effect, p.dependent, p_pre.dependent)
+        dep_threshold = where(
+            hr1_in_effect & ~in_good_faith_window, p.dependent, p_pre.dependent
+        )
         age = person("monthly_age", period)
         is_household_child = age < dep_threshold
         no_household_child = person.spm_unit.sum(is_household_child) == 0
