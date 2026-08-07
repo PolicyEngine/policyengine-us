@@ -1,4 +1,7 @@
-- name: Georgia PeachCare tier 1 tax unit with one child pays 11 dollars monthly.
+# 2025 sits entirely within the schedule that took effect on 2024-10-01, so
+# every month carries the same premium and the calendar year is twelve times
+# the monthly amount.
+- name: Georgia PeachCare tier 1 tax unit with one child pays 11 dollars in every month of 2025.
   period: 2025
   input:
     people:
@@ -14,7 +17,11 @@
         members: [child]
         state_code: GA
   output:
-    ga_chip_premium: 132
+    ga_chip_premium:
+      2025-01: 11
+      2025-07: 11
+      2025-12: 11
+      2025: 132 # 12 x 11
 
 - name: Georgia PeachCare tier 1 tax unit with three children is capped at 16 dollars monthly.
   period: 2025
