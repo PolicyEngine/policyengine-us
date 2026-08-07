@@ -663,3 +663,120 @@
   output:
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
+
+# Approval boundaries. Massachusetts, Pennsylvania, and Arizona represent the
+# three corrected FY2024/FY2025 county-waiver schedules.
+
+- name: Case 39, MA waiver starts in July 2024.
+  period: 2024
+  input:
+    state_code: MA
+    county_fips: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-06: false
+      2024-07: true
+
+- name: Case 40, MA waiver ends in July 2025.
+  period: 2025
+  input:
+    state_code: MA
+    county_fips: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 41, PA waiver starts in September 2024.
+  period: 2024
+  input:
+    state_code: PA
+    county_fips: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-08: false
+      2024-09: true
+
+- name: Case 42, PA waiver ends in September 2025.
+  period: 2025
+  input:
+    state_code: PA
+    county_fips: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-08: true
+      2025-09: false
+
+- name: Case 43, AZ waiver starts in October 2024.
+  period: 2024
+  input:
+    state_code: AZ
+    county_fips: "04001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-09: false
+      2024-10: true
+
+- name: Case 44, AZ waiver ends in October 2025.
+  period: 2025
+  input:
+    state_code: AZ
+    county_fips: "04001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-09: true
+      2025-10: false
+
+# Replacement approvals effective July 1, 2025. Minnesota adds Norman County
+# and removes Lake County. North Dakota removes Bottineau County but retains
+# Rolette County.
+
+- name: Case 45, MN replacement waiver adds Norman County.
+  period: 2025
+  input:
+    state_code: MN
+    county_fips: "27107"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: false
+      2025-07: true
+
+- name: Case 46, MN replacement waiver removes Lake County.
+  period: 2025
+  input:
+    state_code: MN
+    county_fips: "27075"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 47, ND waiver starts in July 2024.
+  period: 2024
+  input:
+    state_code: ND
+    county_fips: "38009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-06: false
+      2024-07: true
+
+- name: Case 48, ND replacement waiver removes Bottineau County.
+  period: 2025
+  input:
+    state_code: ND
+    county_fips: "38009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 49, ND replacement waiver retains Rolette County.
+  period: 2025
+  input:
+    state_code: ND
+    county_fips: "38079"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: true

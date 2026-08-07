@@ -1,0 +1,21 @@
+description: Counties in North Dakota with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - BOTTINEAU_COUNTY_ND # FIPS 38009
+    - PIERCE_COUNTY_ND # FIPS 38069
+    - ROLETTE_COUNTY_ND # FIPS 38079
+  2025-07-01:
+    - ROLETTE_COUNTY_ND # FIPS 38079
+  2026-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in North Dakota
+  reference:
+    - title: USDA FNS North Dakota FY 2024 ABAWD Waiver Response
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/nd-abawd-response-fy2024.pdf
+    - title: USDA FNS North Dakota FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nd-abawd-response-fy2025.pdf
