@@ -33,23 +33,13 @@ class tanf_non_cash_gross_income_limit(Variable):
         )
         gross_limit = where(ny, ny_gross_limit, gross_limit)
 
-        # Dollar standards derive from the guideline vintage each state's
-        # BBCE schedule selects (fpg_year_start_month) and follow the
-        # rounding of the state's published chart: rounded up
-        # (rounded_up_standard_states), to the nearest whole dollar
-        # (whole_dollar_standard_states), or down
-        # (rounded_down_standard_states).
+        # The standard is the state's percentage of the poverty guideline
+        # vintage its BBCE schedule selects (fpg_year_start_month). The
+        # rounding each state applies when publishing its chart is a
+        # feature of that chart, not of the regulation: categorically
+        # eligible households are exempt from the 7 CFR 273.9 income
+        # standards, so the rounding 273.9(a)(3) prescribes for the
+        # federal tests does not reach this limit. Return the exact
+        # computation rather than assert an unlegislated convention.
         fpg = spm_unit("tanf_non_cash_fpg", period)
-        raw_limit = gross_limit * fpg
-        rounded_up = np.isin(state, limits.rounded_up_standard_states)
-        whole_dollar = np.isin(state, limits.whole_dollar_standard_states)
-        rounded_down = np.isin(state, limits.rounded_down_standard_states)
-        return select(
-            [rounded_up, whole_dollar, rounded_down],
-            [
-                np.ceil(raw_limit),
-                np.floor(raw_limit + 0.5),
-                np.floor(raw_limit),
-            ],
-            default=raw_limit,
-        )
+        return gross_limit * fpg
