@@ -1,3 +1,30 @@
+# Premiums were suspended during the COVID public health emergency and
+# resumed on 2024-10-01, so 2024 spans the boundary: September carries no
+# premium, October carries the tier 1 amount, and the calendar year is three
+# times the monthly amount.
+- name: Georgia PeachCare tier 1 tax unit pays nothing in September 2024 and 11 dollars from October 2024.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: GA
+  output:
+    ga_chip_premium:
+      2024-01: 0
+      2024-09: 0
+      2024-10: 11
+      2024-12: 11
+      2024: 33 # 3 x 11
+
 # 2025 sits entirely within the schedule that took effect on 2024-10-01, so
 # every month carries the same premium and the calendar year is twelve times
 # the monthly amount.

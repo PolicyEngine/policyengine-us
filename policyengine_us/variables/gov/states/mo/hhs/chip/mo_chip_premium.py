@@ -39,8 +39,10 @@ class mo_chip_premium(Variable):
         # dollars explicitly.
         # tax_unit_medicaid_income_level divides income by an FPG that
         # counts children a pregnant member is expected to deliver;
-        # multiply by that same FPG to recover monthly dollar income.
-        income_fpg = fpg(family_size + pregnant_count, state_group, period, parameters)
+        # multiply by that same FPG to recover monthly dollar income. Read it
+        # at the year so it resolves at the same instant as the annual income
+        # level's divisor and the round-trip cancels exactly.
+        income_fpg = fpg(family_size + pregnant_count, state_group, year, parameters)
         # Missouri keys the Appendix E chart on the CHIP child's MAGI
         # household size, which counts a pregnant member as one person -
         # the unborn child counts only in the pregnant member's own
