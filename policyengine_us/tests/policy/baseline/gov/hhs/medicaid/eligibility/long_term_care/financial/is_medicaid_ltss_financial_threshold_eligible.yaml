@@ -1,0 +1,163 @@
+- name: MMMNA does not convert above-SIL applicant income into eligibility.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 3_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 0
+    medicaid_ltss_community_spouse_shelter_expenses: 3_000
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    medicaid_ltss_mmmna: 4_066.50
+    is_medicaid_ltss_income_eligible: false
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Identical facts produce state-specific TX, DE, and WA home-equity results.
+  period: 2026-07
+  input:
+    people:
+      texas:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_500
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_home_market_value: 800_000
+        medicaid_ltss_home_ownership_share: 1
+      delaware:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_500
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_home_market_value: 800_000
+        medicaid_ltss_home_ownership_share: 1
+      washington:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_500
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_home_market_value: 800_000
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    marital_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    spm_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    households:
+      texas:
+        members: [texas]
+        state_code:
+          2026: TX
+      delaware:
+        members: [delaware]
+        state_code:
+          2026: DE
+      washington:
+        members: [washington]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
+    is_medicaid_ltss_income_eligible: [true, true, true]
+    medicaid_ltss_csra_resource_eligible: [true, true, true]
+    medicaid_ltss_home_equity_eligible: [false, false, true]
+    is_medicaid_ltss_financial_threshold_eligible: [false, false, true]
+
+- name: Vectorized assistance units and explicit ownership inputs remain separate.
+  period: 2026-07
+  input:
+    people:
+      single:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_home_market_value: 900_000
+        medicaid_ltss_home_encumbrances: 200_000
+        medicaid_ltss_home_ownership_share: 1
+      couple:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_qit_adjusted_income: 5_000
+        medicaid_ltss_countable_resources: 3_000
+        medicaid_ltss_home_market_value: 1_600_000
+        medicaid_ltss_home_ownership_share: 0.5
+      community_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_countable_resources: 50_000
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_home_market_value: 1_500_000
+        medicaid_ltss_home_ownership_share: 0.5
+    tax_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    marital_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    spm_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    households:
+      single:
+        members: [single]
+        state_code:
+          2026: TX
+      couple:
+        members: [couple]
+        state_code:
+          2026: TX
+      community_spouse:
+        members: [community_spouse]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
+    is_medicaid_ltss_income_eligible: [true, true, true]
+    medicaid_ltss_csra_resource_eligible: [true, true, true]
+    medicaid_ltss_home_equity_eligible: [true, false, true]
+    is_medicaid_ltss_financial_threshold_eligible: [true, false, true]

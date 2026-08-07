@@ -1,0 +1,135 @@
+- name: Texas institutional assistance unit of one uses the special income pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+
+- name: Delaware institutional assistance unit of one uses the special income pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+
+- name: Washington institutional income at the special income limit uses that pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_982
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+
+- name: Washington institutional income above the special income limit uses medically needy.
+  period: 2026-07
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_983
+  output:
+    medicaid_ltss_financial_pathway: INSTITUTIONAL_MEDICALLY_NEEDY
+
+- name: Washington COPES income at the special income limit uses that pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: HCBS
+    medicaid_ltss_waiver: WA_COPES
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_982
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+
+- name: Washington named HCBS waivers vectorize across the income pathway boundary.
+  period: 2026-07
+  input:
+    people:
+      new_freedom_applicant:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_waiver: WA_NEW_FREEDOM
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_982
+      rsw_applicant:
+        medicaid_ltss_setting: HCBS
+        medicaid_ltss_waiver: WA_RSW
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_medically_needy_expenses: 500
+        medicaid_ltss_cost_of_care: 2_506
+    families:
+      new_freedom_family:
+        members: [new_freedom_applicant]
+      rsw_family:
+        members: [rsw_applicant]
+    marital_units:
+      new_freedom_marital_unit:
+        members: [new_freedom_applicant]
+      rsw_marital_unit:
+        members: [rsw_applicant]
+    tax_units:
+      new_freedom_tax_unit:
+        members: [new_freedom_applicant]
+      rsw_tax_unit:
+        members: [rsw_applicant]
+    spm_units:
+      new_freedom_spm_unit:
+        members: [new_freedom_applicant]
+      rsw_spm_unit:
+        members: [rsw_applicant]
+    households:
+      new_freedom_household:
+        members: [new_freedom_applicant]
+        state_code:
+          2026: WA
+      rsw_household:
+        members: [rsw_applicant]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      - SPECIAL_INCOME
+      - INSTITUTIONAL_MEDICALLY_NEEDY
+    is_medicaid_ltss_income_eligible: [true, true]
+
+- name: Washington unknown HCBS waiver is unmodeled and fails every financial screen.
+  period: 2026-07
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: HCBS
+    medicaid_ltss_waiver: UNKNOWN
+    medicaid_ltss_assistance_unit_size: 1
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    is_medicaid_ltss_income_eligible: false
+    medicaid_ltss_csra_resource_eligible: false
+    medicaid_ltss_home_equity_eligible: false
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Texas HCBS cannot use a Washington named waiver pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: HCBS
+    medicaid_ltss_waiver: WA_COPES
+    medicaid_ltss_assistance_unit_size: 1
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    is_medicaid_ltss_financial_threshold_eligible: false
