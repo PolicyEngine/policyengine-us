@@ -142,3 +142,33 @@
     wic: 0
   output:
     is_acp_eligible: true
+
+- name: Family reporting SSI receipt with a zero modeled payment is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    medicaid_enrolled: false
+    ebb: 0
+    pell_grant: 0
+    fcc_fpg_ratio: 2.1
+    wic: 0
+  output:
+    is_acp_eligible: true
+
+- name: Tribal family reporting TANF receipt with a zero modeled benefit is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    head_start: 0
+    fdpir: 0
+    tanf: 0
+    receives_tanf: true
+    ebb: 0
+    pell_grant: 0
+    is_on_tribal_land: true
+    fcc_fpg_ratio: 2.1
+    wic: 0
+  output:
+    is_acp_eligible: true
