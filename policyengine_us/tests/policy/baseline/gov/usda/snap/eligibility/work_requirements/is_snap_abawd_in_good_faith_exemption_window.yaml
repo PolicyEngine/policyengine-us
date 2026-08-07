@@ -1,0 +1,58 @@
+# Alaska's 7 U.S.C. 2015(o)(7) good-faith-effort exemption window runs
+# 2025-11-01 through 2026-10-31. Only Alaska currently has an approved
+# window; every other state resolves to false. state_code is a YEAR
+# variable read via period.this_year, so non-January month periods take
+# year-keyed inputs (2026: AK) to avoid a period-parsing error.
+
+- name: Case 1, AK before the window opens.
+  period: 2025-10
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: false
+
+- name: Case 2, AK at the window start date.
+  period: 2025-11
+  input:
+    state_code:
+      2025: AK
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: true
+
+- name: Case 3, AK during the window.
+  period: 2026-01
+  input:
+    state_code: AK
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: true
+
+- name: Case 4, AK in the last month of the window.
+  period: 2026-10
+  input:
+    state_code:
+      2026: AK
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: true
+
+- name: Case 5, AK after the window closes.
+  period: 2026-11
+  input:
+    state_code:
+      2026: AK
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: false
+
+- name: Case 6, a contiguous state is never in a good-faith window.
+  period: 2026-01
+  input:
+    state_code: TX
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: false
+
+- name: Case 7, Hawaii has no approved good-faith window.
+  period: 2026-01
+  input:
+    state_code: HI
+  output:
+    is_snap_abawd_in_good_faith_exemption_window: false

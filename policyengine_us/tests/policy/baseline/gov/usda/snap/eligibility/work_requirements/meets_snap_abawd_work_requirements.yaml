@@ -668,3 +668,238 @@
     is_disabled: false
   output:
     meets_snap_abawd_work_requirements: true
+
+# =====================================================
+# Alaska good-faith exemption window - 7 U.S.C. 2015(o)(7)
+# 2025-11-01 through 2026-10-31.
+# HR1 is in effect for Alaska from 2025-11-01, so during the window the
+# post-HR1 exception set (including the new Alaska Native/Indian exception)
+# applies PLUS the temporarily-retained pre-HR1 categories: ages 56-64,
+# households with children aged 14-17 (see meets_snap_work_requirements.yaml),
+# veterans, homeless individuals, and former foster youth aged 18-24.
+# These cases pin the Municipality of Anchorage (county_fips "02020"), which
+# is NOT in the area waiver, so they exercise the exemption logic rather than
+# the geographic waiver. Without county input Alaska falls back to the
+# alphabetically-first borough (Aleutians East), which IS waived and would
+# bypass this logic (Case 58 keeps that regression). Non-January month
+# periods take year-keyed inputs to avoid a period-parsing error.
+
+- name: Case 44, Anchorage age 60 exempt via the retained 56-64 band during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 45, Anchorage age 60 not exempt after the window closes (post-HR1 65+ only).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 60
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 46, Anchorage age 60 exempt in the last month of the window (2026-10 boundary).
+  period: 2026-10
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 60
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 47, Anchorage age 55 NOT exempt during the window (retained band starts at 56).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 55
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 48, Anchorage age 56 exempt during the window (retained band floor).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 56
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 49, Anchorage healthy non-working adult age 30 NOT exempt during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 50, Anchorage veteran age 30 exempt during the window (retained category).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_veteran: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 51, Anchorage veteran age 30 NOT exempt after the window (HR1 removed the veteran exception).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_veteran:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 52, Anchorage homeless person age 30 exempt during the window (retained category).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_homeless: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 53, Anchorage former foster youth age 22 exempt during the window (retained category).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 22
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    was_in_foster_care: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 54, Anchorage former foster youth age 22 NOT exempt after the window.
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 22
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    was_in_foster_care:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 55, Anchorage Alaska Native/Indian person age 30 exempt during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 56, Anchorage Alaska Native/Indian person age 30 still exempt after the window (permanent HR1 exception).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_snap_abawd_indian_exempt:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 57, Anchorage age 57 exempt before AK adoption (pre-HR1 55+ still applies).
+  period: 2025-10
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 57
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: AK
+    county_fips:
+      2025: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 58, non-Anchorage waived borough healthy adult exempt via the area waiver during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02013"
+  output:
+    meets_snap_abawd_work_requirements: true
