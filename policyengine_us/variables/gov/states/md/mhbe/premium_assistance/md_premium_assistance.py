@@ -25,7 +25,7 @@ class md_premium_assistance(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("aca_magi", period)
+        income = max_(tax_unit("aca_magi", period), 0)
         federal_percentage = tax_unit("aca_required_contribution_percentage", period)
         md_percentage = tax_unit(
             "md_premium_assistance_target_contribution_percentage", period

@@ -94,3 +94,36 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 850
+
+- name: Case 8, DERIVED Maryland Premium Assistance aggregates into the household total.
+  # A real MD tax unit (single age 40 at 250% FPL) with the ACA intermediates
+  # supplied so md_premium_assistance is DERIVED by the model rather than forced:
+  # gap = (0.0844 - 0.0622) * 39_125 = 868.575 -> 868.58. Other health components
+  # zeroed so the household total equals the derived MD subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 3_500
+        assigned_aca_ptc: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 868.58
+    healthcare_benefit_value: 868.58  # 0.0222 * 39_125 = 868.575 (derived, verified)

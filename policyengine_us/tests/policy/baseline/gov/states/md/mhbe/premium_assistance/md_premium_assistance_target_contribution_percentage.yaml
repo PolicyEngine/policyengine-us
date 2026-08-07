@@ -404,3 +404,84 @@
         state_code: MD
   output:
     md_premium_assistance_target_contribution_percentage: 0.0598
+
+- name: Case 21, mid 150-200% band (1.75) -> 1.00% (interpolation midpoint, no YAS).
+  # bracket [1.50, 2.00]: 0 + (1.75-1.50)/0.50 * (0.02-0) = 0.5 * 0.02 = 0.01.
+  # Pins the typo-reconciled final=2.00% at 200% FPL via the midpoint.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.01
+
+- name: Case 22, just below 200% FPL (1.99) -> 1.96% (top of 150-200% ramp).
+  # bracket [1.50, 2.00]: 0 + (1.99-1.50)/0.50 * 0.02 = 0.98 * 0.02 = 0.0196.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.99
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0196
+
+- name: Case 23, age 36 young adult at 250% FPL -> 5.22% (6.22% - 1.0pp through the subtraction).
+  # base target 0.0622 (start of 250-300% band) minus the age-36 reduction 0.01.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0522
+
+- name: Case 24, age 37 young adult at 250% FPL -> 5.72% (6.22% - 0.5pp through the subtraction).
+  # base target 0.0622 (start of 250-300% band) minus the age-37 reduction 0.005.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 37
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0572

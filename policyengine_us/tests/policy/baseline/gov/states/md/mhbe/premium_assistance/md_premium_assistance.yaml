@@ -428,3 +428,108 @@
         state_code: MD
   output:
     md_premium_assistance: 929.61
+
+- name: Case 18, interior interpolation in the 300-400% band with a DERIVED target %.
+  # aca_magi_fraction 3.50 -> md_pct interpolates initial[4]=0.0798 (at 3.0) to
+  # final[4]=0.0923 (at 4.0): position 0.5 -> 0.08605 (target % is NOT forced, so a
+  # target-% interpolation bug would surface here). federal 0.0996 supplied.
+  # gap = (0.0996 - 0.08605) * 54_775 = 0.01355 * 54_775 = 742.20125; cap
+  # (slcsp 8_000 - aca_ptc 3_000 = 5_000) not binding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 54_775
+        aca_magi_fraction: 3.50
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 8_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 742.20  # 0.01355 * 54_775 = 742.20125 (derived, verified)
+
+- name: Case 19, second in-effect year (2027) mirrors the 2026 250% FPL case -> 868.58.
+  # Same forced-input shape as Case 3 but at period 2027, proving the program is
+  # still in effect in its second plan year (distinct from the 2028 sunset).
+  # gap = (0.0844 - 0.0622) * 39_125 = 0.0222 * 39_125 = 868.575.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 3_500
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 868.58
+
+- name: Case 20, negative aca_magi -> subsidy floored at 0 (no sign-flip).
+  # Eligible (aca_magi_fraction 1.50 <= 400% FPL) but negative income yields a
+  # negative contribution gap: max(0, -8_000 * (0.0419 - 0)) = max(0, negative) = 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: -8_000
+        aca_magi_fraction: 1.50
+        aca_required_contribution_percentage: 0.0419
+        slcsp: 6_000
+        aca_ptc: 3_500
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 0
+
+- name: Case 21, young-adult floor drives target % to 0 -> subsidy uses full federal gap.
+  # Age 25 (2.5pp reduction) at 175% FPL where base target = 0.01 (interpolated
+  # 0%@1.5 -> 2%@2.0, position 0.5). 0.01 - 0.025 < 0 -> md_pct floors at 0.
+  # gap = (0.05 - 0) * 27_000 = 1_350; cap (6_000 - 3_000 = 3_000) not binding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 27_000
+        aca_magi_fraction: 1.75
+        aca_required_contribution_percentage: 0.05
+        slcsp: 6_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 1_350  # 0.05 * 27_000 = 1_350 (derived, verified)
