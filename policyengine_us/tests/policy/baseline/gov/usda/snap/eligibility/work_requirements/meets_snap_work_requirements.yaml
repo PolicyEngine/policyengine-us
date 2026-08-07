@@ -377,3 +377,79 @@
     # fails (in-band, no dependent child, not working), so the person fails and
     # the single-person SPM unit fails.
     meets_snap_work_requirements: false
+
+# Alaska good-faith exemption window (7 U.S.C. 2015(o)(7), 2025-11-01 through
+# 2026-10-31) temporarily restores the pre-HR1 dependent-child threshold (18),
+# so a household with a child aged 14-17 keeps the ABAWD exemption even though
+# HR1 is otherwise in effect for Alaska. After the window, the post-HR1
+# threshold (14) applies again. These cases inject the ABAWD/general sub-
+# results to isolate the household-child gate.
+- name: Case 18, AK window a member aged 15 restores the household-child exemption (threshold 18).
+  period: 2026-10
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        monthly_age:
+          2026-10: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements:
+          2026-10: true
+        meets_snap_abawd_work_requirements:
+          2026-10: false
+      # Age 15 is under the window-restored threshold of 18, so it waives the
+      # ABAWD test household-wide.
+      person2:
+        monthly_age:
+          2026-10: 15
+        is_tax_unit_dependent: true
+        meets_snap_general_work_requirements:
+          2026-10: true
+        meets_snap_abawd_work_requirements:
+          2026-10: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: AK
+  output:
+    meets_snap_work_requirements: true
+
+- name: Case 19, AK after the window a member aged 15 no longer waives ABAWD (threshold 14).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        monthly_age:
+          2026-11: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements:
+          2026-11: true
+        meets_snap_abawd_work_requirements:
+          2026-11: false
+      # Age 15 is at/above the post-HR1 threshold of 14 once the window closes,
+      # so it does not trigger the household-child exemption.
+      person2:
+        monthly_age:
+          2026-11: 15
+        is_tax_unit_dependent: true
+        meets_snap_general_work_requirements:
+          2026-11: true
+        meets_snap_abawd_work_requirements:
+          2026-11: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: AK
+  output:
+    # No household member under 14, so person1 must satisfy the ABAWD test,
+    # which is injected as false here.
+    meets_snap_work_requirements: false

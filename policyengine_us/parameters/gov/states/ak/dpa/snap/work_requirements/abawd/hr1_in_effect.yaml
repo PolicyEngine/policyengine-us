@@ -1,25 +1,31 @@
 # P.L. 119-21 grants Alaska preferential waiver authority (150% of the
 # national average unemployment threshold and good-faith exemptions)
-# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). FNS approved Alaska's
-# good-faith exemption effective 2025-11-01 through 2026-10-31, deferring
-# the HR1 ABAWD rules in all areas except the Municipality of Anchorage,
-# which applies them from 2025-11-01. The exemption determination is
-# area-based; Anchorage is the only Alaska area to which the HR1 rules
-# currently apply, and it holds roughly 40% of Alaska's population. This
-# statewide parameter approximates all of Alaska as exempt through the
-# window (treating the exemption as in effect for the ~60% of the
-# population outside Anchorage as well), because the Anchorage split
-# requires borough-level geography, tracked separately. Under
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Alaska adopts the HR1
+# ABAWD rules statewide from 2025-11-01 (its delayed-adoption date, the
+# same as Hawaii), so the new Alaska Native/Indian exception is in effect
+# from that date everywhere in Alaska, including the Municipality of
+# Anchorage. Two Alaska-specific overlays are modeled SEPARATELY rather
+# than by deferring this statewide toggle:
+#   1. The geographic good-faith area waiver (29 boroughs/census areas
+#      outside Anchorage waived through 2026-10-31, Anchorage excluded,
+#      cleared 2026-11-01) is carried by the abawd waived_counties
+#      parameter.
+#   2. The temporary retained pre-HR1 exceptions Alaska was approved to
+#      keep during the good-faith window (2025-11-01 through 2026-10-31)
+#      are carried by the good_faith_exemption parameters and applied on
+#      top of the post-HR1 exception set.
+# Keeping this toggle at 2025-11-01 (rather than deferring it to
+# 2026-11-01) preserves HR1's new Alaska Native/Indian exception and adds
+# only the approved temporary categories during the window, instead of
+# restoring the entire pre-HR1 exception set statewide. Under
 # 7 U.S.C. 2015(o)(7)(D)(i) (as amended by HR1) a good-faith exemption,
-# once granted, may be renewed but expires no later than 2028-12-31 and
-# may not be renewed beyond that date; the 2026-11-01 date assumes the
-# exemption is not renewed. Borough-level high-unemployment waivers are
-# not modeled here.
+# once granted, may be renewed but expires no later than 2028-12-31.
+# Borough-level high-unemployment waivers are not modeled here.
 description: Alaska implements the HR1 changes to Able-Bodied Adult Without Dependents work requirements under the Supplemental Nutrition Assistance Program when this is true.
 
 values:
   0000-01-01: false
-  2026-11-01: true
+  2025-11-01: true
 
 metadata:
   unit: bool
