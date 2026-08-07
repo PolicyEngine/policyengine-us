@@ -5,7 +5,9 @@ values:
     - medicaid_enrolled
     - is_medicare_eligible # medicare
     - wic
+    - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - tanf
     # Comprehensive Energy Assistance Program (CEAP)
     # Housing Choice Voucher Program (Section 8)
