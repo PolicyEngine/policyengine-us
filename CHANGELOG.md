@@ -1,3 +1,21 @@
+## [1.788.0] - 2026-08-07
+
+### Added
+
+- Add primary residence value and derive assessed property value from state assessment rates.
+
+
+## [1.787.0] - 2026-08-06
+
+### Added
+
+- NC SCCA (from 2024) and DC CCSP (from 2025) in the child care subsidies and household state benefits aggregates (via new `nc_child_care_subsidies` and `dc_child_care_subsidies` wrappers), and the NY additional CTC (2021 and 2023) and RI CTC (2027 onwards) in the state CTC aggregate.
+
+### Fixed
+
+- NY supplemental EITC in the state EITC aggregate (from 2019) and the Ohio CDCC in the state CDCC aggregate (from 2021), with structural tests guarding aggregate lists against undefined members, missing state gates, and silent year-block drops.
+
+
 ## [1.786.5] - 2026-08-05
 
 ### Fixed
