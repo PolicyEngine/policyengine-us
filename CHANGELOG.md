@@ -1,3 +1,10 @@
+## [1.788.0] - 2026-08-07
+
+### Added
+
+- Add primary residence value and derive assessed property value from state assessment rates.
+
+
 ## [1.787.0] - 2026-08-06
 
 ### Added
