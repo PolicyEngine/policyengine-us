@@ -1,0 +1,29 @@
+description: Oklahoma limits unemployment compensation benefits to this number of weeks within a benefit year under the Unemployment Insurance program.
+
+values:
+  # 40 O.S. §2-106(1) sets the times-WBA multiplier for the benefit-year cap.
+  # §1-231 sets the duration floor at 16 weeks from Jan. 1, 2025 (Laws 2024,
+  # c. 114 / HB 3596), escalating +2 weeks per 15,000-claim increment up to
+  # 20 weeks, and up to 26 weeks if continued claims exceed 40,000. The
+  # 16-to-26-week claim-volume escalator above the 16-week floor is not
+  # modeled, so 16 weeks remains operative for 2025 and 2026.
+  1980-07-01: 26
+  2023-01-01: 16
+
+metadata:
+  unit: week
+  period: year
+  label: Oklahoma UI maximum benefit weeks
+  reference:
+    - title: 40 O.S. §1-231
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=48
+    - title: 40 O.S. §1-231
+      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=492632
+    - title: 40 O.S. §2-106(1)
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=51
+    - title: 40 O.S. §2-106
+      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77166
+    - title: Oklahoma House Bill 1933 (2022)
+      href: https://www.oklegislature.gov/cf_pdf/2021-22%20ENR/hB/HB1933%20ENR.PDF
+    - title: Oklahoma House Bill 3596 (Laws 2024, c. 114), eff. 2024-11-01
+      href: https://www.oklegislature.gov/cf_pdf/2023-24%20ENR/hB/HB3596%20ENR.PDF
