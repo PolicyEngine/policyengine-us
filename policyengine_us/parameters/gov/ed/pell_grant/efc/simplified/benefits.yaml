@@ -5,10 +5,12 @@ values:
     - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - school_meal_net_subsidy
     - tanf
+    - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     - wic
     - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
     - medicaid_enrolled
     - ssi
+    - receives_ssi # Reported SSI receipt, for people the model gives a $0 payment.
 metadata:
   unit: list
   label: Qualifying benefits for EFC simplified formula
