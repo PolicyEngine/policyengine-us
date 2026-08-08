@@ -3,8 +3,8 @@
 Utility allowances are set per public housing agency (PHA) under 24 CFR 982.517,
 by dwelling-unit size (bedroom count) and utility/fuel type. There is no national
 dataset of these schedules, so this file encodes the schedules for the specific
-counties PolicyEngine currently models (LA County, the TDHCA service area in
-Texas, and four Kansas PHAs).
+counties PolicyEngine currently models (LA County; the TDHCA service area and
+seven metro PHAs in Texas; and six Kansas PHA jurisdictions).
 
 Each schedule is collapsed into a single monthly dollar amount per bedroom size
 using one consistent convention, matching how LA County was originally modeled:
