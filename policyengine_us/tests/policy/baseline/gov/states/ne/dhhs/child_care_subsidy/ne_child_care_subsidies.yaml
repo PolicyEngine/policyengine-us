@@ -1,0 +1,8 @@
+- name: Case 1, monthly subsidy payments aggregate to the annual benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy: 1_200
+    state_code: NE
+  output:
+    ne_child_care_subsidies: 1_200

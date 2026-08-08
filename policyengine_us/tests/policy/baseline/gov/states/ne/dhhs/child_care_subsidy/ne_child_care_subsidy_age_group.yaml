@@ -1,0 +1,33 @@
+- name: Case 1, a child younger than 18 months is an infant.
+  period: 2026-01
+  input:
+    age: 1
+    state_code: NE
+  output:
+    ne_child_care_subsidy_age_group: INFANT
+
+- name: Case 2, a child at 18 months is a toddler.
+  period: 2026-01
+  input:
+    age: 1.5
+    state_code: NE
+  output:
+    ne_child_care_subsidy_age_group: TODDLER
+
+- name: Case 3, a child at 36 months not in school is preschool age.
+  period: 2026-01
+  input:
+    age: 3
+    is_in_k12_school: false
+    state_code: NE
+  output:
+    ne_child_care_subsidy_age_group: PRESCHOOL
+
+- name: Case 4, a school enrollee uses the school-age rate group.
+  period: 2026-01
+  input:
+    age: 6
+    is_in_k12_school: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_age_group: SCHOOL_AGE

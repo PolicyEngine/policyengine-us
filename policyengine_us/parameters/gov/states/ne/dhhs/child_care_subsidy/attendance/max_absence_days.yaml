@@ -1,0 +1,13 @@
+description: Nebraska permits a provider to bill at most this many authorized absence days per child each month under the Child Care Subsidy program.
+values:
+  2020-09-15: 5
+
+metadata:
+  unit: day
+  period: month
+  label: Nebraska Child Care Subsidy maximum billable absence days
+  reference:
+    - title: 392 NAC 3-004.01(A)(i)
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=23
+    - title: Nebraska Child Care Subsidy Rate Structure FAQ
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Rate%20Structure%20Frequently%20Asked%20Questions%20%28FAQ%29.pdf#page=1

@@ -1,0 +1,12 @@
+from policyengine_us.model_api import *
+
+
+class ne_child_care_subsidy_at_redetermination(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = MONTH
+    label = "Nebraska Child Care Subsidy redetermination status"
+    defined_for = StateCode.NE
+    reference = (
+        "https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB304.pdf#page=1",
+    )

@@ -1,0 +1,64 @@
+- name: Case 1, gross income below 100 percent FPL has no family fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 11_988
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_family_fee: 0
+
+- name: Case 2, gross income at 100 percent FPL has no family fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 12_000
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_family_fee: 0
+
+- name: Case 3, gross income above 100 percent FPL pays seven percent monthly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 12_012
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    # $1,001 monthly gross income * 7%.
+    ne_child_care_subsidy_family_fee: 70.07
+
+- name: Case 4, TANF enrollment waives the family fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    is_tanf_enrolled: true
+    ne_child_care_subsidy_gross_income: 24_000
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    # TANF waiver overrides the otherwise-applicable $140 monthly fee.
+    ne_child_care_subsidy_family_fee: 0
+
+- name: Case 5, categorical eligibility waives the family fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_categorical_waived: true
+    ne_child_care_subsidy_gross_income: 24_000
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    # Categorical waiver overrides the otherwise-applicable $140 monthly fee.
+    ne_child_care_subsidy_family_fee: 0
+
+- name: Case 6, negative gross income cannot produce a negative fee.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: -12_000
+    ne_child_care_subsidy_fpg: -2_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_family_fee: 0
