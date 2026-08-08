@@ -1,4 +1,4 @@
-description: County clusters for CCDF market rates
+description: New York assigned each county to a historical market-rate group under the Child Care Assistance Program.
 
 NASSAU_COUNTY_NY:
   2021-10-01: 1
@@ -8,7 +8,7 @@ ROCKLAND_COUNTY_NY:
   2021-10-01: 1
 SUFFOLK_COUNTY_NY:
   2021-10-01: 1
-WESCHESTER_COUNTY_NY:
+WESTCHESTER_COUNTY_NY:
   2021-10-01: 1
 COLUMBIA_COUNTY_NY:
   2021-10-01: 2
@@ -126,6 +126,9 @@ RICHMOND_COUNTY_NY:
   2021-10-01: 5
 
 metadata:
+  unit: int
+  period: year
+  label: New York CCAP historical county group
   reference:
-    - title: Child Care Market Rates 2019 - New York State
-      href: https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.docx
+    - title: 19-OCFS-LCM-23 Attachment A
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=13

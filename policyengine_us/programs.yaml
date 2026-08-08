@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WV
     state_implementations:
       - state: AK
         status: complete
@@ -626,6 +626,13 @@ programs:
         full_name: Nevada Child Care and Development Program
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: NY
+        status: in_progress
+        name: CCAP
+        full_name: New York Child Care Assistance Program
+        variable: ny_ccap
+        parameter_prefix: gov.states.ny.ocfs.ccap
+        notes: Models federal eligibility with New York market rates and family share; household county proxies for provider county and unknown counties default to group 3; extended eligibility pathways, exemptions, excess-period payments, and payment differentials are not modeled
       - state: DC
         status: complete
         name: DC CCSP

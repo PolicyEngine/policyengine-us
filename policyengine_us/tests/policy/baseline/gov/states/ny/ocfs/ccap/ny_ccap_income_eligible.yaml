@@ -1,0 +1,37 @@
+- name: Case 1, income at three times the poverty guideline is eligible before October 2023.
+  period: 2023-01
+  input:
+    ccdf_income: 75_000
+    spm_unit_fpg: 25_000
+    state_code: NY
+  output:
+    # 300% of the state income standard (modeled as FPG): 3 * $25,000.
+    ny_ccap_income_eligible: true
+
+- name: Case 2, income above three times the poverty guideline is ineligible before October 2023.
+  period: 2023-01
+  input:
+    ccdf_income: 75_001
+    spm_unit_fpg: 25_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: false
+
+- name: Case 3, income at 85 percent of the state median income is eligible from October 2023.
+  period: 2025-01
+  input:
+    ccdf_income: 68_000
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    # NYS Register 05/01/2024 (p.12): limit is 85% of SMI, 0.85 * $80,000.
+    ny_ccap_income_eligible: true
+
+- name: Case 4, income above 85 percent of the state median income is ineligible from October 2023.
+  period: 2025-01
+  input:
+    ccdf_income: 68_001
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: false

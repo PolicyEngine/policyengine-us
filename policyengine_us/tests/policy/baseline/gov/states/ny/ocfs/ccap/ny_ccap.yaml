@@ -1,0 +1,80 @@
+- name: Case 1, actual expenses cap the subsidy before family share.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ccdf_eligible: true
+        ny_ccap_market_rate: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        ny_ccap_family_share: 100
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_ccap: 900
+  absolute_error_margin: 0.01
+
+- name: Case 2, market rates cap the subsidy before family share.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ccdf_eligible: true
+        ny_ccap_market_rate: 800
+      person2:
+        is_ccdf_eligible: true
+        ny_ccap_market_rate: 700
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        ny_ccap_family_share: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_ccap: 1_400
+  absolute_error_margin: 0.01
+
+- name: Case 3, ineligible children receive no subsidy.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ccdf_eligible: false
+        ny_ccap_market_rate: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        ny_ccap_family_share: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_ccap: 0
+
+- name: Case 4, family share cannot make the subsidy negative.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        is_ccdf_eligible: true
+        ny_ccap_market_rate: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+        ny_ccap_family_share: 150
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_ccap: 0
