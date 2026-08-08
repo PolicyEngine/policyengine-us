@@ -516,12 +516,16 @@ programs:
         variable: hi_ccap
         parameter_prefix: gov.states.hi.bessd.ccap
       - state: IL
-        status: complete
+        status: partial
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
-        variable: il_ccap_eligible
+        variable: il_ccap
         parameter_prefix: gov.states.il.dhs.ccap
-        notes: Only includes eligibility rules
+        notes: >-
+          Models eligibility, family copayments, and ordinary care payments
+          capped at base provider rates; quality and seniority add-ons, paid
+          leave, longitudinal reassessment history, and provider allocation are
+          not modeled
       - state: ID
         status: complete
         name: ICCP

@@ -52,3 +52,14 @@
     state_code: IL 
   output: 
     il_ccap_eligible_child: false
+
+- name: Case 6, an undocumented dependent child remains program eligible.
+  period: 2026-01
+  input:
+    age: 8
+    immigration_status: UNDOCUMENTED
+    is_tax_unit_dependent: true
+    state_code: IL
+  output:
+    il_ccap_immigration_status_eligible_person: false
+    il_ccap_eligible_child: true

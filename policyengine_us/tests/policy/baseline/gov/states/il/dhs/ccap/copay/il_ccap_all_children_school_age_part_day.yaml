@@ -1,0 +1,81 @@
+- name: Case 1, one school-age student in positive part-day care qualifies.
+  period: 2026-01
+  input:
+    age: 8
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+    childcare_hours_per_day: 4
+    state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: true
+
+- name: Case 2, exactly five hours is full-day care and does not qualify.
+  period: 2026-01
+  input:
+    age: 8
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+    childcare_hours_per_day: 5
+    state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: false
+
+- name: Case 3, a child below age five defeats the all-children test.
+  period: 2026-01
+  input:
+    age: 4
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+    childcare_hours_per_day: 4
+    state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: false
+
+- name: Case 4, the age-five lower boundary qualifies.
+  period: 2026-01
+  input:
+    age: 5
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+    childcare_hours_per_day: 4
+    state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: true
+
+- name: Case 5, no child in care does not qualify.
+  period: 2026-01
+  input:
+    age: 8
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+    childcare_hours_per_day: 0
+    state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: false
+
+- name: Case 6, one nonstudent defeats a two-child all-children test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        childcare_hours_per_day: 4
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_ccap_all_children_school_age_part_day: false

@@ -1,0 +1,254 @@
+- name: Case 1, 2025 family-size-two threshold minus one remains in the lowest band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_763
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 2, 2025 family-size-two exact threshold enters the next band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_764
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 3, 2025 family-size-two threshold plus one remains in the next band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_765
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 4, 2026 family-size-two exact threshold uses the updated table.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_804
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 5, 2025 family-size-five exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_139
+    spm_unit_fpg: 12_000
+    spm_unit_size: 5
+    state_code: IL
+  output:
+    il_ccap_copay: 31
+
+- name: Case 6, 2025 family-size-eight exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 4_514
+    spm_unit_fpg: 12_000
+    spm_unit_size: 8
+    state_code: IL
+  output:
+    il_ccap_copay: 45
+
+- name: Case 7, 2025 family-size-ten exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 5_430
+    spm_unit_fpg: 12_000
+    spm_unit_size: 10
+    state_code: IL
+  output:
+    il_ccap_copay: 54
+
+- name: Case 8, family size below two clamps to the size-two table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_764
+    spm_unit_fpg: 12_000
+    spm_unit_size: 1
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 9, family size above ten clamps to the size-ten table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 5_430
+    spm_unit_fpg: 12_000
+    spm_unit_size: 11
+    state_code: IL
+  output:
+    il_ccap_copay: 54
+
+- name: Case 10, January school-age part-day care halves the one-dollar cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_all_children_school_age_part_day: true
+    state_code: IL
+  output:
+    il_ccap_copay: 0.5
+
+- name: Case 11, annual testing captures nine Table B months and three summer Table A months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 12_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_all_children_school_age_part_day: true
+    state_code: IL
+  output:
+    # Jan-May and Sep-Dec: 9 * $0.50; Jun-Aug: 3 * $1.00.
+    il_ccap_copay: 7.5
+
+- name: Case 12, a qualifying child care worker receives a one-dollar copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_child_care_worker: true
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 13, child-only TANF exemption produces a zero copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_non_parent_relative_child_only_tanf: true
+    state_code: IL
+  output:
+    il_ccap_copay: 0
+
+- name: Case 14, zero exemption takes precedence over child care worker reduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_child_care_worker: true
+    il_ccap_protective_care_copay_exempt: true
+    state_code: IL
+  output:
+    il_ccap_copay: 0
+
+- name: Case 15, negative income receives the ordinary one-dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: -1
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 16, missing income receives the ordinary one-dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 17, annual school-age care exercises the May-June and August-September Table A boundaries.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 21_648
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    il_ccap_all_children_school_age_part_day: true
+    state_code: IL
+  output:
+    # Jan-May and Sep-Dec: 9 * $9; Jun-Aug: 3 * $18.
+    il_ccap_copay: 135
+
+- name: Case 18, 2025 annual copay exercises the July activation boundary.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 21_168
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    # Jan-Jun: inactive; Jul-Dec: 6 * $18 from the 2025 table.
+    il_ccap_copay: 108
+
+- name: Case 19, 2026 annual copay exercises the July Table A transition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 24_000
+    spm_unit_fpg: 12_000
+    spm_unit_size: 2
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $39 from 2025; Jul-Dec: 6 * $40 from 2026.
+    il_ccap_copay: 474
+
+- name: Case 20, 2026 family-size-five annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 38_688
+    spm_unit_fpg: 12_000
+    spm_unit_size: 5
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $31 from 2025; Jul-Dec: 6 * $32 from 2026.
+    il_ccap_copay: 378
+
+- name: Case 21, 2026 family-size-eight annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 55_728
+    spm_unit_fpg: 12_000
+    spm_unit_size: 8
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $45 from 2025; Jul-Dec: 6 * $46 from 2026.
+    il_ccap_copay: 546
+
+- name: Case 22, 2026 family-size-ten annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 67_092
+    spm_unit_fpg: 12_000
+    spm_unit_size: 10
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $54 from 2025; Jul-Dec: 6 * $56 from 2026.
+    il_ccap_copay: 660

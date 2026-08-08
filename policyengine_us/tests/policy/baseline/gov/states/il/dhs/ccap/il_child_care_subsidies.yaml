@@ -1,0 +1,9 @@
+- name: Case 1, Illinois annual subsidy flows through the state and federal aggregators.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap: 1_200
+    state_code: IL
+  output:
+    il_child_care_subsidies: 1_200
+    child_care_subsidies: 1_200

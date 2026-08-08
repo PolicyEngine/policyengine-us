@@ -1,0 +1,23 @@
+- name: Case 1, Cook County is in Group 1A.
+  period: 2026-01
+  input:
+    county_str: COOK_COUNTY_IL
+    state_code: IL
+  output:
+    il_ccap_county_group: GROUP_1A
+
+- name: Case 2, Champaign County is in Group 1B.
+  period: 2026-01
+  input:
+    county_str: CHAMPAIGN_COUNTY_IL
+    state_code: IL
+  output:
+    il_ccap_county_group: GROUP_1B
+
+- name: Case 3, Adams County is in Group 2.
+  period: 2026-01
+  input:
+    county_str: ADAMS_COUNTY_IL
+    state_code: IL
+  output:
+    il_ccap_county_group: GROUP_2
