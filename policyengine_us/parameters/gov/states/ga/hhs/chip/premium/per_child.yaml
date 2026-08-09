@@ -10,11 +10,13 @@ metadata:
       href: https://pamms.dhs.ga.gov/dfcs/medicaid/2194/
     - title: Georgia DCH PeachCare for Kids premiums and copays resume October 1, 2024
       href: https://dch.georgia.gov/announcement/2024-08-13/peachcare-kidsr-co-payments-and-premiums-resume-oct-1-2024
-# Premiums were suspended during the COVID public health emergency and
-# resumed on 2024-10-01. The explicit zero amounts before that date keep the
-# resumption values from being backdated over the suspension period; the
-# pre-suspension premium schedule is not yet modeled, so years before the
-# suspension also show a zero premium.
+    - title: Georgia DCH COVID-19 operations update (Spring 2021 Medicaid Fair), waiving all PeachCare for Kids premiums for the duration of the federal emergency
+      href: https://www.mmis.georgia.gov/portal/Portals/0/StaticContent/Public/ALL/NOTICES/Covid-19-%20Spring%20Medicaid%20Fair%202021%2020210325165058.pdf#page=12
+# DCH waived all PeachCare premiums during the COVID federal emergency and
+# resumed collecting them on 2024-10-01. The explicit zero amounts before
+# that date keep the resumption values from being backdated over the
+# suspension period; the pre-suspension premium schedule is not yet
+# modeled, so years before the suspension also show a zero premium.
 brackets:
   - threshold:
       2024-10-01: -.inf

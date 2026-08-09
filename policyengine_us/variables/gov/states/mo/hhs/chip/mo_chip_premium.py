@@ -47,7 +47,18 @@ class mo_chip_premium(Variable):
         # household size, which counts a pregnant member as one person -
         # the unborn child counts only in the pregnant member's own
         # household (DSS manual 1885.010.00 household example).
-        monthly_fpg = fpg(family_size, state_group, period, parameters) / MONTHS_IN_YEAR
+        # Each July edition of the chart derives its dollar boundaries from
+        # its issue year's January FPG and stays in force through the
+        # following June (the 07-25 chart's size-2 tier 1 floor is 1.5 x the
+        # 2025 FPG, and the 07-26 chart's is 1.5 x the 2026 FPG), so
+        # January-June months read the prior January's FPG.
+        if period.start.month >= 7:
+            chart_instant = f"{period.start.year}-01-01"
+        else:
+            chart_instant = f"{period.start.year - 1}-01-01"
+        monthly_fpg = (
+            fpg(family_size, state_group, chart_instant, parameters) / MONTHS_IN_YEAR
+        )
         p = parameters(period).gov.states.mo.hhs.chip.premium
         # The Appendix E chart sets each tier boundary at the FPL percentage
         # converted to monthly dollars and rounded up to the next whole

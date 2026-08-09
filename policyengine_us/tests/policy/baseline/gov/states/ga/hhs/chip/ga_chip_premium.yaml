@@ -74,6 +74,32 @@
   output:
     ga_chip_premium: 192
 
+# Manual 2194 charges no premium for children under age six, so only the
+# eight-year-old is counted.
+- name: Georgia PeachCare charges only the child aged six or older.
+  period: 2025
+  input:
+    people:
+      young_child:
+        age: 5
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      older_child:
+        age: 8
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [young_child, older_child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [young_child, older_child]
+        state_code: GA
+  output:
+    ga_chip_premium:
+      2025-01: 11
+
 - name: Georgia PeachCare below 134 percent FPL owes no premium.
   period: 2025
   input:

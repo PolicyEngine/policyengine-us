@@ -13,7 +13,8 @@ class ny_chip_premium(Variable):
         "as a fraction of the federal poverty line. Families above 400 "
         "percent FPL pay an uncapped statewide average full plan premium, "
         "because the actual premium varies by health plan. Defined monthly "
-        "because New York's schedule changes take effect in February."
+        "because schedule changes take effect mid-year, most recently the "
+        "October 2022 restructuring under SPA NY-22-0033."
     )
     definition_period = MONTH
     defined_for = StateCode.NY

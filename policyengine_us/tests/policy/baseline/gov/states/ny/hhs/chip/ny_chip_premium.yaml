@@ -1,9 +1,8 @@
-# New York's schedule changes take effect in February, so a calendar year
-# spans two schedules. The 2023 restructuring eliminated the 9 dollar tier and
-# raised the free threshold from 160 to 222 percent FPL, so a child at 180
-# percent FPL pays only for January 2023.
-- name: New York Child Health Plus charges 9 dollars for January 2023 only, before the February 2023 restructuring.
-  period: 2023
+# SPA NY-22-0033 (effective 2022-10-01) eliminated the 9 dollar tier and
+# raised the free threshold from 160 to 222 percent FPL mid-year, so a
+# child at 180 percent FPL pays only through September 2022.
+- name: New York Child Health Plus charges 9 dollars through September 2022 and nothing from October 2022.
+  period: 2022
   input:
     people:
       child:
@@ -19,14 +18,32 @@
         state_code: NY
   output:
     ny_chip_premium:
-      2023-01: 9
-      2023-02: 0
-      2023: 9
+      2022-09: 9
+      2022-10: 0
+      2022: 81 # 9 x 9
 
-# The 2026 schedule takes effect on 2026-02-17. Monthly resolution reads
-# parameters at the start of each month, so February 2026 still charges the
-# prior schedule and the new thresholds first bind in March 2026.
-- name: New York Child Health Plus at 222.5 percent FPL loses its 15 dollar premium when the 2026 thresholds bind in March.
+- name: New York Child Health Plus at 180 percent FPL owes nothing throughout 2023.
+  period: 2023
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium: 0
+
+# The 2026 income-levels chart keeps the CHPlus bands at 222/250/300/350
+# percent FPL, so a family just above 222 percent FPL pays 15 dollars in
+# every month of 2026.
+- name: New York Child Health Plus at 222.5 percent FPL pays 15 dollars per month throughout 2026.
   period: 2026
   input:
     people:
@@ -45,28 +62,10 @@
     ny_chip_premium:
       2026-01: 15
       2026-02: 15
-      2026-03: 0
-      2026: 30 # 2 x 15
+      2026-03: 15
+      2026: 180 # 12 x 15
 
-- name: New York Child Health Plus in 2022 charges 9 dollars per child between 160 and 222 percent FPL.
-  period: 2022
-  input:
-    people:
-      child:
-        is_chip_eligible: true
-        is_chip_eligible_child: true
-    tax_units:
-      tax_unit:
-        members: [child]
-        tax_unit_medicaid_income_level: 1.80
-    households:
-      household:
-        members: [child]
-        state_code: NY
-  output:
-    ny_chip_premium: 108
-
-- name: New York Child Health Plus below 223 percent FPL owes no premium in 2024 after 9 dollar tier elimination.
+- name: New York Child Health Plus below 222 percent FPL owes no premium in 2024 after 9 dollar tier elimination.
   period: 2024
   input:
     people:
