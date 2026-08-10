@@ -20,5 +20,6 @@ class healthcare_benefit_value(Variable):
         "assigned_aca_ptc",
         "basic_health_program",
         "co_omnisalud",
+        "md_premium_assistance",
         "or_healthier_oregon_cost",
     ]

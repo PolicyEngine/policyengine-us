@@ -54,3 +54,60 @@
   output:
     household_health_benefits: 4_234.8
     household_benefits: 4_234.8
+
+- name: Case 5, flag on includes forced Maryland Premium Assistance value.
+  # md_premium_assistance is registered in the household_health_benefits list
+  # (the second registration that feeds net income when the flag is on), so a
+  # forced $850 subsidy flows through to the household total. Other health
+  # components are zeroed so the total equals the MD subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    assigned_aca_ptc: 0
+    md_premium_assistance: 850
+    snap: 0
+  output:
+    household_health_benefits: 850
+    household_benefits: 850
+
+- name: Case 6, DERIVED Maryland Premium Assistance flows into net income with the flag on.
+  # A real MD tax unit (single age 40 at 250% FPL, self-consistent APTC) derives
+  # md_premium_assistance through the model; with the flag on it aggregates into
+  # household_health_benefits and thus household_benefits / net income, proving the
+  # second registration list carries the state subsidy through the pipeline.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        employment_income: 39_125
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698  # self-consistent: 6_000 - 0.0844*39_125
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 868.425  # COMAR .04B: max(0, (6_000 - 2_698) - 0.0622 * 39_125)
+    household_health_benefits: 868.425  # derived MD subsidy flows through the pipeline
+    household_benefits: 868.425  # carried into household_benefits / net income
