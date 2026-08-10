@@ -1,3 +1,10 @@
+## [1.790.3] - 2026-08-10
+
+### Fixed
+
+- Count reported SSI and TANF receipt toward categorical eligibility in the school meals, Lifeline, Pell Grant simplified formula, TX DART, IL IHWAP, DC POWER, CA CARE, CVRP increased rebate, and CalWORKs exempt MAP program lists.
+
+
 ## [1.790.2] - 2026-08-09
 
 ### Fixed
