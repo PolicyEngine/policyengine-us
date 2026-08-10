@@ -1,3 +1,10 @@
+## [1.791.0] - 2026-08-10
+
+### Added
+
+- Add Maryland Premium Assistance (State-Based Health Insurance Subsidies Program).
+
+
 ## [1.790.3] - 2026-08-10
 
 ### Fixed
