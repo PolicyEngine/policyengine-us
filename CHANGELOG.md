@@ -1,3 +1,17 @@
+## [1.790.2] - 2026-08-09
+
+### Fixed
+
+- Convert Georgia, Missouri, and New York CHIP premiums to monthly variables so mid-year schedule changes take effect, align Missouri's tier boundaries with the operative July-to-June Appendix E chart, re-date New York's premium restructuring to October 2022 per SPA NY-22-0033 and remove erroneous 2026 threshold entries, and exempt children under six and in foster care from Georgia's premium.
+
+
+## [1.790.1] - 2026-08-08
+
+### Fixed
+
+- Stop counting in-kind SNAP and WIC as income for the Massachusetts Senior Circuit Breaker credit, following the in-kind public assistance exclusion in M.G.L. c.62 s.6(k)(1); the conflicting DOR guidance is documented in the parameter file.
+
+
 ## [1.790.0] - 2026-08-07
 
 ### Added

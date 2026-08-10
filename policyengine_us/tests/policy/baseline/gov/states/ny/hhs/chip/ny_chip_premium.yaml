@@ -1,4 +1,7 @@
-- name: New York Child Health Plus in 2022 charges 9 dollars per child between 160 and 222 percent FPL.
+# SPA NY-22-0033 (effective 2022-10-01) eliminated the 9 dollar tier and
+# raised the free threshold from 160 to 222 percent FPL mid-year, so a
+# child at 180 percent FPL pays only through September 2022.
+- name: New York Child Health Plus charges 9 dollars through September 2022 and nothing from October 2022.
   period: 2022
   input:
     people:
@@ -14,9 +17,55 @@
         members: [child]
         state_code: NY
   output:
-    ny_chip_premium: 108
+    ny_chip_premium:
+      2022-09: 9
+      2022-10: 0
+      2022: 81 # 9 x 9
 
-- name: New York Child Health Plus below 223 percent FPL owes no premium in 2024 after 9 dollar tier elimination.
+- name: New York Child Health Plus at 180 percent FPL owes nothing throughout 2023.
+  period: 2023
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.80
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium: 0
+
+# The 2026 income-levels chart keeps the CHPlus bands at 222/250/300/350
+# percent FPL, so a family just above 222 percent FPL pays 15 dollars in
+# every month of 2026.
+- name: New York Child Health Plus at 222.5 percent FPL pays 15 dollars per month throughout 2026.
+  period: 2026
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 2.225
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_chip_premium:
+      2026-01: 15
+      2026-02: 15
+      2026-03: 15
+      2026: 180 # 12 x 15
+
+- name: New York Child Health Plus below 222 percent FPL owes no premium in 2024 after 9 dollar tier elimination.
   period: 2024
   input:
     people:
@@ -104,7 +153,9 @@
         members: [person1, person2, person3, person4]
         state_code: NY
   output:
-    ny_chip_premium: 12_966.72
+    ny_chip_premium: 12_966.72 # 12 x 4 x 270.14
+  # Summing twelve monthly premiums accumulates float32 rounding.
+  absolute_error_margin: 0.01
 
 - name: Case 6, New York Child Health Plus above 400 percent FPL with one child pays the per-child full premium.
   period: 2026
@@ -122,4 +173,6 @@
         members: [person1]
         state_code: NY
   output:
-    ny_chip_premium: 3_241.68
+    ny_chip_premium: 3_241.68 # 12 x 270.14
+  # Summing twelve monthly premiums accumulates float32 rounding.
+  absolute_error_margin: 0.01

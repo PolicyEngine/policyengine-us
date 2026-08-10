@@ -8,32 +8,47 @@ metadata:
   reference:
     - title: Georgia DFCS Medicaid Manual 2194, Premiums
       href: https://pamms.dhs.ga.gov/dfcs/medicaid/2194/
+    - title: Georgia DCH PeachCare for Kids premiums and copays resume October 1, 2024
+      href: https://dch.georgia.gov/announcement/2024-08-13/peachcare-kidsr-co-payments-and-premiums-resume-oct-1-2024
+    - title: Georgia DCH COVID-19 operations update (Spring 2021 Medicaid Fair), waiving all PeachCare for Kids premiums for the duration of the federal emergency
+      href: https://www.mmis.georgia.gov/portal/Portals/0/StaticContent/Public/ALL/NOTICES/Covid-19-%20Spring%20Medicaid%20Fair%202021%2020210325165058.pdf#page=12
+# DCH waived all PeachCare premiums during the COVID federal emergency and
+# resumed collecting them on 2024-10-01. The explicit zero amounts before
+# that date keep the resumption values from being backdated over the
+# suspension period; the pre-suspension premium schedule is not yet
+# modeled, so years before the suspension also show a zero premium.
 brackets:
   - threshold:
       2024-10-01: -.inf
     amount:
-      2024-10-01: 0
+      2015-01-01: 0
   - threshold:
       2024-10-01: 1.34
     amount:
+      2015-01-01: 0
       2024-10-01: 16
   - threshold:
       2024-10-01: 1.59
     amount:
+      2015-01-01: 0
       2024-10-01: 44
   - threshold:
       2024-10-01: 1.71
     amount:
+      2015-01-01: 0
       2024-10-01: 49
   - threshold:
       2024-10-01: 1.91
     amount:
+      2015-01-01: 0
       2024-10-01: 58
   - threshold:
       2024-10-01: 2.11
     amount:
+      2015-01-01: 0
       2024-10-01: 64
   - threshold:
       2024-10-01: 2.32
     amount:
+      2015-01-01: 0
       2024-10-01: 72
