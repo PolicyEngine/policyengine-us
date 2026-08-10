@@ -111,3 +111,40 @@
     md_premium_assistance: 868.425  # COMAR .04B: max(0, (6_000 - 2_698) - 0.0622 * 39_125)
     household_health_benefits: 868.425  # derived MD subsidy flows through the pipeline
     household_benefits: 868.425  # carried into household_benefits / net income
+
+- name: Case 7, New Mexico Premium Assistance flows into household health benefits.
+  # household_health_benefits sums gov.household.household_health_benefits, which
+  # lists assigned_nm_premium_assistance (the take-up-gated twin, default true).
+  # With the flag on and the household in NM, the assigned amount (900) enters
+  # household_health_benefits and thus household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nm_premium_assistance: 900
+    snap: 0
+  output:
+    assigned_nm_premium_assistance: 900
+    household_health_benefits: 900
+    household_benefits: 900
+
+- name: Case 8, take-up false keeps New Mexico Premium Assistance out of net income.
+  # takes_up_nm_premium_assistance_if_eligible false zeroes the assigned twin, so
+  # the raw 900 does NOT flow into household_health_benefits even with the flag on.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nm_premium_assistance: 900
+    takes_up_nm_premium_assistance_if_eligible: false
+    snap: 0
+  output:
+    assigned_nm_premium_assistance: 0
+    household_health_benefits: 0
+    household_benefits: 0

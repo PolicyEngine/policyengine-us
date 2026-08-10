@@ -1,16 +1,16 @@
-# Unit tests for base New Mexico Premium Assistance eligibility
-# (REQ-001/002/003/019). Eligible when: the program is in effect (PY2026-2027),
-# the household is in New Mexico, at least one tax-unit member is eligible for
-# the federal ACA premium tax credit (which embeds on-Marketplace enrollment,
-# the MFS exclusion, and the 100-400% FPL income test), and ACA MAGI is at or
-# below the 400% FPL limit. is_aca_ptc_eligible and aca_magi_fraction are
-# supplied directly so the gate logic is tested in isolation from the
-# premium-data lookup.
+# Unit tests for base New Mexico Premium Assistance eligibility.
+# Eligible when: the program is in effect (PY2026-2027), the household is in New
+# Mexico, at least one tax-unit member is eligible for the federal ACA premium
+# tax credit (which embeds on-Marketplace enrollment, the MFS exclusion, and the
+# 100-400% FPL income test), the tax unit files a federal return, and ACA MAGI
+# is at or below the 400% FPL limit. is_aca_ptc_eligible, aca_magi_fraction, and
+# tax_unit_is_filer are supplied directly so the gate logic is tested in
+# isolation from the premium-data lookup.
 # The >400% FPL Middle Income Household (MIH) band is exercised through the
 # nm_premium_assistance amount variable and integration.yaml, because
 # is_aca_ptc_eligible embeds the <=400% income test and is false above it.
 
-- name: Case 1, NM APTC-eligible unit at 250% FPL in 2026 is eligible.
+- name: Case 1, NM APTC-eligible filing unit at 250% FPL in 2026 is eligible.
   period: 2026
   input:
     people:
@@ -20,6 +20,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi_fraction: 2.50
     households:
       household:
@@ -28,7 +29,7 @@
   output:
     nm_premium_assistance_eligible: true
 
-- name: Case 2, NM unit above 400% FPL is base-ineligible (income cap, REQ-003).
+- name: Case 2, NM unit above 400% FPL is base-ineligible (income cap).
   # is_aca_ptc_eligible is false above 400% FPL in 2026, and the income cap also
   # fails; base NMPA does not apply (MIH handles the >400% band separately).
   period: 2026
@@ -58,6 +59,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi_fraction: 4.00
     households:
       household:
@@ -66,7 +68,7 @@
   output:
     nm_premium_assistance_eligible: true
 
-- name: Case 4, no federal-APTC-eligible member makes the unit ineligible (REQ-002).
+- name: Case 4, no federal-APTC-eligible member makes the unit ineligible.
   period: 2026
   input:
     people:
@@ -102,7 +104,7 @@
   output:
     nm_premium_assistance_eligible: false
 
-- name: Case 6, program not in effect in 2025 (before PY2026 start, REQ-019).
+- name: Case 6, program not in effect in 2025 (before PY2026 start).
   period: 2025
   input:
     people:
@@ -151,6 +153,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        tax_unit_is_filer: true
         aca_magi_fraction: 3.00
     households:
       household:
@@ -172,6 +175,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi_fraction: 0
     households:
       household:
@@ -190,6 +194,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi_fraction: 3.99
     households:
       household:
@@ -210,6 +215,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi_fraction: 2.50
     households:
       household:
@@ -218,7 +224,7 @@
   output:
     nm_premium_assistance_eligible: true
 
-- name: Case 12, just above the income cap (4.01) is base-ineligible (REQ-003).
+- name: Case 12, just above the income cap (4.01) is base-ineligible.
   # Income test is magi_frac <= 4.0; 4.01 fails it. Even with a directly-supplied
   # APTC-eligible member, the base band does not apply above 400% FPL.
   period: 2026
@@ -231,6 +237,30 @@
       tax_unit:
         members: [person1]
         aca_magi_fraction: 4.01
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: false
+
+# ---- Federal filing requirement gate (both gates now require tax_unit_is_filer) ----
+
+- name: Case 13, non-filer NM unit at 250% FPL is base-ineligible (filing gate).
+  # Every other base gate passes (is_aca_ptc_eligible true, magi_frac 2.50 <= 4.0,
+  # in NM, in effect) but tax_unit_is_filer is false, so the added federal filing
+  # requirement (IRC 36B(a)) fails. Filer twin is Case 1 (eligible).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: false
+        aca_magi_fraction: 2.50
     households:
       household:
         members: [person1]

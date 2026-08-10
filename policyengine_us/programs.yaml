@@ -1137,8 +1137,12 @@ programs:
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program
     category: Healthcare
-    agency: HCA
-    status: complete
+    # Base Premium Assistance and the Middle Income Household component are
+    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
+    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
+    # Native American Table 2 rates plus the Premium Buy-down.
+    agency: State
+    status: partial
     coverage: NM
     variable: nm_premium_assistance
     parameter_prefix: gov.states.nm.hca.premium_assistance

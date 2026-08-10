@@ -33,6 +33,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 22_500
         aca_magi_fraction: 1.50
         slcsp: 6_000
@@ -43,7 +44,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0
     nm_premium_assistance: 3_100
 
@@ -60,6 +61,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 31_300
         aca_magi_fraction: 2.00
         slcsp: 6_000
@@ -70,7 +72,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0
     nm_premium_assistance: 2_600
 
@@ -87,6 +89,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 39_125
         aca_magi_fraction: 2.50
         slcsp: 6_000
@@ -97,7 +100,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0.02
     nm_premium_assistance: 2_717.50
 
@@ -123,6 +126,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
+        tax_unit_is_filer: true
         aca_magi: 93_900
         aca_magi_fraction: 3.00
         slcsp: 18_000
@@ -133,7 +137,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0.05
     nm_premium_assistance: 5_305
 
@@ -153,6 +157,7 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+        tax_unit_is_filer: true
         aca_magi: 63_400
         aca_magi_fraction: 4.05
         slcsp: 6_000
@@ -163,13 +168,13 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
-    nm_mih_eligible: true
+    nm_premium_assistance_mih_eligible: true
     nm_premium_assistance: 611
 
 - name: Scenario 6, single age 55 at 500% FPL (MIH, 8.5% cap binds -> $0 floor).
   # magi_frac 5.0 > 4.0 -> MIH. 0.085*78_250 = 6_651.25 > slcsp 6_000.
   # amount = max(0, 6_000 - 0 - 6_651.25) = 0 (net premium capped at 8.5% is
-  # already below the benchmark, so no state top-up is owed, REQ-017).
+  # already below the benchmark, so no state top-up is owed ($0 floor).
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -182,6 +187,7 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
+        tax_unit_is_filer: true
         aca_magi: 78_250
         aca_magi_fraction: 5.00
         slcsp: 6_000
@@ -192,7 +198,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
-    nm_mih_eligible: true
+    nm_premium_assistance_mih_eligible: true
     nm_premium_assistance: 0
 
 - name: Scenario 7, single age 40 at 250% FPL living in Texas (non-NM -> $0).
@@ -207,6 +213,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 39_125
         aca_magi_fraction: 2.50
         slcsp: 6_000
@@ -217,7 +224,7 @@
         state_code: TX
   output:
     nm_premium_assistance_eligible: false
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance: 0
 
 - name: Scenario 8, single age 40 at 250% FPL in NM but in 2025 (out of window -> $0).
@@ -232,6 +239,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 39_125
         aca_magi_fraction: 2.50
         slcsp: 6_000
@@ -242,7 +250,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance: 0
 
 - name: Scenario 9, base-band unit with zero SLCSP -> $0 (no benchmark to top up).
@@ -259,6 +267,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 39_000
         aca_magi_fraction: 2.50
         slcsp: 0
@@ -269,7 +278,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0.02
     nm_premium_assistance: 0
 
@@ -287,6 +296,7 @@
     tax_units:
       tax_unit:
         members: [person1]
+        tax_unit_is_filer: true
         aca_magi: 39_125
         aca_magi_fraction: 2.50
         slcsp: 6_000
@@ -297,7 +307,7 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance_target_contribution_percentage: 0.02
     nm_premium_assistance: 2_717.50
 
@@ -324,6 +334,7 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
+        tax_unit_is_filer: true
         aca_magi: 66_000
         aca_magi_fraction: 4.20
         slcsp: 12_000
@@ -334,11 +345,11 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
-    nm_mih_eligible: true
+    nm_premium_assistance_mih_eligible: true
     nm_premium_assistance_target_contribution_percentage: 0.085
     nm_premium_assistance: 6_390
 
-# ---- Derived-from-raw-income scenario (SA3) ----
+# ---- Derived-from-raw-income scenario ----
 # Unlike every scenario above, this one does NOT inject aca_magi,
 # aca_magi_fraction, or is_aca_ptc_eligible. It supplies raw employment_income
 # and pays_aca_premium and lets the federal ACA chain derive:
@@ -357,11 +368,11 @@
 #   base_amount = max(0, 7_700 - 5_150.14 - 0 * aca_magi) = 2_549.86.
 # 1.0 <= magi_frac (1.91) <= 4.0 with a Marketplace-enrolled, non-separate filer
 # who is income-eligible for the federal PTC, so nm_premium_assistance_eligible
-# derives to true and nm_mih_eligible to false. Asserting the non-zero amount
+# derives to true and nm_premium_assistance_mih_eligible to false. Asserting the non-zero amount
 # locks the whole derived chain (aca_magi_fraction 1.91, aca_ptc 5_150.14, the
 # 1.1 gross-up on the injected 7_000 benchmark) down to the dollar.
 
-- name: Scenario 12, derived-from-income single base-band top-up (SA3).
+- name: Scenario 12, derived-from-income single base-band top-up.
   # Raw employment_income drives aca_magi/aca_magi_fraction/is_aca_ptc_eligible
   # and aca_ptc; only slcsp (7_000 annual benchmark) is injected. Derived
   # aca_magi_fraction 1.91 (<= 2.0 gross-up), derived aca_ptc 5_150.14:
@@ -385,5 +396,71 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: true
-    nm_mih_eligible: false
+    nm_premium_assistance_mih_eligible: false
     nm_premium_assistance: 2_549.86
+
+# ---- PY2027 benchmark gross-up boundary (era-toggled inclusive vs strict) ----
+# The benchmark gross-up income limit is 200% FPL. PY2026 treats it as inclusive
+# (magi_frac <= 2.0 -> gross-up ON), PY2027 as strict (magi_frac < 2.0 -> gross-up
+# OFF) via benchmark_gross_up.boundary_inclusive (2022: true, 2027: false).
+# Scenarios 13 and 14 hold every input fixed at exactly 200% FPL and change only
+# the year, so the assistance difference isolates the gross-up toggle:
+#   target% is 0 at 200% FPL, so amount = benchmark - aca_ptc.
+#   2026: benchmark = 6_000 * 1.1 = 6_600 -> amount = 6_600 - 4_000 = 2_600.
+#   2027: benchmark = 6_000 * 1.0 = 6_000 -> amount = 6_000 - 4_000 = 2_000.
+# The 600 difference is exactly the 10% gross-up on the 6_000 SLCSP, applied in
+# 2026 (inclusive at 2.00) but not in 2027 (strict below 2.00).
+
+- name: Scenario 13, exactly 200% FPL in 2026 -> gross-up applied (inclusive <=).
+  # magi_frac 2.00 <= 2.0 -> gross-up ON. amount = 6_000*1.1 - 4_000 = 2_600.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true
+    nm_premium_assistance_mih_eligible: false
+    nm_premium_assistance: 2_600
+
+- name: Scenario 14, exactly 200% FPL in 2027 -> gross-up NOT applied (strict <).
+  # magi_frac 2.00 is NOT < 2.0 in PY2027, so the gross-up is off and the plain
+  # benchmark applies. amount = 6_000 - 4_000 = 2_000. Same inputs as Scenario 13
+  # except the year; the 600 drop is exactly the withdrawn 10% gross-up.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: true
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true
+    nm_premium_assistance_mih_eligible: false
+    nm_premium_assistance: 2_000
