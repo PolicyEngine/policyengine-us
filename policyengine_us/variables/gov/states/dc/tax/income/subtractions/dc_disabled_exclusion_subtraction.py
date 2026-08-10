@@ -20,7 +20,7 @@ class dc_disabled_exclusion_subtraction(Variable):
         is_disabled = person("is_permanently_and_totally_disabled", period)
         gets_ssi_or_ssdi = (
             add(person, period, ["ssi", "social_security_disability"]) > 0
-        )
+        ) | (add(person, period, ["receives_ssi"]) > 0)
         disabled_eligible = is_disabled & gets_ssi_or_ssdi
         # Determine income-related eligibility
         p = parameters(period).gov.states.dc.tax.income.subtractions.disabled_exclusion

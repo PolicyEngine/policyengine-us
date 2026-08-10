@@ -82,3 +82,18 @@
         state_code: LA
   output:
     la_ccap_special_needs_child: false
+
+- name: Case 7, child with reported SSI receipt qualifies with zero computed SSI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_special_needs_child: true

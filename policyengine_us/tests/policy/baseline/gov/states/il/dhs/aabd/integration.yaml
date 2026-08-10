@@ -236,8 +236,7 @@
         age: 30
         is_blind: true
         employment_income: 9_600 # $800 monthly
-        ssi_reported: 0  # Report $0 SSI, e.g. API partner scenario
-        use_reported_ssi: true  # Count reported ($0) SSI in the AABD income test
+        takes_up_ssi_if_eligible: false  # Not receiving SSI, e.g. API partner scenario
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -276,8 +275,7 @@
         age: 30
         is_blind: true
         employment_income: 9_600  # $800 monthly
-        ssi_reported: 0  # Person not receiving federal SSI
-        use_reported_ssi: true  # Use reported SSI for AABD
+        takes_up_ssi_if_eligible: false  # Person not receiving federal SSI
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -294,9 +292,8 @@
         county_str: COOK_COUNTY_IL
   output:
     # Shows federal SSI entitlement (what they COULD get)
-    ssi: 585.5  # Calculated SSI - person could receive this
-    # Shows IL AABD (using ssi_reported: 0)
-    applicable_ssi: 0  # Uses reported value
+    ssi_if_takes_up: 585.5  # Entitlement if they took the program up
+    ssi: 0  # Not taken up, so no SSI is counted downstream
     il_aabd_countable_unearned_income: 0  # No SSI counted
     il_aabd_countable_income: 306.12  # Only earned income
     il_aabd_financial_eligible_person: true
@@ -313,8 +310,7 @@
         age: 30
         is_blind: true
         employment_income: 9_600  # $800 monthly
-        ssi_reported: 3_600  # $300/month reported SSI
-        use_reported_ssi: true
+        ssi: 300  # $300/month reported SSI sent as the ssi input
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -331,9 +327,8 @@
         county_str: COOK_COUNTY_IL
   output:
     # Shows federal SSI entitlement
-    ssi: 585.5  # Calculated - what they could get
-    # Shows IL AABD with partial SSI
-    applicable_ssi: 300  # Uses reported $300/month
+    ssi_if_takes_up: 585.5  # Calculated - what they could get
+    # IL AABD counts the reported $300/month ssi input
     il_aabd_countable_unearned_income: 275  # 300 - 25 flat exemption
     il_aabd_countable_income: 593.62  # earned (318.62) + unearned (275)
     il_aabd_financial_eligible_person: true  # 593.62 < 827.33
@@ -350,8 +345,7 @@
         age: 35
         is_blind: true
         employment_income: 9_600  # $800 monthly
-        ssi_reported: 0  # Not receiving federal SSI
-        use_reported_ssi: true
+        takes_up_ssi_if_eligible: false  # Not receiving federal SSI
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
       child:
@@ -376,9 +370,8 @@
         county_str: COOK_COUNTY_IL
   output:
     # Shows federal SSI entitlement for parent
-    ssi: [585.5, 0]  # Parent could get SSI, child not eligible
-    # Shows IL AABD (using ssi_reported: 0 for parent)
-    applicable_ssi: [0, 0]  # Uses reported value
+    ssi_if_takes_up: [585.5, 0]  # Parent could get SSI, child not eligible
+    ssi: [0, 0]  # Not taken up, so no SSI is counted
     il_aabd_countable_unearned_income: [0, 0]
     il_aabd_non_financial_eligible_person: [true, false]  # Parent eligible, child not
     il_aabd_eligible_person: [true, false]
@@ -393,16 +386,14 @@
       person1:
         age: 68
         employment_income: 6_000  # $500 monthly
-        ssi_reported: 0
-        use_reported_ssi: true
+        takes_up_ssi_if_eligible: false
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
       person2:
         age: 66
         is_blind: true
         employment_income: 0
-        ssi_reported: 0
-        use_reported_ssi: true
+        takes_up_ssi_if_eligible: false
         immigration_status: CITIZEN
         il_aabd_is_bedfast: false
     spm_units:
@@ -422,9 +413,8 @@
         county_str: COOK_COUNTY_IL
   output:
     # Shows federal SSI entitlement for both (couple rate split)
-    ssi: [603.75, 603.75]  # Both get couple rate / 2
-    # Shows IL AABD (using ssi_reported: 0)
-    applicable_ssi: [0, 0]  # Uses reported value
+    ssi_if_takes_up: [603.75, 603.75]  # Both get couple rate / 2
+    ssi: [0, 0]  # Not taken up, so no SSI is counted
     il_aabd_non_financial_eligible_person: [true, true]  # Both aged/blind
     il_aabd_eligible_person: [true, true]  # Both eligible for AABD
     il_aabd_person: [441.45, 822.15]  # Both get AABD

@@ -3,7 +3,7 @@
   input:
     wic_food_package_str: PREGNANT_SINGLETON
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     wic: 39.12
 
@@ -20,7 +20,7 @@
   input:
     wic_food_package_str: POSTPARTUM_NON_BREASTFEEDING
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     wic: 32.27
 
@@ -37,7 +37,7 @@
   input:
     wic_food_package_str: FULLY_BREASTFEEDING
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     # Multiply by ratio of 2022-01 to 2018-01 CPI-U.
     wic: 48.92 * 281.148 / 247.867
@@ -47,7 +47,7 @@
   input:
     wic_food_package_str: CHILD_24_59_MONTHS
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     # 2018 package value less the uprated embedded $8 CVB, plus the FY 2024 $26 CVB.
     wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867 + 26
@@ -58,7 +58,7 @@
     gov.usda.wic.cvb.current.CHILD_24_59_MONTHS: 0
     wic_food_package_str: CHILD_24_59_MONTHS
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     wic: 33.65 * 309.794 / 247.867 - 8 * 309.794 / 247.867
 
@@ -67,7 +67,17 @@
   input:
     wic_food_package_str: PREGNANT_MULTIPLE_FETUSES
     is_wic_eligible: true
-    would_claim_wic: true
+    takes_up_wic_if_eligible: true
   output:
     # Food Package V-B uses the breastfeeding/partially breastfeeding CVB amount.
     wic: 39.12 * 309.794 / 247.867 - 11 * 309.794 / 247.867 + 52
+
+- name: June 2026 child package value uses the observed CPI-U for the month.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    wic_food_package_str: CHILD_24_59_MONTHS
+    is_wic_eligible: true
+    takes_up_wic_if_eligible: true
+  output:
+    wic: 60.42

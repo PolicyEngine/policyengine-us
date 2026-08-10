@@ -22,3 +22,13 @@
     ssi: 1
   output:
     is_ca_cvrp_increased_rebate_eligible: true
+
+- name: Reported SSI receipt with a zero modeled payment also qualifies above the income threshold.
+  period: 2022
+  input:
+    school_meal_fpg_ratio: 4.01
+    medicaid_enrolled: false
+    ssi: 0
+    receives_ssi: true
+  output:
+    is_ca_cvrp_increased_rebate_eligible: true

@@ -70,3 +70,173 @@
     state_code: CT
   output:
     is_optional_senior_or_disabled_income_eligible: false
+
+# Issue #9125: Missouri MHABD applies an 85% FPL non-spend-down standard to
+# old-age and disability-based eligibility but a 100% FPL standard to
+# blindness-based eligibility (DSS Manual § 0805.015.45).
+- name: Missouri blind applicant between 85% and 100% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Missouri non-blind applicant with the same income fails the 85% standard
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Missouri blind applicant above 100% FPL is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 15_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+# The standards are income maxima (DSS Manual § 0805.015.45), so income
+# exactly at the limit qualifies.
+- name: Missouri blind applicant at exactly 100% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Missouri non-blind applicant at exactly 85% FPL is income-eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 12_750
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+# The limits are inclusive maxima in every state, not just Missouri:
+# 42 U.S.C. § 1396a(m)(1)(B) covers income that "does not exceed" the
+# state's standard. Florida's individual limit is 88% FPL.
+- name: Income exactly at Florida's limit is eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Income one dollar over Florida's limit is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 13_201
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Joint income exactly at Florida's couple limit is eligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_600
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Joint income over Florida's couple limit is ineligible
+  period: 2025
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 6_601
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 6_601
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        tax_unit_fpg: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]

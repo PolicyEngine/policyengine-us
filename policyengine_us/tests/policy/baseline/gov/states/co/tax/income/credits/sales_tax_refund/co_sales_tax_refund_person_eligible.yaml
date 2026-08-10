@@ -1,0 +1,175 @@
+- name: Head at or above age threshold, no earnings, unit tax 0 -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: true
+
+- name: Dependent above age threshold (not head or spouse) -> ineligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      dependent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: [true, false]
+
+- name: Head below age threshold, no earnings, unit tax 0 -> ineligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 10
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: false
+
+- name: Head below age threshold but with employment income -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 10
+        is_tax_unit_head: true
+        irs_employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: true
+
+# Head with NO earnings but positive tax-unit CO income tax before non-refundable
+# credits -> eligible via the age-independent tax-liability path
+# (C.R.S. 39-22-2003(1)(a)(I)).
+- name: Head no earnings but positive unit income tax -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 17
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 500
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: true
+
+# Under-18 non-earning spouse in a JOINT unit with positive CO tax liability is
+# eligible: the tax-liability qualifier in (1)(a)(I) is age-independent and
+# co_income_tax_before_non_refundable_credits is a tax-unit-level value, so it
+# qualifies both filers (documented limitation - cannot be split per spouse).
+- name: Under-18 non-earning spouse in joint unit with CO tax -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 50_000
+      spouse:
+        age: 16
+        is_tax_unit_spouse: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_income_tax_before_non_refundable_credits: 500
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: [true, true]
+
+# Age boundary: a filer exactly at the age threshold (18) qualifies via
+# C.R.S. 39-22-2003(1)(a)(II).
+- name: Head exactly age 18 -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 18
+        is_tax_unit_head: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: true
+
+# The spouse is also a filer: an age-eligible spouse qualifies on their own.
+- name: Age-eligible spouse (is_tax_unit_spouse) -> eligible
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 0
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: [true, true]

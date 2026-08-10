@@ -1,6 +1,7 @@
 """Unified script to extend all uprating factors through 2100."""
 
 import math
+from typing import Optional, Tuple
 
 from policyengine_us.model_api import *
 from policyengine_core.periods import instant
@@ -112,6 +113,7 @@ def extend_parameter_values(
     end_year: int,
     period_month: int = 1,
     period_day: int = 1,
+    growth_years: Optional[Tuple[int, int]] = None,
 ) -> None:
     """
     Extend a parameter's values from last_projected_year to end_year using
@@ -123,11 +125,18 @@ def extend_parameter_values(
         end_year: The year to extend values through
         period_month: The month for the period (default 1 for January)
         period_day: The day for the period (default 1)
+        growth_years: Optional (earlier, later) pair to measure the growth
+            rate between, instead of the last two projected years — used
+            when the final actual embeds a one-off level shift that should
+            not compound in the long-run extension.
     """
     # Calculate the growth rate from the last two years of projections
     date_format = f"-{period_month:02d}-{period_day:02d}"
-    second_to_last_value = parameter(f"{last_projected_year - 1}{date_format}")
-    last_value = parameter(f"{last_projected_year}{date_format}")
+    if growth_years is None:
+        growth_years = (last_projected_year - 1, last_projected_year)
+    earlier_year, later_year = growth_years
+    second_to_last_value = parameter(f"{earlier_year}{date_format}")
+    last_value = parameter(f"{later_year}{date_format}")
     growth_rate = last_value / second_to_last_value
 
     # Apply growth rate for years beyond projections
@@ -422,13 +431,16 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
-    # ACA benchmark premium uprating (January values, last projection year 2025)
+    # ACA benchmark premium uprating (January values, last actual 2026).
+    # The published 2026 actual is 25.8% above 2025; keep long-run growth
+    # at the 2024-2025 trend so the one-off jump does not compound.
     extend_parameter_values(
         parameters.gov.aca.benchmark_premium_uprating,
-        last_projected_year=2025,
+        last_projected_year=2026,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        growth_years=(2024, 2025),
     )
 
     # CMS per-capita out-of-pocket medical spending (January values, last

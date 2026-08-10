@@ -1,0 +1,384 @@
+# Tests for sd_cca_activity_eligible (SPMUnit, MONTH, bool).
+# Each caretaker must be in an approved activity (ARSD 67:47:01:03, :03.01;
+# BEES Manual Sections 7.1 and 8.3.1): employed at least 80 hours per month at a
+# salary equivalent to the federal minimum wage ($7.25/hr), or self-employed
+# with at least 80 reported monthly hours and monthly net earnings of at least
+# 80 x $7.25 = $580 (a loss counts as zero), or a full-time student. Activities
+# not modeled (positive TANF activity, job search, other training) fall back to
+# the federal CCDF activity-test input meets_ccdf_activity_test. TANF enrollment
+# alone does not satisfy the activity requirement.
+# Protective services is handled per child in sd_cca_reason_for_care_eligible,
+# not here.
+# weekly_hours_worked defaults to 40/week = ceil(40 x 4.3) = 172/month, so the default
+# employed minimum-wage-equivalence bar is 172 x 7.25 = 1,247/month.
+
+- name: Case 1, activity test met, activity eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: true
+
+- name: Case 2, activity test not met, not activity eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: false
+
+# The cases below exercise the modeled activity path
+# (sd_cca_parent_in_eligible_activity), which requires every caretaker to be in
+# an approved activity, with the CCDF fallback turned off.
+- name: Case 3, single employed parent, activity eligible via the modeled path.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked: 40  # ceil(40 x 4.3) = 172 hrs/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false  # not relying on the CCDF fallback
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # 172 hrs/mo >= 80 and 2,000 >= 172 x 7.25 = 1,247, so the sole
+    # caretaker meets the employment requirement even though the CCDF
+    # activity-test input is false.
+    sd_cca_activity_eligible: true
+
+- name: Case 4, single parent with a self-employment loss, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -12_000  # -1,000/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # A loss counts as zero self-employment earnings (BEES Manual Section
+    # 8.3.1), which falls below the monthly $580 minimum-wage floor, so the
+    # caretaker is not in an approved activity.
+    sd_cca_activity_eligible: false
+
+- name: Case 5, single full-time student parent, activity eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_full_time_student: true  # school enrollment is an approved activity
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: true
+
+- name: Case 6, two married caretakers both employed, activity eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head: true
+      person2:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: true
+
+- name: Case 7, two married caretakers with one not in an activity, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # employed
+        is_tax_unit_head: true
+      person2:
+        age: 30
+        employment_income: 0  # available caretaker, not in any activity
+        is_full_time_student: false
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Every caretaker must be in an approved activity; the available (non-active)
+    # spouse makes the unit ineligible under the modeled path.
+    sd_cca_activity_eligible: false
+
+- name: Case 8, employed parent below the 80-hour monthly minimum, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000  # 1,000/mo
+        weekly_hours_worked: 15  # 65 hrs/mo, below the 80-hour minimum
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # ceil(15 hrs/wk x 4.3) = 65 hrs/mo < 80, so the employment requirement fails
+    # even though the implied wage (1,000 / 65 = 15.38/hr) is above the
+    # federal minimum.
+    sd_cca_activity_eligible: false
+
+- name: Case 9, employed parent below the minimum-wage equivalence, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000  # 500/mo
+        weekly_hours_worked: 40  # ceil(40 x 4.3) = 172 hrs/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # 500/mo over 172 hrs/mo implies 2.91/hr, below the 7.25 federal minimum
+    # wage (500 < 172 x 7.25 = 1,247), so the employment
+    # requirement fails (BEES Manual Section 7.1).
+    sd_cca_activity_eligible: false
+
+- name: Case 10, self-employed parent meeting both monthly work prongs, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 6_960  # 580/mo = 80 x 7.25
+        weekly_hours_worked: 20  # ceil(20 x 4.3) = 86 hrs/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Reported hours exceed 80/month and monthly earnings equal the $580
+    # minimum-wage floor, so the self-employment requirement is met.
+    sd_cca_activity_eligible: true
+
+- name: Case 11, self-employed parent below 80 monthly hours, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000  # earnings are high enough
+        weekly_hours_worked: 18  # ceil(18 x 4.3) = 78 hrs/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: false
+
+- name: Case 12, self-employed parent below minimum-wage earnings, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 6_948  # 579/mo, below the $580 floor
+        weekly_hours_worked: 20  # ceil(20 x 4.3) = 86 hrs/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_activity_eligible: false
+
+- name: Case 13, protective-services child does not satisfy the caretaker activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0  # not in any activity
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # This variable tests caretaker activity only; the protective-services
+    # pathway is applied per child in sd_cca_reason_for_care_eligible.
+    sd_cca_activity_eligible: false
+
+- name: Case 14, TANF enrollment without TANF activity is ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Enrollment alone does not establish positive TANF activity hours.
+    sd_cca_activity_eligible: false
+
+- name: Case 15, weekly work hours use the 4.3 factor and round up.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 18.4
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # ceil(18.4 x 4.3) = 80, and 1,000/month exceeds 80 x 7.25.
+    sd_cca_activity_eligible: true
+
+- name: Case 16, weekly work hours just below the rounded boundary are ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 18.3
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # ceil(18.3 x 4.3) = 79, below the 80-hour requirement.
+    sd_cca_activity_eligible: false

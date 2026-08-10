@@ -182,8 +182,10 @@
         members: [person1]
         state_code: CA
   output:
-    # 2025 indexed CA standard deduction value (still $5,706 in 2027 absent uprating)
-    ca_standard_deduction: 5_706
+    # 2025 indexed value ($5,706) uprated by CA CPI to 2027; the 2027
+    # CA CPI point is an IRS-uprating projection, so it reflects the
+    # observed chained-CPI actuals through June 2026.
+    ca_standard_deduction: 6_009.22
 
 - name: Non-California filer unaffected by the reform.
   period: 2027

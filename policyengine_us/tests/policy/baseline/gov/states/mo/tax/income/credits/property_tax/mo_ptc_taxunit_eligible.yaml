@@ -1,74 +1,465 @@
-- name: Head of household disability qualification
+# Categorical pathways per RSMo 135.010(1), payment requirement per RSMo
+# 135.025 and the DOR eligibility diagram, income limits per RSMo 135.030(1).
+- name: Disabled head qualifies through the general disability definition
   period: 2022
   absolute_error_margin: 0
   input:
-    age_head: 50
-    age_spouse: 50
-    disabled_head: true
-    disabled_spouse: false
-    military_disabled_head: false
-    military_disabled_spouse: false
-    social_security_survivors: false
-    state_code: MO
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 50
+        is_disabled: true
+        rent: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
   output:
     mo_ptc_taxunit_eligible: true
 
-- name: Head of household age qualification
+- name: Head aged 65 or older qualifies
   period: 2022
   absolute_error_margin: 0
   input:
-    age_head: 66
-    age_spouse: 64
-    disabled_head: false 
-    disabled_spouse: false
-    military_disabled_head: false
-    military_disabled_spouse: false
-    social_security_survivors: false
-    state_code: MO
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [person1]
+        state_code: MO
   output:
     mo_ptc_taxunit_eligible: true
 
-- name: Military disabled spouse qualfication
+- name: Military disabled spouse qualifies
   period: 2022
   absolute_error_margin: 0
   input:
-    age_head: 29
-    age_spouse: 35
-    disabled_head: false 
-    disabled_spouse: false
-    military_disabled_head: false
-    military_disabled_spouse: true
-    social_security_survivors: false
-    state_code: MO
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 29
+        rent: 3_600
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        military_disabled_spouse: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
   output:
     mo_ptc_taxunit_eligible: true
 
-- name: Both qualifying, all counts
+- name: No categorical pathway is not eligible
   period: 2022
   absolute_error_margin: 0
   input:
-    age_head: 66
-    age_spouse: 66
-    disabled_head: true 
-    disabled_spouse: true
-    military_disabled_head: true
-    military_disabled_spouse: true
-    social_security_survivors: false
-    state_code: MO
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 29
+        rent: 3_600
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Claimant aged 60 receiving surviving spouse Social Security qualifies
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        social_security_survivors: 6_000
+        rent: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
   output:
     mo_ptc_taxunit_eligible: true
 
-- name: Both not qualifying
+- name: Survivor pathway is claimant-only, a qualifying spouse does not count
   period: 2022
   absolute_error_margin: 0
   input:
-    age_head: 29
-    age_spouse: 35
-    disabled_head: false 
-    disabled_spouse: false
-    military_disabled_head: false
-    military_disabled_spouse: false
-    social_security_survivors: false
-    state_code: MO
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 58
+        rent: 3_600
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security_survivors: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: A child's survivor benefits do not qualify an aged head
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        rent: 3_600
+      person2:
+        age: 10
+        social_security_survivors: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: No rent or property tax paid is not eligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Single renter at the 2026 income limit is eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Single renter above the 2026 income limit is not eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Married homestead owners at the 2026 net income limit are eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # 53,800 gross less the 5,800 owner offset is 48,000 net income
+        mo_ptc_gross_income: 53_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Married homestead owners above the 2026 net income limit are not eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # 53,900 gross less the 5,800 owner offset is 48,100 net income
+        mo_ptc_gross_income: 53_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Homestead owner above the pre-2026 30,000 limit is not eligible
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 30_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Claimant at exactly 60 with own survivor benefits qualifies
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        social_security_survivors: 6_000
+        rent: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Claimant at 59 with own survivor benefits does not qualify
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 59
+        social_security_survivors: 6_000
+        rent: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Paying both rent and property tax takes the renter income limit
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 100
+        real_estate_taxes: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Any rent paid means the part-year 38,200 limit applies, not the
+        # 42,200 full-year homestead limit.
+        mo_ptc_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Paying both rent and property tax is eligible under the renter limit
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 100
+        real_estate_taxes: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Single homestead owner at the 2026 income limit is eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 42_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Single homestead owner above the 2026 income limit is not eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 42_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Married renters at the 2026 net income limit are eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # 43,800 gross less the 2,800 renter offset is 41,000 net income
+        mo_ptc_gross_income: 43_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Married renters above the 2026 net income limit are not eligible
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # 43,900 gross less the 2,800 renter offset is 41,100 net income
+        mo_ptc_gross_income: 43_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+
+- name: Renter at the pre-2026 27,500 limit is eligible
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 27_500
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+
+- name: Renter above the pre-2026 27,500 limit is not eligible
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 27_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
   output:
     mo_ptc_taxunit_eligible: false

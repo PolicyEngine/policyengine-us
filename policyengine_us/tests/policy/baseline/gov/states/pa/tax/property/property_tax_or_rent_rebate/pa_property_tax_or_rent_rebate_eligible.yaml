@@ -4,6 +4,7 @@
     people:
       person1:
         age: 65
+        ssi: 0
         real_estate_taxes: 2_000
     tax_units:
       tax_unit:
@@ -22,6 +23,7 @@
     people:
       person1:
         age: 50
+        ssi: 0
         rent: 9_600
     tax_units:
       tax_unit:
@@ -41,6 +43,7 @@
     people:
       person1:
         age: 18
+        ssi: 0
         is_permanently_and_totally_disabled: true
         rent: 9_600
     tax_units:
@@ -60,6 +63,7 @@
     people:
       person1:
         age: 65
+        ssi: 0
         real_estate_taxes: 2_000
     tax_units:
       tax_unit:
@@ -78,6 +82,7 @@
     people:
       person1:
         age: 65
+        ssi: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -95,6 +100,7 @@
     people:
       person1:
         age: 50
+        ssi: 0
         is_surviving_spouse: true
         rent: 9_600
     tax_units:
@@ -114,6 +120,7 @@
     people:
       person1:
         age: 65
+        ssi: 0
         tax_exempt_interest_income: 200
         real_estate_taxes: 2_000
     tax_units:
@@ -133,6 +140,7 @@
     people:
       person1:
         age: 18
+        ssi: 0
         is_disabled: true
         rent: 9_600
     tax_units:
@@ -152,6 +160,7 @@
     people:
       person1:
         age: 65
+        ssi: 0
         workers_compensation: 2_000
         real_estate_taxes: 2_000
     tax_units:

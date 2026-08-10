@@ -57,3 +57,33 @@
     ctc_qualifying_children: 1
   output:
     nc_child_deduction: 2_000 * 1
+
+# Regression guard for the #6374 NC resolution: NC is a static IRC-conformity state
+# (conformed to the Code as of Jan 1, 2023, N.C. Gen. Stat. 105-228.90(b)(1b)), so it
+# does NOT import the OBBBA (July 2025) filer-SSN gate on section 24. An ITIN filer
+# whose qualifying child has a valid SSN still receives the NC child deduction, because
+# nc_child_deduction keys on ctc_qualifying_children (child-SSN gate only), not the
+# federal filer-SSN gate. Fails if a filer-SSN gate is ever propagated into the NC count.
+- name: NC child deduction counts an SSN-holding child of an ITIN filer in 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        ssn_card_type: OTHER_NON_CITIZEN  # ITIN filer, no SSN
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        ssn_card_type: CITIZEN            # child has a valid SSN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    ctc_qualifying_children: 1
+    nc_child_deduction: 3_000

@@ -18,4 +18,4 @@ class ne_aabd_eligible(Variable):
         # disabled), resource, immigration eligibility, the federal
         # income test, and takeup -- so no separate is_ssi_eligible
         # check is needed.
-        return person("ssi", period) > 0
+        return (person("ssi", period) > 0) | person("receives_ssi", period)

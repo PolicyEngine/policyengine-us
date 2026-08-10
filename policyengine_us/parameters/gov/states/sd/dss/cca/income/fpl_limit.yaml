@@ -1,0 +1,16 @@
+description: South Dakota limits countable income to this multiple of the federal poverty guideline under the Child Care Assistance program.
+
+# Households with gross monthly countable income exceeding 209% of the federal
+# poverty level are not eligible (Subsidy Manual, Section 3). This is the initial
+# income ceiling; continuing recipients use the state median income ceiling in
+# smi_limit.yaml.
+values:
+  2026-08-01: 2.09
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA federal poverty guideline income limit
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 3 Eligibility Criteria
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=8

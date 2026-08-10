@@ -28,8 +28,10 @@ class basic_income_before_phase_out(Variable):
         fpg = tax_unit("tax_unit_fpg", period)
         fpg_amount = p.amount.tax_unit.fpg_percent * fpg
 
-        # Disability amount
-        disabled = person("is_ssi_disabled", period)
+        # Disability amount. Blind people are treated as disabled for this
+        # supplement; is_blind is settable directly on households, unlike the
+        # microdata-only blindness capture in is_ssi_disabled (see issue #3523).
+        disabled = person("is_ssi_disabled", period) | person("is_blind", period)
         disabled_amount = tax_unit.sum(disabled * p.amount.person.disability)
         base_amount = (
             total_flat_amount + applicable_amount_by_age + fpg_amount + disabled_amount

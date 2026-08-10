@@ -1,0 +1,170 @@
+description: Whether the state excludes anyone receiving Supplemental Security Income from the Medicaid adult expansion group, beyond the federal mandatory-coverage exclusion.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid adult group excludes all SSI recipients
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.119(b)(4) - adult group mandatory-coverage exclusion
+      href: https://www.law.cornell.edu/cfr/text/42/435.119
+    - title: Missouri DSS Manual § 1865.020.00 - Adult Expansion Group ("Not receiving SSI")
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1865-000-00/1865-020-00/
+    - title: North Dakota Medicaid Policy Manual § 510-03-30-05 - adult expansion group "may include SSI recipients ... who fail the Medicaid asset limits"
+      href: https://www.nd.gov/dhs/policymanuals/51003/Content/510-03-30-05.htm
+    - title: New Hampshire Medical Assistance Manual § 230.01 - Granite Advantage criteria (mandatory-group and Medicare exclusions only, no SSI-receipt test)
+      href: https://www.dhhs.nh.gov/mam_htm/html/230_01_granite_advantage_eligibility_criteria_mam.htm
+    - title: Virginia DMAS Eligibility Manual M0330.250.B - MAGI Adults ("not be eligible in a Medicaid mandatory covered group")
+      href: https://www.dmas.virginia.gov/media/ifujac10/m03-7-1-24.pdf#page=125
+    - title: Hawaii Administrative Rules § 17-1718-10(a)(3) - Adults Group, "Not in receipt of Supplemental Security Income (SSI)"
+      href: https://humanservices.hawaii.gov/wp-content/uploads/2016/12/HAR-17-1718-ADULT-GROUP-Final-10-31-16-1.pdf#page=3
+    - title: Minnesota Health Care Programs Eligibility Policy Manual § 2.2.2.1 - "Is not a Supplemental Security Income (SSI) recipient"
+      href: https://hcopub.dhs.state.mn.us/epm/2_2_2_1.htm
+    - title: Connecticut DSS UPM 2540 coverage groups chart - HUSKY D (X02) criteria, no SSI test
+      href: https://portal.ct.gov/-/media/Departments-and-Agencies/DSS/HIT/MedCoverageGroupsOLD.pdf#page=17
+    - title: Illinois HFS Medical Policy PM 06-25-01 - ACA Adult nonfinancial requirements, no SSI test
+      href: https://www.dhs.state.il.us/page.aspx?item=61206
+    - title: Missouri DSS Manual § 1865.010.00 - Legal Basis (Mo. Const. art. IV, § 36(c), expansion effective July 1, 2021)
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1865-000-00/1865-010-00/
+# Sourced values only. States marked false without a comment are
+# unverified defaults: no receipt-based exclusion is encoded pending a
+# source, leaving only the federal mandatory-coverage exclusion. In
+# Section 1634 and SSI-criteria states that federal exclusion already
+# removes every SSI recipient, so a receipt bar would be redundant; the
+# distinction only binds in 209(b) states, all eight of which are
+# sourced below (MO, HI, and MN true; CT, IL, ND, NH, and VA false).
+AK:
+  2014-01-01: false
+AL:
+  2014-01-01: false
+AR:
+  2014-01-01: false
+AZ:
+  2014-01-01: false
+CA:
+  2014-01-01: false
+CO:
+  2014-01-01: false
+# Sourced: HUSKY D's criteria (UPM 2540 chart, X02) list age, Medicare,
+# pregnancy, and dependent tests only - no SSI-receipt test.
+CT:
+  2014-01-01: false
+DC:
+  2014-01-01: false
+DE:
+  2014-01-01: false
+FL:
+  2014-01-01: false
+GA:
+  2014-01-01: false
+# Sourced: Hawaii's Adults Group requires the person to be "Not in
+# receipt of Supplemental Security Income (SSI)"
+# (HAR § 17-1718-10(a)(3), effective 9/30/2013).
+HI:
+  2014-01-01: true
+IA:
+  2014-01-01: false
+ID:
+  2014-01-01: false
+# Sourced: Illinois's ACA Adult exclusions are eligibility-based
+# ("do not qualify for" AABD and other programs, PM 06-25-01 and
+# WAG 06-25-00) - no SSI-receipt test.
+IL:
+  2014-01-01: false
+IN:
+  2014-01-01: false
+KS:
+  2014-01-01: false
+KY:
+  2014-01-01: false
+LA:
+  2014-01-01: false
+MA:
+  2014-01-01: false
+MD:
+  2014-01-01: false
+ME:
+  2014-01-01: false
+MI:
+  2014-01-01: false
+# Sourced: Minnesota's adults-without-children basis requires "Is not a
+# Supplemental Security Income (SSI) recipient" (EPM § 2.2.2.1;
+# Minn. Stat. § 256B.055 subd. 15). Approximation: that basis covers
+# ages 21-64, while Minnesota's separate 19-20-year-old basis carries
+# no SSI test; the model applies the exclusion across the full adult
+# age range.
+MN:
+  2014-01-01: true
+# Sourced: Missouri's Adult Expansion Group requires an applicant not
+# to be receiving SSI (DSS Manual § 1865.020.00) - a categorical
+# receipt bar, so even an SSI recipient who fails Missouri's more
+# restrictive 209(b) criteria, and thus has no mandatory-coverage
+# pathway, is excluded. The bar begins with the expansion itself,
+# effective July 1, 2021 (Mo. Const. art. IV, § 36(c), quoted in
+# § 1865.010.00; enrollment began October 1, 2021 after Doyle v.
+# Tidball, with eligibility retroactive to the effective date).
+MO:
+  2014-01-01: false
+  2021-07-01: true
+MS:
+  2014-01-01: false
+MT:
+  2014-01-01: false
+NC:
+  2014-01-01: false
+# Sourced: North Dakota's adult group "may include SSI recipients and
+# other disabled individuals who fail the Medicaid asset limits"
+# (§ 510-03-30-05) - no receipt-based exclusion.
+ND:
+  2014-01-01: false
+NE:
+  2014-01-01: false
+# Sourced: Granite Advantage excludes only those who otherwise qualify
+# for or are enrolled in a mandatory coverage group or Medicare
+# (MAM § 230.01) - no SSI-receipt test.
+NH:
+  2014-01-01: false
+NJ:
+  2014-01-01: false
+NM:
+  2014-01-01: false
+NV:
+  2014-01-01: false
+NY:
+  2014-01-01: false
+OH:
+  2014-01-01: false
+OK:
+  2014-01-01: false
+OR:
+  2014-01-01: false
+PA:
+  2014-01-01: false
+RI:
+  2014-01-01: false
+SC:
+  2014-01-01: false
+SD:
+  2014-01-01: false
+TN:
+  2014-01-01: false
+TX:
+  2014-01-01: false
+UT:
+  2014-01-01: false
+# Sourced: Virginia's MAGI Adults criteria require only "not be eligible
+# in a Medicaid mandatory covered group" (M0330.250.B); SSI recipients
+# failing the 209(b) resource test are evaluated for MAGI Adults
+# (M0320.101).
+VA:
+  2014-01-01: false
+VT:
+  2014-01-01: false
+WA:
+  2014-01-01: false
+WI:
+  2014-01-01: false
+WV:
+  2014-01-01: false
+WY:
+  2014-01-01: false

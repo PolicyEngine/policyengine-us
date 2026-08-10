@@ -117,25 +117,28 @@
     snap_net_income: 0
     snap: 3_522
 
-- name: Case 5, work-requirement-ineligible adult is excluded from SNAP benefit size.
+- name: Case 5, ABAWD-time-limit-ineligible adult is excluded from SNAP benefit size.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
+        # Working 40 hours: meets ABAWD via hours; general met in baseline.
         age:
           2024: 35
         monthly_age: 35
         is_tax_unit_dependent: false
-        meets_snap_general_work_requirements: true
-        meets_snap_abawd_work_requirements: true
+        weekly_hours_worked_before_lsr: 40
       person2:
+        # In-band, no dependent child, not working, not exempt: fails ABAWD.
         age:
           2024: 30
         monthly_age: 30
         is_tax_unit_dependent: false
-        meets_snap_general_work_requirements: false
-        meets_snap_abawd_work_requirements: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+        is_pregnant: false
+        is_veteran: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -233,3 +236,123 @@
     # Net income: $1,000 - $200 earned income deduction - $198 standard
     # deduction = $602; benefit: $291 - 0.3 x $602 = $110.40.
     snap: 110.40
+
+# Acceptance-criteria integration tests for issue #8862 (person-level SNAP work
+# requirements). Period 2024-01 is pre-HR1 (ABAWD band 18-52, dependent-child
+# threshold 18, homeless/veteran exempt); ABAWD exemptions are set explicitly
+# false on the ABAWD failers so no unintended exemption triggers.
+
+- name: Case 8, issue example, unemployed non-disabled adult with a 10-year-old dependent is eligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Unemployed, non-disabled 30-year-old. A dependent child under 18 is in
+        # the unit, so ABAWD is skipped; general requirement met in baseline.
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+      person2:
+        # 10-year-old tax-unit dependent: exempt from the general requirement by
+        # age (under 16) and triggers the household's dependent-child status.
+        age:
+          2024: 10
+        monthly_age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # A zero-income TX family of two qualifies for TANF organically, which
+        # counts as SNAP unearned income; zero it to isolate work requirements.
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # ABAWD is skipped for both (dependent child present); general met in baseline.
+    meets_snap_work_requirements_person: [true, true]
+    meets_snap_work_requirements: true
+    is_snap_eligible: true
+    snap_unit_size: 2
+    # Zero income, FY2024 CONTIGUOUS_US size-2 max allotment.
+    snap_max_allotment: 535
+    snap: 535
+
+- name: Case 9, mixed household with no children, one working adult and one non-working ABAWD.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Works 30 hours: exempt from ABAWD via hours; general met in baseline.
+        age:
+          2024: 40
+        monthly_age: 40
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        # In-band, no dependent child, not working, no exemption: fails ABAWD.
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+        is_pregnant: false
+        is_veteran: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # person1 passes, person2 fails ABAWD and is removed from the SNAP unit.
+    meets_snap_work_requirements_person: [true, false]
+    meets_snap_work_requirements: true
+    is_snap_eligible: true
+    snap_unit_size: 1
+
+- name: Case 10, single non-working non-disabled adult with no children is work-requirement ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # In-band, no dependent child, not working, no exemption: fails ABAWD, and
+        # with no dependent child the person-level test requires both ABAWD and
+        # general, so the person fails.
+        age:
+          2024: 30
+        monthly_age: 30
+        is_tax_unit_dependent: false
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: false
+        is_pregnant: false
+        is_veteran: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    meets_snap_work_requirements_person: [false]
+    meets_snap_work_requirements: false
+    snap_unit_size: 0

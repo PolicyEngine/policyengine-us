@@ -21,7 +21,7 @@ class la_ccap_special_needs_child(Variable):
         disabled = person("is_disabled", period.this_year)
         iep = person("has_individualized_education_program", period.this_year)
         developmental_delay = person("has_developmental_delay", period.this_year)
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         return (age < p.disabled_child_limit) & (
             disabled | iep | developmental_delay | receives_ssi
         )

@@ -1,0 +1,15 @@
+description: South Dakota caps the family co-payment at this share of gross monthly income under the Child Care Assistance program.
+
+# In no case may the co-payment exceed 12% of gross monthly countable income;
+# co-payments above this ceiling are reduced to exactly 12% (Subsidy Manual,
+# Section 9).
+values:
+  2026-08-01: 0.12
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA co-payment maximum rate
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 9 Recipient Co-payment and Length of Eligibility
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21

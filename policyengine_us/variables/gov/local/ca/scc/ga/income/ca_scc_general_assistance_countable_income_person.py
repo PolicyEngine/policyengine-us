@@ -21,5 +21,5 @@ class ca_scc_general_assistance_countable_income_person(Variable):
         )
         unearned = add(person, period, p.unearned_sources)
         net_earned = max_(earned - deductions, 0)
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         return (net_earned + unearned) * ~receives_ssi

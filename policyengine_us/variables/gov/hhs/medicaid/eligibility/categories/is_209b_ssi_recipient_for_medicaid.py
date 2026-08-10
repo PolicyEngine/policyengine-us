@@ -20,7 +20,9 @@ class is_209b_ssi_recipient_for_medicaid(Variable):
     def formula(person, period, parameters):
         classified = person("medicaid_ssi_recipient_state_classification", period)
         is_209b_state = classified == classified.possible_values.SECTION_209B
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
 
         state = person.household("state_code_str", period)
         p = parameters(

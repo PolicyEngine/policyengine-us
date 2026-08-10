@@ -1,0 +1,430 @@
+# Tests for oh_ccap_rate_with_addons (Person, MONTH, defined_for oh_ccap_eligible_child).
+# 5180:6-1-10(B)(1)-(2): the base for all add-ons is the LOWER of the Appendix
+# A rate and the provider's customary charge (pre_subsidy_childcare_expenses).
+# (C)/(D): the higher of the Step Up To Quality and accredited bonuses is then
+# added on top and may exceed the customary charge. (F)/(G): non-traditional
+# hours (+5%) and special-needs (+5%) percentages apply to the (B)(1)-or-(C)
+# rate and may not exceed the customary charge; approved accommodations
+# double the (B)(1)-or-(C) rate with no charge cap.
+# All cases use a Category 2 center, preschool, full-time child:
+#   base = 190/week * 52 / 12 = 823.333...; customary charge is set high so the
+# (B)(1) cap does not bind except in the dedicated cap cases. Rates start
+# 2025-11-01, so cases use period 2026.
+- name: Case 1, Gold quality adds 25 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000  # 5,000/month, no cap
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.25 = 1,029.167
+    oh_ccap_rate_with_addons: [0, 1_029.17]
+
+- name: Case 2, Silver quality adds 15 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: SILVER
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.15 = 946.833
+    oh_ccap_rate_with_addons: [0, 946.83]
+
+- name: Case 3, Bronze quality adds 10 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: BRONZE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.10 = 905.667
+    oh_ccap_rate_with_addons: [0, 905.67]
+
+- name: Case 4, unrated provider gets no quality bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.00 = 823.333
+    oh_ccap_rate_with_addons: [0, 823.33]
+
+- name: Case 5, accredited unrated provider gets the 10 percent accredited bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_is_accredited: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # max(0, 10%) = 10%; 823.333 * 1.10 = 905.667
+    oh_ccap_rate_with_addons: [0, 905.67]
+
+- name: Case 6, Gold and accredited take the higher Gold bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        oh_ccap_is_accredited: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # max(25%, 10%) = 25%; 823.333 * 1.25 = 1,029.167
+    oh_ccap_rate_with_addons: [0, 1_029.17]
+
+- name: Case 7, non-traditional hours add 5 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_non_traditional_hours: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.05 = 864.5
+    oh_ccap_rate_with_addons: [0, 864.5]
+
+- name: Case 8, special-needs child adds 5 percent without accommodations.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # 823.333 * 1.05 = 864.5
+    oh_ccap_rate_with_addons: [0, 864.5]
+
+- name: Case 9, special-needs child with approved accommodations doubles the base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_has_special_accommodations: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # special-needs add = multiplier - 1 = 2 - 1 = 1; 823.333 * (1 + 1) = 1,646.667
+    oh_ccap_rate_with_addons: [0, 1_646.67]
+
+- name: Case 10, stacked Gold, non-traditional, and special-needs add-ons.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        oh_ccap_non_traditional_hours: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # (823.333 * 1.25) * 1.10 = 1,132.083.
+    oh_ccap_rate_with_addons: [0, 1_132.08]
+
+- name: Case 11, quality bonus applies on top of the customary-charge-capped base.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 7_200  # 600/month customary charge
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # (B)(1) base = min(823.333, 600) = 600; (C) Gold bonus applies on top
+    # and may exceed the charge: 600 * 1.25 = 750.
+    oh_ccap_rate_with_addons: [0, 750]
+
+- name: Case 12, the non-traditional-hours payment is capped at the customary charge.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_non_traditional_hours: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 10_200  # 850/month customary charge
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # (B)(1) base = min(823.333, 850) = 823.333; non-traditional 5% would give
+    # 864.5, but (F)(3) caps the payment at the 850 customary charge.
+    oh_ccap_rate_with_addons: [0, 850]
+
+- name: Case 13, accreditation and non-traditional enhancements are additive.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_is_accredited: true
+        oh_ccap_non_traditional_hours: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # Accreditation adds 10% of 823.333 and non-traditional care separately
+    # adds 5% of 823.333: 823.333 * 1.15 = 946.833.
+    oh_ccap_rate_with_addons: [0, 946.83]
+
+- name: Case 14, accreditation and ordinary special-needs enhancements are additive.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_is_accredited: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # Accreditation adds 10% of 823.333 and special needs separately adds 5%:
+    # 823.333 * 1.15 = 946.833.
+    oh_ccap_rate_with_addons: [0, 946.83]
+
+- name: Case 15, accreditation remains separate from special accommodations.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_has_special_accommodations: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_is_accredited: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # Special accommodations pay twice the 823.333 base, while accreditation
+    # separately adds 10% of that base: 823.333 * 2.10 = 1,729.
+    oh_ccap_rate_with_addons: [0, 1_729]
+
+- name: Case 16, special accommodations double the Gold-enhanced rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_has_special_accommodations: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: GOLD
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # (G)(2) doubles the (B)(1)-or-(C) rate, which for a Gold provider is the
+    # SUTQ-enhanced rate: 823.333 * 1.25 * 2 = 2,058.333.
+    oh_ccap_rate_with_addons: [0, 2_058.33]
+
+- name: Case 17, non-traditional hours stay additive inside the accommodations doubling.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        has_developmental_delay: true
+        oh_ccap_has_special_accommodations: true
+        oh_ccap_provider_type: CENTER
+        oh_ccap_quality_tier: NONE
+        oh_ccap_non_traditional_hours: true
+        childcare_hours_per_week: 40
+        pre_subsidy_childcare_expenses: 60_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH
+  output:
+    # (G)(2) doubles the 823.333 base while the (F) non-traditional share
+    # stays additive: 823.333 * (2 + 0.05) = 1,687.833.
+    oh_ccap_rate_with_addons: [0, 1_687.83]

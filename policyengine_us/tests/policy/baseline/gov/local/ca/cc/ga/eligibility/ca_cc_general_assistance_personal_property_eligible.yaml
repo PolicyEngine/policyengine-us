@@ -67,3 +67,114 @@
         members: [person1, person2]
   output:
     ca_cc_general_assistance_personal_property_eligible: false
+
+# One vehicle valued at or below $4,500 is exempt (GA-80 brochure).
+- name: One vehicle below the $4,500 vehicle limit is exempt.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_499
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: true
+
+- name: One vehicle above the $4,500 vehicle limit counts in full, ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 0
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_501
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: false
+
+# Two vehicles averaging 400 <= 4,500: one exempt, 400 countable, which sums
+# with personal property against the $500 limit.
+- name: Personal property plus countable vehicle value at the $500 limit is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 100
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 2
+        household_vehicles_value: 800
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 100 + 400 = 500 (at the limit).
+    ca_cc_general_assistance_personal_property_eligible: true
+
+- name: Personal property plus countable vehicle value just over the $500 limit is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        personal_property: 101
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 2
+        household_vehicles_value: 800
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # 101 + 400 = 501 (over the limit).
+    ca_cc_general_assistance_personal_property_eligible: false
+
+# Money counts as property (the brochure exempts only property-tax escrow
+# money and amounts under $50), so bank assets count toward the $500 limit.
+- name: Bank assets at the $500 limit are counted and eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        bank_account_assets: 500
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: true
+
+- name: Bank assets above the $500 limit are ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        bank_account_assets: 501
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_personal_property_eligible: false

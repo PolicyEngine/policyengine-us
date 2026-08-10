@@ -1,44 +1,58 @@
 description: California reduces the exemption amount for filers with income exceeding this threshold.
 SINGLE:
-  1991-01-01: 100_000 # Defined in the legal code. Inflation-indexed from here.
-  2021-01-01: 212_288
-  2022-01-01: 229_908
-  2023-01-01: 237_035
-  2024-01-01: 244_857
-  2025-01-01: 252_203
+  values:
+    1991-01-01: 100_000 # Defined in the legal code. Inflation-indexed from here.
+    2021-01-01: 212_288
+    2022-01-01: 229_908
+    2023-01-01: 237_035
+    2024-01-01: 244_857
+    2025-01-01: 252_203
+  metadata:
+    uprating: gov.states.ca.cpi
 SEPARATE:
-  1991-01-01: 100_000
-  2021-01-01: 212_288
-  2022-01-01: 229_908
-  2023-01-01: 237_035
-  2024-01-01: 244_857
-  2025-01-01: 252_203
+  values:
+    1991-01-01: 100_000
+    2021-01-01: 212_288
+    2022-01-01: 229_908
+    2023-01-01: 237_035
+    2024-01-01: 244_857
+    2025-01-01: 252_203
+  metadata:
+    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
-  1991-01-01: 200_000
-  2021-01-01: 424_581
-  2022-01-01: 459_821
-  2023-01-01: 474_075
-  2024-01-01: 489_719
-  2025-01-01: 504_411
+  values:
+    1991-01-01: 200_000
+    2021-01-01: 424_581
+    2022-01-01: 459_821
+    2023-01-01: 474_075
+    2024-01-01: 489_719
+    2025-01-01: 504_411
+  metadata:
+    uprating: gov.states.ca.cpi
 JOINT:
-  1991-01-01: 200_000
-  2021-01-01: 424_581
-  2022-01-01: 459_821
-  2023-01-01: 474_075
-  2024-01-01: 489_719
-  2025-01-01: 504_411
+  values:
+    1991-01-01: 200_000
+    2021-01-01: 424_581
+    2022-01-01: 459_821
+    2023-01-01: 474_075
+    2024-01-01: 489_719
+    2025-01-01: 504_411
+  metadata:
+    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
-  1991-01-01: 150_000
-  2021-01-01: 318_437
-  2022-01-01: 344_867
-  2023-01-01: 355_558
-  2024-01-01: 367_291
-  2025-01-01: 378_310
+  values:
+    1991-01-01: 150_000
+    2021-01-01: 318_437
+    2022-01-01: 344_867
+    2023-01-01: 355_558
+    2024-01-01: 367_291
+    2025-01-01: 378_310
+  metadata:
+    uprating: gov.states.ca.cpi
 
 metadata:
   period: year
   unit: currency-USD
-  uprating: gov.states.ca.cpi
   breakdown:
   - filing_status
   label: California exemption phase out start
@@ -55,5 +69,3 @@ metadata:
     href: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.html
   - title: Cal. Rev. & Tax. Code § 17054.1 | (b)
     href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17054.1.&nodeTreePath=3.20.2&lawCode=RTC
-    # Index according to federal tax parameter rules until we add California CPI trend.
-    # uprating: gov.irs.uprating
