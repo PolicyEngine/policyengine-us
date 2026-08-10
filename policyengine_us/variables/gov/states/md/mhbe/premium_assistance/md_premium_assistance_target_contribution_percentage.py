@@ -8,15 +8,16 @@ class md_premium_assistance_target_contribution_percentage(Variable):
     unit = "/1"
     definition_period = YEAR
     defined_for = StateCode.MD
+    # COMAR 14.35.21.04D (Board delegation to set the target contribution
+    # schedule) is on page 6 of the codified chapter, permanent effective
+    # 2025-10-13. The emergency PDF (25-134E) expired 2026-01-06.
     reference = (
-        "https://mgaleg.maryland.gov/pubs/committee/AELR/25-134E-Regulation.pdf#page=5",
+        "https://regs.maryland.gov/us/md/exec/comar/14.35.21#page=6",
         "https://mgaleg.maryland.gov/meeting_material/2025/hgo%20-%20134051066649659653%20-%20Combined%20MHBE.MIA%20slides_10.16.2025%20briefing%20to%20HGO&Finance.pdf#page=58",
     )
-    documentation = (
-        "Maryland target contribution percentage toward the benchmark SLCSP, "
-        "bracket-interpolated across FPL bands, then reduced by the Young "
-        "Adult Subsidy overlay and floored at zero."
-    )
+    # Maryland target contribution percentage toward the benchmark SLCSP,
+    # bracket-interpolated across FPL bands, then reduced by the Young Adult
+    # Subsidy overlay and floored at zero.
 
     def formula(tax_unit, period, parameters):
         magi_frac = tax_unit("aca_magi_fraction", period)

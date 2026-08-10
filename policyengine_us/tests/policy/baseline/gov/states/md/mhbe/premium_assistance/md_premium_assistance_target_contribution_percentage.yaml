@@ -1,12 +1,11 @@
-# Unit tests for the Maryland target contribution percentage
-# (REQ-011/012/013/014/018).
+# Unit tests for the Maryland target contribution percentage.
 # Bracket-interpolated from gov.states.md.mhbe.premium_assistance.
 # target_contribution_percentage:
 #   threshold: [0, 1.50, 2.00, 2.50, 3.00, 4.00]
 #   initial:   [0, 0,    0.02, 0.0622, 0.0798]
 #   final:     [0, 0.02, 0.0622, 0.0798, 0.0923]
-# Young adults have their target reduced by the YAS amount, floored at 0
-# (REQ-018). age 40 -> no reduction.
+# Young adults have their target reduced by the YAS amount, floored at 0.
+# age 40 -> no reduction.
 
 # ---- Base schedule (age 40, no YAS) ----
 
@@ -48,7 +47,7 @@
   output:
     md_premium_assistance_target_contribution_percentage: 0
 
-- name: Case 3, exactly 200% FPL -> 2.00% (start of 200-250% band, REQ-011 endpoint).
+- name: Case 3, exactly 200% FPL -> 2.00% (start of 200-250% band, endpoint).
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -67,7 +66,7 @@
   output:
     md_premium_assistance_target_contribution_percentage: 0.02
 
-- name: Case 4, exactly 250% FPL -> 6.22% (start of 250-300% band, REQ-013).
+- name: Case 4, exactly 250% FPL -> 6.22% (start of 250-300% band).
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -125,7 +124,7 @@
   output:
     md_premium_assistance_target_contribution_percentage: 0.08605
 
-- name: Case 7, exactly 400% FPL -> 9.23% (top of schedule, REQ-013).
+- name: Case 7, exactly 400% FPL -> 9.23% (top of schedule).
   period: 2026
   absolute_error_margin: 0.0001
   input:
@@ -264,7 +263,7 @@
   output:
     md_premium_assistance_target_contribution_percentage: 0.0004
 
-- name: Case 14, mid 200-250% band (2.25) -> 4.11% (linear phase, REQ-012).
+- name: Case 14, mid 200-250% band (2.25) -> 4.11% (linear phase).
   # bracket [2.00, 2.50]: 0.02 + (2.25-2.00)/0.50 * (0.0622-0.02) = 0.02 + 0.5*0.0422.
   period: 2026
   absolute_error_margin: 0.0001
@@ -485,3 +484,47 @@
         state_code: MD
   output:
     md_premium_assistance_target_contribution_percentage: 0.0572
+
+# ---- S8 additions ----
+
+- name: Case 25, just inside the 200-250% band (2.01) -> 2.0844% (no YAS).
+  # bracket [2.00, 2.50]: 0.02 + (2.01-2.00)/0.50 * (0.0622-0.02)
+  # = 0.02 + 0.02 * 0.0422 = 0.020844. Pins the just-inside-band interpolation.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.01
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.020844
+
+- name: Case 26, young adult below 150% FPL -> 0.00% (base 0 - 2.5pp floors at 0).
+  # In the 0-150% band the base target is a flat 0%; subtracting the age-30 young
+  # adult reduction 0.025 floors at 0 rather than going negative.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0

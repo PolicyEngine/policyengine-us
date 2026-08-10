@@ -1133,17 +1133,6 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
-  - id: md_premium_assistance
-    name: Maryland Premium Assistance
-    full_name: Maryland State-Based Health Insurance Subsidies Program
-    category: Healthcare
-    agency: MHBE
-    status: complete
-    coverage: MD
-    variable: md_premium_assistance
-    parameter_prefix: gov.states.md.mhbe.premium_assistance
-    verified_years: "2026-2027"
-
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
@@ -1163,6 +1152,18 @@ programs:
     coverage: DC
     variable: dc_gac
     parameter_prefix: gov.states.dc.dhc.gac
+
+  - id: md_premium_assistance
+    name: Maryland Premium Assistance
+    full_name: Maryland State-Based Health Insurance Subsidies Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MD
+    variable: md_premium_assistance
+    parameter_prefix: gov.states.md.mhbe.premium_assistance
+    verified_years: "2026-2027"
+    notes: The permanent Young Adult Subsidy (Insurance Article Section 31-122) is modeled only inside the 2026-2027 window; 2022-2025 and 2028-onward Young Adult Subsidy years are unmodeled. Cost-sharing and non-essential-health-benefit premium components and the enrollment-cap limits are not modeled.
 
   - id: ca_cvrp
     name: California CVRP
