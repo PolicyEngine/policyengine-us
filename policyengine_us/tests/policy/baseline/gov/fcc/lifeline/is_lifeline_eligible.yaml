@@ -62,3 +62,42 @@
     medicaid_enrolled: false
   output:
     is_lifeline_eligible: true
+
+- name: Family reporting SSI receipt with a zero modeled payment is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    medicaid_enrolled: false
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family reporting TANF receipt with a zero modeled benefit is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+    receives_tanf: true
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family reporting SSI receipt is not qualified via the non-tribal list
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    medicaid_enrolled: false
+  output:
+    # SSI is only in the non-tribal list, which tribal households do not read.
+    is_lifeline_eligible: false

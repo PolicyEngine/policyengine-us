@@ -3,6 +3,7 @@ values:
   2016-01-01:
     - medicaid_enrolled
     - ssi
+    - receives_ssi # Reported SSI receipt, for people the model gives a $0 payment.
     # Also:
     # - tanf # Not yet implemented in California.
     # Medi-Cal (Income Qualified Medi-Cal Only)

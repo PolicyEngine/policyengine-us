@@ -279,3 +279,27 @@
   output:
     # receives_snap is SPM-unit-level, so it projects to both members.
     tx_dart_reduced_fare_program_eligible: [true, true]
+
+- name: Person reporting TANF receipt with a zero modeled benefit is eligible for reduced fare program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35  # Too young for Medicare, and not disabled.
+        is_disabled: false
+        wic: 0
+        chip: 0
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        receives_tanf: true
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Every other qualifying program is zeroed, so only receives_tanf can qualify him.
+    tx_dart_reduced_fare_program_eligible: true

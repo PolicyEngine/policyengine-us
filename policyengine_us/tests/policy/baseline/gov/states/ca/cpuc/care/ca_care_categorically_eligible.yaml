@@ -56,3 +56,44 @@
     head_start: false
   output:
     ca_care_categorically_eligible: true
+
+- name: Household reporting SSI receipt with a zero modeled payment is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    tanf: 0
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Tribal household reporting TANF receipt with a zero modeled benefit is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    is_on_tribal_land: true
+    tanf: 0
+    receives_tanf: true
+    head_start: false
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Tribal household reporting SSI receipt is not qualified via the non-tribal list.
+  period: 2023
+  input:
+    state_code: CA
+    is_on_tribal_land: true
+    tanf: 0
+    head_start: false
+    medicaid_enrolled: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+  output:
+    # SSI is only in the non-tribal list, which tribal households do not read.
+    ca_care_categorically_eligible: false

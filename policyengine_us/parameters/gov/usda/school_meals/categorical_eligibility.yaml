@@ -5,6 +5,7 @@ values:
     - snap # Supplemental Nutrition Assistance Program.
     - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - tanf # Temporary Assistance to Needy Families. Currently only available in CA and IL.
+    - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     - fdpir # Food Distribution Program on Indian Reservations.
     - was_in_foster_care
     - is_homeless
