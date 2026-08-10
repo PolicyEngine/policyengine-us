@@ -237,6 +237,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -245,6 +246,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id004
@@ -273,8 +275,9 @@
     spm_units:
       spm_unit:
         # Zero-income childless couple pins the 2-person maximum allotment
-        # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr defaults
-        # to 40, so work requirements are met). Net income 0 -> contribution 0 ->
+        # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr is set
+        # to 40 for both adults so work requirements are met). Net income 0 ->
+        # contribution 0 ->
         # benefit = max allotment: 9 x 546 + 3 x 565.28 = 6,609.84.
         snap: 6609.85
         is_snap_eligible: true
@@ -291,6 +294,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id005
@@ -384,6 +388,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -392,6 +397,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id007
@@ -1443,6 +1449,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
       student:
         age: 20
         is_tax_unit_head: false
