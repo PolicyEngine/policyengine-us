@@ -1,4 +1,4 @@
-- name: Missouri tier 1 family of 3 in 2024 uses the pre-July 2024 schedule (25 dollars monthly).
+- name: Missouri tier 1 family of 3 in 2024 pays six months at 25 dollars then six at 30.
   period: 2024
   input:
     people:
@@ -19,9 +19,12 @@
         members: [parent, child1, child2]
         state_code: MO
   output:
-    mo_chip_premium: 300
+    mo_chip_premium:
+      2024-06: 25
+      2024-07: 30
+      2024: 330 # 6 x 25 + 6 x 30
 
-- name: Missouri tier 2 family of 4 in 2024 uses the pre-July 2024 schedule (99 dollars monthly).
+- name: Missouri tier 2 family of 4 in 2024 pays six months at 99 dollars then six at 119.
   period: 2024
   input:
     people:
@@ -44,9 +47,12 @@
         members: [p1, p2, c1, c2]
         state_code: MO
   output:
-    mo_chip_premium: 1188
+    mo_chip_premium:
+      2024-06: 99
+      2024-07: 119
+      2024: 1308 # 6 x 99 + 6 x 119
 
-- name: Missouri tier 1 family of 3 in 2026 uses the post-July 2025 schedule (31 dollars monthly).
+- name: Missouri tier 1 family of 3 in 2026 pays six months at 31 dollars then six at 32.
   period: 2026
   input:
     people:
@@ -67,9 +73,12 @@
         members: [parent, child1, child2]
         state_code: MO
   output:
-    mo_chip_premium: 372
+    mo_chip_premium:
+      2026-06: 31
+      2026-07: 32
+      2026: 378 # 6 x 31 + 6 x 32
 
-- name: Missouri tier 1 family of 3 in 2027 uses the post-July 2026 schedule (32 dollars monthly).
+- name: Missouri tier 1 family of 3 in 2027 uses the post-July 2026 schedule (32 dollars monthly) all year.
   period: 2027
   input:
     people:
@@ -198,11 +207,13 @@
 
 # The unborn child counts only in the pregnant member's own MAGI household;
 # the CHIP child's household counts the pregnant member as one person (DSS
-# manual 1885.010.00 example), so the chart keeps the size-2 boundaries
-# (2,705 / 3,337 / 4,058 dollars in 2026) and size-2 amounts. The pregnancy
-# still enlarges the FPG underlying tax_unit_medicaid_income_level, which
-# the formula must undo when recovering dollar income.
-- name: Missouri pregnant parent with one child at 4,058 dollars monthly in 2026 pays the size-2 tier 2 premium.
+# manual 1885.010.00 example), so the chart keeps the size-2 boundaries and
+# size-2 amounts. The pregnancy still enlarges the FPG underlying
+# tax_unit_medicaid_income_level, which the formula must undo when
+# recovering dollar income. At 4,058 dollars monthly the family sits above
+# the July 2025 chart's tier 3 floor (3,966 dollars) through June and at
+# the July 2026 chart's tier 2 ceiling from July.
+- name: Missouri pregnant parent with one child at 4,058 dollars monthly in 2026 moves from tier 3 to tier 2 at the July chart change.
   period: 2026
   input:
     people:
@@ -221,9 +232,12 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 972
+    mo_chip_premium:
+      2026-06: 198
+      2026-07: 83
+      2026: 1_686 # 6 x 198 + 6 x 83
 
-- name: Missouri pregnant parent with one child at 4,212 dollars monthly in 2026 pays the size-2 tier 3 premium.
+- name: Missouri pregnant parent with one child at 4,212 dollars monthly in 2026 pays the size-2 tier 3 premiums.
   period: 2026
   input:
     people:
@@ -242,13 +256,43 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 2_376
+    mo_chip_premium:
+      2026-06: 198
+      2026-07: 203
+      2026: 2_406 # 6 x 198 + 6 x 203
 
 # Boundary tests for the Appendix E chart's rounded monthly-dollar tier
-# boundaries. Family of 2 in 2026: FPG is 21,640 dollars (1,803.33 monthly),
-# so the ceiled boundaries are 2,705 / 3,337 / 4,058 dollars, and January
-# 2026 resolves to the July 2025 premium schedule (25 / 81 / 198 dollars).
-- name: Missouri family of 2 just below the tier 1 floor (2,704 dollars monthly) in 2026 owes no premium.
+# boundaries. Each July edition derives its boundaries from that January's
+# FPG and stays in force through the following June, so 2026 spans two
+# charts for a family of 2: January-June uses the July 2025 chart built on
+# the 2025 FPG of 21,150 dollars (floors 2,644 / 3,261 / 3,966, premiums
+# 25 / 81 / 198), and July-December uses the July 2026 chart built on the
+# 2026 FPG of 21,640 dollars (floors 2,705 / 3,337 / 4,058, premiums
+# 25 / 83 / 203).
+- name: Missouri family of 2 at the July 2025 chart's tier 1 floor (2,644 dollars monthly) pays through June 2026 and falls below the July 2026 floor.
+  period: 2026
+  input:
+    people:
+      parent:
+        is_chip_eligible: false
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        medicaid_magi: 31_728
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_chip_premium:
+      2026-06: 25
+      2026-07: 0
+      2026: 150 # 6 x 25
+
+- name: Missouri family of 2 at 2,704 dollars monthly in 2026 pays tier 1 through June and nothing from July.
   period: 2026
   input:
     people:
@@ -266,9 +310,12 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 0
+    mo_chip_premium:
+      2026-06: 25
+      2026-07: 0
+      2026: 150 # 6 x 25
 
-- name: Missouri family of 2 at the tier 1 floor (2,705 dollars monthly) in 2026 pays the tier 1 premium.
+- name: Missouri family of 2 at 2,705 dollars monthly in 2026 pays the tier 1 premium under both charts.
   period: 2026
   input:
     people:
@@ -288,7 +335,7 @@
   output:
     mo_chip_premium: 300
 
-- name: Missouri family of 2 at the published tier 1 upper boundary (3,337 dollars monthly) in 2026 stays in tier 1.
+- name: Missouri family of 2 at 3,337 dollars monthly in 2026 is in tier 2 through June and at the tier 1 ceiling from July.
   period: 2026
   input:
     people:
@@ -306,9 +353,12 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 300
+    mo_chip_premium:
+      2026-06: 81
+      2026-07: 25
+      2026: 636 # 6 x 81 + 6 x 25
 
-- name: Missouri family of 2 one dollar above the tier 1 upper boundary (3,338 dollars monthly) in 2026 pays the tier 2 premium.
+- name: Missouri family of 2 at 3,338 dollars monthly in 2026 pays the tier 2 premium under both charts.
   period: 2026
   input:
     people:
@@ -326,9 +376,13 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 972
+    mo_chip_premium:
+      2026-06: 81
+      2026-07: 83
+      2026-08: 83
+      2026: 984 # 6 x 81 + 6 x 83
 
-- name: Missouri family of 2 at the published tier 2 upper boundary (4,058 dollars monthly) in 2026 stays in tier 2.
+- name: Missouri family of 2 at 4,058 dollars monthly in 2026 is in tier 3 through June and at the tier 2 ceiling from July.
   period: 2026
   input:
     people:
@@ -346,9 +400,12 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 972
+    mo_chip_premium:
+      2026-06: 198
+      2026-07: 83
+      2026: 1_686 # 6 x 198 + 6 x 83
 
-- name: Missouri family of 2 one dollar above the tier 2 upper boundary (4,059 dollars monthly) in 2026 pays the tier 3 premium.
+- name: Missouri family of 2 at 4,059 dollars monthly in 2026 pays the tier 3 premium under both charts.
   period: 2026
   input:
     people:
@@ -366,4 +423,7 @@
         members: [parent, child]
         state_code: MO
   output:
-    mo_chip_premium: 2_376
+    mo_chip_premium:
+      2026-06: 198
+      2026-07: 203
+      2026: 2_406 # 6 x 198 + 6 x 203

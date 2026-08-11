@@ -1,6 +1,11 @@
 # Federal HR1 effective date: 2025-07-04
 # CA delays to 2026-06-01 per ACL 25-93
-# HI and AK delay to 2025-11-01
+# HI delays to 2025-11-01
+# AK delays to 2025-11-01 (same as HI). HR1 is then in effect statewide,
+# including Anchorage, so the new Alaska Native/Indian exception applies.
+# Alaska's 7 U.S.C. 2015(o)(7) good-faith window (the temporary retained
+# pre-HR1 exceptions, 2025-11-01 through 2026-10-31) is tracked separately
+# by is_snap_abawd_in_good_faith_exemption_window, not by this toggle.
 
 - name: Case 1, non-CA after federal effective date.
   period: 2026-01
@@ -62,7 +67,7 @@
   output:
     is_snap_abawd_hr1_in_effect: false
 
-- name: Case 9, AK not in effect between federal and state adoption dates.
+- name: Case 9, AK not in effect between federal effective date and exemption window.
   period: 2025-08
   input:
     state_code:
@@ -78,7 +83,7 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 11, AK in effect at state adoption date.
+- name: Case 11, AK in effect at its 2025-11-01 adoption date (window tracked separately).
   period: 2025-11
   input:
     state_code:
@@ -93,9 +98,39 @@
   output:
     is_snap_abawd_hr1_in_effect: true
 
-- name: Case 13, AK in effect in 2026 steady state.
+- name: Case 13, AK in effect during the good-faith exemption window.
   period: 2026-01
   input:
     state_code: AK
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 14, AK still in effect after the good-faith exemption window closes.
+  period: 2026-11
+  input:
+    state_code:
+      2026: AK
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Case 15, AK in effect in 2027 steady state.
+  period: 2027-01
+  input:
+    state_code: AK
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+# AK adopts HR1 at 2025-11-01, so hr1_in_effect is true for every month from
+# then on, including the good-faith window. The window itself (the retained
+# pre-HR1 exceptions) is a separate variable; see
+# is_snap_abawd_in_good_faith_exemption_window.yaml for its 2026-10 -> 2026-11
+# boundary. state_code is a YEAR variable read via period.this_year, so
+# non-January month periods require year-keyed inputs (2026: AK) to avoid a
+# period-parsing error in policyengine-core input storage.
+- name: Case 16, AK in effect in the last month of the good-faith window.
+  period: 2026-10
+  input:
+    state_code:
+      2026: AK
   output:
     is_snap_abawd_hr1_in_effect: true

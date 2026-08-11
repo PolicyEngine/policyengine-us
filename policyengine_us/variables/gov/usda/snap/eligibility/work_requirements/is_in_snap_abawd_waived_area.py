@@ -12,6 +12,7 @@ class is_in_snap_abawd_waived_area(Variable):
         "https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=4",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-79.pdf#page=6",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-15.pdf#page=6",
+        "https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2",
     )
     documentation = (
         "Whether the person lives in an area where the USDA Food and "
@@ -22,7 +23,8 @@ class is_in_snap_abawd_waived_area(Variable):
         "form matches); statewide waivers are matched on state_code. A "
         "household with no county information falls back to the first "
         "county alphabetically in its state, which for Alaska is the "
-        "waived Aleutians East Borough — see waived_counties.yaml for "
+        "waived Aleutians East Borough — see the waived_counties state "
+        "parameters for "
         "the waiver provenance and this fallback's implications."
     )
 
@@ -30,6 +32,11 @@ class is_in_snap_abawd_waived_area(Variable):
         p = parameters(period).gov.usda.snap.work_requirements.abawd
         county = person.household("county_str", period.this_year)
         state_code = person.household("state_code_str", period.this_year)
-        in_waived_county = np.isin(county, p.waived_counties)
+        in_waived_county = np.zeros_like(state_code, dtype=bool)
+        for state in p.waived_counties._children:
+            in_waived_county |= (state_code == state.upper()) & np.isin(
+                county,
+                p.waived_counties[state],
+            )
         in_waived_state = np.isin(state_code, p.waived_states)
         return in_waived_county | in_waived_state

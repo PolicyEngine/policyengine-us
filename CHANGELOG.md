@@ -1,3 +1,73 @@
+## [1.792.0] - 2026-08-11
+
+### Added
+
+- Add California Premium Subsidy (Covered California Individual Market Assistance).
+
+
+## [1.791.0] - 2026-08-10
+
+### Added
+
+- Add Maryland Premium Assistance (State-Based Health Insurance Subsidies Program).
+
+
+## [1.790.3] - 2026-08-10
+
+### Fixed
+
+- Count reported SSI and TANF receipt toward categorical eligibility in the school meals, Lifeline, Pell Grant simplified formula, TX DART, IL IHWAP, DC POWER, CA CARE, CVRP increased rebate, and CalWORKs exempt MAP program lists.
+
+
+## [1.790.2] - 2026-08-09
+
+### Fixed
+
+- Convert Georgia, Missouri, and New York CHIP premiums to monthly variables so mid-year schedule changes take effect, align Missouri's tier boundaries with the operative July-to-June Appendix E chart, re-date New York's premium restructuring to October 2022 per SPA NY-22-0033 and remove erroneous 2026 threshold entries, and exempt children under six and in foster care from Georgia's premium.
+
+
+## [1.790.1] - 2026-08-08
+
+### Fixed
+
+- Stop counting in-kind SNAP and WIC as income for the Massachusetts Senior Circuit Breaker credit, following the in-kind public assistance exclusion in M.G.L. c.62 s.6(k)(1); the conflicting DOR guidance is documented in the parameter file.
+
+
+## [1.790.0] - 2026-08-07
+
+### Added
+
+- Added Montana's unemployment compensation subtraction for tax years before 2024, when SB 399 repealed the exemption; previously unemployment income was incorrectly taxed by Montana and inflated Montana-taxable Social Security.
+
+
+## [1.789.2] - 2026-08-07
+
+### Fixed
+
+- Count reported SNAP and WIC receipt toward categorical eligibility in the school meals, Lifeline, ACP, MA MBTA reduced fare, CA CARE, TX DART, and Pell Grant simplified formula program lists.
+
+
+## [1.789.1] - 2026-08-07
+
+### Fixed
+
+- Model Alaska's SNAP ABAWD good-faith-effort exemption (7 U.S.C. 2015(o)(7)) as a separate window overlay: Alaska adopts HR1 statewide from 2025-11-01 (keeping the new Alaska Native/Indian exception in effect), and during 2025-11-01 through 2026-10-31 temporarily retains only the approved pre-HR1 exceptions (ages 56-64, households with children aged 14-17, veterans, people experiencing homelessness, and former foster youth aged 18-24) on top of the post-HR1 exception set, rather than deferring the statewide HR1 toggle.
+
+
+## [1.789.0] - 2026-08-07
+
+### Added
+
+- Add FNS FY2025 Q1 partial-state ABAWD waiver county coverage with litigation-aware termination dates.
+
+
+## [1.788.0] - 2026-08-07
+
+### Added
+
+- Add primary residence value and derive assessed property value from state assessment rates.
+
+
 ## [1.787.0] - 2026-08-06
 
 ### Added

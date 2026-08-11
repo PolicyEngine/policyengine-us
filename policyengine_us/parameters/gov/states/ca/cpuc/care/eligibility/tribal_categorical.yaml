@@ -2,6 +2,7 @@ description: California provides CARE eligibility to tribal households that are 
 values:
   2022-06-01:
     - tanf
+    - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     - head_start
     # Also these, not in our model:
     # Bureau of Indian Affairs General Assistance

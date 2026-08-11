@@ -1,0 +1,34 @@
+description: Counties in New Jersey with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2025-02-01:
+    - ATLANTIC_COUNTY_NJ # FIPS 34001
+    - BERGEN_COUNTY_NJ # FIPS 34003
+    - BURLINGTON_COUNTY_NJ # FIPS 34005
+    - CAMDEN_COUNTY_NJ # FIPS 34007
+    - CAPE_MAY_COUNTY_NJ # FIPS 34009
+    - CUMBERLAND_COUNTY_NJ # FIPS 34011
+    - ESSEX_COUNTY_NJ # FIPS 34013
+    - GLOUCESTER_COUNTY_NJ # FIPS 34015
+    - HUDSON_COUNTY_NJ # FIPS 34017
+    - HUNTERDON_COUNTY_NJ # FIPS 34019
+    - MERCER_COUNTY_NJ # FIPS 34021
+    - MIDDLESEX_COUNTY_NJ # FIPS 34023
+    - MONMOUTH_COUNTY_NJ # FIPS 34025
+    - OCEAN_COUNTY_NJ # FIPS 34029
+    - PASSAIC_COUNTY_NJ # FIPS 34031
+    - SALEM_COUNTY_NJ # FIPS 34033
+    - SOMERSET_COUNTY_NJ # FIPS 34035
+    - SUSSEX_COUNTY_NJ # FIPS 34037
+    - UNION_COUNTY_NJ # FIPS 34039
+    - WARREN_COUNTY_NJ # FIPS 34041
+  2026-02-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in New Jersey
+  reference:
+    - title: USDA FNS New Jersey FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/nj-abawd-response-fy2025.pdf
