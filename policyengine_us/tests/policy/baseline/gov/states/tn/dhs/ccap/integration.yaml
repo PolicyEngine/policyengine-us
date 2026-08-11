@@ -92,9 +92,14 @@
     tn_ccap_copay: 146.20
     # Infant center Top q90 = 260*1.10*1.15 = 328.90; school-age family home Top School In = 119
     tn_ccap_max_weekly_benefit: [0, 328.90, 119]
-    # max monthly = (328.90+119)*52/12 = 1_940.90; expenses 2_000/mo capped at 1_940.90
-    # benefit = 1_940.90 - 146.20 = 1_794.70
-    tn_ccap: 1_794.70
+    # The lesser-of comparison applies per child, not to a pooled family cap:
+    # expenses 2_000/mo split evenly = 1_000 per child.
+    #   infant:     cap 328.90*52/12 = 1_425.23 -> min(1_000, 1_425.23) = 1_000.00
+    #   school-age: cap 119*52/12    =   515.67 -> min(1_000,   515.67) =   515.67
+    # total 1_515.67 - copay 146.20 = 1_369.47. Pooling the caps first would
+    # instead pay 1_794.70, letting the infant's unused headroom cover the
+    # school-age child's above-rate charges.
+    tn_ccap: 1_369.47
 
 - name: Case 3, part-time toddler at a Lower Tier center in the prior era with waived copay.
   period: 2025-01
