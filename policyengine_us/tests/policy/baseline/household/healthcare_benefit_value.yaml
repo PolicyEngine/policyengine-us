@@ -190,3 +190,42 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 960
+
+- name: Case 12, New Mexico Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the assigned twin (assigned_nm_premium_assistance
+  # = nm_premium_assistance * takeup, default true), which is defined_for
+  # StateCode.NM, so the household must be in NM; with takeup defaulting true the
+  # raw and assigned amounts coincide (900).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 900
+    healthcare_benefit_value: 900
+
+- name: Case 13, take-up false zeroes the New Mexico Premium Assistance health value.
+  # Setting takes_up_nm_premium_assistance_if_eligible false makes the assigned
+  # twin 0 even though the raw amount is 900, so it does not enter the health value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    takes_up_nm_premium_assistance_if_eligible: false
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 0
+    healthcare_benefit_value: 0

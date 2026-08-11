@@ -1145,6 +1145,21 @@ programs:
     verified_years: "2026-2027"
     notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
 
+  - id: nm_premium_assistance
+    name: New Mexico Premium Assistance
+    full_name: Health Insurance Marketplace Affordability Program
+    category: Healthcare
+    # Base Premium Assistance and the Middle Income Household component are
+    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
+    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
+    # Native American Table 2 rates plus the Premium Buy-down.
+    agency: State
+    status: partial
+    coverage: NM
+    variable: nm_premium_assistance
+    parameter_prefix: gov.states.nm.hca.premium_assistance
+    verified_years: "2026-2027"
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
