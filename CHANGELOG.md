@@ -1,3 +1,10 @@
+## [1.792.0] - 2026-08-11
+
+### Added
+
+- Add California Premium Subsidy (Covered California Individual Market Assistance).
+
+
 ## [1.791.0] - 2026-08-10
 
 ### Added
