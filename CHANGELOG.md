@@ -1,3 +1,10 @@
+## [1.793.0] - 2026-08-11
+
+### Added
+
+- Add Colorado Premium Assistance (Connect for Health Colorado premium wrap).
+
+
 ## [1.792.1] - 2026-08-11
 
 ### Fixed
