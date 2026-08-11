@@ -1177,6 +1177,17 @@ programs:
     verified_years: "2026-2027"
     notes: The permanent Young Adult Subsidy (Insurance Article Section 31-122) is modeled only inside the 2026-2027 window; 2022-2025 and 2028-onward Young Adult Subsidy years are unmodeled. Cost-sharing and non-essential-health-benefit premium components and the enrollment-cap limits are not modeled.
 
+  - id: ca_premium_subsidy
+    name: California Premium Subsidy
+    full_name: California Premium Subsidy (Individual Market Assistance)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_premium_subsidy
+    parameter_prefix: gov.states.ca.hbex.premium_subsidy
+    verified_years: "2026-2027"
+
   - id: ca_cvrp
     name: California CVRP
     full_name: California Clean Vehicle Rebate Project
