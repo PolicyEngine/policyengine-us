@@ -1,11 +1,10 @@
-# Unit tests for the California Premium Subsidy amount
-# (REQ-010/011/013/014/016/017/026). The subsidy is the residual top-up over
-# the federal APTC toward the SLCSP benchmark:
+# Unit tests for the California Premium Subsidy amount. The subsidy is the
+# residual top-up over the federal APTC toward the SLCSP benchmark:
 #   income  = max(aca_magi, 0)                          # negative MAGI clamped
 #   slcsp   = annualized second-lowest-cost silver plan  # sum of 12 monthly slcsp
 #   pct     = ca_premium_subsidy_applicable_percentage   # CA schedule
 #   amount  = max(0, slcsp - aca_ptc - pct * income)
-#   result  = where(ca_premium_subsidy_eligible, amount, 0)
+#   result  = amount when ca_premium_subsidy_eligible (defined_for), else 0
 # slcsp is a MONTH-period variable; in a YEAR test it is supplied as the annual
 # figure (spread across 12 months and re-summed by add()), matching the NM
 # convention. aca_magi, aca_magi_fraction, slcsp, aca_ptc and is_aca_ptc_eligible
@@ -17,7 +16,7 @@
 - name: Case 1, 140% FPL with APTC covering the full residual -> $0 floor.
   # pct 0 (100-150% band). amount = max(0, 6_000 - 6_000 - 0*21_000) = 0.
   # Below 150% FPL the state fills the post-APTC gap; when APTC already reaches
-  # the benchmark there is no remaining state top-up owed (REQ-017).
+  # the benchmark there is no remaining state top-up owed.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -55,6 +54,7 @@
         aca_magi_fraction: 1.40
         slcsp: 6_000
         aca_ptc: 3_500
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -81,6 +81,7 @@
         aca_magi_fraction: 1.575
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -105,6 +106,7 @@
         aca_magi_fraction: 1.65
         slcsp: 7_000
         aca_ptc: 2_500
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -156,6 +158,7 @@
         aca_magi_fraction: 1.575
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -190,7 +193,7 @@
 
 - name: Case 8, in-band CA unit in 2025 (before the program) -> $0.
   # in_effect is false before 2026-01-01, so the unit is ineligible and the
-  # where() gate returns 0 despite a positive residual.
+  # defined_for gate returns 0 despite a positive residual.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -213,7 +216,7 @@
     ca_premium_subsidy: 0
 
 - name: Case 9, above the 165% FPL limit (1.66) -> $0 (federal APTC only).
-  # ca_premium_subsidy_eligible is false above the band, so the where() gate
+  # ca_premium_subsidy_eligible is false above the band, so the defined_for gate
   # returns 0 even though slcsp exceeds aca_ptc.
   period: 2026
   absolute_error_margin: 0.01
@@ -281,6 +284,7 @@
         aca_magi_fraction: 1.00
         slcsp: 6_000
         aca_ptc: 3_500
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -310,6 +314,7 @@
         aca_magi_fraction: 1.60
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
@@ -321,9 +326,8 @@
 
 - name: Case 13, in-band CA unit in 2028 (after the sunset) -> $0.
   # in_effect ends 2028-01-01, so ca_premium_subsidy_eligible is false and the
-  # where() gate returns 0 despite a positive residual. Mirrors the eligible
-  # variable's 2028 case at the amount level (the amount file previously tested
-  # only the pre-program 2025 side of the window).
+  # defined_for gate returns 0 despite a positive residual. Mirrors the eligible
+  # variable's 2028 case at the amount level.
   period: 2028
   absolute_error_margin: 0.01
   input:
@@ -351,7 +355,7 @@
   # aca_magi_fraction 1.66 clamps ca_premium_subsidy_applicable_percentage to the
   # top-bracket 0.0391 (see the pct file Case 10), and slcsp - aca_ptc = 4_000 is a
   # positive residual, yet ca_premium_subsidy_eligible is false above fpl_limit 1.65
-  # so the where() gate zeroes the amount. Confirms the out-of-band pct clamp is
+  # so the defined_for gate zeroes the amount. Confirms the out-of-band pct clamp is
   # unreachable through the eligibility gate (the raw residual + clamped pct never
   # pay out above the band).
   period: 2026
@@ -380,7 +384,7 @@
   # aca_magi_fraction 0.99 clamps ca_premium_subsidy_applicable_percentage to the
   # first-bracket 0 (see the pct file Case 9), and slcsp - aca_ptc = 4_000 is a
   # positive residual, yet ca_premium_subsidy_eligible is false below fpl_floor 1.0
-  # so the where() gate zeroes the amount. Cross-checks the below-floor clamp
+  # so the defined_for gate zeroes the amount. Cross-checks the below-floor clamp
   # region against the eligibility gate from the low side.
   period: 2026
   absolute_error_margin: 0.01
@@ -406,13 +410,13 @@
 
 # ---- PY2027 carry-forward (positive amount) ----
 
-- name: Case 16, PY2027 carry-forward pays a positive subsidy at 157.5% FPL.
-  # in_effect is true through PY2027 and the schedule carries forward, so
-  # magi_frac 1.575 -> pct 0.0319 + 0.5*0.0072 = 0.0355. income 25_000.
-  # amount = max(0, 6_000 - 2_000 - 0.0355*25_000) = 6_000 - 2_000 - 887.50 = 3_112.50.
-  # The amount file otherwise covers 2025/2026/2028; this confirms the carry-forward
-  # window produces dollars (not just the boolean eligibility already in the eligible
-  # file's 2027 case).
+- name: Case 16, PY2027 pays a positive subsidy at 157.5% FPL (revised schedule).
+  # in_effect is true through PY2027 and the schedule CHANGED (Board Res. 2026-22):
+  # the 150-165% band is now initial 0.0269 -> final 0.0341, so
+  # magi_frac 1.575 -> pct 0.0269 + 0.5*(0.0341-0.0269) = 0.0269 + 0.0036 = 0.0305.
+  # income 25_000. amount = max(0, 6_000 - 2_000 - 0.0305*25_000)
+  # = 6_000 - 2_000 - 762.50 = 3_237.50 (up from the 2026 value of 3_112.50 at the
+  # same FPL because the PY2027 applicable percentage in this band is lower).
   period: 2027
   absolute_error_margin: 0.01
   input:
@@ -427,12 +431,13 @@
         aca_magi_fraction: 1.575
         slcsp: 6_000
         aca_ptc: 2_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy: 3_112.50
+    ca_premium_subsidy: 3_237.50
 
 # ---- Floor from the SLCSP == APTC direction ----
 
@@ -491,6 +496,7 @@
         aca_magi_fraction: 1.575
         slcsp: 8_000
         aca_ptc: 3_000
+        tax_unit_is_filer: true
     households:
       household:
         members: [person1, person2]

@@ -1,5 +1,5 @@
-# Unit tests for the California Premium Subsidy applicable percentage
-# (REQ-008/009/025). Bracket-interpolated from
+# Unit tests for the California Premium Subsidy applicable percentage.
+# Bracket-interpolated from
 # gov.states.ca.hbex.premium_subsidy.applicable_percentage:
 #   threshold: [1.0, 1.5, 1.65]
 #   initial:   [0,   0.0319]
@@ -254,9 +254,11 @@
 
 # ---- Carry-forward ----
 
-- name: Case 12, PY2027 carry-forward uses the same schedule -> 3.55% at 157.5% FPL.
-  # Schedule values carry forward through PY2027; bracket 1 [1.5,1.65]:
-  # position (1.575-1.5)/0.15 = 0.5 -> 0.0319 + 0.5*0.0072 = 0.0355.
+- name: Case 12, PY2027 schedule at 157.5% FPL -> 3.05% (revised 150-165% band).
+  # PY2027 Program Design V4 (Board Res. 2026-22) changes the 150-165% band to
+  # initial 0.0269 -> final 0.0341. bracket 1 [1.5,1.65]:
+  # position (1.575-1.5)/0.15 = 0.5 -> 0.0269 + 0.5*(0.0341-0.0269)
+  # = 0.0269 + 0.5*0.0072 = 0.0269 + 0.0036 = 0.0305.
   period: 2027
   absolute_error_margin: 0.0001
   input:
@@ -273,4 +275,71 @@
         members: [person1]
         state_code: CA
   output:
-    ca_premium_subsidy_applicable_percentage: 0.0355
+    ca_premium_subsidy_applicable_percentage: 0.0305
+
+# ---- PY2027 new 165-200% FPL tier ----
+
+- name: Case 13, PY2027 exactly 165% FPL -> 3.41% (start of the new 165-200% tier).
+  # PY2027 thresholds [1,1.5,1.65,2.0]. searchsorted(..., 1.65, "right") = 3,
+  # -1 = 2 -> bracket 2 [1.65,2.0], position 0 -> initial rate 0.0341. The 165%
+  # knot now takes the NEW tier's initial rate (2026 had 0.0391 at this point).
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.65
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0341
+
+- name: Case 14, PY2027 182.5% FPL (midpoint of the new 165-200% tier) -> 4.255%.
+  # bracket 2 [1.65,2.0]: position (1.825-1.65)/0.35 = 0.5.
+  # 0.0341 + 0.5*(0.051-0.0341) = 0.0341 + 0.5*0.0169 = 0.0341 + 0.00845 = 0.04255.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.825
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.04255
+
+- name: Case 15, PY2027 199% FPL (top of the eligible band) -> ~5.05%.
+  # bracket 2 [1.65,2.0]: position (1.99-1.65)/0.35 = 0.34/0.35 = 0.971428...
+  # 0.0341 + 0.971428*(0.051-0.0341) = 0.0341 + 0.971428*0.0169 = 0.0341 +
+  # 0.016417 = 0.050517. Derived (non-round position); confirm against the model.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.99
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.050517  # model computes 0.05051714
