@@ -170,3 +170,23 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 2_100
+
+- name: Case 11, Colorado Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned twin
+  # (assigned_co_premium_assistance), not the raw co_premium_assistance, so a
+  # forced $960 assigned subsidy aggregates to the household value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_co_premium_assistance: 960
+    assigned_ca_premium_subsidy: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 960

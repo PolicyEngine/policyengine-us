@@ -21,6 +21,7 @@ class healthcare_benefit_value(Variable):
         "assigned_ca_premium_subsidy",
         "basic_health_program",
         "co_omnisalud",
+        "assigned_co_premium_assistance",
         "md_premium_assistance",
         "or_healthier_oregon_cost",
     ]
