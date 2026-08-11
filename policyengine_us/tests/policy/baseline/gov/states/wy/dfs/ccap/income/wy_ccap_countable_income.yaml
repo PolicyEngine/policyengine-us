@@ -265,3 +265,52 @@
         state_code: WY
   output:
     wy_ccap_countable_income: 2_800  # 1_800 + 1_000
+
+# Rules §8(e)(iv)(E)(III): the income of a child who is ineligible for child
+# care assistance is not counted. A 15-year-old with no special need fails the
+# under-13 age test, so their unearned income drops out of countable income
+# while remaining in gross income, which the copay's 7% cap reads.
+- name: An ineligible child's unearned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 per month - 200 = 2_300
+      person2:
+        age: 4
+      person3:
+        age: 15
+        social_security: 12_000  # 1_000 per month, not counted
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_300
+    wy_ccap_gross_income: 3_500  # 2_500 + 1_000
+
+- name: An eligible child's unearned income is counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 per month - 200 = 2_300
+      person2:
+        age: 4
+        social_security: 12_000  # 1_000 per month, counted
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 3_300  # 2_300 + 1_000

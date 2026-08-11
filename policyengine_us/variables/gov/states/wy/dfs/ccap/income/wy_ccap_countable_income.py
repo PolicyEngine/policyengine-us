@@ -9,7 +9,7 @@ class wy_ccap_countable_income(Variable):
     unit = USD
     defined_for = StateCode.WY
     reference = (
-        "https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254",  # Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §8(e)(iv)(D), eff. 05/07/2025 (PDF p. 19)
+        "https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254",  # Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §8(e)(iv)(D), (E), eff. 05/07/2025 (PDF pp. 19-20)
         "https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/",  # Wyoming DFS Child Care Subsidy Policy Manual §§905, 907 (PDF pp. 5-9)
     )
 
@@ -53,7 +53,20 @@ class wy_ccap_countable_income(Variable):
             [max_(earned - p.earned_income_disregard, 0), max_(earned, 0)],
             default=0,
         )
-        unearned = spm_unit("wy_ccap_gross_income", period) - spm_unit.sum(earned)
+        # Rules Ch. 1 §8(e)(iv)(E)(III): "Income of a child(ren) who is
+        # ineligible for child care assistance is not counted", while
+        # §8(e)(iv)(E)(II) counts the income of the minor child who needs child
+        # care and of a minor parent. The unearned side is taken per person so
+        # that exclusion reaches it; summed over the unit it equals
+        # wy_ccap_gross_income less the excluded children's unearned income.
+        # The earned side needs no further filter, since Appendix B already
+        # exempts a dependent child's wages above.
+        person_unearned = add(person, period, p.countable_income.sources) - earned
+        is_eligible_child = person("wy_ccap_eligible_child", period)
+        counted_unearned = where(
+            is_child & ~is_eligible_child & ~is_minor_parent, 0, person_unearned
+        )
+        unearned = spm_unit.sum(counted_unearned)
         # Manual §907.B: deduct child support paid by a parent whose income
         # counts, capped at the monthly court-ordered amount and excluding
         # arrears; the court-ordered amount and arrears are not tracked, so

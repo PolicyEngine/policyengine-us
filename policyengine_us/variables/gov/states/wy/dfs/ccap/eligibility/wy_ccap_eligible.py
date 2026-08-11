@@ -14,8 +14,9 @@ class wy_ccap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Rules Ch. 1 §8(e): the unit must include at least one eligible child
-        # and meet the activity and income requirements. §8(f) considers no
-        # resources in determining eligibility; only the federal CCDF
+        # and meet the activity and income requirements. §8(e)(v) provides
+        # that "[r]esources shall not be considered in determining
+        # eligibility"; only the federal CCDF
         # $1,000,000 asset ceiling applies (Manual §800). The eligibility bars
         # for fraud, fugitive felons, program noncooperation, and unpaid
         # overpayments (§8(e)(i)(F), (G), (L), (M)) are not modeled.

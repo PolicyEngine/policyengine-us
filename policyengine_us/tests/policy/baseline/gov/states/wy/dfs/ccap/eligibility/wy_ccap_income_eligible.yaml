@@ -202,3 +202,78 @@
         state_code: WY
   output:
     wy_ccap_income_eligible: true
+
+# Rules §8(e)(iv)(C) / CCDF State Plan §§2.2.2.f-g, 3.3.1.vi: the income test
+# is waived for a foster child or a child receiving or needing protective
+# services. Cases 9-11 reuse the Case 2 income, one dollar per month over the
+# Step 4 initial limit.
+- name: Case 9, a foster child waives the income test above the initial limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_162
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 10, a protective services child waives the income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_162
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: true
+
+- name: Case 11, the same unit without either flag stays ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_162
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_income_eligible: false

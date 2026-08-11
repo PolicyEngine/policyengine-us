@@ -18,8 +18,10 @@ class wy_ccap(Variable):
         # provider's actual charge, the statewide maximum limit, and the
         # provider's DFS rate for each authorized day of care, summed across
         # eligible children, minus the family copayment, floored at zero.
-        # The 16-hour-per-day care cap (§9(k)) and the multi-child family rate
-        # cap (§9(m)) are not modeled.
+        # The 16-hour-per-day care cap (§9(h)), the deduction for child care
+        # paid from another source (§9(k)), and the family-rate cap when a
+        # provider charges one rate for several children (Manual §1101.N.3)
+        # are not modeled.
         person = spm_unit.members
         daily_benefit = person("wy_ccap_daily_benefit", period)
         care_days = person("childcare_attending_days_per_month", period.this_year)
