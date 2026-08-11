@@ -1,1 +1,0 @@
-Update SNAP broad-based categorical eligibility income limits on each state's own poverty-guideline schedule, rather than the federal October cycle, and raise Arizona's standard to 200% of the poverty guideline from March 2026.
