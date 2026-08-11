@@ -16,7 +16,7 @@ class mo_tanf_earned_income_deductions_person(Variable):
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        # 13 CSR 40-2.310(9)(A) applies the disregards to each
+        # 13 CSR 40-2.310(9)(A) and (9)(D) apply the disregards to each
         # participant's earned income separately; DSS Manual
         # 0210.015.30.10: "If more than one person has earned income,
         # apply the $30 plus 1/3 disregard to each person's net income."

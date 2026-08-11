@@ -16,7 +16,7 @@ class mo_tanf_earned_income_deductions(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # 13 CSR 40-2.310(9)(A): the disregards apply to each
+        # 13 CSR 40-2.310(9)(A) and (9)(D): the disregards apply to each
         # participant's earned income separately, then the per-person
         # amounts are summed (DSS Manual 0210.015.30.10: "Add together
         # the $30 plus 1/3 disregard amount from each person's income").
