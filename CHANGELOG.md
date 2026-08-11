@@ -1,3 +1,10 @@
+## [1.794.0] - 2026-08-11
+
+### Added
+
+- Add New Mexico Premium Assistance (Marketplace Affordability Program NMPA and MIH).
+
+
 ## [1.793.0] - 2026-08-11
 
 ### Added
