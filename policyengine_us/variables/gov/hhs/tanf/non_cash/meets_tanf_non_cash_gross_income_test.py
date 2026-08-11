@@ -8,7 +8,7 @@ class meets_tanf_non_cash_gross_income_test(Variable):
     documentation = "Income eligibility (gross income compared to the state's published standard) for TANF non-cash benefit for SNAP BBCE"
     definition_period = MONTH
 
-    def formula(spm_unit, period):
+    def formula(spm_unit, period, parameters):
         # Use the gross-test income concept so states electing full
         # counting of certain ineligible aliens' income under the gross
         # income test (7 CFR 273.11(c)(3)(i)) apply it to this categorical

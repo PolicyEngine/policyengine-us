@@ -41,5 +41,10 @@ class tanf_non_cash_gross_income_limit(Variable):
         # standards, so the rounding 273.9(a)(3) prescribes for the
         # federal tests does not reach this limit. Return the exact
         # computation rather than assert an unlegislated convention.
+        # Charts round in state-specific directions: Washington and
+        # Maine publish figures equal to the exact value, while states
+        # that round up publish a figure up to about $2 above it, so a
+        # household between the two can score ineligible here slightly
+        # before the published chart would say so.
         fpg = spm_unit("tanf_non_cash_fpg", period)
         return gross_limit * fpg

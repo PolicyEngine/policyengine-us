@@ -28,6 +28,9 @@ class tanf_non_cash_fpg(Variable):
         state_group = spm_unit.household("state_group_str", period.this_year)
         year = period.start.year
 
+        # snap_fpg encodes the same guideline arithmetic on the fixed
+        # federal October cycle; this variable generalizes it with a
+        # per-state cutover month. Keep the two in sync.
         def monthly_fpg(guideline_year):
             p_fpg = parameters(f"{guideline_year}-01-01").gov.hhs.fpg
             p1 = p_fpg.first_person[state_group]

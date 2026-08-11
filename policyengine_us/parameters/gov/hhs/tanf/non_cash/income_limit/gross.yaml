@@ -15,7 +15,9 @@ AZ:
   # the NA Expanded Categorical Eligibility changed from 185% of the FPL
   # to 200% of the FPL." The same note confirms Arizona re-bases each
   # October ("increased for FFY 2026 starting 10/01/2025"), so
-  # fpg_year_start_month keeps its default of 10.
+  # fpg_year_start_month keeps its default of 10. The CNAP manual is not
+  # publicly linkable (des.az.gov serves a 403 challenge page); SNAP
+  # Screener's Arizona guide corroborates the 200% limit (see metadata).
   2026-03-01: 2
 AR:
   2015-10-01: -.inf # Non-BBCE.
@@ -128,8 +130,11 @@ UT:
 VT:
   2015-10-01: 1.85
 VI:
-  # DHS announced the increase from 130% to 175% effective 2024-10-01:
-  # https://www.vi.gov/department-of-human-services-announces-change-to-snap-income-guidelines/
+  # DHS announced the increase from 130% to 175% effective 2024-10-01
+  # (see metadata reference). The announcement documents 130% as the
+  # limit in effect immediately before October 2024; the 2015-10-01
+  # start date aligns with this file's baseline rather than a documented
+  # adoption date for the 130% level.
   2015-10-01: 1.3
   2024-10-01: 1.75
 VA:
@@ -154,5 +159,9 @@ metadata:
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)
       href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
+    - title: VI Department of Human Services announcement (130% to 175%, effective October 1, 2024)
+      href: https://www.vi.gov/department-of-human-services-announces-change-to-snap-income-guidelines/
+    - title: SNAP Screener Arizona guide (200% gross income limit)
+      href: https://www.snapscreener.com/guides/arizona
   breakdown:
   - state_code
