@@ -1,0 +1,337 @@
+# Tests for sd_cca_weekly_rate (Person, MONTH, USD per week), effective
+# 2026-08-03 (tested in 2027, inside the weekly rate era). The weekly maximum
+# is keyed on region x provider category x age band x level of service, with
+# informal/in-home/relative rates flat statewide (region and age moot). A child
+# with special needs receives the base rate plus an additional 75% (x 1.75).
+# Each case establishes an approved activity and sets county_str (region),
+# sd_cca_provider_type, age (age band), and childcare_hours_per_week (level of
+# service). Values are transcribed from the CCA Weekly Reimbursement Rates
+# schedule. The final case keeps activity eligibility true to isolate the
+# child-age guard.
+
+# ---- Family day care ----
+- name: Case 1, urban family day care, full time infant.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    sd_cca_weekly_rate: 180
+
+- name: Case 2, urban family day care, part time toddler.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 1.5  # 18 months, toddler
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 20  # part time
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 88.75
+
+- name: Case 3, urban family day care, limited time preschool.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 4  # preschool (under 5, not in school)
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 10  # limited time
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 43.75
+
+- name: Case 4, urban family day care, full time school age.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8  # school age (in K-12 by imputation)
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 170
+
+- name: Case 5, suburban family day care, full time infant.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: BROOKINGS_COUNTY_SD  # suburban
+  output:
+    sd_cca_weekly_rate: 153
+
+- name: Case 6, rural family day care, full time toddler.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 1.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD  # rural
+  output:
+    sd_cca_weekly_rate: 145
+
+# ---- Licensed center or school age program ----
+- name: Case 7, urban licensed center, full time infant.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 276
+
+- name: Case 8, suburban licensed center, full time preschool.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 4
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: BROOKINGS_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 203
+
+- name: Case 9, rural licensed center, full time school age.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 150
+
+# ---- Informal / in-home / relative (flat statewide by level of service) ----
+- name: Case 10, informal provider, full time (flat statewide).
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        sd_cca_provider_type: INFORMAL
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 116.25
+
+- name: Case 11, informal provider, part time (flat statewide).
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        sd_cca_provider_type: INFORMAL
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 58.25
+
+- name: Case 12, informal provider, limited time (flat statewide).
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        sd_cca_provider_type: INFORMAL
+        childcare_hours_per_week: 10
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_weekly_rate: 29
+
+# ---- Special needs (base rate x 1.75) ----
+- name: Case 13, special-needs child, urban family day care full time infant, base plus 75%.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 0.5
+        is_disabled: true
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # base 180 x 1.75 = 315
+    sd_cca_weekly_rate: 315
+
+- name: Case 14, special-needs school-age child, rural licensed center full time, base plus 75%.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 8  # school age (in K-12 by imputation)
+        is_disabled: true
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD  # rural
+  output:
+    # rural licensed center full-time school age 150 x 1.75 = 262.5
+    sd_cca_weekly_rate: 262.5
+
+- name: Case 15, adult with an approved activity is age-ineligible and receives no rate.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # The activity test is met, but sd_cca_weekly_rate is defined_for
+    # sd_cca_eligible_child, so an adult receives no rate.
+    sd_cca_reason_for_care_eligible: true
+    sd_cca_eligible_child: false
+    sd_cca_weekly_rate: 0

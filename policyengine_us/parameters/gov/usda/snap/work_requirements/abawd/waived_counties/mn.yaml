@@ -1,0 +1,49 @@
+description: Counties in Minnesota with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - AITKIN_COUNTY_MN # FIPS 27001
+    - CARLTON_COUNTY_MN # FIPS 27017
+    - CASS_COUNTY_MN # FIPS 27021
+    - CLEARWATER_COUNTY_MN # FIPS 27029
+    - HUBBARD_COUNTY_MN # FIPS 27057
+    - ISANTI_COUNTY_MN # FIPS 27059
+    - ITASCA_COUNTY_MN # FIPS 27061
+    - KANABEC_COUNTY_MN # FIPS 27065
+    - KOOCHICHING_COUNTY_MN # FIPS 27071
+    - LAKE_COUNTY_MN # FIPS 27075
+    - MAHNOMEN_COUNTY_MN # FIPS 27087
+    - MILLE_LACS_COUNTY_MN # FIPS 27095
+    - MORRISON_COUNTY_MN # FIPS 27097
+    - PINE_COUNTY_MN # FIPS 27115
+    - WADENA_COUNTY_MN # FIPS 27159
+  2025-07-01:
+    - AITKIN_COUNTY_MN # FIPS 27001
+    - CARLTON_COUNTY_MN # FIPS 27017
+    - CASS_COUNTY_MN # FIPS 27021
+    - CLEARWATER_COUNTY_MN # FIPS 27029
+    - HUBBARD_COUNTY_MN # FIPS 27057
+    - ISANTI_COUNTY_MN # FIPS 27059
+    - ITASCA_COUNTY_MN # FIPS 27061
+    - KANABEC_COUNTY_MN # FIPS 27065
+    - KOOCHICHING_COUNTY_MN # FIPS 27071
+    - LAKE_OF_THE_WOODS_COUNTY_MN # FIPS 27077
+    - MAHNOMEN_COUNTY_MN # FIPS 27087
+    - MILLE_LACS_COUNTY_MN # FIPS 27095
+    - MORRISON_COUNTY_MN # FIPS 27097
+    - NORMAN_COUNTY_MN # FIPS 27107
+    - PINE_COUNTY_MN # FIPS 27115
+    - TODD_COUNTY_MN # FIPS 27153
+    - WADENA_COUNTY_MN # FIPS 27159
+  2026-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Minnesota
+  reference:
+    - title: USDA FNS Minnesota FY 2024 ABAWD Waiver Response
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/mn-abawd-response-fy2024.pdf
+    - title: USDA FNS Minnesota FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/mn-abawd-response-fy2025.pdf

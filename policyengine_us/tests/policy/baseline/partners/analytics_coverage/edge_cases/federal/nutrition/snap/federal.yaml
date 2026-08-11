@@ -319,9 +319,11 @@
         # Minimum allotment path: net = 20,000/12 x 0.8 - 209 = 1,124.33 ->
         # contribution 337.20 exceeds the 1-person maximum (298), so the normal
         # allotment is negative and the minimum allotment applies (8% of the
-        # 1-person maximum, units of 1-2 people only): Jan-Sep 0.08 x 298 =
-        # 23.84/month; Oct-Dec 0.08 x 308.52 = 24.68/month. Annual = 288.60.
-        snap: 288.61
+        # 1-person maximum, rounded to the nearest whole dollar per 7 CFR
+        # 273.10(e)(2)(ii)(C), units of 1-2 people only): Jan-Sep
+        # 0.08 x 298 = 23.84 -> 24/month; Oct-Dec 0.08 x 308.52 = 24.68 ->
+        # 25/month. Annual = 291.
+        snap: 291
         is_snap_eligible: true
 - name: snap_single_elderly_65_ssi_counts_as_unearned_income (federal)
   period: 2026
@@ -1483,6 +1485,7 @@
         # The ineligible student is a nonhousehold member (7 CFR 273.11(d)):
         # their $10,000 earnings are excluded entirely and the unit size is 1;
         # the 130%-FPG gross test passes only because of the exclusion, and
-        # the unit receives the 1-2 person minimum allotment.
-        snap: 288.61
+        # the unit receives the 1-2 person minimum allotment, rounded to the
+        # nearest whole dollar ($24/month Jan-Sep, $25/month Oct-Dec).
+        snap: 291
         is_snap_eligible: true

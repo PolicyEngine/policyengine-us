@@ -1,0 +1,40 @@
+description: South Dakota counts these income sources as countable income under the Child Care Assistance program.
+values:
+  2026-08-01:
+    # Earned income (wages, salary, commissions, tips, bonuses, fees, and
+    # self-employment net of allowable business expenses).
+    - employment_income
+    # Section 6: a self-employment loss is counted as $0 and may not offset
+    # other income, so we sum the per-person floored figure.
+    - sd_cca_self_employment_income
+    # Unearned income (Subsidy Manual, Section 4).
+    - rental_income            # "lease income"
+    - social_security          # "Social Security (SSA)"; already excludes SSI
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits        # "VA benefits"; VA disability is non-countable
+    - pension_income           # "pensions" and "retirement"
+    - alimony_income
+    - child_support_received   # "child support" and "back child support"
+    - interest_income          # "interest income"
+    - dividend_income          # "investment earnings"
+    - capital_gains            # Section 6: "Capital gains and interest shall be
+                               # added into the total income."
+
+    # ----------------------------------------------------------------------
+    # NON-COUNTABLE income (Subsidy Manual, Section 4), not listed above:
+    # student financial aid (grants, loans, scholarships), GI Bill, utility
+    # allowance, foster care payments, SSI disability, VA disability, Earned
+    # Income Tax Credits, and IRS tax refunds.
+    #
+    # TANF cash assistance is countable per the manual but is omitted here to
+    # avoid the Child Care Assistance to Temporary Assistance for Needy Families
+    # circular dependency through the dependent care deduction.
+
+metadata:
+  unit: list
+  period: year
+  label: South Dakota CCA countable income sources
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 4 Income Types
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=10

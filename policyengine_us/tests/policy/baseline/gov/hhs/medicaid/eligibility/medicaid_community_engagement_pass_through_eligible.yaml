@@ -120,7 +120,7 @@
   output:
     medicaid_community_engagement_pass_through_eligible: false
 
-- name: Case 7, age 16 is at the non-exempt age boundary and passes through when work compliant.
+- name: Case 7, age 16 is at the non-exempt age boundary and passes through.
   period: 2026-01
   input:
     people:
@@ -138,7 +138,7 @@
   output:
     medicaid_community_engagement_pass_through_eligible: true
 
-- name: Case 8, age 59 is just below the upper exempt age threshold and passes through when work compliant.
+- name: Case 8, age 59 is just below the upper exempt age threshold and passes through.
   period: 2026-01
   input:
     people:
@@ -174,15 +174,12 @@
   output:
     medicaid_community_engagement_pass_through_eligible: false
 
-# Issue #8863 mirror: 7 CFR 273.24(c)(4) keys the ABAWD child exception on any
-# household member under the age threshold, regardless of tax-unit dependency.
-# The adult participates in a SNAP work program (general-compliant per 7 CFR
-# 273.7(a)(1)) but logs zero qualifying hours, so she fails the ABAWD 20-hour
-# test. A 13-year-old household member who is NOT her tax dependent still
-# routes her around the ABAWD test post-HR1 (threshold 14), so she passes
-# through on general compliance alone. The 13-year-old is under the general
-# work-rule age floor and does not pass through.
-- name: Case 10, non-dependent under-14 household member triggers the household-wide ABAWD exception.
+# Under the 42 CFR 435.554(c)(7) status test, the adult passes through on
+# SNAP receipt plus subject-to status alone; her work program hours and the
+# ABAWD test are not consulted. The 13-year-old household member is under
+# the general work-rule age floor (exempt) and does not pass through,
+# regardless of tax-unit dependency.
+- name: Case 10, adult passes through on status while an under-14 member is age-exempt.
   period: 2026-01
   input:
     people:
@@ -210,9 +207,10 @@
   output:
     medicaid_community_engagement_pass_through_eligible: [true, false]
 
-# Same adult without an under-threshold household member: the ABAWD hours
-# test binds, and zero qualifying hours fail it.
-- name: Case 11, with no under-threshold household member the ABAWD hours test binds.
+# Same adult without an under-threshold household member: under the status
+# test the ABAWD hours test still does not bind — both non-exempt adults in
+# the SNAP household pass through regardless of hours worked.
+- name: Case 11, with no under-threshold household member both non-exempt adults still pass through.
   period: 2026-01
   input:
     people:
@@ -238,9 +236,32 @@
         members: [adult, housemate]
         state_code: TX
   output:
-    medicaid_community_engagement_pass_through_eligible: [false, false]
+    medicaid_community_engagement_pass_through_eligible: [true, true]
 
-- name: Case 12, reported SNAP receipt passes through when computed SNAP is zero.
+- name: Case 12, non-working SNAP member subject to work rules passes through without a compliance check.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        # Subject to (not exempt from) the SNAP general work requirement. Under
+        # 42 CFR 435.554(c)(7) the SNAP exclusion is a status test - unlike the
+        # TANF prong, actual work-requirement compliance is not confirmed - so
+        # not working and failing the SNAP ABAWD time limit are irrelevant.
+        age: 30
+        is_disabled: false
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 13, reported SNAP receipt passes through when computed SNAP is zero.
   period: 2026-01
   input:
     people:

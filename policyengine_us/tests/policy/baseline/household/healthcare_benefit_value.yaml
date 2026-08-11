@@ -81,3 +81,55 @@
     or_healthier_oregon_cost: 0
   output:
     healthcare_benefit_value: 1_200
+
+- name: Case 7, Maryland Premium Assistance flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    md_premium_assistance: 850
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 850
+
+- name: Case 8, DERIVED Maryland Premium Assistance aggregates into the household total.
+  # A real MD tax unit (single age 40 at 250% FPL) with the ACA intermediates
+  # supplied so md_premium_assistance is DERIVED by the model rather than forced.
+  # COMAR .04B: max(0, (6_000 - 2_698) - 0.0622 * 39_125) = 3_302 - 2_433.575
+  # = 868.425. Other health components zeroed so the household total equals the
+  # derived MD subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        employment_income: 39_125
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698  # self-consistent: 6_000 - 0.0844*39_125
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance: 868.425
+    healthcare_benefit_value: 868.425  # derived MD subsidy aggregates to the household

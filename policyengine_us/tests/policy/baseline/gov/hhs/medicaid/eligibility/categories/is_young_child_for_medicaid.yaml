@@ -20,3 +20,34 @@
     age: 6
   output:
     is_young_child_for_medicaid: false
+
+- name: MO child at 152% FPL, within the 148% base plus 5% disregard, eligible
+  period: 2026
+  input:
+    age: 3
+    medicaid_income_level: 1.52
+    state_code: MO
+  output:
+    is_young_child_for_medicaid: true
+
+# The formula compares with strict less-than, but the float32-stored input
+# 1.53 (~1.52999997) lands just below the float64 parameter 1.53, so the
+# exact boundary evaluates eligible under both < and <= — matching the
+# manual's income-maximum (<=) semantics.
+- name: MO child at exactly 153% FPL, the income maximum, eligible
+  period: 2026
+  input:
+    age: 3
+    medicaid_income_level: 1.53
+    state_code: MO
+  output:
+    is_young_child_for_medicaid: true
+
+- name: MO child at 154% FPL, above the 153% effective standard, ineligible
+  period: 2026
+  input:
+    age: 3
+    medicaid_income_level: 1.54
+    state_code: MO
+  output:
+    is_young_child_for_medicaid: false

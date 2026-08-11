@@ -67,3 +67,42 @@
   output:
     deductible_mortgage_interest_tax_unit: 0
     non_deductible_mortgage_interest_tax_unit: 0
+
+- name: Person-level home mortgage interest is deductible when no structural inputs are provided
+  period: 2024
+  input:
+    people:
+      head:
+        home_mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        standard_deduction: 0
+  output:
+    deductible_mortgage_interest_tax_unit: 10_000
+    interest_deduction: 10_000
+    mortgage_interest: 10_000
+
+- name: Structural interest with no reported balance is fully deductible
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_interest: 10_000
+  output:
+    deductible_mortgage_interest_tax_unit: 10_000
+
+- name: Regression guard - post-TCJA balance above the cap is still limited
+  period: 2024
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    standard_deduction: 0
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_interest: 45_000
+    first_home_mortgage_origination_year: 2018
+  output:
+    deductible_mortgage_interest_tax_unit: 37_500

@@ -1,0 +1,57 @@
+description: Oklahoma limits adjusted monthly income to this amount, by household size, under the Child Care Subsidy Program.
+# The limit is the top of the highest family share copayment band in
+# Appendix C-4 for each family size; income above it closes the case.
+# Households larger than ten use the ten-person threshold.
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: month
+  label: Oklahoma Child Care Subsidy income limit
+  reference:
+    - title: OKDHS Appendix C-4, Child Care Eligibility/Copayment Chart
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4.pdf#page=2
+    - title: OAC 340:40-7-13
+      href: https://okrules.elaws.us/oac/340:40-7-13
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 3_460
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 4_525
+  - threshold:
+      2025-10-01: 3
+    amount:
+      2025-10-01: 5_589
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 6_654
+  - threshold:
+      2025-10-01: 5
+    amount:
+      2025-10-01: 7_718
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 8_783
+  - threshold:
+      2025-10-01: 7
+    amount:
+      2025-10-01: 8_983
+  - threshold:
+      2025-10-01: 8
+    amount:
+      2025-10-01: 9_182
+  - threshold:
+      2025-10-01: 9
+    amount:
+      2025-10-01: 9_382
+  - threshold:
+      2025-10-01: 10
+    amount:
+      2025-10-01: 9_582

@@ -6,13 +6,75 @@
 - name: Income up to 100% meets test
   period: 2022
   input:
-    snap_net_income_fpg_ratio: 1
+    # $1,000 per month against a $1,000 monthly poverty guideline.
+    snap_net_income: 12_000
+    snap_fpg: 12_000
   output:
     meets_snap_net_income_test: true
 
 - name: Income above 100% fails test
   period: 2022
   input:
-    snap_net_income_fpg_ratio: 1.01
+    # $1,010 per month against a $1,000 monthly poverty guideline.
+    snap_net_income: 12_120
+    snap_fpg: 12_000
+  output:
+    meets_snap_net_income_test: false
+
+- name: Monthly net standard rounds up to the next whole dollar
+  period: 2022
+  input:
+    # $1,001 per month against a $1,000.83 monthly poverty guideline;
+    # 7 CFR 273.9(a)(3)(ii) rounds the monthly standard up to $1,001.
+    snap_net_income: 12_012
+    snap_fpg: 12_010
+  output:
+    meets_snap_net_income_test: true
+
+- name: Income above the rounded monthly net standard fails
+  period: 2022
+  input:
+    # $1,002 per month against the rounded $1,001 monthly standard.
+    snap_net_income: 12_024
+    snap_fpg: 12_010
+  output:
+    meets_snap_net_income_test: false
+
+- name: Missouri three-person household at the published FY 2026 net limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # USDA FY 2026 net monthly income limit for a household of three:
+        # $26,650 annual poverty guideline / 12 = $2,220.83, rounded up
+        # to $2,221.
+        snap_net_income: 2_221
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_net_income_test: true
+
+- name: Missouri three-person household just above the published FY 2026 net limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_net_income: 2_222
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
   output:
     meets_snap_net_income_test: false

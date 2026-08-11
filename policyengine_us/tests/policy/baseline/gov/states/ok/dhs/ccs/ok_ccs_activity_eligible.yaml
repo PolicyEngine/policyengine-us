@@ -1,0 +1,337 @@
+# Need factor per OAC 340:40-7-8: each parent or caretaker must be employed
+# or attending an education or training program, with TANF, protective or
+# preventive child care, and CCDF activity-test pathways.
+- name: Case 1, single working parent meets the need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 2, two-parent household where one parent is not in an activity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 24_000  # $2,000/month.
+      person2:
+        age: 28
+        is_tax_unit_spouse: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 3, working parent and full-time student spouse both meet the need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 24_000  # $2,000/month.
+      person2:
+        age: 28
+        is_tax_unit_spouse: true
+        is_full_time_student: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 4, a self-employment loss does not establish employment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -6_000  # -$500/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 5, TANF enrollment without an approved activity does not meet the need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 6, non-working parent receiving protective services meets the need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        receives_or_needs_protective_services: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 7, non-working household meeting the CCDF activity test meets the need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 8, non-working single parent with no qualifying pathway.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 9, employment at the hours and minimum-wage boundaries qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 7_540  # 20 hours/week * 52 weeks * $7.25/hour.
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 10, employment below 20 hours per week does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 19
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 11, earnings below minimum wage do not establish employment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 7_280  # 20 hours/week * 52 weeks * $7/hour.
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 12, two non-working college-student parents do not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_full_time_college_student: true
+      person2:
+        age: 28
+        is_tax_unit_spouse: true
+        is_full_time_college_student: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 13, an inactive dependent minor parent must meet a need factor.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 24_000
+      person2:
+        age: 16
+        is_parent: true
+        is_in_k12_school: false
+        is_full_time_student: false
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: false
+
+- name: Case 14, qualifying farm earnings establish employment.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        farm_operations_income: 7_540
+        weekly_hours_worked_before_lsr: 20
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_activity_eligible: true
+
+- name: Case 15, employment below 20 hours per week qualifies once the permanent rule removes the floor.
+  # A non-January period cannot set YEAR-defined inputs in the YAML harness,
+  # so the post-sunset era is tested at 2027-01 (floor is zero from
+  # 2026-09-14).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 19
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # The permanent OAC 340:40-7-8 effective 2026-09-14 drops the 20-hour
+    # floor; only the minimum-wage-per-hour test applies.
+    ok_ccs_activity_eligible: true
+
+- name: Case 16, employment below 20 hours per week qualifies before the 2025 emergency amendment.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 19
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # The pre-2025 rule (amended 2017-10-01) had no minimum-hours floor.
+    ok_ccs_activity_eligible: true
