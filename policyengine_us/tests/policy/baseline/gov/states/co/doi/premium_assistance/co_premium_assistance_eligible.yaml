@@ -1,0 +1,289 @@
+# Unit tests for Colorado Premium Assistance eligibility.
+# A tax unit is eligible when the program is in effect (PY2026-2027, verified by
+# SB26-178), the household is in Colorado, at least one member is eligible for
+# the federal ACA premium tax credit, and household ACA MAGI is at or below the
+# 400% FPL ceiling (upper = 4.0 as an FPL fraction). Regulation 4-2-78 Section
+# 4.C sets a 400%-inclusive ceiling with NO lower bound, so there is no 100% FPL
+# floor: a sub-100%-FPL unit with an is_aca_ptc_eligible member is eligible.
+# is_aca_ptc_eligible and aca_magi_fraction are supplied directly so the gate
+# logic is tested in isolation from the premium-data / FPL lookups.
+
+- name: Case 1, CO APTC-eligible unit at 250% FPL in 2026 is eligible.
+  # in_effect true, one is_aca_ptc_eligible member, 1.0 <= 2.50 <= 4.0.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 2, below 100% FPL (0.99) is now ELIGIBLE (FPL floor removed).
+  # Regulation 4-2-78 Section 4.C has no lower bound; the deleted fpl_limit.lower
+  # floor no longer excludes sub-100%-FPL units. With an is_aca_ptc_eligible
+  # member and magi_frac 0.99 <= 4.0, the unit is eligible. (A genuinely
+  # ineligible low-income unit now fails via the is_aca_ptc_eligible any() gate,
+  # exercised in Case 14, not via any income floor.)
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 3, exactly 100% FPL (1.0) is eligible (no lower bound; 1.0 <= 4.0).
+  # There is no 100% FPL floor; 1.0 is admitted like any value at or below the
+  # 400% ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.00
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 4, exactly 400% FPL (4.0) is eligible (upper boundary inclusive).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.00
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 5, just above the 400% FPL upper bound (4.01) is ineligible.
+  # Upper bound: magi_frac <= 4.0; 4.01 > 4.0 fails it.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.01
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+
+- name: Case 6, no federal-APTC-eligible member makes the unit ineligible.
+  # No member has is_aca_ptc_eligible true, so the any() gate fails.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+
+- name: Case 7, one eligible member in a multi-person unit qualifies the unit.
+  # any() gate: person2 is APTC-eligible even though person1 is not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: false
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 8, non-Colorado state is ineligible (defined_for StateCode.CO).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    co_premium_assistance_eligible: false
+
+- name: Case 9, program not in effect in 2025 (before PY2026 start).
+  # in_effect: 0000-01-01 false, 2026-01-01 true. 2025 resolves to false.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+
+- name: Case 10, program sunset in 2028 (after PY2027 end, verified by SB26-178).
+  # in_effect: 2028-01-01 false. 2028 resolves to false.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+
+- name: Case 11, PY2027 in-window year is still eligible (in_effect true).
+  # in_effect true for 2026 and 2027; 2027 is inside the PY2026-2027 window.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 12, a low fraction just above 100% FPL (1.01) is eligible.
+  # 1.01 <= 4.0, so income-eligible. With no lower bound this is eligible for the
+  # same reason as the 0.99 and 1.00 cases; retained as a nearby-value check on
+  # the ceiling-only band.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.01
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 13, just inside the 400% FPL upper bound (3.99) is eligible.
+  # Fractional value one step below the upper boundary: 3.99 <= 4.0, so
+  # income-eligible. Complements the 4.00/4.01 boundary cases by confirming the
+  # band admits values immediately below the ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.99
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+
+- name: Case 14, sub-100% FPL with no APTC-eligible member is ineligible via the any() gate.
+  # After the FPL floor removal, the exclusion path for a low-income unit is the
+  # is_aca_ptc_eligible any() gate, NOT any income floor: magi_frac 0.50 <= 4.0
+  # passes the ceiling, but no member is is_aca_ptc_eligible, so the unit is
+  # ineligible. Contrasts with Case 2 (same low FPL, eligible because a member is
+  # APTC-eligible).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.50
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
