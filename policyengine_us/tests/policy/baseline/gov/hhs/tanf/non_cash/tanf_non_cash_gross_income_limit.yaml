@@ -1,0 +1,257 @@
+# The BBCE gross standard is the state's percentage of the poverty
+# guideline vintage its schedule selects under fpg_year_start_month
+# (October by default). In January, Maine is the only state whose
+# standard has already moved to the current calendar year's guidelines;
+# Massachusetts (February), Oregon (March), and Washington (April)
+# re-base later in the year. Mid-year boundaries are asserted by keying
+# the output by month within a whole-year period.
+#
+# The limit is the exact percentage x guideline / 12, with no chart
+# rounding (see tanf_non_cash_gross_income_limit.py). The dollar
+# assertions carry a 0.01 margin, so re-introducing whole-dollar
+# rounding fails these tests.
+- name: WA re-bases to the new guidelines on April 1, 2026
+  # WAC 388-414-0001(2)(a)(ii). March is still on the 2025 guidelines
+  # (200% x 15,650 / 12 = 2,608.33); April moves to the 2026 ones
+  # (200% x 15,960 / 12 = 2,660), which is the figure DSHS publishes for
+  # April 1, 2026 through March 31, 2027. The federal October re-basing
+  # must not disturb a standard that already moved in April.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-03: 2_608.33
+      2026-04: 2_660
+      2026-09: 2_660
+      2026-10: 2_660
+      2026-12: 2_660
+
+- name: CO stays on the October cycle while WA has already re-based
+  # Guard against a vacuous pass: an October-cycle state holds the 2025
+  # guidelines through September, so April differs between the two.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: CO
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-04: 2_608.33
+      2026-09: 2_608.33
+      2026-10: 2_660
+
+- name: MA re-bases to the new guidelines on February 1, 2026
+  # DTA Helpful Charts and Figures marks the 200% categorical
+  # eligibility column 'Effective 2/1/2026': January is still on the
+  # 2025 guidelines (200% x 15,650 / 12 = 2,608.33); February moves to
+  # the 2026 ones (200% x 15,960 / 12 = 2,660), undisturbed by the
+  # federal October re-basing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: MA
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-01: 2_608.33
+      2026-02: 2_660
+      2026-10: 2_660
+
+- name: OR re-bases to the new guidelines on March 1, 2026
+  # OAR 461-155-0180(6): the 200% standard is 'updated every March'.
+  # February is still on the 2025 guidelines (200% x 15,650 / 12 =
+  # 2,608.33); March moves to the 2026 ones (200% x 15,960 / 12 =
+  # 2,660).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: OR
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-02: 2_608.33
+      2026-03: 2_660
+      2026-10: 2_660
+
+- name: AZ raises the standard to 200% for the benefit month of March 2026
+  # "Starting the benefit month of 03/2026, the gross income limit for
+  # the NA Expanded Categorical Eligibility changed from 185% of the FPL
+  # to 200% of the FPL." Arizona re-bases each October, so both figures
+  # come off the 2025 guidelines.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AZ
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-02: 2_412.71
+      2026-03: 2_608.33
+
+- name: AZ applies the March 2026 increase to elderly or disabled households
+  # gross_hheod had remained at 185%, so the new standard never reached
+  # these households. Arizona's general and elderly/disabled standards
+  # are equal, so the AL cases below assert the gross_hheod branch where
+  # the two diverge.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: AZ
+  output:
+    tanf_non_cash_gross_income_limit:
+      2026-02: 2_412.71
+      2026-03: 2_608.33
+
+- name: AL elderly household uses the 200% elderly or disabled standard
+  # Alabama's general standard is 130% while its elderly or disabled
+  # standard is 200%, so the branches diverge: 200% x 15,650 / 12 =
+  # 2,608.33; a formula reading only the general standard returns
+  # 1,695.42 and fails.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    state_code: AL
+  output:
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: AL non-elderly household uses the 130% general standard
+  # 130% x 15,650 / 12 = 1,695.42.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AL
+  output:
+    tanf_non_cash_gross_income_limit: 1_695.42
+
+- name: WA one person in January 2026 uses the 2025 guidelines
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,650 / 12 = 2,608.33.
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: WA one person in January 2025 uses the 2024 guidelines
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,060 / 12 = 2,510.
+    tanf_non_cash_gross_income_limit: 2_510
+
+- name: WA four persons in January 2026
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 34
+      child1:
+        age: 8
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: WA
+  output:
+    # 200% x (15,650 + 3 x 5,500) / 12 = 5,358.33.
+    tanf_non_cash_gross_income_limit: 5_358.33
+
+- name: ME one person in January 2026 already uses the 2026 guidelines
+  # 10-144 CMR Ch. 301 Sec. 999-3 Chart 4 re-bases when HHS publishes the
+  # guidelines each January, so Maine leads the October states by a full
+  # guideline year from January onward.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: ME
+  output:
+    # 200% x 15,960 / 12 = 2,660.
+    tanf_non_cash_gross_income_limit: 2_660
+
+- name: ME one person in January 2025 already uses the 2025 guidelines
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: ME
+  output:
+    # 200% x 15,650 / 12 = 2,608.33, while the October states are still
+    # at 2,510.
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: CO one person in January 2026 follows the October cycle
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: CO
+  output:
+    tanf_non_cash_gross_income_limit: 2_608.33
+
+- name: NJ one person in January 2026 applies the 185% standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: NJ
+  output:
+    # 185% x 15,650 / 12 = 2,412.71.
+    tanf_non_cash_gross_income_limit: 2_412.71
+
+- name: AZ one person in January 2026 still applies the 185% standard
+  # Arizona raised the standard to 200% for the benefit month of March
+  # 2026; January precedes the change.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AZ
+  output:
+    tanf_non_cash_gross_income_limit: 2_412.71
+
+- name: AK one person in January 2026 uses the Alaska guidelines
+  # Alaska adopted BBCE on 2025-07-01 at 200% of the Alaska guidelines.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: AK
+  output:
+    # 200% x 19,550 / 12 = 3,258.33.
+    tanf_non_cash_gross_income_limit: 3_258.33
+
+- name: WA one person in January 2027 carries the 2026 guidelines
+  # By the following January, Washington's April 2026 re-basing to the
+  # 2026 guidelines is in force.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    state_code: WA
+  output:
+    # 200% x 15,960 / 12 = 2,660.
+    tanf_non_cash_gross_income_limit: 2_660
+
+# The Virgin Islands' 130% -> 175% step on 2024-10-01 (gross.yaml) has
+# no dollar assertion here: the territory poverty guidelines in
+# gov/hhs/fpg.yaml are $0 placeholders, so the computed limit is $0 on
+# both sides of the step and any boundary test would pass vacuously
+# regardless of the percentage.

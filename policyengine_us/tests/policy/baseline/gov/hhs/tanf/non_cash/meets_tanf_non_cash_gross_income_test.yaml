@@ -1,12 +1,17 @@
+# The screen compares gross-test income in dollars against the state's
+# published BBCE standard (tanf_non_cash_gross_income_limit), which
+# derives from the guideline vintage in fpg_year_start_month.
 - name: "Default SPM unit meets California's income test"
   period: 2022
   output:
     meets_tanf_non_cash_gross_income_test: true
 
 - name: "California gross income limit is 200% of FPL"
-  period: 2022
+  # January 2022 uses the 2021 guidelines: 200% x 12,880 / 12 = 2,146.67.
+  period: 2022-01
   input:
-    snap_gross_test_income_fpg_ratio: 2.05
+    snap_gross_test_income: 2_200
+    state_code: CA
   output:
     meets_tanf_non_cash_gross_income_test: false
 
@@ -23,9 +28,10 @@
     meets_tanf_non_cash_gross_income_test: true
 
 - name: CO has BBCE at 200% FPL (bug fix verification)
+  # January 2024 uses the 2023 guidelines: 200% x 14,580 / 12 = 2,430.
   period: 2024-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.95
+    snap_gross_test_income: 2_370
     state_code: CO
   output:
     meets_tanf_non_cash_gross_income_test: true
@@ -33,7 +39,7 @@
 - name: CO rejects income above 200% FPL
   period: 2024-01
   input:
-    snap_gross_test_income_fpg_ratio: 2.05
+    snap_gross_test_income: 2_490
     state_code: CO
   output:
     meets_tanf_non_cash_gross_income_test: false
@@ -41,23 +47,27 @@
 - name: MS has no BBCE (non-BBCE state, bug fix verification)
   period: 2024-01
   input:
-    snap_gross_test_income_fpg_ratio: 0.5
+    snap_gross_test_income: 100
     state_code: MS
   output:
     meets_tanf_non_cash_gross_income_test: false
 
 - name: IN has BBCE at 130% FPL
+  # January 2024 limit: 130% x 14,580 / 12 = 1,579.50.
   period: 2024-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.25
+    snap_gross_test_income: 1_519
     state_code: IN
   output:
     meets_tanf_non_cash_gross_income_test: true
 
+# January 2026 uses the 2025 guidelines: one-person monthly FPG is
+# 15,650 / 12 = 1,304.17, so NY's tiers are 130% = 1,695.42,
+# 150% = 1,956.25, and 200% = 2,608.33.
 - name: NY without earned income, dependent care, or elderly/disabled status is capped at 130% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.45
+    snap_gross_test_income: 1_891
     snap_earned_income: 0
     snap_dependent_care_deduction: 0
     has_snap_elderly_disabled_member: false
@@ -68,7 +78,7 @@
 - name: NY with earned income is eligible through 150% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.45
+    snap_gross_test_income: 1_891
     snap_earned_income: 1
     snap_dependent_care_deduction: 0
     has_snap_elderly_disabled_member: false
@@ -79,7 +89,7 @@
 - name: NY with earned income is ineligible above 150% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.55
+    snap_gross_test_income: 2_022
     snap_earned_income: 1
     snap_dependent_care_deduction: 0
     has_snap_elderly_disabled_member: false
@@ -90,7 +100,7 @@
 - name: NY with dependent care expenses is eligible through 200% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.9
+    snap_gross_test_income: 2_478
     snap_earned_income: 0
     snap_dependent_care_deduction: 1
     has_snap_elderly_disabled_member: false
@@ -99,6 +109,8 @@
     meets_tanf_non_cash_gross_income_test: true
 
 - name: NY with adult dependent care expenses computed from care_expenses is eligible through 200% FPL
+  # Two-person monthly FPG in January 2026: (15,650 + 5,500) / 12 =
+  # 1,762.50; 200% = 3,525 and 130% = 2,291.25.
   period: 2026-01
   input:
     people:
@@ -111,7 +123,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_gross_test_income_fpg_ratio: 1.9
+        snap_gross_test_income: 3_349
         snap_earned_income: 0
         has_snap_elderly_disabled_member: false
     households:
@@ -133,7 +145,7 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        snap_gross_test_income_fpg_ratio: 1.9
+        snap_gross_test_income: 3_349
         snap_earned_income: 0
         has_snap_elderly_disabled_member: false
     households:
@@ -146,7 +158,7 @@
 - name: NY elderly or disabled household is eligible through 200% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.9
+    snap_gross_test_income: 2_478
     snap_earned_income: 0
     snap_dependent_care_deduction: 0
     has_snap_elderly_disabled_member: true
@@ -157,7 +169,7 @@
 - name: AL all elderly or disabled household is eligible through 200% FPL
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 1.9
+    snap_gross_test_income: 2_478
     has_snap_elderly_disabled_member: true
     has_all_usda_elderly_disabled: true
     state_code: AL
@@ -167,75 +179,91 @@
 - name: AK elderly or disabled household had no BBCE through ERS coverage
   period: 2020
   input:
-    snap_gross_test_income_fpg_ratio: 1
+    snap_gross_test_income: 100
     has_snap_elderly_disabled_member: true
     state_code: AK
   output:
     meets_tanf_non_cash_gross_income_test: false
 
-- name: CO elderly or disabled household had 200% FPL BBCE before the general limit changed
-  period: 2016-01
-  input:
-    snap_gross_test_income_fpg_ratio: 1.9
-    has_snap_elderly_disabled_member: true
-    state_code: CO
-  output:
-    meets_tanf_non_cash_gross_income_test: true
-
-- name: ID elderly or disabled household has no BBCE gross income test
+# State-standard boundary tests. The screen compares dollars against
+# each state's published standard, so the same January can carry
+# different guideline vintages: Maine re-bases in January while
+# Washington is still on the prior year's guidelines until April.
+- name: WA at its January 2026 standard of $2,608 passes
   period: 2026-01
   input:
-    snap_gross_test_income_fpg_ratio: 2.5
-    has_snap_elderly_disabled_member: true
-    state_code: ID
+    age: 30
+    state_code: WA
+    snap_gross_test_income: 2_608
   output:
     meets_tanf_non_cash_gross_income_test: true
 
-- name: MS elderly or disabled household had no BBCE gross income test before BBCE ended
-  period: 2016-01
-  input:
-    snap_gross_test_income_fpg_ratio: 2.5
-    has_snap_elderly_disabled_member: true
-    state_code: MS
-  output:
-    meets_tanf_non_cash_gross_income_test: true
-
-- name: WV all elderly or disabled household had 200% FPL BBCE before the general limit changed
-  period: 2016-01
-  input:
-    snap_gross_test_income_fpg_ratio: 1.9
-    has_snap_elderly_disabled_member: true
-    has_all_usda_elderly_disabled: true
-    state_code: WV
-  output:
-    meets_tanf_non_cash_gross_income_test: true
-
-- name: NC full-count alien income flips the BBCE gross screen where the prorated income would pass
+- name: WA one dollar above its January 2026 standard fails
   period: 2026-01
-  absolute_error_margin: 0.1
+  input:
+    age: 30
+    state_code: WA
+    snap_gross_test_income: 2_609
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: ME at its January 2026 standard of $2,660 passes
+  # Maine's January re-basing puts it a guideline year ahead of the
+  # October states, so this income clears in Maine but not in Washington.
+  period: 2026-01
+  input:
+    age: 30
+    state_code: ME
+    snap_gross_test_income: 2_660
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: ME one dollar above its January 2026 standard fails
+  period: 2026-01
+  input:
+    age: 30
+    state_code: ME
+    snap_gross_test_income: 2_661
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA at the $2,660 Maine standard fails in January 2026
+  period: 2026-01
+  input:
+    age: 30
+    state_code: WA
+    snap_gross_test_income: 2_660
+  output:
+    meets_tanf_non_cash_gross_income_test: false
+
+- name: WA in January 2027 clears $2,660 once the 2026 guidelines apply
+  period: 2027-01
+  input:
+    age: 30
+    state_code: WA
+    snap_gross_test_income: 2_660
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: WA four-person unit at its January 2026 standard of $5,358 passes
+  period: 2026-01
   input:
     people:
-      person1:
+      parent1:
         age: 35
-        employment_income: 48_000
-        employment_income_before_lsr: 48_000
-        immigration_status: UNDOCUMENTED
-      person2:
-        age: 33
-      person3:
+      parent2:
+        age: 34
+      child1:
         age: 8
+      child2:
+        age: 5
     spm_units:
       spm_unit:
-        members: [person1, person2, person3]
+        members: [parent1, parent2, child1, child2]
+        snap_gross_test_income: 5_358
     households:
       household:
-        members: [person1, person2, person3]
-        state_code: NC
+        members: [parent1, parent2, child1, child2]
+        state_code: WA
   output:
-    # North Carolina fully counts the alien's income under gross screens
-    # (7 CFR 273.11(c)(3)(i)) while prorating it on the net side. The
-    # full $4,000 monthly income exceeds NC's 200% FPL BBCE limit for the
-    # 2-person unit, though the prorated $2,666.67 would have passed.
-    snap_gross_income: 2_666.67
-    snap_gross_test_income: 4_000
-    meets_tanf_non_cash_gross_income_test: false
+    meets_tanf_non_cash_gross_income_test: true
