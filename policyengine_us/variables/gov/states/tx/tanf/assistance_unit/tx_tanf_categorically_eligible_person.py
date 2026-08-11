@@ -14,6 +14,6 @@ class tx_tanf_categorically_eligible_person(Variable):
 
     def formula(person, period, parameters):
         immigration_eligible = person("is_citizen_or_legal_immigrant", period.this_year)
-        ssi = person("ssi", period)
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
 
-        return immigration_eligible & (ssi == 0)
+        return immigration_eligible & ~receives_ssi

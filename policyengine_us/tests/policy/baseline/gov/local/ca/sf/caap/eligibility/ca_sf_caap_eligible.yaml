@@ -1,5 +1,6 @@
-# Eligible = age_eligible & property_eligible & income_eligible &
-# (budget_unit_size > 0). Each case fails exactly one branch (except Case 1).
+# Eligible = age_eligible & property_eligible & vehicle_eligible &
+# income_eligible & (budget_unit_size > 0) & not_on_calworks. Each case fails
+# exactly one branch (except Case 1).
 - name: Case 1, fully eligible single adult.
   period: 2025-01
   input:
@@ -123,3 +124,30 @@
     ca_sf_caap_income_eligible: true
     ca_sf_caap_budget_unit_size: 1
     ca_sf_caap_eligible: false
+
+- name: Case 7, barred solely by the motor vehicle rule.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+        # One vehicle above the 2024-era CalWORKs limit of $32,968.
+        household_vehicles_owned: 1
+        household_vehicles_value: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    ca_sf_caap_age_eligible: true
+    ca_sf_caap_personal_property_eligible: true
+    ca_sf_caap_income_eligible: true
+    ca_sf_caap_budget_unit_size: 1
+    ca_sf_caap_vehicle_eligible: false
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0

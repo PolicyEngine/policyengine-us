@@ -171,3 +171,20 @@
     is_snap_work_incentive_student: true
   output:
     is_snap_ineligible_student: false
+
+- name: College student whose household reports TANF receipt is not an ineligible student
+  period: 2022
+  input:
+    people:
+      person1:
+        is_full_time_college_student: true
+        age: 20
+        is_disabled: false
+        weekly_hours_worked_before_lsr: 0
+        is_parent: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        receives_tanf: true
+  output:
+    is_snap_ineligible_student: false

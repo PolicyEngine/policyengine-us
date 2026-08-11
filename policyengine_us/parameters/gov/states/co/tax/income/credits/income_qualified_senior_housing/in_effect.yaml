@@ -1,0 +1,17 @@
+description: Colorado provides the income qualified senior housing income tax credit in these years.
+values:
+  2022-01-01: true
+  2023-01-01: false
+  2024-01-01: true
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Colorado income qualified senior housing income tax credit in effect
+  reference:
+    - title: C.R.S. 39-22-544 - Credit against tax - qualifying seniors (creation)
+      href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-5-special-rules/section-39-22-544-credit-against-tax-qualifying-seniors-creation-legislative-declaration-definitions
+    - title: HB24-1052 - Senior Housing Income Tax Credit
+      href: https://leg.colorado.gov/sites/default/files/2024a_1052_signed.pdf
+# The credit is authorized only for tax years 2022 (original enactment) and 2024
+# (revived by HB24-1052). No future years are scheduled.

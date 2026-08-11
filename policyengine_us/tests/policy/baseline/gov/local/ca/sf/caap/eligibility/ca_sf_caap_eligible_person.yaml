@@ -105,3 +105,19 @@
     # person1's $500/month Social Security is excluded from countable income.
     ca_sf_caap_budget_unit_size: 1
     ca_sf_caap_countable_income: 0
+
+- name: Case 7, not counted because of reported SSI receipt with zero computed SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_sf_caap_eligible_person: false

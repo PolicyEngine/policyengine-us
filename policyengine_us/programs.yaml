@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, PA, RI, SC, TX, VA, VT, WA, WI, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WI, WV
     state_implementations:
       - state: AK
         status: complete
@@ -641,6 +641,12 @@ programs:
         name: Delaware POC
         full_name: Delaware Purchase of Care
         variable: de_poc
+      - state: OH
+        status: complete
+        name: Ohio Publicly Funded Child Care
+        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care)
+        variable: oh_child_care_subsidies
+        parameter_prefix: gov.states.oh.dcy.ccap
       - state: PA
         status: complete
         name: Pennsylvania CCW
@@ -708,6 +714,18 @@ programs:
         full_name: New Mexico Child Care Assistance Program
         variable: nm_ccap
         parameter_prefix: gov.states.nm.ececd.ccap
+      - state: OK
+        status: complete
+        name: Oklahoma Child Care Subsidy
+        full_name: Oklahoma Child Care Subsidy Program
+        variable: ok_ccs
+        parameter_prefix: gov.states.ok.dhs.ccs
+      - state: SD
+        status: in_progress
+        name: South Dakota CCA
+        full_name: South Dakota Child Care Assistance
+        variable: sd_cca
+        parameter_prefix: gov.states.sd.dss.cca
 
   - id: head_start
     name: Head Start
@@ -1141,6 +1159,18 @@ programs:
     variable: dc_gac
     parameter_prefix: gov.states.dc.dhc.gac
 
+  - id: md_premium_assistance
+    name: Maryland Premium Assistance
+    full_name: Maryland State-Based Health Insurance Subsidies Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MD
+    variable: md_premium_assistance
+    parameter_prefix: gov.states.md.mhbe.premium_assistance
+    verified_years: "2026-2027"
+    notes: The permanent Young Adult Subsidy (Insurance Article Section 31-122) is modeled only inside the 2026-2027 window; 2022-2025 and 2028-onward Young Adult Subsidy years are unmodeled. Cost-sharing and non-essential-health-benefit premium components and the enrollment-cap limits are not modeled.
+
   - id: ca_cvrp
     name: California CVRP
     full_name: California Clean Vehicle Rebate Project
@@ -1464,6 +1494,17 @@ programs:
     coverage: Riverside County
     variable: ca_riv_share_payment
     parameter_prefix: gov.local.ca.riv.share
+
+  - id: ca_sbd_general_relief
+    name: San Bernardino County General Relief
+    full_name: San Bernardino County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Bernardino County
+    variable: ca_sbd_general_relief
+    parameter_prefix: gov.local.ca.sbd.general_relief
+    notes: Flat maximum basic grant by assistance unit size (June 2021 design onward) net of countable income; the pre-June-2021 needs-based design, employability screening (100-hour rule and self-employment bar), employable time limits, vehicle-as-residence real-property treatment, and loan repayment are not modeled
 
   - id: ca_ala_general_assistance
     name: Alameda County General Assistance

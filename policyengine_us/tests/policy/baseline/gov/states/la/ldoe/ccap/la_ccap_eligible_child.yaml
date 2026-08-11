@@ -119,3 +119,18 @@
         state_code: LA
   output:
     la_ccap_eligible_child: true
+
+- name: Case 10, thirteen-year-old with reported SSI receipt is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    la_ccap_eligible_child: true

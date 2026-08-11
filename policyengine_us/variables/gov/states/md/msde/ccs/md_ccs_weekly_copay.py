@@ -21,7 +21,9 @@ class md_ccs_weekly_copay(Variable):
         # We don't track TANF applicants separately from recipients at the
         # moment; the regulation covers both.
         is_tca = spm_unit("is_tanf_enrolled", period)
-        receives_ssi = add(spm_unit, period, ["ssi"]) > 0
+        receives_ssi = (add(spm_unit, period, ["ssi"]) > 0) | (
+            add(spm_unit, period, ["receives_ssi"]) > 0
+        )
 
         # SNAP/WIC recipients have copayments waived per Chapter 525 of 2022
         # (HB 995). Uses bare-input receives_snap (SPMUnit) and receives_wic

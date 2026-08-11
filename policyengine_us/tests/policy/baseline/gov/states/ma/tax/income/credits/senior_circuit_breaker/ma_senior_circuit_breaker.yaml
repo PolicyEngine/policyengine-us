@@ -86,3 +86,40 @@
     # over threshold: 6,000 - 4,000 = 2,000
     # credit: min(2,000, 2,820) = 2,000
     ma_senior_circuit_breaker: 2_000
+
+- name: Case 4, 2025 boundary flip, excluding in-kind SNAP and WIC keeps income below the ceiling.
+  # M.G.L. c.62 s.6(k)(1) re-adds "cash, but not in-kind, public assistance",
+  # so SNAP and WIC do not count toward total income. Re-adding the 4,200 of
+  # in-kind assistance below would push total income to 75,500, over the
+  # 75,000 SINGLE ceiling, and zero out the credit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 70
+        wic: 1_200
+        ssi: 0
+        ma_state_supplement: 0
+        real_estate_taxes: 8_000
+        assessed_property_value: 500_000
+    tax_units:
+      tax_unit:
+        ma_gross_income: 72_000
+        members: [person1]
+    spm_units:
+      spm_unit:
+        snap: 3_000
+        tanf: 0
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    # total income: 72,000 gross - 700 aged exemption = 71,300 <= 75,000
+    ma_scb_total_income: 71_300
+    # income threshold: 71,300 * 0.10 = 7,130
+    # over threshold: 8,000 - 7,130 = 870
+    # credit: min(870, 2,820) = 870
+    ma_senior_circuit_breaker: 870

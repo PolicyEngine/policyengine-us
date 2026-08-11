@@ -23,7 +23,11 @@ class md_withheld_income_tax(Variable):
         # Guard against non-MD counties in microsimulation:
         # defined_for masks results but doesn't prevent formula execution.
         in_md = person.household("state_code_str", period) == "MD"
-        safe_county = where(in_md, county, "ALLEGANY_COUNTY_MD")
+        # Fall back to a default MD county when the county is unknown/unmapped
+        # (County.UNKNOWN is the default), since gov.local.md.flat_rate has no
+        # UNKNOWN key and would otherwise raise ParameterNotFoundError. The
+        # non-MD path already falls back to the same default county.
+        safe_county = where(in_md & (county != "UNKNOWN"), county, "ALLEGANY_COUNTY_MD")
         p_local = parameters(period).gov.local.md
         flat_rate_withheld = p_local.flat_rate[safe_county] * reduced_agi
         is_anne_arundel = county == "ANNE_ARUNDEL_COUNTY_MD"

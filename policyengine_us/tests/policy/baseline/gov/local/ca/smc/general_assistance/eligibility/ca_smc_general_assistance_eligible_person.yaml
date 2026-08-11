@@ -55,3 +55,14 @@
     ssi: 0
   output:
     ca_smc_general_assistance_eligible_person: false
+
+- name: Case 7, adult with reported SSI receipt is ineligible.
+  period: 2026-01
+  input:
+    age: 18
+    immigration_status: CITIZEN
+    ssi: 0
+    receives_ssi: true
+    in_smc: true
+  output:
+    ca_smc_general_assistance_eligible_person: false

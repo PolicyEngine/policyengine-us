@@ -17,7 +17,7 @@ class ca_scc_general_assistance_eligible_person(Variable):
         immigration_status_eligible = person(
             "ca_scc_general_assistance_immigration_status_eligible", period
         )
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         # Per GA 202, persons eligible for another federal or state cash aid
         # program (here: CAPI for aged/blind/disabled noncitizens) are not
         # eligible for General Assistance.

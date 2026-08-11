@@ -25,7 +25,7 @@ class ga_ssp_eligible_person(Variable):
         ssi_amount = person("ssi", period)
         # in_federal_medicaid_facility already confirms MEDICAL_TREATMENT_FACILITY
         # arrangement, so any positive SSI confirms institutional SSI receipt.
-        receives_institutional_ssi = ssi_amount > 0
+        receives_institutional_ssi = (ssi_amount > 0) | person("receives_ssi", period)
         return (
             receives_institutional_ssi
             & in_federal_medicaid_facility

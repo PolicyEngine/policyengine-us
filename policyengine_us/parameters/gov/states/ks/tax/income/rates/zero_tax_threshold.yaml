@@ -1,43 +1,43 @@
-description: Kansas only levies taxes on filers with at least this much taxable income.
+description: Kansas zeroes the income tax of filers with taxable income at or below this amount.
 metadata:
-  label: KS zero-tax taxable-income threshold 
+  label: KS zero-tax taxable-income threshold
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
   reference:
-  - title: 2021 Form K-40 instructions
-    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: Kansas 2022 Statute Article 32 79-32,110 (a)(2)(F)
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/
+  # The 2021 tax table applies the threshold to line 7 taxable income: the
+  # married filing joint column is 0 through $5,000 while the other-status
+  # column is nonzero (e.g., 137 at 4,401-4,450).
+  - title: 2021 Form K-40 instructions, tax table
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf#page=22
   - title: 2022 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip22.pdf
   - title: 2023 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip23.pdf#page=32
-  - title: 2024 Form K-40 instructions
-    href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=3
-  - title: 2025 Form K-40 instructions
-    href: https://www.ksrevenue.gov/pdf/ip25.pdf#page=3
-  # The minimum filing requirement only appears in the tax forms, not in the legal code
-  - title: Kansas 2022 Statute Article 32 79-32,110_(e)
-    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/
 
-  
+# From 2024, the taxable-income zero-tax band no longer appears in the
+# restructured rate schedule; the AGI-based minimum filing requirement in
+# agi_zero_tax_threshold.yaml takes over.
 JOINT:
   2016-01-01: 12_500
   2018-01-01: 5_000
-  2024-01-01: 26_560 # 8,240 + 18,320
+  2024-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2016-01-01: 5_000
   2018-01-01: 2_500
-  2024-01-01: 17_660 # 6,180 + 9,160 + 2,320
+  2024-01-01: 0
 SURVIVING_SPOUSE:
   2016-01-01: 5_000
   2018-01-01: 2_500
-  2024-01-01: 12_765 # 3,605 + 9,160
+  2024-01-01: 0
 SINGLE:
   2016-01-01: 5_000
   2018-01-01: 2_500
-  2024-01-01: 12_765 # 3,605 + 9,160
+  2024-01-01: 0
 SEPARATE:
   2016-01-01: 5_000
   2018-01-01: 2_500
-  2024-01-01: 13_280 # 4,120 + 9,160
+  2024-01-01: 0

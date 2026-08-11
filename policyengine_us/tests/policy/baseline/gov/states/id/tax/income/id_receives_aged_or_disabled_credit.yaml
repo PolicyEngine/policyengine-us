@@ -1,0 +1,83 @@
+# End-to-end tests for the credit-vs-deduction chooser. These cases do NOT
+# set id_receives_aged_or_disabled_credit as an input, so the new formula runs
+# and compares Idaho income tax under each branch (mirroring the Delaware EITC
+# get_branch() pattern).
+#
+# Under Idaho law the $100/person aged-or-disabled credit is refundable, while
+# the $1,000/person deduction only reduces AGI. Idaho's post-2022 tax rate is a
+# flat 5.8% (2023), 5.695% (2024), 5.3% (2025), so a $1,000 deduction is worth
+# at most ~$58/person, always less than the $100 credit. The credit therefore
+# wins for every household with a positive liability, and (being refundable)
+# also pays out when there is no liability. A "deduction wins" outcome is not
+# reachable under current Idaho rates; the chooser still exists as the correct
+# lower-tax comparison and keeps the credit on ties (preserving the prior
+# always-credit default).
+
+- name: Credit wins - low income, refundable credit pays where deduction is worthless
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 8_000
+      disabled_dependent:
+        age: 10
+        is_disabled: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 1
+    tax_units:
+      tax_unit:
+        members: [head, disabled_dependent]
+    households:
+      household:
+        members: [head, disabled_dependent]
+        state_code: ID
+  output:
+    id_aged_or_disabled_credit_eligible_person: [false, true]
+    id_receives_aged_or_disabled_credit: true
+    id_aged_or_disabled_credit: 100
+    id_aged_or_disabled_deduction: 0
+    id_income_tax: -100
+
+- name: Credit wins - positive liability, credit beats deduction at Idaho flat rate
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 80_000
+      disabled_dependent:
+        age: 10
+        is_disabled: true
+        share_of_care_and_support_costs_paid_by_tax_filer: 1
+    tax_units:
+      tax_unit:
+        members: [head, disabled_dependent]
+    households:
+      household:
+        members: [head, disabled_dependent]
+        state_code: ID
+  output:
+    id_receives_aged_or_disabled_credit: true
+    id_aged_or_disabled_credit: 100
+    id_aged_or_disabled_deduction: 0
+
+- name: No eligible person - both credit and deduction are zero
+  period: 2023
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 30_000
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: ID
+  output:
+    id_aged_or_disabled_credit_eligible_person: [false, false]
+    id_aged_or_disabled_credit: 0
+    id_aged_or_disabled_deduction: 0

@@ -1,0 +1,414 @@
+# End-to-end integration tests for Maryland Premium Assistance
+# (State-Based Health Insurance Subsidies Program), PY2026.
+# Scenarios follow the MIA Exhibit 2a illustrative net-premium targets
+# (single age 40 and family of four across FPL tiers), plus a young-adult case,
+# an over-400% ineligible case, and a non-MD case.
+#
+# To keep expected values exactly hand-verifiable and independent of the
+# rating-area premium lookup, aca_magi, aca_magi_fraction, the federal required
+# contribution percentage, slcsp (annual) and aca_ptc are supplied directly, and
+# each scenario checks the intermediate values so a reviewer can follow the
+# arithmetic:
+#   md_pct  = target contribution % from the MD schedule (keyed on aca_magi_fraction)
+#   subsidy = max(0, max(0, slcsp - aca_ptc) - md_pct * max(aca_magi, 0))  [COMAR .04B]
+# For a filer with a self-consistent APTC (aca_ptc = slcsp - federal_pct * income),
+# this reduces to (federal_pct - md_pct) * income, so the arithmetic below matches.
+#
+# MD target schedule (initial per band): 0-150% 0%, 150-200% 0%->2%,
+# 200-250% 2%->6.22%, 250-300% 6.22%->7.98%, 300-400% 7.98%->9.23%.
+# 2026 federal non-enhanced percentages at each tier: 138% 3.4488%, 150% 4.19%,
+# 200% 6.60%, 250% 8.44%, 300% 9.96%, 400% 9.96%.
+
+- name: Scenario 1, single age 40 at 138% FPL (full replacement, MIA ~$1/mo net).
+  # aca_magi 21_597; md target 0% (below 150%); federal 3.4488%.
+  # COMAR .04B: max(0, (6_000 - 5_255) - 0 * 21_597) = 745/yr (~62/mo state
+  # subsidy); the whole-dollar forced APTC leaves a 745 post-APTC premium balance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 21_597
+        aca_magi_fraction: 1.38
+        aca_required_contribution_percentage: 0.034488
+        slcsp: 6_000
+        aca_ptc: 5_255  # 6_000 - 0.034488*21_597 (federal contribution)
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0
+    md_premium_assistance: 745.00
+
+- name: Scenario 2, single age 40 at 200% FPL (MIA net $53/mo vs $173/mo).
+  # md target 2.00%; federal 6.60%. COMAR .04B: max(0, (6_000 - 3_934) - 0.02 *
+  # 31_300) = 2_066 - 626 = 1_440/yr (~120/mo); whole-dollar forced APTC rounding.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 6_000
+        aca_ptc: 3_934  # 6_000 - 0.066*31_300
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.02
+    md_premium_assistance: 1_440.00
+
+- name: Scenario 3, single age 40 at 300% FPL (50% replacement, MIA net $313 vs $390/mo).
+  # md target 7.98%; federal 9.96%. COMAR .04B: max(0, (9_000 - 4_324) - 0.0798 *
+  # 46_950) = 4_676 - 3_746.61 = 929.39/yr (~77/mo).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950
+        aca_magi_fraction: 3.00
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 9_000
+        aca_ptc: 4_324  # 9_000 - 0.0996*46_950
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0798
+    md_premium_assistance: 929.39
+
+- name: Scenario 4, family of four at 200% FPL (MIA net $110/mo vs $356/mo).
+  # ages 45/43/15/13; aca_magi 64_300; md target 2.00%; federal 6.60%. COMAR .04B:
+  # max(0, (18_000 - 13_756) - 0.02 * 64_300) = 4_244 - 1_286 = 2_958/yr (~246/mo).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 13
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 64_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 18_000
+        aca_ptc: 13_756  # 18_000 - 0.066*64_300
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.02
+    md_premium_assistance: 2_958.00
+
+- name: Scenario 5, family of four at 400% FPL (top of schedule, MIA net $992 vs $1070/mo).
+  # aca_magi 128_600; md target 9.23%; federal 9.96%. COMAR .04B:
+  # max(0, (22_000 - 9_191) - 0.0923 * 128_600) = 12_809 - 11_869.78 = 939.22/yr.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 13
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 128_600
+        aca_magi_fraction: 4.00
+        aca_required_contribution_percentage: 0.0996
+        slcsp: 22_000
+        aca_ptc: 9_191  # 22_000 - 0.0996*128_600
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0923
+    md_premium_assistance: 939.22
+
+- name: Scenario 6, young adult age 30 at 250% FPL (YAS overlay, HGO p.59 example).
+  # md target 6.22% - 2.5pp = 3.72%; federal 8.44%. COMAR .04B:
+  # max(0, (6_000 - 2_698) - 0.0372 * 39_125) = 3_302 - 1_455.45 = 1_846.55/yr.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698  # 6_000 - 0.0844*39_125
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance_target_contribution_percentage: 0.0372
+    md_premium_assistance: 1_846.55
+
+- name: Scenario 7, single age 40 at 401% FPL (over the limit, no subsidy).
+  # aca_magi 62_757; above 400% FPL -> ineligible -> subsidy 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 62_757
+        aca_magi_fraction: 4.01
+        slcsp: 6_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+    md_premium_assistance: 0
+
+- name: Scenario 8, young adult age 30 at 200% FPL -> full floor (target 0%).
+  # md target = 2.00% - 2.5pp = 0 (floored); federal 6.60%. Forced APTC 1_934.
+  # New COMAR .04B form: with md_pct 0 the subsidy is the full post-APTC premium
+  # balance max(0, (6_000 - 1_934) - 0) = 4_066. This is the intended behaviour of
+  # the new form: a 0% MD target means the state covers the entire premium balance
+  # left after the federal APTC (it is NOT the old (federal - 0) * income reading).
+  # Margin tightened to 0.0001 so the target-% floor assertion is functional (the
+  # blanket 0.01 tolerated a full 1pp).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 31_300
+        aca_magi_fraction: 2.00
+        aca_required_contribution_percentage: 0.066
+        slcsp: 6_000
+        aca_ptc: 1_934  # 6_000 - 0.066*31_300 (self-consistent federal contribution)
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance_target_contribution_percentage: 0
+    md_premium_assistance: 4_066.00  # 0% MD target -> full post-APTC premium balance
+
+- name: Scenario 9, single age 40 at 250% FPL, APTC already covers full premium.
+  # aca_ptc 6_000 == slcsp 6_000 -> post-APTC premium 0 -> subsidy 0 despite a
+  # positive gap. Margin 0.0001 so the target-% assertion is functional.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_target_contribution_percentage: 0.0622
+    md_premium_assistance: 0
+
+- name: Scenario 10, fully income-derived young-adult subsidy (no forced intermediates).
+  # A single age-30 enrollee in MD with only employment_income set. aca_magi,
+  # aca_magi_fraction, the federal applicable %, slcsp and aca_ptc are ALL derived
+  # from the rating-area premium lookup and the federal PTC engine; the young-adult
+  # 2.5pp reduction flows through the MD target %. Asserts a derived non-round
+  # subsidy rather than a forced arithmetic identity. Derived intermediates:
+  # aca_magi 35_000, aca_magi_fraction 2.23, federal 7.4464%, md target
+  # (2.23 FPL base minus the 2.5pp young-adult floor) 1.4412%; cap not binding.
+  # gap = (0.074464 - 0.014412) * 35_000 = 2_101.82.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.025
+    md_premium_assistance: 2_101.82  # fully income-derived through the federal chain
+
+- name: Scenario 11a, age-36 young adult at 250% FPL flowing through the target-% subtraction.
+  # base target 6.22% - age-36 reduction 1.0pp = 5.22% md_pct; federal 8.44%.
+  # Self-consistent APTC 2_698 = 6_000 - 0.0844*39_125. New COMAR .04B form:
+  # max(0, (6_000 - 2_698) - 0.0522 * 39_125) = 3_302 - 2_042.325 = 1_259.675
+  # (matches the old (0.0844 - 0.0522) * 39_125 = 1_259.825 up to the APTC rounding).
+  # Margin 0.0001 so the target-% subtraction assertion (0.0522) is functional;
+  # the dollar reconciles to the forced-APTC .04B value (filer gate satisfied).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.01
+    md_premium_assistance_target_contribution_percentage: 0.0522
+    md_premium_assistance: 1_259.6749  # max(0, (6_000 - 2_698) - 0.0522 * 39_125)
+
+- name: Scenario 11b, age-37 young adult at 250% FPL flowing through the target-% subtraction.
+  # base target 6.22% - age-37 reduction 0.5pp = 5.72% md_pct; federal 8.44%.
+  # Self-consistent APTC 2_698 = 6_000 - 0.0844*39_125. New COMAR .04B form:
+  # max(0, (6_000 - 2_698) - 0.0572 * 39_125) = 3_302 - 2_237.95 = 1_064.05
+  # (matches the old (0.0844 - 0.0572) * 39_125 = 1_064.20 up to the APTC rounding).
+  # Margin 0.0001 so the reduction assertion (0.005) is functional (the blanket
+  # 0.01 was 2x this value); dollar reconciled to the forced-APTC .04B value.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 37
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+    md_premium_assistance_young_adult_reduction: 0.005
+    md_premium_assistance_target_contribution_percentage: 0.0572
+    md_premium_assistance: 1_064.05  # max(0, (6_000 - 2_698) - 0.0572 * 39_125)
+
+- name: Scenario 12, single age 40 at 250% FPL living in Virginia (non-MD -> 0).
+  # Non-MD households are masked to ineligible by defined_for StateCode.MD.
+  # (Placed last so the MD scenarios read sequentially.)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        aca_required_contribution_percentage: 0.0844
+        slcsp: 6_000
+        aca_ptc: 2_698
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    md_premium_assistance_eligible: false
+    md_premium_assistance: 0

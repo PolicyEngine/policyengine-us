@@ -1,7 +1,6 @@
-from typing import List, Optional
+from pathlib import Path
 
 import pandas as pd
-from pathlib import Path
 
 US_ENTITIES = [
     "person",
@@ -157,14 +156,21 @@ class USSingleYearDataset:
                 data[col] = df[col].values
         return data
 
-    def copy(self):
+    def copy(self, deep: bool = True) -> "USSingleYearDataset":
+        """Return a copy of the dataset.
+
+        With ``deep=False``, entity DataFrames share column buffers with
+        the original until they are modified. pandas copy-on-write keeps
+        the original isolated. Callers should modify columns via
+        whole-column assignment (``df[col] = value``).
+        """
         return USSingleYearDataset(
-            person=self.person.copy(),
-            household=self.household.copy(),
-            tax_unit=self.tax_unit.copy(),
-            spm_unit=self.spm_unit.copy(),
-            family=self.family.copy(),
-            marital_unit=self.marital_unit.copy(),
+            person=self.person.copy(deep=deep),
+            household=self.household.copy(deep=deep),
+            tax_unit=self.tax_unit.copy(deep=deep),
+            spm_unit=self.spm_unit.copy(deep=deep),
+            family=self.family.copy(deep=deep),
+            marital_unit=self.marital_unit.copy(deep=deep),
             time_period=int(self.time_period),
         )
 
@@ -173,7 +179,7 @@ class USMultiYearDataset:
     def __init__(
         self,
         file_path: str = None,
-        datasets: Optional[List[USSingleYearDataset]] = None,
+        datasets: list[USSingleYearDataset] | None = None,
     ):
         if datasets is not None and file_path is not None:
             raise ValueError("Provide either datasets or file_path, not both.")
@@ -258,8 +264,12 @@ class USMultiYearDataset:
                     data_columns=True,
                 )
 
-    def copy(self):
-        new_datasets = {year: dataset.copy() for year, dataset in self.datasets.items()}
+    def copy(self, deep: bool = True) -> "USMultiYearDataset":
+        """Return a copy of the dataset. ``deep=False`` shares buffers
+        using pandas copy-on-write; see ``USSingleYearDataset.copy``."""
+        new_datasets = {
+            year: dataset.copy(deep=deep) for year, dataset in self.datasets.items()
+        }
         return USMultiYearDataset(datasets=list(new_datasets.values()))
 
     def load(self):

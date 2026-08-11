@@ -1,0 +1,19 @@
+description: Counties in Maryland with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - DORCHESTER_COUNTY_MD # FIPS 24019
+    - KENT_COUNTY_MD # FIPS 24029
+    - SOMERSET_COUNTY_MD # FIPS 24039
+    - WORCESTER_COUNTY_MD # FIPS 24047
+    - BALTIMORE_CITY_MD # FIPS 24510
+  2025-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Maryland
+  reference:
+    - title: USDA FNS Maryland FY 2024 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/md-abawd-response-fy2024.pdf

@@ -13,6 +13,8 @@ class id_grocery_credit_qualifying_month(Variable):
     )
 
     def formula(person, period, parameters):
-        snap_received = person.spm_unit("snap", period) > 0
+        snap_received = (person.spm_unit("snap", period) > 0) | person.spm_unit(
+            "receives_snap", period
+        )
         # Incarcerated people are not eligible for the grocery credit
         return ~person("is_incarcerated", period) & ~snap_received

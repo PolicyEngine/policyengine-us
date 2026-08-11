@@ -12,6 +12,21 @@
     is_medicaid_work_requirement_applicable_adult: true
     is_medicaid_ineligible_due_to_work_requirement: true
 
+- name: Federal applicable adult is not barred before the 2027 applicability date
+  period: 2026
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    monthly_hours_worked: 0
+    employment_income: 0
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    # Same facts as the barred 2027 case above, but the H.R. 1 community
+    # engagement requirement applies only from the first quarter after
+    # December 31, 2026, so the federal bar does not attach in 2026.
+    is_medicaid_ineligible_due_to_work_requirement: false
+
 - name: Federal applicable adult is not barred when work requirements are met
   period: 2027
   input:

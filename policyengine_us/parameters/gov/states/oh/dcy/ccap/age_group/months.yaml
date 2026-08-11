@@ -1,0 +1,35 @@
+description: Ohio defines these child age group boundaries in months under the Publicly Funded Child Care program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Ohio PFCC child age group by months
+  reference:
+    - title: OAC 5180:2-16-01(P),(DD),(T),(W) — Definitions
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-01
+
+# Index maps to the OHCCAPAgeGroup enum: 0 = Infant, 1 = Toddler,
+# 2 = Preschool, 3 = School-Age. The School-Age vs School-Age Summer split is
+# applied separately in the variable using the school-year month window.
+brackets:
+  - threshold:
+      2022-12-11: 0
+    amount:
+      2022-12-11: 0
+  # Toddler begins at 18 months (1.5 years).
+  - threshold:
+      2022-12-11: 18
+    amount:
+      2022-12-11: 1
+  # Preschool begins at 3 years (36 months).
+  - threshold:
+      2022-12-11: 36
+    amount:
+      2022-12-11: 2
+  # School-Age begins at 5 years (60 months), the typical kindergarten age.
+  - threshold:
+      2022-12-11: 60
+    amount:
+      2022-12-11: 3

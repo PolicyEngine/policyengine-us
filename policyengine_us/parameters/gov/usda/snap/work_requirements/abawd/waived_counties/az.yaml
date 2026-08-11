@@ -1,0 +1,28 @@
+description: Counties in Arizona with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-10-01:
+    - APACHE_COUNTY_AZ # FIPS 04001
+    - COCHISE_COUNTY_AZ # FIPS 04003
+    - COCONINO_COUNTY_AZ # FIPS 04005
+    - GILA_COUNTY_AZ # FIPS 04007
+    - GRAHAM_COUNTY_AZ # FIPS 04009
+    - GREENLEE_COUNTY_AZ # FIPS 04011
+    - LA_PAZ_COUNTY_AZ # FIPS 04012
+    - MOHAVE_COUNTY_AZ # FIPS 04015
+    - NAVAJO_COUNTY_AZ # FIPS 04017
+    - PIMA_COUNTY_AZ # FIPS 04019
+    - PINAL_COUNTY_AZ # FIPS 04021
+    - SANTA_CRUZ_COUNTY_AZ # FIPS 04023
+    - YAVAPAI_COUNTY_AZ # FIPS 04025
+    - YUMA_COUNTY_AZ # FIPS 04027
+  2025-10-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Arizona
+  reference:
+    - title: USDA FNS Arizona FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2025.pdf

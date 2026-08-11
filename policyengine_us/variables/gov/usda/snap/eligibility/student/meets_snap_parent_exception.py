@@ -30,13 +30,17 @@ class meets_snap_parent_exception(Variable):
             household_member_ages < p.single_parent
         )
 
-        # Two-parent households need child under 6
-        # Single parent households need child under 12, enrolled full-time
         is_full_time_student = person("is_full_time_college_student", period)
-        parent_exception_requirement = where(
-            parent_count > 1,
-            has_child_under_two_parent_limit,
-            has_child_under_single_parent_limit & is_full_time_student,
+        # Exception 5: any parent responsible for a child under 6 (the
+        # two-parent age limit); no full-time enrollment requirement.
+        exception_5 = has_child_under_two_parent_limit
+        # Exception 8: single parent enrolled full-time, responsible for a
+        # child under 12 (the single-parent age limit).
+        exception_8 = (
+            (parent_count == 1)
+            & has_child_under_single_parent_limit
+            & is_full_time_student
         )
+        parent_exception_requirement = exception_5 | exception_8
 
         return is_parent & parent_exception_requirement

@@ -179,9 +179,9 @@
     tax_units:
       tax_unit:
         # Age 18 passes the minimum-age boundary (contrast with the age-17 case).
-        # 0-kid final phase-out: credit = 263 x (32,901 - 15,000) /
-        # (32,901 - 5,488.63) = 263 x 0.65299 = 171.74.
-        ca_eitc: 171.74
+        # 0-kid final phase-out: credit = 257 x (32,901 - 15,000) /
+        # (32,901 - 5,580.94) = 257 x 0.65521 = 168.39.
+        ca_eitc: 168.39
         ca_eitc_eligible: true
         adjusted_gross_income: 15_000.0
 - name: ca_eitc_investment_income_at_limit_4923_eligible (ca)
@@ -229,8 +229,8 @@
       tax_unit:
         # Investment income $4,923 is at/below the 2026 uprated limit
         # ($4,923.10), so eligibility holds; the credit still uses earned
-        # income only: 263 x (32,901 - 15,000) / 27,412.37 = 171.74.
-        ca_eitc: 171.74
+        # income only: 257 x (32,901 - 15,000) / 27,320.06 = 168.39.
+        ca_eitc: 168.39
         ca_eitc_eligible: true
         adjusted_gross_income: 19_923.0
 - name: ca_eitc_investment_income_above_limit_4924_ineligible (ca)

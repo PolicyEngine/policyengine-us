@@ -1,0 +1,119 @@
+# An eligible person must pass the immigration test, not receive SSI or
+# CalWORKs, not reside in a treatment facility, and meet a linkage category.
+- name: Case 1, an unemployed adult citizen with no other cash assistance is an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible_person: true
+
+- name: Case 2, an undocumented adult is not an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible_person: false
+
+- name: Case 3, an SSI recipient is not an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible_person: false
+
+- name: Case 4, a resident of a treatment facility is not an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The grant is not paid to residents of treatment programs or
+    # facilities (SSI medical-facility proxy).
+    ca_sbd_general_relief_eligible_person: false
+
+- name: Case 5, a full-time student adult fails linkage and is not an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible_person: false
+
+- name: Case 6, a refugee on the qualified immigration list is an eligible person.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible_person: true

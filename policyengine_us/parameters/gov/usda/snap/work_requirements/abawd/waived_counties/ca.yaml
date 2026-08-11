@@ -1,0 +1,23 @@
+description: Counties in California with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2025-11-01:
+    - ALPINE_COUNTY_CA # FIPS 06003
+    - COLUSA_COUNTY_CA # FIPS 06011
+    - IMPERIAL_COUNTY_CA # FIPS 06025
+    - MERCED_COUNTY_CA # FIPS 06047
+    - MONTEREY_COUNTY_CA # FIPS 06053
+    - PLUMAS_COUNTY_CA # FIPS 06063
+    - TULARE_COUNTY_CA # FIPS 06107
+  2026-11-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in California
+  reference:
+    - title: CDSS All County Letter No. 25-79
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-79.pdf#page=5
+    - title: CDSS All County Letter No. 26-15
+      href: https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-15.pdf#page=6

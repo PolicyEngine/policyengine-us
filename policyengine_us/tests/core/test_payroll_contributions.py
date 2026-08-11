@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 from policyengine_core.reforms import Reform
 
@@ -14,7 +12,7 @@ WAGES = 100_000
 def make_simulation(
     state_code: str,
     *,
-    county: Optional[str] = None,
+    county: str | None = None,
     employment_income: float = WAGES,
     health_savings_account_payroll_contributions: float = 0,
     employer_headcount: int = 100,

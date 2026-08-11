@@ -31,7 +31,7 @@ class ca_sf_caap_eligible_person(Variable):
         # ca_capi is computed at the SPM-unit level, so unit receipt is projected
         # down and intersected with the person-level categorical flag, which is
         # what ca_capi's own payment standard and countable income are masked by.
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         receives_capi = person("ca_capi_eligible_person", period.this_year) & (
             person.spm_unit("ca_capi", period.this_year) > 0
         )

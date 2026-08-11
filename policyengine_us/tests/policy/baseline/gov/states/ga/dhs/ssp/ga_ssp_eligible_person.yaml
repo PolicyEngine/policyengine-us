@@ -215,3 +215,20 @@
   output:
     # person1 fails SSI-eligible, person2 fails facility
     ga_ssp_eligible_person: [false, false]
+
+- name: Case 13, reported SSI receipt qualifies a nursing-home resident with zero computed SSI.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        receives_ssi: true
+        ga_ssp_in_nursing_home_or_institutionalized_hospice: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_ssp_eligible_person: [true]

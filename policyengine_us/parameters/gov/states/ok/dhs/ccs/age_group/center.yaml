@@ -1,0 +1,35 @@
+description: Oklahoma assigns children to these child care center rate age groups, by age in months, under the Child Care Subsidy Program.
+# The amount is the OKCCSCenterAgeGroup enum index: 0 = MONTHS_0_TO_12,
+# 1 = MONTHS_13_TO_24, 2 = MONTHS_25_TO_48, 3 = MONTHS_49_TO_72,
+# 4 = MONTHS_73_PLUS.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Oklahoma Child Care Subsidy center age group
+  reference:
+    - title: OKDHS Appendix C-4-B, Child Care Provider Rate Schedule
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4-b.pdf#page=3
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  - threshold:
+      2023-01-01: 13
+    amount:
+      2023-01-01: 1
+  - threshold:
+      2023-01-01: 25
+    amount:
+      2023-01-01: 2
+  - threshold:
+      2023-01-01: 49
+    amount:
+      2023-01-01: 3
+  - threshold:
+      2023-01-01: 73
+    amount:
+      2023-01-01: 4

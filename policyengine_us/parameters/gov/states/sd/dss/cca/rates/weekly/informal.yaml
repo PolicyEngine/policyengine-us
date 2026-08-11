@@ -1,0 +1,20 @@
+description: South Dakota provides these weekly maximum reimbursement rates for informal, in-home, and relative providers under the Child Care Assistance program.
+
+# Informal, in-home, and relative provider rates are flat statewide: they do not
+# vary by region or age group, only by level of service.
+metadata:
+  period: week
+  unit: currency-USD
+  label: South Dakota CCA informal provider weekly rates
+  breakdown:
+    - sd_cca_time_category
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026 (Informal, In-home, relative)
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf
+
+FULL_TIME:
+  2026-08-01: 116.25
+PART_TIME:
+  2026-08-01: 58.25
+LIMITED_TIME:
+  2026-08-01: 29

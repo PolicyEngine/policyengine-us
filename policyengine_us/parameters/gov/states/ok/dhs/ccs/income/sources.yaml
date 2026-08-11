@@ -1,0 +1,57 @@
+description: Oklahoma counts these income sources as countable income under the Child Care Subsidy Program.
+values:
+  2023-01-01:
+    # Earned income (OAC 340:40-7-11(b)): wages, including armed forces pay,
+    # commissions, tips, piece-rate payments, longevity payments, and cash
+    # bonuses, and self-employment income. Each tracked business income source
+    # is floored at zero per person because a business loss is not deducted
+    # from other household income (OAC 340:40-7-11(b)(3)(B)). The 50 percent
+    # business-expense standard deduction in the same subsection is not
+    # applied: self_employment_income is already net of actual expenses, and
+    # gross self-employment receipts are not tracked at the moment.
+    - ok_ccs_countable_earned_income
+    # Unearned income (OAC 340:40-7-11(c)).
+    # social_security already includes the disability, retirement, survivors,
+    # and dependents components.
+    - social_security
+    - unemployment_compensation
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    - dividend_income
+    - interest_income
+    # Annuities, pensions, retirement benefits, and disability benefits from
+    # government or private sources are unearned income (OAC
+    # 340:40-7-11(c)(2)). disability_benefits excludes Social Security
+    # disability (inside social_security) and workers' compensation, so the
+    # sources do not double-count.
+    - pension_income
+    - disability_benefits
+    # Veterans' compensation, pensions, and military allotments
+    # (OAC 340:40-7-11(c)(6)).
+    - veterans_benefits
+    # S corporation, limited partnership, and LLC profit shares are unearned
+    # income (OAC 340:40-7-11(c)(11)). ok_ccs_gross_income adds this source
+    # separately so each person's business loss is floored at zero.
+    # Temporary Assistance for Needy Families cash assistance is countable per
+    # OAC 340:40-7-11(c)(1) but is omitted here: TANF recipients are
+    # predetermined eligible with no family share copayment (OAC 340:40-7-1),
+    # so counting the TANF dollars has no effect on their eligibility, and
+    # including them would create a circular dependency with the TANF
+    # dependent care deduction. Oklahoma State Supplemental Payments and
+    # Refugee Resettlement Program cash assistance are not tracked at the
+    # moment. Supplemental Security Income is likewise countable unearned
+    # income (OAC 340:40-7-11(c)(3)) but omitted for the same reason: SSI
+    # recipients are predetermined eligible with no family share copayment,
+    # so the SSI dollars can never reach the income test or copayment lookup.
+    # Mineral and royalty payments (OAC 340:40-7-11(c)(8)), cash contributions
+    # over $30 per quarter (c)(7), and recurring lump sum or irregular income
+    # (c)(9)-(10) have no corresponding tracked income source at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma Child Care Subsidy countable income sources
+  reference:
+    - title: OAC 340:40-7-11
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-40-7-11

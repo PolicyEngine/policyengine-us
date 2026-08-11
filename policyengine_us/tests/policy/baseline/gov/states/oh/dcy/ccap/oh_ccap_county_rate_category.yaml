@@ -1,0 +1,75 @@
+# Tests for oh_ccap_county_rate_category (Household, YEAR).
+# 5180:6-1-10 Appendix A maps each of Ohio's 88 counties to one of three rate
+# categories. Counties not in any list (and non-Ohio counties) fall through to
+# Category 2. The variable reads county_str directly, which we set as an input.
+# Geography parameters start 2025-11-01, so cases use 2026. A person is required
+# for the simulation to run.
+- name: Case 1, Brown County is rate category 1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county_str: BROWN_COUNTY_OH  # category 1
+  output:
+    oh_ccap_county_rate_category: CATEGORY_1
+
+- name: Case 2, Stark County is rate category 2.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    oh_ccap_county_rate_category: CATEGORY_2
+
+- name: Case 3, Franklin County is rate category 3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    oh_ccap_county_rate_category: CATEGORY_3
+
+- name: Case 4, Cuyahoga County is rate category 3.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county_str: CUYAHOGA_COUNTY_OH  # category 3
+  output:
+    oh_ccap_county_rate_category: CATEGORY_3
+
+- name: Case 5, out-of-Ohio county defaults to category 2.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: CAMPBELL_COUNTY_KY
+  output:
+    oh_ccap_county_rate_category: CATEGORY_2

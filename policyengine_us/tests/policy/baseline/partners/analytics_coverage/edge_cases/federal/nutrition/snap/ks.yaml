@@ -59,10 +59,10 @@
         # Monthly gross 27,395/12 = 2,282.92 vs Jan-Sep limit 1.3 x 21,150/12
         # = 2,291.25 -> passes the federal gross test all year (Oct-Dec limit
         # 2,344.33). Net = 2,282.92 x 0.8 - 209 = 1,617.33 -> EC 485.10 ->
-        # 546 - 485.10 = 60.90/month Jan-Sep; Oct-Dec: net 1,612.65 -> EC
-        # 483.60 -> 558.24 - 483.60 = 74.64.
-        # Annual = 9 x 60.90 + 3 x 74.64 = 772.02.
-        snap: 772.02
+        # 546 - 485.10 = 60.90/month Jan-Sep; Oct-Dec: net 1,609.95 -> EC
+        # 482.70 -> 565.28 - 482.70 = 82.58.
+        # Annual = 9 x 60.90 + 3 x 82.58 = 795.84.
+        snap: 795.84
         is_snap_eligible: true
 - name: snap_couple_income_at_fy2026_gross_limit_27495 (ks)
   period: 2026
@@ -115,9 +115,9 @@
         # Exactly at the binding FY2026 limit: 27,495 = 1.3 x 21,150 -> gross
         # ratio 1.30 -> still eligible. Net = 2,291.25 x 0.8 - 209 = 1,624.00
         # -> EC 487.20 -> 546 - 487.20 = 58.80/month Jan-Sep; Oct-Dec: net
-        # 1,619.32 -> EC 485.70 -> 558.24 - 485.70 = 72.54.
-        # Annual = 9 x 58.80 + 3 x 72.54 = 746.82.
-        snap: 746.82
+        # 1,616.62 -> EC 484.80 -> 565.28 - 484.80 = 80.48.
+        # Annual = 9 x 58.80 + 3 x 80.48 = 770.64.
+        snap: 770.64
         is_snap_eligible: true
 - name: snap_couple_income_above_gross_limit_all_year_28232 (ks)
   period: 2026
@@ -284,7 +284,7 @@
         # higher elderly/disabled asset limit ($4,500) applies, so $4,000
         # passes and the age-59/60 asset distinction is observable (0 vs
         # positive). Net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC 337.20 ->
-        # 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: 558.24 - 335.70 =
-        # 222.54. Annual = 9 x 208.80 + 3 x 222.54 = 2,546.82.
-        snap: 2_546.82
+        # 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: 565.28 - 334.80 =
+        # 230.48. Annual = 9 x 208.80 + 3 x 230.48 = 2,570.64.
+        snap: 2570.64
         is_snap_eligible: true

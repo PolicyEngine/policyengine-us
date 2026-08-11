@@ -1,0 +1,78 @@
+- name: Pre-2019 divorce, alimony income is taxable to the recipient.
+  period: 2022
+  input:
+    divorce_year: 2015
+    alimony_income: 10_000
+  output:
+    taxable_alimony_income: 10_000
+
+- name: Post-2018 divorce, alimony income is not taxable to the recipient.
+  period: 2022
+  input:
+    divorce_year: 2020
+    alimony_income: 10_000
+  output:
+    taxable_alimony_income: 0
+
+- name: Default divorce year (2010) is pre-cutoff, so alimony is taxable.
+  period: 2022
+  input:
+    alimony_income: 10_000
+  output:
+    taxable_alimony_income: 10_000
+
+- name: 2018 divorce is pre-cutoff, so alimony is taxable.
+  period: 2022
+  input:
+    divorce_year: 2018
+    alimony_income: 10_000
+  output:
+    taxable_alimony_income: 10_000
+
+- name: 2019 divorce is at the cutoff, so alimony is not taxable.
+  period: 2022
+  input:
+    divorce_year: 2019
+    alimony_income: 10_000
+  output:
+    taxable_alimony_income: 0
+
+- name: Pre-2019 alimony income flows into federal gross income and AGI.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        divorce_year: 2015
+        alimony_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxable_alimony_income: 10_000
+    irs_gross_income: 10_000
+    adjusted_gross_income: 10_000
+
+- name: Post-2018 alimony income does not flow into federal gross income or AGI.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        divorce_year: 2020
+        alimony_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxable_alimony_income: 0
+    irs_gross_income: 0
+    adjusted_gross_income: 0

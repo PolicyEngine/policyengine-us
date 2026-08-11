@@ -48,3 +48,23 @@
         county_str: FREDERICK_COUNTY_MD
   output:
     md_applicable_local_tax_rate: 0.0296
+
+- name: Allegany County uses its flat rate (2025)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+  output:
+    md_applicable_local_tax_rate: 0.0303
+
+- name: Unknown county in an MD household falls back to Allegany County (issue #8975)
+  period: 2025
+  absolute_error_margin: 0.0001
+  input:
+    state_code_str: MD
+    county_str: UNKNOWN
+  output:
+    # gov.local.md.flat_rate has no UNKNOWN key; the formula falls back to
+    # ALLEGANY_COUNTY_MD. Before the fix this raised ParameterNotFoundError.
+    md_applicable_local_tax_rate: 0.0303

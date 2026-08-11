@@ -43,3 +43,15 @@
     state_code: CA
   output:
     ca_oc_general_relief_receives_other_cash_assistance: true
+
+- name: An adult reporting SSI receipt counts as receiving other cash assistance.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    employment_income: 6_000
+    receives_ssi: true
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_receives_other_cash_assistance: true

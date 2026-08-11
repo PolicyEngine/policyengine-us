@@ -1,0 +1,129 @@
+# Tests for oh_ccap_child_age_group (Person, MONTH).
+# 5180:2-16-01: Infant under 18 months, Toddler 18 months to under 3 years,
+# Preschool 3 years to under school age (60 months / 5 years here), School-Age
+# at or above 60 months. age (years) is multiplied by 12 for month thresholds.
+#
+# The School-Age vs School-Age-Summer split depends on the calendar month
+# (summer = June-August). PolicyEngine YAML tests only support January (or a
+# whole-year period that resolves to January for an Enum), so only the
+# School-Age (school-year) branch can be exercised here; the School-Age-Summer
+# value is reached only mid-year, which the test harness cannot drive (a known
+# period-format limitation). The summer rate cells are still defined in the
+# rate parameters.
+- name: Case 1, infant at six months.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0.5
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: INFANT
+
+- name: Case 2, infant just under 18 months.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.49  # 17.88 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: INFANT
+
+- name: Case 3, toddler at exactly 18 months.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5  # 18 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: TODDLER
+
+- name: Case 4, toddler just under 3 years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.99  # 35.88 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: TODDLER
+
+- name: Case 5, preschool at exactly 3 years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3  # 36 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: PRESCHOOL
+
+- name: Case 6, preschool just under 5 years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4.99  # 59.88 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: PRESCHOOL
+
+- name: Case 7, school-age at exactly 5 years in January (school year).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5  # 60 months
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: SCHOOL_AGE
+
+- name: Case 8, older school-age child in January (school year).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 9
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: SCHOOL_AGE
+
+- name: Case 9, school-age-range child not in K-12 school falls back to preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_child_age_group: PRESCHOOL

@@ -1,0 +1,157 @@
+- name: Parent and two dependent children form a unit of three
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+      child2:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 3
+
+- name: A 19-year-old non-student filing separately is excluded from the unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      adult_child:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+      tax_unit_2:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 2
+
+- name: Both parents count as caretakers
+  period: 2024-01
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 3
+
+- name: Single adult with no dependent child has an empty unit
+  period: 2024-01
+  input:
+    people:
+      adult:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [adult]
+    households:
+      household:
+        members: [adult]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 0
+
+- name: Child-only unit counts the child
+  period: 2024-01
+  input:
+    people:
+      child:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: MO
+  output:
+    mo_tanf_assistance_unit_size: 1
+
+- name: An SSI-recipient parent is excluded from the unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        ssi: 750
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(1)(F): the SSI recipient's needs are excluded,
+    # leaving a child-only unit.
+    mo_tanf_assistance_unit_size: 1
+
+- name: A parent with reported SSI receipt but no computed SSI is excluded
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        ssi: 0
+        receives_ssi: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(1)(F): reported SSI receipt alone excludes the
+    # parent, leaving a child-only unit.
+    mo_tanf_assistance_unit_size: 1

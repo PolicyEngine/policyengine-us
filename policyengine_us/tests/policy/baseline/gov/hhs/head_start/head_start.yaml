@@ -36,3 +36,12 @@
     # FY2024 (2023-09-01): 66,709,446 / 4,590 = 14,533.65 per child,
     # uprated to the 2024 period by gov.hhs.uprating.
     head_start: 14_958.16
+
+- name: 2025 Texas per-slot amount uses the published calendar-2025 CPI-U average.
+  period: 2025
+  absolute_error_margin: 0.5
+  input:
+    state_code: TX
+    is_head_start_eligible: true
+  output:
+    head_start: 12_076.41 # 540,532,752 x (321.9 / 304.7) / 47,286

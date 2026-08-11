@@ -12,8 +12,9 @@ class ca_sf_caap_personal_property_eligible(Variable):
         p = parameters(period).gov.local.ca.sf.caap.eligibility.personal_property.limit
         # Only liquid cash/savings/checking count toward the Medi-Cal property
         # reserve (Title 22 Section 50420; SEC. 20.7-13). Asset exemptions such
-        # as burial funds, one vehicle, and life insurance are not tracked at
-        # the moment, but spm_unit_cash_assets already excludes them.
+        # as burial funds and life insurance are not tracked at the moment, but
+        # spm_unit_cash_assets already excludes them. The motor vehicle rule is
+        # modeled separately in ca_sf_caap_vehicle_eligible (Manual 92-26).
         cash_assets = spm_unit("spm_unit_cash_assets", period.this_year)
         budget_unit_size = spm_unit("ca_sf_caap_budget_unit_size", period)
         # The Manual quotes only the 1-person ($2,000) and 2-person ($3,000)

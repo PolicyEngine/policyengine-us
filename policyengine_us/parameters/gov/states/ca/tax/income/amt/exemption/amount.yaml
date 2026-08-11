@@ -1,9 +1,8 @@
-description: California provides the following alternative minimum tax exemption amount.  
+description: California provides the following alternative minimum tax exemption amount.
 metadata:
   label: California exemption amount
   period: year
   unit: currency-USD
-  uprating: gov.states.ca.cpi
   breakdown:
   - filing_status
   reference:
@@ -22,32 +21,47 @@ metadata:
     href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax
 
 JOINT:
-  2021-01-01: 104_094
-  2022-01-01: 112_734
-  2023-01-01: 116_229
-  2024-01-01: 120_065
-  2025-01-01: 123_667
+  values:
+    2021-01-01: 104_094
+    2022-01-01: 112_734
+    2023-01-01: 116_229
+    2024-01-01: 120_065
+    2025-01-01: 123_667
+  metadata:
+    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 78_070
-  2022-01-01: 84_550
-  2023-01-01: 87_171
-  2024-01-01: 90_048
-  2025-01-01: 92_749
+  values:
+    2021-01-01: 78_070
+    2022-01-01: 84_550
+    2023-01-01: 87_171
+    2024-01-01: 90_048
+    2025-01-01: 92_749
+  metadata:
+    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
-  2021-01-01: 104_094
-  2022-01-01: 112_734
-  2023-01-01: 116_229
-  2024-01-01: 120_065
-  2025-01-01: 123_667
+  values:
+    2021-01-01: 104_094
+    2022-01-01: 112_734
+    2023-01-01: 116_229
+    2024-01-01: 120_065
+    2025-01-01: 123_667
+  metadata:
+    uprating: gov.states.ca.cpi
 SINGLE:
-  2021-01-01: 78_070
-  2022-01-01: 84_550
-  2023-01-01: 87_171
-  2024-01-01: 90_048
-  2025-01-01: 92_749
+  values:
+    2021-01-01: 78_070
+    2022-01-01: 84_550
+    2023-01-01: 87_171
+    2024-01-01: 90_048
+    2025-01-01: 92_749
+  metadata:
+    uprating: gov.states.ca.cpi
 SEPARATE:
-  2021-01-01: 52_044
-  2022-01-01: 56_364
-  2023-01-01: 58_111
-  2024-01-01: 60_029
-  2025-01-01: 61_830
+  values:
+    2021-01-01: 52_044
+    2022-01-01: 56_364
+    2023-01-01: 58_111
+    2024-01-01: 60_029
+    2025-01-01: 61_830
+  metadata:
+    uprating: gov.states.ca.cpi

@@ -27,6 +27,6 @@ class ca_smc_general_assistance_eligible_person(Variable):
             "ca_smc_general_assistance_immigration_status_eligible_person",
             period,
         )
-        not_on_ssi = person("ssi", period) == 0
+        not_on_ssi = (person("ssi", period) == 0) & ~person("receives_ssi", period)
         not_capi_eligible = ~person("ca_capi_eligible_person", period.this_year)
         return adult & immigration_eligible & not_on_ssi & not_capi_eligible

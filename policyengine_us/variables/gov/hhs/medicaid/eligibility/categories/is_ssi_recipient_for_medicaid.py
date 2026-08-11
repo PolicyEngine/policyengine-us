@@ -26,7 +26,9 @@ class is_ssi_recipient_for_medicaid(Variable):
         covered_classification = (classified == classifications.SECTION_1634) | (
             classified == classifications.SSI_CRITERIA
         )
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | (
+            add(person, period, ["receives_ssi"]) > 0
+        )
         return (receives_ssi & is_covered & covered_classification) | person(
             "is_209b_ssi_recipient_for_medicaid", period
         )
