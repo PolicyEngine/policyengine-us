@@ -68,3 +68,16 @@
     mo_tanf_resources_eligible: false
   output:
     mo_tanf_eligible: false
+
+- name: Ineligible when the unit has no payable member
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_dependent_child: true
+    ssi: 750
+    mo_tanf_income_eligible: true
+    mo_tanf_resources_eligible: true
+  output:
+    # The SSI child establishes the case but is not a payable member, and
+    # no caretaker is present, so the unit is empty and nothing is paid.
+    mo_tanf_eligible: false

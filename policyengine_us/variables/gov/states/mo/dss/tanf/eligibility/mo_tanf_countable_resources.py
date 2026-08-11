@@ -7,6 +7,7 @@ class mo_tanf_countable_resources(Variable):
     label = "Missouri TANF countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
@@ -25,6 +26,9 @@ class mo_tanf_countable_resources(Variable):
         total = spm_unit("spm_unit_cash_assets", period.this_year)
         person = spm_unit.members
         is_ssi_recipient = (person("ssi", period) > 0) | person("receives_ssi", period)
+        # This component list must mirror spm_unit_cash_assets.adds: the
+        # subtraction below assumes the person-level components sum to the
+        # unit aggregate, so a divergence would under- or over-subtract.
         person_assets = add(
             person,
             period.this_year,

@@ -165,3 +165,62 @@
     # The student child's earnings are excluded from gross earned income
     # (DSS Manual 0210.015.35.10), so no disregard attaches to them.
     mo_tanf_earned_income_deductions: 0
+
+- name: An SSI-recipient earner generates no deduction
+  period: 2024-01
+  input:
+    people:
+      ssi_parent:
+        age: 30
+        ssi: 750
+        tanf_gross_earned_income: 300
+      parent2:
+        age: 30
+        tanf_gross_earned_income: 480
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [ssi_parent, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [ssi_parent, parent2, child]
+    households:
+      household:
+        members: [ssi_parent, parent2, child]
+        state_code: MO
+  output:
+    # The SSI parent is not an assistance unit member (13 CSR
+    # 40-2.310(1)(F)), so their $300 of earnings — excluded from gross
+    # earned income — also attach no disregard: only the other parent's
+    # $240 counts, not $420.
+    mo_tanf_earned_income_deductions: 240
+
+- name: An exempt student earner alongside a counted earner
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 40
+        tanf_gross_earned_income: 300
+      student_child:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        tanf_gross_earned_income: 300
+    tax_units:
+      tax_unit:
+        members: [parent, student_child]
+    spm_units:
+      spm_unit:
+        members: [parent, student_child]
+    households:
+      household:
+        members: [parent, student_child]
+        state_code: MO
+  output:
+    # Only the parent's earnings are counted, so only the parent's $180
+    # disregard applies; the exempt student child's earnings (DSS Manual
+    # 0210.015.35.10) contribute no deduction.
+    mo_tanf_earned_income_deductions: 180

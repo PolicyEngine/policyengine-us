@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mo_tanf_person_earned_income_deductions(Variable):
+class mo_tanf_earned_income_deductions_person(Variable):
     value_type = float
     entity = Person
     label = "Missouri TANF earned income deductions for one earner"
@@ -24,6 +24,12 @@ class mo_tanf_person_earned_income_deductions(Variable):
         # for four consecutive months, $30-only for the following eight
         # months, and the two-thirds disregard for up to 12 consecutive
         # months). These month counts are not modeled.
+        # For a self-employment loss (negative gross), both branches
+        # return the negative gross unchanged, so the loss cancels exactly
+        # against the same person's gross in mo_tanf_countable_income.
+        # Do not floor earnings here without flooring
+        # mo_tanf_gross_earned_income in the same change — a one-sided
+        # floor breaks the cancellation.
         p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
         gross_earned = person("tanf_gross_earned_income", period)
         is_enrolled = person.spm_unit("is_tanf_enrolled", period)
