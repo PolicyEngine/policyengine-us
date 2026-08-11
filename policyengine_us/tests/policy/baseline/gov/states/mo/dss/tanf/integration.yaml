@@ -422,8 +422,9 @@
     mo_tanf_eligible: true
     mo_tanf: 135.687
 
-- name: A family whose only child receives SSI has no eligible case
+- name: A family whose only child receives SSI gets a payee-only grant
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       parent:
@@ -443,8 +444,71 @@
         members: [parent, ssi_child]
         state_code: MO
   output:
-    # The SSI child cannot be in the unit, and without a dependent child
-    # in the unit there is no Temporary Assistance case.
+    # The SSI child is excluded from the unit but still establishes the
+    # case; the parent receives a size-1 payee-only grant (DSS Manual
+    # 0210.005.05: "when the only child in the EU receives SSI, explore
+    # Temporary Assistance (TA) eligibility for the payee and/or second
+    # parent").
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_eligible: true
+    mo_tanf: 135.69
+
+- name: An SSI child's own savings do not disqualify the payee-only unit
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 400
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10 excludes the SSI participant's resources:
+    # only the parent's $400 counts against the $1,000 limit, so the
+    # $1,900 of total unit assets do not block the payee-only grant.
+    mo_tanf_countable_resources: 400
+    mo_tanf_resources_eligible: true
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_eligible: true
+    mo_tanf: 135.69
+
+- name: A family whose child and caretaker both receive SSI has no payable unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        ssi: 750
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # Both members are SSI recipients, so no one remains to pay.
     mo_tanf_assistance_unit_size: 0
     mo_tanf_eligible: false
     mo_tanf: 0

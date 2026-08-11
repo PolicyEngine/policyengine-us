@@ -19,9 +19,19 @@ class mo_tanf_eligible(Variable):
         # RSMo 208.040 grants Temporary Assistance only on behalf of a
         # dependent child; pregnancy alone does not qualify a household
         # (13 CSR 40-2.325 has no unborn-child provision).
+        # The child need not be a payable unit member: an SSI child is
+        # excluded from the unit but still establishes the case, and the
+        # caretaker can receive a payee-only grant (DSS Manual 0210.005.05:
+        # "when the only child in the EU receives SSI, explore Temporary
+        # Assistance (TA) eligibility for the payee and/or second parent").
         dependent_child = person("mo_tanf_dependent_child", period)
-        member = person("mo_tanf_is_assistance_unit_member", period)
-        has_eligible_child = spm_unit.any(dependent_child & member)
+        has_dependent_child = spm_unit.any(dependent_child)
+        # The unit must still contain someone to pay — a household whose
+        # child and caretaker are both SSI recipients has no payable
+        # members and receives no grant.
+        unit_size = spm_unit("mo_tanf_assistance_unit_size", period)
         income_eligible = spm_unit("mo_tanf_income_eligible", period)
         resources_eligible = spm_unit("mo_tanf_resources_eligible", period)
-        return has_eligible_child & income_eligible & resources_eligible
+        return (
+            has_dependent_child & (unit_size > 0) & income_eligible & resources_eligible
+        )

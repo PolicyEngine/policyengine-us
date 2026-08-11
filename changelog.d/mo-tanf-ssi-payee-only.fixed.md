@@ -1,0 +1,1 @@
+Apply Missouri TANF earned income disregards to each earner separately, allow a caretaker payee-only grant when the only child in the home receives SSI, and exclude SSI recipients' person-level assets from the resource test.
