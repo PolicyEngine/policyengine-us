@@ -8,7 +8,7 @@ class mo_tanf_child_care_deduction(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120",
+        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/",
     )
     defined_for = StateCode.MO
@@ -17,7 +17,7 @@ class mo_tanf_child_care_deduction(Variable):
         p = parameters(period).gov.states.mo.dss.tanf.child_care_deduction
         person = spm_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        # Per 13 CSR 40-2.120(6)(A)5, the disregard also covers care of an
+        # Per 13 CSR 40-2.310(9)(A)5, the disregard also covers care of an
         # incapacitated individual living in the same home as the dependent
         # child, at the $175 age-two-or-older tier.
         incapacitated_adult = person("is_adult", period.this_year) & person(
