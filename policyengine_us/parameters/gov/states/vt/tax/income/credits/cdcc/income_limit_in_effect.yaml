@@ -1,11 +1,14 @@
 description: Vermont limits the Child and Dependent Care Credit to filers with adjusted gross income at or below the low-income threshold when this is in effect.
 values:
+  # Through 2021 the Vermont credit under 32 V.S.A. § 5828c was the low-income
+  # child and dependent care credit, limited to filers with AGI below the
+  # $30,000 / $40,000 threshold.
+  2021-01-01: true
   # 2022 Act 138, Sec. 3 struck the 5828c low-income adjusted gross income cap
   # (and the certified-facility requirement) and raised the match from 50% to
   # 72%, renaming the section from "Low-income child and dependent care credit"
   # to "Child and dependent care credit." Per Sec. 13(b) this took effect
-  # retroactively to January 1, 2022, so the 72% credit has never been
-  # income-limited.
+  # retroactively to January 1, 2022, so the 72% credit is not income-limited.
   2022-01-01: false
 metadata:
   unit: bool
