@@ -16,6 +16,15 @@ class wi_shares_child_subsidy(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wi.dcf.shares.hours
+        # Coverage: this program is modeled from the current-era schedules
+        # only - maximum rates effective 2025-10-01 and the copayment schedule
+        # effective 2026-02-01. Earlier schedules are not yet transcribed, and
+        # no effective-date gate is applied here, so policyengine-us parameter
+        # backdating carries those values back to earlier periods: months
+        # before 2025-10-01 return the current-era subsidy rather than $0.
+        # Backdating the true historical rate and copayment tables is planned;
+        # until then, treat pre-2025-10-01 Wisconsin Shares results as
+        # unmodeled rather than as a statement of prior law.
         # The per-child subsidy is the least of the hourly maximum times the
         # monthly subsidized hours, the provider's monthly price, and the
         # monthly maximum rate (Section 18.5). pre_subsidy_childcare_expenses
