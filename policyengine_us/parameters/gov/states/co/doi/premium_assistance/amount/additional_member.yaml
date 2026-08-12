@@ -1,0 +1,25 @@
+description: Colorado provides this amount for each additional household member under the Colorado Premium Assistance program.
+values:
+  # $29 per-member-per-month (PMPM) for each additional enrolled member, per DOI
+  # Amended Regulation 4-2-78 (3 CCR 702-4, eff. 2025-11-30) section 5.B.2, which
+  # also limits the enhanced subsidy to no more than three dependents under age 21
+  # (subsequent $0-premium dependents receive no enhanced subsidy).
+  # Do NOT use the $18 additional-member figure from DOI Emergency Regulation
+  # 25-E-03: that was a superseded pre-launch rate-filing contingency.
+  # Doc note: the reg establishes a $0 floor (subsidy cannot exceed the member's
+  # premium); the Connect for Health Colorado FAQ phrases this as premiums "as
+  # low as $1", which conflicts with the section 5.B $0-floor and is not modeled.
+  # Doc note: payments are subject to unmodeled budget/enrollment-slot caps.
+  2026-01-01: 29
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado Premium Assistance additional member amount
+  reference:
+    - title: DOI Amended Regulation 4-2-78 (3 CCR 702-4) section 5.B.2
+      href: https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view
+    - title: Colorado DOI Notice of Adoption of Amended Regulation 4-2-78 (403s to non-browser user agents)
+      href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance
+    - title: Connect for Health Colorado - Colorado Premium Assistance
+      href: https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/

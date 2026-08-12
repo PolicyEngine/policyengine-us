@@ -133,3 +133,99 @@
   output:
     md_premium_assistance: 868.425
     healthcare_benefit_value: 868.425  # derived MD subsidy aggregates to the household
+
+- name: Case 9, California Premium Subsidy flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned twin
+  # (assigned_ca_premium_subsidy), not the raw ca_premium_subsidy, so a forced
+  # $900 assigned subsidy aggregates to the household value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 900
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 900
+
+- name: Case 10, assigned ACA PTC and CA Premium Subsidy are additive (base + top-up).
+  # Both ACA components nonzero: assigned_aca_ptc (federal PTC, take-up-gated) is
+  # the base, ca_premium_subsidy (raw state top-up) is the California residual on
+  # top. healthcare_benefit_value adds both -> 1_200 + 900 = 2_100. Guards against
+  # any future accidental subtraction/overlap between the two ACA layers; they are
+  # additive by design (the CA residual formula already nets out aca_ptc, so there
+  # is no double-count of the federal subsidy).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 1_200
+    ca_premium_subsidy: 900
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 2_100
+
+- name: Case 11, Colorado Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned twin
+  # (assigned_co_premium_assistance), not the raw co_premium_assistance, so a
+  # forced $960 assigned subsidy aggregates to the household value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_co_premium_assistance: 960
+    assigned_ca_premium_subsidy: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 960
+
+- name: Case 12, New Mexico Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the assigned twin (assigned_nm_premium_assistance
+  # = nm_premium_assistance * takeup, default true), which is defined_for
+  # StateCode.NM, so the household must be in NM; with takeup defaulting true the
+  # raw and assigned amounts coincide (900).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 900
+    healthcare_benefit_value: 900
+
+- name: Case 13, take-up false zeroes the New Mexico Premium Assistance health value.
+  # Setting takes_up_nm_premium_assistance_if_eligible false makes the assigned
+  # twin 0 even though the raw amount is 900, so it does not enter the health value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    takes_up_nm_premium_assistance_if_eligible: false
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 0
+    healthcare_benefit_value: 0

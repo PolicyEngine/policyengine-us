@@ -16,26 +16,19 @@ class mo_tanf_earned_income_deductions(Variable):
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # Note: Missouri time-limits these disregards ($30 plus one-third
-        # for four consecutive months, $30-only for the following eight
-        # months, and the two-thirds disregard for up to 12 consecutive
-        # months). These month counts are not modeled.
-        p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned = spm_unit("mo_tanf_gross_earned_income", period)
-        is_enrolled = spm_unit("is_tanf_enrolled", period)
+        # 13 CSR 40-2.310(9)(A) and (9)(D): the disregards apply to each
+        # participant's earned income separately, then the per-person
+        # amounts are summed (DSS Manual 0210.015.30.10: "Add together
+        # the $30 plus 1/3 disregard amount from each person's income").
+        # The membership and exemption masks must stay identical to
+        # mo_tanf_gross_earned_income so deductions attach only to
+        # earnings that are counted: a loss earner's negative deduction
+        # then cancels exactly against their negative gross in
+        # mo_tanf_countable_income. Diverging the masks (or flooring one
+        # side alone) breaks that cancellation.
+        person = spm_unit.members
+        member = person("mo_tanf_is_assistance_unit_member", period)
+        exempt = person("is_mo_tanf_earned_income_exempt", period)
+        person_deductions = person("mo_tanf_earned_income_deductions_person", period)
         child_care = spm_unit("mo_tanf_child_care_deduction", period)
-        # Not an active TA participant when employment began (DSS Manual
-        # 0210.015.30.10): deduct the standard work exemption first, then
-        # $30, then one-third of the remainder.
-        work_expense = min_(gross_earned, p.amount)
-        after_work_expense = max_(gross_earned - p.amount, 0)
-        thirty = min_(after_work_expense, p.thirty_plus_one_third.flat_amount)
-        one_third = (after_work_expense - thirty) * p.thirty_plus_one_third.percentage
-        new_applicant = work_expense + thirty + one_third
-        # Active TA participant when employment began (DSS Manual
-        # 0210.015.30.20; 13 CSR 40-2.310(9)(D)): apply the two-thirds
-        # disregard to gross earnings first, then the work exemption.
-        two_thirds = gross_earned * p.two_thirds_disregard.percentage
-        enrolled_work_expense = min_(gross_earned - two_thirds, p.amount)
-        enrolled = two_thirds + enrolled_work_expense
-        return where(is_enrolled, enrolled, new_applicant) + child_care
+        return spm_unit.sum(person_deductions * member * ~exempt) + child_care

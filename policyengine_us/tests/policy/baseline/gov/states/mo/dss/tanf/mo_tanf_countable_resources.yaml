@@ -1,0 +1,186 @@
+# DSS Manual 0210.005.10 excludes an SSI participant's resources. The
+# exclusion works by subtracting SSI recipients' person-level assets from
+# the unit aggregate, so it activates only when assets are attributed to
+# people; aggregate-only inputs keep the aggregate behavior.
+- name: Person-level assets of an SSI child are excluded
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 400
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # $1,900 of unit assets minus the SSI child's $1,500.
+    mo_tanf_countable_resources: 400
+    mo_tanf_resources_eligible: true
+
+- name: A non-recipient's person-level assets count in full
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_200
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_tanf_countable_resources: 1_200
+    mo_tanf_resources_eligible: false
+
+- name: Aggregate-only input cannot be attributed and counts in full
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+        spm_unit_cash_assets: 2_000
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # Nothing identifies whose assets these are, so no exclusion applies.
+    mo_tanf_countable_resources: 2_000
+    mo_tanf_resources_eligible: false
+
+- name: SSI recipient assets larger than a directly supplied aggregate floor at zero
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    mo_tanf_countable_resources: 0
+    mo_tanf_resources_eligible: true
+
+- name: Reported SSI receipt also excludes the person's assets
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 800
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        receives_ssi: true
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    mo_tanf_countable_resources: 800
+    mo_tanf_resources_eligible: true
+
+- name: Countable resources exactly at the limit through the SSI exclusion path
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_000
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(3): eligible when countable resources do not
+    # exceed $1,000; the SSI child's $1,500 is excluded.
+    mo_tanf_countable_resources: 1_000
+    mo_tanf_resources_eligible: true
+
+- name: Countable resources just over the limit through the SSI exclusion path
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_001
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    mo_tanf_countable_resources: 1_001
+    mo_tanf_resources_eligible: false

@@ -4,6 +4,7 @@
     people:
       parent1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 12_000  # Annual income ($1,000/month, <20% SMI)
       child1:
         age: 3
@@ -29,9 +30,11 @@
     people:
       parent1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000  # Annual income ($2,500/month, ~35% SMI)
       parent2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
       child1:
         age: 4
         is_disabled: false
@@ -58,9 +61,11 @@
     people:
       parent1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 48_000  # Annual income ($4,000/month, ~55% SMI)
       parent2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
       child1:
         age: 5
         is_disabled: false
@@ -94,6 +99,7 @@
     people:
       parent1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000  # Annual income ($2,000/month, ~34% SMI for family size 2)
       child1:
         age: 1
@@ -120,6 +126,7 @@
     people:
       parent1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 36_000
       teenager:
         age: 14  # Too old for CCS

@@ -14,26 +14,26 @@
   output:
     vt_cdcc: 1440 
 
-- name: Vermont CDCC 2022 above the low-income AGI cap gets no credit, 2022 Act 138 Sec. 3
+- name: Vermont CDCC 2022 high-AGI filer still gets the full 72% credit; 2022 Act 138 Sec. 3 struck the low-income AGI cap
   period: 2022
   input:
     capped_cdcc: 1_000
     adjusted_gross_income: 50_000
     state_code: VT
   output:
-    vt_cdcc: 0
+    vt_cdcc: 720
 
-- name: Vermont CDCC 2022 joint filer at the 40,000 AGI threshold keeps the credit
+- name: Vermont CDCC 2022 high-income joint filer keeps the credit; no AGI cap after Act 138
   period: 2022
   input:
     capped_cdcc: 1_000
-    adjusted_gross_income: 40_000
+    adjusted_gross_income: 100_000
     filing_status: JOINT
     state_code: VT
   output:
     vt_cdcc: 720
 
-- name: Vermont CDCC 2023 has no AGI cap, 2023 Act 72 Sec. 14
+- name: Vermont CDCC 2023 has no AGI cap
   period: 2023
   input:
     capped_cdcc: 1_000

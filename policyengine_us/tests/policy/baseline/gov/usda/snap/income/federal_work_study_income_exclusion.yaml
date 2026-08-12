@@ -12,6 +12,7 @@
   input:
     employment_income: 12_000
     is_federal_work_study_participant: false
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_countable_earner: true
     snap_earned_income: 1_000

@@ -4,6 +4,7 @@
   input:
     state_code: CA
     spm_unit_size: 3
+    weekly_hours_worked_before_lsr: 40
   output:
     # Assert that Jan/Feb/Mar/Apr are all $95, and following months are $0.
     snap_emergency_allotment:
