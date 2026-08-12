@@ -202,3 +202,24 @@
     # ineligible 14-year-old contributes nothing to the family's pooled
     # market rate cap.
     ut_ccap_market_rate: 0
+
+- name: Case 14, license exempt home and licensed commercial preschool are priced identically at the same age band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ut_ccap_provider_type: LICENSE_EXEMPT_HOME
+      person2:
+        age: 3
+        ut_ccap_provider_type: LICENSED_COMMERCIAL_PRESCHOOL
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Table 3 publishes identical rows for License-Exempt Home and Licensed
+    # Commercial Preschool; this pairs both provider types at the same
+    # three-year-old band so a one-sided edit to either row fails.
+    ut_ccap_market_rate: [437, 437]

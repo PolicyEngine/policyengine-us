@@ -16,17 +16,9 @@ class ut_ccap_countable_income(Variable):
         p = parameters(period).gov.states.ut.dwf.ccap.income
         gross_income = spm_unit("ut_ccap_gross_income", period)
         person = spm_unit.members
-        # The CC client is a parent, specified relative, or court-appointed
-        # guardian (R986-700-702(2)): is_parent identifies parent clients,
-        # and when no parent lives in the household the tax-unit head or
-        # spouse proxies the nonparent caretaker client, mirroring
-        # ut_ccap_gross_income.
-        is_parent = person("is_parent", period.this_year)
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        no_parent_present = spm_unit.sum(is_parent) == 0
-        is_client = is_parent | (
-            spm_unit.project(no_parent_present) & is_head_or_spouse
-        )
+        # ut_ccap_is_client identifies the CC client per R986-700-702(2),
+        # mirroring the countable income scope of ut_ccap_gross_income.
+        is_client = person("ut_ccap_is_client", period.this_year)
         earned_income = add(person, period, p.sources.earned)
         # The first $50 of child support received by the family is deducted
         # (R986-700-710(5)(a)).

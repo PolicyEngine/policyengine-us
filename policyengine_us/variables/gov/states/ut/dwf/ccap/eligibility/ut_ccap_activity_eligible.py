@@ -14,25 +14,12 @@ class ut_ccap_activity_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ut.dwf.ccap.eligibility
         person = spm_unit.members
-        # R986-700-702(2) makes CC available to parents, specified
-        # relatives, and court-appointed guardians, and R986-700-709
-        # applies its work requirements to that client. is_parent (own
-        # children in the household) identifies parent clients across
-        # tax-unit boundaries and keeps minor parents visible, matching
-        # the countable income scope of R986-700-710(4)(a); when no parent
-        # lives in the household, the tax-unit head or spouse proxies the
-        # nonparent caretaker client. Co-resident adults who are not the
-        # client stay excluded from the hours test. Foster parents
-        # receiving DHHS foster care reimbursement are eligible clients
-        # (R986-700-702(2)(a)) subject to the same work requirements as
-        # any other client, so is_parent correctly includes them and no
-        # foster-parent carve-out applies.
-        is_parent = person("is_parent", period.this_year)
-        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
-        no_parent_present = spm_unit.sum(is_parent) == 0
-        is_client = is_parent | (
-            spm_unit.project(no_parent_present) & is_head_or_spouse
-        )
+        # R986-700-709 applies its work requirements to the CC client
+        # identified by ut_ccap_is_client per R986-700-702(2), including
+        # foster parents, who are subject to the same work requirements as
+        # any other client (R986-700-702(2)(a)). Co-resident adults who
+        # are not the client stay excluded from the hours test.
+        is_client = person("ut_ccap_is_client", period.this_year)
         # weekly_hours_worked_before_lsr avoids the labor-supply feedback loop
         # that weekly_hours_worked (before_lsr + behavioral response) creates
         # in reform runs.

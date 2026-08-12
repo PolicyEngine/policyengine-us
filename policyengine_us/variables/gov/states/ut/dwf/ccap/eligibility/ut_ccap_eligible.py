@@ -21,7 +21,14 @@ class ut_ccap_eligible(Variable):
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
         activity_eligible = spm_unit("ut_ccap_activity_eligible", period)
         # A family whose co-payment exceeds the actual cost of care is
-        # ineligible (R986-700-707(3)).
+        # ineligible (R986-700-707(3)). The gate deliberately compares the
+        # co-payment to the unit's uncapped billed expenses ("the actual
+        # cost of child care"), while ut_ccap caps each child's expense at
+        # the Table 3 market rate, so a family can pass this gate yet
+        # receive a benefit floored to zero. The expense variable is a bare
+        # survey input that defaults to zero unless imputed, in which case
+        # the program is inert at the population level (a dataset
+        # limitation, not a rule).
         copay = spm_unit("ut_ccap_copay", period)
         childcare_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
         copay_affordable = copay <= childcare_expenses

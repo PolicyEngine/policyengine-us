@@ -248,3 +248,29 @@
     # floors to the size 2 row and the one-child column without erroring:
     # size 2, group 2, one child -> 18.
     ut_ccap_copay: 18
+
+- name: Case 11, a structurally impossible size 2 two-child cell uses the padded one-child value.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 2_000  # group 2 (1,763.01-2,082)
+        # Table 4 prints n/a for two or more children at size 2 (a
+        # two-person unit cannot include two subsidized children); the
+        # child count group is forced directly to reach the padded cell.
+        ut_ccap_child_count_group: TWO
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # The padded two-child column repeats the one-child value, so the
+    # copayment matches Case 2: size 2, group 2 -> 18.
+    ut_ccap_copay: 18
