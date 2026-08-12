@@ -4,8 +4,8 @@
 # (R986-700-710(6)(b)), pass the CCDF asset test (45 CFR 98.20), meet the
 # work-hour requirements (R986-700-709), and have a copayment no larger
 # than the cost of care (R986-700-707). Parents are identified with
-# own_children_in_household and hours default to 40 per week, so a marked
-# parent with unstated hours passes the activity test. Each case sets
+# own_children_in_household and given 40 weekly hours explicitly, so
+# the parent passes the activity test. Each case sets
 # billed child care expenses above the copayment so the targeted gate is
 # the one that fails.
 
@@ -16,6 +16,7 @@
       person1:
         age: 30
         employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 4
@@ -40,6 +41,7 @@
       person1:
         age: 30
         employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 14
@@ -62,6 +64,7 @@
       person1:
         age: 30
         employment_income: 240_000  # 20,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 4
@@ -85,6 +88,7 @@
       person1:
         age: 30
         employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 4
@@ -130,6 +134,7 @@
       person1:
         age: 30
         employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 4
@@ -151,6 +156,7 @@
       person1:
         age: 30
         employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3
@@ -176,6 +182,7 @@
       person1:
         age: 30
         employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3

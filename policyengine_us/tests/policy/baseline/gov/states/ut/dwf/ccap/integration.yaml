@@ -16,6 +16,7 @@
       person1:
         age: 30
         employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3
@@ -33,7 +34,7 @@
     ut_ccap_countable_income: 2_800
     # 2,800 <= 5,667.63 (85% SMI, size 2).
     ut_ccap_income_eligible: true
-    # Hours default to 40/week, above the single-parent 15-hour bar.
+    # The parent works 40 hours, above the single-parent 15-hour bar.
     ut_ccap_activity_eligible: true
     ut_ccap_eligible: true
     # Size 2, group 5 (2,722.01-3,041), one child -> 109.
@@ -102,6 +103,7 @@
       person1:
         age: 25
         employment_income: 21_600  # 1,800/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 0
@@ -133,6 +135,7 @@
       person1:
         age: 35
         employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 5
@@ -165,6 +168,7 @@
       person1:
         age: 45
         employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
         child_support_received: 3_600  # 300/mo
         own_children_in_household: 1
       person2:
@@ -240,6 +244,7 @@
       person1:
         age: 40
         employment_income: 240_000  # 20,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 4
@@ -267,6 +272,7 @@
       person1:
         age: 30
         employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3
@@ -293,6 +299,7 @@
       person1:
         age: 25
         own_children_in_household: 1
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 2
         ut_ccap_provider_type: LICENSED_CENTER
@@ -308,8 +315,8 @@
     # Income: 0 - 100 (medical) floors at zero.
     ut_ccap_countable_income: 0
     ut_ccap_income_eligible: true
-    # Hours default to 40/week, above the single-parent 15-hour bar (the
-    # minimum-wage earnings verification rule is not modeled).
+    # The parent reports 40 weekly hours, above the single-parent 15-hour
+    # bar (the minimum-wage earnings verification rule is not modeled).
     ut_ccap_eligible: true
     # Size 2, group 1 -> no copayment (R986-700-707(5)(a)).
     ut_ccap_income_group: 1
@@ -326,6 +333,7 @@
       person1:
         age: 30
         self_employment_income: -60_000  # -5,000/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3
@@ -359,6 +367,7 @@
       person1:
         age: 30
         employment_income: 69_600  # 5,800/mo
+        weekly_hours_worked_before_lsr: 40
         own_children_in_household: 1
       person2:
         age: 3

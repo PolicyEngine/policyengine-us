@@ -28,7 +28,7 @@ class ut_ccap_is_client(Variable):
         # applies.
         is_parent = person("is_parent", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # person.spm_unit.sum already broadcasts the unit total back to
+        # each member, so no explicit projection is needed.
         no_parent_present = person.spm_unit.sum(is_parent) == 0
-        return is_parent | (
-            person.spm_unit.project(no_parent_present) & is_head_or_spouse
-        )
+        return is_parent | (no_parent_present & is_head_or_spouse)
