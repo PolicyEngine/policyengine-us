@@ -15,8 +15,4 @@ class ne_child_care_subsidy_categorical_waived(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         foster = person("is_in_foster_care", period)
-        observed = spm_unit.sum(foster) > 0
-        administrative = spm_unit(
-            "ne_child_care_subsidy_administrative_categorical_waiver", period
-        )
-        return observed | administrative
+        return spm_unit.sum(foster) > 0

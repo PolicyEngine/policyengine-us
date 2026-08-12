@@ -257,7 +257,7 @@
       spm_unit:
         members: [person1, person2, person3]
         ne_child_care_subsidy_at_redetermination: true
-        ne_child_care_subsidy_earned_income_disregard_eligible: true
+        ne_child_care_subsidy_enrolled: true
         spm_unit_assets: 0
         spm_unit_pre_subsidy_childcare_expenses: 6_000
     households:
@@ -273,7 +273,6 @@
     ne_child_care_subsidy_provider_eligible: [false, true, true]
     # Rural home preschool full $33*10; school-age partial $30*10.
     ne_child_care_subsidy_maximum_provider_rate: [0, 330, 300]
-    ne_child_care_subsidy_optional_fees: [0, 0, 0]
     # One family fee: $2,500 * 7% = $175, not one fee per child.
     ne_child_care_subsidy_family_fee: 175
     ne_child_care_subsidy_eligible: true

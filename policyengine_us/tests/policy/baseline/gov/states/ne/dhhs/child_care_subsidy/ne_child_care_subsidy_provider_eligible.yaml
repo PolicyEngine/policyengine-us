@@ -30,18 +30,7 @@
   output:
     ne_child_care_subsidy_provider_eligible: true
 
-- name: Case 4, approved license-exempt in-home care is eligible by the hour.
-  period: 2026-01
-  input:
-    ne_child_care_subsidy_eligible_child: true
-    ne_child_care_subsidy_in_home_approved: true
-    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
-    ne_child_care_subsidy_rate_unit: HOUR
-    state_code: NE
-  output:
-    ne_child_care_subsidy_provider_eligible: true
-
-- name: Case 5, in-home care without an approved condition is ineligible.
+- name: Case 4, in-home care without a qualifying condition is ineligible.
   period: 2026-01
   input:
     ne_child_care_subsidy_eligible_child: true
@@ -51,7 +40,7 @@
   output:
     ne_child_care_subsidy_provider_eligible: false
 
-- name: Case 6, a special-needs child satisfies the in-home condition.
+- name: Case 5, a special-needs child satisfies the in-home condition.
   period: 2026-01
   input:
     ne_child_care_subsidy_eligible_child: true
@@ -62,7 +51,7 @@
   output:
     ne_child_care_subsidy_provider_eligible: true
 
-- name: Case 7, missing quality does not change legal provider eligibility.
+- name: Case 6, missing quality does not change legal provider eligibility.
   period: 2026-01
   input:
     ne_child_care_subsidy_eligible_child: true
@@ -72,7 +61,7 @@
   output:
     ne_child_care_subsidy_provider_eligible: true
 
-- name: Case 8, missing provider and care-unit inputs are ineligible.
+- name: Case 7, missing provider and care-unit inputs are ineligible.
   period: 2026-01
   input:
     ne_child_care_subsidy_eligible_child: true
@@ -80,7 +69,7 @@
   output:
     ne_child_care_subsidy_provider_eligible: false
 
-- name: Case 9, three children actually using in-home care satisfy the pathway.
+- name: Case 8, three children actually using in-home care satisfy the pathway.
   period: 2026-01
   input:
     people:

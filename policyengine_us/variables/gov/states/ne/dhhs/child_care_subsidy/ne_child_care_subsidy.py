@@ -30,9 +30,7 @@ class ne_child_care_subsidy(Variable):
                 childcare_expenses,
             )
         person = spm_unit.members
-        state_maximum = person(
-            "ne_child_care_subsidy_maximum_provider_rate", period
-        ) + person("ne_child_care_subsidy_optional_fees", period)
+        state_maximum = person("ne_child_care_subsidy_maximum_provider_rate", period)
         private_charge = person("pre_subsidy_childcare_expenses", period)
         reimbursement = spm_unit.sum(min_(state_maximum, private_charge))
         family_fee = spm_unit("ne_child_care_subsidy_family_fee", period)

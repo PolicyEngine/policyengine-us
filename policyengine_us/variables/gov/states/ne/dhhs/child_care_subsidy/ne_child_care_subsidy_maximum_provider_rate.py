@@ -76,29 +76,13 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
         licensed_daily = p.rates.licensed[location][provider_key][age_group][
             quality_key
         ][unit_key]
-        licensed_full_day = p.rates.licensed[location][provider_key][age_group][
-            quality_key
-        ][NEChildCareSubsidyRateUnit.FULL_DAY.name]
         exempt_family_daily = p.rates.license_exempt_family_home[location][unit_key]
-        exempt_family_full_day = p.rates.license_exempt_family_home[location][
-            NEChildCareSubsidyRateUnit.FULL_DAY.name
-        ]
 
-        paid_days = person("ne_child_care_subsidy_paid_days", period)
-        absence_days = clip(
-            person("ne_child_care_subsidy_approved_absence_days", period),
-            0,
-            p.attendance.max_absence_days,
+        attending_days = max_(
+            person("childcare_attending_days_per_month", period.this_year), 0
         )
-        attending_days = max_(paid_days - absence_days, 0)
-        # Nebraska prices each approved absence as one full-day unit,
-        # independently of the child's ordinary authorized unit.
-        licensed_monthly = (
-            licensed_daily * attending_days + licensed_full_day * absence_days
-        )
-        exempt_family_monthly = (
-            exempt_family_daily * attending_days + exempt_family_full_day * absence_days
-        )
+        licensed_monthly = licensed_daily * attending_days
+        exempt_family_monthly = exempt_family_daily * attending_days
         members = person.spm_unit.members
         member_provider = members("ne_child_care_subsidy_provider_type", period)
         member_provider_eligible = members(
@@ -143,13 +127,12 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
         )
 
         special_needs = person("ne_dhhs_has_special_needs", period.this_year)
-        approved = person("ne_child_care_subsidy_special_needs_rate_approved", period)
         special_increase = where(
             provider == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME,
             in_home_monthly * p.special_needs.in_home_increase_per_child,
             base_rate * p.special_needs.max_increase,
         )
-        special_increase = where(special_needs & approved, special_increase, 0)
+        special_increase = where(special_needs, special_increase, 0)
         quality_reported = quality != NEChildCareSubsidyQualityTier.NONE
         licensed = (provider == NEChildCareSubsidyProviderType.HOME_I_II) | (
             provider == NEChildCareSubsidyProviderType.CENTER

@@ -32,12 +32,7 @@ class ne_child_care_subsidy_provider_eligible(Variable):
         enough_children = (
             person.spm_unit.sum(in_home_children) >= p.in_home_min_children
         )
-        in_home_condition = (
-            ~in_home
-            | special_needs
-            | enough_children
-            | person("ne_child_care_subsidy_in_home_approved", period)
-        )
+        in_home_condition = ~in_home | special_needs | enough_children
         daily_unit = (
             (rate_unit == NEChildCareSubsidyRateUnit.PARTIAL_DAY)
             | (rate_unit == NEChildCareSubsidyRateUnit.FULL_DAY)

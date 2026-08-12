@@ -20,8 +20,8 @@ class ne_child_care_subsidy_countable_income(Variable):
         ).gov.states.ne.dhhs.child_care_subsidy.income.earned_income_disregard
         gross_income = spm_unit("ne_child_care_subsidy_gross_income", period)
         gross_earned = spm_unit("ne_child_care_subsidy_gross_earned_income", period)
-        disregard_eligible = spm_unit(
-            "ne_child_care_subsidy_earned_income_disregard_eligible", period
-        )
+        # LB304 grants the disregard after 12 continuous months of receipt;
+        # the enrollment flag is the observable proxy for that history.
+        disregard_eligible = spm_unit("ne_child_care_subsidy_enrolled", period)
         disregard = where(disregard_eligible, max_(gross_earned, 0) * p.rate, 0)
         return max_(gross_income - disregard, 0)

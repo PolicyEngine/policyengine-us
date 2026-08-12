@@ -5,13 +5,11 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 450
-    ne_child_care_subsidy_optional_fees: 50
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 450
-    ne_child_care_subsidy_optional_fees: 50
-    # min($100 monthly private charge, $450 provider rate + $50 fees).
+    # min($100 monthly private charge, $450 provider rate).
     ne_child_care_subsidy: 100
 
 - name: Case 2, state maximum below the private charge caps reimbursement.
@@ -21,12 +19,10 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 80
-    ne_child_care_subsidy_optional_fees: 0
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 80
-    ne_child_care_subsidy_optional_fees: 0
     ne_child_care_subsidy: 80
 
 - name: Case 3, family fee above reimbursement floors the subsidy at zero.
@@ -36,13 +32,11 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 150
     ne_child_care_subsidy_maximum_provider_rate: 80
-    ne_child_care_subsidy_optional_fees: 20
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
     ne_child_care_subsidy_maximum_provider_rate: 80
-    ne_child_care_subsidy_optional_fees: 20
-    # max(min($100, $80 provider rate + $20 fees) - $150, 0).
+    # max(min($100, $80 provider rate) - $150, 0).
     ne_child_care_subsidy: 0
 
 - name: Case 4, private charges cap each child separately.
@@ -52,11 +46,9 @@
     people:
       child1:
         ne_child_care_subsidy_maximum_provider_rate: 100
-        ne_child_care_subsidy_optional_fees: 0
         pre_subsidy_childcare_expenses: 1_800
       child2:
         ne_child_care_subsidy_maximum_provider_rate: 100
-        ne_child_care_subsidy_optional_fees: 0
         pre_subsidy_childcare_expenses: 0
     spm_units:
       spm_unit:
