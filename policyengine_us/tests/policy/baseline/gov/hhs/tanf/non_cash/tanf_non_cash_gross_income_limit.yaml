@@ -20,6 +20,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: WA
   output:
     tanf_non_cash_gross_income_limit:
@@ -36,6 +37,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: CO
   output:
     tanf_non_cash_gross_income_limit:
@@ -53,6 +55,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: MA
   output:
     tanf_non_cash_gross_income_limit:
@@ -69,6 +72,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: OR
   output:
     tanf_non_cash_gross_income_limit:
@@ -85,6 +89,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: AZ
   output:
     tanf_non_cash_gross_income_limit:
@@ -125,6 +130,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: AL
   output:
     tanf_non_cash_gross_income_limit: 1_695.42
@@ -134,6 +140,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: WA
   output:
     # 200% x 15,650 / 12 = 2,608.33.
@@ -144,6 +151,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: WA
   output:
     # 200% x 15,060 / 12 = 2,510.
@@ -181,6 +189,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: ME
   output:
     # 200% x 15,960 / 12 = 2,660.
@@ -191,6 +200,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: ME
   output:
     # 200% x 15,650 / 12 = 2,608.33, while the October states are still
@@ -202,6 +212,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: CO
   output:
     tanf_non_cash_gross_income_limit: 2_608.33
@@ -211,6 +222,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: NJ
   output:
     # 185% x 15,650 / 12 = 2,412.71.
@@ -223,6 +235,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: AZ
   output:
     tanf_non_cash_gross_income_limit: 2_412.71
@@ -233,6 +246,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: AK
   output:
     # 200% x 19,550 / 12 = 3,258.33.
@@ -245,6 +259,7 @@
   absolute_error_margin: 0.01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: WA
   output:
     # 200% x 15,960 / 12 = 2,660.
