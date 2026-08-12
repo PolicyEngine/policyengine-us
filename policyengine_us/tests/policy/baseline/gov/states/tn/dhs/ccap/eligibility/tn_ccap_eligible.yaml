@@ -13,6 +13,7 @@
       person1:
         age: 30
         employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -28,7 +29,7 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # 2_000/mo <= 4_948.40; parent hours default 40; assets 0; child eligible
+    # 2_000/mo <= 4_948.40; parent works 40 hours; assets 0; child eligible
     tn_ccap_eligible: true
 
 - name: Case 2, no eligible child (only a non-disabled teenager) is ineligible.
@@ -38,6 +39,7 @@
       person1:
         age: 40
         employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 15
         immigration_status: CITIZEN
@@ -63,6 +65,7 @@
       person1:
         age: 30
         employment_income: 100_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -88,6 +91,7 @@
       person1:
         age: 30
         employment_income: 100_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -141,6 +145,7 @@
       person1:
         age: 30
         employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
         immigration_status: CITIZEN
@@ -169,9 +174,11 @@
       person1:
         age: 30
         employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 32
         employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
     tax_units:
       tax_unit:
         members: [person1, person2]
