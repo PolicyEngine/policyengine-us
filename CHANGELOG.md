@@ -1,3 +1,10 @@
+## [1.794.4] - 2026-08-12
+
+### Fixed
+
+- Set explicit work hours in the TANF non-cash BBCE gross-income tests that relied on the former 40-hour default of weekly_hours_worked_before_lsr, so they remain green after that default became 0.
+
+
 ## [1.794.3] - 2026-08-12
 
 ### Fixed
