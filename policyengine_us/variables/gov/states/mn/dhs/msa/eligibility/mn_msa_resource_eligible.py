@@ -23,7 +23,7 @@ class mn_msa_resource_eligible(Variable):
         # liquid stocks/bonds, non-excluded vehicles, business accounts) but
         # we don't track that breakdown at the moment.
         p = parameters(period).gov.states.mn.dhs.msa.eligibility
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         countable_resources = person("ssi_countable_resources", period.this_year)
         unit_resources = person.marital_unit.sum(countable_resources)
         return receives_ssi | (unit_resources <= p.asset_limit.non_ssi_track)

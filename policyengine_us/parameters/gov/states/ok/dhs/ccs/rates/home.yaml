@@ -1,0 +1,118 @@
+description: Oklahoma provides these daily reimbursement rates for licensed child care homes under the Child Care Subsidy Program.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Oklahoma Child Care Subsidy child care home daily rates
+  breakdown:
+    - ok_ccs_star_level
+    - ok_ccs_home_age_group
+    - ok_ccs_time_category
+  reference:
+    - title: OKDHS Appendix C-4-B, Child Care Provider Rate Schedule
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4-b.pdf#page=3
+
+STAR_1:
+  MONTHS_0_TO_24:
+    FULL_TIME:
+      2023-01-01: 20
+    PART_TIME:
+      2023-01-01: 13.7
+  MONTHS_25_TO_48:
+    FULL_TIME:
+      2023-01-01: 17.2
+    PART_TIME:
+      2023-01-01: 11.2
+  MONTHS_49_TO_72:
+    FULL_TIME:
+      2023-01-01: 16.2
+    PART_TIME:
+      2023-01-01: 11.2
+  MONTHS_73_PLUS:
+    FULL_TIME:
+      2023-01-01: 13
+    PART_TIME:
+      2023-01-01: 8
+STAR_2:
+  MONTHS_0_TO_24:
+    FULL_TIME:
+      2023-01-01: 20.7
+    PART_TIME:
+      2023-01-01: 13.9
+  MONTHS_25_TO_48:
+    FULL_TIME:
+      2023-01-01: 18.5
+    PART_TIME:
+      2023-01-01: 12.8
+  MONTHS_49_TO_72:
+    FULL_TIME:
+      2023-01-01: 18.5
+    PART_TIME:
+      2023-01-01: 12.8
+  MONTHS_73_PLUS:
+    FULL_TIME:
+      2023-01-01: 13.7
+    PART_TIME:
+      2023-01-01: 9.6
+STAR_3:
+  MONTHS_0_TO_24:
+    FULL_TIME:
+      2023-01-01: 28.6
+    PART_TIME:
+      2023-01-01: 18.2
+  MONTHS_25_TO_48:
+    FULL_TIME:
+      2023-01-01: 26.5
+    PART_TIME:
+      2023-01-01: 16.7
+  MONTHS_49_TO_72:
+    FULL_TIME:
+      2023-01-01: 22.8
+    PART_TIME:
+      2023-01-01: 15
+  MONTHS_73_PLUS:
+    FULL_TIME:
+      2023-01-01: 18.2
+    PART_TIME:
+      2023-01-01: 11.8
+STAR_4:
+  MONTHS_0_TO_24:
+    FULL_TIME:
+      2023-01-01: 39.5
+    PART_TIME:
+      2023-01-01: 25.7
+  MONTHS_25_TO_48:
+    FULL_TIME:
+      2023-01-01: 36
+    PART_TIME:
+      2023-01-01: 22.1
+  MONTHS_49_TO_72:
+    FULL_TIME:
+      2023-01-01: 26.6
+    PART_TIME:
+      2023-01-01: 17.1
+  MONTHS_73_PLUS:
+    FULL_TIME:
+      2023-01-01: 20.7
+    PART_TIME:
+      2023-01-01: 12.8
+STAR_5:
+  MONTHS_0_TO_24:
+    FULL_TIME:
+      2023-01-01: 45.4
+    PART_TIME:
+      2023-01-01: 29.6
+  MONTHS_25_TO_48:
+    FULL_TIME:
+      2023-01-01: 41.4
+    PART_TIME:
+      2023-01-01: 25.4
+  MONTHS_49_TO_72:
+    FULL_TIME:
+      2023-01-01: 30.6
+    PART_TIME:
+      2023-01-01: 19.7
+  MONTHS_73_PLUS:
+    FULL_TIME:
+      2023-01-01: 23.8
+    PART_TIME:
+      2023-01-01: 14.7

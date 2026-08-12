@@ -26,9 +26,10 @@ class mi_ccap_income_waived(Variable):
         # FIP-related: child or P/SP receives FIP or SSI. MI FIP is TANF; we
         # use is_tanf_enrolled (not computed FIP eligibility) to break the
         # CCAP-TANF circular dependency.
-        fip_related = spm_unit("is_tanf_enrolled", period) | (
-            add(spm_unit, period, ["ssi"]) > 0
+        receives_ssi = (add(spm_unit, period, ["ssi"]) > 0) | (
+            add(spm_unit, period, ["receives_ssi"]) > 0
         )
+        fip_related = spm_unit("is_tanf_enrolled", period) | receives_ssi
         # Homeless under the McKinney-Vento Act (self-attested).
         homeless = spm_unit.household("is_homeless", period.this_year)
         return protective_services | foster_care | fip_related | homeless

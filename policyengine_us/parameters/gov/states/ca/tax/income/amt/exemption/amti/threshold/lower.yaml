@@ -1,9 +1,8 @@
 description: California provides a flat alternative minimum tax exemption amount for filers with alternative minimum taxable income below this amount, based on filing status.
 metadata:
-  label: California alternative minimum tax exemption lower AMTI threshold 
+  label: California alternative minimum tax exemption lower AMTI threshold
   period: year
   unit: currency-USD
-  uprating: gov.states.ca.cpi
   breakdown:
   - filing_status
   reference:
@@ -22,32 +21,47 @@ metadata:
     href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-21-alternative-minimum-tax/section-17062-alternative-minimum-tax
 
 JOINT:
-  2021-01-01: 390_351
-  2022-01-01: 422_750
-  2023-01-01: 435_855
-  2024-01-01: 450_238
-  2025-01-01: 463_745
+  values:
+    2021-01-01: 390_351
+    2022-01-01: 422_750
+    2023-01-01: 435_855
+    2024-01-01: 450_238
+    2025-01-01: 463_745
+  metadata:
+    uprating: gov.states.ca.cpi
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 292_763
-  2022-01-01: 317_062
-  2023-01-01: 326_891
-  2024-01-01: 337_678
-  2025-01-01: 347_808
+  values:
+    2021-01-01: 292_763
+    2022-01-01: 317_062
+    2023-01-01: 326_891
+    2024-01-01: 337_678
+    2025-01-01: 347_808
+  metadata:
+    uprating: gov.states.ca.cpi
 SURVIVING_SPOUSE:
-  2021-01-01: 390_351
-  2022-01-01: 422_750
-  2023-01-01: 435_855
-  2024-01-01: 450_238
-  2025-01-01: 463_745
+  values:
+    2021-01-01: 390_351
+    2022-01-01: 422_750
+    2023-01-01: 435_855
+    2024-01-01: 450_238
+    2025-01-01: 463_745
+  metadata:
+    uprating: gov.states.ca.cpi
 SINGLE:
-  2021-01-01: 292_763
-  2022-01-01: 317_062
-  2023-01-01: 326_891
-  2024-01-01: 337_678
-  2025-01-01: 347_808
+  values:
+    2021-01-01: 292_763
+    2022-01-01: 317_062
+    2023-01-01: 326_891
+    2024-01-01: 337_678
+    2025-01-01: 347_808
+  metadata:
+    uprating: gov.states.ca.cpi
 SEPARATE:
-  2021-01-01: 195_172
-  2022-01-01: 211_371
-  2023-01-01: 217_924
-  2024-01-01: 225_115
-  2025-01-01: 231_868
+  values:
+    2021-01-01: 195_172
+    2022-01-01: 211_371
+    2023-01-01: 217_924
+    2024-01-01: 225_115
+    2025-01-01: 231_868
+  metadata:
+    uprating: gov.states.ca.cpi

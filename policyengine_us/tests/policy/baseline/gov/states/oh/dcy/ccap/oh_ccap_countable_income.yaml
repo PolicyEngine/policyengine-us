@@ -1,0 +1,181 @@
+# Tests for oh_ccap_countable_income (SPMUnit, MONTH).
+# 5180:2-16-03: countable income is gross earned plus gross unearned income,
+# minus the enumerated exclusions. SSI is excluded (omitted from the sources
+# list), and the earned income of any person receiving SSI is also excluded
+# (subtracted person-level, since a list omission cannot zero one earner's
+# wages). Income variables are YEAR-defined (input annual, output monthly);
+# ssi is MONTH-defined (input monthly).
+- name: Case 1, earned plus unearned income with no SSI.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2,000/month
+        social_security: 6_000  # 500/month
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 2,000 employment + 500 social security = 2,500/month
+    oh_ccap_countable_income: 2_500
+
+- name: Case 2, SSI recipient earnings are excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 800  # monthly; person1 is an SSI recipient
+        employment_income: 12_000  # 1,000/month — excluded because of SSI
+      person2:
+        age: 35
+        employment_income: 24_000  # 2,000/month — counted
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # Sources sum the earnings of both parents (3,000/month); SSI itself is not
+    # in the sources list. Person1's 1,000/month earnings are then subtracted
+    # because person1 receives SSI. 3,000 - 1,000 = 2,000.
+    oh_ccap_countable_income: 2_000
+
+- name: Case 3, SSI recipient with only SSI income has zero countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 900  # monthly
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # SSI is not in the sources list, so countable income is 0.
+    oh_ccap_countable_income: 0
+
+# Edge cases.
+- name: Case 4, zero income across the family has zero countable income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: 0
+
+# 5180:2-16-03(D)(1) counts self-employment as the total profit from a
+# business enterprise and (D)(4)(a) disallows net losses, so a loss is floored
+# at zero per person and per source instead of flowing through as negative
+# countable income.
+- name: Case 5, a self-employment loss floors at zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: -60_000  # -5,000/month, no other income
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: 0
+
+- name: Case 6, non-parent minor full-time student earnings are excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+      person2:
+        age: 17
+        employment_income: 12_000
+        is_full_time_student: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: 2_000
+
+- name: Case 7, Ohio Works First basic assistance is countable.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        oh_ccap_owf_basic_assistance: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_countable_income: 500
+
+- name: Case 8, one parent's business loss cannot offset the other parent's wages.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: -60_000  # -5,000/month loss, floored at zero
+      person2:
+        age: 33
+        employment_income: 72_000  # 6,000/month — counted in full
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # (D)(4)(a): person1's loss counts as zero, so countable income is
+    # person2's 6,000/month — not 6,000 - 5,000 = 1,000.
+    oh_ccap_countable_income: 6_000

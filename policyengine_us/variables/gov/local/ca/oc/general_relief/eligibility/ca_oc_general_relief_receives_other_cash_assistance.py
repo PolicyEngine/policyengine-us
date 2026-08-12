@@ -21,7 +21,12 @@ class ca_oc_general_relief_receives_other_cash_assistance(Variable):
         # distinguish child-only cases. Refugee Cash Assistance has no
         # California variable in PolicyEngine, so we don't track RCA at the
         # moment.
-        receives_ssi = person("ssi", period) > 0
-        receives_calworks = person.spm_unit("ca_tanf", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+        # Read the take-up-gated federal aggregator rather than ca_tanf
+        # directly (matching the ssi arm) so declined take-up lifts the
+        # exclusion; for a California household, tanf equals CalWORKs.
+        receives_calworks = (person.spm_unit("tanf", period) > 0) | person.spm_unit(
+            "receives_tanf", period
+        )
         receives_capi = person.spm_unit("ca_capi", period) > 0
         return receives_ssi | receives_calworks | receives_capi

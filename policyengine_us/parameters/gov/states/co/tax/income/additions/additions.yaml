@@ -10,9 +10,9 @@ values:
     # - Partnership/Fiduciary
     # - Clubs that restrict membership
     # - Distributions from a medical savings account not made for an eligible expense
-  2022-01-01: 
+  2022-01-01:
     - co_state_addback
-    - co_qualified_business_income_deduction_addback 
+    - co_qualified_business_income_deduction_addback
     - co_federal_deduction_addback
     # - Non-qualifying Distribution addback
     # - Non-Colorado state and local bond interest
@@ -22,6 +22,11 @@ values:
     # - Partnership/Fiduciary
     # - Distributions from a medical savings account not made for an eligible expense
     # - Food and beverage expense deduction
+  2026-01-01:
+    - co_state_addback
+    - co_qualified_business_income_deduction_addback
+    - co_federal_deduction_addback
+    - co_overtime_income_addback  # Overtime deduction add-back (HB25-1296), TY2026+
 metadata:
   unit: list
   period: year
@@ -41,4 +46,6 @@ metadata:
     href: https://tax.colorado.gov/individual-income-tax-guide
   - title: 2025 Colorado Individual Tax Filing Guide 104 Book - Additions
     href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=8
+  - title: HB25-1296 (2025), Colorado Laws 2025 ch. 202, Section 6 - adds C.R.S. 39-22-104(3)(u) (overtime compensation add-back), the co_overtime_income_addback 2026 list entry
+    href: https://content.leg.colorado.gov/sites/default/files/2025a_1296_signed.pdf#page=6
 

@@ -63,7 +63,7 @@ class fl_oss_eligible(Variable):
         is_protected = program_track == program_track.possible_values.PROTECTED
         track_valid = where(is_protected, p.protected.in_effect, has_track)
         # FAC 65A-2.033(1): "receiving SSI checks" (Group 1).
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         # FAC 65A-2.033(2): income within OSS income standard (Group 2).
         income_standard = person("fl_oss_income_standard", period)
         countable_income = person("ssi_countable_income", period)

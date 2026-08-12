@@ -113,3 +113,22 @@
         state_code: FL
   output:
     fl_oss_eligible: [false]
+
+- name: Case 7, reported SSI receipt qualifies despite income above the OSS standard.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi: 0
+        ssi_countable_income: 5_000
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_oss_eligible: [true]

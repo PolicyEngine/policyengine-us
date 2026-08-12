@@ -77,3 +77,24 @@
         state_code: NC
   output:
     nc_tanf_household_size: 0
+
+- name: Reported SSI receipt excludes member from NC TANF household size
+  period: 2023
+  input:
+    people:
+      person1:
+        ssi: 0
+        receives_ssi: true
+      person2:
+        ssi: 0
+      person3:
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_tanf_household_size: 2

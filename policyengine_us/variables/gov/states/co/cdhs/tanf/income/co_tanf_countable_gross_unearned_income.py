@@ -14,5 +14,5 @@ class co_tanf_countable_gross_unearned_income(Variable):
         # Sum unearned sources, plus child support if not currently enrolled.
         gross_unearned = add(spm_unit, period, p.unearned)
         child_support = add(spm_unit, period, ["child_support_received"])
-        enrolled = spm_unit("is_tanf_enrolled", period)
+        enrolled = spm_unit("is_tanf_enrolled", period.first_month)
         return gross_unearned + where(enrolled, 0, child_support)

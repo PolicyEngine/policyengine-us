@@ -114,3 +114,18 @@
         state_code: NE
   output:
     ne_aabd_eligible: true
+
+- name: Case 8, reported SSI receipt qualifies when computed SSI is zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_eligible: true

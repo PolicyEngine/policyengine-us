@@ -81,3 +81,23 @@
         state_code: MO
   output:
     mo_ccs_special_needs: [false, false]
+
+- name: Case 5, child with reported SSI receipt is a child with special needs (criterion A).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        ssi: 0
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_ccs_special_needs: [false, true]

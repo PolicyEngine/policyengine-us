@@ -24,3 +24,29 @@
     medicaid_medically_needy_medical_expenses: 5_000
   output:
     is_209b_ssi_recipient_income_eligible_for_medicaid: false
+
+# Missouri's 209(b) criteria are the MHABD standards, which test
+# blindness-based eligibility against 100% of the poverty guideline
+# rather than the 85% aged/disabled standard (DSS Manual
+# § 0805.015.45). After spenddown, 14,500 falls between the two, so
+# the case passes only under the blind standard.
+- name: Case 4, Missouri blind SSI recipient qualifies under the 100% FPL blind standard.
+  period: 2026
+  input:
+    state_code: MO
+    is_blind: true
+    tax_unit_fpg: 15_000
+    medicaid_optional_senior_or_disabled_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 5_500
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 5, Missouri non-blind SSI recipient with the same income fails the 85% standard.
+  period: 2026
+  input:
+    state_code: MO
+    tax_unit_fpg: 15_000
+    medicaid_optional_senior_or_disabled_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 5_500
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: false

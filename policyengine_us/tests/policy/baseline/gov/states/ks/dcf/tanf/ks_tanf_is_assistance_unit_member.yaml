@@ -27,3 +27,18 @@
         state_code: KS
   output:
     ks_tanf_is_assistance_unit_member: false
+
+- name: Case 3, reported SSI receipt excludes even with zero computed SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_tanf_is_assistance_unit_member: false

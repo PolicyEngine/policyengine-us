@@ -1,0 +1,100 @@
+# Per-earner disregard sequence (13 CSR 40-2.310(9)(A), (9)(D)). New applicants
+# (not enrolled in TA when employment began) get the $90 standard work
+# exemption, then $30, then one-third of the remainder (DSS Manual
+# 0210.015.30.10). Active participants get two-thirds of gross earnings
+# first, then the work exemption (0210.015.30.20).
+- name: No earned income
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 0
+  output:
+    mo_tanf_earned_income_deductions_person: 0
+
+- name: Earned income below the $90 work exemption
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 50
+  output:
+    # The work exemption caps at gross earnings; nothing remains for the
+    # $30 plus one-third disregard.
+    mo_tanf_earned_income_deductions_person: 50
+
+- name: Earned income at the $90 work exemption
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 90
+  output:
+    mo_tanf_earned_income_deductions_person: 90
+
+- name: DSS manual sequence for a new applicant earning $300
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 300
+  output:
+    # $300 - $90 = $210; $210 - $30 = $180; one-third of $180 = $60.
+    # Deductions: $90 + $30 + $60 = $180 (DSS Manual 0210.015.30.10).
+    mo_tanf_earned_income_deductions_person: 180
+
+- name: New applicant earning $480
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 480
+  output:
+    # $90 + $30 + (480 - 90 - 30) / 3 = $90 + $30 + $120.
+    mo_tanf_earned_income_deductions_person: 240
+
+- name: DSS manual sequence for an active participant earning $300
+  period: 2024-01
+  input:
+    state_code: MO
+    is_tanf_enrolled: true
+    tanf_gross_earned_income: 300
+  output:
+    # Two-thirds of $300 = $200 first, then the $90 work exemption
+    # (DSS Manual 0210.015.30.20).
+    mo_tanf_earned_income_deductions_person: 290
+
+- name: Active participant with earnings below the work exemption
+  period: 2024-01
+  input:
+    state_code: MO
+    is_tanf_enrolled: true
+    tanf_gross_earned_income: 90
+  output:
+    # Two-thirds of $90 = $60, then the exemption caps at the $30 left.
+    mo_tanf_earned_income_deductions_person: 90
+
+- name: Active participant earning $900
+  period: 2024-01
+  input:
+    state_code: MO
+    is_tanf_enrolled: true
+    tanf_gross_earned_income: 900
+  output:
+    # Two-thirds of $900 = $600, plus the $90 exemption.
+    mo_tanf_earned_income_deductions_person: 690
+
+- name: New applicant earnings exactly exhaust the work exemption and thirty dollars
+  period: 2024-01
+  input:
+    state_code: MO
+    tanf_gross_earned_income: 120
+  output:
+    # $90 + $30 leaves nothing for the one-third disregard.
+    mo_tanf_earned_income_deductions_person: 120
+
+- name: Active participant earnings exactly exhaust both disregards
+  period: 2024-01
+  input:
+    state_code: MO
+    is_tanf_enrolled: true
+    tanf_gross_earned_income: 270
+  output:
+    # Two-thirds of $270 = $180; the $90 left exactly equals the work
+    # exemption, deducting all $270.
+    mo_tanf_earned_income_deductions_person: 270

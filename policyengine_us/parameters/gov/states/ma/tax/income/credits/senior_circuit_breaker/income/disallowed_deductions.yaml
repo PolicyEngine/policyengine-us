@@ -1,20 +1,41 @@
 description: Income sources re-added to total income for the Massachusetts Senior Circuit Breaker credit.
+# M.G.L. c.62 § 6(k)(1) re-adds "cash, but not in-kind, public assistance", so
+# in-kind nutrition assistance is excluded. SNAP and WIC are commented out below
+# rather than deleted, because the statute and DOR guidance point opposite ways.
+#
+# Statute § 6(k)(1) enumerates eight add-backs. Item 2 is "cash, but not in-kind,
+# public assistance", which excludes SNAP and WIC. Item 8 is the catch-all "gross
+# receipts from any other source", which is broad enough to reach them.
+#
+# DOR resolves that tension in favor of inclusion for SNAP: "Cash public
+# assistance (Schedule CB, Line 6) - Includes food stamps and welfare", repeated
+# as "Food stamps - See cash public assistance above". DOR's exclusion list
+# exempts "in-kind payments ... otherwise not defined as ... Gross receipts",
+# so DOR is relying on item 8, not item 2. DOR never mentions WIC.
+#
+# We follow the statute's item 2 here: reading item 8 to sweep in in-kind aid
+# would make the words "but not in-kind" surplusage. Revisit if DOR clarifies.
+#
+# Not re-added, for lack of a corresponding variable: tax-exempt dividends
+# (§ 6(k)(1) item 3 covers "tax-exempt interest and dividends"), and the item 8
+# catch-all generally.
 values:
   2001-01-01:
     - social_security
     - tax_exempt_unemployment_compensation
     - tax_exempt_pension_income
     - tax_exempt_interest_income
-    - snap
     - ssi
     - ma_state_supplement
     - tanf
-    - wic
+    # In-kind under § 6(k)(1) item 2; see the note above before re-enabling.
+    # - snap
+    # - wic
 metadata:
   unit: list
   label: Massachusetts Senior Circuit Breaker income disallowed deductions
   reference:
     - title: Mass.gov, Massachusetts Senior Circuit Breaker Tax Credit, Calculate your total income
       href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit#calculate-your-total-income-
-    - title: Mass. General Laws c.62 § 6(k)
-      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
+    - title: Mass. General Laws c.62 § 6(k)(1), definition of "taxpayer's total income"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6

@@ -32,3 +32,10 @@
     filing_status: SEPARATE
   output:
     basic_standard_deduction: 12_400
+
+- name: 2027 single filer standard deduction uprates from observed chained CPI through June 2026
+  period: 2027
+  input:
+    filing_status: SINGLE
+  output:
+    basic_standard_deduction: 16_550

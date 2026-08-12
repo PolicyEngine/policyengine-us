@@ -8,8 +8,12 @@ class applicable_ssi(Variable):
     unit = USD
     label = "Applicable SSI for program income tests"
     documentation = (
-        "SSI amount counted in program income tests. Uses calculated ssi "
-        "by default; uses ssi_reported instead when use_reported_ssi is True."
+        "Deprecated: no program reads this variable anymore; programs count "
+        "ssi directly, which partners can override by sending it as an "
+        "input. Retained as an output for API partner compatibility until "
+        "partners migrate (PolicyEngine/policyengine-us#9111). Uses "
+        "calculated ssi by default; uses ssi_reported instead when "
+        "use_reported_ssi is True."
     )
 
     def formula(person, period, parameters):

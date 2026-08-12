@@ -69,9 +69,9 @@
         # Jan-Sep: pre-shelter net = 2,857.67; shelter expense = 1,500 housing
         # + 914 MA SUA = 2,414 - 1,428.83 = 985.17 -> capped at 744 -> net =
         # 2,113.67 -> EC 633.90 -> 785 - 633.90 = 151.10/month; Oct-Dec (cap
-        # 760.68): 802.60 - 627.60 = 175.00.
-        # Annual = 9 x 151.10 + 3 x 175.00 = 1,884.90.
-        snap: 1_884.89
+        # 770.27): 812.72 - 624.00 = 188.72.
+        # Annual = 9 x 151.10 + 3 x 188.72 = 1,926.06.
+        snap: 1926.06
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (ma)
   period: 2026
@@ -205,5 +205,5 @@
   output:
     spm_units:
       spm_unit:
-        snap: 3_815.82
+        snap: 3840.54
         is_snap_eligible: true

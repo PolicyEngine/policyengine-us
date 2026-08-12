@@ -72,10 +72,10 @@
         # CA AGI 40,000 hits the 43% bracket (binding at the 40k threshold):
         # ca_cdcc = 1,110 x 0.43 = 477.30.
         ca_cdcc: 477.3
-        # CA HOH taxable = 40,000 - 11,412 = 28,588;
-        # tax = 1% x 22,675.50 + 2% x (28,588 - 22,675.50) = 226.76 + 118.25
-        # = 345.01.
-        ca_income_tax_before_credits: 345.01
+        # CA HOH taxable = 40,000 - 11,670.63 = 28,329.37;
+        # tax = 1% x 22,675.50 + 2% x (28,329.37 - 22,675.50) = 226.76 + 113.08
+        # = 339.83.
+        ca_income_tax_before_credits: 339.83
         # Exemptions (156.47 personal + 485.76 dependent) + ca_cdcc 477.30
         # = 1,119.53 > 345.01 liability.
         ca_non_refundable_credits: 1_119.53
@@ -148,14 +148,14 @@
         cdcc: 1_050.0
         # CA AGI 74,000 -> 34% bracket: ca_cdcc = 1,050 x 0.34 = 357.00.
         ca_cdcc: 357.0
-        # CA HOH taxable = 74,000 - 11,412 = 62,588; tax = 1% x 22,675.50
-        # + 2% x (53,720.48 - 22,675.50) + 4% x (62,588 - 53,720.48)
-        # = 226.76 + 620.90 + 354.70 = 1,202.36.
-        ca_income_tax_before_credits: 1_202.36
-        # Exemptions 642.23 + ca_cdcc 357.00 = 999.23 < 1,202.36 liability.
+        # CA HOH taxable = 74,000 - 11,670.63 = 62,329.37; tax = 1% x 22,675.50
+        # + 2% x (53,720.48 - 22,675.50) + 4% x (62,329.37 - 53,720.48)
+        # = 226.76 + 620.90 + 344.36 = 1,192.01.
+        ca_income_tax_before_credits: 1_192.01
+        # Exemptions 642.23 + ca_cdcc 357.00 = 999.23 < 1,192.01 liability.
         ca_non_refundable_credits: 999.23
-        # 1,202.36 - 999.23 = 203.13 > 0: the CDCC is fully usable.
-        ca_income_tax_before_refundable_credits: 203.13
+        # 1,192.01 - 999.23 = 192.78 > 0: the CDCC is fully usable.
+        ca_income_tax_before_refundable_credits: 192.78
 - name: ca_cdcc_agi_100000_zero_match_rate (ca)
   period: 2026
   absolute_error_margin: 0.1

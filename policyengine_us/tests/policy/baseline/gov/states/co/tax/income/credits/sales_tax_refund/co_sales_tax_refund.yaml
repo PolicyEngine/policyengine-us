@@ -1,6 +1,7 @@
 - name: Ineligible
   period: 2022
   input:
+    state_code: CO
     co_modified_agi: 44_000
     co_sales_tax_refund_eligible: false
     filing_status: SINGLE
@@ -10,6 +11,7 @@
 - name: Ineligible
   period: 2023
   input:
+    state_code: CO
     co_modified_agi: 49_999
     co_sales_tax_refund_eligible: false
     filing_status: SINGLE
@@ -19,6 +21,8 @@
 - name: Single calculation
   period: 2022
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 95_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -28,24 +32,45 @@
 - name: Flat amount in 2023
   period: 2023
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 60_001
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 800
 
-- name: Joint calculation
+- name: Joint calculation - both spouses eligible (2x per-person amount)
   period: 2022
   input:
-    co_modified_agi: 268_001
-    co_sales_tax_refund_eligible: true
-    filing_status: JOINT
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 268_001
+        co_sales_tax_refund_eligible: true
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
   output:
+    # Highest 2022 bracket amount is 486 per eligible filer; both spouses
+    # qualify (age >= 18) so 486 * 2 = 972.
     co_sales_tax_refund: 972
 
 - name: Separate calculation
   period: 2022
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 151_000
     co_sales_tax_refund_eligible: true
     filing_status: SEPARATE
@@ -58,16 +83,96 @@
     people:
       person1:
         age: 40
+        is_tax_unit_head: true
       person2:
         age: 40
+        is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
         co_modified_agi: 60_001
         co_sales_tax_refund_eligible: true
         filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
   output:
     co_sales_tax_refund: 1_600
+
+# Issue #2922 cases: person-count logic (2022, non-flat scale bracket).
+# The per-person amount in the first 2022 bracket (AGI <= 48,000) is 153.
+- name: Issue 2922 - joint both eligible (2x per-person amount)
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 44_000
+        co_sales_tax_refund_eligible: true
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    # Both spouses qualify (age >= 18): 153 * 2 = 306.
+    co_sales_tax_refund: 306
+
+- name: Issue 2922 - joint only head eligible (1x per-person amount)
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 10
+        is_tax_unit_spouse: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 44_000
+        co_sales_tax_refund_eligible: true
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    # Only the head qualifies (spouse age < 18, no earnings, unit tax 0): 153.
+    co_sales_tax_refund: 153
+
+- name: Issue 2922 - single eligible (1x per-person amount)
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        co_modified_agi: 44_000
+        co_sales_tax_refund_eligible: true
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: CO
+  output:
+    co_sales_tax_refund: 153
 
 # 2025 Tests - Sales Tax Refund brackets per Income Tax Topics: State Sales Tax Refund
 # Single filer brackets for 2025:
@@ -81,6 +186,8 @@
 - name: 2025 Single - lowest bracket ($0-$52,000)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 30_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -91,6 +198,8 @@
 - name: 2025 Single - at first threshold boundary
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 52_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -101,6 +210,8 @@
 - name: 2025 Single - second bracket ($52,001-$105,000)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 75_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -111,6 +222,8 @@
 - name: 2025 Single - third bracket ($105,001-$168,000)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 130_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -121,6 +234,8 @@
 - name: 2025 Single - fourth bracket ($168,001-$233,000)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 200_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -131,6 +246,8 @@
 - name: 2025 Single - fifth bracket ($233,001-$299,000)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 260_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -141,6 +258,8 @@
 - name: 2025 Single - highest bracket ($299,001+)
   period: 2025
   input:
+    state_code: CO
+    age: 40
     co_modified_agi: 400_000
     co_sales_tax_refund_eligible: true
     filing_status: SINGLE
@@ -151,9 +270,23 @@
 - name: 2025 Joint - lowest bracket (double single amount)
   period: 2025
   input:
-    co_modified_agi: 40_000
-    co_sales_tax_refund_eligible: true
-    filing_status: JOINT
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 40_000
+        co_sales_tax_refund_eligible: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
   output:
     # AGI $40,000 in first bracket: $19 * 2 = $38
     co_sales_tax_refund: 38
@@ -161,9 +294,23 @@
 - name: 2025 Joint - second bracket
   period: 2025
   input:
-    co_modified_agi: 80_000
-    co_sales_tax_refund_eligible: true
-    filing_status: JOINT
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 80_000
+        co_sales_tax_refund_eligible: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
   output:
     # AGI $80,000 in second bracket: $25 * 2 = $50
     co_sales_tax_refund: 50
@@ -171,9 +318,23 @@
 - name: 2025 Joint - highest bracket
   period: 2025
   input:
-    co_modified_agi: 500_000
-    co_sales_tax_refund_eligible: true
-    filing_status: JOINT
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 500_000
+        co_sales_tax_refund_eligible: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
   output:
     # AGI $500,000 in highest bracket: $59 * 2 = $118
     co_sales_tax_refund: 118
@@ -181,8 +342,122 @@
 - name: 2025 Ineligible - no refund regardless of income
   period: 2025
   input:
+    state_code: CO
     co_modified_agi: 50_000
     co_sales_tax_refund_eligible: false
     filing_status: SINGLE
   output:
     co_sales_tax_refund: 0
+
+# End-to-end with the eligibility gate COMPUTED (not supplied as input): the unit
+# would only "earn" via a DEPENDENT's wages. The head is under 18 with no
+# earnings/tax and the dependent (not head/spouse) has employment income. Only
+# head/spouse can be qualified individuals, so the dependent's earnings do NOT
+# create a filer refund: eligible count 0 -> co_sales_tax_refund 0.
+- name: Dependent earnings only -> gate computed false -> no refund
+  period: 2022
+  input:
+    people:
+      head:
+        age: 10
+        is_tax_unit_head: true
+        irs_employment_income: 0
+      dependent:
+        age: 16
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        irs_employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        co_income_tax_before_non_refundable_credits: 0
+        co_modified_agi: 30_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: [false, false]
+    co_sales_tax_refund_eligible: false
+    co_sales_tax_refund: 0
+
+# 2023 flat-amount year, JOINT unit with only ONE qualified filer: the head is
+# eligible while the under-18, non-earning spouse with zero unit tax is not. The
+# flat amount is claimed once per qualified filer, so the refund is the single
+# flat amount (800), NOT double (1,600).
+- name: 2023 flat-year - partially eligible joint couple -> single flat amount
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 50_000
+      spouse:
+        age: 16
+        is_tax_unit_spouse: true
+        irs_employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_income_tax_before_non_refundable_credits: 0
+        co_modified_agi: 60_001
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_sales_tax_refund_person_eligible: [true, false]
+    co_sales_tax_refund: 800
+
+# Filing-status sanity: a HEAD_OF_HOUSEHOLD filer with one eligible filer gets the
+# single (1x) per-person amount. 2022 first bracket (AGI <= 48,000) -> 153.
+- name: Head of household - single eligible filer -> 1x amount
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        co_modified_agi: 44_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+        state_code: CO
+  output:
+    co_sales_tax_refund: 153
+
+# Filing-status sanity: a SURVIVING_SPOUSE filer with one eligible filer likewise
+# gets the single (1x) per-person amount (153 in the 2022 first bracket).
+- name: Surviving spouse - single eligible filer -> 1x amount
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        irs_employment_income: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        co_modified_agi: 44_000
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head, child]
+        state_code: CO
+  output:
+    co_sales_tax_refund: 153

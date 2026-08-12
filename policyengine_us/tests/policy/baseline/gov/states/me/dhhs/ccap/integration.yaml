@@ -5,6 +5,7 @@
     people:
       person1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
       person2:
         age: 4
@@ -79,9 +80,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 45_000
       person2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         employment_income: 10_000
       person3:
         age: 2
@@ -241,11 +244,13 @@
     people:
       person1:
         age: 42
+        weekly_hours_worked_before_lsr: 40
         # SMI for ME size 3 (2025-10-01): 118,065 * 0.84 = $99,174.60.
         # Target ~115% SMI => 99,175 * 1.15 = $114,051.
         employment_income: 115_000
       person2:
         age: 40
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 1
         is_tax_unit_dependent: true
@@ -312,6 +317,7 @@
     people:
       person1:
         age: 45
+        weekly_hours_worked_before_lsr: 40
         employment_income: 50_000
       person2:
         age: 15
@@ -410,6 +416,7 @@
     people:
       person1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
       person2:
         age: 4
@@ -462,9 +469,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 35_000
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 0
         is_tax_unit_dependent: true
@@ -548,10 +557,12 @@
     people:
       person1:
         age: 40
+        weekly_hours_worked_before_lsr: 40
         # Target ~110% SMI for size 4 => $118,065 * 1.10 = $129,871.50.
         employment_income: 129_872
       person2:
         age: 38
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 0
         is_tax_unit_dependent: true

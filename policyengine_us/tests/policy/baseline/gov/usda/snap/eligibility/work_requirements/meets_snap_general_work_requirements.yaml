@@ -1,3 +1,11 @@
+# Under 7 CFR 273.7(b)(1), working 30+ hours/week (or the equivalent earnings),
+# being under 16 or 60+, being disabled, or caring for a dependent child under 6
+# or an incapacitated person are EXEMPTIONS from the general work requirements.
+# The affirmative requirement (7 CFR 273.7(a)(1)) is only to register and not
+# without-good-cause refuse/quit. Simply not working is NOT a violation, so the
+# baseline assumes registration compliance and every person meets the general
+# requirement unless is_snap_work_registration_noncompliant is set true.
+
 - name: Case 1, age 15, exempted from the general work requirements.
   period: 2022
   input:
@@ -18,7 +26,7 @@
   output:
     meets_snap_general_work_requirements: true
 
-- name: Case 3, age 16, not exempted from the general work requirements.
+- name: Case 3, age 16, non-exempt and not working, but assumed compliant with work registration in baseline.
   period: 2022
   input:
     age: 16
@@ -26,7 +34,8 @@
     is_disabled: false
     is_incapable_of_self_care: false
   output:
-    meets_snap_general_work_requirements: false
+    # Not exempt, but not affirmatively noncompliant, so still meets the requirement.
+    meets_snap_general_work_requirements: true
 
 - name: Case 4, age 30, but disabled.
   period: 2022
@@ -48,7 +57,7 @@
   output:
     meets_snap_general_work_requirements: true
 
-- name: Case 6, age 30, working 29 hours per week.
+- name: Case 6, age 30, working 29 hours per week, but assumed compliant with work registration in baseline.
   period: 2022
   input:
     age: 30
@@ -56,9 +65,12 @@
     is_disabled: false
     is_incapable_of_self_care: false
   output:
-    meets_snap_general_work_requirements: false
+    # Working fewer than 30 hours removes the 273.7(b)(1)(vii) exemption, but a
+    # non-exempt registrant who is simply not working 30+ hours is not violating
+    # the requirement, so the baseline still meets it.
+    meets_snap_general_work_requirements: true
 
-- name: Case 7, integration test.
+- name: Case 7, integration test, non-working 30-year-old caring for a 5-year-old dependent.
   period: 2022
   input:
     people:
@@ -80,7 +92,119 @@
   output:
     meets_snap_general_work_requirements: [true, true]
 
-- name: Case 8, age 30, not working but a SNAP work program participant.
+# Sanction-hook cases: is_snap_work_registration_noncompliant set true models a
+# State-agency "without good cause" work-registration sanction under
+# 7 CFR 273.7(f)(1)-(2). A noncompliant person only meets the general requirement
+# if they are otherwise exempt under 7 CFR 273.7(b)(1).
+
+- name: Case 8, noncompliant non-exempt 30-year-old not working is disqualified.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+    is_snap_work_registration_noncompliant: true
+  output:
+    # Non-exempt and affirmatively noncompliant, so fails the general requirement.
+    meets_snap_general_work_requirements: false
+
+- name: Case 9, noncompliant 30-year-old working 30 hours is exempt.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 30
+    is_disabled: false
+    is_incapable_of_self_care: false
+    is_snap_work_registration_noncompliant: true
+  output:
+    # Exempt under 7 CFR 273.7(b)(1)(vii) (30+ hours), so the sanction does not apply.
+    meets_snap_general_work_requirements: true
+
+- name: Case 10, noncompliant age 60 is age-exempt.
+  period: 2022
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+    is_snap_work_registration_noncompliant: true
+  output:
+    # Exempt under 7 CFR 273.7(b)(1)(i) (60 or older), so the sanction does not apply.
+    meets_snap_general_work_requirements: true
+
+- name: Case 11, noncompliant 30-year-old but disabled is exempt.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: true
+    is_incapable_of_self_care: false
+    is_snap_work_registration_noncompliant: true
+  output:
+    # Exempt under 7 CFR 273.7(b)(1)(ii) (physically or mentally unfit), so exempt.
+    meets_snap_general_work_requirements: true
+
+- name: Case 12, noncompliant 30-year-old caring for a 5-year-old dependent is exempt.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        is_incapable_of_self_care: false
+        is_snap_work_registration_noncompliant: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # person1 exempt under 7 CFR 273.7(b)(1)(iv) (caring for a dependent child under 6);
+    # person2 is exempt by age (under 16).
+    meets_snap_general_work_requirements: [true, true]
+
+- name: Case 12b, noncompliant 30-year-old caring for an incapacitated person is exempt.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+        is_disabled: false
+        is_incapable_of_self_care: false
+        is_snap_work_registration_noncompliant: true
+      person2:
+        age: 40
+        is_incapable_of_self_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    # person1 exempt under 7 CFR 273.7(b)(1)(v) (caring for an incapacitated
+    # person), so the sanction does not apply; person2 is exempt on the same
+    # household basis.
+    meets_snap_general_work_requirements: [true, true]
+
+# Work program participation under 7 CFR 273.7(a)(1)(ii) is affirmative
+# compliance, so it satisfies the requirement even alongside a noncompliance
+# flag.
+
+- name: Case 13, age 30, not working but a SNAP work program participant.
   period: 2022
   input:
     age: 30
@@ -89,11 +213,15 @@
   output:
     meets_snap_general_work_requirements: true
 
-- name: Case 9, age 30, not working and not a SNAP work program participant.
+- name: Case 14, noncompliant 30-year-old who participates in a work program still meets the requirement.
   period: 2022
   input:
     age: 30
-    weekly_hours_worked_before_lsr: 0
-    is_snap_work_program_participant: false
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_incapable_of_self_care: false
+    is_snap_work_program_participant: true
+    is_snap_work_registration_noncompliant: true
   output:
-    meets_snap_general_work_requirements: false
+    # Participation is affirmative compliance under 7 CFR 273.7(a)(1)(ii).
+    meets_snap_general_work_requirements: true

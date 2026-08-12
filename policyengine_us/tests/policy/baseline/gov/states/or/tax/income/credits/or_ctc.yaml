@@ -185,3 +185,15 @@
         or_agi: 20_000
   output:
     or_ctc: 0
+
+- name: 2027 - phase-out start uprates from observed CPI-U through June 2026.
+  period: 2027
+  input:
+    state_code: OR
+    age: 5
+    is_tax_unit_dependent: true
+    or_agi: 28_200
+  output:
+    # $28,200 exceeds the $28,100 phase-out start by $100 of the $5,000
+    # width: 1,100 x (1 - 100 / 5,000) = 1,078.
+    or_ctc: 1_078

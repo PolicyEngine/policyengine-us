@@ -23,7 +23,9 @@ class snap_min_allotment(Variable):
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("snap_unit_size", period)
         eligible = size <= snap.min_allotment.maximum_household_size
-        min_allotment = eligible * min_allotment.rate * relevant_max_allotment
+        # 7 CFR 273.10(e)(2)(ii)(C): 8 percent of the one-person maximum
+        # allotment, rounded to the nearest whole dollar.
+        min_allotment = np.round(eligible * min_allotment.rate * relevant_max_allotment)
 
         # DC, NM, MD and NJ provide separate minimum allotment amounts
         state_code = spm_unit.household("state_code_str", period)

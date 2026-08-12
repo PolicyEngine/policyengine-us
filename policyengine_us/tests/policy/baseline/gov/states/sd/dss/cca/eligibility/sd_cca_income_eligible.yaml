@@ -1,0 +1,233 @@
+# Tests for sd_cca_income_eligible (SPMUnit, MONTH, bool).
+# Initial applicants (is_sd_cca_enrolled = false) must have adjusted monthly
+# income at or below the lesser of 209% of the federal poverty guideline and
+# 85% of the state median income; continuing recipients (is_sd_cca_enrolled =
+# true) are held only to the 85% SMI ceiling (ARSD 67:47:01:05; Subsidy Manual
+# Section 3). spm_unit_fpg and hhs_smi are pinned as annual inputs so the
+# thresholds do not depend on future uprating; read with the bare monthly
+# period they auto-divide to monthly. sd_cca_countable_income is set directly
+# to isolate the two-tier comparison.
+# Pinned: spm_unit_fpg 24,000/yr -> 2,000/mo; 209% = 4,180/mo.
+#         hhs_smi 84,000/yr -> 7,000/mo; 85% = 5,950/mo.
+
+- name: Case 1, applicant below 209% FPL, income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 4_000  # below 4,180 (209% FPL)
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: true
+
+- name: Case 2, applicant above 209% FPL, not income eligible as applicant.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 4_300  # above 4,180 (209% FPL)
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: false
+
+- name: Case 3, enrolled family at the same 4,300 income, eligible under the 85% SMI tier.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 4_300  # above 209% FPL but below 5,950 (85% SMI)
+        is_sd_cca_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: true
+
+- name: Case 4, enrolled family above 85% SMI, not income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 6_000  # above 5,950 (85% SMI)
+        is_sd_cca_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: false
+
+- name: Case 5, applicant exactly at 209% FPL, income eligible (at or below).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 4_180  # exactly 209% FPL
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: true
+
+- name: Case 6, enrolled family exactly at 85% SMI, income eligible (at or below).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 5_950  # exactly 85% SMI
+        is_sd_cca_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: true
+
+- name: Case 7, applicant where 85% SMI is the binding (lesser) ceiling.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 48_000  # 4,000/mo; 209% = 8,360/mo
+        hhs_smi: 60_000  # 5,000/mo; 85% = 4,250/mo (the lesser limit)
+        sd_cca_countable_income: 4_300  # below 209% FPL but above 85% SMI
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # The applicant ceiling is the lesser of the two, so 85% SMI (4,250) binds
+    # and 4,300 fails even though it is well below 209% FPL (8,360).
+    sd_cca_income_eligible: false
+
+- name: Case 8, applicant one dollar above 209% FPL, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 4_181  # 1 above the 4,180 applicant ceiling
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: false
+
+- name: Case 9, enrolled family one dollar above 85% SMI, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 5_951  # 1 above the 5,950 continuing ceiling
+        is_sd_cca_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: false
+
+- name: Case 10, applicant with zero income, income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 84_000
+        sd_cca_countable_income: 0
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_income_eligible: true

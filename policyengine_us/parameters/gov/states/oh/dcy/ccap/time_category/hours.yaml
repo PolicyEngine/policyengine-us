@@ -1,0 +1,29 @@
+description: Ohio defines these weekly authorized-hour boundaries for child care time increments under the Publicly Funded Child Care program.
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  period: year
+  label: Ohio PFCC time category by weekly hours
+  reference:
+    - title: OAC 5180:6-1-10(H) — Reimbursement ceilings for publicly funded child care
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-10
+
+# Index maps to the OHCCAPTimeCategory enum: 0 = Hourly, 1 = Part-time,
+# 2 = Full-time.
+brackets:
+  - threshold:
+      2025-11-01: 0
+    amount:
+      2025-11-01: 0
+  # Part-time is 10 to fewer than 33 hours per week.
+  - threshold:
+      2025-11-01: 10
+    amount:
+      2025-11-01: 1
+  # Full-time is 33 or more hours per week.
+  - threshold:
+      2025-11-01: 33
+    amount:
+      2025-11-01: 2

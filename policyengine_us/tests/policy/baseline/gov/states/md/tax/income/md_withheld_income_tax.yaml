@@ -33,3 +33,30 @@
     state_code: MD
   output:
     md_withheld_income_tax: 0
+
+- name: Allegany County MD baseline for the unknown-county fallback comparison
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: JOINT
+    state_code: MD
+    county_str: ALLEGANY_COUNTY_MD
+  output:
+    # State: single rates on (5,000 - 2,350 standard deduction) = 76
+    # Local: 3.05% Allegany rate * 2,650 = 80.825
+    md_withheld_income_tax: 156.825
+
+- name: Unknown county in an MD household falls back to Allegany County (issue #8975)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income_person: 5_000
+    filing_status: JOINT
+    state_code: MD
+    county_str: UNKNOWN
+  output:
+    # gov.local.md.flat_rate has no UNKNOWN key; the formula falls back to
+    # ALLEGANY_COUNTY_MD, so this must equal the Allegany baseline above.
+    # Before the fix this raised ParameterNotFoundError instead of computing.
+    md_withheld_income_tax: 156.825

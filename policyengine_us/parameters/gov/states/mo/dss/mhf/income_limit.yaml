@@ -1,0 +1,111 @@
+description: Missouri limits MHF parent and caretaker income to this monthly dollar amount.
+metadata:
+  propagate_metadata_to_children: true
+  economy: false
+  household: false
+amount:
+  description: Missouri limits MHF parent and caretaker income to this monthly dollar amount by household size.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Missouri MHF parent income limit
+    breakdown:
+      - range(1, 23)
+    breakdown_label:
+      - Household size
+    reference:
+      - title: Missouri DSS Manual 1810.020.10
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-10/
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  1:
+    1996-07-16: 141
+  2:
+    1996-07-16: 241
+  3:
+    1996-07-16: 301
+  4:
+    1996-07-16: 353
+  5:
+    1996-07-16: 400
+  6:
+    1996-07-16: 445
+  7:
+    1996-07-16: 490
+  8:
+    1996-07-16: 532
+  9:
+    1996-07-16: 574
+  10:
+    1996-07-16: 616
+  11:
+    1996-07-16: 658
+  12:
+    1996-07-16: 700
+  13:
+    1996-07-16: 742
+  14:
+    1996-07-16: 784
+  15:
+    1996-07-16: 826
+  16:
+    1996-07-16: 868
+  17:
+    1996-07-16: 910
+  18:
+    1996-07-16: 952
+  19:
+    1996-07-16: 994
+  20:
+    1996-07-16: 1_036
+  21:
+    1996-07-16: 1_078
+  22:
+    1996-07-16: 1_120
+additional_person:
+  description: Missouri increases the MHF parent and caretaker income limit by this monthly amount for each person above the published table.
+  metadata:
+    unit: currency-USD
+    period: month
+    label: Missouri MHF parent income limit additional person amount
+    reference:
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  values:
+    1996-07-16: 42
+max_household_size:
+  description: Missouri publishes the MHF parent and caretaker income limit through this household size.
+  metadata:
+    unit: person
+    period: year
+    label: Missouri MHF parent income limit maximum household size
+    reference:
+      - title: Missouri Family Healthcare Programs - MAGI Appendix A
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/magi-appendix-a/
+  values:
+    1996-07-16: 22
+fpl_disregard:
+  description: Missouri adds this share of the federal poverty guideline to the MHF parent and caretaker income limit, reflecting the conditional 5% MAGI disregard that applied at the MHF adult level until the Adult Expansion Group became the highest MAGI standard applicable to parents.
+  metadata:
+    unit: /1
+    label: Missouri MHF parent income limit FPL disregard
+    reference:
+      - title: 42 CFR 435.603(d)(4) - the 5% FPL disregard applies only at the highest income standard under which the individual may qualify
+        href: https://www.law.cornell.edu/cfr/text/42/435.603#d_4
+      # The pre-expansion Appendix A (revised 11/2020) publishes a separate
+      # "MHF Adult" row equal to the frozen schedule plus 5% of the FPG
+      # (e.g., $392 for a household of 3 = $301 + 5% x $1,810) and lists
+      # "MHF Adult" among the programs with the 5% included; the row was
+      # removed once the AEG launched.
+      - title: Missouri DSS MAGI Appendix A as of March 2021 (Wayback Machine), MHF Adult row
+        href: https://web.archive.org/web/20210303084354/https://dssmanuals.mo.gov/wp-content/uploads/2019/03/MAGIappendix-a.pdf#page=1
+      - title: Missouri DSS Manual § 1805.030.20.20.05 - 5% FPL disregard
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1805-000-00/1805-030-00/1805-030-20/1805-030-20-20/1805-030-20-20-05/
+      - title: Missouri DSS Manual § 1865.010.00 - Legal Basis (Mo. Const. art. IV, § 36(c), expansion effective July 1, 2021)
+        href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1865-000-00/1865-010-00/
+  values:
+    2014-01-01: 0.05
+    # The expansion's constitutional effective date; enrollment began
+    # October 1, 2021 after Doyle v. Tidball, with eligibility
+    # retroactive to the effective date.
+    2021-07-01: 0
