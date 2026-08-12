@@ -1145,6 +1145,18 @@ programs:
     verified_years: "2026-2027"
     notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
 
+  - id: ct_covered_connecticut
+    name: Covered Connecticut
+    full_name: Covered Connecticut Program
+    category: Healthcare
+    agency: State
+    status: partial
+    coverage: CT
+    variable: ct_covered_connecticut
+    parameter_prefix: gov.states.ct.dss.covered_connecticut
+    verified_start_year: 2026
+    notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
+
   - id: nm_premium_assistance
     name: New Mexico Premium Assistance
     full_name: Health Insurance Marketplace Affordability Program

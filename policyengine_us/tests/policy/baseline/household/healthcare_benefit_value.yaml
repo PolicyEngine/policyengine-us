@@ -229,3 +229,50 @@
   output:
     assigned_nm_premium_assistance: 0
     healthcare_benefit_value: 0
+
+- name: Case 14, Covered Connecticut premium assistance is a healthcare benefit value.
+  # ct_covered_connecticut flows into healthcare_benefit_value via the adds list.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 500
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 500
+
+- name: Case 15, derived Covered Connecticut residual flows into healthcare benefit value.
+  # T4 [S2]: a REAL CT household -- ct_covered_connecticut is DERIVED from raw
+  # employment_income (not injected), then flows into healthcare_benefit_value via
+  # the adds list. A 40-year-old single CT enrollee at 23_600 (exactly 150% FPL,
+  # above the Medicaid split so is_aca_ptc_eligible derives to True) gets a genuine
+  # non-round CT residual of 988.84 on top of the federal assigned_aca_ptc of
+  # 10_197.50. healthcare_benefit_value sums the two health benefits actually on
+  # file (assigned_aca_ptc + ct_covered_connecticut = 10_197.50 + 988.84 =
+  # 11_186.34), confirming the CT residual reaches net income through the wiring.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    assigned_aca_ptc: 10_197.50
+    ct_covered_connecticut: 988.84
+    healthcare_benefit_value: 11_186.34
