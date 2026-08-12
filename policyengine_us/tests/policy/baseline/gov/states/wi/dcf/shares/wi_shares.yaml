@@ -126,7 +126,14 @@
     people:
       person1:
         age: 30
-        employment_income: 0  # weekly_hours_worked_before_lsr defaults to 40, keeping the activity test satisfied.
+        employment_income: 0
+        # The parent is a full-time student, which Wis. Stat.
+        # § 49.155(1m)(a) counts as an approved activity. This case
+        # previously leaned on weekly_hours_worked_before_lsr defaulting to
+        # 40, which both stopped working when that default became 0 and
+        # described a parent working full time for no pay. Education is the
+        # approved activity that actually fits a household with no income.
+        is_full_time_student: true
       person2:
         age: 3
         childcare_hours_per_week: 40
