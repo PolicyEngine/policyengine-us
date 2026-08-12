@@ -407,3 +407,41 @@
     or_erdc_maximum_monthly_rate: [0, 0, 1_563]
     or_erdc_allowable_child_care_cost: 1_500
     or_erdc: 1_495
+
+- name: Case 14, failing the activity test alone denies the benefit.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+        or_erdc_provider_area: AREA_A
+        or_erdc_provider_type: CERTIFIED_CENTER
+        pre_subsidy_childcare_expenses: 18_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        # Care-need hours are supplied directly (per the variable's documented
+        # override) so the rate and copay gate stay live while the zero work
+        # hours fail the activity test on their own.
+        or_erdc_caretaker_weekly_need_hours: 40
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Mirror of Case 1 except the parent reports no qualifying work hours:
+    # every other condition of or_erdc_eligible holds, so the activity test
+    # is the sole failing condition.
+    or_erdc_eligible_child: [false, true]
+    or_erdc_income_eligible: true
+    is_ccdf_asset_eligible: true
+    or_erdc_copay: 10
+    or_erdc_allowable_child_care_cost: 1_500
+    or_erdc_activity_eligible: false
+    or_erdc_eligible: false
+    or_erdc: 0
