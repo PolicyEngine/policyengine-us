@@ -1,0 +1,302 @@
+# Tests for sd_cca (SPMUnit, MONTH, USD), the South Dakota Child Care
+# Assistance benefit. The benefit is the lesser of the summed per-child weekly
+# maximum rates (converted to a monthly amount with WEEKS_IN_YEAR /
+# MONTHS_IN_YEAR = 52/12 = 4.3333) and the family's billed child care expenses,
+# minus the monthly co-payment, floored at zero (ARSD 67:47:01:16). Only
+# eligible children with positive care hours contribute to the rate cap (the
+# limited-time rate tier starts at one hour per week). There are
+# no separate additive bonuses. sd_child_care_subsidies is the YEAR aggregator
+# (adds sd_cca); read at a month period it reports the monthly value, and
+# sd_cca is registered in the federal child_care_subsidies total.
+# Urban family day care full-time infant weekly rate 180 -> 180 x 52/12 = 780.
+
+- name: Case 1, rate-limited benefit, co-payment zero.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo; countable 1,920, below 170% FPL
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo, above the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    # rate 780 < expenses 2,000, capped at 780; copay 0. benefit = 780.
+    sd_cca: 780
+    sd_child_care_subsidies: 780
+    # sd_cca is registered as a federal child care subsidy program.
+    child_care_subsidies: 780
+
+- name: Case 2, expense-limited benefit, co-payment zero.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_600  # 300/mo, below the rate
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # expenses 300 < rate 780, capped at 300; copay 0. benefit = 300.
+    sd_cca: 300
+
+- name: Case 3, co-payment subtracted from the capped rate.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_500  # countable 3,800, above 170% FPL
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # pins 170% FPL to 3,400/mo
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # rate 780 capped below expenses; copay (3,800 - 3,400) x 5% = 20.
+    # benefit = 780 - 20 = 760.
+    sd_cca: 760
+
+- name: Case 4, two eligible children, per-child rates summed.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # copay 0
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+      person3:
+        age: 0.8  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/mo, above the summed rate
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # two infants at 780/mo each = 1,560; expenses 3,000 higher; copay 0.
+    sd_cca: 1_560
+
+- name: Case 5, ineligible family, no benefit.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 240_000  # 20,000/mo, above the income limit
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca: 0
+    sd_child_care_subsidies: 0
+
+- name: Case 6, zero child care expenses, no benefit.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # copay 0
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 0  # no billed expenses
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # capped expenses = min(0, rate) = 0; benefit floors at 0.
+    sd_cca: 0
+
+- name: Case 7, co-payment exceeds capped expenses, benefit floors at zero.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000  # 8,333.33/mo gross; countable 8,000
+      person2:
+        age: 8  # school age
+        sd_cca_provider_type: LICENSED_CENTER
+        childcare_hours_per_week: 40  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # 170% FPL = 3,400/mo
+        hhs_smi: 120_000  # 10,000/mo; 85% = 8,500/mo continuing ceiling
+        is_sd_cca_enrolled: true  # continuing recipient, 85% SMI tier
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 1_200  # 100/mo billed
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD  # rural
+  output:
+    sd_cca_eligible: true  # countable 8,000 <= 8,500 (85% SMI, enrolled)
+    # copay = (8,000 - 3,400) x 5% = 230.
+    sd_cca_copay: 230
+    # rural licensed center full-time school age 150/wk x 52/12 = 650 monthly
+    # cap; expenses 100 bind, capped at 100; benefit = max(100 - 230, 0) = 0.
+    sd_cca: 0
+
+- name: Case 8, child with no care hours, no reimbursement despite billed expenses.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # copay 0
+      person2:
+        age: 0.5  # infant
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 0  # not in care
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000  # 2,000/mo billed
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # The limited-time rate tier starts at one hour of care per week, so a
+    # child with zero care hours is excluded from the reimbursement cap:
+    # capped expenses = min(2,000, 0) = 0 and no benefit is paid.
+    sd_cca: 0
+
+- name: Case 9, protective-services child covered, non-protective sibling excluded.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0  # not in any activity
+      person2:
+        age: 0.5  # infant receiving protective services
+        receives_or_needs_protective_services: true
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+      person3:
+        age: 0.8  # infant sibling without protective services
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_ccdf_activity_test: false
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/mo billed
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD  # urban
+  output:
+    # With no caretaker activity, only the protective-services infant has a
+    # reason for care (ARSD 67:47:01:03): one urban family day care full-time
+    # infant rate 180/wk x 52/12 = 780/mo, not 1,560 for both children.
+    # Expenses 3,000 exceed the cap; the co-payment is waived for
+    # protective-services children. Benefit = 780.
+    sd_cca: 780
+
+- name: Case 10, pre-effective period, weekly rate era not yet in effect, no benefit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 0.5
+        sd_cca_provider_type: FAMILY_DAY_CARE
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    # Same household as Case 1, evaluated before the weekly rate schedule
+    # takes effect in August 2026: the uses_weekly_rates gate zeroes the
+    # benefit even though the family is otherwise eligible. Only the weekly
+    # rate era is modeled; the earlier hourly schedule is a follow-up.
+    sd_cca: 0
+    sd_child_care_subsidies: 0

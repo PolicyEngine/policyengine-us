@@ -104,7 +104,20 @@ class home_mortgage_interest_tax_unit(Variable):
     label = "Tax unit home mortgage interest"
     unit = USD
     definition_period = YEAR
-    adds = ["first_home_mortgage_interest", "second_home_mortgage_interest"]
+    documentation = (
+        "Total home mortgage interest, taken from the structured first/second "
+        "mortgage inputs when provided, otherwise falling back to the reported "
+        "person-level home mortgage interest."
+    )
+
+    def formula(tax_unit, period, parameters):
+        structured_interest = add(
+            tax_unit,
+            period,
+            ["first_home_mortgage_interest", "second_home_mortgage_interest"],
+        )
+        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
+        return where(structured_interest > 0, structured_interest, reported_interest)
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
@@ -122,12 +135,12 @@ class deductible_mortgage_interest_tax_unit(Variable):
     def formula(tax_unit, period, parameters):
         first_balance = tax_unit("first_home_mortgage_balance", period)
         second_balance = tax_unit("second_home_mortgage_balance", period)
-        first_interest = tax_unit("first_home_mortgage_interest", period)
-        second_interest = tax_unit("second_home_mortgage_interest", period)
         first_year = tax_unit("first_home_mortgage_origination_year", period)
         second_year = tax_unit("second_home_mortgage_origination_year", period)
         total_balance = first_balance + second_balance
-        total_interest = first_interest + second_interest
+        # Falls back to reported person-level interest when the structured
+        # first/second inputs are absent.
+        total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
 
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
@@ -151,7 +164,10 @@ class deductible_mortgage_interest_tax_unit(Variable):
             first_balance, second_balance, first_cap, second_cap
         )
 
-        deductible_share = np.zeros_like(total_balance)
+        # When no acquisition-debt balance is provided, assume the mortgage is
+        # within the statutory caps and fully deductible, rather than treating a
+        # $0 balance as making the interest entirely non-deductible.
+        deductible_share = np.ones_like(total_balance)
         mask = total_balance > 0
         deductible_share[mask] = np.minimum(
             1, limited_balance[mask] / total_balance[mask]

@@ -1,0 +1,31 @@
+description: Kansas zeroes the income tax of filers with adjusted gross income at or below this amount, reflecting the minimum filing requirement.
+metadata:
+  label: KS zero-tax AGI threshold (minimum filing requirement)
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  # The minimum filing requirement only appears in the tax forms, not in the legal code
+  - title: 2024 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip24.pdf#page=3
+  - title: 2025 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip25.pdf#page=3
+
+# Before 2024, the taxable-income zero-tax band in zero_tax_threshold.yaml
+# applies instead.
+JOINT:
+  0000-01-01: 0
+  2024-01-01: 26_560 # 8,240 + 18,320
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 0
+  2024-01-01: 17_660 # 6,180 + 9,160 + 2,320
+SURVIVING_SPOUSE:
+  0000-01-01: 0
+  2024-01-01: 12_765 # 3,605 + 9,160
+SINGLE:
+  0000-01-01: 0
+  2024-01-01: 12_765 # 3,605 + 9,160
+SEPARATE:
+  0000-01-01: 0
+  2024-01-01: 13_280 # 4,120 + 9,160

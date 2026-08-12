@@ -1,0 +1,206 @@
+# Daily rates per OKDHS Appendix C-4-B (1/1/2023).
+- name: Case 1, three-star center full-time rate for a three-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ok_ccs_star_level: STAR_3
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 25-48 months, full-time.
+    ok_ccs_daily_rate: 31.5
+
+- name: Case 2, three-star center part-time rate for a three-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ok_ccs_star_level: STAR_3
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 25-48 months, part-time (four or fewer hours per day).
+    ok_ccs_daily_rate: 18.9
+
+- name: Case 3, five-star home full-time rate for an infant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        ok_ccs_star_level: STAR_5
+        ok_ccs_provider_setting: CHILD_CARE_HOME
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 0-24 months, full-time.
+    ok_ccs_daily_rate: 45.4
+
+- name: Case 4, two-star home full-time rate for a school-age child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        ok_ccs_star_level: STAR_2
+        ok_ccs_provider_setting: CHILD_CARE_HOME
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 73 months to 13 years, full-time.
+    ok_ccs_daily_rate: 13.7
+
+- name: Case 5, in-home care pays 90 percent of the one-star home rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        ok_ccs_provider_setting: IN_HOME
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 0.9 * 13.00 = 11.70.
+    ok_ccs_daily_rate: 11.7
+
+- name: Case 6, four-star center full-time rate for an 18-month-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1.5
+        ok_ccs_star_level: STAR_4
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 13-24 months, full-time.
+    ok_ccs_daily_rate: 41.8
+
+- name: Case 7, unset hours per day default to the full-time rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ok_ccs_star_level: STAR_3
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 25-48 months, full-time (zero hours means unset, not part-time).
+    ok_ccs_daily_rate: 31.5
+
+- name: Case 8, a child aged 13 receives no rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 13
+        ok_ccs_star_level: STAR_3
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_daily_rate: 0
+
+- name: Case 9, three-star center full-time rate for a five-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 5
+        ok_ccs_star_level: STAR_3
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 49-72 months, full-time.
+    ok_ccs_daily_rate: 22.8
+
+- name: Case 10, three-star center full-time rate for an eight-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        ok_ccs_star_level: STAR_3
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 73 months to 13 years, full-time.
+    ok_ccs_daily_rate: 18.8
+
+- name: Case 11, three-star home full-time rate for a three-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        ok_ccs_star_level: STAR_3
+        ok_ccs_provider_setting: CHILD_CARE_HOME
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 25-48 months, full-time.
+    ok_ccs_daily_rate: 26.5
+
+- name: Case 12, three-star home full-time rate for a five-year-old.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 5
+        ok_ccs_star_level: STAR_3
+        ok_ccs_provider_setting: CHILD_CARE_HOME
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    # 49-72 months, full-time.
+    ok_ccs_daily_rate: 22.8

@@ -1,0 +1,41 @@
+description: Maryland sets this final target contribution percentage for each bracket under the State-Based Health Insurance Subsidies Program.
+values:
+  # Bands: 0-150%, 150-200%, 200-250%, 250-300%, 300-400% FPL.
+  # MD target = 2026 federal percentage - share x (2026 federal - ARPA),
+  # equivalently ARPA + (1 - share) x (2026 federal - ARPA), where the
+  # replacement share is 1.0 up to 200% FPL, tapers linearly 1.0 -> 0.5 over
+  # 200-250% FPL, and is 0.5 over 250-400% FPL.
+  # Endpoint-linear encoding: bracket start/end rates are the published
+  # endpoints; the pointwise taper is within <=0.02pp of this reading.
+  # NOTE: the 150-200% band ends at 2.00% (full replacement of the enhanced
+  # schedule). HGO p.58 prints 1.00% at the 200% FPL boundary twice (a
+  # consistent printed figure, not a one-cell typo); both cells are overridden.
+  # MIA Exhibit 2a arithmetic confirms 2.00%: $53 PMPM at 200% FPL / $31,300 =
+  # 2.03%, whereas 1.00% would give about $26. The Board design is full
+  # replacement of ePTC up to 200% FPL, adopted at the 8-18-2025 special meeting.
+  0000-01-01:
+    - 0       # program not in effect before 2026
+    - 0
+    - 0
+    - 0
+    - 0
+  2026-01-01:
+    - 0       # 0-150%: flat 0%
+    - 0.02    # 150-200%: 0% -> 2%
+    - 0.0622  # 200-250%: 2% -> 6.22%
+    - 0.0798  # 250-300%: 6.22% -> 7.98%
+    - 0.0923  # 300-400%: 7.98% -> 9.23%
+
+metadata:
+  unit: /1
+  period: year
+  label: Maryland Premium Assistance target contribution percentage - final rate per bracket
+  reference:
+    - title: COMAR 14.35.21.04B-C (State-Based Subsidies; basis of calculation)
+      href: https://regs.maryland.gov/us/md/exec/comar/14.35.21
+    - title: HGO Combined MHBE and MIA briefing to HGO and Finance (10-16-2025), state subsidy design table (prints 1.00% at the 200% FPL boundary; superseded - see MIA Exhibit 2a and Board adoption)
+      href: https://mgaleg.maryland.gov/meeting_material/2025/hgo%20-%20134051066649659653%20-%20Combined%20MHBE.MIA%20slides_10.16.2025%20briefing%20to%20HGO&Finance.pdf#page=58
+    - title: MIA 2026 ACA Approved Rates State Subsidy Program Impact, Exhibit 2a
+      href: https://insurance.maryland.gov/Documents/newscenter/newsreleases/2026-ACA-Approved-Rates-State-Subsidy-Program-Impact.pdf#page=1
+    - title: MHBE Board special meeting minutes (8-18-2025), adoption of state subsidy parameters
+      href: https://www.marylandhbe.com/wp-content/uploads/2025/09/MHBE-Board-Meeting-Minutes-8.18.25.pdf#page=5

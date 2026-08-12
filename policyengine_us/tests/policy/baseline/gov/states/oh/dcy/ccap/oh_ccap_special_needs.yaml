@@ -1,0 +1,47 @@
+# Tests for oh_ccap_special_needs (Person, MONTH).
+# 5180:2-16-01(AA): a special needs child has a chronic health condition
+# (proxied by is_disabled) or unmet developmental expectations
+# (has_developmental_delay). Consumers apply the under-18 age bound.
+- name: Case 1, child with a developmental delay has special needs.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_special_needs: true
+
+- name: Case 2, child with neither condition does not have special needs.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        has_developmental_delay: false
+        is_disabled: false
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_special_needs: false
+
+- name: Case 3, child with a chronic health condition has special needs.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        has_developmental_delay: false
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_special_needs: true

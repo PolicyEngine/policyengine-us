@@ -1,0 +1,16 @@
+description: San Bernardino County provides a flat maximum basic grant based on assistance unit size under the General Relief program if this is true.
+# The pre-June 2021 needs-based General Relief design (GRPHB Handbook Letter
+# #7356 and earlier) is not modeled.
+values:
+  1900-01-01: false
+  2021-06-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: San Bernardino County General Relief in effect
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358 (effective June 1, 2021), summary of changes (flat grant replaces needs-based budgeting)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx
+    - title: California Welfare and Institutions Code Section 17000
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=17000.

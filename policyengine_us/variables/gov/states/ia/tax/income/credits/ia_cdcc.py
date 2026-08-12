@@ -17,13 +17,13 @@ class ia_cdcc(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        # Pre-2023: Iowa's tax base used net income (the legacy joint /
-        # indiv path that the dynamically generated ia_taxable_income
-        # resolves to).
+        # Pre-2023: the percentage table is keyed on Iowa net income
+        # (IA 1040 line 26, columns A and B combined), per the Line 60
+        # worksheet and Iowa Admin. Code r. 701-304.15.
         federal_cdcc = tax_unit("cdcc_potential", period)
-        taxable_income = tax_unit("ia_taxable_income", period)
+        net_income = add(tax_unit, period, ["ia_net_income"])
         p = parameters(period).gov.states.ia.tax.income
-        return federal_cdcc * p.credits.child_care.fraction.calc(taxable_income)
+        return federal_cdcc * p.credits.child_care.fraction.calc(net_income)
 
     def formula_2023(tax_unit, period, parameters):
         # The 2022 Iowa tax reform (HF 2317) shifted Iowa's tax base to

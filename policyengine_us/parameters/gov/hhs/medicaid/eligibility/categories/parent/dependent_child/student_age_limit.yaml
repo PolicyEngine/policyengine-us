@@ -1,0 +1,16 @@
+description: A full-time student qualifies as a dependent child for the Medicaid parent and other caretaker relative category while under this age, under the state option covering 18-year-old students expected to complete secondary school.
+# Deliberately not a state breakdown: 42 CFR 435.4 fixes the option's
+# bound (an 18-year-old expected to complete school before turning 19),
+# so every electing state shares the under-19 limit. Whether a state
+# elects the option at all is student_option.yaml.
+values:
+  2014-01-01: 19
+metadata:
+  unit: year
+  period: year
+  label: Medicaid parent category dependent child student age limit
+  reference:
+    - title: 42 CFR 435.4 - definition of dependent child
+      href: https://www.law.cornell.edu/cfr/text/42/435.4
+    - title: Missouri DSS Manual § 1810.020.20.20 - Eligibility for 18-Year-Olds
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-20/1810-020-20-20/

@@ -1,0 +1,21 @@
+description: San Bernardino County counts these earned income sources under the General Relief program.
+# The A-3 income chart's earned row states the disregard rule but does not
+# enumerate earned income types, so this list is an interpretive mapping of
+# "earned income" onto PolicyEngine variables.
+values:
+  2021-06-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    # Active farming (Schedule F) is self-employment earned income; the
+    # farm_operations_income variable holds it separately from
+    # self_employment_income by model convention.
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: San Bernardino County General Relief earned income sources
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-3 (income chart, earned income row)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

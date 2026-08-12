@@ -1,0 +1,148 @@
+# Tests for sd_cca_parent_in_eligible_activity (Person, MONTH, bool).
+# A caretaker is in an eligible activity when employed at least 80 hours per
+# month at a salary equivalent to the federal minimum wage ($7.25/hr), or
+# self-employed with at least 80 reported monthly hours and monthly net
+# earnings of at least 80 x $7.25 = $580, or a full-time student (BEES Manual
+# Sections 7.1, 8.3.1, and 10.1.1; ARSD 67:47:01:03.01).
+# Monthly hours are ceil(weekly hours x 4.3), so 18.4 weekly hours ->
+# ceil(79.12) = 80 meets the bar and 18.3 -> ceil(78.69) = 79 does not.
+# weekly_hours_worked defaults to 40, so the cases set it explicitly.
+
+- name: Case 1, employed parent meeting the hours and wage requirements.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.4  # ceil(18.4 x 4.3) = 80 monthly hours
+        employment_income: 12_000  # 1,000/mo >= 80 x 7.25 = 580
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: true
+
+- name: Case 2, employed parent one increment below the 80-hour bar.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.3  # ceil(18.3 x 4.3) = 79 monthly hours
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: false
+
+- name: Case 3, employed parent below the minimum-wage equivalence bar.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.4  # 80 monthly hours
+        employment_income: 6_000  # 500/mo < 80 x 7.25 = 580
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: false
+
+- name: Case 4, employed parent exactly at the minimum-wage equivalence bar.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.4  # 80 monthly hours
+        employment_income: 6_960  # 580/mo = 80 x 7.25 exactly
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: true
+
+- name: Case 5, self-employed parent meeting the hours and earnings floor.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.4  # 80 monthly hours
+        self_employment_income: 12_000  # 1,000/mo >= 580
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: true
+
+- name: Case 6, self-employed parent one dollar below the earnings floor.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 18.4  # 80 monthly hours
+        self_employment_income: 6_948  # 579/mo < 580
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: false
+
+- name: Case 7, self-employed parent with qualifying earnings but low reported hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 10  # ceil(10 x 4.3) = 43 monthly hours
+        self_employment_income: 24_000  # 2,000/mo, well above the 580 floor
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # The model requires reported work hours to reach 80 per month. BEES
+    # Section 10.1.1 instead derives self-employment hours from net income
+    # (2,000 / 7.25 would establish the hours); that derivation is a
+    # documented simplification not modeled, so this caretaker does not
+    # qualify through the self-employment path.
+    sd_cca_parent_in_eligible_activity: false
+
+- name: Case 8, full-time student with no work hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: true
+
+- name: Case 9, no work, self-employment, or school activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_parent_in_eligible_activity: false

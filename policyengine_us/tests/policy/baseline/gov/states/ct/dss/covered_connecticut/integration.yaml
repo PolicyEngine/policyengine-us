@@ -1,0 +1,371 @@
+# Integration tests for the Covered Connecticut Program (PY2026, premium axis).
+# Covered Connecticut pays the residual benchmark silver-plan premium remaining
+# after the federal APTC, driving the enrollee's net benchmark premium to $0 for
+# APTC-eligible Connecticut tax units at or below 175% FPL:
+#   slcsp_annual = annualized second-lowest-cost silver plan (sum of 12 monthly slcsp)
+#   ct_covered_connecticut = where(eligible, max(0, slcsp_annual - aca_ptc), 0)
+#   eligible = in_effect AND any(is_aca_ptc_eligible) AND aca_magi_fraction <= 1.75
+# Scenario 1 DERIVES the whole federal ACA chain (aca_magi, aca_magi_fraction,
+# slcsp, aca_ptc) from raw employment_income for a 40-year-old single Connecticut
+# enrollee and then asserts the residual -- the highest-value test, since the CT
+# benefit rides on the derived federal APTC. Scenarios 2-7 inject
+# aca_magi_fraction / slcsp / aca_ptc / is_aca_ptc_eligible directly to isolate
+# the residual, boundary, zero-residual and ineligible branches. Derived values
+# in Scenario 1 are read from the model at 2026 parameters.
+
+# ---- Scenario 1: full federal derivation, ~160% FPL single CT enrollee ----
+- name: Scenario 1, single CT enrollee at 25k derives the federal chain and gets the residual premium.
+  # Raw input: employment_income 25_000 for a 40-year-old single Connecticut filer.
+  # Derived (read from the model): aca_magi = 25_000; aca_magi_fraction = 1.59
+  #   (~160% FPL, below the 175% ceiling -> eligible); the federal applicable %
+  #   lands at aca_required_contribution_percentage = 0.046238; slcsp annualizes
+  #   to 11_186.34.
+  # Federal APTC = max(0, slcsp - income*fed_pct) = 11_186.34 - 25_000*0.046238
+  #   = 11_186.34 - 1_155.95 = 10_030.39 (matches the model).
+  # CT residual = max(0, slcsp - aca_ptc) = 11_186.34 - 10_030.39 = 1_155.95.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi: 25_000
+    aca_magi_fraction: 1.59
+    is_aca_ptc_eligible: true
+    slcsp: 11_186.34
+    aca_ptc: 10_030.39
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 1_155.95
+
+# ---- Scenario 2: injected, ~150% FPL small residual ----
+- name: Scenario 2, 150% FPL injected inputs give a small residual of 500.
+  # At low income the federal APTC nearly covers the benchmark premium:
+  #   residual = slcsp - aca_ptc = 8_000 - 7_500 = 500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.50
+    slcsp: 8_000
+    aca_ptc: 7_500
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 500
+
+# ---- Scenario 3: injected, exactly 175% FPL boundary, larger residual ----
+- name: Scenario 3, exactly 175% FPL stays eligible with a larger residual.
+  # aca_magi_fraction 1.75 == fpl_limit (inclusive ceiling) -> eligible. Near the
+  #   ceiling the applicable % is larger, so the federal APTC covers less and the
+  #   residual grows: slcsp - aca_ptc = 10_000 - 8_800 = 1_200.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 10_000
+        aca_ptc: 8_800
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.75
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 1_200
+
+# ---- Scenario 4: injected, aca_ptc equals slcsp -> zero residual ----
+- name: Scenario 4, federal APTC covering the full premium gives a zero residual.
+  # slcsp - aca_ptc = 8_000 - 8_000 = 0. The unit is eligible, but the federal
+  #   APTC already drives the net premium to $0, so CT pays nothing on top.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 0
+
+# ---- Scenario 5: ineligible, above the 175% FPL ceiling ----
+- name: Scenario 5, CT enrollee above 175% FPL yields no benefit.
+  # aca_magi_fraction 1.76 > 1.75 -> above the ceiling -> not eligible -> 0, even
+  #   though the member is APTC-eligible and slcsp - aca_ptc would be 1_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.76
+        slcsp: 10_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.76
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0
+
+# ---- Scenario 6: ineligible, non-Connecticut household ----
+- name: Scenario 6, non-Connecticut enrollee at 150% FPL yields no benefit via defined_for.
+  # APTC-eligible at 150% FPL, but defined_for = StateCode.CT gates the whole
+  #   variable off for a New York household -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0
+
+# ---- Scenario 7: multi-member CT family, gap-binding residual ----
+- name: Scenario 7, three-person CT family at 160% FPL gets a positive residual scaling with the premium.
+  # A larger family has a larger benchmark premium; only one member need be
+  #   APTC-eligible for the unit to qualify at aca_magi_fraction 1.60 <= 1.75:
+  #   residual = slcsp - aca_ptc = 20_000 - 18_500 = 1_500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+      person3:
+        age: 8
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 1.60
+        slcsp: 20_000
+        aca_ptc: 18_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 1_500
+
+# ---- Scenario 8: injected, ~138% FPL low end just above the Medicaid floor ----
+- name: Scenario 8, CT enrollee at 138% FPL just above the Medicaid floor gets a small residual.
+  # aca_magi_fraction 1.38 is the effective lower bound inherited from the
+  #   federal APTC/Medicaid split (CT imposes no explicit floor), well below the
+  #   1.75 ceiling -> eligible. At the low end the federal APTC nearly covers the
+  #   benchmark premium: residual = slcsp - aca_ptc = 8_500 - 8_300 = 200.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+        slcsp: 8_500
+        aca_ptc: 8_300
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi_fraction: 1.38
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 200
+
+# ---- Scenario 9: injected, APTC exceeds SLCSP -> floored at zero ----
+- name: Scenario 9, federal APTC exceeding the benchmark premium floors the residual at zero.
+  # Over-subsidized data edge: slcsp - aca_ptc = 8_000 - 9_000 = -1_000 ->
+  #   max(0, -1_000) = 0. The unit is eligible, but CT never pays a negative
+  #   amount when the federal APTC exceeds the modeled benchmark premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 0
+
+# ---- Scenario 10: injected, large CT family, large benchmark premium ----
+- name: Scenario 10, five-person CT family at 150% FPL gets a large residual scaling with the premium.
+  # A larger household carries a larger benchmark premium; only one member need
+  #   be APTC-eligible for the unit to qualify at aca_magi_fraction 1.50 <= 1.75:
+  #   residual = slcsp - aca_ptc = 32_000 - 27_000 = 5_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        is_aca_ptc_eligible: true
+      person2:
+        age: 40
+        is_aca_ptc_eligible: false
+      person3:
+        age: 12
+        is_aca_ptc_eligible: false
+      person4:
+        age: 9
+        is_aca_ptc_eligible: false
+      person5:
+        age: 5
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 1.50
+        slcsp: 32_000
+        aca_ptc: 27_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 5_000
+
+# ---- Scenario 11: full federal derivation, exactly 150% FPL single CT enrollee ----
+- name: Scenario 11, single CT enrollee at 23.6k derives the federal chain and lands exactly at 150% FPL.
+  # Raw input: employment_income 23_600 for a 40-year-old single Connecticut
+  #   filer, NO injected ACA inputs -- the full federal chain derives everything.
+  # Derived (read from the model at 2026 parameters):
+  #   aca_magi = 23_600; aca_magi_fraction = 1.50 (exactly 150% FPL, below the
+  #   1.75 ceiling -> eligible); slcsp annualizes to 11_186.34 (age-40 CT
+  #   benchmark, same as Scenario 1); federal APTC = 10_197.50, i.e. the
+  #   benchmark less the required contribution (11_186.34 - 23_600*0.041900).
+  # CT residual = max(0, slcsp - aca_ptc) = 11_186.34 - 10_197.50 = 988.84.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi: 23_600
+    aca_magi_fraction: 1.50
+    is_aca_ptc_eligible: true
+    slcsp: 11_186.34
+    aca_ptc: 10_197.50
+    ct_covered_connecticut_eligible: true
+    ct_covered_connecticut: 988.84
+
+# ---- Scenario 12 [T3]: full federal derivation, ~140% FPL single CT enrollee is Medicaid, not marketplace ----
+- name: Scenario 12, single CT enrollee at 22k derives into Medicaid and gets no CT residual.
+  # Raw input: employment_income 22_000 for a 40-year-old single Connecticut filer,
+  #   NO injected ACA inputs -- the full federal chain derives everything and the
+  #   federal PTC gate itself governs eligibility.
+  # aca_magi = 22_000; aca_magi_fraction = 1.40 (~140% FPL). In Connecticut (a
+  #   Medicaid-expansion state, HUSKY up to 138% FPL for adults, with an adult
+  #   coverage group extending above it) a single adult at this income is
+  #   Medicaid-eligible, so is_aca_ptc_eligible derives to False (Medicaid coverage
+  #   precludes marketplace APTC). With no APTC-eligible member, slcsp returns 0 for
+  #   the ineligible and the CT residual is 0. This scenario documents that CT's
+  #   ~138% effective lower bound is inherited from the federal Medicaid/APTC split:
+  #   below the split, enrollees are on Medicaid rather than the Covered CT program.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 22_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    aca_magi: 22_000
+    aca_magi_fraction: 1.40
+    is_aca_ptc_eligible: false
+    slcsp: 0
+    aca_ptc: 0
+    ct_covered_connecticut_eligible: false
+    ct_covered_connecticut: 0

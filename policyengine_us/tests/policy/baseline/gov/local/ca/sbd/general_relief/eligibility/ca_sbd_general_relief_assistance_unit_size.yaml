@@ -1,0 +1,121 @@
+# The assistance unit counts eligible persons only. Members barred for SSI
+# or CalWORKs receipt, immigration status, facility residence, or lack of
+# linkage are excluded from the count. A member barred for other-assistance
+# receipt also has their income excluded from AU income; members excluded
+# for other reasons remain family members whose income still counts.
+- name: Case 1, a single eligible adult forms a one-person assistance unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_assistance_unit_size: 1
+
+- name: Case 2, a parent and a young child form a two-person assistance unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The child links through the cooperating parent (under 16).
+    ca_sbd_general_relief_assistance_unit_size: 2
+
+- name: Case 3, a treatment-facility resident is excluded from the assistance unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_assistance_unit_size: 1
+
+- name: Case 4, a 17-year-old not attending high school fails linkage and is excluded.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+      person2:
+        age: 17
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # At 17 the under-16 path closes and the student path requires
+    # full-time high school attendance.
+    ca_sbd_general_relief_assistance_unit_size: 1
+
+- name: Case 5, a seven-member family all pass and form a seven-person assistance unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        ssi: 0
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_sbd: true
+  output:
+    # The size itself is uncapped; the grant table caps at the 5+ row.
+    ca_sbd_general_relief_assistance_unit_size: 7
