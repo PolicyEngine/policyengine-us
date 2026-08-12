@@ -26,6 +26,7 @@
     is_usda_disabled: true
     other_medical_expenses: 35.01 * 12
     state_code_str: CA
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_medical_expense_deduction: 120 * 12
 
@@ -37,6 +38,7 @@
     is_usda_elderly: true
     other_medical_expenses: 155 * 12
     state_code_str: CA
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_medical_expense_deduction: (155 - 35) * 12
 
@@ -47,6 +49,7 @@
     is_usda_elderly: true
     other_medical_expenses: 156 * 12
     state_code_str: CA
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_medical_expense_deduction: (156 - 35) * 12
 

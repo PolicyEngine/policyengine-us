@@ -20,6 +20,7 @@
     people:
       person1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_400
         # $20,400/yr = $1,700/mo < $1,762.50 (100% FPG for 2)
       person2:
@@ -57,6 +58,7 @@
     people:
       person1:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         # $24,000/yr = $2,000/mo
         # Family of 2: 100% FPG = $1,762.50; 138% FPG = $2,432.25
@@ -95,11 +97,13 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 60_000
         # $60,000/yr = $5,000/mo > $3,064.75 (138% FPG for 3)
         # Step 3: 7% * $5,000 / 4.33 = $80.77/week
       person2:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 0
       person3:
         age: 8
@@ -135,12 +139,14 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         # $24,000/yr = $2,000/mo
         # Family of 4: 100% FPG = $2,679.17/mo
         # $2,000 < $2,679.17 → Step 1 → $0
       person2:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 0
       person3:
         age: 1
@@ -184,6 +190,7 @@
     people:
       person1:
         age: 25
+        weekly_hours_worked_before_lsr: 40
         employment_income: 120_000
         # Well above 85% SMI for family of 2
       person2:
@@ -217,6 +224,7 @@
     people:
       person1:
         age: 40
+        weekly_hours_worked_before_lsr: 40
         employment_income: 36_000
       person2:
         age: 14
@@ -250,6 +258,7 @@
     people:
       person1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_400
         # $20,400/yr = $1,700/mo < $1,762.50 (100% FPG for 2)
       person2:
@@ -290,12 +299,14 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         # $24,000/yr = $2,000/mo
         # Family of 3: 100% FPG = $2,220.83
         # $2,000 < $2,220.83 → Step 1 → $0 cost share
       person2:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 0
       person3:
         age: 5
