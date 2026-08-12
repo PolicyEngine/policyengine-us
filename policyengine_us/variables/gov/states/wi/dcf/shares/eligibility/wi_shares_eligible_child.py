@@ -18,9 +18,11 @@ class wi_shares_eligible_child(Variable):
         age = person("age", period.this_year)
         # Children under age 19 remain eligible with a verified disability if
         # they cannot care for themselves; is_disabled proxies the verified
-        # status (Section 4.3). A child who turns 13 mid-eligibility-period
-        # stays eligible until renewal under the grandfather rule; we don't
-        # track the renewal date at the moment.
+        # status but not the inability to self-care, so the extension
+        # over-includes disabled 13-18-year-olds who can care for themselves
+        # (Section 4.3). A child who turns 13 mid-eligibility-period stays
+        # eligible until renewal under the grandfather rule; we don't track
+        # the renewal date at the moment.
         is_disabled = person("is_disabled", period.this_year)
         age_limit = where(is_disabled, p.disabled_child_age_limit, p.child_age_limit)
         age_eligible = age < age_limit

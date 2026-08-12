@@ -20,6 +20,12 @@ class wi_shares_parent_in_approved_activity(Variable):
         # evidences active self-employment. weekly_hours_worked_before_lsr is
         # used instead of weekly_hours_worked to avoid a labor-supply
         # response cycle.
+        # This proxy is over-inclusive relative to the statute's closed
+        # list: the statutory education pathways are limited (high school
+        # or its equivalent for minor/young parents, or courses tied to an
+        # employability plan), while is_full_time_student counts any
+        # full-time student regardless of age or program, so the variable
+        # errs toward eligibility.
         is_employed = (
             (person("weekly_hours_worked_before_lsr", period.this_year) > 0)
             | (person("employment_income", period) > 0)
