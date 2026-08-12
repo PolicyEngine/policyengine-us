@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_provider_type import (
+from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.rates.ne_child_care_subsidy_provider_type import (
     NEChildCareSubsidyProviderType,
 )
 

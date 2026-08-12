@@ -1,14 +1,14 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_age_group import (
+from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.rates.ne_child_care_subsidy_age_group import (
     NEChildCareSubsidyAgeGroup,
 )
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_provider_type import (
+from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.rates.ne_child_care_subsidy_provider_type import (
     NEChildCareSubsidyProviderType,
 )
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_quality_tier import (
+from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.rates.ne_child_care_subsidy_quality_tier import (
     NEChildCareSubsidyQualityTier,
 )
-from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.ne_child_care_subsidy_rate_unit import (
+from policyengine_us.variables.gov.states.ne.dhhs.child_care_subsidy.rates.ne_child_care_subsidy_rate_unit import (
     NEChildCareSubsidyRateUnit,
 )
 
