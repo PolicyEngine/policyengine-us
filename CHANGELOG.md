@@ -1,3 +1,66 @@
+## [1.795.0] - 2026-08-12
+
+### Added
+
+- Add Covered Connecticut Program premium assistance.
+
+
+## [1.794.4] - 2026-08-12
+
+### Fixed
+
+- Set explicit work hours in the TANF non-cash BBCE gross-income tests that relied on the former 40-hour default of weekly_hours_worked_before_lsr, so they remain green after that default became 0.
+
+
+## [1.794.3] - 2026-08-12
+
+### Fixed
+
+- Default weekly_hours_worked_before_lsr to 0 rather than 40 so that missing hours data fails the SNAP work-requirement hours tests loudly instead of silently satisfying them.
+
+
+## [1.794.2] - 2026-08-11
+
+### Fixed
+
+- Apply Missouri TANF earned income disregards to each earner separately, allow a caretaker-only grant when the only child in the home receives SSI, and exclude SSI recipients' person-level assets from the resource test.
+
+
+## [1.794.1] - 2026-08-11
+
+### Fixed
+
+- Update SNAP broad-based categorical eligibility income limits on each state's own poverty-guideline schedule, rather than the federal October cycle, and raise Arizona's standard to 200% of the poverty guideline from March 2026.
+
+
+## [1.794.0] - 2026-08-11
+
+### Added
+
+- Add New Mexico Premium Assistance (Marketplace Affordability Program NMPA and MIH).
+
+
+## [1.793.0] - 2026-08-11
+
+### Added
+
+- Add Colorado Premium Assistance (Connect for Health Colorado premium wrap).
+
+
+## [1.792.1] - 2026-08-11
+
+### Fixed
+
+- Removed the incorrect low-income AGI cap on the Vermont child and dependent care credit for tax year 2022, which 2022 Act 138 repealed retroactively to January 1, 2022.
+
+
+## [1.792.0] - 2026-08-11
+
+### Added
+
+- Add California Premium Subsidy (Covered California Individual Market Assistance).
+
+
 ## [1.791.0] - 2026-08-10
 
 ### Added

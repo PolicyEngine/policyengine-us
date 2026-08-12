@@ -5,6 +5,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000  # $2,500/month.
       person2:
         age: 3
@@ -36,6 +37,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 1
         ok_ccs_provider_setting: CHILD_CARE_HOME
@@ -66,6 +68,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 60_000  # $5,000/month, above $4,525.
       person2:
         age: 3
@@ -91,6 +94,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000  # $2,500/month.
       person2:
         age: 3
@@ -117,6 +121,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         self_employment_income: -60_000  # -$5,000/month.
       person2:
         age: 3
@@ -146,9 +151,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -173,6 +180,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
       person2:
         age: 13
@@ -197,6 +205,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
       person2:
         age: 3
@@ -221,6 +230,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000  # $2,500/month.
       person2:
         age: 3
@@ -256,6 +266,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 72_000  # $6,000/month, above the $4,525 size-2 limit.
       person2:
         age: 3
@@ -290,6 +301,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
     spm_units:
       spm_unit:

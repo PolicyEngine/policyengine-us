@@ -111,3 +111,183 @@
     md_premium_assistance: 868.425  # COMAR .04B: max(0, (6_000 - 2_698) - 0.0622 * 39_125)
     household_health_benefits: 868.425  # derived MD subsidy flows through the pipeline
     household_benefits: 868.425  # carried into household_benefits / net income
+
+- name: Case 7, California Premium Subsidy flows through household_health_benefits via the assigned twin.
+  # assigned_ca_premium_subsidy (the take-up-gated twin) is in the
+  # household_health_benefits parameter list, so with the flag on a forced $900
+  # subsidy aggregates into household_health_benefits / household_benefits / net
+  # income, proving the second registration list carries the CA state subsidy.
+  # All other health components are zeroed so the total equals the CA subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+        md_premium_assistance: 0
+        assigned_ca_premium_subsidy: 900
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    household_health_benefits: 900  # the twin flows through the second list
+    household_benefits: 900  # carried into household_benefits / net income
+
+- name: Case 8, flag on includes forced Colorado Premium Assistance via the assigned twin.
+  # assigned_co_premium_assistance is registered in healthcare_benefit_value's
+  # adds list (the canonical health-value aggregate feeding net income when the
+  # flag is on), so a forced $960 assigned subsidy flows through to the household
+  # total. Other health components are zeroed so the total equals the CO subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    md_premium_assistance: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 960
+    snap: 0
+  output:
+    household_health_benefits: 960
+    household_benefits: 960
+
+- name: Case 9, DERIVED Colorado Premium Assistance flows into net income with the flag on.
+  # A real CO tax unit (single age 40 at 250% FPL) derives co_premium_assistance
+  # and its assigned twin through the model; with take-up defaulting to true the
+  # twin equals the raw amount and aggregates into household_health_benefits and
+  # thus household_benefits / net income. n=1 -> 12*80 = 960; residual
+  # 10_000-2_000 = 8_000 >= 960; amount = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+        md_premium_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the CO subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance: 960
+    assigned_co_premium_assistance: 960
+    household_health_benefits: 960  # derived CO subsidy flows through the pipeline
+    household_benefits: 960
+
+- name: Case 10, take-up false zeroes the Colorado assigned twin in net income.
+  # Same derived CO unit but takes_up_co_premium_assistance_if_eligible false:
+  # the raw co_premium_assistance stays 960 while the assigned twin is 960 * 0 = 0,
+  # so household_health_benefits / net income pick up nothing. Confirms the
+  # net-income pipeline reads the take-up-gated twin, not the raw amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+        takes_up_co_premium_assistance_if_eligible: false
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+        md_premium_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the CO subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance: 960  # raw amount unchanged
+    assigned_co_premium_assistance: 0  # take-up false zeroes the twin
+    household_health_benefits: 0  # nothing flows into net income
+    household_benefits: 0
+
+- name: Case 11, New Mexico Premium Assistance flows into household health benefits.
+  # household_health_benefits sums gov.household.household_health_benefits, which
+  # lists assigned_nm_premium_assistance (the take-up-gated twin, default true).
+  # With the flag on and the household in NM, the assigned amount (900) enters
+  # household_health_benefits and thus household_benefits / net income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nm_premium_assistance: 900
+    snap: 0
+  output:
+    assigned_nm_premium_assistance: 900
+    household_health_benefits: 900
+    household_benefits: 900
+
+- name: Case 12, take-up false keeps New Mexico Premium Assistance out of net income.
+  # takes_up_nm_premium_assistance_if_eligible false zeroes the assigned twin, so
+  # the raw 900 does NOT flow into household_health_benefits even with the flag on.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    gov.simulation.include_health_benefits_in_net_income: true
+    assigned_aca_ptc: 0
+    medicaid_cost: 0
+    nm_premium_assistance: 900
+    takes_up_nm_premium_assistance_if_eligible: false
+    snap: 0
+  output:
+    assigned_nm_premium_assistance: 0
+    household_health_benefits: 0
+    household_benefits: 0

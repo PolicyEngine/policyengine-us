@@ -8,7 +8,7 @@ class mo_tanf_standard_of_need(Variable):
     unit = USD
     definition_period = MONTH
     reference = (
-        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-120",
+        "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-010-05-185/",
     )
     defined_for = StateCode.MO

@@ -1,0 +1,373 @@
+# Unit tests for the Covered Connecticut Program amount (REQ-5, REQ-6). For an
+# eligible tax unit the benefit is the residual benchmark silver premium after
+# the federal APTC, floored at zero:
+#   slcsp_annual = add(tax_unit, period, ["slcsp"])   # slcsp is MONTH-period, summed over 12
+#   ct_covered_connecticut = max(0, slcsp_annual - aca_ptc)
+# The amount variable is gated by defined_for = "ct_covered_connecticut_eligible",
+# so any tax unit failing the three eligibility gates (in_effect, APTC, income)
+# or the StateCode.CT gate returns 0. slcsp, aca_ptc, aca_magi_fraction and
+# is_aca_ptc_eligible are supplied directly so each residual is hand-verifiable.
+
+# ---- Eligible, small residual near the Medicaid floor (~150% FPL) ----
+- name: Case 1, 150% FPL eligible residual of 500.
+  # slcsp 8_000 (annual) - aca_ptc 7_500 = 500 > 0. At low income the federal APTC
+  # nearly covers the benchmark premium, so the CT residual is small.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 500
+
+# ---- Eligible, mid-band residual (~160% FPL) ----
+- name: Case 2, 160% FPL eligible residual of 300.
+  # slcsp 9_000 - aca_ptc 8_700 = 300 > 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.60
+        slcsp: 9_000
+        aca_ptc: 8_700
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 300
+
+# ---- Eligible, larger residual near the 175% ceiling ----
+- name: Case 3, 175% FPL eligible larger residual of 1200.
+  # At higher income the applicable percentage is larger, so the federal APTC
+  # covers less of the benchmark premium and the CT residual grows:
+  # slcsp 10_000 - aca_ptc 8_800 = 1_200 > 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 10_000
+        aca_ptc: 8_800
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 1_200
+
+# ---- Eligible but APTC exactly equals SLCSP: zero residual ----
+- name: Case 4, aca_ptc equal to slcsp gives a zero residual.
+  # slcsp 8_000 - aca_ptc 8_000 = 0. The unit is eligible but the federal APTC
+  # already covers the full benchmark premium, so CT pays nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Ineligible: income above the 175% FPL ceiling ----
+- name: Case 5, 176% FPL above the ceiling yields no benefit.
+  # aca_magi_fraction 1.76 > 1.75 -> not eligible -> 0 (defined_for gate),
+  # even though slcsp - aca_ptc would otherwise be 1_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.76
+        slcsp: 10_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Ineligible: no APTC-eligible member ----
+- name: Case 6, no APTC-eligible member yields no benefit.
+  # any(is_aca_ptc_eligible) is false -> not eligible -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Ineligible: non-Connecticut household ----
+- name: Case 7, non-Connecticut household yields no benefit via defined_for.
+  # defined_for = StateCode.CT (via the eligible variable); a New York household
+  # is gated off -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Ineligible: not in effect (pre-2026) ----
+- name: Case 8, 2025 pre-effective year yields no benefit.
+  # in_effect is false before 2026 -> not eligible -> 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Eligible multi-member family, positive residual ----
+- name: Case 9, three-person CT family gets a positive residual.
+  # A larger family has a larger benchmark premium; slcsp 20_000 - aca_ptc 18_500
+  # = 1_500 > 0. Only one member need be APTC-eligible for the unit to qualify at
+  # aca_magi_fraction 1.60 <= 1.75.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+      person2:
+        is_aca_ptc_eligible: true
+      person3:
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 1.60
+        slcsp: 20_000
+        aca_ptc: 18_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 1_500
+
+# ---- Edge: zero SLCSP with zero APTC yields a zero residual ----
+- name: Case 10, zero benchmark premium yields a zero residual.
+  # slcsp 0 - aca_ptc 0 = 0. A data edge with no benchmark premium on file:
+  # max(0, 0 - 0) = 0, no negative or spurious payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 0
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Edge: APTC exceeds SLCSP (over-subsidized data edge) floors at zero ----
+- name: Case 11, APTC exceeding the benchmark premium floors the residual at zero.
+  # slcsp 8_000 - aca_ptc 9_000 = -1_000 -> max(0, -1_000) = 0. Guards the floor
+  # against an over-subsidized data edge where the federal APTC exceeds the
+  # modeled benchmark premium; CT never pays a negative amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 0
+
+# ---- Edge: very low end (~138% FPL, just above Medicaid) positive residual ----
+- name: Case 12, 138% FPL just above the Medicaid floor gets a positive residual.
+  # aca_magi_fraction 1.38 (~138% FPL, the effective lower bound inherited from
+  # the federal APTC/Medicaid split) <= 1.75 -> eligible. At the low end the
+  # federal APTC nearly covers the benchmark premium:
+  # slcsp 8_500 - aca_ptc 8_300 = 200 > 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+        slcsp: 8_500
+        aca_ptc: 8_300
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 200
+
+# ---- Edge: large family, large benchmark premium, large residual ----
+- name: Case 13, five-person CT family gets a large residual scaling with the premium.
+  # A larger household has a larger benchmark premium; only one member need be
+  # APTC-eligible for the unit to qualify at aca_magi_fraction 1.50 <= 1.75:
+  # slcsp 32_000 - aca_ptc 27_000 = 5_000 > 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+      person2:
+        is_aca_ptc_eligible: false
+      person3:
+        is_aca_ptc_eligible: false
+      person4:
+        is_aca_ptc_eligible: false
+      person5:
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 1.50
+        slcsp: 32_000
+        aca_ptc: 27_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 5_000
+
+# ---- T6 [G2]: 2027 amount assertion confirms in_effect carry-forward ----
+- name: Case 14, 2027 later year retains the same residual (standing statute, no sunset).
+  # in_effect stays true from 2026 onward, so a 2027 eligible unit with the same
+  # forced inputs as Case 1 keeps the same residual: slcsp 8_000 - aca_ptc 7_500 =
+  # 500. Confirms the carry-forward of the in_effect toggle past the launch year.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 500
+
+# ---- T7 [G3]: negative-income low end -> residual behavior holds ----
+- name: Case 15, negative employment income at the low end retains the eligible residual.
+  # A self-employment loss drives income negative; aca_magi_fraction is forced to
+  # the low-end floor and the member is APTC-eligible, so the unit stays eligible
+  # via the federal gate and the residual is max(0, slcsp - aca_ptc) = 8_000 -
+  # 7_500 = 500. Guards against negative income inflating or zeroing the residual.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+        slcsp: 8_000
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut: 500  # verified: negative income does not disturb the injected residual

@@ -903,3 +903,17 @@
     county_fips: "02013"
   output:
     meets_snap_abawd_work_requirements: true
+
+# Hardening: a working-age, non-exempt adult with NO hours input must fail
+# the ABAWD work-hours test. Before weekly_hours_worked_before_lsr defaulted
+# to 40, this person silently cleared the 20-hour test, making the whole
+# work requirement a no-op whenever the hours column was missing.
+- name: Case 59, missing hours input fails the ABAWD work-hours test (no silent 40-hour default).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 40
+    is_disabled: false
+    state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: false

@@ -1,0 +1,20 @@
+description: New Mexico limits the base income eligibility to this share of the federal poverty line under the Health Insurance Marketplace Affordability Program.
+values:
+  # Dual use: this ceiling is the base-program cutoff via <= (units at or below
+  # 400% FPL qualify for base assistance) and simultaneously the Middle Income
+  # Household floor via > (units above 400% FPL route to the MIH component).
+  # PY2027 uses the same 400% ceiling per the FINAL PY2027 MAP Manual (HCA,
+  # issued 2026-06-16), Table 1 (p.4) and the flat 8.5% cap at >=400% FPL (p.4).
+  2026-01-01: 4
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Premium Assistance income limit as fraction of FPL
+  reference:
+    - title: PY2026 MAP Policy and Procedures Manual, Eligibility item 3 and Program Parameters
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
+    - title: PY2026 MAP Policy and Procedures Manual, consumers over 400% FPL do not qualify
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=6
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, Table 1
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4

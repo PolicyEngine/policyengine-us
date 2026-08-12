@@ -1,0 +1,384 @@
+# Unit tests for the New Mexico Premium Assistance target contribution
+# percentage. Bracket-interpolated from
+# gov.states.nm.hca.premium_assistance.target_contribution_percentage:
+#   threshold: [0, 1.5, 2.0, 2.5, 3.0, 4.0]
+#   initial:   [0, 0,   0,   0.02, 0.05]
+#   final:     [0, 0,   0.02, 0.05, 0.085]
+# Bands (initial -> final over the FPL band):
+#   0-150%   FPL: 0%           (flat)
+#   150-200% FPL: 0%           (flat)
+#   200-250% FPL: 0%   -> 2%   (interpolated)
+#   250-300% FPL: 2%   -> 5%   (interpolated)
+#   300-400% FPL: 5%   -> 8.5% (interpolated)
+# NM has no young-adult overlay, so the percentage depends only on
+# aca_magi_fraction. Every expected value is hand-computed inline.
+
+# ---- Knot points ----
+
+- name: Case 1, 138% FPL -> 0.00% (0-150% band, full replacement).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 2, exactly 150% FPL -> 0.00% (start of 150-200% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 3, exactly 200% FPL -> 0.00% (start of 200-250% band, initial 0%).
+  # NM keeps a 0% target at exactly 200% FPL (the 200-250% band starts at 0%),
+  # unlike MD which starts at 2% here.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.00
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 4, exactly 250% FPL -> 2.00% (start of 250-300% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.02
+
+- name: Case 5, exactly 300% FPL -> 5.00% (start of 300-400% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.05
+
+- name: Case 6, exactly 400% FPL -> 8.50% (top of the base schedule).
+  # aca_magi_fraction 4.00 clips to the last band [3.00, 4.00] final rate.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.00
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.085
+
+# ---- Mid-bracket interpolations ----
+
+- name: Case 7, 225% FPL -> 1.00% (mid 200-250% band).
+  # bracket [2.00, 2.50]: 0 + (2.25-2.00)/0.50 * (0.02-0) = 0.5 * 0.02 = 0.01.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.25
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.01
+
+- name: Case 8, 275% FPL -> 3.50% (mid 250-300% band).
+  # bracket [2.50, 3.00]: 0.02 + (2.75-2.50)/0.50 * (0.05-0.02) = 0.02 + 0.5*0.03.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.75
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.035
+
+- name: Case 9, 350% FPL -> 6.75% (mid 300-400% band).
+  # bracket [3.00, 4.00]: 0.05 + (3.50-3.00)/1.00 * (0.085-0.05) = 0.05 + 0.5*0.035.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0675
+
+# ---- Bracket-boundary semantics ----
+
+- name: Case 10, 0% FPL clamps to the first bracket -> 0.00%.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 11, just above 200% FPL (2.01) -> 0.04% (start of 200-250% ramp).
+  # bracket [2.00, 2.50]: 0 + (2.01-2.00)/0.50 * (0.02-0) = 0.02*0.02 = 0.0004.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.01
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0004
+
+- name: Case 12, just below 250% FPL (2.49) -> 1.96% (top of 200-250% band).
+  # bracket [2.00, 2.50]: 0 + (2.49-2.00)/0.50 * 0.02 = 0.98*0.02 = 0.0196.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.49
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0196
+
+- name: Case 13, just above 250% FPL (2.51) -> 2.06% (start of 250-300% band).
+  # bracket [2.50, 3.00]: 0.02 + (2.51-2.50)/0.50 * (0.05-0.02) = 0.02 + 0.02*0.03.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.51
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.0206
+
+- name: Case 14, just above 300% FPL (3.01) -> 5.035% (start of 300-400% band).
+  # bracket [3.00, 4.00]: 0.05 + (3.01-3.00)/1.00 * (0.085-0.05) = 0.05 + 0.01*0.035.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.01
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.05035
+
+- name: Case 15, above 400% FPL (4.50) clamps to the top bracket rate -> 8.50%.
+  # bracket_idx clips to the last band [3.00, 4.00]; position clips to 1 -> final
+  # 0.085. (MIH units above 400% use the flat 8.5% mih.rate inside the amount
+  # variable; this checks the schedule variable does not extrapolate.)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.085
+
+# ---- Edge cases: below-zero fraction, exact top-bracket start, carry-forward ----
+
+- name: Case 16, negative FPL fraction clamps to the first bracket -> 0.00%.
+  # searchsorted([0,1.5,2.0,2.5,3.0,4.0], -0.5, "right")=0, -1 -> -1, clipped to 0.
+  # bracket [0, 1.5]; position (-0.5-0)/1.5 = -0.33 clipped to 0; initial 0, final 0
+  # -> 0. Guards against a negative aca_magi_fraction producing a spurious rate.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: -0.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 17, just below 200% FPL (1.99) -> 0.00% (flat 150-200% band).
+  # bracket [1.5, 2.0]: initial 0, final 0 -> 0 regardless of position. Confirms
+  # the gross-up band (<=200%) carries a 0% target right up to the 200% knot.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.99
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 18, PY2027 carry-forward uses the same schedule -> 3.50% at 275% FPL.
+  # Schedule values carry forward through PY2027; bracket [2.50, 3.00]:
+  # 0.02 + (2.75-2.50)/0.50 * (0.05-0.02) = 0.02 + 0.5*0.03 = 0.035.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.75
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_target_contribution_percentage: 0.035
