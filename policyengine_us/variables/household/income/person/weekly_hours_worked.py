@@ -23,7 +23,17 @@ class weekly_hours_worked_before_lsr(Variable):
     label = "average weekly hours worked (before labor supply responses)"
     unit = "hour"
     definition_period = YEAR
-    default_value = 40
+    documentation = (
+        "Usual weekly hours worked, before labor supply responses. Datasets "
+        "populate this from survey data; it is the input the SNAP ABAWD "
+        "(20-hour) and general (30-hour) work-requirement tests read. The "
+        "default is 0, not a full-time 40, so a household or dataset that "
+        "fails to populate it reads as 'no hours' and fails the work-hours "
+        "test loudly, rather than silently clearing every hours-conditioned "
+        "work requirement — the failure mode where a missing or degenerate "
+        "hours column makes work-requirement reforms a no-op."
+    )
+    default_value = 0
 
 
 class weekly_hours_worked_behavioural_response_income_elasticity(Variable):

@@ -133,3 +133,146 @@
   output:
     md_premium_assistance: 868.425
     healthcare_benefit_value: 868.425  # derived MD subsidy aggregates to the household
+
+- name: Case 9, California Premium Subsidy flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned twin
+  # (assigned_ca_premium_subsidy), not the raw ca_premium_subsidy, so a forced
+  # $900 assigned subsidy aggregates to the household value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 900
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 900
+
+- name: Case 10, assigned ACA PTC and CA Premium Subsidy are additive (base + top-up).
+  # Both ACA components nonzero: assigned_aca_ptc (federal PTC, take-up-gated) is
+  # the base, ca_premium_subsidy (raw state top-up) is the California residual on
+  # top. healthcare_benefit_value adds both -> 1_200 + 900 = 2_100. Guards against
+  # any future accidental subtraction/overlap between the two ACA layers; they are
+  # additive by design (the CA residual formula already nets out aca_ptc, so there
+  # is no double-count of the federal subsidy).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 1_200
+    ca_premium_subsidy: 900
+    co_omnisalud: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 2_100
+
+- name: Case 11, Colorado Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the take-up-gated assigned twin
+  # (assigned_co_premium_assistance), not the raw co_premium_assistance, so a
+  # forced $960 assigned subsidy aggregates to the household value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_co_premium_assistance: 960
+    assigned_ca_premium_subsidy: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 960
+
+- name: Case 12, New Mexico Premium Assistance flows into healthcare benefit value.
+  # healthcare_benefit_value adds the assigned twin (assigned_nm_premium_assistance
+  # = nm_premium_assistance * takeup, default true), which is defined_for
+  # StateCode.NM, so the household must be in NM; with takeup defaulting true the
+  # raw and assigned amounts coincide (900).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 900
+    healthcare_benefit_value: 900
+
+- name: Case 13, take-up false zeroes the New Mexico Premium Assistance health value.
+  # Setting takes_up_nm_premium_assistance_if_eligible false makes the assigned
+  # twin 0 even though the raw amount is 900, so it does not enter the health value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NM
+    medicaid_cost: 0
+    msp_cost: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    nm_premium_assistance: 900
+    takes_up_nm_premium_assistance_if_eligible: false
+    or_healthier_oregon_cost: 0
+  output:
+    assigned_nm_premium_assistance: 0
+    healthcare_benefit_value: 0
+
+- name: Case 14, Covered Connecticut premium assistance is a healthcare benefit value.
+  # ct_covered_connecticut flows into healthcare_benefit_value via the adds list.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 500
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 500
+
+- name: Case 15, derived Covered Connecticut residual flows into healthcare benefit value.
+  # T4 [S2]: a REAL CT household -- ct_covered_connecticut is DERIVED from raw
+  # employment_income (not injected), then flows into healthcare_benefit_value via
+  # the adds list. A 40-year-old single CT enrollee at 23_600 (exactly 150% FPL,
+  # above the Medicaid split so is_aca_ptc_eligible derives to True) gets a genuine
+  # non-round CT residual of 988.84 on top of the federal assigned_aca_ptc of
+  # 10_197.50. healthcare_benefit_value sums the two health benefits actually on
+  # file (assigned_aca_ptc + ct_covered_connecticut = 10_197.50 + 988.84 =
+  # 11_186.34), confirming the CT residual reaches net income through the wiring.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    assigned_aca_ptc: 10_197.50
+    ct_covered_connecticut: 988.84
+    healthcare_benefit_value: 11_186.34

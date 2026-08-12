@@ -422,8 +422,9 @@
     mo_tanf_eligible: true
     mo_tanf: 135.687
 
-- name: A family whose only child receives SSI has no eligible case
+- name: A family whose only child receives SSI gets a caretaker-only grant
   period: 2024-01
+  absolute_error_margin: 0.01
   input:
     people:
       parent:
@@ -443,8 +444,305 @@
         members: [parent, ssi_child]
         state_code: MO
   output:
-    # The SSI child cannot be in the unit, and without a dependent child
-    # in the unit there is no Temporary Assistance case.
+    # The SSI child is excluded from the unit but still establishes the
+    # case; the parent receives a size-1 caretaker-only grant (DSS Manual
+    # 0210.005.05: "when the only child in the EU receives SSI, explore
+    # Temporary Assistance (TA) eligibility for the payee and/or second
+    # parent").
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_eligible: true
+    mo_tanf: 135.69
+
+- name: An SSI child's own savings do not disqualify the caretaker-only unit
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 400
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10 excludes the SSI participant's resources:
+    # only the parent's $400 counts against the $1,000 limit, so the
+    # $1,900 of total unit assets do not block the caretaker-only grant.
+    mo_tanf_countable_resources: 400
+    mo_tanf_resources_eligible: true
+    mo_tanf_assistance_unit_size: 1
+    mo_tanf_eligible: true
+    mo_tanf: 135.69
+
+- name: A family whose child and caretaker both receive SSI has no payable unit
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        ssi: 750
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # Both members are SSI recipients, so no one remains to pay.
     mo_tanf_assistance_unit_size: 0
     mo_tanf_eligible: false
     mo_tanf: 0
+
+- name: Two-parent caretaker-only unit when the only child receives SSI
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 38
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, ssi_child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent1, parent2, ssi_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05 extends the caretaker-only case to "the
+    # payee and/or second parent": both parents stay in the unit at the
+    # size-2 payment level while the SSI child is excluded.
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 234.09
+
+- name: An SSI child with an eligible sibling stays out of the unit
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+      sibling:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child, sibling]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child, sibling]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent, ssi_child, sibling]
+        state_code: MO
+  output:
+    # The eligible sibling and parent form a size-2 unit; the SSI child
+    # remains excluded even though another payable child is present
+    # (13 CSR 40-2.310(1)(F); DSS Manual 0210.005.10).
+    mo_tanf_assistance_unit_size: 2
+    mo_tanf_eligible: true
+    mo_tanf: 234.09
+
+- name: A caretaker's own assets can still fail the resource test
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+        bank_account_assets: 1_200
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # Only the SSI child's resources are excluded (DSS Manual
+    # 0210.005.10); the parent's $1,200 exceeds the $1,000 limit and
+    # blocks the caretaker-only grant.
+    mo_tanf_countable_resources: 1_200
+    mo_tanf_resources_eligible: false
+    mo_tanf_eligible: false
+    mo_tanf: 0
+
+- name: Two new-applicant earners end to end
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      parent2:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    # Per earner: $90 + $30 + ($200 - $120) / 3 = $146.67; x2 = $293.33
+    # (13 CSR 40-2.310(9)(A) applies the disregards to each participant).
+    # Countable: $400 - $293.33 = $106.67; benefit: $292.09 - $106.67.
+    mo_tanf_gross_earned_income: 400
+    mo_tanf_earned_income_deductions: 293.33
+    mo_tanf_countable_income: 106.67
+    mo_tanf_eligible: true
+    mo_tanf: 185.42
+
+- name: Two enrolled earners end to end
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      parent2:
+        age: 30
+        employment_income_before_lsr: 2_400  # $200/month
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    # Per enrolled earner: two-thirds of $200 = $133.33, then the work
+    # exemption caps at the $66.67 left, deducting all $200; x2 = $400
+    # (DSS Manual 0210.015.30.20). Countable income is zero, so the unit
+    # receives the size-3 maximum benefit.
+    mo_tanf_earned_income_deductions: 400
+    mo_tanf_countable_income: 0
+    mo_tanf_eligible: true
+    mo_tanf: 292.09
+
+- name: A self-employment loss does not offset another earner's income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        self_employment_income_before_lsr: -3_600  # -$300/month
+      parent2:
+        age: 30
+        employment_income_before_lsr: 5_760  # $480/month
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    # The loss earner's -$300 deduction cancels their -$300 gross, so
+    # countable income equals the wage earner's own result: $480 - $240
+    # = $240 (13 CSR 40-2.310(9)(A) applies the disregards per
+    # participant; no cross-earner loss offset). Benefit: $292.09 - $240.
+    mo_tanf_gross_earned_income: 180
+    mo_tanf_earned_income_deductions: -60
+    mo_tanf_countable_income: 240
+    mo_tanf: 52.09
+
+- name: A self-employment loss does not offset an enrolled earner's income
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        self_employment_income_before_lsr: -3_600  # -$300/month
+      parent2:
+        age: 30
+        employment_income_before_lsr: 5_760  # $480/month
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        spm_unit_cash_assets: 500
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MO
+  output:
+    # Enrolled wage earner: two-thirds of $480 = $320, plus the $90
+    # work exemption = $410; the loss earner's -$300 cancels their own
+    # gross, leaving countable income $480 - $410 = $70.
+    mo_tanf_countable_income: 70
+    mo_tanf: 222.09

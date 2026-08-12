@@ -155,3 +155,28 @@
     # 13 CSR 40-2.310(1)(F): reported SSI receipt alone excludes the
     # parent, leaving a child-only unit.
     mo_tanf_assistance_unit_size: 1
+
+- name: An SSI child leaves a caretaker-only unit of one
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      ssi_child:
+        age: 8
+        is_tax_unit_dependent: true
+        ssi: 750
+    tax_units:
+      tax_unit:
+        members: [parent, ssi_child]
+    spm_units:
+      spm_unit:
+        members: [parent, ssi_child]
+    households:
+      household:
+        members: [parent, ssi_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.05: the SSI child establishes the case but only
+    # the caretaker is a payable member.
+    mo_tanf_assistance_unit_size: 1
