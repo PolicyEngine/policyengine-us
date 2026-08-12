@@ -15,6 +15,7 @@
       tax_unit:
         members: [person1, person2]
         aca_ptc: 0  # not in TAXSIM35
+        ct_child_tax_rebate: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -44,6 +45,7 @@
       tax_unit:
         members: [person1, person2, person3, person4]
         aca_ptc: 0  # not in TAXSIM35
+        ct_child_tax_rebate: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
