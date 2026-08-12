@@ -17,8 +17,10 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -42,11 +44,13 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 38_400 / 12 = 3_200 - 200 = 3_000; ratio 3_000 / 2_750 = 1.091
         # lands in Step 2 (above 100% through 125%).
         employment_income: 38_400
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 4  # part day
@@ -70,9 +74,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 38_400  # Step 2, as in Case 2
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8  # full day
@@ -96,11 +102,13 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 50_400 / 12 = 4_200 - 200 = 4_000; ratio 4_000 / 2_750 = 1.455
         # lands in Step 3 (above 125% through 150%).
         employment_income: 50_400
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -124,11 +132,13 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 56_400 / 12 = 4_700 - 200 = 4_500; ratio 4_500 / 2_750 = 1.636
         # lands in Step 4 (above 150% through 175%).
         employment_income: 56_400
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -152,12 +162,14 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 62_400 / 12 = 5_200 - 200 = 5_000; ratio 5_000 / 2_750 = 1.818
         # lands in Step 5 (above 175% through 200%), reachable only while
         # enrolled.
         employment_income: 62_400
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -182,11 +194,13 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 74_400 / 12 = 6_200 - 200 = 6_000; ratio 6_000 / 2_750 = 2.182
         # lands in Step 6 (above 200% through 225%).
         employment_income: 74_400
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -211,9 +225,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 50_400  # Step 3, as in Case 4
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8  # full day: 1.76 per day
@@ -239,9 +255,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 56_400  # Step 4 income, would owe 64
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -266,9 +284,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 56_400  # Step 4 income, would owe 64
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -293,6 +313,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # Single parent, three children in care: 69_000 / 12 = 5_750 gross;
         # countable 5_550; ratio 5_550 / 2_750 = 2.018 lands in Step 6.
         # Uncapped copay 3 x 13.68 x 10 = 410.40 exceeds the cap
@@ -328,9 +349,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 56_400  # Step 4, as in Case 5
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
       person3:
         age: 3
         childcare_hours_per_day: 8
@@ -363,9 +386,11 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 38_400  # 3_200 per month - 200 = 3_000 countable
       person2:
         age: 33
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         self_employment_income: -60_000  # -5_000 per month; gross goes negative
       person3:
         age: 3

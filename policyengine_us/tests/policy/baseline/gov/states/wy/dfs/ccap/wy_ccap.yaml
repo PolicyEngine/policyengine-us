@@ -13,6 +13,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 30_000 / 12 = 2_500 - 200 = 2_300 countable; ratio
         # 2_300 / 1_803.33 = 1.275 lands in Step 3 (full-day copay 1.76).
         employment_income: 30_000
@@ -41,6 +42,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 30_000  # Step 3, as in Case 1
       person2:
         age: 3
@@ -67,6 +69,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 38_400 / 12 = 3_200 - 200 = 3_000 countable; ratio
         # 3_000 / 1_803.33 = 1.664 lands in Step 4 (full-day copay 6.40).
         employment_income: 38_400
@@ -95,6 +98,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 30_000
       person2:
         age: 3
@@ -119,6 +123,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         # 60_000 / 12 = 5_000 - 200 = 4_800 > 3_155.83 initial limit.
         employment_income: 60_000
       person2:
@@ -145,6 +150,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40  # working caretaker
         employment_income: 30_000
         # -7_500 per month floors the parent's countable earnings at 0, so
         # the unit lands at Step 1 with no copay; the benefit stays capped
