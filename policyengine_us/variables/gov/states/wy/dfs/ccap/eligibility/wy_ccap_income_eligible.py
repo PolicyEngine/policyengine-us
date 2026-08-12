@@ -9,8 +9,7 @@ class wy_ccap_income_eligible(Variable):
     defined_for = StateCode.WY
     reference = (
         "https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254",  # Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §8(e)(i)(N), §8(e)(iv)(C) and Appendix A, eff. 05/07/2025 (PDF pp. 18, 19, 37)
-        "https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/",  # Wyoming DFS Child Care Subsidy Policy Manual §1101.A (PDF p. 1)
-        "https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/",  # Wyoming DFS Child Care Subsidy Policy Manual §1201.B (PDF p. 1)
+        "https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/",  # Wyoming DFS Child Care Subsidy Policy Manual §1101.A (Ch. 1100 PDF p. 1) and §1201.B (Ch. 1200 PDF p. 1)
         "https://drive.google.com/file/d/10TJ3S8d_nwyNxdkkbyk2gzCfHTk7CTcA/view#page=18",  # Wyoming CCDF State Plan FFY 2025-2027 §§2.2.2.f, 2.2.2.g (PDF p. 18)
     )
 
@@ -47,9 +46,11 @@ class wy_ccap_income_eligible(Variable):
         # with no countable income, so the waiver is modeled as passing the
         # income test. Rules §8(e)(iii)(A) keeps the child in the caretaker's
         # unit, so this is applied unit-wide rather than per child: a
-        # non-foster sibling in the same unit also passes, where the law would
-        # still count the parent's income for that child. The activity and
-        # child tests continue to apply (Plan §2.2.2.h, Rules §8(e)(i)(J)).
+        # non-foster sibling in the same unit also passes, where §8(e)(iv)(A)
+        # would still count the parent's income for that child. wy_ccap_copay
+        # applies the same simplification and quantifies its effect. The
+        # activity and child tests continue to apply (Plan §2.2.2.h, Rules
+        # §8(e)(i)(J)).
         person = spm_unit.members
         income_waived = spm_unit.any(
             person("is_in_foster_care", period)

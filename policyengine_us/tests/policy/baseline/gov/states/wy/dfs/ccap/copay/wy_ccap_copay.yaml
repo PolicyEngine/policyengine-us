@@ -348,3 +348,40 @@
         state_code: WY
   output:
     wy_ccap_copay: 64  # 6.40 x 10 days for the eligible child only
+
+# The 7% cap reads gross income floored at zero. A self-employment loss can
+# drive gross negative while countable income stays positive, because the
+# per-person countable-earned floor discards the loss instead of offsetting
+# other earnings. Without the max_(gross, 0) floor the cap would be negative
+# (0.07 x -1_800 = -126) and min_() would return that as the copay, so this
+# case fails if the floor is removed. Family of three, 2026 FPG =
+# 15_960 + 2 x 5_680 = 27_320 per year = 2_276.67 per month.
+- name: Case 13, a negative gross income floors the 7 percent cap at zero rather than going negative.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_400  # 3_200 per month - 200 = 3_000 countable
+      person2:
+        age: 33
+        self_employment_income: -60_000  # -5_000 per month; gross goes negative
+      person3:
+        age: 3
+        childcare_hours_per_day: 8  # full day
+        childcare_attending_days_per_month: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # 3_000 / 2_276.67 = 1.318 of the guideline: Step 3, full-day 1.76 per day,
+    # so the uncapped family copay would be 1.76 x 20 = 35.20.
+    wy_ccap_countable_income: 3_000
+    wy_ccap_gross_income: -1_800  # 3_200 - 5_000
+    wy_ccap_income_eligible: true  # 3_000 <= 1.75 x 2_276.67 = 3_984.17
+    wy_ccap_copay: 0  # min(35.20, 0.07 x max(-1_800, 0)) = 0

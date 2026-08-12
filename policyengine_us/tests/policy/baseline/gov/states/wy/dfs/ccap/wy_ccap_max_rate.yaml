@@ -15,7 +15,9 @@
       person2:
         age: 0  # 0-11 months
         childcare_hours_per_day: 8
-        wy_ccap_provider_type: CENTER
+        # provider type deliberately omitted: this pins the CENTER
+        # default_value on wy_ccap_provider_type, which every other case
+        # sets explicitly.
       person3:
         age: 1  # 12-23 months
         childcare_hours_per_day: 8

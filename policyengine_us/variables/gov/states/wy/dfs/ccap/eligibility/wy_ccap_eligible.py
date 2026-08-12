@@ -14,12 +14,15 @@ class wy_ccap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # Rules Ch. 1 §8(e): the unit must include at least one eligible child
-        # and meet the activity and income requirements. §8(e)(v) provides
-        # that "[r]esources shall not be considered in determining
-        # eligibility"; only the federal CCDF
-        # $1,000,000 asset ceiling applies (Manual §800). The eligibility bars
-        # for fraud, fugitive felons, program noncooperation, and unpaid
-        # overpayments (§8(e)(i)(F), (G), (L), (M)) are not modeled.
+        # and meet the activity and income requirements. Wyoming applies no
+        # resource test of its own (§8(e)(v)); the asset_eligible term is the
+        # federal CCDF $1,000,000 ceiling that binds every state's CCDF-funded
+        # program (45 CFR 98.20(a)(2), CCDF State Plan §2.2.6, Manual §800), so
+        # it is a federal backstop rather than a Wyoming rule. It is retained
+        # for consistency with other state CCAP implementations and is inert
+        # for virtually every household. The eligibility bars for fraud,
+        # fugitive felons, program noncooperation, and unpaid overpayments
+        # (§8(e)(i)(F), (G), (L), (M)) are not modeled.
         has_eligible_child = add(spm_unit, period, ["wy_ccap_eligible_child"]) > 0
         income_eligible = spm_unit("wy_ccap_income_eligible", period)
         activity_eligible = spm_unit("wy_ccap_activity_eligible", period)
