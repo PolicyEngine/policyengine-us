@@ -1,3 +1,10 @@
+## [1.795.0] - 2026-08-12
+
+### Added
+
+- Add Covered Connecticut Program premium assistance.
+
+
 ## [1.794.4] - 2026-08-12
 
 ### Fixed
