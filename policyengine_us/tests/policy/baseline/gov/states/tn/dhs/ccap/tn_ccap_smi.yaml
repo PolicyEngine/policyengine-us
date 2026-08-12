@@ -147,3 +147,30 @@
   output:
     # size 1 adjustment = 0.52; 102_735 * 0.52 / 12 = 4_451.85
     tn_ccap_smi: 4_451.85
+
+- name: Case 7, FFY pinning switches the SMI at the October 1 boundary.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # September 2025 -> month < 10 -> FFY instant 2024-10-01 -> 98_377 / 12 = 8_198.08
+    # October 2025 -> month >= 10 -> FFY instant 2025-10-01 -> 102_735 / 12 = 8_561.25
+    tn_ccap_smi:
+      2025-09: 8_198.08
+      2025-10: 8_561.25

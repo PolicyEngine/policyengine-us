@@ -57,6 +57,8 @@ class tn_ccap_max_weekly_benefit(Variable):
         disability_differential = is_disabled * p.disability_differential
 
         is_licensed_provider = provider_type != TNCCAPProviderType.AUTHORIZED
+        # The + 0.5 rounds the QRIS-bonused rate half-up to the nearest whole
+        # dollar, reproducing the published chart's QRIS columns.
         qris_rate = np.floor(base_rate * (1 + p.qris_bonus[qris_tier]) + 0.5)
         quality_adjusted_rate = where(
             is_licensed_provider,

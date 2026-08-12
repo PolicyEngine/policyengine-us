@@ -1,6 +1,7 @@
 # tn_ccap_countable_income: SPMUnit, float, MONTH
-# counts gross wages or salary. Annual employment income is auto-divided to a
-# monthly total by the MONTH-period variable.
+# counts gross wages or salary, including self-employment earnings (a
+# qualifying work activity under State Plan Section 2.2.2.a.ii). Annual
+# income is auto-divided to a monthly total by the MONTH-period variable.
 
 - name: Case 1, single earner monthly countable income.
   period: 2026-01
@@ -47,7 +48,7 @@
 
 # ---- Edge cases ----
 
-- name: Case 3, self-employment income is excluded from wage-only income.
+- name: Case 3, self-employment income is counted alongside wages.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -55,7 +56,7 @@
       person1:
         age: 30
         employment_income: 12_000
-        self_employment_income: -24_000
+        self_employment_income: 12_000
       person2:
         age: 4
     spm_units:
@@ -66,8 +67,8 @@
         members: [person1, person2]
         state_code: TN
   output:
-    # Only 12_000 of wages is counted: 12_000 / 12 = 1_000
-    tn_ccap_countable_income: 1_000
+    # (12_000 + 12_000) / 12 = 2_000
+    tn_ccap_countable_income: 2_000
 
 - name: Case 4, retirement and investment income are excluded.
   period: 2026-01
@@ -90,3 +91,26 @@
         state_code: TN
   output:
     tn_ccap_countable_income: 0
+
+- name: Case 5, a self-employment loss offsets wages in the raw sum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: -24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # (12_000 - 24_000) / 12 = -1_000; the copay formula floors this at 0
+    # downstream (see tn_ccap.yaml Case 5).
+    tn_ccap_countable_income: -1_000

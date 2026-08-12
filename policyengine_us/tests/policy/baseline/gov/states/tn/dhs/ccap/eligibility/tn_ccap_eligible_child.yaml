@@ -1,5 +1,5 @@
 # tn_ccap_eligible_child: Person, bool, MONTH
-# Age eligible (under 13, or under 19 if disabled) AND immigration eligible.
+# Age eligible (under 13, or through age 18 if disabled) AND immigration eligible.
 # The court-supervision extension is not modeled pending a general input.
 # Note: unlike some states, TN does NOT require is_tax_unit_dependent.
 # Boolean output, so no error margin.
@@ -46,7 +46,7 @@
   output:
     tn_ccap_eligible_child: false
 
-- name: Case 4, disabled fifteen-year-old is eligible (under 19).
+- name: Case 4, disabled fifteen-year-old is eligible (at or below 18).
   period: 2026-01
   input:
     people:
@@ -61,7 +61,7 @@
   output:
     tn_ccap_eligible_child: true
 
-- name: Case 5, disabled nineteen-year-old is not eligible (19 is not under 19).
+- name: Case 5, disabled nineteen-year-old is not eligible (19 exceeds the age-18 limit).
   period: 2026-01
   input:
     people:
@@ -106,7 +106,7 @@
 
 # ---- Edge cases ----
 
-- name: Case 8, disabled eighteen-year-old is eligible (18 is under 19).
+- name: Case 8, disabled eighteen-year-old is eligible (exactly at the age-18 limit).
   period: 2026-01
   input:
     people:
@@ -119,5 +119,5 @@
         members: [person1]
         state_code: TN
   output:
-    # 18 < 19 special-needs limit and citizen -> eligible (upper boundary just inside)
+    # 18 <= 18 special-needs limit and citizen -> eligible (exact upper boundary)
     tn_ccap_eligible_child: true

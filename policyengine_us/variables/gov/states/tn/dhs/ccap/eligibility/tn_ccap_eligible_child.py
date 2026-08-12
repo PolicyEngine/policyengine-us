@@ -14,9 +14,11 @@ class tn_ccap_eligible_child(Variable):
         age = person("age", period.this_year)
         is_disabled = person("is_disabled", period.this_year)
         # NOTE: Court-supervision eligibility awaits a general input variable.
+        # The State Plan sets the special-needs upper age at 18 (Section
+        # 2.2.1(b): "18.00"), so children remain eligible through age 18.
         age_eligible = where(
             is_disabled,
-            age < p.special_needs_age_limit,
+            age <= p.special_needs_age_limit,
             age < p.child_age_limit,
         )
         immigration_eligible = person(

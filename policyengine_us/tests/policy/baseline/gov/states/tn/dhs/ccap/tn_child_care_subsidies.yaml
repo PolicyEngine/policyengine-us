@@ -29,6 +29,9 @@
   output:
     # Monthly tn_ccap = 802.43; annual = 802.43 * 12 = 9_629.20
     tn_child_care_subsidies: 9_629.20
+    # The federal aggregator picks up the TN entry in
+    # gov/hhs/ccdf/child_care_subsidy_programs.yaml.
+    child_care_subsidies: 9_629.20
 
 - name: Case 2, ineligible family has no annual subsidy.
   period: 2026
