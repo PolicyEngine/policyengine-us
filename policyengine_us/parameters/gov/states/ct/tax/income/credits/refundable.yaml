@@ -5,5 +5,11 @@ metadata:
   label: Connecticut refundable credits
 
 values:
+  # The 2022 child tax rebate (PA 22-118) is a refundable rebate keyed to the
+  # 2021 return, booked in the eligibility year like other prior-year rebates
+  # (cf. ri_child_tax_rebate, nm_2021_income_rebate).
   2021-01-01:
+    - ct_eitc
+    - ct_child_tax_rebate
+  2022-01-01:
     - ct_eitc
