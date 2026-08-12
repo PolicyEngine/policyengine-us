@@ -33,6 +33,7 @@
   period: 2024-01
   input:
     snap_gross_test_income: 2_370
+    weekly_hours_worked_before_lsr: 40
     state_code: CO
   output:
     meets_tanf_non_cash_gross_income_test: true
@@ -58,6 +59,7 @@
   period: 2024-01
   input:
     snap_gross_test_income: 1_519
+    weekly_hours_worked_before_lsr: 40
     state_code: IN
   output:
     meets_tanf_non_cash_gross_income_test: true
@@ -81,6 +83,7 @@
   input:
     snap_gross_test_income: 1_891
     snap_earned_income: 1
+    weekly_hours_worked_before_lsr: 40
     snap_dependent_care_deduction: 0
     has_snap_elderly_disabled_member: false
     state_code: NY
@@ -104,6 +107,7 @@
     snap_gross_test_income: 2_478
     snap_earned_income: 0
     snap_dependent_care_deduction: 1
+    weekly_hours_worked_before_lsr: 40
     has_snap_elderly_disabled_member: false
     state_code: NY
   output:
@@ -162,6 +166,7 @@
     snap_gross_test_income: 2_478
     snap_earned_income: 0
     snap_dependent_care_deduction: 0
+    weekly_hours_worked_before_lsr: 40
     has_snap_elderly_disabled_member: true
     state_code: NY
   output:
@@ -171,6 +176,7 @@
   period: 2026-01
   input:
     snap_gross_test_income: 2_478
+    weekly_hours_worked_before_lsr: 40
     has_snap_elderly_disabled_member: true
     has_all_usda_elderly_disabled: true
     state_code: AL
@@ -214,6 +220,7 @@
   period: 2026-01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: ME
     snap_gross_test_income: 2_660
   output:
@@ -241,6 +248,7 @@
   period: 2027-01
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_code: WA
     snap_gross_test_income: 2_660
   output:
