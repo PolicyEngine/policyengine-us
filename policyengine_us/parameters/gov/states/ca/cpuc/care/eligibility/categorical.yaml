@@ -3,8 +3,11 @@ values:
   2022-06-01:
     - medicaid_enrolled
     - wic
+    - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - ssi
+    - receives_ssi # Reported SSI receipt, for people the model gives a $0 payment.
     # Also these, not in our model:
     # NSL
     # Healthy Families A & B

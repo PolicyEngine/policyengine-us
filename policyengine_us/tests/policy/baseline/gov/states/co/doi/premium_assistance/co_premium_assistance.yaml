@@ -1,0 +1,683 @@
+# Unit tests for the Colorado Premium Assistance amount.
+#
+# All inputs (is_aca_ptc_eligible per person, aca_magi_fraction, slcsp as an
+# annual value, aca_ptc) are supplied directly so every expected value is
+# exactly hand-verifiable and independent of the rating-area premium lookup.
+# slcsp is a MONTH-period variable; the amount formula annualizes it via
+# add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
+# annual total, so the values below are annual SLCSP.
+#
+# Monthly flat build-up: first_member = $80, additional_member = $29. There is
+# NO member cap (Regulation 4-2-78 Section 5.B has no cap), so the flat amount
+# grows linearly with the eligible member count:
+#   n            = count of is_aca_ptc_eligible members
+#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0
+#   residual     = max(0, slcsp_annual - aca_ptc)
+#   amount       = eligible * min(12 * flat_monthly, residual)
+# Hand values: n=1 -> 12*80 = 960; n=2 -> 12*109 = 1_308; n=4 -> 12*167 = 2_004;
+# n=5 -> 12*196 = 2_352; n=6 -> 12*225 = 2_700; n=7 -> 12*254 = 3_048.
+
+- name: Case 1, single APTC-eligible member, high residual -> n=1 flat $80/mo.
+  # n=1 -> flat_monthly = 80 -> 12*80 = 960. residual 10_000-2_000 = 8_000 >= 960.
+  # amount = min(960, 8_000) = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Case 2, two APTC-eligible members -> n=2 flat $109/mo.
+  # n=2 -> flat_monthly = 80 + 29*1 = 109 -> 12*109 = 1_308.
+  # residual 12_000-2_000 = 10_000 >= 1_308. amount = 1_308.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 3.00
+        slcsp: 12_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_308
+
+- name: Case 3, five APTC-eligible members -> n=5 flat $196/mo.
+  # n=5 -> flat_monthly = 80 + 29*4 = 196 -> 12*196 = 2_352.
+  # residual 20_000-3_000 = 17_000 >= 2_352. amount = 2_352 (no cap; the amount
+  # continues to grow above five members, see Cases 12 and 4).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 12
+        is_aca_ptc_eligible: true
+      person5:
+        age: 9
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 3.00
+        slcsp: 20_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_352
+
+- name: Case 4, seven APTC-eligible members -> n=7 flat $254/mo (no cap).
+  # n = 7 -> flat_monthly = 80 + 29*6 = 254 -> 12*254 = 3_048.
+  # residual 25_000-4_000 = 21_000 >= 3_048. amount = 3_048. With the 5-member
+  # cap removed the amount scales past five members. NOTE: injecting seven
+  # APTC-eligible members plus a 4.00-FPL state is counterfactual in the 2026
+  # baseline (see upstream #9264); inputs are supplied directly to isolate the
+  # amount arithmetic.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 17
+        is_aca_ptc_eligible: true
+      person4:
+        age: 15
+        is_aca_ptc_eligible: true
+      person5:
+        age: 12
+        is_aca_ptc_eligible: true
+      person6:
+        age: 9
+        is_aca_ptc_eligible: true
+      person7:
+        age: 6
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        aca_magi_fraction: 3.00
+        slcsp: 25_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 3_048
+
+- name: Case 5, residual cap binding -> amount = SLCSP minus APTC, not 12*flat.
+  # n=1 -> 12*80 = 960. residual 10_000-9_500 = 500 < 960.
+  # amount = min(960, 500) = 500 (residual cap).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 9_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 500
+
+- name: Case 6, APTC already covers the SLCSP -> residual 0 -> amount 0.
+  # residual = max(0, 8_000 - 8_000) = 0. amount = min(960, 0) = 0 despite
+  # eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 8_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 0
+
+- name: Case 7, ineligible unit (above 400% FPL) -> amount 0.
+  # aca_magi_fraction 4.50 > 4.0 -> co_premium_assistance_eligible false ->
+  # where(eligible, annual, 0) returns 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Case 8, non-Colorado state -> amount 0 (defined_for StateCode.CO).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    co_premium_assistance: 0
+
+- name: Case 9, program not in effect in 2025 -> amount 0.
+  # in_effect false for 2025 -> eligible false -> amount 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Case 10, zero SLCSP with an eligible unit -> residual 0 -> amount 0.
+  # Distinct from Case 6 (both positive and equal): here the benchmark premium
+  # itself is 0. residual = max(0, 0 - 0) = 0. n=1 -> 12*80 = 960.
+  # amount = min(960, 0) = 0 despite eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 0
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 0
+
+- name: Case 11, residual exactly equals 12*flat (tie at the min) -> amount = flat.
+  # n=1 -> flat_monthly = 80 -> 12*80 = 960. residual 8_000-7_040 = 960.
+  # min(960, 960) = 960: the two caps are equal, so the tie resolves to 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 8_000
+        aca_ptc: 7_040
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Case 12, six APTC-eligible members -> n=6 flat $225/mo (no cap).
+  # n = 6 -> flat_monthly = 80 + 29*5 = 225 -> 12*225 = 2_700. This is the first
+  # member above the old five-member cap; with the cap removed the amount grows
+  # by one additional-member rung ($29/mo -> $348/yr) over the n=5 case (2_352,
+  # Case 3), confirming n=5 -> n=6 now increases the benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        is_aca_ptc_eligible: true
+      person2:
+        age: 45
+        is_aca_ptc_eligible: true
+      person3:
+        age: 17
+        is_aca_ptc_eligible: true
+      person4:
+        age: 15
+        is_aca_ptc_eligible: true
+      person5:
+        age: 12
+        is_aca_ptc_eligible: true
+      person6:
+        age: 9
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        aca_magi_fraction: 3.00
+        slcsp: 25_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_700
+
+- name: Case 13, positive amount just inside the FPL band (1.01) -> full 12*$80.
+  # Fractional lower-band value 1.01 is income-eligible and yields a positive
+  # benefit (not just an eligibility flag). n=1 -> 12*80 = 960.
+  # residual 10_000-2_000 = 8_000 >= 960. amount = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.01
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Case 14, mixed eligibility 2-of-3 members -> amount uses eligible COUNT (n=2).
+  # Guards that the amount reads add(is_aca_ptc_eligible) (the eligible COUNT),
+  # NOT household size: 3-member unit, only person1 and person2 are
+  # is_aca_ptc_eligible (person3 false). count = 2, n = min(2, 5) = 2 ->
+  # flat_monthly = 80 + 29*(2-1) = 109 -> 12*109 = 1_308. If the formula used
+  # household size (3) it would give 80 + 29*2 = 138 -> 1_656, so this case
+  # distinguishes the two. residual 14_000-3_000 = 11_000 >= 1_308.
+  # Eligibility still holds via any(is_aca_ptc_eligible) = true.
+  # amount = min(1_308, 11_000) = 1_308.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 3.00
+        slcsp: 14_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_308
+
+- name: Case 15, PY2027 two APTC-eligible members -> $29 additional-member carries forward.
+  # The existing 2027 coverage is n=1 only (integration Scenario 6, eligible.yaml
+  # Case 11), so the $29 additional-member amount is untested in the second
+  # in-window year. Both amount params (first_member $80, additional_member $29)
+  # carry forward from their single 2026-01-01 value into PY2027.
+  # n=2 -> flat_monthly = 80 + 29*1 = 109 -> 12*109 = 1_308.
+  # residual 14_000-3_000 = 11_000 >= 1_308. in_effect true for 2027 (SB26-178).
+  # amount = min(1_308, 11_000) = 1_308.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 3.00
+        slcsp: 14_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_308
+
+- name: Case 16, PY2027 five APTC-eligible members -> full $80/$29 schedule carries forward.
+  # Locks the full $80/$29 build-up in PY2027: n=5 ->
+  # flat_monthly = 80 + 29*4 = 196 -> 12*196 = 2_352.
+  # residual 22_000-4_000 = 18_000 >= 2_352. in_effect true for 2027.
+  # amount = min(2_352, 18_000) = 2_352.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        is_aca_ptc_eligible: true
+      person2:
+        age: 45
+        is_aca_ptc_eligible: true
+      person3:
+        age: 17
+        is_aca_ptc_eligible: true
+      person4:
+        age: 15
+        is_aca_ptc_eligible: true
+      person5:
+        age: 12
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 3.00
+        slcsp: 22_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_352
+
+- name: Case 17, aca_ptc exceeds slcsp -> residual clamps to 0 -> amount 0.
+  # Negative-guard convention: residual = max(0, slcsp_annual - aca_ptc). With
+  # aca_ptc (9_000) injected above slcsp (8_000) the raw difference is -1_000, so
+  # the max_(0, ...) clamp floors the residual at 0 rather than letting a negative
+  # residual flip the sign of the benefit. n=1 -> 12*80 = 960, but
+  # amount = min(960, 0) = 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 8_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 0
+
+- name: Case 18, below 100% FPL (0.99) is now eligible after the FPL floor removal.
+  # Regulation 4-2-78 Section 4.C sets a 400%-inclusive ceiling with NO lower
+  # bound; the deleted fpl_limit.lower floor no longer excludes sub-100%-FPL
+  # units. A 0.99-FPL unit with an is_aca_ptc_eligible member is therefore
+  # eligible and receives a positive benefit. n=1 -> 12*80 = 960.
+  # residual 10_000-2_000 = 8_000 >= 960. amount = min(960, 8_000) = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Case 19, no APTC-eligible member is the real gate below 100% FPL -> amount 0.
+  # With the FPL floor gone, a genuinely ineligible sub-100%-FPL unit needs
+  # is_aca_ptc_eligible false (the any() gate), not the removed floor. n=0 ->
+  # flat_monthly = 0, and co_premium_assistance_eligible is false, so the amount
+  # is 0. This is the correct exclusion path for a low-income unit that lacks
+  # federal ACA PTC eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+        slcsp: 10_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Case 20, four APTC-eligible members -> n=4 flat $167/mo (build-up rung).
+  # Fills the gap between the n=3 (integration Scenario 2) and n=5 (Case 3) rungs:
+  # n=4 -> flat_monthly = 80 + 29*3 = 167 -> 12*167 = 2_004.
+  # residual 18_000-3_000 = 15_000 >= 2_004. amount = min(2_004, 15_000) = 2_004.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 12
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 3.00
+        slcsp: 18_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_004
+
+- name: Case 21, no APTC-eligible member -> n=0 flat 0 -> amount asserted 0.
+  # Asserts the AMOUNT (not just the eligibility flag) at n=0: with no
+  # is_aca_ptc_eligible member the flat build-up is 0 and eligibility is false,
+  # so co_premium_assistance = 0 even with a large positive residual available.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Case 22, out-of-window 2028 -> amount asserted 0 (program sunset).
+  # Asserts the AMOUNT at 2028: the program is not in effect after PY2027
+  # (2028-01-01 sunset), so co_premium_assistance_eligible is false and the
+  # amount is 0 even for an otherwise-qualifying single member.
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Case 23, take-up false zeroes the assigned twin while the raw amount stays positive.
+  # takes_up_co_premium_assistance_if_eligible false -> assigned_co_premium_
+  # assistance = co_premium_assistance * 0 = 0, while the raw co_premium_assistance
+  # remains the full n=1 amount. Only the assigned twin feeds net income, so this
+  # confirms take-up gating without disturbing the underlying benefit.
+  # n=1 -> 12*80 = 960. residual 10_000-2_000 = 8_000 >= 960. raw amount = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+        takes_up_co_premium_assistance_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+    assigned_co_premium_assistance: 0

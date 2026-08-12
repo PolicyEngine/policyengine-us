@@ -1,12 +1,19 @@
 description: Step size by which maximum MO property tax credit is phased out.
 values:
   2021-01-01: 300
+  # Indexed annually for inflation (national CPI-U) from 2027-01-01;
+  # update when DOR publishes adjusted amounts.
+  2026-01-01: 495
 metadata:
   unit: currency-USD
   period: year
   label: Missouri property tax credit phaseout step size
   reference:
     - title: 2025 Property Tax Credit Chart
-      href: https://dor.mo.gov/forms/Property%20Tax%20Claim%20Chart_2025.pdf
-    - title: MO Rev Stat § 135.030
+      href: https://dor.mo.gov/forms/Property%20Tax%20Claim%20Chart_2025.pdf#page=1
+    - title: MO Rev Stat § 135.030.2(1)
       href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439
+    - title: MO Rev Stat § 135.030.3(1), effective 2026-01-01
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542
+    - title: MO Rev Stat § 135.030.3(2) (table income increments), effective 2026-01-01
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542

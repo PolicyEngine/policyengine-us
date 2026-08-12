@@ -83,8 +83,6 @@ class meets_snap_abawd_work_requirements(Variable):
         # Area waiver — 7 U.S.C. 2015(o)(4), 7 CFR 273.24(f). The time limit
         # is waived for residents of areas with an approved FNS waiver.
         in_waived_area = person("is_in_snap_abawd_waived_area", period)
-        # TODO: HI/AK delayed adoption (2025-11-01) to be handled
-        # in a follow-up PR via state-level hr1_in_effect parameters.
         base_conditions = (
             is_working
             | working_age_exempt
@@ -108,8 +106,28 @@ class meets_snap_abawd_work_requirements(Variable):
         pre_hr1_conditions = (
             base_conditions | is_homeless | is_veteran | former_foster_youth
         )
+        # Good-faith-effort exemption window — 7 U.S.C. 2015(o)(7). A
+        # noncontiguous State (currently only Alaska, 2025-11-01 through
+        # 2026-10-31) that has adopted HR1 may temporarily retain a specified
+        # set of pre-HR1 exceptions ON TOP OF the post-HR1 set: an older-adult
+        # age band (56-64 in Alaska; ages 65+ are already exempt post-HR1, so
+        # the retained minimum age reproduces the band), homeless individuals,
+        # veterans, and former foster youth. HR1's new Alaska Native/Indian
+        # exception (in post_hr1_conditions) stays in effect throughout, and
+        # the entire pre-HR1 exception set is NOT restored.
+        in_good_faith_window = person(
+            "is_snap_abawd_in_good_faith_exemption_window", period
+        )
+        retained_age_exempt = age >= p.good_faith_exemption.retained_age_minimum
+        window_conditions = (
+            post_hr1_conditions
+            | retained_age_exempt
+            | is_homeless
+            | is_veteran
+            | former_foster_youth
+        )
         return where(
             hr1_in_effect,
-            post_hr1_conditions,
+            where(in_good_faith_window, window_conditions, post_hr1_conditions),
             pre_hr1_conditions,
         )

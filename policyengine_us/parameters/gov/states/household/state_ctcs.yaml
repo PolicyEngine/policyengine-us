@@ -24,6 +24,7 @@ values:
     - me_dependent_exemption_credit
     - nc_ctc
     - ny_ctc
+    - ny_additional_ctc
     - taxsim_ok_child_tax_credit_component
   2022-01-01:
     - az_dependent_tax_credit
@@ -51,6 +52,7 @@ values:
     - nj_ctc
     - nm_ctc
     - ny_ctc
+    - ny_additional_ctc
     - taxsim_ok_child_tax_credit_component
     - or_ctc
     - vt_ctc
@@ -97,6 +99,29 @@ values:
     - ut_ctc
     - vt_ctc
 
+  2027-01-01:
+    - az_dependent_tax_credit
+    - ca_yctc
+    - co_ctc
+    - co_family_affordability_credit
+    - dc_ctc
+    - ga_ctc
+    - id_ctc
+    - il_ctc
+    - ma_child_and_family_credit_or_dependent_care_credit
+    - md_ctc
+    - me_dependent_exemption_credit
+    - taxsim_mn_child_tax_credit_component
+    - nc_ctc
+    - ne_refundable_ctc
+    - nj_ctc
+    - nm_ctc
+    - ny_ctc
+    - taxsim_ok_child_tax_credit_component
+    - or_ctc
+    - ri_ctc
+    - ut_ctc
+    - vt_ctc
 metadata:
   unit: list
   period: year

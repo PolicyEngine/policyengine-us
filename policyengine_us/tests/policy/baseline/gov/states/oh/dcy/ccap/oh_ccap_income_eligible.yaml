@@ -15,9 +15,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 36_000  # 3,000/month, below 3,221
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -36,9 +38,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -57,9 +61,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 39_600  # 3,300/month, between 145% (3,221) and 150% (3,332)
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
         has_developmental_delay: true
@@ -80,9 +86,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 42_000  # 3,500/month, above 145% but below 300%
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -102,9 +110,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 84_000  # 7,000/month, above 6,663
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -127,9 +137,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 84_000  # 7,000/month, far above 300%
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -152,9 +164,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 38_400  # 3,200/month, just below 3,221
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -173,9 +187,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 38_880  # 3,240/month, just above 3,221
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -195,9 +211,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 39_840  # 3,320/month, just below 3,332
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
         has_developmental_delay: true
@@ -218,9 +236,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_080  # 3,340/month, just above 3,332
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
         has_developmental_delay: true
@@ -242,9 +262,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 79_800  # 6,650/month, just below 6,663
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -264,9 +286,11 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 80_100  # 6,675/month, just above 6,663
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -288,6 +312,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000  # 2,500/month, below 2,556
       person2:
         age: 3
@@ -308,6 +333,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 33_000  # 2,750/month, above 2,556
       person2:
         age: 3
@@ -328,6 +354,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 3
         immigration_status: CITIZEN
@@ -349,10 +376,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
         oh_ccap_owf_transitional: true
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -371,10 +400,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_080  # 3,340/month, above 3,332
         oh_ccap_owf_transitional: true
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -401,6 +432,7 @@
         oh_ccap_owf_transitional: true
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
       person3:
         age: 3
     spm_units:
@@ -421,6 +453,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         employment_income: 39_600  # 3,300/month, above 3,221 and below 3,332
         oh_ccap_owf_transitional: true
