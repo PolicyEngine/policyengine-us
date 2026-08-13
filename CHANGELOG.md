@@ -1,3 +1,14 @@
+## [1.802.0] - 2026-08-13
+
+### Added
+
+- Implement complete current-law Nebraska Child Care Subsidy eligibility, family fees, and provider reimbursement.
+
+### Changed
+
+- Redefine ne_child_care_subsidy as a monthly variable; ne_child_care_subsidies provides the annual total.
+
+
 ## [1.801.0] - 2026-08-13
 
 ### Added
