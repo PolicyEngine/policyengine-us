@@ -1,7 +1,9 @@
 description: Wyoming caps the total family copayment at this share of gross family income under the Child Care, Purchase of Service program.
-# CCDF Plan 3.1.1: family copayments do not exceed 7% of gross family income;
-# 3.2.1: the per-child daily fee is charged per child up to a maximum per
-# family.
+# CCDF Plan §3.1.1: no family is charged more than 7% of gross income
+# "regardless of the number of children", which is why the cap binds on the
+# family total rather than per child; §3.2.1.a.i sets the fee per child up to a
+# family maximum. Wyoming adopts the federal ceiling at 45 CFR 98.45(l)(3)
+# unchanged.
 values:
   2024-04-01: 0.07
 

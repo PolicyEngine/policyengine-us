@@ -13,11 +13,11 @@ class wy_ccap_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        # Rules Ch. 1 §8(e)(i)(A): a child must be under 13, or 13 through
-        # under 18 if the child has special needs, is developmentally delayed,
-        # or is physically or mentally incapable of self-care, or is under
-        # court supervision. We don't track court supervision at the moment,
-        # so the extension applies only via the special-needs branch.
+        # Rules Ch. 1 §8(e)(i)(A): a child must be under 13, or over 13 with
+        # special needs, a developmental delay, or an inability to care for
+        # themselves. The Rules state no upper age, so the 18 comes from CCDF
+        # Plan §2.2.1.b. Court supervision isn't tracked, so the extension
+        # applies only via the special-needs branch.
         p = parameters(period).gov.states.wy.dfs.ccap.eligibility
         age = person("age", period.this_year)
         has_special_need = person("is_disabled", period.this_year) | person(

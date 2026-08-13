@@ -25,15 +25,17 @@ class wy_ccap_max_rate(Variable):
         age_band = person("wy_ccap_age_band", period)
         day_length = person("wy_ccap_day_length", period)
         types = WYCCAPProviderType
+        # Legally exempt is the third and last setting in the enum, so it takes
+        # the default branch: every provider type resolves to a rate rather than
+        # falling through to zero.
         return select(
             [
                 provider_type == types.CENTER,
                 provider_type == types.LICENSED_FAMILY,
-                provider_type == types.LEGALLY_EXEMPT,
             ],
             [
                 p.center[age_band][day_length],
                 p.licensed_family[age_band][day_length],
-                p.legally_exempt[day_length],
             ],
+            default=p.legally_exempt[day_length],
         )
