@@ -1,0 +1,46 @@
+# OAR 414-175-0025(1)(b)(B): Expanded Child Welfare eligibility is proxied by
+# foster care receipt; the Child Abuse Prevention and Family Reunification
+# service pathways are not tracked (documented in the variable).
+
+- name: Case 1, a family with a child in foster care is Expanded Child Welfare eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_expanded_child_welfare_eligible: true
+
+- name: Case 2, a family with no foster care involvement is not Expanded Child Welfare eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_expanded_child_welfare_eligible: false
