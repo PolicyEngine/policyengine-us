@@ -1,0 +1,123 @@
+# Unit tests for wy_ccap_gross_income (SPMUnit, MONTH, USD).
+# Sums the income/countable_income/sources.yaml list (Rules Ch. 1
+# Appendix B / Manual §901.G Table #1). SSI, foster care payments, and
+# POWER cash are deliberately absent from the sources list. Annual dollar
+# inputs divide by 12 in this monthly variable.
+- name: Case 1, earned income plus counted unearned sources sum to gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 per month
+        social_security: 6_000  # 500 per month (RSDI counted)
+        child_support_received: 2_400  # 200 per month
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_gross_income: 2_700
+
+- name: Case 2, SSI is exempt and excluded from gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 per month
+        ssi: 900  # monthly SSI, not in the sources list
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_gross_income: 2_000
+
+- name: Case 3, investment and retirement sources are counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        interest_income: 1_200  # 100 per month
+        dividend_income: 2_400  # 200 per month
+        rental_income: 6_000  # 500 per month
+        pension_income: 12_000  # 1_000 per month
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_gross_income: 1_800
+
+- name: Case 4, a dependent minor's wages are in gross income but not countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 per month
+      person2:
+        age: 16
+        employment_income: 6_000  # 500 per month, in gross only
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Gross includes the minor's wages (the 7 percent copay cap base);
+    # countable applies the Appendix B minor-wage exemption and the parent's
+    # $200 disregard.
+    wy_ccap_gross_income: 2_500
+    wy_ccap_countable_income: 1_800
+
+- name: Case 5, VA benefits are counted in gross and countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 per month
+        veterans_benefits: 6_000  # 500 per month, counted unearned
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Rules §8(e)(iv)(F)(IX)'s at-or-below-100%-FPL service-connected
+    # exemption and GI Bill school-cost split are not modeled; VA benefits
+    # count in full (sources.yaml). Countable = 2_000 - 200 earned income
+    # disregard + 500 unearned = 2_300.
+    wy_ccap_gross_income: 2_500
+    wy_ccap_countable_income: 2_300
