@@ -1,3 +1,10 @@
+## [1.796.0] - 2026-08-13
+
+### Added
+
+- Add Oregon Employment Related Day Care eligibility, copays, and 2026 provider reimbursement rates.
+
+
 ## [1.795.0] - 2026-08-12
 
 ### Added
