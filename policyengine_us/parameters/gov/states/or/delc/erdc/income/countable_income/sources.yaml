@@ -1,0 +1,37 @@
+description: Oregon counts these income sources under the Employment Related Day Care program.
+values:
+  2026-03-01:
+    # Earned sources are aggregated per person so the earned income of a
+    # child can be excluded, per OAR 414-175-0035(21)(a).
+    - or_erdc_countable_earned_income
+    - disability_benefits
+    - social_security
+    - ssi
+    - pension_income
+    - retirement_distributions
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - dividend_income
+    - rental_income
+    - veterans_benefits
+    # TANF is countable under OAR 414-175-0035(56)(g), but including the
+    # calculated tanf variable would create a circular dependency through
+    # TANF child care deductions, child care expenses, and ERDC.
+    # - tanf
+    # The following countable sources do not have exact PolicyEngine variables:
+    # Paid Leave Oregon, striker benefits, Job Corps allowances, WIOA stipends,
+    # vocational rehabilitation maintenance, and other narrow payment types.
+
+metadata:
+  unit: list
+  period: year
+  label: Oregon ERDC countable income sources
+  reference:
+    - title: OAR 414-175-0030(1), General Financial Eligibility Provisions
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0030
+    - title: OAR 414-175-0035, Specific Financial Requirements
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0035
