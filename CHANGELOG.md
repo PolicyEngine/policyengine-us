@@ -1,3 +1,10 @@
+## [1.799.0] - 2026-08-13
+
+### Added
+
+- Add Massachusetts ConnectorCare state premium assistance.
+
+
 ## [1.798.0] - 2026-08-13
 
 ### Added
