@@ -1,0 +1,311 @@
+# Nebraska's monthly subsidy is:
+# max(min(private monthly charge, sum of per-child state maximums)
+#     - one monthly family fee, 0).
+# Annual income and private-expense inputs are divided by 12 in monthly formulas.
+
+- name: Case 1, eligible urban infant receives a positive expense-capped subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        childcare_attending_days_per_month: 20
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: CENTER
+        ne_child_care_subsidy_quality_tier: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        county_str: DOUGLAS_COUNTY_NE
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: [true, false]
+    ne_child_care_subsidy_eligible_child: [false, true]
+    ne_child_care_subsidy_provider_eligible: [false, true]
+    ne_child_care_subsidy_countable_income: 1_000
+    ne_child_care_subsidy_income_eligible: true
+    # Urban center infant base full day: $66.35 * 20 days = $1,327.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 1_327]
+    ne_child_care_subsidy_family_fee: 0
+    ne_child_care_subsidy_eligible: true
+    # min($1,000 private charge, $1,327 maximum) - $0 fee.
+    ne_child_care_subsidy: 1_000
+    ne_child_care_subsidies: 1_000
+
+- name: Case 2, one inactive caretaker makes a two-caretaker family ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 12_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 4
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: CENTER
+        ne_child_care_subsidy_quality_tier: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        county_str: LANCASTER_COUNTY_NE
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: [true, false, false]
+    ne_child_care_subsidy_eligible_child: [false, false, true]
+    ne_child_care_subsidy_provider_eligible: [false, false, true]
+    ne_child_care_subsidy_countable_income: 1_000
+    ne_child_care_subsidy_income_eligible: true
+    # Urban center preschool base full day: $55 * 10 days.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 0, 550]
+    ne_child_care_subsidy_family_fee: 0
+    ne_child_care_subsidy_eligible: false
+    ne_child_care_subsidy: 0
+    ne_child_care_subsidies: 0
+
+- name: Case 3, an undocumented child fails while the adult status is irrelevant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 5
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: HOME_I_II
+        ne_child_care_subsidy_quality_tier: STEP_5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        county_str: BUFFALO_COUNTY_NE
+        members: [person1, person2]
+        state_code: NE
+  output:
+    is_ccdf_immigration_eligible_child: [true, false]
+    # The school-age child's student status satisfies the person-level
+    # activity formula, but only the adult is a modeled caretaker.
+    ne_child_care_subsidy_eligible_parent: [true, true]
+    ne_child_care_subsidy_eligible_child: [false, false]
+    ne_child_care_subsidy_provider_eligible: [false, false]
+    ne_child_care_subsidy_countable_income: 1_000
+    ne_child_care_subsidy_income_eligible: true
+    ne_child_care_subsidy_maximum_provider_rate: [0, 0]
+    ne_child_care_subsidy_eligible: false
+    ne_child_care_subsidy: 0
+    ne_child_care_subsidies: 0
+
+- name: Case 4, enrolled age-13 child qualifies at the exact asset boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 13
+        childcare_attending_days_per_month: 2
+        childcare_days_per_week: 2
+        childcare_hours_per_day: 10
+        childcare_hours_per_week: 20
+        immigration_status: CITIZEN
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    spm_units:
+      spm_unit:
+        meets_ccdf_activity_test: true
+        members: [person1, person2]
+        ne_child_care_subsidy_enrolled: true
+        spm_unit_assets: 1_000_000
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        county_str: BUFFALO_COUNTY_NE
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: [true, true]
+    ne_child_care_subsidy_eligible_child: [false, true]
+    is_ccdf_asset_eligible: true
+    ne_child_care_subsidy_provider_eligible: [false, true]
+    ne_child_care_subsidy_rate_unit: [FULL_DAY, FULL_PLUS_PARTIAL]
+    # Rural exempt family home: ($8.80 + $14.90) * 2 days.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 47.40]
+    ne_child_care_subsidy_income_eligible: true
+    ne_child_care_subsidy_eligible: true
+    ne_child_care_subsidy: 47.40
+    ne_child_care_subsidies: 47.40
+
+- name: Case 5, categorical waiver does not waive an unmet activity need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 6
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: CENTER
+        ne_child_care_subsidy_quality_tier: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_000_001
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        county_str: SARPY_COUNTY_NE
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_categorical_waived: true
+    is_ccdf_asset_eligible: false
+    ne_child_care_subsidy_income_eligible: true
+    ne_child_care_subsidy_family_fee: 0
+    # Urban center school-age base full day: $47.50 * 10 days.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 475]
+    # The school-age child satisfies the education path, but the sole
+    # caretaker does not satisfy any activity path.
+    ne_child_care_subsidy_eligible_parent: [false, true]
+    ne_child_care_subsidy_provider_eligible: [false, true]
+    ne_child_care_subsidy_eligible: false
+    ne_child_care_subsidy: 0
+    ne_child_care_subsidies: 0
+
+- name: Case 6, two children share one fee and the private charge caps payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 30_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 8
+        childcare_hours_per_week: 40
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: HOME_I_II
+        ne_child_care_subsidy_quality_tier: BASE
+      person3:
+        age: 8
+        childcare_attending_days_per_month: 10
+        childcare_days_per_week: 5
+        childcare_hours_per_day: 4
+        childcare_hours_per_week: 20
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: false
+        ne_child_care_subsidy_provider_type: HOME_I_II
+        ne_child_care_subsidy_quality_tier: BASE
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ne_child_care_subsidy_at_redetermination: true
+        ne_child_care_subsidy_enrolled: true
+        spm_unit_assets: 0
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        county_str: BUFFALO_COUNTY_NE
+        members: [person1, person2, person3]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_gross_income: 2_500
+    # $2,500 monthly gross less the 10% earned-income disregard.
+    ne_child_care_subsidy_countable_income: 2_250
+    ne_child_care_subsidy_income_eligible: true
+    ne_child_care_subsidy_provider_eligible: [false, true, true]
+    # Rural home preschool full $33*10; school-age partial $30*10.
+    ne_child_care_subsidy_maximum_provider_rate: [0, 330, 300]
+    # One family fee: $2,500 * 7% = $175, not one fee per child.
+    ne_child_care_subsidy_family_fee: 175
+    ne_child_care_subsidy_eligible: true
+    # min($500 private charge, $630 maximum) - $175.
+    ne_child_care_subsidy: 325
+    ne_child_care_subsidies: 325
+    child_care_subsidies: 325
+
+- name: Case 7, a family reporting no care details receives an expense-based subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: true
+    # Monthly gross income of $1,500 sits below 100% FPG, so no fee applies.
+    ne_child_care_subsidy_family_fee: 0
+    # One-twelfth of the $6,000 annual billed childcare expenses.
+    ne_child_care_subsidy: 500
+    ne_child_care_subsidies: 500
+    child_care_subsidies: 500

@@ -1,0 +1,123 @@
+# tn_ccap_eligible_child: Person, bool, MONTH
+# Age eligible (under 13, or through age 18 if disabled) AND immigration eligible.
+# The court-supervision extension is not modeled pending a general input.
+# Note: unlike some states, TN does NOT require is_tax_unit_dependent.
+# Boolean output, so no error margin.
+
+- name: Case 1, four-year-old citizen is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: true
+
+- name: Case 2, twelve-year-old citizen is eligible (under 13).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: true
+
+- name: Case 3, thirteen-year-old is not eligible (13 is not under 13).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: false
+
+- name: Case 4, disabled fifteen-year-old is eligible (at or below 18).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: true
+
+- name: Case 5, disabled nineteen-year-old is not eligible (19 exceeds the age-18 limit).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: false
+
+- name: Case 6, undocumented four-year-old fails the immigration test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: false
+
+- name: Case 7, non-disabled twenty-year-old is not an eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_eligible_child: false
+
+# ---- Edge cases ----
+
+- name: Case 8, disabled eighteen-year-old is eligible (exactly at the age-18 limit).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 18 <= 18 special-needs limit and citizen -> eligible (exact upper boundary)
+    tn_ccap_eligible_child: true

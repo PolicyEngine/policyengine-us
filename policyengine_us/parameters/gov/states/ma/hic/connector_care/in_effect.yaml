@@ -1,0 +1,24 @@
+description: Massachusetts provides ConnectorCare premium assistance when this is true under the ConnectorCare program.
+values:
+  # ConnectorCare has operated since 2006 under M.G.L. c. 176Q (permanent law, no
+  # statutory sunset). Only the PY2026 design is modeled: the flat-dollar enrollee
+  # contributions decoupled from the affordability schedule and the 2A-3C plan-type
+  # bands spanning 100-400% FPL. Pre-2026 years (affordability-coupled
+  # percent-of-income contributions, Plan Types 1 and 3D) are left unmodeled and
+  # carried as a backdating backlog item, so the flag is false before 2026-01-01.
+  # No end date: the program is permanent law, so PY2027+ carries the PY2026 design
+  # forward as a current-law assumption (the Board sets amounts annually).
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts ConnectorCare in effect
+  reference:
+    - title: M.G.L. c. 176Q
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXXII/Chapter176Q
+    - title: 956 CMR 12.12(9)
+      href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=13
+    - title: Board Memo 2026 Seal of Approval Submission Summary (ConnectorCare Pilot extended one year in the FY2026 budget)
+      href: https://www.mahealthconnector.org/wp-content/uploads/board_meetings/2025/07-10-25/Board-Memo-2026-Seal-of-Approval-Submission-Summary-070925.pdf#page=6

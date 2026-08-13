@@ -1,0 +1,77 @@
+# tn_ccap_part_time: Person, bool, MONTH
+# Part-time care is fewer than 20 hours per week; 20 or more is full-time.
+# Boolean output, so no error margin.
+
+- name: Case 1, full-time care (35 hours) is not part-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 35
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_part_time: false
+
+- name: Case 2, exactly 20 hours is full-time (not part-time).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_part_time: false
+
+- name: Case 3, 19 hours is part-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 19
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_part_time: true
+
+- name: Case 4, 15 hours is part-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_part_time: true
+
+# ---- Edge cases ----
+
+- name: Case 5, zero hours reads as part-time.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 0 < 20 -> part-time. Whether the child is actually in care (hours > 0) is
+    # gated separately in the rate and copay formulas, not here.
+    tn_ccap_part_time: true

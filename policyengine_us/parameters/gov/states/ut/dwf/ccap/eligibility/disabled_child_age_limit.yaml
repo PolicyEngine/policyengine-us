@@ -1,0 +1,18 @@
+description: Utah limits eligibility for children with special needs to those below this age under the Child Care Assistance program.
+
+# Children up to the age of 18 are eligible if they meet the special needs
+# requirements of R986-700-717 or are under court supervision
+# (R986-700-702(5)(b)). The 2020 entry is placed at PolicyEngine's
+# backdating floor; the provision was in effect well before this date.
+values:
+  2020-01-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Utah CCAP special needs child age limit
+  reference:
+    - title: Utah Admin. Code R986-700-702(5)(b)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-702
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1

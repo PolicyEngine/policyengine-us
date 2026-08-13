@@ -1,0 +1,39 @@
+description: Tennessee provides this weekly state reimbursement rate for group homes under the Child Care Certificate Program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Tennessee CCAP group home weekly state rates
+  breakdown:
+    - tn_ccap_county_tier
+    - tn_ccap_age_category
+  reference:
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, State Rate column, Group Homes (effective October 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Current%20state%20rate%20and%20QRIS%20bonus%20table.pdf
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, State Rate column, Group Homes (effective January 1, 2026)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Reimbursement_Rate_Chart_1.1.26.pdf
+
+# SCHOOL_OUT rates are transcribed for completeness but are currently
+# unreachable: the model has no school-calendar input, so
+# tn_ccap_age_category assigns school-age children SCHOOL_IN year-round.
+TOP_TIER:
+  INFANT:
+    2024-10-01: 215
+  TODDLER:
+    2024-10-01: 200
+  PRESCHOOL:
+    2024-10-01: 184
+  SCHOOL_IN:
+    2024-10-01: 101
+  SCHOOL_OUT:
+    2024-10-01: 135
+LOWER_TIER:
+  INFANT:
+    2024-10-01: 143
+  TODDLER:
+    2024-10-01: 140
+  PRESCHOOL:
+    2024-10-01: 133
+  SCHOOL_IN:
+    2024-10-01: 75
+  SCHOOL_OUT:
+    2024-10-01: 100
