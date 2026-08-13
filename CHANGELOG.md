@@ -1,3 +1,10 @@
+## [1.800.0] - 2026-08-13
+
+### Added
+
+- Add Utah Child Care Assistance Program (CCAP).
+
+
 ## [1.799.0] - 2026-08-13
 
 ### Added
