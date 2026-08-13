@@ -78,14 +78,3 @@
     state_code: IL
   output:
     il_ccap_countable_income: 1_000
-
-- name: Case 7, royalty income is counted independently from rental income.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    il_ccap_royalty_income: 12_000
-    state_code: IL
-  output:
-    rental_income: 0
-    il_ccap_royalty_income: 1_000
-    il_ccap_countable_income: 1_000

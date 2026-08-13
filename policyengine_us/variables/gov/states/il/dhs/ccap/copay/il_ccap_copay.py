@@ -41,24 +41,11 @@ class il_ccap_copay(Variable):
             p.copay.fpl_minimum_amount,
             table_a_copay,
         )
-        school_age_part_day = spm_unit(
-            "il_ccap_all_children_school_age_part_day",
-            period,
-        ) & np.isin(period.start.month, p.copay.school_age_months)
-        scheduled_copay = where(
-            school_age_part_day,
-            ordinary_copay * p.copay.school_age_reduction_rate,
-            ordinary_copay,
-        )
-
+        # We do not model the Table B school-age part-day copayment schedule.
         zero_copay = spm_unit(
             "il_ccap_non_parent_relative_child_only_tanf",
             period,
         ) | spm_unit("il_ccap_protective_care_copay_exempt", period)
-        child_care_worker = add(spm_unit, period, ["il_ccap_child_care_worker"]) > 0
-        assessed_copay = select(
-            [zero_copay, child_care_worker],
-            [p.copay.exempt_amount, p.copay.child_care_worker_amount],
-            default=scheduled_copay,
-        )
+        # We do not model the $1 child care worker copayment.
+        assessed_copay = where(zero_copay, 0, ordinary_copay)
         return where(p.in_effect, assessed_copay, 0)

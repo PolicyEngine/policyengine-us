@@ -1,4 +1,4 @@
-- name: Case 1, daily maximum is multiplied by approved attending days.
+- name: Case 1, daily maximum is multiplied by attending days.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -41,7 +41,7 @@
   output:
     il_ccap_max_monthly_reimbursement: 0
 
-- name: Case 5, licensed home at 70 percent attendance receives approved days.
+- name: Case 5, licensed home is paid on attended days.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -49,38 +49,11 @@
     il_ccap_max_daily_rate: 67
     il_ccap_provider_type: LICENSED_HOME
     childcare_attending_days_per_month: 14
-    il_ccap_approved_eligible_days_per_month: 20
-    state_code: IL
-  output:
-    il_ccap_max_monthly_reimbursement: 1_340
-
-- name: Case 6, licensed home below the attendance threshold receives attended days.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    il_ccap_eligible_child: true
-    il_ccap_max_daily_rate: 67
-    il_ccap_provider_type: LICENSED_HOME
-    childcare_attending_days_per_month: 13
-    il_ccap_approved_eligible_days_per_month: 20
-    state_code: IL
-  output:
-    il_ccap_max_monthly_reimbursement: 871
-
-- name: Case 7, licensed center at 70 percent attendance receives attended days.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    il_ccap_eligible_child: true
-    il_ccap_max_daily_rate: 67
-    il_ccap_provider_type: LICENSED_CENTER
-    childcare_attending_days_per_month: 14
-    il_ccap_approved_eligible_days_per_month: 20
     state_code: IL
   output:
     il_ccap_max_monthly_reimbursement: 938
 
-- name: Case 8, license-exempt home at 70 percent attendance receives approved days.
+- name: Case 6, license-exempt home is paid on attended days.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -88,51 +61,11 @@
     il_ccap_max_daily_rate: 30
     il_ccap_provider_type: LICENSE_EXEMPT_HOME
     childcare_attending_days_per_month: 14
-    il_ccap_approved_eligible_days_per_month: 20
     state_code: IL
   output:
-    il_ccap_max_monthly_reimbursement: 600
+    il_ccap_max_monthly_reimbursement: 420
 
-- name: Case 9, missing approved days preserve attended-day reimbursement.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    il_ccap_eligible_child: true
-    il_ccap_max_daily_rate: 67
-    il_ccap_provider_type: LICENSED_HOME
-    childcare_attending_days_per_month: 14
-    state_code: IL
-  output:
-    il_ccap_max_monthly_reimbursement: 938
-
-- name: Case 10, absent child receives no approved days when family meets threshold.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        il_ccap_eligible_child: true
-        il_ccap_max_daily_rate: 10
-        il_ccap_provider_type: LICENSED_HOME
-        childcare_attending_days_per_month: 20
-        il_ccap_approved_eligible_days_per_month: 20
-      person2:
-        il_ccap_eligible_child: true
-        il_ccap_max_daily_rate: 10
-        il_ccap_provider_type: LICENSED_HOME
-        childcare_attending_days_per_month: 0
-        il_ccap_approved_eligible_days_per_month: 5
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    il_ccap_max_monthly_reimbursement: [200, 0]
-
-- name: Case 11, family attendance determines payable days for each home child.
+- name: Case 7, each child is reimbursed on their own attending days.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -142,13 +75,11 @@
         il_ccap_max_daily_rate: 10
         il_ccap_provider_type: LICENSED_HOME
         childcare_attending_days_per_month: 10
-        il_ccap_approved_eligible_days_per_month: 20
       person2:
         il_ccap_eligible_child: true
         il_ccap_max_daily_rate: 10
         il_ccap_provider_type: LICENSE_EXEMPT_HOME
         childcare_attending_days_per_month: 18
-        il_ccap_approved_eligible_days_per_month: 20
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -157,31 +88,4 @@
         members: [person1, person2]
         state_code: IL
   output:
-    il_ccap_max_monthly_reimbursement: [200, 200]
-
-- name: Case 12, center attendance is excluded from the home-family rate.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        il_ccap_eligible_child: true
-        il_ccap_max_daily_rate: 10
-        il_ccap_provider_type: LICENSED_HOME
-        childcare_attending_days_per_month: 10
-        il_ccap_approved_eligible_days_per_month: 20
-      person2:
-        il_ccap_eligible_child: true
-        il_ccap_max_daily_rate: 10
-        il_ccap_provider_type: LICENSED_CENTER
-        childcare_attending_days_per_month: 20
-        il_ccap_approved_eligible_days_per_month: 20
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IL
-  output:
-    il_ccap_max_monthly_reimbursement: [100, 200]
+    il_ccap_max_monthly_reimbursement: [100, 180]

@@ -41,7 +41,7 @@
     il_ccap_copay: 39
     il_ccap: 1_301
 
-- name: Case 2, 2026 licensed home attendance rule includes an undocumented child.
+- name: Case 2, 2026 licensed home excludes an undocumented child.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -57,7 +57,6 @@
         childcare_provider_type_group: FDC_GFDC
         childcare_hours_per_day: 8
         childcare_attending_days_per_month: 14
-        il_ccap_approved_eligible_days_per_month: 20
         pre_subsidy_childcare_expenses: 7_200
     spm_units:
       spm_unit:
@@ -82,14 +81,13 @@
     il_ccap_county_group: GROUP_2
     il_ccap_child_age_group: [AGE_THREE_OR_OLDER, AGE_TWO]
     il_ccap_max_daily_rate: [0, 44.99]
-    il_ccap_max_monthly_reimbursement: [0, 899.8]
-    # Family attendance is 14 / 20 = 70%, so all 20 approved days are payable.
-    # Actual charge is $600/month, below the $899.80 State maximum.
+    il_ccap_max_monthly_reimbursement: [0, 629.86]
+    # Actual charge is $600/month, below the 14 * $44.99 = $629.86 State maximum.
     # The ordinary minimum copay is $1, so State payment is $599.
     il_ccap_copay: 1
     il_ccap: 599
 
-- name: Case 3, January school-age part-day care uses the half-copay table.
+- name: Case 3, school-age part-day care uses the Table A copay.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -123,16 +121,15 @@
     il_ccap_income_eligible: true
     il_ccap_eligible_child: [false, true]
     il_ccap_eligible: true
-    il_ccap_all_children_school_age_part_day: true
     il_ccap_provider_type: [LICENSED_CENTER, LICENSE_EXEMPT_CENTER]
     il_ccap_county_group: GROUP_1B
     il_ccap_care_duration: [NONE, PART_DAY]
     il_ccap_max_daily_rate: [0, 18]
     il_ccap_max_monthly_reimbursement: [0, 360]
-    # Table A is $18 at the exact $1,764 threshold; Table B is 50%, or $9.
+    # Table A is $18 at the exact $1,764 threshold.
     # The $500 monthly charge is capped at 18 * 20 = $360.
-    il_ccap_copay: 9
-    il_ccap: 351
+    il_ccap_copay: 18
+    il_ccap: 342
 
 - name: Case 4, two children share one copay after separate reimbursement caps.
   period: 2026-01
