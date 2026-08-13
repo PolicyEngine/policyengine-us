@@ -25,6 +25,7 @@ class healthcare_benefit_value(Variable):
         "ct_covered_connecticut",
         "ma_connector_care",
         "md_premium_assistance",
+        "nj_njhps",
         "assigned_nm_premium_assistance",
         "or_healthier_oregon_cost",
         "wa_cascade_care_savings",
