@@ -1,3 +1,10 @@
+## [1.803.0] - 2026-08-13
+
+### Added
+
+- Add Vermont Premium Assistance (VPA).
+
+
 ## [1.802.0] - 2026-08-13
 
 ### Added
