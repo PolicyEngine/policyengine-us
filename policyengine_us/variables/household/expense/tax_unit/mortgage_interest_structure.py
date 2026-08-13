@@ -60,8 +60,11 @@ class first_home_mortgage_interest(Variable):
     definition_period = YEAR
     default_value = 0
     documentation = (
-        "Interest paid on the first home acquisition mortgage used to "
-        "calculate the federal mortgage interest deduction."
+        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
+        "input instead; the deduction only ever uses the first+second sum, and "
+        "this input is read only when no person-level interest is reported. "
+        "Kept temporarily so existing datasets that supply it keep working; "
+        "removal is scheduled once certified microdata stops exporting it."
     )
 
 
@@ -73,8 +76,11 @@ class second_home_mortgage_interest(Variable):
     definition_period = YEAR
     default_value = 0
     documentation = (
-        "Interest paid on the second home acquisition mortgage used to "
-        "calculate the federal mortgage interest deduction."
+        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
+        "input instead; the deduction only ever uses the first+second sum, and "
+        "this input is read only when no person-level interest is reported. "
+        "Kept temporarily so existing datasets that supply it keep working; "
+        "removal is scheduled once certified microdata stops exporting it."
     )
 
 
@@ -105,19 +111,20 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest, taken from the structured first/second "
-        "mortgage inputs when provided, otherwise falling back to the reported "
-        "person-level home mortgage interest."
+        "Total home mortgage interest. The person-level home_mortgage_interest "
+        "input is canonical; the deprecated structured first/second interest "
+        "inputs are used only when no person-level interest is reported "
+        "(existing datasets still supply them — see issue #9275)."
     )
 
     def formula(tax_unit, period, parameters):
+        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
         structured_interest = add(
             tax_unit,
             period,
             ["first_home_mortgage_interest", "second_home_mortgage_interest"],
         )
-        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
-        return where(structured_interest > 0, structured_interest, reported_interest)
+        return where(reported_interest > 0, reported_interest, structured_interest)
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
