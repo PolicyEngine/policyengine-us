@@ -12,6 +12,8 @@ metadata:
       href: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/pages/ccap-for-providers/IL444-3455B%20DEC%20-%20Important%20Parent%20Co-Payment%20Information%207.1.26.pdf#page=4
 
 brackets:
+  # The FY2025 chart publishes one fewer income band than FY2026 at this
+  # family size, so the final bracket opens at .inf until 2026-07-01.
   - threshold:
       2025-07-01: 0
     amount:

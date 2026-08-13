@@ -16,8 +16,8 @@ class il_ccap_max_daily_rate(Variable):
     defined_for = "il_ccap_eligible_child"
     reference = (
         "https://www.dhs.state.il.us/page.aspx?item=173323",
+        # Center rates are on page 1; home rates continue on page 2.
         "https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/pages/ccap-for-providers/IL444-4343%20-%20Child%20Care%20Payment%20Rates%20for%20Child%20Care%20Providers%207.1.26.pdf#page=1",
-        "https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/pages/ccap-for-providers/IL444-4343%20-%20Child%20Care%20Payment%20Rates%20for%20Child%20Care%20Providers%207.1.26.pdf#page=2",
     )
 
     def formula(person, period, parameters):

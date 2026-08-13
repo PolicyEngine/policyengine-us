@@ -210,3 +210,89 @@
   output:
     # Jan-Jun: 6 * $25.76; Jul-Dec: 6 * $26.79.
     il_ccap_max_daily_rate: 315.3
+
+# Cases 17-22 widen coverage of the licensed-home table, which changed on
+# 2026-07-01 and previously had a single cell asserted, and of the
+# license-exempt-center table's age-gated cells.
+
+- name: Case 17, 2025 licensed home Group 1A under-two part-day rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSED_HOME
+    il_ccap_county_group: GROUP_1A
+    il_ccap_child_age_group: UNDER_TWO
+    il_ccap_care_duration: PART_DAY
+    state_code: IL
+  output:
+    il_ccap_max_daily_rate: 28.03
+
+- name: Case 18, 2026 licensed home Group 1A under-two part-day rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSED_HOME
+    il_ccap_county_group: GROUP_1A
+    il_ccap_child_age_group: UNDER_TWO
+    il_ccap_care_duration: PART_DAY
+    state_code: IL
+  output:
+    il_ccap_max_daily_rate: 29.15
+
+- name: Case 19, 2025 licensed home Group 1B age-three full-plus-part rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSED_HOME
+    il_ccap_county_group: GROUP_1B
+    il_ccap_child_age_group: AGE_THREE_OR_OLDER
+    il_ccap_care_duration: FULL_PLUS_PART
+    state_code: IL
+  output:
+    # One full day at $42.76 plus one part day at $21.38.
+    il_ccap_max_daily_rate: 64.14
+
+- name: Case 20, 2026 licensed home Group 2 under-two two-full-days rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSED_HOME
+    il_ccap_county_group: GROUP_2
+    il_ccap_child_age_group: UNDER_TWO
+    il_ccap_care_duration: TWO_FULL_DAYS
+    state_code: IL
+  output:
+    # Two full days at $48.53.
+    il_ccap_max_daily_rate: 97.06
+
+- name: Case 21, license-exempt center has no age-two rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSE_EXEMPT_CENTER
+    il_ccap_county_group: GROUP_1A
+    il_ccap_child_age_group: AGE_TWO
+    il_ccap_care_duration: FULL_DAY
+    state_code: IL
+  output:
+    # The published chart prints N/A: Illinois pays no maximum for this
+    # arrangement, which license-exempt centers may not serve.
+    il_ccap_max_daily_rate: 0
+
+- name: Case 22, 2025 license-exempt center Group 2 age-three part-day rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSE_EXEMPT_CENTER
+    il_ccap_county_group: GROUP_2
+    il_ccap_child_age_group: AGE_THREE_OR_OLDER
+    il_ccap_care_duration: PART_DAY
+    state_code: IL
+  output:
+    il_ccap_max_daily_rate: 17
