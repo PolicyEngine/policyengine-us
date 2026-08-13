@@ -1,0 +1,568 @@
+# Unit tests for the Massachusetts ConnectorCare subsidy amount.
+#
+# ma_connector_care (TaxUnit, YEAR, USD, defined_for StateCode.MA):
+#   n_members         = count of ma_connector_care_member_eligible (= is_aca_ptc_eligible)
+#   per_person_month  = enrollee_premium.calc(aca_magi_fraction)   # single_amount bracket
+#   contribution      = MONTHS_IN_YEAR (12) * per_person_month * n_members
+#   slcsp_annual      = add(tax_unit, period, ["slcsp"])           # MONTH var summed to year
+#   subsidy           = max(0, slcsp_annual - aca_ptc - contribution)
+#   amount            = where(ma_connector_care_eligible, subsidy, 0)
+#
+# All of slcsp / aca_ptc / aca_magi_fraction / is_aca_ptc_eligible are supplied
+# directly so each expected value is hand-verifiable. slcsp is a MONTH variable;
+# supplying it at the YEAR period sets the annual total, so the values below are
+# annual SLCSP.
+#
+# Per-person monthly enrollee premium bracket (single_amount, lower-exclusive):
+#   [1.0, 1.5001)  -> $0     (Plan Type 2A)
+#   [1.5001, 2.0001) -> $53  (Plan Type 2B)
+#   [2.0001, 2.5001) -> $103 (Plan Type 3A)
+#   [2.5001, 3.0001) -> $152 (Plan Type 3B)
+#   [3.0001, ...)  -> $235   (Plan Type 3C)
+# So at EXACTLY 150%/200%/250%/300% FPL the household is still in the LOWER band.
+
+# --- Each band exercised with a positive residual, single member (n=1) ---
+
+- name: Case 1, band 2A ($0/mo) at 140% FPL, single member.
+  # per_person_month 0 -> contribution 0. subsidy = 6_000 - 5_500 - 0 = 500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_500
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 500
+
+- name: Case 2, band 2B ($53/mo) at 175% FPL, single member.
+  # contribution = 12*53*1 = 636. subsidy = 7_200 - 5_000 - 636 = 1_564.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 7_200
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 1_564
+
+- name: Case 3, band 3A ($103/mo) at 225% FPL, single member.
+  # contribution = 12*103*1 = 1_236. subsidy = 9_000 - 5_000 - 1_236 = 2_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.25
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 2_764
+
+- name: Case 4, band 3B ($152/mo) at 275% FPL, single member.
+  # contribution = 12*152*1 = 1_824. subsidy = 9_000 - 4_000 - 1_824 = 3_176.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.75
+        slcsp: 9_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 3_176
+
+- name: Case 5, band 3C ($235/mo) at 350% FPL, single member.
+  # contribution = 12*235*1 = 2_820. subsidy = 8_000 - 4_000 - 2_820 = 1_180.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.5
+        slcsp: 8_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 1_180
+
+# --- Band boundaries where the premium step is observable ---
+# slcsp 12_000 and aca_ptc 0 held constant so the only moving part is the
+# contribution; the $636 step (12*53) between 1.50 and 1.51 is directly visible.
+
+- name: Case 6, exactly 150% FPL is still band 2A ($0/mo).
+  # 1.5 < 1.5001 -> $0. contribution 0. subsidy = 12_000 - 0 - 0 = 12_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.5
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 12_000
+
+- name: Case 7, 151% FPL crosses into band 2B ($53/mo).
+  # 1.51 >= 1.5001 -> $53. contribution = 12*53 = 636. subsidy = 12_000 - 636 = 11_364.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.51
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 11_364
+
+- name: Case 8, exactly 200% FPL is still band 2B ($53/mo).
+  # 2.0 < 2.0001 -> $53. contribution 636. subsidy = 12_000 - 636 = 11_364.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 11_364
+
+- name: Case 9, 201% FPL crosses into band 3A ($103/mo).
+  # 2.01 >= 2.0001 -> $103. contribution = 12*103 = 1_236. subsidy = 12_000 - 1_236 = 10_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.01
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 10_764
+
+- name: Case 10, exactly 250% FPL is still band 3A ($103/mo).
+  # 2.5 < 2.5001 -> $103. contribution 1_236. subsidy = 12_000 - 1_236 = 10_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.5
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 10_764
+
+- name: Case 11, 251% FPL crosses into band 3B ($152/mo).
+  # 2.51 >= 2.5001 -> $152. contribution = 12*152 = 1_824. subsidy = 12_000 - 1_824 = 10_176.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.51
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 10_176
+
+- name: Case 12, exactly 300% FPL is still band 3B ($152/mo).
+  # 3.0 < 3.0001 -> $152. contribution 1_824. subsidy = 12_000 - 1_824 = 10_176.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.0
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 10_176
+
+- name: Case 13, 301% FPL crosses into band 3C ($235/mo).
+  # 3.01 >= 3.0001 -> $235. contribution = 12*235 = 2_820. subsidy = 12_000 - 2_820 = 9_180.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.01
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 9_180
+
+# --- Multi-member (n=2), zero-floor, and ineligibility ---
+
+- name: Case 14, two APTC-eligible members at 175% FPL (n=2).
+  # per_person_month 53. contribution = 12*53*2 = 1_272.
+  # subsidy = 7_200 - 5_000 - 1_272 = 928.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.75
+        slcsp: 7_200
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_connector_care: 928
+
+- name: Case 15, mixed household counts only the APTC-eligible member (n=1).
+  # person2 is not APTC-eligible, so n_members=1. band 3A ($103/mo).
+  # contribution = 12*103*1 = 1_236. subsidy = 9_000 - 5_000 - 1_236 = 2_764.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 2.25
+        slcsp: 9_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_connector_care: 2_764
+
+- name: Case 16, zero floor when APTC plus contribution exceeds SLCSP.
+  # band 3C ($235/mo). contribution = 12*235 = 2_820.
+  # slcsp - aca_ptc - contribution = 5_000 - 3_000 - 2_820 = -820 -> floored to 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.5
+        slcsp: 5_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 0
+
+- name: Case 17, ineligible household (no APTC member) receives nothing.
+  # has_eligible_member false -> ma_connector_care_eligible false -> where returns 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 9_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 0
+
+- name: Case 18, non-Massachusetts household receives nothing via defined_for.
+  # state_code CA -> defined_for returns 0 regardless of the otherwise-large residual.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ma_connector_care: 0
+
+- name: Case 19, program not in effect in 2025 yields nothing.
+  # in_effect false pre-2026 -> ma_connector_care_eligible false -> 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 0
+
+# --- Edge cases: SLCSP=0, exact-tie floor, large household (n=5), floor+payout ---
+
+- name: Case 20, eligible household with zero SLCSP receives nothing.
+  # Edge: benchmark premium of 0. band 2A ($0/mo), aca_ptc 0.
+  # subsidy = max(0, 0 - 0 - 0) = 0. Eligible (1.4 in band, MA, APTC member) but
+  # nothing to wrap. Guards the SLCSP=0 input against a spurious negative/positive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 0
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 0
+
+- name: Case 21, exact tie where SLCSP minus APTC equals the contribution yields 0.
+  # Edge: the max_(0, .) floor at EXACTLY zero (not a negative residual).
+  # band 2B ($53/mo). contribution = 12*53 = 636.
+  # slcsp - aca_ptc - contribution = 5_636 - 5_000 - 636 = 0 exactly.
+  # Eligible but the wrap is precisely 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 5_636
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 0
+
+- name: Case 22, large household with five APTC-eligible members at 350% FPL (n=5).
+  # Entity-size edge: contribution scales by member count at the top $235 band.
+  # band 3C ($235/mo). contribution = 12*235*5 = 14_100.
+  # subsidy = 20_000 - 0 - 14_100 = 5_900.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 20
+        is_aca_ptc_eligible: true
+      person4:
+        age: 18
+        is_aca_ptc_eligible: true
+      person5:
+        age: 17
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 3.5
+        slcsp: 20_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MA
+  output:
+    ma_connector_care: 5_900
+
+- name: Case 23, exactly at the 100% FPL floor with a positive residual pays out.
+  # Edge: floor-inclusive eligibility (1.0 >= fpl_floor 1.0) combined with a
+  # nonzero amount. band 2A ($0/mo). contribution 0.
+  # subsidy = 6_000 - 5_500 - 0 = 500. Ties the eligibility boundary to a payout.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.0
+        slcsp: 6_000
+        aca_ptc: 5_500
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care: 500
