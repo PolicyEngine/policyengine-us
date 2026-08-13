@@ -1,0 +1,25 @@
+description: Washington provides premium assistance when this is true under the Cascade Care Savings program.
+values:
+  # RCW 43.71.110 (established by SB 5377, 2021) is permanent law; the program is
+  # funded through each state Operating Budget ($55M appropriated for PY2026, with
+  # up to $5M reserved and contingent on the Section 1332 waiver for the
+  # non-federally-subsidized population). PY2026 coverage runs Jan 1 - Dec 31, 2026.
+  # No end date: the program has no statutory sunset, so PY2027+ carries the PY2026
+  # design forward as a current-law assumption (WAHBE Board sets amounts annually
+  # within the appropriation).
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Washington Cascade Care Savings in effect
+  reference:
+    - title: RCW 43.71.110 (Washington state premium assistance)
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=43.71.110
+    - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 1 and Section 2
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=5
+    - title: WAHBE Plan Year 2026 Final PMPM Methodology ($55M appropriation)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=1
+    - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy ($5M Section 1332 waiver reserve footnote)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=5
