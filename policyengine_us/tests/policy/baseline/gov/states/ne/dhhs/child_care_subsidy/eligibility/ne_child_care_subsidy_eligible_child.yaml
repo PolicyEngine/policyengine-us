@@ -1,0 +1,104 @@
+- name: Case 1, a citizen child at the ordinary age limit is eligible.
+  period: 2026-01
+  input:
+    age: 12
+    immigration_status: CITIZEN
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 2, a child age 13 is not initially age eligible.
+  period: 2026-01
+  input:
+    age: 13
+    immigration_status: CITIZEN
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: false
+
+- name: Case 3, an enrolled child age 13 remains eligible.
+  period: 2026-01
+  input:
+    age: 13
+    immigration_status: CITIZEN
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 4, enrollment does not extend eligibility beyond age 13.
+  period: 2026-01
+  input:
+    age: 14
+    immigration_status: CITIZEN
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: false
+
+- name: Case 5, a special-needs child at age 18 is eligible.
+  period: 2026-01
+  input:
+    age: 18
+    immigration_status: CITIZEN
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 6, special-needs eligibility ends after age 18.
+  period: 2026-01
+  input:
+    age: 19
+    immigration_status: CITIZEN
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: false
+
+- name: Case 7, an undocumented child fails the child-only immigration test.
+  period: 2026-01
+  input:
+    age: 8
+    immigration_status: UNDOCUMENTED
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: false
+
+- name: Case 8, a qualified refugee child passes the immigration test.
+  period: 2026-01
+  input:
+    age: 8
+    immigration_status: REFUGEE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 9, an ordinary child remains eligible until the 13th birthday.
+  period: 2026-01
+  input:
+    age: 12.5
+    immigration_status: CITIZEN
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 10, an enrolled child remains eligible until the 14th birthday.
+  period: 2026-01
+  input:
+    age: 13.5
+    immigration_status: CITIZEN
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true
+
+- name: Case 11, a special-needs child remains eligible until age 19.
+  period: 2026-01
+  input:
+    age: 18.5
+    immigration_status: CITIZEN
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_child: true

@@ -1,0 +1,262 @@
+# End-to-end integration tests for the California Premium Subsidy (PY2026),
+# a state top-up over the federal ACA APTC toward the SLCSP benchmark for
+# on-Exchange enrollees between 100% and 165% FPL. Scenarios span the flat
+# 100-150% band (state fills the post-APTC gap), the 150-165% sliding scale,
+# the $0 floor when APTC already covers the residual, a non-CA case, and an
+# out-of-window (2025) case.
+#
+# To keep expected values exactly hand-verifiable and independent of the
+# rating-area premium lookup, aca_magi, aca_magi_fraction, slcsp (annual),
+# aca_ptc and is_aca_ptc_eligible are supplied directly, and each scenario
+# asserts the intermediate values so a reviewer can follow the arithmetic:
+#   eligible = in_effect & any(is_aca_ptc_eligible) & 1.0 <= magi_frac <= 1.65
+#   pct      = CA schedule keyed on aca_magi_fraction
+#              (100-150%: 0%; 150-165%: 3.19% -> 3.91% linear)
+#   amount   = max(0, slcsp_annual - aca_ptc - pct * max(aca_magi, 0))
+#   result   = where(eligible, amount, 0)
+
+- name: Scenario 1, single age 40 at 125% FPL (flat 0% band, state fills the gap).
+  # magi_frac 1.25 in [1.0,1.5) -> pct 0. eligible (in-band, APTC-eligible, CA).
+  # amount = max(0, 6_000 - 3_800 - 0*18_750) = 2_200. Below 150% FPL the CA
+  # expected contribution is 0%, so the subsidy fills the full post-APTC gap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 18_750
+        aca_magi_fraction: 1.25
+        slcsp: 6_000
+        aca_ptc: 3_800
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0
+    ca_premium_subsidy: 2_200
+
+- name: Scenario 2, single age 40 exactly at 150% FPL (knot, pct jumps to 3.19%).
+  # magi_frac 1.50 -> bracket [1.5,1.65] start -> pct 0.0319. income 22_500.
+  # amount = max(0, 6_000 - 3_000 - 0.0319*22_500) = 6_000 - 3_000 - 717.75 = 2_282.25.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 22_500
+        aca_magi_fraction: 1.50
+        slcsp: 6_000
+        aca_ptc: 3_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.0319
+    ca_premium_subsidy: 2_282.25
+
+- name: Scenario 3, single age 55 at 157.5% FPL (midpoint of the 150-165% ramp).
+  # magi_frac 1.575 -> pct 0.0319 + 0.5*0.0072 = 0.0355. income 23_625.
+  # amount = max(0, 7_500 - 3_200 - 0.0355*23_625) = 7_500 - 3_200 - 838.69 = 3_461.31.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 23_625
+        aca_magi_fraction: 1.575
+        slcsp: 7_500
+        aca_ptc: 3_200
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.0355
+    ca_premium_subsidy: 3_461.31
+
+- name: Scenario 4, family of four at 165% FPL (top of the ramp, pct 3.91%).
+  # ages 45/43/15/13; magi_frac 1.65 -> pct 0.0391. income 51_500.
+  # amount = max(0, 18_000 - 9_000 - 0.0391*51_500) = 18_000 - 9_000 - 2_013.65 = 6_986.35.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 13
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi: 51_500
+        aca_magi_fraction: 1.65
+        slcsp: 18_000
+        aca_ptc: 9_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.0391
+    ca_premium_subsidy: 6_986.35
+
+- name: Scenario 5, single age 40 at 160% FPL where APTC covers the residual -> $0.
+  # magi_frac 1.60 -> pct 0.0319 + (2/3)*0.0072 = 0.0367. income 24_000.
+  # 0.0367*24_000 = 880.80. amount = max(0, 3_000 - 2_500 - 880.80) = max(0, -380.80) = 0.
+  # Eligible, positive pct, but no state top-up owed once APTC and the expected
+  # contribution exceed the benchmark.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 24_000
+        aca_magi_fraction: 1.60
+        slcsp: 3_000
+        aca_ptc: 2_500
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
+    ca_premium_subsidy_applicable_percentage: 0.0367
+    ca_premium_subsidy: 0
+
+- name: Scenario 6, single age 40 at 140% FPL living in Texas (non-CA -> $0).
+  # defined_for StateCode.CA zeroes both the eligibility and the amount outside
+  # California, so the household falls back to federal APTC only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 21_000
+        aca_magi_fraction: 1.40
+        slcsp: 6_000
+        aca_ptc: 3_500
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ca_premium_subsidy_eligible: false
+    ca_premium_subsidy_applicable_percentage: 0
+    ca_premium_subsidy: 0
+
+- name: Scenario 7, single age 40 at 140% FPL in CA but in 2025 (out of window -> $0).
+  # in_effect is false before 2026-01-01, so the unit is ineligible and the
+  # subsidy is 0 despite an otherwise-qualifying in-band residual.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 21_000
+        aca_magi_fraction: 1.40
+        slcsp: 6_000
+        aca_ptc: 3_500
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: false
+    ca_premium_subsidy: 0
+
+# ---- Fully derived from raw income (no ACA intermediates injected) ----
+
+- name: Scenario 8, single age 40 in LA county with the full ACA chain derived from wages.
+  # Unlike Scenarios 1-7 (which inject aca_magi/aca_magi_fraction/slcsp/aca_ptc),
+  # this scenario supplies ONLY employment_income and the rating-area geography, so
+  # aca_magi_fraction, slcsp, aca_ptc and is_aca_ptc_eligible all DERIVE from the
+  # federal ACA chain. This closes the "scalar unit test passes, end-to-end wiring
+  # untested" gap: it proves ca_premium_subsidy correctly consumes the derived
+  # federal intermediates rather than only hand-fed ones.
+  #   employment_income 24_650 -> aca_magi 24_650; aca_magi_fraction = floor(100 *
+  #   24_650 / prior-year 1-person FPG 15_650) / 100 = floor(157.50)/100 = 1.57
+  #   (in the 150-165% paying band).
+  #   is_aca_eshi_eligible false + citizen defaults -> pays_aca_premium -> is_aca_ptc
+  #   _eligible true. slcsp and aca_ptc derive from the LA-county rating-area premium
+  #   curve. ca_premium_subsidy_applicable_percentage interpolates on the derived
+  #   fraction: 0.0319 + ((1.57-1.5)/0.15)*(0.0391-0.0319) = 0.0319 + 0.4667*0.0072
+  #   = 0.03526. ca_premium_subsidy = max(0, slcsp - aca_ptc - 0.03526 * 24_650),
+  #   floored at 0. The federal PTC often fully covers the benchmark in this band,
+  #   so the derived residual can be 0; the expected values below are the model's
+  #   computed derived outputs (verified by running this file).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_650
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_fips: 6  # CA
+        county: LOS_ANGELES_COUNTY_CA
+        three_digit_zip_code: 902  # 90210 -> rating area 16 in CA
+  output:
+    is_aca_ptc_eligible: [true]
+    ca_premium_subsidy_eligible: true
+    # Fully-derived chain (verified by running this file):
+    #   aca_magi_fraction 1.57, slcsp 6_254.73, aca_ptc 5_138.72,
+    #   pct 0.03526 -> ca_premium_subsidy =
+    #   max(0, 6_254.73 - 5_138.72 - 0.03526 * 24_650) = 246.85.
+    # The derived residual is positive (federal APTC does NOT fully cover the
+    # benchmark in this band), so no slcsp injection is needed.
+    ca_premium_subsidy: 246.85

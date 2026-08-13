@@ -1,0 +1,408 @@
+# Unit tests for the Vermont Premium Assistance amount (REQ-5, REQ-6, REQ-7,
+# REQ-9, REQ-10, REQ-11, REQ-12). VPA is a flat 1.5-percentage-point reduction
+# off the federal section 36B applicable percentage, layered on top of the
+# federal APTC and capped at the benchmark premium remaining after that APTC:
+#   income     = max(aca_magi, 0)                          # negative MAGI clamped
+#   fed_pct    = aca_required_contribution_percentage       # federal applicable %
+#   vt_pct     = max(0, fed_pct - 0.015)                    # floors at 0
+#   gap        = max(0, income * (fed_pct - vt_pct))        # == income * min(fed_pct, 0.015)
+#   slcsp      = annualized second-lowest-cost silver plan  # sum of 12 monthly slcsp
+#   residual   = max(0, slcsp - aca_ptc)                    # premium after federal APTC
+#   VPA        = where(eligible, min(gap, residual), 0)
+# aca_magi, aca_magi_fraction, slcsp, aca_ptc and is_aca_ptc_eligible are supplied
+# directly so each expectation is exactly hand-verifiable. The 2026 federal
+# applicable-percentage schedule (IRS Rev. Proc. 2025-25) is:
+#   0-133%: 2.10% flat | 133-150%: 3.14%->4.19% | 150-200%: 4.19%->6.60%
+#   200-250%: 6.60%->8.44% | 250-300%: 8.44%->9.96% | 300-400%: 9.96% flat
+# so fed_pct never falls below 2.1% for income-eligible households; whenever
+# fed_pct >= 1.5% the gap collapses to income * 0.015. slcsp is a MONTH-period
+# variable supplied here as the annual figure (spread across 12 months and
+# re-summed by add()), matching the CA/NM convention.
+
+# ---- Mid-band, gap-binding (the flat 1.5% reduction) ----
+
+- name: Case 1, 250% FPL gap-binding VPA equals income times 1.5%.
+  # fed_pct at exactly 250% FPL = 8.44% (start of the 250-300% bracket) > 1.5%,
+  # so gap = income * 0.015 = 39_125 * 0.015 = 586.875 ~= 586.88.
+  # residual = 10_000 - 5_000 = 5_000 > gap, so VPA = 586.88 (gap binds).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 586.88
+
+# ---- Low-income edge (REQ-11): fed_pct below 1.5% -> VPA covers full residual ----
+
+- name: Case 2, low applicable percentage floors the reduction and VPA covers the full residual.
+  # REQ-11. The 2026 federal schedule floors at 2.1%, so a fed_pct below 1.5%
+  # only arises when supplied directly; here fed_pct = 1.2%. Then
+  # vt_pct = max(0, 0.012 - 0.015) = 0, so gap = income * (0.012 - 0) =
+  # 30_000 * 0.012 = 360. residual = 8_000 - 7_640 = 360. VPA = min(360, 360) =
+  # 360, i.e. Vermont covers the ENTIRE benchmark premium remaining after the
+  # federal APTC (net premium -> $0), because the 1.5pp reduction cannot go below
+  # zero. aca_ptc = max(0, slcsp - income * fed_pct) = 8_000 - 30_000*0.012 =
+  # 8_000 - 360 = 7_640, so the case is internally consistent.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 30_000
+        aca_magi_fraction: 1.20
+        slcsp: 8_000
+        aca_ptc: 7_640
+        aca_required_contribution_percentage: 0.012
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 360
+
+# ---- Cap-binding (SLCSP ceiling below the gap) ----
+
+- name: Case 3, 250% FPL cap-binding VPA equals the residual premium after APTC.
+  # fed_pct at 250% FPL = 8.44%, gap = 39_125 * 0.015 = 586.875. But
+  # residual = 6_000 - 5_700 = 300 < gap, so VPA = min(586.875, 300) = 300
+  # (SLCSP cap binds -- VPA never exceeds the premium left after the federal APTC).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 6_000
+        aca_ptc: 5_700
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 300
+
+# ---- 300% FPL boundary (eligible) ----
+
+- name: Case 4, exactly 300% FPL VPA equals income times 1.5%.
+  # fed_pct at exactly 300% FPL = 9.96% (start of the 300-400% flat bracket) > 1.5%,
+  # so gap = 46_950 * 0.015 = 704.25. residual = 10_000 - 5_000 = 5_000 > gap,
+  # so VPA = 704.25 (gap binds, and the unit is still eligible at the 300% ceiling).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 46_950
+        aca_magi_fraction: 3.00
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 704.25
+
+# ---- Ineligible: above the 300% FPL ceiling ----
+
+- name: Case 5, 301% FPL above the ceiling yields no VPA.
+  # aca_magi_fraction 3.01 > 3.0 -> not eligible -> VPA = 0 (defined_for gate).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 47_100
+        aca_magi_fraction: 3.01
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Ineligible: no APTC-eligible member ----
+
+- name: Case 6, no APTC-eligible member yields no VPA.
+  # any(is_aca_ptc_eligible) is false -> not eligible -> VPA = 0 (REQ-1).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Ineligible: non-Vermont household ----
+
+- name: Case 7, non-Vermont household yields no VPA via defined_for.
+  # defined_for = StateCode.VT (via vt_premium_assistance_eligible) -> VPA = 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    vt_premium_assistance: 0
+
+# ---- Ineligible: 2025 off-year ----
+
+- name: Case 8, 2025 off-year before the program is in effect yields no VPA.
+  # in_effect is false before 2026 -> not eligible -> VPA = 0 (REQ-8).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Zero SLCSP: no benchmark premium exists -> residual cap is 0 ----
+
+- name: Case 10, zero SLCSP leaves no residual premium so VPA is zero.
+  # No benchmark premium (slcsp = 0) -> residual = max(0, 0 - 0) = 0, so however
+  # large the gap (39_125 * 0.015 = 586.875), VPA = min(586.875, 0) = 0. VPA can
+  # never exceed a nonexistent premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 0
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Exact tie: gap == residual (min returns that shared value) ----
+
+- name: Case 11, gap exactly equal to the residual returns that shared value.
+  # fed_pct at 250% FPL = 8.44% > 1.5% -> gap = 40_000 * 0.015 = 600.
+  # residual = 5_000 - 4_400 = 600 == gap, so VPA = min(600, 600) = 600. The
+  # min is exercised exactly at the tie point between the two binding arms.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 40_000
+        aca_magi_fraction: 2.50
+        slcsp: 5_000
+        aca_ptc: 4_400
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 600
+
+# ---- APTC already exceeds SLCSP: residual clamps to 0 ----
+
+- name: Case 12, federal APTC exceeding the SLCSP clamps the residual to zero.
+  # aca_ptc 9_000 > slcsp 8_000 -> residual = max(0, 8_000 - 9_000) = 0 (the
+  # max_(0, ...) clamp), so VPA = min(gap, 0) = 0 even though the gap
+  # (39_125 * 0.015 = 586.875) is positive. Guards against a negative residual
+  # producing a spurious (negative or offsetting) subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 39_125
+        aca_magi_fraction: 2.50
+        slcsp: 8_000
+        aca_ptc: 9_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Multi-member household at the 300% FPL ceiling (gap scales with MAGI) ----
+
+- name: Case 13, three-person Vermont household at 300% FPL gets a gap scaling with the larger MAGI.
+  # A larger family reaches 300% FPL at a higher aca_magi, so the gap
+  # (income * 0.015) scales up accordingly. fed_pct at 300% FPL = 9.96% > 1.5%,
+  # income = 100_000 -> gap = 100_000 * 0.015 = 1_500. residual =
+  # 20_000 - 8_000 = 12_000 > gap, so VPA = 1_500 (gap binds). Eligibility holds
+  # at the inclusive 300% ceiling for a multi-member unit, and only one member
+  # need be APTC-eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+      person3:
+        age: 8
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi: 100_000
+        aca_magi_fraction: 3.00
+        slcsp: 20_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    vt_premium_assistance: 1_500
+
+# ---- Negative MAGI clamp (REQ-12) ----
+
+- name: Case 9, negative ACA MAGI cannot inflate the gap.
+  # income = max(aca_magi, 0) = max(-50_000, 0) = 0, so gap = 0 * min(pct,0.015)
+  # = 0 and VPA = min(0, residual) = 0. A negative MAGI must not produce a
+  # positive (or inflated) subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: -50_000
+        aca_magi_fraction: 0.50
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0
+
+# ---- Exact zero MAGI clamp (Gap D): income == 0 -> gap 0 -> VPA 0 ----
+
+- name: Case 14, exact zero ACA MAGI produces a zero gap and no VPA.
+  # income = max(aca_magi, 0) = max(0, 0) = 0, so gap = 0 * min(fed_pct, 0.015)
+  # = 0 and VPA = min(0, residual) = 0. Distinct from the negative-MAGI clamp
+  # (Case 9): here the boundary itself (aca_magi = 0) yields a zero gap even
+  # though the residual (10_000 - 5_000 = 5_000) is positive and the unit is
+  # otherwise eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi: 0
+        aca_magi_fraction: 0.00
+        slcsp: 10_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance: 0

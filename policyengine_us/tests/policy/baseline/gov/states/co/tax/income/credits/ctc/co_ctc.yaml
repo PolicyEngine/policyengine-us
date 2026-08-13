@@ -416,3 +416,18 @@
     co_ctc_eligible_children_count: 1
     # Non-zero refundable CTC driven entirely by the ITIN under-6 child.
     co_refundable_ctc: 1_500
+
+# Boundary guard for the ctc_matched_federal_credit flip date (2022-01-01 true ->
+# 2024-01-01 false). 2023 must still use the rate x co_federal_ctc branch, not the
+# 2024+ flat-per-child branch. Mirrors the 2022 single/agi=25k/federal=1_000 case.
+# HB23-1112; ctc_matched_federal_credit.yaml.
+- name: In 2023, single filer, agi = 25_000, federal ctc = 1_000, rate branch still active - co_ctc = 600
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 25_000
+    co_federal_ctc: 1_000
+    filing_status: SINGLE
+    age: 5
+  output:
+    co_ctc: 600

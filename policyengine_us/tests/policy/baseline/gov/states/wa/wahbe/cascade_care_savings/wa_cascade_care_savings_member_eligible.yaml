@@ -1,0 +1,175 @@
+# Unit tests for the Person-level Cascade Care Savings enrollee flag.
+#
+# wa_cascade_care_savings_member_eligible (Person, bool) is true iff the person is
+# in Group 1 OR Group 3:
+#   Group 1 = is_aca_ptc_eligible.
+#   Group 3 = immigration_status UNDOCUMENTED
+#             AND NOT wa_apple_health_expansion_eligible
+#             AND NOT wa_apple_health_kids_eligible
+#             AND NOT is_aca_ptc_eligible (making Groups 1 and 3 exclusive).
+# Person-level gates are supplied directly so each row is hand-verifiable, and
+# outputs are asserted per person to localize any failure to the member rather
+# than a household-sum diff. defined_for StateCode.WA, so households are in WA.
+
+- name: Case 1, Group 1 APTC-eligible member is an enrollee.
+  # is_aca_ptc_eligible true -> Group 1 -> member eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [true]
+
+- name: Case 2, Group 3 undocumented non-Apple-Health member is an enrollee.
+  # UNDOCUMENTED, not APTC-eligible, not Apple Health (Expansion or Kids) -> Group
+  # 3 -> member eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [true]
+
+- name: Case 3, citizen non-APTC member is in neither group.
+  # Not APTC-eligible and not undocumented -> neither Group 1 nor Group 3 ->
+  # member ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [false]
+
+- name: Case 4, undocumented adult eligible for Apple Health Expansion is excluded.
+  # wa_apple_health_expansion_eligible true removes an undocumented adult from
+  # Group 3 (state MEC via the Medicaid proxy) -> member ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [false]
+
+- name: Case 5, undocumented Apple-Health-for-Kids child is excluded from Group 3.
+  # age 10, UNDOCUMENTED, wa_apple_health_kids_income_eligible true -> under 19 and
+  # income-eligible so wa_apple_health_kids_eligible is true -> the child has state
+  # MEC and is excluded from Group 3 -> member ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [false]
+
+- name: Case 6, undocumented child above the kids income limit is a Group 3 member.
+  # Companion to Case 5: only wa_apple_health_kids_income_eligible flips to false,
+  # so the child is NOT Apple-Health-for-Kids eligible (and cannot get Expansion
+  # under 19) -> Group 3 -> member eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [true]
+
+- name: Case 7, dual-flagged member is Group 1 only (mutual exclusivity), still eligible.
+  # is_aca_ptc_eligible true AND UNDOCUMENTED with Apple Health false. Group 3 adds
+  # ~is_aca_ptc_eligible, so the person is Group 1 ONLY, but still an enrollee.
+  # The $55-not-$305 dollar contract is pinned in the member_amount file.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [true]
+
+- name: Case 8, per-person outputs in a mixed household localize to each member.
+  # person1 Group 1 (APTC). person2 Group 3 (undocumented, no Apple Health).
+  # person3 citizen non-APTC (neither group). person4 undocumented but Apple
+  # Health Expansion eligible (excluded). Asserting each person separately proves
+  # the flag is computed member-by-member, not household-broadcast.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+      person3:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+      person4:
+        age: 38
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_eligible: [true, true, false, false]

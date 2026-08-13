@@ -1,0 +1,28 @@
+description: Nebraska sets these maximum daily rates for license-exempt family child care homes under the Child Care Subsidy program.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Nebraska Child Care Subsidy license-exempt family home rates
+  breakdown:
+    - [URBAN, RURAL]
+    - [PARTIAL_DAY, FULL_DAY, FULL_PLUS_PARTIAL]
+  reference:
+    - title: Nebraska 2025-2027 Child Care Subsidy Rates
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf
+    - title: Neb. Rev. Stat. § 68-1206(3)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+
+URBAN:
+  PARTIAL_DAY:
+    2025-10-01: 9.9
+  FULL_DAY:
+    2025-10-01: 16.5
+  FULL_PLUS_PARTIAL:
+    2025-10-01: 26.4
+RURAL:
+  PARTIAL_DAY:
+    2025-10-01: 8.8
+  FULL_DAY:
+    2025-10-01: 14.9
+  FULL_PLUS_PARTIAL:
+    2025-10-01: 23.7

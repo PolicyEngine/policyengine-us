@@ -1,0 +1,225 @@
+# Linkage per GRPHB Handbook Letter #7356: adults link through verified
+# incapacity (proxied by is_incapable_of_self_care) or as non-student
+# employables. The handbook's employable definition (unemployed or employed
+# under 100 hours a month) and its self-employment bar are deliberately not
+# modeled: a worker whose income is low enough to pass the income test could
+# leave the job and qualify categorically, so the income test alone governs
+# need. Children link when under 16, or at 16 to 18 while enrolled in and
+# attending high school full time; the 16-to-18 student path also requires
+# an adult-linked member in the unit (the cooperating-parent proxy).
+- name: Case 1, an unemployed adult is employable and linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 2, an employed adult is linked regardless of hours worked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The 100-monthly-hour employable test is not modeled; the income test
+    # screens need separately.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 3, a self-employed adult is linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000
+        is_self_employed: true
+        farm_operations_income: 24_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The self-employment bar is not modeled: neither self-employment
+    # income (including Schedule F farm income) nor the self-employed
+    # flag affects linkage; the income still counts as earned income.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 4, a full-time student adult who is employable is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Attending school while employable is an eligibility bar.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 5, a full-time student adult who is incapacitated is linked through incapacity.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        is_full_time_student: true
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The student bar applies only to employable adults;
+    # incapacity linkage is unaffected by student status.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 6, a 15-year-old child links through a parent regardless of school status.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Children under 16 are linked with no school requirement.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+
+- name: Case 7, a 16-year-old attending high school full time links through a linked parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_full_time_student: true
+        is_in_secondary_school: true
+      person2:
+        age: 40
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_meets_linkage_requirements: [true, true]
+
+- name: Case 8, a 16-year-old not in school is not linked.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # At 16 the under-16 child path closes and the student path requires
+    # full-time high school attendance; the adult path requires age 18.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 9, a 16-year-old enrolled in high school but not full time is not linked even with a linked parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_full_time_student: false
+        is_in_secondary_school: true
+      person2:
+        age: 40
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The 16-to-18 path requires full-time enrollment and attendance.
+    ca_sbd_general_relief_meets_linkage_requirements: [false, true]
+
+- name: Case 10, a solo 18-year-old high school student is not linked without a linked adult in the unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_full_time_student: true
+        is_in_secondary_school: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The county would evaluate a lone 18-year-old as an adult applicant,
+    # and a full-time student fails the employable path; the 16-to-18
+    # student path serves children in a cooperating parent's case, so it
+    # requires an adult-linked member in the unit.
+    ca_sbd_general_relief_meets_linkage_requirements: false
+
+- name: Case 11, a 19-year-old attending high school full time is not linked even with a linked parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_full_time_student: true
+        is_in_secondary_school: true
+      person2:
+        age: 45
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # Too old for the child student path, and as an adult the student-while-
+    # employable bar applies.
+    ca_sbd_general_relief_meets_linkage_requirements: [false, true]
+
+- name: Case 12, an 18-and-a-half-year-old attending high school full time stays linked through a linked parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18.5
+        is_full_time_student: true
+        is_in_secondary_school: true
+      person2:
+        age: 45
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # "Children aged 16 to 18" is a whole-number age band running through
+    # the 19th birthday, so a float age of 18.5 still falls inside it.
+    ca_sbd_general_relief_meets_linkage_requirements: [true, true]
+
+- name: Case 13, a part-time college student adult is not linked while employable.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 25
+        is_part_time_college_student: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # "Students do not meet this criteria" is unqualified: part-time and
+    # full-time students alike fail the employability linkage.
+    ca_sbd_general_relief_meets_linkage_requirements: false

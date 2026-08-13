@@ -1,0 +1,59 @@
+# Unit tests for the Massachusetts ConnectorCare Person-level member gate.
+#
+# ma_connector_care_member_eligible (Person, YEAR, bool, defined_for StateCode.MA)
+# is a pass-through of is_aca_ptc_eligible: a person counts as a ConnectorCare
+# enrollee exactly when they are eligible for the federal ACA premium tax credit.
+# is_aca_ptc_eligible is supplied directly here so the identity is isolated.
+
+- name: Case 1, MA resident who is APTC-eligible is a ConnectorCare member.
+  # is_aca_ptc_eligible true, state_code MA -> member_eligible true.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_member_eligible: true
+
+- name: Case 2, MA resident who is not APTC-eligible is not a member.
+  # is_aca_ptc_eligible false -> member_eligible false (pass-through).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_member_eligible: false
+
+- name: Case 3, per-person gate in a mixed MA household ([true, false]).
+  # person1 APTC-eligible -> true; person2 not APTC-eligible -> false. The gate
+  # is evaluated independently per person, not aggregated.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+      person2:
+        age: 38
+        is_aca_ptc_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    people:
+      person1:
+        ma_connector_care_member_eligible: true
+      person2:
+        ma_connector_care_member_eligible: false

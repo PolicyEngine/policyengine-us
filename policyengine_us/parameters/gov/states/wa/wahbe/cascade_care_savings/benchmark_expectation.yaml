@@ -1,0 +1,33 @@
+description: Washington sets this monthly per-member benchmark premium expectation under the Cascade Care Savings program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Washington Cascade Care Savings monthly benchmark premium expectation by income band
+  reference:
+    - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 5(1)(e)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=11
+    - title: RCW 43.71.110 (Washington state premium assistance)
+      href: https://app.leg.wa.gov/rcw/default.aspx?cite=43.71.110
+
+brackets:
+  # Household income (ACA MAGI as a share of the federal poverty line):
+  # up to 150% FPL -> $0 per eligible member per month.
+  - threshold:
+      2026-01-01: 0
+    amount:
+      2026-01-01: 0
+  # Above 150% and up to 200% FPL -> $10. The benchmark premium expectation is new
+  # for PY2026, so every band is $0 before 2026-01-01.
+  - threshold:
+      2026-01-01: 1.5001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 10
+  # Above 200% FPL (through the 250% eligibility ceiling) -> $15.
+  - threshold:
+      2026-01-01: 2.0001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 15

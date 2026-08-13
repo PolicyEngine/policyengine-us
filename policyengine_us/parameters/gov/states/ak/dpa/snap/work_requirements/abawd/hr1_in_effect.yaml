@@ -1,10 +1,26 @@
 # P.L. 119-21 grants Alaska preferential waiver authority (150% of the
 # national average unemployment threshold and good-faith exemptions)
-# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Alaska implemented the
-# HR1 ABAWD work requirement changes effective 2025-11-01, alongside a
-# good-faith exemption waiver covering all census areas and boroughs
-# except the Municipality of Anchorage. Borough-level high-unemployment
-# waivers are not modeled here.
+# per 7 U.S.C. 2015(o)(4)(A)(ii) and 2015(o)(7). Alaska adopts the HR1
+# ABAWD rules statewide from 2025-11-01 (its delayed-adoption date, the
+# same as Hawaii), so the new Alaska Native/Indian exception is in effect
+# from that date everywhere in Alaska, including the Municipality of
+# Anchorage. Two Alaska-specific overlays are modeled SEPARATELY rather
+# than by deferring this statewide toggle:
+#   1. The geographic good-faith area waiver (29 boroughs/census areas
+#      outside Anchorage waived through 2026-10-31, Anchorage excluded,
+#      cleared 2026-11-01) is carried by the abawd waived_counties
+#      parameter.
+#   2. The temporary retained pre-HR1 exceptions Alaska was approved to
+#      keep during the good-faith window (2025-11-01 through 2026-10-31)
+#      are carried by the good_faith_exemption parameters and applied on
+#      top of the post-HR1 exception set.
+# Keeping this toggle at 2025-11-01 (rather than deferring it to
+# 2026-11-01) preserves HR1's new Alaska Native/Indian exception and adds
+# only the approved temporary categories during the window, instead of
+# restoring the entire pre-HR1 exception set statewide. Under
+# 7 U.S.C. 2015(o)(7)(D)(i) (as amended by HR1) a good-faith exemption,
+# once granted, may be renewed but expires no later than 2028-12-31.
+# Borough-level high-unemployment waivers are not modeled here.
 description: Alaska implements the HR1 changes to Able-Bodied Adult Without Dependents work requirements under the Supplemental Nutrition Assistance Program when this is true.
 
 values:
@@ -18,7 +34,9 @@ metadata:
   reference:
     - title: Alaska Department of Health, H.R. 1 - AK Impacts
       href: https://health.alaska.gov/en/education/hr-1-ak-impacts/
-    - title: Public Law 119-21, Section 10102(a) - Modifications to SNAP ABAWD Requirements
-      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81
+    - title: 7 U.S.C. 2015(o)(7) - Good faith exemptions for Alaska and Hawaii
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim
+    - title: Public Law 119-21, Section 10102(c) - Exemption for noncontiguous States
+      href: https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=12
     - title: USDA FNS SNAP Provisions of the One Big Beautiful Bill Act of 2025, ABAWD Waivers Implementation Memorandum (October 3, 2025)
       href: https://www.fns.usda.gov/snap/obbb-ABAWD-Waivers-Implementation-Memo
