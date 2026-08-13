@@ -1,3 +1,10 @@
+## [1.797.0] - 2026-08-13
+
+### Added
+
+- Add Washington Cascade Care Savings (state premium assistance program).
+
+
 ## [1.796.0] - 2026-08-13
 
 ### Added
