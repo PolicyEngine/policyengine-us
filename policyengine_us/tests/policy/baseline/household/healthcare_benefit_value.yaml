@@ -277,7 +277,75 @@
     ct_covered_connecticut: 988.84
     healthcare_benefit_value: 11_186.34
 
-- name: Case 16, Massachusetts ConnectorCare wrap flows into healthcare benefit value.
+- name: Case 16, Washington Cascade Care Savings flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+    wa_cascade_care_savings: 660
+  output:
+    healthcare_benefit_value: 660
+
+- name: Case 17, two tax units each earning CCS sum into one household value.
+  # wa_cascade_care_savings is a TaxUnit variable; healthcare_benefit_value is a
+  # Household variable that adds it, so a household with two tax units (each with
+  # a Group 1 member earning 660) must aggregate to 660 + 660 = 1_320. Guards the
+  # TaxUnit -> Household sum, which a single-tax-unit case cannot exercise. All
+  # other health-value components are zeroed so the total is purely the CCS sum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+      tax_unit2:
+        members: [person2]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: [660, 660]
+    healthcare_benefit_value: 1_320
+
+- name: Case 18, Massachusetts ConnectorCare wrap flows into healthcare benefit value.
   # ma_connector_care is supplied directly; all sibling cost proxies are zeroed so
   # the wrap is the only contributor. healthcare_benefit_value adds it verbatim.
   period: 2026
