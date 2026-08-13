@@ -1,109 +1,191 @@
 description: New York sets these weekly market rates by county group, provider type, and child age under the Child Care Assistance Program.
+# School-age child care programs share the DCC_SACC rates. The 2024 schedule
+# has four county groups, so there is no GROUP_5.
 
 GROUP_1:
   DCC_SACC:
-    INFANT: {2024-10-01: 484}
-    TODDLER: {2024-10-01: 444}
-    PRESCHOOLER: {2024-10-01: 411}
-    SCHOOL_AGE: {2024-10-01: 340}
+    INFANT:
+      2024-10-01: 484
+    TODDLER:
+      2024-10-01: 444
+    PRESCHOOLER:
+      2024-10-01: 411
+    SCHOOL_AGE:
+      2024-10-01: 340
   FDC_GFDC:
-    INFANT: {2024-10-01: 404}
-    TODDLER: {2024-10-01: 400}
-    PRESCHOOLER: {2024-10-01: 380}
-    SCHOOL_AGE: {2024-10-01: 350}
+    INFANT:
+      2024-10-01: 404
+    TODDLER:
+      2024-10-01: 400
+    PRESCHOOLER:
+      2024-10-01: 380
+    SCHOOL_AGE:
+      2024-10-01: 350
   LE_GC:
-    INFANT: {2024-10-01: 0}
-    TODDLER: {2024-10-01: 0}
-    PRESCHOOLER: {2024-10-01: 308}
-    SCHOOL_AGE: {2024-10-01: 255}
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 308
+    SCHOOL_AGE:
+      2024-10-01: 255
   LE_STD:
-    INFANT: {2024-10-01: 263}
-    TODDLER: {2024-10-01: 260}
-    PRESCHOOLER: {2024-10-01: 247}
-    SCHOOL_AGE: {2024-10-01: 228}
+    INFANT:
+      2024-10-01: 263
+    TODDLER:
+      2024-10-01: 260
+    PRESCHOOLER:
+      2024-10-01: 247
+    SCHOOL_AGE:
+      2024-10-01: 228
   LE_ENH:
-    INFANT: {2024-10-01: 283}
-    TODDLER: {2024-10-01: 280}
-    PRESCHOOLER: {2024-10-01: 266}
-    SCHOOL_AGE: {2024-10-01: 245}
+    INFANT:
+      2024-10-01: 283
+    TODDLER:
+      2024-10-01: 280
+    PRESCHOOLER:
+      2024-10-01: 266
+    SCHOOL_AGE:
+      2024-10-01: 245
 GROUP_2:
   DCC_SACC:
-    INFANT: {2024-10-01: 385}
-    TODDLER: {2024-10-01: 365}
-    PRESCHOOLER: {2024-10-01: 340}
-    SCHOOL_AGE: {2024-10-01: 286}
+    INFANT:
+      2024-10-01: 385
+    TODDLER:
+      2024-10-01: 365
+    PRESCHOOLER:
+      2024-10-01: 340
+    SCHOOL_AGE:
+      2024-10-01: 286
   FDC_GFDC:
-    INFANT: {2024-10-01: 315}
-    TODDLER: {2024-10-01: 300}
-    PRESCHOOLER: {2024-10-01: 285}
-    SCHOOL_AGE: {2024-10-01: 270}
+    INFANT:
+      2024-10-01: 315
+    TODDLER:
+      2024-10-01: 300
+    PRESCHOOLER:
+      2024-10-01: 285
+    SCHOOL_AGE:
+      2024-10-01: 270
   LE_GC:
-    INFANT: {2024-10-01: 0}
-    TODDLER: {2024-10-01: 0}
-    PRESCHOOLER: {2024-10-01: 255}
-    SCHOOL_AGE: {2024-10-01: 215}
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 255
+    SCHOOL_AGE:
+      2024-10-01: 215
   LE_STD:
-    INFANT: {2024-10-01: 205}
-    TODDLER: {2024-10-01: 195}
-    PRESCHOOLER: {2024-10-01: 185}
-    SCHOOL_AGE: {2024-10-01: 176}
+    INFANT:
+      2024-10-01: 205
+    TODDLER:
+      2024-10-01: 195
+    PRESCHOOLER:
+      2024-10-01: 185
+    SCHOOL_AGE:
+      2024-10-01: 176
   LE_ENH:
-    INFANT: {2024-10-01: 221}
-    TODDLER: {2024-10-01: 210}
-    PRESCHOOLER: {2024-10-01: 200}
-    SCHOOL_AGE: {2024-10-01: 189}
+    INFANT:
+      2024-10-01: 221
+    TODDLER:
+      2024-10-01: 210
+    PRESCHOOLER:
+      2024-10-01: 200
+    SCHOOL_AGE:
+      2024-10-01: 189
 GROUP_3:
   DCC_SACC:
-    INFANT: {2024-10-01: 320}
-    TODDLER: {2024-10-01: 300}
-    PRESCHOOLER: {2024-10-01: 277}
-    SCHOOL_AGE: {2024-10-01: 257}
+    INFANT:
+      2024-10-01: 320
+    TODDLER:
+      2024-10-01: 300
+    PRESCHOOLER:
+      2024-10-01: 277
+    SCHOOL_AGE:
+      2024-10-01: 257
   FDC_GFDC:
-    INFANT: {2024-10-01: 279}
-    TODDLER: {2024-10-01: 265}
-    PRESCHOOLER: {2024-10-01: 263}
-    SCHOOL_AGE: {2024-10-01: 236}
+    INFANT:
+      2024-10-01: 279
+    TODDLER:
+      2024-10-01: 265
+    PRESCHOOLER:
+      2024-10-01: 263
+    SCHOOL_AGE:
+      2024-10-01: 236
   LE_GC:
-    INFANT: {2024-10-01: 0}
-    TODDLER: {2024-10-01: 0}
-    PRESCHOOLER: {2024-10-01: 208}
-    SCHOOL_AGE: {2024-10-01: 193}
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 208
+    SCHOOL_AGE:
+      2024-10-01: 193
   LE_STD:
-    INFANT: {2024-10-01: 181}
-    TODDLER: {2024-10-01: 172}
-    PRESCHOOLER: {2024-10-01: 171}
-    SCHOOL_AGE: {2024-10-01: 153}
+    INFANT:
+      2024-10-01: 181
+    TODDLER:
+      2024-10-01: 172
+    PRESCHOOLER:
+      2024-10-01: 171
+    SCHOOL_AGE:
+      2024-10-01: 153
   LE_ENH:
-    INFANT: {2024-10-01: 195}
-    TODDLER: {2024-10-01: 186}
-    PRESCHOOLER: {2024-10-01: 184}
-    SCHOOL_AGE: {2024-10-01: 165}
+    INFANT:
+      2024-10-01: 195
+    TODDLER:
+      2024-10-01: 186
+    PRESCHOOLER:
+      2024-10-01: 184
+    SCHOOL_AGE:
+      2024-10-01: 165
 GROUP_4:
   DCC_SACC:
-    INFANT: {2024-10-01: 500}
-    TODDLER: {2024-10-01: 450}
-    PRESCHOOLER: {2024-10-01: 439}
-    SCHOOL_AGE: {2024-10-01: 325}
+    INFANT:
+      2024-10-01: 500
+    TODDLER:
+      2024-10-01: 450
+    PRESCHOOLER:
+      2024-10-01: 439
+    SCHOOL_AGE:
+      2024-10-01: 325
   FDC_GFDC:
-    INFANT: {2024-10-01: 400}
-    TODDLER: {2024-10-01: 350}
-    PRESCHOOLER: {2024-10-01: 325}
-    SCHOOL_AGE: {2024-10-01: 289}
+    INFANT:
+      2024-10-01: 400
+    TODDLER:
+      2024-10-01: 350
+    PRESCHOOLER:
+      2024-10-01: 325
+    SCHOOL_AGE:
+      2024-10-01: 289
   LE_GC:
-    INFANT: {2024-10-01: 0}
-    TODDLER: {2024-10-01: 0}
-    PRESCHOOLER: {2024-10-01: 329}
-    SCHOOL_AGE: {2024-10-01: 244}
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 329
+    SCHOOL_AGE:
+      2024-10-01: 244
   LE_STD:
-    INFANT: {2024-10-01: 260}
-    TODDLER: {2024-10-01: 228}
-    PRESCHOOLER: {2024-10-01: 211}
-    SCHOOL_AGE: {2024-10-01: 188}
+    INFANT:
+      2024-10-01: 260
+    TODDLER:
+      2024-10-01: 228
+    PRESCHOOLER:
+      2024-10-01: 211
+    SCHOOL_AGE:
+      2024-10-01: 188
   LE_ENH:
-    INFANT: {2024-10-01: 280}
-    TODDLER: {2024-10-01: 245}
-    PRESCHOOLER: {2024-10-01: 228}
-    SCHOOL_AGE: {2024-10-01: 202}
+    INFANT:
+      2024-10-01: 280
+    TODDLER:
+      2024-10-01: 245
+    PRESCHOOLER:
+      2024-10-01: 228
+    SCHOOL_AGE:
+      2024-10-01: 202
 
 metadata:
   unit: currency-USD
@@ -114,11 +196,5 @@ metadata:
     - childcare_provider_type_group
     - ny_ccap_age_group
   reference:
-    - title: 24-OCFS-LCM-22 Attachment A
+    - title: 24-OCFS-LCM-22 Attachment A, weekly market rates for county Groups 1-4 (file pages 15-18), effective October 1, 2024
       href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=15
-    - title: 24-OCFS-LCM-22 Attachment A
-      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=16
-    - title: 24-OCFS-LCM-22 Attachment A
-      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=17
-    - title: 24-OCFS-LCM-22 Attachment A
-      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=18

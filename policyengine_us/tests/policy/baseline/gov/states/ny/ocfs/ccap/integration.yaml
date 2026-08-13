@@ -7,11 +7,11 @@
         childcare_provider_type_group: DCC_SACC
         childcare_hours_per_day: 6
         childcare_days_per_week: 5
-        is_ccdf_eligible: true
     spm_units:
       spm_unit:
         members: [person1]
-        ccdf_income: 60_000
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 60_000
         spm_unit_fpg: 25_750
         # 85% of SMI is the limit from 2023-10-01; $68,000 > $60,000 income.
         hhs_smi: 80_000
@@ -45,11 +45,11 @@
         childcare_provider_type_group: FDC_GFDC
         childcare_hours_per_day: 7
         childcare_days_per_week: 4
-        is_ccdf_eligible: true
     spm_units:
       spm_unit:
         members: [person1]
-        ccdf_income: 25_750
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 25_750
         spm_unit_fpg: 25_750
         spm_unit_pre_subsidy_childcare_expenses: 9_600
     households:
@@ -79,11 +79,11 @@
         childcare_provider_type_group: LE_ENH
         childcare_hours_per_day: 4
         childcare_days_per_week: 3
-        is_ccdf_eligible: true
     spm_units:
       spm_unit:
         members: [person1]
-        ccdf_income: 25_751
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 25_751
         spm_unit_fpg: 25_750
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
@@ -112,11 +112,11 @@
         childcare_provider_type_group: DCC_SACC
         childcare_hours_per_day: 6
         childcare_days_per_week: 5
-        is_ccdf_eligible: false
     spm_units:
       spm_unit:
         members: [person1]
-        ccdf_income: 60_000
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income: 60_000
         spm_unit_fpg: 25_750
         spm_unit_pre_subsidy_childcare_expenses: 36_000
     households:
@@ -143,11 +143,11 @@
         childcare_provider_type_group: DCC_SACC
         childcare_hours_per_day: 2
         childcare_days_per_week: 2
-        is_ccdf_eligible: true
     spm_units:
       spm_unit:
         members: [person1]
-        ccdf_income: 30_000
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 30_000
         spm_unit_fpg: 25_000
         spm_unit_pre_subsidy_childcare_expenses: 12_000
     households:
@@ -158,19 +158,21 @@
   output:
     ny_ccap_county_group: GROUP_5
     ny_ccap_age_group: SCHOOL_AGE
-    # Hourly rates existed until 22-OCFS-LCM-14 abolished them on 2022-06-01.
-    ny_ccap_duration_of_care: HOURLY
-    # Historical rate: $10/hour * 4 hours/week * 52 / 12 (19-OCFS-LCM-23).
-    ny_ccap_market_rate: 10 * 4 * 52 / 12
+    # 19-OCFS-LCM-23 §III.3.c requires the part-day rate, not the hourly
+    # rate, for a child enrolled in kindergarten or higher receiving under
+    # three hours of before or after school care per day at a day care
+    # center or school-age program.
+    ny_ccap_duration_of_care: PART_DAY
+    # Historical rate: $31/part-day * 2 days/week * 52 / 12 (19-OCFS-LCM-23).
+    ny_ccap_market_rate: 31 * 2 * 52 / 12
     # Family share: 10% statutory cap (SSL 410-x(6), eff. 2021-04-16) on
     # income above FPL.
     ny_ccap_family_share: (30_000 - 25_000) * 0.1 / 12
-    ny_ccap: (10 * 4 * 52 - (30_000 - 25_000) * 0.1) / 12
-    # Annual aggregator blends five hourly-era months (Jan-May: $10/hour *
-    # 4 hours/week -> $173.33 market rate, minus the $41.67 share = $131.67)
-    # and seven part-day months (Jun-Dec: $40/part-day * 2 days/week ->
-    # $346.67, minus $41.67 = $305.00) from 22-OCFS-LCM-14 Attachment A,
-    # then returns the annual average here.
-    ny_child_care_subsidies: (5 * (10 * 4 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
-    child_care_subsidies: (5 * (10 * 4 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
+    ny_ccap: (31 * 2 * 52 - (30_000 - 25_000) * 0.1) / 12
+    # Annual aggregator blends five months at the 2019-era part-day rate
+    # (Jan-May: $31 * 2 days/week) and seven at the 2022-era rate
+    # (Jun-Dec: $40 * 2 days/week, 22-OCFS-LCM-14 Attachment A), each less
+    # the $41.67 monthly share, then returns the annual average here.
+    ny_child_care_subsidies: (5 * (31 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
+    child_care_subsidies: (5 * (31 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12) + 7 * (40 * 2 * 52 / 12 - (30_000 - 25_000) * 0.1 / 12)) / 12
   absolute_error_margin: 0.01

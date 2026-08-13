@@ -1,14 +1,18 @@
 description: Age at which children are no longer eligible for CCDF
 
+# The Child Care and Development Block Grant Act of 1990 was enacted as part
+# of Pub. L. 101-508 on November 5, 1990, and has set the age limit at 13
+# since. 45 CFR Part 98 was not promulgated until 1998, so the statute is the
+# earliest authority for this value.
 values:
-  1991-01-01: 13
+  1990-11-05: 13
 
 metadata:
   unit: year
   period: year
   label: Federal CCDF child age limit
   reference:
-    - title: 42 U.S.C. § 9858n(4)(A)
+    - title: 42 U.S.C. § 9858n(4)(A), eligible child under 13 years of age, as added by Pub. L. 101-508 (Nov. 5, 1990)
       href: https://www.law.cornell.edu/uscode/text/42/9858n#4_A
-    - title: 45 CFR 98.20(a)(1)(i)
-      href: https://www.law.cornell.edu/cfr/text/45/98.20
+    - title: 45 CFR 98.20(a)(1)(i), child must be under 13 years of age
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(1)(i)

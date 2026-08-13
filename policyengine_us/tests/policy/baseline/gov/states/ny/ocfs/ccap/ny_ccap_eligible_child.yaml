@@ -1,0 +1,147 @@
+# 18 NYCRR 415.2(a)(2)(vi): foster care placements and open child protective
+# or preventive services cases "must be determined eligible without regard to
+# income". The NYS Register waives only the activity requirement for families
+# experiencing homelessness, who stay inside the income test.
+
+- name: Case 1, an over-income child with no categorical route is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+- name: Case 2, an over-income child in foster care is eligible without regard to income.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 3, an over-income child with an open protective services case is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+# The categorical routes are modeled from the 2023-10-01 regulatory changes,
+# so the same child is income-tested in the earlier era.
+- name: Case 4, the categorical routes do not apply before October 2023.
+  period: 2023-01
+  input:
+    people:
+      child:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        spm_unit_fpg: 25_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+# Homelessness waives the activity requirement but not the income test.
+- name: Case 5, a homeless family under the income limit is eligible without the activity test.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 40_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+        is_homeless: true
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 6, a homeless family over the income limit remains ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+        is_homeless: true
+  output:
+    ny_ccap_eligible_child: false
+
+- name: Case 7, a child at or above the federal age limit is ineligible on every route.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 13
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false

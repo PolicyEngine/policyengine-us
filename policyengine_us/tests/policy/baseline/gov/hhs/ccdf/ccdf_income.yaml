@@ -23,3 +23,74 @@
         members: [p1, p2]
   output:
     ccdf_income: 30_000
+
+# The four government income streams added alongside market income had no
+# coverage: deleting any of them from the adds list left the whole suite
+# green. One case per source, plus a combined case.
+- name: CCDF income counts child support received.
+  period: 2022
+  input:
+    market_income: 10_000
+    child_support_received: 5_000
+  output:
+    ccdf_income: 15_000
+
+- name: CCDF income counts unemployment compensation.
+  period: 2022
+  input:
+    market_income: 10_000
+    unemployment_compensation: 4_000
+  output:
+    ccdf_income: 14_000
+
+- name: CCDF income counts workers compensation.
+  period: 2022
+  input:
+    market_income: 10_000
+    workers_compensation: 3_000
+  output:
+    ccdf_income: 13_000
+
+- name: CCDF income counts social security.
+  period: 2022
+  input:
+    market_income: 10_000
+    social_security_retirement: 6_000
+  output:
+    ccdf_income: 16_000
+
+- name: CCDF income sums market income and all four government streams.
+  period: 2022
+  input:
+    market_income: 10_000
+    child_support_received: 5_000
+    unemployment_compensation: 4_000
+    workers_compensation: 3_000
+    social_security_retirement: 6_000
+  output:
+    ccdf_income: 28_000
+
+# TANF is countable under most state plans but is deliberately omitted to
+# avoid the CCDF-to-TANF circular dependency. This pins that decision.
+- name: CCDF income does not count TANF.
+  period: 2022
+  input:
+    people:
+      p1:
+        market_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [p1]
+        tanf: 6_000
+  output:
+    ccdf_income: 10_000
+
+# SSI is excluded from this federal approximation; New York counts an adult's
+# SSI through ny_ccap_countable_income instead.
+- name: CCDF income does not count SSI.
+  period: 2022
+  input:
+    market_income: 10_000
+    ssi: 1_000
+  output:
+    ccdf_income: 10_000

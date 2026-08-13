@@ -1,6 +1,10 @@
-description: New York applies this statewide rate to income above the federal poverty guideline under the Child Care Assistance Program.
+description: New York applies this rate to income above the state income standard under the Child Care Assistance Program.
+# The 10% figure is the statutory ceiling, applied statewide because districts
+# electing above it were amended down to exactly 10%. It therefore overstates
+# the share for any district that elected lower, by at most nine points of
+# income above the standard.
 values:
-  2021-10-01: 0
+  2021-04-16: 0.1
   2023-10-01: 0.01
 
 metadata:
@@ -8,7 +12,9 @@ metadata:
   period: year
   label: New York CCAP family share rate
   reference:
-    - title: 18 NYCRR 415.3(e)(3)
+    - title: 21-OCFS-ADM-14, Social Services Law 410-x(6) 10% family share cap effective April 16, 2021 (file page 2) and the 1%-to-10% district range with districts above 10% auto-amended down (file page 3)
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2021/ADM/21-OCFS-ADM-14.pdf#page=2
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), statewide family share of 1% of income above the federal poverty level (file page 11 = printed page 5)
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=11
+    - title: 18 NYCRR 415.3(e)(3), family share as a percentage of income in excess of the state income standard
       href: https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=19
-    - title: New York Accepted ACF-118 CCDF FFY 2025-2027 Appendix
-      href: https://www.acf.hhs.gov/sites/default/files/documents/occ/NY-Accepted-ACF118-CCDF-FFY-2025-2027-Appendix.pdf#page=2

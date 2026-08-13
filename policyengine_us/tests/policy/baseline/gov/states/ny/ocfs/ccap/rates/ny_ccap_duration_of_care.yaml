@@ -54,14 +54,37 @@
   output:
     ny_ccap_duration_of_care: DAILY
 
-- name: Case 7, care across six days does not use the weekly rate.
+# 18 NYCRR 415.9(a): the weekly rate turns on 30 or more hours of care per
+# week, so a six-day schedule reaching 30 hours is weekly. The extra day is
+# priced as an additional period in ny_ccap_market_rate rather than switching
+# the whole week to a daily rate.
+- name: Case 7, care across six days reaching thirty weekly hours uses the weekly rate.
   period: 2025-01
   input:
     childcare_hours_per_day: 5
     childcare_days_per_week: 6
     state_code: NY
   output:
-    ny_ccap_duration_of_care: PART_DAY
+    ny_ccap_duration_of_care: WEEKLY
+
+# 415.9(b) allows the daily rate only below 30 hours per week.
+- name: Case 7b, six-hour care over six days exceeds thirty weekly hours and is weekly.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 6
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+
+- name: Case 7c, six-hour care over four days stays under thirty weekly hours and is daily.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
 
 - name: Case 8, care below three daily hours is part-day after hourly rates ended.
   period: 2024-01

@@ -1,7 +1,7 @@
 - name: Case 1, current family share is one percent of income above FPL.
   period: 2025-01
   input:
-    ccdf_income: 60_000
+    ny_ccap_countable_income: 60_000
     spm_unit_fpg: 25_750
     state_code: NY
   output:
@@ -11,7 +11,7 @@
 - name: Case 2, income at FPL has no family share.
   period: 2025-01
   input:
-    ccdf_income: 25_750
+    ny_ccap_countable_income: 25_750
     spm_unit_fpg: 25_750
     state_code: NY
   output:
@@ -20,7 +20,7 @@
 - name: Case 3, income just above FPL triggers the weekly minimum.
   period: 2025-01
   input:
-    ccdf_income: 25_751
+    ny_ccap_countable_income: 25_751
     spm_unit_fpg: 25_750
     state_code: NY
   output:
@@ -31,7 +31,7 @@
   period: 2023-01
   input:
     county_str: NASSAU_COUNTY_NY
-    ccdf_income: 60_000
+    ny_ccap_countable_income: 60_000
     spm_unit_fpg: 25_750
     state_code: NY
   output:
@@ -44,7 +44,7 @@
   period: 2023-01
   input:
     county_str: ALBANY_COUNTY_NY
-    ccdf_income: 20_000
+    ny_ccap_countable_income: 20_000
     spm_unit_fpg: 21_330
     state_code: NY
   output:
@@ -57,7 +57,7 @@
   period: 2023-01
   input:
     county_str: ALBANY_COUNTY_NY
-    ccdf_income: 21_331
+    ny_ccap_countable_income: 21_331
     spm_unit_fpg: 21_330
     state_code: NY
   output:

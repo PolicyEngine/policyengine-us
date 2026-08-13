@@ -632,7 +632,7 @@ programs:
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models federal eligibility with New York market rates and family share; household county proxies for provider county and unknown counties default to group 3; extended eligibility pathways, exemptions, excess-period payments, and payment differentials are not modeled
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes and the statutory family-share exceptions. Household county proxies for provider county and unknown counties default to group 3, which understates rates for the New York City and downstate groups. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3), the discretionary accreditation differential, the special-needs substituted market rate, excess-period payments beyond the base rate period, Title XX income levels above 300 percent of the state income standard, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
       - state: DC
         status: complete
         name: DC CCSP

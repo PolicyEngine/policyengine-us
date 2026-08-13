@@ -60,3 +60,44 @@
     state_code: NY
   output:
     ny_ccap_age_group: SCHOOL_AGE
+
+# 24-OCFS-LCM-22 §III.3 puts legally exempt group child care on the
+# center-based age bands, where the infant ceiling is 1.5 years, while
+# family day care uses the home-based bands with a 2-year ceiling. At age
+# 1.75 the two sets disagree, so these paired cases make the LE_GC branch
+# functional: removing it from ny_ccap_age_group flips Case 8.
+- name: Case 8, legally exempt group care uses the center infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: LE_GC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 9, day care centers use the center infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 10, family day care uses the home infant ceiling at the same age.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: FDC_GFDC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 11, legally exempt standard care uses the home infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: LE_STD
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT

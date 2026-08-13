@@ -1,17 +1,20 @@
 description: New York limits income to this multiple of the federal poverty guideline under the Child Care Assistance Program when the state median income limit is not in effect.
-# Before October 1, 2023, SSL 410-u(2), 410-w(1), and 410-w(3) set the income
-# eligibility threshold for the New York State Child Care Block Grant Program
-# at 300% of the state income standard, modeled here as the federal poverty
-# guideline. A lower 200% limit possibly in force before August 2022 is not
-# established by a dated citation, so 300% applies for the whole
-# pre-October-2023 window.
+# The multiple applies to spm_unit_fpg because 18 NYCRR 415.1(k) defines the
+# state income standard as the federal poverty guideline. 22-OCFS-ADM-18's
+# table is headed "200% SIS (Through 7/31/22)" and "300% SIS (Effective
+# 8/1/22)".
 values:
-  2021-10-01: 3
+  2021-10-01: 2
+  2022-08-01: 3
 
 metadata:
   unit: /1
   period: year
   label: New York CCAP income limit multiple of the federal poverty guideline
   reference:
-    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), printed p. 6
-      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=12
+    - title: 22-OCFS-ADM-18, Increase in Income Eligibility Levels for Child Care Assistance, sec. II Background (200%/300% state income standard table) and sec. VIII Effective Date
+      href: https://ocfs.ny.gov/main/policies/external/2022/adm/22-OCFS-ADM-18.pdf#page=2
+    - title: 21-OCFS-ADM-30, Changes to Child Care Subsidy Regulations Parts 404 and 415, initial-eligibility rule (income may not exceed 200% of the state income standard)
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2021/ADM/21-OCFS-ADM-30.pdf#page=13
+    - title: 20-OCFS-ADM-17, New York State Child Care Block Grant eligibility at or below 200% of the state income standard
+      href: https://ocfs.ny.gov/main/policies/external/ocfs_2020/ADM/20-OCFS-ADM-17.pdf#page=2

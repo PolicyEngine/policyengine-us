@@ -1,0 +1,193 @@
+# 18 NYCRR 404.5(b)(5) sets what New York counts. Each case adds one source
+# on top of the same $10,000 of employment income so that deleting any single
+# entry from countable_income_sources.yaml fails a test.
+
+- name: Case 1, employment income alone.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+- name: Case 2, child support received is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        child_support_received: 5_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 15_000
+
+- name: Case 3, unemployment compensation is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        unemployment_compensation: 4_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 14_000
+
+- name: Case 4, workers compensation is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        workers_compensation: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 13_000
+
+- name: Case 5, social security is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        social_security_retirement: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 16_000
+
+# 404.5(b)(5): veterans' pensions are countable, and New York's CCDF plan
+# enumerates them explicitly.
+- name: Case 6, veterans benefits are countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        veterans_benefits: 7_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 17_000
+
+# 404.5(b)(5)(vi) counts SSI as public assistance income. The carve-out added
+# in October 2023 reaches only children, so an adult's SSI stays countable.
+- name: Case 7, an adult's SSI is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 11_000
+
+- name: Case 8, a child's SSI is excluded from October 2023.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 5
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+# Before the October 2023 rule, 404.5(b)(5)(vi) counted all SSI.
+- name: Case 9, a child's SSI is countable before October 2023.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 5
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 11_000
+
+# TANF is countable under 404.5(b)(5)(vi) but is deliberately omitted to
+# avoid the CCAP-to-TANF circular dependency; this pins that decision.
+- name: Case 10, TANF is not counted.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+        tanf: 6_000
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
