@@ -4,6 +4,7 @@
   input:
     il_ccap_countable_income: 1_763
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 1
@@ -14,6 +15,7 @@
   input:
     il_ccap_countable_income: 1_764
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 18
@@ -24,6 +26,7 @@
   input:
     il_ccap_countable_income: 1_765
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 18
@@ -34,6 +37,7 @@
   input:
     il_ccap_countable_income: 1_804
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 18
@@ -44,6 +48,7 @@
   input:
     il_ccap_countable_income: 3_139
     spm_unit_size: 5
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 31
@@ -54,6 +59,7 @@
   input:
     il_ccap_countable_income: 4_514
     spm_unit_size: 8
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 45
@@ -64,6 +70,7 @@
   input:
     il_ccap_countable_income: 5_430
     spm_unit_size: 10
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 54
@@ -74,6 +81,7 @@
   input:
     il_ccap_countable_income: 1_764
     spm_unit_size: 1
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 18
@@ -84,6 +92,7 @@
   input:
     il_ccap_countable_income: 5_430
     spm_unit_size: 11
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 54
@@ -95,6 +104,7 @@
     il_ccap_countable_income: 3_000
     spm_unit_size: 2
     il_ccap_non_parent_relative_child_only_tanf: true
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 0
@@ -106,6 +116,7 @@
     il_ccap_countable_income: 3_000
     spm_unit_size: 2
     il_ccap_protective_care_copay_exempt: true
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 0
@@ -116,6 +127,7 @@
   input:
     il_ccap_countable_income: -1
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 1
@@ -125,6 +137,7 @@
   absolute_error_margin: 0.01
   input:
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     il_ccap_copay: 1
@@ -135,6 +148,7 @@
   input:
     il_ccap_countable_income: 21_168
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     # Jan-Jun: inactive; Jul-Dec: 6 * $18 from the 2025 table.
@@ -146,6 +160,7 @@
   input:
     il_ccap_countable_income: 24_000
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     # Jan-Jun: 6 * $39 from 2025; Jul-Dec: 6 * $40 from 2026.
@@ -157,6 +172,7 @@
   input:
     il_ccap_countable_income: 38_688
     spm_unit_size: 5
+    il_ccap_eligible: true
     state_code: IL
   output:
     # Jan-Jun: 6 * $31 from 2025; Jul-Dec: 6 * $32 from 2026.
@@ -168,6 +184,7 @@
   input:
     il_ccap_countable_income: 55_728
     spm_unit_size: 8
+    il_ccap_eligible: true
     state_code: IL
   output:
     # Jan-Jun: 6 * $45 from 2025; Jul-Dec: 6 * $46 from 2026.
@@ -179,6 +196,7 @@
   input:
     il_ccap_countable_income: 67_092
     spm_unit_size: 10
+    il_ccap_eligible: true
     state_code: IL
   output:
     # Jan-Jun: 6 * $54 from 2025; Jul-Dec: 6 * $56 from 2026.
@@ -200,6 +218,7 @@
     # $1,790 a month; the 2026 guideline for two people is $1,803.33 a month.
     il_ccap_countable_income: 21_480
     spm_unit_size: 2
+    il_ccap_eligible: true
     state_code: IL
   output:
     # In-force 2025 table charges $18 from $1,764.
@@ -213,6 +232,7 @@
     # $3,200 a month; the 2026 guideline for five people is $3,223.33 a month.
     il_ccap_countable_income: 38_400
     spm_unit_size: 5
+    il_ccap_eligible: true
     state_code: IL
   output:
     # In-force 2025 table charges $31 from $3,139.
@@ -226,6 +246,7 @@
     # $4,600 a month; the 2026 guideline for eight people is $4,643.33 a month.
     il_ccap_countable_income: 55_200
     spm_unit_size: 8
+    il_ccap_eligible: true
     state_code: IL
   output:
     # In-force 2025 table charges $45 from $4,514.

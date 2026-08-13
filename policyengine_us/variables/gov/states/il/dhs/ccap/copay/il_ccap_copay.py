@@ -7,7 +7,7 @@ class il_ccap_copay(Variable):
     unit = USD
     definition_period = MONTH
     label = "Illinois CCAP monthly family copayment"
-    defined_for = StateCode.IL
+    defined_for = "il_ccap_eligible"
     reference = (
         "https://www.dhs.state.il.us/page.aspx?item=54862",
         "https://www.dhs.state.il.us/OneNetLibrary/27897/documents/Forms/443455B%20CCAP%20Income%20and%20Copay%20Chart%20Eff%207.1.25.pdf#page=2",
