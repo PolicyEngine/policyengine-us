@@ -1,3 +1,10 @@
+## [1.798.0] - 2026-08-13
+
+### Added
+
+- Add Tennessee Child Care Payment Assistance (CCAP / Smart Steps) program administered by TN DHS.
+
+
 ## [1.797.0] - 2026-08-13
 
 ### Added
