@@ -1,3 +1,10 @@
+## [1.801.0] - 2026-08-13
+
+### Added
+
+- Add New Jersey Health Plan Savings (NJHPS) state premium assistance.
+
+
 ## [1.800.0] - 2026-08-13
 
 ### Added
