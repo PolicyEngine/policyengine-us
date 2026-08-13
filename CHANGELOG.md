@@ -1,3 +1,49 @@
+## [1.803.0] - 2026-08-13
+
+### Added
+
+- Add Vermont Premium Assistance (VPA).
+
+
+## [1.802.0] - 2026-08-13
+
+### Added
+
+- Implement complete current-law Nebraska Child Care Subsidy eligibility, family fees, and provider reimbursement.
+
+### Changed
+
+- Redefine ne_child_care_subsidy as a monthly variable; ne_child_care_subsidies provides the annual total.
+
+
+## [1.801.0] - 2026-08-13
+
+### Added
+
+- Add New Jersey Health Plan Savings (NJHPS) state premium assistance.
+
+
+## [1.800.0] - 2026-08-13
+
+### Added
+
+- Add Utah Child Care Assistance Program (CCAP).
+
+
+## [1.799.0] - 2026-08-13
+
+### Added
+
+- Add Massachusetts ConnectorCare state premium assistance.
+
+
+## [1.798.0] - 2026-08-13
+
+### Added
+
+- Add Tennessee Child Care Payment Assistance (CCAP / Smart Steps) program administered by TN DHS.
+
+
 ## [1.797.0] - 2026-08-13
 
 ### Added

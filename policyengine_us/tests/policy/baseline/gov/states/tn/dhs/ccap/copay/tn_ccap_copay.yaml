@@ -1,0 +1,423 @@
+# tn_ccap_copay: SPMUnit, float (USD), MONTH
+# Per the adjudicated chart formula, the copay applies TWO whole-dollar floors:
+#   monthly 5% floored:  m = floor(monthly countable income * 0.05)
+#   weekly floored:      w = floor(m / 4.3)
+# The weekly amount is split equally among eligible children in care (part-time
+# children pay half a share), then re-annualized to a month by multiplying by 4.3.
+# Waived when the FPL ratio is at or below the era threshold (1.5 before
+# 2025-10-01, 0 after), or for Families First (TANF) or protective-services
+# families. Currency output, margin 0.01.
+#
+# $3,000/mo: m = floor(150) = 150; w = floor(150 / 4.3) = 34
+# $2,000/mo: m = floor(100) = 100; w = floor(100 / 4.3) = 23
+# $1,895/mo: m = floor(94.75) = 94; w = floor(94 / 4.3) = 21  (both floors bind here)
+
+- name: Case 1, one full-time child at $3,000/mo income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # weekly = 34; 1 full-time child -> family weekly = 34; monthly = 34 * 4.3 = 146.20
+    tn_ccap_copay: 146.20
+
+- name: Case 2, two full-time children pay the same family copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # weekly 34 split 2 ways = 17/child; both full time -> shares 1 + 1 = 2
+    # family weekly = 17 * 2 = 34; monthly = 34 * 4.3 = 146.20 (same as one child)
+    tn_ccap_copay: 146.20
+
+- name: Case 3, one full-time plus one part-time child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # weekly 34 split 2 ways = 17/child; shares 1 (FT) + 0.5 (PT) = 1.5
+    # family weekly = 17 * 1.5 = 25.5; monthly = 25.5 * 4.3 = 109.65
+    tn_ccap_copay: 109.65
+
+- name: Case 4, single part-time child pays half.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # weekly 34; 1 part-time child -> share 0.5; family weekly = 34 * 0.5 = 17
+    # monthly = 17 * 4.3 = 73.10
+    tn_ccap_copay: 73.10
+
+- name: Case 5, zero income owes no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_copay: 0
+
+- name: Case 6, Families First (TANF) family copay is waived.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # TANF enrollment waives the copay despite $3,000/mo income
+    tn_ccap_copay: 0
+
+- name: Case 7, protective-services child waives the family copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_copay: 0
+
+- name: Case 8, income at or below 150% FPL is waived before October 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # FPG family of 2 (2025) = 21_150/yr = 1_762.50/mo
+    # FPL ratio = 1_500 / 1_762.50 = 0.85 <= 1.5 -> waived
+    tn_ccap_copay: 0
+
+- name: Case 9, income above 150% FPL pays the copay before October 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # FPL ratio = 3_000 / 1_762.50 = 1.70 > 1.5 -> not waived
+    # weekly 34; 1 full-time child -> monthly = 34 * 4.3 = 146.20
+    tn_ccap_copay: 146.20
+
+- name: Case 10, non-round income exercises the two-step whole-dollar floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 22_740
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # $1,895/mo (the chart's own worked example): m = floor(1_895 * 0.05) =
+    # floor(94.75) = 94; w = floor(94 / 4.3) = floor(21.86) = 21;
+    # monthly = 21 * 4.3 = 90.30.
+    # A single floor would give floor(94.75 / 4.3) = 22 -> 94.60, so this case
+    # distinguishes the adjudicated double-floor from a single floor.
+    tn_ccap_copay: 90.30
+
+# ---- Edge cases ----
+
+- name: Case 11, income just below 150% FPL is waived in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_680
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # FPG family of 2 (2025) = 1_762.50/mo; income 31_680/12 = 2_640/mo
+    # FPL ratio = 2_640 / 1_762.50 = 1.498 <= 1.5 -> waived (just below the boundary)
+    tn_ccap_copay: 0
+
+- name: Case 12, income just above 150% FPL pays the copay in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_800
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # income 31_800/12 = 2_650/mo; FPL ratio = 2_650 / 1_762.50 = 1.504 > 1.5 -> not waived
+    # m = floor(2_650 * 0.05) = floor(132.5) = 132; w = floor(132 / 4.3) = floor(30.70) = 30
+    # monthly = 30 * 4.3 = 129.00
+    tn_ccap_copay: 129.00
+
+- name: Case 13, low income where the double floor differs from a single floor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 11_400
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # $950/mo: m = floor(950 * 0.05) = floor(47.5) = 47; w = floor(47 / 4.3) =
+    # floor(10.93) = 10; monthly = 10 * 4.3 = 43.00.
+    # A single floor would give floor(47.5 / 4.3) = 11 -> 47.30, so this low-income
+    # case is a second point that distinguishes the double floor from a single floor.
+    tn_ccap_copay: 43.00
+
+- name: Case 14, two part-time children split the copay to half a full-time family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # weekly = 34 (as in Case 1); split 2 ways = 17/child; both part-time -> shares
+    # 0.5 + 0.5 = 1.0; family weekly = 17 * 1.0 = 17; monthly = 17 * 4.3 = 73.10
+    # (same as a single part-time child, Case 4)
+    tn_ccap_copay: 73.10
+
+- name: Case 15, a second eligible child not in care is excluded from the copay divisor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # person3 is an eligible child but is in 0 hrs of care, so it is not a paying
+    # child: n_paying counts only children in care. weekly 34 / 1 paying child = 34;
+    # share 1 (FT) -> family weekly = 34; monthly = 34 * 4.3 = 146.20 (same as one
+    # child, Case 1). If the not-in-care child diluted the divisor it would be
+    # 34 / 2 = 17 -> 73.10, so this case guards the in-care-only divisor.
+    tn_ccap_copay: 146.20
+
+- name: Case 16, Head Start enrollment waives the copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        is_enrolled_in_head_start: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # State Plan 3.3.1.v: families enrolled in Head Start / Early Head Start have
+    # the copay waived. Same $3,000/mo income as Case 1 (which pays 146.20), but
+    # the Head Start child waives the whole family copay. In this post-Oct-2025
+    # period the 150% FPL waiver is gone, so the Head Start waiver is load-bearing.
+    tn_ccap_copay: 0

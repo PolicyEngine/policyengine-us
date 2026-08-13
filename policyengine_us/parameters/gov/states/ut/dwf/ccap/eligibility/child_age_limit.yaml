@@ -1,0 +1,17 @@
+description: Utah limits eligibility to children below this age under the Child Care Assistance program.
+
+# Children under the age of 13 are eligible (R986-700-702(5)(a)).
+# The 2020 entry is placed at PolicyEngine's backdating floor; the
+# provision was in effect well before this date.
+values:
+  2020-01-01: 13
+
+metadata:
+  unit: year
+  period: year
+  label: Utah CCAP child age limit
+  reference:
+    - title: Utah Admin. Code R986-700-702(5)(a)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-702
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1

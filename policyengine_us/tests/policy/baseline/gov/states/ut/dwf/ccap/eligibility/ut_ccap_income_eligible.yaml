@@ -1,0 +1,88 @@
+# Tests for ut_ccap_income_eligible (SPMUnit, MONTH, bool).
+# R986-700-710(6)(b): countable income, less applicable deductions, must be at
+# or below 85% of the state median income for the household size. The
+# ceiling is computed dynamically as smi_rate x hhs_smi (per the approved
+# scope decision), so these cases pin hhs_smi directly: 96,000/year is
+# 8,000/month, and 85% of 8,000 is a 6,800 monthly ceiling.
+
+- name: Case 1, countable income below the 85 percent ceiling.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 96_000  # 8,000/mo; ceiling 0.85 x 8,000 = 6,800
+        ut_ccap_countable_income: 6_700
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_eligible: true
+
+- name: Case 2, countable income above the ceiling is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 96_000  # 8,000/mo; ceiling 0.85 x 8,000 = 6,800
+        ut_ccap_countable_income: 6_900
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_eligible: false
+
+- name: Case 3, countable income exactly at the ceiling is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 96_000  # 8,000/mo; ceiling 0.85 x 8,000 = 6,800
+        ut_ccap_countable_income: 6_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # R986-700-710(6)(b) requires income "at or below" the limit, so income
+    # exactly at the ceiling remains eligible.
+    ut_ccap_income_eligible: true
+
+- name: Case 4, zero countable income is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 96_000
+        ut_ccap_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_eligible: true
