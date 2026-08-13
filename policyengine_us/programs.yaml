@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WV, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, OR, PA, RI, SC, SD, TX, VA, VT, WA, WV, WY
     state_implementations:
       - state: AK
         status: complete
@@ -626,6 +626,13 @@ programs:
         full_name: Nevada Child Care and Development Program
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: OR
+        status: complete
+        name: Oregon ERDC
+        full_name: Oregon Employment Related Day Care
+        variable: or_erdc
+        parameter_prefix: gov.states.or.delc.erdc
+        notes: Provider rate area is an input; automatic provider ZIP mapping is deferred
       - state: DC
         status: complete
         name: DC CCSP
@@ -1452,6 +1459,17 @@ programs:
     coverage: Harris County, TX
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
+
+  - id: wa_cascade_care_savings
+    name: Cascade Care Savings
+    full_name: Washington Cascade Care Savings (State Premium Assistance Program)
+    category: Healthcare
+    agency: WAHBE
+    status: complete
+    coverage: WA
+    variable: wa_cascade_care_savings
+    parameter_prefix: gov.states.wa.wahbe.cascade_care_savings
+    verified_start_year: 2026
 
   # --- Local programs ---
   - id: ez_save
