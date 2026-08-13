@@ -23,7 +23,7 @@ class mo_wftc(Variable):
             tax_unit,
             period,
             ordered_credits,
-            "mo_income_tax_before_credits",
+            "mo_wftc_liability_cap",
             "mo_wftc",
             "mo_wftc_potential",
         )

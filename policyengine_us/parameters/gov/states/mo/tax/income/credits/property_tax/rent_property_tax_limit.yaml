@@ -1,6 +1,8 @@
 description: Maximum claimable property tax associated with a rented property.
 values:
   2008-08-28: 750
+  # Indexed annually for inflation (Midwest-region CPI-U) from 2027-01-01
+  # per RSMo 135.025; update when DOR publishes adjusted amounts.
   2026-01-01: 1_055
 metadata:
   unit: currency-USD

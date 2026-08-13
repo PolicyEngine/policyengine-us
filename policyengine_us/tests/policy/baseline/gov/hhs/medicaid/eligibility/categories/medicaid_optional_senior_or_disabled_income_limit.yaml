@@ -1,0 +1,79 @@
+# Missouri MHABD tests blindness-based eligibility against 100% of the
+# poverty guideline but old-age and disability-based eligibility against
+# 85% (DSS Manual § 0805.015.45; current dollars in MHABD Appendix J).
+- name: Missouri blind single person gets the 100% FPL blind standard
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 1.00 x 20,000
+    medicaid_optional_senior_or_disabled_income_limit: [20_000]
+
+- name: Missouri non-blind single person gets the 85% FPL standard
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 0.85 x 20,000
+    medicaid_optional_senior_or_disabled_income_limit: [17_000]
+
+# The blind override is per person, so within one joint unit the blind
+# spouse gets the 100% standard while the other keeps the couple limit.
+- name: Missouri blind spouse gets the blind standard over the couple limit
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+        tax_unit_fpg: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # [1.00, 0.85] x 20,000
+    medicaid_optional_senior_or_disabled_income_limit: [20_000, 17_000]
+
+- name: Blindness does not change the limit outside Missouri
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_fpg: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Florida's ordinary individual percentage, 0.88 x 20,000
+    medicaid_optional_senior_or_disabled_income_limit: [17_600]

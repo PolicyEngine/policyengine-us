@@ -1,0 +1,530 @@
+# Unit tests for the Maryland target contribution percentage.
+# Bracket-interpolated from gov.states.md.mhbe.premium_assistance.
+# target_contribution_percentage:
+#   threshold: [0, 1.50, 2.00, 2.50, 3.00, 4.00]
+#   initial:   [0, 0,    0.02, 0.0622, 0.0798]
+#   final:     [0, 0.02, 0.0622, 0.0798, 0.0923]
+# Young adults have their target reduced by the YAS amount, floored at 0.
+# age 40 -> no reduction.
+
+# ---- Base schedule (age 40, no YAS) ----
+
+- name: Case 1, 138% FPL -> 0.00% (0-150% band, full replacement).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 2, exactly 150% FPL -> 0.00% (start of 150-200% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 3, exactly 200% FPL -> 2.00% (start of 200-250% band, endpoint).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.02
+
+- name: Case 4, exactly 250% FPL -> 6.22% (start of 250-300% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0622
+
+- name: Case 5, exactly 300% FPL -> 7.98% (start of 300-400% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0798
+
+- name: Case 6, 350% FPL -> 8.605% (interpolated in 300-400% band).
+  # 0.0798 + (3.50-3.00)/(4.00-3.00) * (0.0923-0.0798) = 0.0798 + 0.5*0.0125
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.08605
+
+- name: Case 7, exactly 400% FPL -> 9.23% (top of schedule).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0923
+
+# ---- Young Adult Subsidy overlay (single-person unit; person reduction = unit reduction) ----
+
+- name: Case 8, young adult age 30 at 250% FPL -> 3.72% (6.22% - 2.5pp).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0372
+
+- name: Case 9, young adult age 30 at 200% FPL -> 0.00% (2.00% - 2.5pp floored at 0).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 10, age 35 at 300% FPL -> 6.48% (7.98% - 1.5pp taper).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 35
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0648
+
+# ---- Edge cases: bracket-boundary semantics (searchsorted side="right") ----
+
+- name: Case 11, 0% FPL clamps to the first bracket -> 0.00%.
+  # searchsorted right of 0 -> idx 1, minus 1 -> bracket 0 (0-150%), rate 0.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 12, just below 150% FPL (1.49) -> 0.00% (still in 0-150% band).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.49
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0
+
+- name: Case 13, just above 150% FPL (1.51) -> 0.04% (start of 150-200% ramp).
+  # bracket [1.50, 2.00]: 0 + (1.51-1.50)/0.50 * (0.02-0) = 0.02*0.02 = 0.0004.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.51
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0004
+
+- name: Case 14, mid 200-250% band (2.25) -> 4.11% (linear phase).
+  # bracket [2.00, 2.50]: 0.02 + (2.25-2.00)/0.50 * (0.0622-0.02) = 0.02 + 0.5*0.0422.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.25
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0411
+
+- name: Case 15, just below 250% FPL (2.49) -> 6.1356% (top of 200-250% band).
+  # bracket [2.00, 2.50]: 0.02 + (2.49-2.00)/0.50 * 0.0422 = 0.02 + 0.98*0.0422.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.49
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.061356
+
+- name: Case 16, just above 250% FPL (2.51) -> 6.2552% (start of 250-300% band).
+  # bracket [2.50, 3.00]: 0.0622 + (2.51-2.50)/0.50 * (0.0798-0.0622) = 0.0622 + 0.02*0.0176.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.51
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.062552
+
+- name: Case 17, just below 300% FPL (2.99) -> 7.9448% (top of 250-300% band).
+  # bracket [2.50, 3.00]: 0.0622 + (2.99-2.50)/0.50 * 0.0176 = 0.0622 + 0.98*0.0176.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.99
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.079448
+
+- name: Case 18, just above 300% FPL (3.01) -> 7.9925% (start of 300-400% band).
+  # bracket [3.00, 4.00]: 0.0798 + (3.01-3.00)/1.00 * (0.0923-0.0798) = 0.0798 + 0.01*0.0125.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.01
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.079925
+
+- name: Case 19, above 400% FPL (4.50) clamps to the top bracket rate -> 9.23%.
+  # bracket_idx clips to the last band [3.00, 4.00]; position clips to 1 -> final 0.0923.
+  # (Subsidy is still 0 for these units via the eligibility gate; this checks the
+  #  target-% variable does not extrapolate past the schedule.)
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0923
+
+- name: Case 20, young adult age 34 at 300% FPL -> 5.98% (7.98% - 2.0pp taper).
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 34
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0598
+
+- name: Case 21, mid 150-200% band (1.75) -> 1.00% (interpolation midpoint, no YAS).
+  # bracket [1.50, 2.00]: 0 + (1.75-1.50)/0.50 * (0.02-0) = 0.5 * 0.02 = 0.01.
+  # Pins the typo-reconciled final=2.00% at 200% FPL via the midpoint.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.01
+
+- name: Case 22, just below 200% FPL (1.99) -> 1.96% (top of 150-200% ramp).
+  # bracket [1.50, 2.00]: 0 + (1.99-1.50)/0.50 * 0.02 = 0.98 * 0.02 = 0.0196.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.99
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0196
+
+- name: Case 23, age 36 young adult at 250% FPL -> 5.22% (6.22% - 1.0pp through the subtraction).
+  # base target 0.0622 (start of 250-300% band) minus the age-36 reduction 0.01.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 36
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0522
+
+- name: Case 24, age 37 young adult at 250% FPL -> 5.72% (6.22% - 0.5pp through the subtraction).
+  # base target 0.0622 (start of 250-300% band) minus the age-37 reduction 0.005.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 37
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.0572
+
+# ---- S8 additions ----
+
+- name: Case 25, just inside the 200-250% band (2.01) -> 2.0844% (no YAS).
+  # bracket [2.00, 2.50]: 0.02 + (2.01-2.00)/0.50 * (0.0622-0.02)
+  # = 0.02 + 0.02 * 0.0422 = 0.020844. Pins the just-inside-band interpolation.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.01
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0.020844
+
+- name: Case 26, young adult below 150% FPL -> 0.00% (base 0 - 2.5pp floors at 0).
+  # In the 0-150% band the base target is a flat 0%; subtracting the age-30 young
+  # adult reduction 0.025 floors at 0 rather than going negative.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 30
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_target_contribution_percentage: 0

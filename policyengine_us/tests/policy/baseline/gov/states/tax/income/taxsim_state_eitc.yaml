@@ -1,0 +1,35 @@
+- name: NY supplemental EITC is included in the state EITC aggregate from 2019
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        ny_eitc: 300
+        ny_supplemental_eitc: 75
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    taxsim_state_eitc: 375
+
+- name: NY supplemental EITC is not counted before 2019
+  period: 2018
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        ny_eitc: 300
+        ny_supplemental_eitc: 75
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    taxsim_state_eitc: 300

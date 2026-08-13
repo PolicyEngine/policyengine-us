@@ -1,0 +1,239 @@
+# Unit tests for the New Mexico Premium Assistance Middle Income Household (MIH)
+# eligibility gate. A tax unit is MIH-eligible when: the MIH component is in
+# effect (PY2026-2027), at least one member is enrolled on the Marketplace
+# (pays_aca_premium, any-member), the unit does not file married-filing-
+# separately, the tax unit files a federal return, and ACA MAGI is ABOVE the
+# 400% FPL limit (aca_magi_fraction > 4.0). pays_aca_premium, filing_status,
+# and aca_magi_fraction are supplied directly so the gate logic is tested in
+# isolation from the premium-data lookup. Unlike the base gate this does NOT use
+# is_aca_ptc_eligible, whose embedded income test fails above 400% FPL.
+
+- name: Case 1, NM unit above 400% FPL with a Marketplace payer is MIH-eligible.
+  # in_effect true (2026), pays_aca_premium any true, filing not SEPARATE,
+  # magi_frac 4.20 > 4.0, filer -> all gates pass.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: true
+
+- name: Case 2, no Marketplace payer makes the unit MIH-ineligible.
+  # pays_aca_premium false for every member -> tax_unit.any(pays_aca_premium)
+  # is false, so the gate fails even above 400% FPL.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 3, one Marketplace payer in a multi-person unit qualifies the unit.
+  # person1 pays_aca_premium true, person2 false -> any-member true. Non-separate
+  # filing, magi_frac 4.50 > 4.0 -> MIH-eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        pays_aca_premium: true
+      person2:
+        age: 43
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.50
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: true
+
+- name: Case 4, married-filing-separately unit is MIH-ineligible.
+  # The MIH gate inherits the federal MFS exclusion; despite a Marketplace payer
+  # above 400% FPL, SEPARATE filing fails the not_separate check.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        pays_aca_premium: true
+      person2:
+        age: 43
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 5, exactly 400% FPL is MIH-ineligible (gate is strictly > 4.0).
+  # income_eligible = magi_frac > fpl_limit; 4.00 is not > 4.00, so the base band
+  # (<= 4.0) applies and MIH does not. Boundary paired with Case 6.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.00
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 6, just above 400% FPL (4.01) is MIH-eligible (gate is > 4.0).
+  # 4.01 > 4.00 -> the income gate passes; other gates hold. Paired with Case 5
+  # to show the base->MIH boundary at the 400% FPL threshold.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.01
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: true
+
+- name: Case 7, non-New-Mexico state is MIH-ineligible (defined_for StateCode.NM).
+  # Every gate would pass but the unit is in Texas, so defined_for returns false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 8, MIH component not in effect in 2025 -> ineligible.
+  # mih.in_effect is false before 2026-01-01, so the gate fails despite an
+  # above-400% Marketplace payer.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 9, MIH component sunset in 2028 -> ineligible (post-sunset).
+  # mih.in_effect flips to false at 2028-01-01, so the gate fails despite an
+  # above-400% Marketplace payer. Pairs the pre-start 2025 case (Case 8) with the
+  # post-sunset 2028 case, closing the in-effect window on both sides. Same inputs
+  # as Case 1 (MIH-eligible in 2026); only the year changes.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: true
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+# ---- Filing-requirement gate (both gates now require tax_unit_is_filer) ----
+
+- name: Case 10, non-filer MIH unit above 400% FPL is MIH-ineligible.
+  # All other gates pass (Marketplace payer, non-separate, magi_frac 4.20 > 4.0)
+  # but tax_unit_is_filer is false, so the added federal filing requirement
+  # (IRC 36B(a)) fails and the unit is MIH-ineligible. Filer twin is Case 1.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: false
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false

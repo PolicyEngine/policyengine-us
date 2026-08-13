@@ -1,0 +1,55 @@
+- name: Child under 18 is a dependent child
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 17
+    is_tax_unit_dependent: true
+  output:
+    mo_tanf_dependent_child: true
+
+- name: 18-year-old dependent in secondary school is a dependent child
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+  output:
+    mo_tanf_dependent_child: true
+
+- name: 18-year-old dependent not in school is not a dependent child
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 18
+    is_tax_unit_dependent: true
+    is_in_secondary_school: false
+  output:
+    mo_tanf_dependent_child: false
+
+- name: 19-year-old is not a dependent child even as a secondary school student
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 19
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+  output:
+    mo_tanf_dependent_child: false
+
+- name: Child under 18 counts without the tax-dependent flag (child-only unit)
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 16
+    is_tax_unit_dependent: false
+  output:
+    mo_tanf_dependent_child: true
+
+- name: Adult is not a dependent child
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 30
+  output:
+    mo_tanf_dependent_child: false

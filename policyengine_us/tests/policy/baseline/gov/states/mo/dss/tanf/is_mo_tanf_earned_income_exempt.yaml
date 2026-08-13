@@ -1,0 +1,127 @@
+- name: Full-time-student dependent child's earnings are exempt
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 16
+    is_tax_unit_dependent: true
+    is_full_time_student: true
+  output:
+    is_mo_tanf_earned_income_exempt: true
+
+- name: Secondary-school student child's earnings are exempt
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 17
+    is_tax_unit_dependent: true
+    is_in_secondary_school: true
+  output:
+    is_mo_tanf_earned_income_exempt: true
+
+- name: Non-student child's earnings are not exempt
+  period: 2024-01
+  input:
+    state_code: MO
+    age: 17
+    is_tax_unit_dependent: true
+    is_full_time_student: false
+    is_in_secondary_school: false
+  output:
+    is_mo_tanf_earned_income_exempt: false
+
+- name: Teen parent in secondary school has exempt earnings
+  period: 2024-01
+  input:
+    people:
+      teen_parent:
+        age: 18
+        is_in_secondary_school: true
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [teen_parent, infant]
+    households:
+      household:
+        members: [teen_parent, infant]
+        state_code: MO
+  output:
+    is_mo_tanf_earned_income_exempt: [true, false]
+
+- name: Adult parent's earnings are not exempt
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 30
+      # The child is exempt because is_in_k12_school imputes school
+      # enrollment for ages 5-17, making the child a full-time student.
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    is_mo_tanf_earned_income_exempt: [false, true]
+
+- name: A 19-year-old parent in secondary school is not exempt
+  period: 2024-01
+  input:
+    people:
+      teen_parent:
+        age: 19
+        is_in_secondary_school: true
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [teen_parent, infant]
+    households:
+      household:
+        members: [teen_parent, infant]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.310(9)(A)6. exempts a parent "under the age of
+    # nineteen (19)"; a 19-year-old is over the boundary.
+    is_mo_tanf_earned_income_exempt: [false, false]
+
+- name: An 18-year-old parent not in school is not exempt
+  period: 2024-01
+  input:
+    people:
+      teen_parent:
+        age: 18
+      infant:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [teen_parent, infant]
+    spm_units:
+      spm_unit:
+        members: [teen_parent, infant]
+    households:
+      household:
+        members: [teen_parent, infant]
+        state_code: MO
+  output:
+    # The (9)(A)6. exemption requires full-time secondary school
+    # attendance, and the parent is not a dependent child under
+    # (9)(A)1.
+    is_mo_tanf_earned_income_exempt: [false, false]
