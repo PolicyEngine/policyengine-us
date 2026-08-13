@@ -1,0 +1,76 @@
+description: Tennessee designates these counties as Top Tier for reimbursement rate purposes under the Child Care Certificate Program.
+# Top Tier counties are enumerated directly in the footnote of each reimbursement
+# rate chart, which is the operational source of truth. All other counties default to
+# Lower Tier. The two eras differ only by Dyer County, which was Top Tier on the
+# October 1, 2024 chart and dropped to Lower Tier on the January 1, 2026 chart. Gibson
+# County appears on both chart footnotes even though it is absent from the Market Rate
+# Survey ranking table (too small for either top-20 list); it is a petition county
+# added to the top tier under MRS footnote 3 (employer creating 50+ child-care slots).
+values:
+  2024-10-01:
+    - ANDERSON_COUNTY_TN
+    - BLOUNT_COUNTY_TN
+    - BRADLEY_COUNTY_TN
+    - CHEATHAM_COUNTY_TN
+    - DAVIDSON_COUNTY_TN
+    - DICKSON_COUNTY_TN
+    - DYER_COUNTY_TN
+    - FAYETTE_COUNTY_TN
+    - GIBSON_COUNTY_TN
+    - GREENE_COUNTY_TN
+    - HAMILTON_COUNTY_TN
+    - HENRY_COUNTY_TN
+    - KNOX_COUNTY_TN
+    - LOUDON_COUNTY_TN
+    - MADISON_COUNTY_TN
+    - MAURY_COUNTY_TN
+    - MONTGOMERY_COUNTY_TN
+    - PUTNAM_COUNTY_TN
+    - ROBERTSON_COUNTY_TN
+    - RUTHERFORD_COUNTY_TN
+    - SEVIER_COUNTY_TN
+    - SHELBY_COUNTY_TN
+    - SULLIVAN_COUNTY_TN
+    - SUMNER_COUNTY_TN
+    - WASHINGTON_COUNTY_TN
+    - WILLIAMSON_COUNTY_TN
+    - WILSON_COUNTY_TN
+  2026-01-01:
+    - ANDERSON_COUNTY_TN
+    - BLOUNT_COUNTY_TN
+    - BRADLEY_COUNTY_TN
+    - CHEATHAM_COUNTY_TN
+    - DAVIDSON_COUNTY_TN
+    - DICKSON_COUNTY_TN
+    - FAYETTE_COUNTY_TN
+    - GIBSON_COUNTY_TN
+    - GREENE_COUNTY_TN
+    - HAMILTON_COUNTY_TN
+    - HENRY_COUNTY_TN
+    - KNOX_COUNTY_TN
+    - LOUDON_COUNTY_TN
+    - MADISON_COUNTY_TN
+    - MAURY_COUNTY_TN
+    - MONTGOMERY_COUNTY_TN
+    - PUTNAM_COUNTY_TN
+    - ROBERTSON_COUNTY_TN
+    - RUTHERFORD_COUNTY_TN
+    - SEVIER_COUNTY_TN
+    - SHELBY_COUNTY_TN
+    - SULLIVAN_COUNTY_TN
+    - SUMNER_COUNTY_TN
+    - WASHINGTON_COUNTY_TN
+    - WILLIAMSON_COUNTY_TN
+    - WILSON_COUNTY_TN
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee CCAP Top Tier counties
+  reference:
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, Top Tier Counties note (effective October 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Current%20state%20rate%20and%20QRIS%20bonus%20table.pdf
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, Top Tier Counties note (effective January 1, 2026)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Reimbursement_Rate_Chart_1.1.26.pdf
+    - title: Tennessee CCDF State Plan FFY 2025-2027, Section 4.3.4 (Top Tier methodology)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=64
