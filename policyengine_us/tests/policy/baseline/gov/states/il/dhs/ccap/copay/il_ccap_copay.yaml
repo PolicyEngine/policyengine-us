@@ -252,3 +252,31 @@
     # In-force 2025 table charges $45 from $4,514.
     il_ccap_copay:
       2026-03: 45
+
+- name: Case 22, Table B halves the Table A copayment in a school month.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,764 a month charges $18 under the 2025 Table A for two people.
+    il_ccap_countable_income: 21_168
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    il_ccap_table_b_applies: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2025-10: 9
+
+- name: Case 23, Table B halves the one-dollar minimum to fifty cents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,000 a month falls in the lowest 2025 Table A band for two people.
+    il_ccap_countable_income: 12_000
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    il_ccap_table_b_applies: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2025-10: 0.5

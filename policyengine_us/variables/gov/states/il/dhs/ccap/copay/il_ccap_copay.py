@@ -40,9 +40,14 @@ class il_ccap_copay(Variable):
         # Flooring at the minimum reproduces that rule and covers zero or
         # negative income, which falls below the table's first threshold.
         ordinary_copay = max_(table_a_copay, p.copay.fpl_minimum_amount)
-        # We do not model Table B, which halves the copayment for a month from
-        # September through May in which every child in care is school age and
-        # approved for part day care.
+        # Table B halves the Table A copayment, including its one-dollar
+        # minimum, reproducing the published fifty-cent lowest cell.
+        table_b_applies = spm_unit("il_ccap_table_b_applies", period)
+        assessed_table_copay = where(
+            table_b_applies,
+            ordinary_copay * p.copay.table_b.rate,
+            ordinary_copay,
+        )
         zero_copay = spm_unit(
             "il_ccap_non_parent_relative_child_only_tanf",
             period,
@@ -50,5 +55,5 @@ class il_ccap_copay(Variable):
         # We do not model the $1 copayment for a parent who spends at least 75%
         # of their scope of work in early childhood education and care, under
         # 23 Ill. Adm. Code 2060.310(b); PolicyEngine has no occupation input.
-        assessed_copay = where(zero_copay, 0, ordinary_copay)
+        assessed_copay = where(zero_copay, 0, assessed_table_copay)
         return where(p.in_effect, assessed_copay, 0)

@@ -87,7 +87,7 @@
     il_ccap_copay: 1
     il_ccap: 599
 
-- name: Case 3, school-age part-day care uses the Table A copay.
+- name: Case 3, school-age part-day care uses the Table B copay in a school month.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -100,6 +100,7 @@
         age: 8
         is_tax_unit_dependent: true
         is_full_time_student: true
+        is_in_k12_school: true
         childcare_provider_type_group: LE_GC
         childcare_hours_per_day: 4
         childcare_attending_days_per_month: 20
@@ -126,10 +127,11 @@
     il_ccap_care_duration: [NONE, PART_DAY]
     il_ccap_max_daily_rate: [0, 18]
     il_ccap_max_monthly_reimbursement: [0, 360]
-    # Table A is $18 at the exact $1,764 threshold.
-    # The $500 monthly charge is capped at 18 * 20 = $360.
-    il_ccap_copay: 18
-    il_ccap: 342
+    # Table A is $18 at the exact $1,764 threshold; the eight-year-old in
+    # part-day care during January halves it to $9 under Table B.
+    il_ccap_table_b_applies: true
+    il_ccap_copay: 9
+    il_ccap: 351
 
 - name: Case 4, two children share one copay after separate reimbursement caps.
   period: 2026-01
