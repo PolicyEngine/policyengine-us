@@ -1,0 +1,322 @@
+description: Oregon provides these hourly maximum provider reimbursement rates under the Employment Related Day Care program.
+metadata:
+  period: hour
+  unit: currency-USD
+  label: Oregon ERDC hourly maximum provider rates
+  breakdown:
+    - or_erdc_provider_area
+    - or_erdc_provider_type
+    - or_erdc_age_group
+  reference:
+    - title: Oregon DELC ERDC Child Care Maximum Rates, Group Areas A-C
+      href: https://www.oregon.gov/delc/providers/Documents/Provider%20Rate%20Increase%20For%20Jan%202026_Phase%202_ENG.pdf#page=2
+    - title: Oregon DELC ERDC Maximum Rates, Provider Guide Insert DELC 7492i (01/24), effective January 1, 2024
+      href: http://web.archive.org/web/20251012133829id_/https://www.oregon.gov/delc/programs/ERDC%20Fliers/Provider%20Guide%20Insert%20Final%20EN.pdf#page=3
+
+# For enhanced and licensed providers (QFM/QEC/RFM/CFM/CNT) the insert applies
+# these hourly rates to the 1-62 hour tier and publishes a separate part-time
+# monthly tier for 63-135 hours (75% of the full-time monthly rate). The
+# part-time tier is not modeled (see rates/monthly.yaml); hourly billing is
+# applied to all sub-full-time care, capped at the full-time monthly rate.
+AREA_A:
+  STANDARD_FAMILY:
+    INFANT:
+      2024-01-01: 6.3
+      2026-03-01: 6.5
+    TODDLER:
+      2024-01-01: 5.7
+      2026-03-01: 5.9
+    PRESCHOOL:
+      2024-01-01: 5.4
+      2026-03-01: 5.4
+    SCHOOL:
+      2024-01-01: 5.1
+      2026-03-01: 5.7
+    SPECIAL_NEEDS:
+      2024-01-01: 6.3
+      2026-03-01: 6.5
+  STANDARD_CENTER:
+    INFANT:
+      2024-01-01: 9
+    TODDLER:
+      2024-01-01: 11
+    PRESCHOOL:
+      2024-01-01: 8.25
+    SCHOOL:
+      2024-01-01: 8
+    SPECIAL_NEEDS:
+      2024-01-01: 9
+  ENHANCED_FAMILY:
+    INFANT:
+      2024-01-01: 6.65
+      2026-03-01: 6.86
+    TODDLER:
+      2024-01-01: 6.01
+      2026-03-01: 6.22
+    PRESCHOOL:
+      2024-01-01: 5.7
+      2026-03-01: 5.7
+    SCHOOL:
+      2024-01-01: 5.39
+      2026-03-01: 6.01
+    SPECIAL_NEEDS:
+      2024-01-01: 6.65
+      2026-03-01: 6.86
+  ENHANCED_CENTER:
+    INFANT:
+      2024-01-01: 10.2
+    TODDLER:
+      2024-01-01: 12.47
+    PRESCHOOL:
+      2024-01-01: 9.35
+    SCHOOL:
+      2024-01-01: 9.07
+    SPECIAL_NEEDS:
+      2024-01-01: 10.2
+  REGISTERED_FAMILY:
+    INFANT:
+      2024-01-01: 7
+      2026-01-01: 7.22
+    TODDLER:
+      2024-01-01: 6.33
+      2026-01-01: 6.55
+    PRESCHOOL:
+      2024-01-01: 6
+    SCHOOL:
+      2024-01-01: 5.67
+      2026-01-01: 6.33
+    SPECIAL_NEEDS:
+      2024-01-01: 7
+      2026-01-01: 7.22
+  CERTIFIED_FAMILY:
+    INFANT:
+      2024-01-01: 7.33
+      2026-01-01: 9.33
+    TODDLER:
+      2024-01-01: 7.33
+      2026-01-01: 8.58
+    PRESCHOOL:
+      2024-01-01: 7.33
+      2026-01-01: 8.5
+    SCHOOL:
+      2024-01-01: 7.67
+    SPECIAL_NEEDS:
+      2024-01-01: 7.33
+      2026-01-01: 9.33
+  CERTIFIED_CENTER:
+    INFANT:
+      2024-01-01: 12
+    TODDLER:
+      2024-01-01: 14.67
+    PRESCHOOL:
+      2024-01-01: 11
+    SCHOOL:
+      2024-01-01: 10.67
+    SPECIAL_NEEDS:
+      2024-01-01: 12
+AREA_B:
+  STANDARD_FAMILY:
+    INFANT:
+      2024-01-01: 4.2
+      2026-03-01: 4.95
+    TODDLER:
+      2024-01-01: 3.9
+      2026-03-01: 4.73
+    PRESCHOOL:
+      2024-01-01: 3.75
+      2026-03-01: 4.5
+    SCHOOL:
+      2024-01-01: 3.9
+      2026-03-01: 5.4
+    SPECIAL_NEEDS:
+      2024-01-01: 4.2
+      2026-03-01: 4.95
+  STANDARD_CENTER:
+    INFANT:
+      2024-01-01: 5.81
+      2026-01-01: 6.56
+    TODDLER:
+      2024-01-01: 4.94
+    PRESCHOOL:
+      2024-01-01: 7.13
+    SCHOOL:
+      2024-01-01: 3.95
+      2026-01-01: 4.31
+    SPECIAL_NEEDS:
+      2024-01-01: 5.81
+      2026-01-01: 6.56
+  ENHANCED_FAMILY:
+    INFANT:
+      2024-01-01: 4.44
+      2026-03-01: 5.23
+    TODDLER:
+      2024-01-01: 4.11
+      2026-03-01: 4.99
+    PRESCHOOL:
+      2024-01-01: 4.11
+      2026-03-01: 4.75
+    SCHOOL:
+      2024-01-01: 4.11
+      2026-03-01: 5.7
+    SPECIAL_NEEDS:
+      2024-01-01: 4.44
+      2026-03-01: 5.23
+  ENHANCED_CENTER:
+    INFANT:
+      2024-01-01: 6.59
+      2026-01-01: 7.44
+    TODDLER:
+      2024-01-01: 5.59
+    PRESCHOOL:
+      2024-01-01: 8.08
+    SCHOOL:
+      2024-01-01: 4.48
+    SPECIAL_NEEDS:
+      2024-01-01: 6.59
+      2026-01-01: 7.44
+  REGISTERED_FAMILY:
+    INFANT:
+      2024-01-01: 4.67
+      2026-01-01: 5.5
+    TODDLER:
+      2024-01-01: 4.33
+      2026-01-01: 5.25
+    PRESCHOOL:
+      2024-01-01: 4.17
+      2026-01-01: 5
+    SCHOOL:
+      2024-01-01: 4.33
+      2026-01-01: 6
+    SPECIAL_NEEDS:
+      2024-01-01: 4.67
+      2026-01-01: 5.5
+  CERTIFIED_FAMILY:
+    INFANT:
+      2024-01-01: 5.92
+      2026-01-01: 6
+    TODDLER:
+      2024-01-01: 5.25
+      2026-01-01: 5.5
+    PRESCHOOL:
+      2024-01-01: 5.75
+      2026-01-01: 6
+    SCHOOL:
+      2024-01-01: 5.83
+    SPECIAL_NEEDS:
+      2024-01-01: 5.92
+      2026-01-01: 6
+  CERTIFIED_CENTER:
+    INFANT:
+      2024-01-01: 7.75
+    TODDLER:
+      2024-01-01: 6.58
+    PRESCHOOL:
+      2024-01-01: 9.5
+    SCHOOL:
+      2024-01-01: 5.27
+      2026-01-01: 5.75
+    SPECIAL_NEEDS:
+      2024-01-01: 7.75
+AREA_C:
+  STANDARD_FAMILY:
+    INFANT:
+      2024-01-01: 4.2
+      2026-03-01: 4.95
+    TODDLER:
+      2024-01-01: 3.9
+      2026-03-01: 4.73
+    PRESCHOOL:
+      2024-01-01: 3.75
+      2026-03-01: 4.5
+    SCHOOL:
+      2024-01-01: 3.9
+      2026-03-01: 5.4
+    SPECIAL_NEEDS:
+      2024-01-01: 4.2
+      2026-03-01: 4.95
+  STANDARD_CENTER:
+    INFANT:
+      2024-01-01: 5.81
+      2026-01-01: 6.56
+    TODDLER:
+      2024-01-01: 4.94
+    PRESCHOOL:
+      2024-01-01: 7.13
+    SCHOOL:
+      2024-01-01: 3.95
+      2026-01-01: 4.31
+    SPECIAL_NEEDS:
+      2024-01-01: 5.81
+      2026-01-01: 6.56
+  ENHANCED_FAMILY:
+    INFANT:
+      2024-01-01: 4.44
+      2026-03-01: 5.23
+    TODDLER:
+      2024-01-01: 4.11
+      2026-03-01: 4.99
+    PRESCHOOL:
+      2024-01-01: 4.11
+      2026-03-01: 4.75
+    SCHOOL:
+      2024-01-01: 4.11
+      2026-03-01: 5.7
+    SPECIAL_NEEDS:
+      2024-01-01: 4.44
+      2026-03-01: 5.23
+  ENHANCED_CENTER:
+    INFANT:
+      2024-01-01: 6.59
+      2026-01-01: 7.44
+    TODDLER:
+      2024-01-01: 5.59
+    PRESCHOOL:
+      2024-01-01: 8.08
+    SCHOOL:
+      2024-01-01: 4.48
+    SPECIAL_NEEDS:
+      2024-01-01: 6.59
+      2026-01-01: 7.44
+  REGISTERED_FAMILY:
+    INFANT:
+      2024-01-01: 4.67
+      2026-01-01: 5.5
+    TODDLER:
+      2024-01-01: 4.33
+      2026-01-01: 5.25
+    PRESCHOOL:
+      2024-01-01: 4.17
+      2026-01-01: 5
+    SCHOOL:
+      2024-01-01: 4.33
+      2026-01-01: 6
+    SPECIAL_NEEDS:
+      2024-01-01: 4.67
+      2026-01-01: 5.5
+  CERTIFIED_FAMILY:
+    INFANT:
+      2024-01-01: 5.92
+      2026-01-01: 6
+    TODDLER:
+      2024-01-01: 5.25
+      2026-01-01: 5.5
+    PRESCHOOL:
+      2024-01-01: 5.75
+      2026-01-01: 6
+    SCHOOL:
+      2024-01-01: 5.83
+    SPECIAL_NEEDS:
+      2024-01-01: 5.92
+      2026-01-01: 6
+  CERTIFIED_CENTER:
+    INFANT:
+      2024-01-01: 7.75
+    TODDLER:
+      2024-01-01: 6.58
+    PRESCHOOL:
+      2024-01-01: 9.5
+    SCHOOL:
+      2024-01-01: 5.27
+      2026-01-01: 5.75
+    SPECIAL_NEEDS:
+      2024-01-01: 7.75

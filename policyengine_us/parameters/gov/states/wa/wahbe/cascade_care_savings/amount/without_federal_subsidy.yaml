@@ -1,0 +1,21 @@
+description: Washington provides this monthly amount per member without federal subsidies under the Cascade Care Savings program.
+values:
+  # Groups 2 and 3: enrollees without federal subsidies (including the Section 1332
+  # waiver population without a federally recognized immigration status). PY2026
+  # maximum per-member per-month (PMPM) assistance is $250 (unchanged from PY2025).
+  # Group 2 (lawfully present but Advance-Premium-Tax-Credit-ineligible) is not
+  # separately identifiable in the model; the modeled without-subsidy population is
+  # Group 3, which uses this same amount. Amount set annually by the WAHBE Board.
+  2026-01-01: 250
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington Cascade Care Savings monthly amount per member without federal subsidies
+  reference:
+    - title: WAHBE Plan Year 2026 Final PMPM Methodology (customers without federal subsidies $250 PMPM)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=1
+    - title: WAHBE Plan Year 2026 Final PMPM Methodology (2025-vs-2026 amount exhibit)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=7
+    - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 5(1)(b)-(c)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=11
