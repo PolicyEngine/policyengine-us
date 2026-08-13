@@ -276,3 +276,190 @@
     assigned_aca_ptc: 10_197.50
     ct_covered_connecticut: 988.84
     healthcare_benefit_value: 11_186.34
+
+- name: Case 16, Washington Cascade Care Savings flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+    wa_cascade_care_savings: 660
+  output:
+    healthcare_benefit_value: 660
+
+- name: Case 17, two tax units each earning CCS sum into one household value.
+  # wa_cascade_care_savings is a TaxUnit variable; healthcare_benefit_value is a
+  # Household variable that adds it, so a household with two tax units (each with
+  # a Group 1 member earning 660) must aggregate to 660 + 660 = 1_320. Guards the
+  # TaxUnit -> Household sum, which a single-tax-unit case cannot exercise. All
+  # other health-value components are zeroed so the total is purely the CCS sum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+      tax_unit2:
+        members: [person2]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: [660, 660]
+    healthcare_benefit_value: 1_320
+
+- name: Case 18, Massachusetts ConnectorCare wrap flows into healthcare benefit value.
+  # ma_connector_care is supplied directly; all sibling cost proxies are zeroed so
+  # the wrap is the only contributor. healthcare_benefit_value adds it verbatim.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    ma_connector_care: 1_564
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+  output:
+    healthcare_benefit_value: 1_564
+
+- name: Case 19, New Jersey Health Plan Savings flows into healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    basic_health_program: 0
+    assigned_aca_ptc: 0
+    co_omnisalud: 0
+    assigned_ca_premium_subsidy: 0
+    assigned_co_premium_assistance: 0
+    ct_covered_connecticut: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+    nj_njhps: 480
+  output:
+    healthcare_benefit_value: 480
+
+- name: Case 20, DERIVED New Jersey Health Plan Savings flows into healthcare benefit value.
+  # notes: proves the nj_njhps wiring against a COMPUTED value rather than a forced
+  # nj_njhps (Case 19 forces 480; this derives). A real NJ single-adult household in
+  # the $20 band: frac 1.4 in [1.38, 1.5] -> pmpm 20, n=1 -> base = 12*20 = 240.
+  # slcsp 6_000, aca_ptc 5_000 -> residual = max(0, 6_000 - 5_000) = 1_000 ->
+  # nj_njhps = min(240, 1_000) = 240. All other health channels are forced to 0, so
+  # healthcare_benefit_value = the derived nj_njhps = 240. Does NOT alter Case 19 or
+  # the nj wiring.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+        medicaid_cost: 0
+        msp_cost: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+        assigned_aca_ptc: 0
+        co_omnisalud: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps: 240
+    healthcare_benefit_value: 240
+
+- name: Case 21, Vermont Premium Assistance flows through to the healthcare benefit value.
+  # vt_premium_assistance is in the adds list, so a direct 585 state top-up (with
+  # all other components zeroed) surfaces as the household healthcare benefit value.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    medicaid_cost: 0
+    msp_cost: 0
+    chip: 0
+    assigned_aca_ptc: 0
+    basic_health_program: 0
+    co_omnisalud: 0
+    md_premium_assistance: 0
+    or_healthier_oregon_cost: 0
+    vt_premium_assistance: 585
+  output:
+    healthcare_benefit_value: 585
+
+- name: Case 22, Vermont Premium Assistance derived from a real VT household flows into the benefit value.
+  # Gap B. Unlike Case 21 (which injects vt_premium_assistance directly), this case
+  # DERIVES vt_premium_assistance end-to-end from employment_income for a 40-year-old
+  # single Vermont enrollee (~249% FPL, as in the integration Scenario 1), proving
+  # the aca_magi -> VPA -> adds wiring against a computed value. Because
+  # healthcare_benefit_value also adds the federal assigned_aca_ptc, the household
+  # total is assigned_aca_ptc + vt_premium_assistance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 39_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    # assigned_aca_ptc (12_310.752) + vt_premium_assistance (585.00) = 12_895.752.
+    vt_premium_assistance: 585.00
+    healthcare_benefit_value: 12_895.752

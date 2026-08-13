@@ -1,0 +1,22 @@
+description: Massachusetts sets this share of the federal poverty line as the income eligibility floor under the ConnectorCare program.
+values:
+  # For PY2026 the operational program covers households at or above 100% FPL
+  # (Plan Type 2A floor), applied as a ">=" comparison. The 2026 ConnectorCare
+  # Overview states only households between 100% and 400% FPL qualify and omits
+  # Plan Type 1 (<100% FPL) from its band table. This conflicts with the amended
+  # 956 CMR 12.04(3)(b), which still defines Plan Type 1 below 100% FPL for plan
+  # years on or after 2026-01-01; the operational Overview is treated as
+  # controlling and the sub-100% band is left unmodeled.
+  2026-01-01: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: Massachusetts ConnectorCare income floor as a share of the federal poverty line
+  reference:
+    - title: ConnectorCare Overview 2026
+      href: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+    - title: 956 CMR 12.04(3)(b)2
+      href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
+    - title: ConnectorCare Overview 2026, Table 2 income bands
+      href: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1

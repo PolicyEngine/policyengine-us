@@ -1,0 +1,164 @@
+- name: A working single caretaker is activity eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: true
+
+- name: Both caretakers must have an eligible activity.
+  period: 2027-01
+  input:
+    people:
+      parent_1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      parent_2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent_1, parent_2, child]
+    spm_units:
+      spm_unit:
+        members: [parent_1, parent_2, child]
+    households:
+      household:
+        members: [parent_1, parent_2, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: false
+
+- name: A second caretaker unable to provide care satisfies the exception.
+  period: 2027-01
+  input:
+    people:
+      parent_1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      parent_2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent_1, parent_2, child]
+    spm_units:
+      spm_unit:
+        members: [parent_1, parent_2, child]
+    households:
+      household:
+        members: [parent_1, parent_2, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: true
+
+- name: A college student caretaker is activity eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 22
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_college_student: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: true
+
+- name: A part-time college student caretaker is activity eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 25
+        weekly_hours_worked_before_lsr: 0
+        is_part_time_college_student: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: true
+
+- name: A secondary school student caretaker at the education age limit is activity eligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 20
+        weekly_hours_worked_before_lsr: 0
+        is_in_secondary_school: true
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: true
+
+- name: A secondary school student caretaker above the education age limit is ineligible.
+  period: 2027-01
+  input:
+    people:
+      parent:
+        age: 21
+        weekly_hours_worked_before_lsr: 0
+        is_in_secondary_school: true
+      child:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_activity_eligible: false

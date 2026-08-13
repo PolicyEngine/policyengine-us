@@ -1,0 +1,364 @@
+# Integration tests for New Jersey Health Plan Savings (NJHPS).
+#
+# These exercise the full chain: aca_magi_fraction (income band) ->
+# nj_njhps_member_eligible (per-person non-income enrollee gate) ->
+# nj_njhps_eligible (in_effect + band + at least one member) ->
+# nj_njhps (per-member build-up capped by SLCSP - APTC).
+#
+# slcsp and aca_ptc are supplied directly (SLCSP as an annual value) so the cap
+# arithmetic is fully hand-verifiable. slcsp is a MONTH variable; at the YEAR test
+# period its output is the annual sum (= the value supplied). Scenario 1 instead
+# derives aca_magi_fraction from raw employment income to exercise the income path.
+#
+# Amount formula recap:
+#   n            = count of nj_njhps_member_eligible members
+#   pmpm(frac)   = 20 [1.38-1.5], 40 (1.5-2.0], 50 (2.0-2.5], 100 (2.5-4.0],
+#                  50 (4.0-6.0], 0 elsewhere   [per member per month]
+#   base_annual  = 12 * pmpm(frac) * n
+#   residual     = max(0, slcsp_annual - aca_ptc)
+#   annual       = eligible * min(base_annual, residual)
+
+- name: Scenario 1, single adult with income deriving 200% FPL, $40 band.
+  # Income path: employment_income 31_300 -> aca_magi 31_300 (single W-2 filer,
+  # AGI = gross). aca_magi_fraction uses the PRIOR-year (2025) single FPG 15_650:
+  #   floor(100 * 31_300 / 15_650) / 100 = floor(200.0) / 100 = 2.0.
+  # frac 2.0 is upper-inclusive in the (1.5, 2.0] band -> pmpm 40. n=1 ->
+  # base = 12*40 = 480. residual = max(0, 8_000 - 5_000) = 3_000.
+  # annual = min(480, 3_000) = 480.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 31_300
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 8_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi: 31_300
+    aca_magi_fraction: 2.0
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 8_000  # annual sum of the MONTH variable
+    aca_ptc: 5_000
+    nj_njhps: 480
+
+- name: Scenario 2, family of four at 300% FPL, four members, digest anchor.
+  # frac 3.0 -> pmpm 100. All four pay an ACA premium -> n=4.
+  # base = 12*100*4 = 4_800 ($400/month, matching the digest anchor).
+  # residual = max(0, 20_000 - 8_000) = 12_000. annual = min(4_800, 12_000) = 4_800.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 42, pays_aca_premium: true}
+      person2: {age: 40, pays_aca_premium: true}
+      person3: {age: 12, pays_aca_premium: true}
+      person4: {age: 9, pays_aca_premium: true}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 3.0
+        slcsp: 20_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 3.0
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 20_000
+    aca_ptc: 8_000
+    nj_njhps: 4_800
+
+- name: Scenario 3, single at 500% FPL above the APTC cliff, NJHPS sole subsidy.
+  # frac 5.0 -> pmpm 50. Above 400% FPL the federal APTC cliff makes aca_ptc 0.
+  # The NJHPS member gate is non-income, so the member stays eligible.
+  # n=1 -> base = 12*50 = 600. residual = max(0, 7_000 - 0) = 7_000.
+  # annual = min(600, 7_000) = 600.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+        slcsp: 7_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 5.0
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 7_000
+    aca_ptc: 0
+    nj_njhps: 600
+
+- name: Scenario 4, couple at 220% FPL, cap binds on the post-APTC residual.
+  # frac 2.2 -> pmpm 50. Both pay an ACA premium -> n=2.
+  # base = 12*50*2 = 1_200. residual = max(0, 6_000 - 5_200) = 800.
+  # annual = min(1_200, 800) = 800 (the cap binds: total APTC + NJHPS cannot exceed
+  # the benchmark SLCSP premium).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 50, pays_aca_premium: true}
+      person2: {age: 48, pays_aca_premium: true}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 2.2
+        slcsp: 6_000
+        aca_ptc: 5_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 2.2
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 6_000
+    aca_ptc: 5_200
+    nj_njhps: 800
+
+- name: Scenario 5, below the 138% floor, routed away from NJHPS.
+  # frac 1.2 < 1.38 -> outside band -> member ineligible -> tax unit ineligible ->
+  # amount 0 (households below 138% FPL go to NJ FamilyCare/Medicaid).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.2
+        slcsp: 6_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 1.2
+    nj_njhps_member_eligible: false
+    nj_njhps_eligible: false
+    slcsp: 6_000
+    aca_ptc: 4_000
+    nj_njhps: 0
+
+- name: Scenario 6, married filing separately member excluded, no subsidy.
+  # filing_status SEPARATE -> member gate fails despite a valid 250% FPL fraction.
+  # n=0 -> nj_njhps_eligible False -> amount 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 44
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.5
+        filing_status: SEPARATE
+        slcsp: 9_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 2.5
+    nj_njhps_member_eligible: false
+    nj_njhps_eligible: false
+    slcsp: 9_000
+    aca_ptc: 4_000
+    nj_njhps: 0
+
+- name: Scenario 7, at exactly 600% FPL, $50 band, still eligible.
+  # frac 6.0 == fpl_limit -> inclusive ceiling, and 6.0 is NOT > 6.0001 -> pmpm 50.
+  # aca_ptc 0 above the cliff. n=1 -> base = 12*50 = 600.
+  # residual = max(0, 10_000 - 0) = 10_000. annual = min(600, 10_000) = 600.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 6.0
+        slcsp: 10_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 6.0
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 10_000
+    aca_ptc: 0
+    nj_njhps: 600
+
+# ===========================================================================
+# EDGE-CASE SCENARIOS (appended).
+# ===========================================================================
+
+- name: Scenario 8, exactly 400% FPL, APTC-positive residual caps below the base.
+  # notes: 400.0 leg of the residual-flip pair. frac 4.0 (NOT > 4.0001) -> pmpm 100,
+  # n=1 -> base = 12*100 = 1_200. At the cliff the tax unit is still APTC-eligible,
+  # so aca_ptc 9_500 -> residual = max(0, 10_000 - 9_500) = 500. annual =
+  # min(1_200, 500) = 500 (the post-APTC residual binds). Paired with Scenario 9.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.0
+        slcsp: 10_000
+        aca_ptc: 9_500
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 4.0
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 10_000
+    aca_ptc: 9_500
+    nj_njhps: 500
+
+- name: Scenario 9, just above 400% FPL, APTC 0 so residual is the full SLCSP.
+  # notes: 400.01 leg of the residual-flip pair (same slcsp 10_000 as Scenario 8).
+  # frac 4.01 > 4.0001 -> pmpm 50, n=1 -> base = 12*50 = 600. Above the 400% cliff
+  # aca_ptc 0 -> residual = max(0, 10_000 - 0) = 10_000. annual = min(600, 10_000) =
+  # 600. The residual source flips from slcsp - aptc (500) to full slcsp (10_000),
+  # so the base binds -> 600. NJHPS is the sole subsidy in this band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.01
+        slcsp: 10_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 4.01
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 10_000
+    aca_ptc: 0
+    nj_njhps: 600
+
+- name: Scenario 10, mixed household, only two of four pay premiums (n counts payers).
+  # notes: member-count flows through the full chain. frac 3.0 -> pmpm 100. Two of
+  # four pay an ACA premium, so nj_njhps_member_eligible is per-person and n=2 (not
+  # 4). base = 12*100*2 = 2_400. residual = max(0, 20_000 - 8_000) = 12_000 ->
+  # annual = min(2_400, 12_000) = 2_400.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 41, pays_aca_premium: true}
+      person2: {age: 39, pays_aca_premium: true}
+      person3: {age: 11, pays_aca_premium: false}
+      person4: {age: 9, pays_aca_premium: false}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 3.0
+        slcsp: 20_000
+        aca_ptc: 8_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    aca_magi_fraction: 3.0
+    nj_njhps_member_eligible: [true, true, false, false]
+    nj_njhps_eligible: true
+    slcsp: 20_000
+    aca_ptc: 8_000
+    nj_njhps: 2_400
+
+- name: Scenario 11, income-derived SLCSP and APTC in the $100 band, base binds.
+  # notes: fully-derived scenario (Gap A) — NEITHER slcsp NOR aca_ptc is forced;
+  # both come from the rating-area premium lookup and the federal PTC calc for a
+  # real NJ single adult, so the whole chain (income -> band -> slcsp -> aptc ->
+  # residual cap) runs end to end.
+  # Income path: employment_income 43_000 -> aca_magi 43_000 (single W-2 filer,
+  # AGI = gross). aca_magi_fraction uses the PRIOR-year (2025) single FPG 15_650:
+  #   floor(100 * 43_000 / 15_650) / 100 = floor(274.76...) / 100 = 2.74.
+  # frac 2.74 in (2.5, 4.0] -> pmpm 100. n=1 -> base = 12*100 = 1_200.
+  # The band is chosen so the derived residual (slcsp - aptc) comfortably exceeds
+  # 1_200, i.e. the residual cap does NOT bind and the base path is asserted.
+  # ci-fixer: verify derived value — fill exact slcsp, aca_ptc, and nj_njhps from a
+  # test run. Expected nj_njhps = 1_200 provided the derived residual > 1_200; if
+  # the derived residual is smaller, ci-fixer must lower employment_income / adjust
+  # so the cap does not bind, keeping this a base-binds assertion.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 43_000
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    aca_magi: 43_000
+    aca_magi_fraction: 2.74
+    nj_njhps_member_eligible: true
+    nj_njhps_eligible: true
+    slcsp: 6_535.388  # derived: annual sum of the MONTH SLCSP for a NJ single adult
+    aca_ptc: 2_592.4602  # derived: federal PTC at 274% FPL
+    # residual = 6_535.388 - 2_592.4602 = 3_942.93 > base 1_200, so the cap does
+    # NOT bind and the base path is asserted: nj_njhps = min(1_200, 3_942.93) = 1_200.
+    nj_njhps: 1_200

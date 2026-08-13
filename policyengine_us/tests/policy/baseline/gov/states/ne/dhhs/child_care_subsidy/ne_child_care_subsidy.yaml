@@ -1,43 +1,105 @@
-- name: NE child care subsidy no fee
-  period: 2024
+- name: Case 1, private charge below the state maximum caps reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     ne_child_care_subsidy_eligible: true
-    spm_unit_pre_subsidy_childcare_expenses: 50
-    spm_unit_fpg: 100
-    ne_child_care_subsidy_countable_income: 100
+    ne_child_care_subsidy_family_fee: 0
+    ne_child_care_subsidy_maximum_provider_rate: 450
+    ne_child_care_subsidy_provider_type: CENTER
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
-    ne_child_care_subsidy: 50
+    ne_child_care_subsidy_maximum_provider_rate: 450
+    # min($100 monthly private charge, $450 provider rate).
+    ne_child_care_subsidy: 100
 
-- name: NE child care subsidy with small fee
-  period: 2024
+- name: Case 2, state maximum below the private charge caps reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     ne_child_care_subsidy_eligible: true
-    spm_unit_pre_subsidy_childcare_expenses: 50
-    spm_unit_fpg: 100
-    ne_child_care_subsidy_countable_income: 200
+    ne_child_care_subsidy_family_fee: 0
+    ne_child_care_subsidy_maximum_provider_rate: 80
+    ne_child_care_subsidy_provider_type: CENTER
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
-    ne_child_care_subsidy: 36 # 50 - 0.07 * 200
+    ne_child_care_subsidy_maximum_provider_rate: 80
+    ne_child_care_subsidy: 80
 
-- name: NE child care subsidy with big fee
-  period: 2024
+- name: Case 3, family fee above reimbursement floors the subsidy at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     ne_child_care_subsidy_eligible: true
-    spm_unit_pre_subsidy_childcare_expenses: 50
-    spm_unit_fpg: 100
-    ne_child_care_subsidy_countable_income: 2_000
+    ne_child_care_subsidy_family_fee: 150
+    ne_child_care_subsidy_maximum_provider_rate: 80
+    ne_child_care_subsidy_provider_type: CENTER
+    pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
-    ne_child_care_subsidy: 0 # 50 - 0.07 * 2000 < 0
-
-- name: NE child care subsidy not eligible
-  period: 2024
-  input:
-    ne_child_care_subsidy_eligible: false
-    spm_unit_pre_subsidy_childcare_expenses: 50
-    spm_unit_fpg: 100
-    ne_child_care_subsidy_countable_income: 100
-    state_code: NE
-  output:
+    ne_child_care_subsidy_maximum_provider_rate: 80
+    # max(min($100, $80 provider rate) - $150, 0).
     ne_child_care_subsidy: 0
+
+- name: Case 4, private charges cap each child separately.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child1:
+        ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 1_800
+      child2:
+        ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 0
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 0
+    households:
+      household:
+        members: [child1, child2]
+        state_code: NE
+  output:
+    # The second child's unused maximum cannot absorb the first child's charge.
+    ne_child_care_subsidy: 100
+
+- name: Case 5, the pre-matrix historical expense approximation is preserved.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_countable_income: 200
+    ne_child_care_subsidy_eligible: true
+    spm_unit_fpg: 100
+    spm_unit_pre_subsidy_childcare_expenses: 50
+    state_code: NE
+  output:
+    # $50 annual expense less the 7% historical family fee.
+    ne_child_care_subsidy: 36
+
+- name: Case 6, an unreported care schedule falls back to billed expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 40
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # $100 monthly billed expenses less the $40 family fee.
+    ne_child_care_subsidy: 60
