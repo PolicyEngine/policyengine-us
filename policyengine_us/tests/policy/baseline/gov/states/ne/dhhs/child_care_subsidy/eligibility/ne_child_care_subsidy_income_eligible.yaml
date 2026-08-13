@@ -58,7 +58,7 @@
 - name: Case 7, enrolled income at 85 percent SMI remains eligible.
   period: 2026-01
   input:
-    hhs_smi: 120_000
+    ne_child_care_subsidy_smi: 10_000
     ne_child_care_subsidy_countable_income: 8_500
     ne_child_care_subsidy_enrolled: true
     state_code: NE
@@ -68,7 +68,7 @@
 - name: Case 8, enrolled income one dollar above 85 percent SMI is ineligible.
   period: 2026-01
   input:
-    hhs_smi: 120_000
+    ne_child_care_subsidy_smi: 10_000
     ne_child_care_subsidy_countable_income: 8_501
     ne_child_care_subsidy_enrolled: true
     state_code: NE
@@ -149,7 +149,7 @@
 - name: Case 14, the 85 percent SMI limit rounds to the nearest dollar.
   period: 2026-01
   input:
-    hhs_smi: 69_532
+    ne_child_care_subsidy_smi: 5_794.33
     ne_child_care_subsidy_countable_income: 4_926
     ne_child_care_subsidy_enrolled: true
     state_code: NE
@@ -157,3 +157,27 @@
     # Nebraska rounds the SMI column to the nearest dollar, so the limit is
     # round(0.85 * $5,794.33) = $4,925, one dollar below the income.
     ne_child_care_subsidy_income_eligible: false
+
+- name: Case 15, the SMI limit switches to the new vintage in October.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The two-person adjustment is 0.52 + 0.16 = 0.68 of the state figure:
+    # 0.68 * $118,162 / 12 through September (FFY 2026 vintage) and
+    # 0.68 * $121,844 / 12 from October (FFY 2027 vintage).
+    ne_child_care_subsidy_smi:
+      2026-09: 6_695.85
+      2026-10: 6_904.49

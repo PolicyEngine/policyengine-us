@@ -16,7 +16,7 @@ class ne_child_care_subsidy_income_eligible(Variable):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         income = spm_unit("ne_child_care_subsidy_countable_income", period)
         fpg = spm_unit("ne_child_care_subsidy_fpg", period)
-        smi = spm_unit("hhs_smi", period)
+        smi = spm_unit("ne_child_care_subsidy_smi", period)
         enrolled = spm_unit("ne_child_care_subsidy_enrolled", period)
         at_redetermination = spm_unit(
             "ne_child_care_subsidy_at_redetermination", period

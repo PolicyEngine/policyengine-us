@@ -102,11 +102,10 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
             / MONTHS_IN_YEAR
         )
         in_home_child_count = person.spm_unit.sum(member_in_home)
-        in_home_base_per_child = np.zeros_like(in_home_monthly)
-        has_in_home_children = in_home_child_count > 0
-        in_home_base_per_child[has_in_home_children] = (
-            in_home_monthly[has_in_home_children]
-            / in_home_child_count[has_in_home_children]
+        in_home_base_per_child = where(
+            in_home_child_count > 0,
+            in_home_monthly / max_(in_home_child_count, 1),
+            0,
         )
         base_rate = select(
             [
