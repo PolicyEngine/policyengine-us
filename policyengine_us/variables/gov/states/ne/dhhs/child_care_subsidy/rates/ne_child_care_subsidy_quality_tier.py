@@ -17,6 +17,4 @@ class ne_child_care_subsidy_quality_tier(Variable):
     definition_period = MONTH
     label = "Nebraska Child Care Subsidy provider quality tier"
     defined_for = StateCode.NE
-    reference = (
-        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1",
-    )
+    reference = ("https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf",)

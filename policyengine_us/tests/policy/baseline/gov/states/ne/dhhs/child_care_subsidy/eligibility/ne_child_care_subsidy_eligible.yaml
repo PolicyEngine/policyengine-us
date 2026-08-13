@@ -47,7 +47,7 @@
   output:
     ne_child_care_subsidy_eligible: false
 
-- name: Case 3, an eligible child without eligible provider conditions fails.
+- name: Case 3, a reported provider failing the provider conditions fails.
   period: 2026-01
   input:
     people:
@@ -58,6 +58,7 @@
         is_tax_unit_head_or_spouse: false
         ne_child_care_subsidy_eligible_child: true
         ne_child_care_subsidy_provider_eligible: false
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
     spm_units:
       spm_unit:
         is_ccdf_asset_eligible: true

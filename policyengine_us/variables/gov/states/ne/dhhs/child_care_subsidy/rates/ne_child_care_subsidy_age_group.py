@@ -19,7 +19,7 @@ class ne_child_care_subsidy_age_group(Variable):
     reference = (
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=4",
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=6",
-        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1",
+        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf",
     )
 
     def formula(person, period, parameters):

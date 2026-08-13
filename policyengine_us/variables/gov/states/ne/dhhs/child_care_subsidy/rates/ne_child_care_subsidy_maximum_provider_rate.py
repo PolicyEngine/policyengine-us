@@ -21,7 +21,7 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
     label = "Nebraska Child Care Subsidy maximum monthly provider rate"
     defined_for = "ne_child_care_subsidy_provider_eligible"
     reference = (
-        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1",
+        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf",
         "https://dhhs.ne.gov/Documents/CC-Subsidy-Provider-Booklet.pdf#page=31",
         "https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=10",
     )
@@ -133,8 +133,7 @@ class ne_child_care_subsidy_maximum_provider_rate(Variable):
             base_rate * p.special_needs.max_increase,
         )
         special_increase = where(special_needs, special_increase, 0)
-        quality_reported = quality != NEChildCareSubsidyQualityTier.NONE
-        licensed = (provider == NEChildCareSubsidyProviderType.HOME_I_II) | (
-            provider == NEChildCareSubsidyProviderType.CENTER
-        )
-        return (base_rate + special_increase) * (~licensed | quality_reported)
+        # Section 68-1206(3) makes tiered rates an optional increase, so a
+        # licensed provider with no reported quality rating receives the
+        # chart's base rate (quality_key already maps NONE to BASE).
+        return base_rate + special_increase

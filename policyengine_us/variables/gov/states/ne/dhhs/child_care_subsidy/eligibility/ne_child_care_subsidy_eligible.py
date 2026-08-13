@@ -14,23 +14,24 @@ class ne_child_care_subsidy_eligible(Variable):
     defined_for = StateCode.NE
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ne.dhhs.child_care_subsidy
         person = spm_unit.members
         eligible_parent = person("ne_child_care_subsidy_eligible_parent", period)
-        caretaker = person("is_tax_unit_head_or_spouse", period.this_year) | person(
-            "is_parent", period.this_year
-        )
-        all_caretakers_eligible = spm_unit.sum(caretaker & ~eligible_parent) == 0
         eligible_child = person("ne_child_care_subsidy_eligible_child", period)
-        provider_eligible = person("ne_child_care_subsidy_provider_eligible", period)
         eligible_child_present = spm_unit.sum(eligible_child) > 0
         income_eligible = spm_unit("ne_child_care_subsidy_income_eligible", period)
-        if (period.start.year, period.start.month) < (2025, 10):
+        if not p.provider_rate_model_in_effect:
             # Preserve the pre-matrix model path for historical periods.
             return (
                 (spm_unit.sum(eligible_parent) > 0)
                 & eligible_child_present
                 & income_eligible
             )
+        caretaker = person("is_tax_unit_head_or_spouse", period.this_year) | person(
+            "is_parent", period.this_year
+        )
+        all_caretakers_eligible = spm_unit.sum(caretaker & ~eligible_parent) == 0
+        provider_eligible = person("ne_child_care_subsidy_provider_eligible", period)
         enrolled = spm_unit("ne_child_care_subsidy_enrolled", period)
         at_redetermination = spm_unit(
             "ne_child_care_subsidy_at_redetermination", period

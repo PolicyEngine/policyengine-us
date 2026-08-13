@@ -13,11 +13,13 @@ class ne_child_care_subsidy_provider_type(Variable):
     value_type = Enum
     entity = Person
     possible_values = NEChildCareSubsidyProviderType
-    default_value = NEChildCareSubsidyProviderType.NONE
+    # Defaults to the licensed-center category so survey and microdata
+    # households without provider detail flow through the rate matrix path.
+    default_value = NEChildCareSubsidyProviderType.CENTER
     definition_period = MONTH
     label = "Nebraska Child Care Subsidy provider type"
     defined_for = StateCode.NE
     reference = (
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=17",
-        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1",
+        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf",
     )

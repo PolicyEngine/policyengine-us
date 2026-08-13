@@ -15,4 +15,7 @@ class ne_child_care_subsidy_categorical_waived(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         foster = person("is_in_foster_care", period)
-        return spm_unit.sum(foster) > 0
+        # State Plan section 2.2.2(f)-(g) and 392 NAC 001.32 extend the
+        # waiver beyond foster care to protective-services cases.
+        protective = person("receives_or_needs_protective_services", period.this_year)
+        return spm_unit.sum(foster | protective) > 0

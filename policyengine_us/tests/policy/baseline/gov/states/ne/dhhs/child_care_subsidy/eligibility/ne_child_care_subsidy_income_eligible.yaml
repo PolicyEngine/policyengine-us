@@ -145,3 +145,15 @@
     state_code: NE
   output:
     ne_child_care_subsidy_income_eligible: true
+
+- name: Case 14, the 85 percent SMI limit rounds to the nearest dollar.
+  period: 2026-01
+  input:
+    hhs_smi: 69_532
+    ne_child_care_subsidy_countable_income: 4_926
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    # Nebraska rounds the SMI column to the nearest dollar, so the limit is
+    # round(0.85 * $5,794.33) = $4,925, one dollar below the income.
+    ne_child_care_subsidy_income_eligible: false

@@ -33,6 +33,9 @@ class ne_child_care_subsidy_rate_unit(Variable):
             p.activity.max_daily_hours,
         )
         weekly_hours = person("ne_child_care_subsidy_authorized_weekly_hours", period)
+        # Unreported daily hours default to a full-day authorization so
+        # survey households without care schedule detail keep a priceable
+        # unit under the rate matrix.
         derived = select(
             [
                 (provider == NEChildCareSubsidyProviderType.LICENSE_EXEMPT_IN_HOME)
@@ -44,7 +47,7 @@ class ne_child_care_subsidy_rate_unit(Variable):
             ],
             [
                 NEChildCareSubsidyRateUnit.HOUR,
-                NEChildCareSubsidyRateUnit.NONE,
+                NEChildCareSubsidyRateUnit.FULL_DAY,
                 NEChildCareSubsidyRateUnit.PARTIAL_DAY,
                 NEChildCareSubsidyRateUnit.FULL_DAY,
                 NEChildCareSubsidyRateUnit.FULL_PLUS_PARTIAL,

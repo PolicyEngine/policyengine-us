@@ -170,7 +170,7 @@
     ne_child_care_subsidy_eligible_child: [false, true]
     is_ccdf_asset_eligible: true
     ne_child_care_subsidy_provider_eligible: [false, true]
-    ne_child_care_subsidy_rate_unit: [NONE, FULL_PLUS_PARTIAL]
+    ne_child_care_subsidy_rate_unit: [FULL_DAY, FULL_PLUS_PARTIAL]
     # Rural exempt family home: ($8.80 + $14.90) * 2 days.
     ne_child_care_subsidy_maximum_provider_rate: [0, 47.40]
     ne_child_care_subsidy_income_eligible: true
@@ -279,3 +279,33 @@
     # min($500 private charge, $630 maximum) - $175.
     ne_child_care_subsidy: 325
     ne_child_care_subsidies: 325
+    child_care_subsidies: 325
+
+- name: Case 7, a family reporting no care details receives an expense-based subsidy.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 4
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_eligible: true
+    # Monthly gross income of $1,500 sits below 100% FPG, so no fee applies.
+    ne_child_care_subsidy_family_fee: 0
+    # One-twelfth of the $6,000 annual billed childcare expenses.
+    ne_child_care_subsidy: 500
+    ne_child_care_subsidies: 500
+    child_care_subsidies: 500

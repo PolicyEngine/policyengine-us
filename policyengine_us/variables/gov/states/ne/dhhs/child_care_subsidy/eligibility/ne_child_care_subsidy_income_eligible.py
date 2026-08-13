@@ -23,7 +23,9 @@ class ne_child_care_subsidy_income_eligible(Variable):
         )
         initial_limit = np.ceil(fpg * p.fpg_fraction.initial_eligibility)
         redetermination_limit = np.ceil(fpg * p.fpg_fraction.redetermination)
-        current_period_limit = np.ceil(smi * p.smi_fraction.current_period_exit)
+        # Nebraska rounds the published 85% SMI column to the nearest
+        # dollar, unlike the FPL columns, which round up.
+        current_period_limit = np.round(smi * p.smi_fraction.current_period_exit)
         initial_eligible = income <= initial_limit
         redetermination_eligible = income < redetermination_limit
         current_period_eligible = income <= current_period_limit

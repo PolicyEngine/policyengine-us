@@ -15,7 +15,7 @@ class ne_child_care_subsidy_provider_eligible(Variable):
     defined_for = "ne_child_care_subsidy_eligible_child"
     reference = (
         "https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=17",
-        "https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=47",
+        "https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=57",
     )
 
     def formula(person, period, parameters):

@@ -135,7 +135,7 @@
   output:
     ne_child_care_subsidy_maximum_provider_rate: 110
 
-- name: Case 10, a missing provider yields a conservative zero rate.
+- name: Case 10, a person who is not an eligible child yields a zero rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -207,3 +207,72 @@
   output:
     # $780 allocated base + 25% of the $2,340 provider base per child.
     ne_child_care_subsidy_maximum_provider_rate: [1_365, 1_365, 1_365]
+
+- name: Case 13, a licensed center without a reported quality tier receives the base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_age_group: INFANT
+    ne_child_care_subsidy_location: URBAN
+    childcare_attending_days_per_month: 2
+    ne_child_care_subsidy_provider_eligible: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_rate_unit: FULL_DAY
+    state_code: NE
+  output:
+    # Tiered rates are an optional increase, so the unreported quality
+    # tier falls back to the $66.35 base full-day rate * 2 attending days.
+    ne_child_care_subsidy_maximum_provider_rate: 132.70
+
+- name: Case 14, urban license-exempt family-home full-day and combined rates are applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child1:
+        childcare_attending_days_per_month: 1
+        ne_child_care_subsidy_provider_eligible: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+        ne_child_care_subsidy_rate_unit: FULL_DAY
+      child2:
+        childcare_attending_days_per_month: 1
+        ne_child_care_subsidy_provider_eligible: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+        ne_child_care_subsidy_rate_unit: FULL_PLUS_PARTIAL
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+    households:
+      household:
+        members: [child1, child2]
+        ne_child_care_subsidy_location: URBAN
+        state_code: NE
+  output:
+    # $16.50 full day; $9.90 partial + $16.50 full combined.
+    ne_child_care_subsidy_maximum_provider_rate: [16.50, 26.40]
+
+- name: Case 15, rural license-exempt family-home partial-day and full-day rates are applied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child1:
+        childcare_attending_days_per_month: 1
+        ne_child_care_subsidy_provider_eligible: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+        ne_child_care_subsidy_rate_unit: PARTIAL_DAY
+      child2:
+        childcare_attending_days_per_month: 1
+        ne_child_care_subsidy_provider_eligible: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+        ne_child_care_subsidy_rate_unit: FULL_DAY
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+    households:
+      household:
+        members: [child1, child2]
+        ne_child_care_subsidy_location: RURAL
+        state_code: NE
+  output:
+    ne_child_care_subsidy_maximum_provider_rate: [8.80, 14.90]

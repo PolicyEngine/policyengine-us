@@ -61,10 +61,11 @@
   output:
     ne_child_care_subsidy_provider_eligible: true
 
-- name: Case 7, missing provider and care-unit inputs are ineligible.
+- name: Case 7, an affirmatively reported no-provider case is ineligible.
   period: 2026-01
   input:
     ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: NONE
     state_code: NE
   output:
     ne_child_care_subsidy_provider_eligible: false
@@ -94,3 +95,25 @@
         state_code: NE
   output:
     ne_child_care_subsidy_provider_eligible: [true, true, true]
+
+- name: Case 9, two children using in-home care fall below the three-child minimum.
+  period: 2026-01
+  input:
+    people:
+      child1:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+      child2:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+    households:
+      household:
+        members: [child1, child2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: [false, false]

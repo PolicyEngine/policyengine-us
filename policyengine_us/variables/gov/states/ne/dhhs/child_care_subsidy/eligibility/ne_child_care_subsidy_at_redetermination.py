@@ -8,5 +8,6 @@ class ne_child_care_subsidy_at_redetermination(Variable):
     label = "Nebraska Child Care Subsidy redetermination status"
     defined_for = StateCode.NE
     reference = (
-        "https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB304.pdf#page=1",
+        "https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206",
+        "https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB304.pdf#page=2",
     )

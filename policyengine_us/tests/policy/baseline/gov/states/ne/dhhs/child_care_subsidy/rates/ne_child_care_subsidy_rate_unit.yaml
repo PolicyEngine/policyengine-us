@@ -53,10 +53,10 @@
   output:
     ne_child_care_subsidy_rate_unit: HOUR
 
-- name: Case 6, no reported care hours produces no rate unit.
+- name: Case 6, unreported care hours default to a full-day unit.
   period: 2026-01
   input:
     ne_child_care_subsidy_provider_type: CENTER
     state_code: NE
   output:
-    ne_child_care_subsidy_rate_unit: NONE
+    ne_child_care_subsidy_rate_unit: FULL_DAY

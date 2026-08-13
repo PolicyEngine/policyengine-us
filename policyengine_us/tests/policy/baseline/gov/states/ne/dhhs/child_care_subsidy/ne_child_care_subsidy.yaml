@@ -5,6 +5,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 450
+    ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
@@ -19,6 +20,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 0
     ne_child_care_subsidy_maximum_provider_rate: 80
+    ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
@@ -32,6 +34,7 @@
     ne_child_care_subsidy_eligible: true
     ne_child_care_subsidy_family_fee: 150
     ne_child_care_subsidy_maximum_provider_rate: 80
+    ne_child_care_subsidy_provider_type: CENTER
     pre_subsidy_childcare_expenses: 1_200
     state_code: NE
   output:
@@ -46,9 +49,11 @@
     people:
       child1:
         ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_provider_type: CENTER
         pre_subsidy_childcare_expenses: 1_800
       child2:
         ne_child_care_subsidy_maximum_provider_rate: 100
+        ne_child_care_subsidy_provider_type: CENTER
         pre_subsidy_childcare_expenses: 0
     spm_units:
       spm_unit:
@@ -75,3 +80,26 @@
   output:
     # $50 annual expense less the 7% historical family fee.
     ne_child_care_subsidy: 36
+
+- name: Case 6, an unreported care schedule falls back to billed expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ne_child_care_subsidy_eligible: true
+        ne_child_care_subsidy_family_fee: 40
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [parent, child]
+        state_code: NE
+  output:
+    # $100 monthly billed expenses less the $40 family fee.
+    ne_child_care_subsidy: 60

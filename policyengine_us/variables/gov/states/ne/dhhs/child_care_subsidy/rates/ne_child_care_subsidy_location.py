@@ -14,9 +14,7 @@ class ne_child_care_subsidy_location(Variable):
     definition_period = YEAR
     label = "Nebraska Child Care Subsidy rate location"
     defined_for = StateCode.NE
-    reference = (
-        "https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf#page=1",
-    )
+    reference = ("https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf",)
 
     def formula(household, period, parameters):
         p = parameters(period).gov.states.ne.dhhs.child_care_subsidy.provider
