@@ -1,0 +1,178 @@
+# Wisconsin Shares activity eligibility: every parent (head and spouse) in
+# the assistance group must participate in an approved activity, with
+# meets_ccdf_activity_test as an OR fallback covering approved activities
+# PolicyEngine does not individually model (FSET, job search, temporary
+# break). Wisconsin Shares Handbook (July 2026) Sections 4.8 and 5.1.
+- name: Case 1, single employed parent satisfies the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: true
+
+- name: Case 2, two parents with one idle parent fail the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: false
+
+- name: Case 3, two employed parents satisfy the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 32
+        weekly_hours_worked_before_lsr: 25
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: true
+
+- name: Case 4, idle parent covered by the CCDF activity test fallback is activity eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: true
+
+- name: Case 5, idle single parent without the fallback fails the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: false
+
+- name: Case 6, one employed parent and one full-time student parent satisfy the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 32
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: true
+
+- name: Case 7, an idle teenage dependent does not block the activity test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 16
+        weekly_hours_worked_before_lsr: 0  # Not a head or spouse, so not tested.
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_activity_eligible: true
+
+- name: Case 8, a parent with only a self-employment loss passes the activity test and stays eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        self_employment_income: -12_000  # -1,000/month; an active business running a loss.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # With zero work hours, no wages, and no fallback input, the
+    # self-employment-loss arm alone satisfies the activity test.
+    wi_shares_activity_eligible: true
+    # Downstream, the loss floors countable income at zero, so the
+    # assistance group passes the income test and remains eligible.
+    wi_shares_eligible: true

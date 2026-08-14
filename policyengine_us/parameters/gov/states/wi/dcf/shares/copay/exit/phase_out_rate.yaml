@@ -1,0 +1,23 @@
+description: Wisconsin increases the assistance group's monthly copayment by this share of monthly income above the initial income limit during the exit period under the Wisconsin Shares Child Care Subsidy Program.
+
+# "The AG Copay is increased by $1 for every $5 that the income exceeds 200%
+# FPL" - the formula floors the product to whole dollars ($1 per full $5).
+# The $1-per-$5 rate applies beginning fiscal year 2024-25 per
+# Wis. Stat. § 49.155(1m)(c)1d.a. (it was $1 per $3 before); coverage here
+# begins with the February 1, 2026 copayment schedule era.
+values:
+  2026-02-01: 0.2
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Shares exit period additional copayment rate
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.2.1 Exit Period Copayments
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=150
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.4.2 Exit
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=154
+    - title: Wis. Stat. § 49.155(1m)(c)1d.a.
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/1m/c/1d/a
+    - title: Wisconsin Shares Copayment Schedule, effective February 1, 2026
+      href: https://dcf.wisconsin.gov/files/wishares/pdf/wishares-copay-schedule.pdf

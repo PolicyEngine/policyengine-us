@@ -1,0 +1,17 @@
+description: Wisconsin classifies authorizations of at most this many weekly hours as part time under the Wisconsin Shares Child Care Subsidy Program.
+
+# "Authorizations of 20 weekly hours or less are part-time authorizations;
+# full-time authorizations are more than 20 weekly hours." The boundary is
+# inclusive on the part-time side (exactly 20 hours is part time).
+values:
+  2025-10-01: 20
+
+metadata:
+  unit: hour
+  period: week
+  label: Wisconsin Shares part-time maximum weekly hours
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 16.1.1 Authorization Hours
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=111
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.5 Subsidy Calculation
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=155
