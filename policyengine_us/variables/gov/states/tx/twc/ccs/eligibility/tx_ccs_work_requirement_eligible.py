@@ -29,14 +29,8 @@ class tx_ccs_work_requirement_eligible(Variable):
         # If 2+ non-exempt parents: 50 hours
         requirement = where(num_non_exempt_parents > 1, p.two_parent, p.single_parent)
 
-        # Check each parent individually
-        # A parent meets requirements if they are:
-        # - Exempt from work, OR
-        # - Part of a household that meets the work hour requirement
+        # The SPM unit is eligible if the non-exempt parents' combined work
+        # hours meet the requirement, or if every parent is exempt.
         household_meets_work_requirement = total_work_hours >= requirement
-        parent_meets_requirement = is_exempt | household_meets_work_requirement
-
-        # SPM unit is eligible if ALL parents meet requirements
-        # (Non-parents automatically pass)
-        person_eligible = parent_meets_requirement | ~is_head_or_spouse
-        return spm_unit.all(person_eligible)
+        all_parents_exempt = num_non_exempt_parents == 0
+        return household_meets_work_requirement | all_parents_exempt

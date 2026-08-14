@@ -31,3 +31,11 @@
     sstb_self_employment_income: 100_000
   output:
     school_meal_countable_income: 100_000
+
+- name: Includes child support received.
+  period: 2026
+  input:
+    employment_income: 10_000
+    child_support_received: 3_000
+  output:
+    school_meal_countable_income: 13_000

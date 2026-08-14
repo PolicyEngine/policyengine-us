@@ -135,7 +135,7 @@ programs:
     variable: csfp
     parameter_prefix: gov.usda.csfp
     verified_start_year: 2024
-    verified_end_year: 2025
+    verified_end_year: 2026
     notes: Nutritious foods for low-income pregnant/postpartum women, infants, children, and seniors
 
   - id: fdpir
@@ -1466,6 +1466,17 @@ programs:
     coverage: NY
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
+
+  - id: ut_ui
+    name: Utah UI
+    full_name: Utah Unemployment Insurance
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: UT
+    verified_years: "2024-2026"
+    variable: ut_ui
+    parameter_prefix: gov.states.ut.dws.unemployment_insurance
 
   - id: tx_fpp_benefit
     name: Texas FPP
