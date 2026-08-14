@@ -1,0 +1,67 @@
+- name: Case 1, infants and toddlers are children under 36 months.
+  period: 2025-01
+  input:
+    people:
+      newborn:
+        age: 0
+      toddler:
+        age: 1
+      older_toddler:
+        # 34.8 months, just under the 36-month limit.
+        age: 2.9
+    households:
+      household:
+        members: [newborn, toddler, older_toddler]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: [INFANT_AND_TODDLER, INFANT_AND_TODDLER, INFANT_AND_TODDLER]
+
+- name: Case 2, preschoolers are children from 36 to under 60 months.
+  period: 2025-01
+  input:
+    people:
+      just_turned_three:
+        # 36 months exactly, the first preschool month.
+        age: 3
+      four_year_old:
+        age: 4
+      almost_five:
+        # 58.8 months, just under the 60-month limit.
+        age: 4.9
+    households:
+      household:
+        members: [just_turned_three, four_year_old, almost_five]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: [PRESCHOOL, PRESCHOOL, PRESCHOOL]
+
+- name: Case 3, school-age children are 60 months and over.
+  period: 2025-01
+  input:
+    people:
+      just_turned_five:
+        # 60 months exactly, the first school-age month.
+        age: 5
+      twelve_year_old:
+        age: 12
+    households:
+      household:
+        members: [just_turned_five, twelve_year_old]
+        state_code: DC
+  output:
+    dc_ccsp_child_category:
+      [SCHOOL_AGE_BEFORE_AND_AFTER, SCHOOL_AGE_BEFORE_AND_AFTER]
+
+- name: Case 4, an explicit special needs category overrides the age band.
+  period: 2025-01
+  input:
+    people:
+      disabled_infant:
+        age: 1
+        dc_ccsp_child_category: INFANT_AND_TODDLER_SPECIAL_NEEDS
+    households:
+      household:
+        members: [disabled_infant]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: INFANT_AND_TODDLER_SPECIAL_NEEDS

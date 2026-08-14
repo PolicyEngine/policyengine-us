@@ -16,5 +16,7 @@ class dc_ccsp_maximum_subsidy_amount(Variable):
         child_category = person("dc_ccsp_child_category", period)
         schedule_type = person("dc_ccsp_schedule_type", period)
         uncapped_payment_per_day = p[childcare_provider][child_category][schedule_type]
-        attending_days_per_month = person("dc_ccsp_attending_days_per_month", period)
+        attending_days_per_month = person(
+            "childcare_attending_days_per_month", period.this_year
+        )
         return uncapped_payment_per_day * attending_days_per_month
