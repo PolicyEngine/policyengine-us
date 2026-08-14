@@ -129,6 +129,50 @@
   output:
     tx_ccs_work_requirement_eligible: true
 
+# Regression test for issue 7767: person-level and SPM-unit-level arrays
+# were combined directly, crashing when the simulation contains multiple
+# SPM units of different sizes (as in microsimulation).
+- name: Two SPM units of different sizes compute without broadcasting errors
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked: 30
+      parent2:
+        age: 32
+        weekly_hours_worked: 0
+      child1:
+        age: 5
+        weekly_hours_worked: 0
+      parent3:
+        age: 28
+        weekly_hours_worked: 25
+      child2:
+        age: 4
+        weekly_hours_worked: 0
+    tax_units:
+      first_tax_unit:
+        members: [parent1, parent2, child1]
+      second_tax_unit:
+        members: [parent3, child2]
+    spm_units:
+      first_spm_unit:
+        members: [parent1, parent2, child1]
+      second_spm_unit:
+        members: [parent3, child2]
+    households:
+      first_household:
+        members: [parent1, parent2, child1]
+        state_code: TX
+      second_household:
+        members: [parent3, child2]
+        state_code: TX
+  output:
+    # First unit: two non-exempt parents working 30 combined hours < 50.
+    # Second unit: single parent working 25 hours meets the 25-hour rule.
+    tx_ccs_work_requirement_eligible: [false, true]
+
 - name: Two parents, both students, eligible
   period: 2024-01
   input:
