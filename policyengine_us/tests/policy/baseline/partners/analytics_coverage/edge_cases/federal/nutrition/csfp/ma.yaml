@@ -42,9 +42,9 @@
         # Age 65 >= 60 and Suffolk County is on the MA covered-county list.
         # The zero-earnings aged single draws full SSI (994/mo x 12 = 11,928),
         # which counts in the school-meal income base: 11,928 / 15,960 size-1
-        # FPG = 0.7474 <= 1.5 -> eligible -> flat 601
-        # (gov/usda/csfp/amount.yaml, 2025 value carried to 2026).
-        commodity_supplemental_food_program: 601.0
+        # FPG = 0.7474 <= 1.5 -> eligible -> flat 651
+        # (gov/usda/csfp/amount.yaml 2026 value).
+        commodity_supplemental_food_program: 651.0
 - name: csfp_ma_non_covered_county_worcester (ma)
   period: 2026
   absolute_error_margin: 0.1
