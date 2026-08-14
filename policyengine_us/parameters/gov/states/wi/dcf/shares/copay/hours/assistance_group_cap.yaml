@@ -1,0 +1,16 @@
+description: Wisconsin caps the total monthly copayment hours of an assistance group at this amount under the Wisconsin Shares Child Care Subsidy Program.
+
+# If an assistance group has five children or more, the maximum copayment
+# hours are 5 x 152 = 760.
+values:
+  2026-02-01: 760
+
+metadata:
+  unit: hour
+  period: month
+  label: Wisconsin Shares assistance group monthly copayment hours cap
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.2 Copayments
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=150
+    - title: Wisconsin Shares Copayment Schedule, effective February 1, 2026
+      href: https://dcf.wisconsin.gov/files/wishares/pdf/wishares-copay-schedule.pdf

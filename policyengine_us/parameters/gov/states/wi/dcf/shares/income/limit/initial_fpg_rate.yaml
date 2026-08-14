@@ -1,0 +1,20 @@
+description: Wisconsin limits initial eligibility to assistance groups with gross income at or below this share of the federal poverty guideline under the Wisconsin Shares Child Care Subsidy Program.
+
+# Applies at application and to assistance groups that have been closed for
+# more than one calendar month. The handbook publishes the corresponding
+# dollar table (effective 2/1/2026); the underlying limit is 200% of the
+# federal poverty level.
+values:
+  2025-10-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Shares initial income limit as a share of the federal poverty guideline
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.1.1 Application Income Limit
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=57
+    - title: Wis. Stat. § 49.155(1m)(c)1.
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/1m/c/1
+    - title: Legislative Fiscal Bureau 2025-27 Budget Paper 211, Wisconsin Shares Child Care Subsidy Program
+      href: https://docs.legis.wisconsin.gov/misc/lfb/budget/2025_27_biennial_budget/302_budget_papers/211_children_and_families_tanf_and_economic_support_wisconsin_shares_child_care_subsidy_program.pdf#page=2

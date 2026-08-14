@@ -1,0 +1,34 @@
+description: Wisconsin assigns children to these age groups when determining maximum subsidy rates under the Wisconsin Shares Child Care Subsidy Program.
+
+# The maximum rate tables use four age groups: "0 through 1", "2 through 3",
+# "4 through 5", and "6+". The integer amounts are the indices of the
+# wi_shares_age_group enum members in that order.
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0 # AGE_0_THROUGH_1
+  - threshold:
+      2025-10-01: 2
+    amount:
+      2025-10-01: 1 # AGE_2_THROUGH_3
+  - threshold:
+      2025-10-01: 4
+    amount:
+      2025-10-01: 2 # AGE_4_THROUGH_5
+  - threshold:
+      2025-10-01: 6
+    amount:
+      2025-10-01: 3 # AGE_6_AND_OLDER
+
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Wisconsin Shares child age group
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.5.1 Subsidy Maximum Rates
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=156
+    - title: 2025 Wisconsin Shares Child Care Subsidy County and Tribal Maximum Rates - Statewide, effective 10/1/2025
+      href: https://dcf.wisconsin.gov/files/wishares/pdf/max-rates-statewide.pdf#page=26

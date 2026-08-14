@@ -1,0 +1,15 @@
+description: Wisconsin limits eligibility to children below this age under the Wisconsin Shares Child Care Subsidy Program.
+
+# Children are eligible if under age 13, "which includes 12 years, 11 months".
+values:
+  2025-10-01: 13
+
+metadata:
+  unit: year
+  period: year
+  label: Wisconsin Shares child age limit
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 4.3 Ages of Eligible Children
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=21
+    - title: Wis. Stat. § 49.155(1m)(a)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/1m/a
