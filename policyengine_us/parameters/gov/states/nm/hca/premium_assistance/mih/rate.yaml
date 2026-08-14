@@ -1,0 +1,21 @@
+description: New Mexico caps the benchmark plan premium at this share of household income for Middle Income Households under the Health Insurance Marketplace Affordability Program.
+values:
+  # PY2026 value; the FINAL PY2027 MAP Manual (HCA, issued 2026-06-16) sets the
+  # same flat 8.5% cap at >=400% FPL (p.4). The MIH assistance nets out the
+  # federal premium tax credit per 8.401.2.8(D)(1)(a) NMAC ("minus monthly
+  # federal premium tax credit"), which the formula implements as - aca_ptc.
+  2026-01-01: 0.085
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Premium Assistance Middle Income Household contribution rate
+  reference:
+    - title: 8.401.2.8(D)(1)(a) NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.401.0002.html
+    - title: Addendum 1 to PY2026 MAP Policy and Procedures Manual, Section I.B program parameter 3
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P%26P%20Middle%20Income%20Household.pdf#page=2
+    - title: Addendum 1 to PY2026 MAP Policy and Procedures Manual, calculation formula
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P%26P%20Middle%20Income%20Household.pdf#page=3
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, flat 8.5% cap at 400% FPL and above
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4

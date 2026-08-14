@@ -90,7 +90,7 @@ changelog.d/medicaid-ce-exclusions.md
 **DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
 
 ## Project Requirements
-- Python >= 3.9, < 3.15 (`requires-python` in pyproject.toml; CI smoke-imports the package on 3.9–3.14)
+- Python >= 3.11, < 3.15 (`requires-python` in pyproject.toml; CI smoke-imports the package on 3.11–3.14)
 - Follow GitHub Flow with PRs targeting the `main` branch (the default branch is `main`, **not** `master`)
 - Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory

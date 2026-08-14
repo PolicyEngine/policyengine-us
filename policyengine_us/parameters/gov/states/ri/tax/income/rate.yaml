@@ -6,6 +6,8 @@ metadata:
   period: year
   label: Rhode Island income tax rate
   reference:
+    - title: Rhode Island Division of Taxation Advisory ADV 2025-22
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/ADV_2025_22_Inflation_Adjustments.pdf#page=2
     - title: Rhode Island Tax Rate Schedule - 2025
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-12/2025%201040R%20Instructions%20122025.pdf#page=13
     - title: Rhode Island Tax Rate Schedule - 2024
@@ -31,6 +33,7 @@ brackets:
         2023-01-01: 73_450
         2024-01-01: 77_450
         2025-01-01: 79_900
+        2026-01-01: 82_050
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -46,6 +49,7 @@ brackets:
         2023-01-01: 166_950
         2024-01-01: 176_050
         2025-01-01: 181_650
+        2026-01-01: 186_450
       metadata:
         uprating:
           parameter: gov.irs.uprating

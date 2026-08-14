@@ -1,0 +1,16 @@
+description: San Bernardino County children at or below this age meet the General Relief linkage criteria if verified to be enrolled in and attending high school full time.
+# "Children aged 16 to 18 who are verified to be enrolled and attending high
+# school full-time and earning passing grades" — inclusive upper bound: a
+# child is "aged 18" until their 19th birthday.
+# Adopted by GRPHB Handbook Letter #7356 (Board approved January 29, 2021);
+# dated June 1, 2021 to align with the modeled flat-grant era.
+values:
+  2021-06-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: San Bernardino County General Relief child linkage student age limit
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7356, Chapter A p. A-6 (child linkage criteria)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/39fc00fa-7256-4849-9f07-7710402996f1.docx

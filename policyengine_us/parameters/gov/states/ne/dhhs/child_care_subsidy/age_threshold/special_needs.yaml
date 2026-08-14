@@ -1,10 +1,11 @@
-description: Nebraska limits the child care subsidy to children of this age or younger, requiring special needs care.  
+description: Nebraska limits the Child Care Subsidy program to children with a verified special need who are this age or younger.
 values:
-  2021-08-28: 18
+  2020-09-15: 18
+
 metadata:
   period: year
   unit: year
-  label: Nebraska child care subsidy special needs age threshold
+  label: Nebraska Child Care Subsidy special needs age limit
   reference:
-    - title: Nebraska DHHS, Child Care Subsidy Information For Parents
-      href: https://dhhs.ne.gov/Pages/Child-Care-Subsidy-Information-for-Parents.aspx
+    - title: 392 NAC 2-004(E)
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=9

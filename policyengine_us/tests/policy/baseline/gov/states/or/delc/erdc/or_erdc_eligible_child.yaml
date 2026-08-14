@@ -1,0 +1,51 @@
+- name: Child younger than 13 is eligible.
+  period: 2027-01
+  input:
+    age: 12
+    state_code: OR
+  output:
+    or_erdc_eligible_child: true
+
+- name: Child age 13 without special circumstances is ineligible.
+  period: 2027-01
+  input:
+    age: 13
+    state_code: OR
+  output:
+    or_erdc_eligible_child: false
+
+- name: Child younger than 18 incapable of self-care is eligible.
+  period: 2027-01
+  input:
+    age: 17
+    is_incapable_of_self_care: true
+    state_code: OR
+  output:
+    or_erdc_eligible_child: true
+
+- name: Person age 18 is ineligible even with special circumstances.
+  period: 2027-01
+  input:
+    age: 18
+    is_incapable_of_self_care: true
+    state_code: OR
+  output:
+    or_erdc_eligible_child: false
+
+- name: Child age 15 with a disability is an eligible child.
+  period: 2027-01
+  input:
+    age: 15
+    is_disabled: true
+    state_code: OR
+  output:
+    or_erdc_eligible_child: true
+
+- name: Child age 15 receiving foster care is an eligible child.
+  period: 2027-01
+  input:
+    age: 15
+    is_in_foster_care: true
+    state_code: OR
+  output:
+    or_erdc_eligible_child: true

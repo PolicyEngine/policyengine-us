@@ -1,0 +1,183 @@
+# Weekly need is banded (20 / 40 / 75), a 25% travel allowance is added, and the
+# result is converted to monthly hours (x4.3), rounded up, and capped at 215.
+
+- name: Twenty or fewer weekly work hours authorize the 20-hour band.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # 20 weekly hours * 1.25 travel * 4.3 = 107.5, rounded up to 108.
+    or_erdc_monthly_care_hours: [0, 108]
+
+- name: Twenty to forty weekly work hours authorize the 40-hour band.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # 40 weekly hours * 1.25 travel * 4.3 = 215 monthly hours.
+    or_erdc_monthly_care_hours: [0, 215]
+
+- name: High weekly work hours are capped at 215 monthly hours.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 60
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # 75 weekly hours * 1.25 * 4.3 = 403.125, capped at 215 monthly hours.
+    or_erdc_monthly_care_hours: [0, 215]
+
+- name: A categorically eligible caretaker receives the 20-hour weekly floor.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # No work hours, but the categorical 20-hour floor applies:
+    # 20 * 1.25 * 4.3 = 107.5, rounded up to 108.
+    or_erdc_monthly_care_hours: [0, 108]
+
+- name: An excused disabled second caretaker does not collapse the need to zero.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+      parent2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: OR
+  output:
+    # The disabled non-working second caretaker is excused and dropped from the
+    # overlap minimum, so the need follows the working caretaker's 40 hours:
+    # 40 * 1.25 * 4.3 = 215 monthly hours.
+    or_erdc_monthly_care_hours: [0, 0, 215]
+
+- name: Two working caretakers use the lower schedule for the overlap minimum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 28
+        weekly_hours_worked_before_lsr: 20
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: OR
+  output:
+    # Lowest caretaker hours (20) set the need -> 20-hour band:
+    # 20 * 1.25 * 4.3 = 107.5, rounded up to 108.
+    or_erdc_monthly_care_hours: [0, 0, 108]
+
+- name: A single caretaker at exactly twenty weekly hours stays in the 20-hour band.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # 20 need hours land in the 20-hour band (bracket threshold 20.0001):
+    # 20 * 1.25 * 4.3 = 107.5, rounded up to 108.
+    or_erdc_monthly_care_hours: [0, 108]

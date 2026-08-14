@@ -1,0 +1,21 @@
+description: Tennessee increases the state reimbursement rate by this share as a QRIS Scorecard quality bonus under the Child Care Certificate Program.
+metadata:
+  period: year
+  unit: /1
+  label: Tennessee CCAP QRIS bonus share
+  breakdown:
+    - tn_ccap_qris_tier
+  reference:
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, QRIS Scorecard bonus notes (effective October 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Current%20state%20rate%20and%20QRIS%20bonus%20table.pdf
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, QRIS Scorecard bonus notes (effective January 1, 2026)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Reimbursement_Rate_Chart_1.1.26.pdf
+
+STATE_RATE:
+  2024-10-01: 0
+QRIS_80_89:
+  2024-10-01: 0.15
+  2026-01-01: 0.05
+QRIS_90_100:
+  2024-10-01: 0.2
+  2026-01-01: 0.1

@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, PA, RI, SC, SD, TX, VA, VT, WA, WV
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AK
         status: complete
@@ -626,6 +626,13 @@ programs:
         full_name: Nevada Child Care and Development Program
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: OR
+        status: complete
+        name: Oregon ERDC
+        full_name: Oregon Employment Related Day Care
+        variable: or_erdc
+        parameter_prefix: gov.states.or.delc.erdc
+        notes: Provider rate area is an input; automatic provider ZIP mapping is deferred
       - state: DC
         status: complete
         name: DC CCSP
@@ -684,6 +691,12 @@ programs:
         name: Washington WCCC
         full_name: Washington Working Connections Child Care
         variable: wa_wccc
+      - state: WI
+        status: complete
+        name: Wisconsin Shares
+        full_name: Wisconsin Shares Child Care Subsidy Program
+        variable: wi_shares
+        parameter_prefix: gov.states.wi.dcf.shares
       - state: WV
         status: complete
         name: West Virginia CCAP
@@ -720,6 +733,24 @@ programs:
         full_name: South Dakota Child Care Assistance
         variable: sd_cca
         parameter_prefix: gov.states.sd.dss.cca
+      - state: UT
+        status: complete
+        name: Utah CCAP
+        full_name: Utah Child Care Assistance Program
+        variable: ut_ccap
+        parameter_prefix: gov.states.ut.dwf.ccap
+      - state: TN
+        status: complete
+        name: Tennessee CCAP
+        full_name: Tennessee Child Care Certificate Program (Smart Steps)
+        variable: tn_ccap
+        parameter_prefix: gov.states.tn.dhs.ccap
+      - state: WY
+        status: complete
+        name: Wyoming CCAP
+        full_name: Wyoming Child Care, Purchase of Service
+        variable: wy_ccap
+        parameter_prefix: gov.states.wy.dfs.ccap
 
   - id: head_start
     name: Head Start
@@ -1133,6 +1164,45 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
+  - id: co_premium_assistance
+    name: Colorado Premium Assistance
+    full_name: Colorado Premium Assistance (Health Insurance Affordability Enterprise premium wrap)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_premium_assistance
+    parameter_prefix: gov.states.co.doi.premium_assistance
+    verified_years: "2026-2027"
+    notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
+
+  - id: ct_covered_connecticut
+    name: Covered Connecticut
+    full_name: Covered Connecticut Program
+    category: Healthcare
+    agency: State
+    status: partial
+    coverage: CT
+    variable: ct_covered_connecticut
+    parameter_prefix: gov.states.ct.dss.covered_connecticut
+    verified_start_year: 2026
+    notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
+
+  - id: nm_premium_assistance
+    name: New Mexico Premium Assistance
+    full_name: Health Insurance Marketplace Affordability Program
+    category: Healthcare
+    # Base Premium Assistance and the Middle Income Household component are
+    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
+    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
+    # Native American Table 2 rates plus the Premium Buy-down.
+    agency: State
+    status: partial
+    coverage: NM
+    variable: nm_premium_assistance
+    parameter_prefix: gov.states.nm.hca.premium_assistance
+    verified_years: "2026-2027"
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
@@ -1152,6 +1222,29 @@ programs:
     coverage: DC
     variable: dc_gac
     parameter_prefix: gov.states.dc.dhc.gac
+
+  - id: md_premium_assistance
+    name: Maryland Premium Assistance
+    full_name: Maryland State-Based Health Insurance Subsidies Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MD
+    variable: md_premium_assistance
+    parameter_prefix: gov.states.md.mhbe.premium_assistance
+    verified_years: "2026-2027"
+    notes: The permanent Young Adult Subsidy (Insurance Article Section 31-122) is modeled only inside the 2026-2027 window; 2022-2025 and 2028-onward Young Adult Subsidy years are unmodeled. Cost-sharing and non-essential-health-benefit premium components and the enrollment-cap limits are not modeled.
+
+  - id: ca_premium_subsidy
+    name: California Premium Subsidy
+    full_name: California Premium Subsidy (Individual Market Assistance)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_premium_subsidy
+    parameter_prefix: gov.states.ca.hbex.premium_subsidy
+    verified_years: "2026-2027"
 
   - id: ca_cvrp
     name: California CVRP
@@ -1323,6 +1416,29 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
+  - id: ma_connector_care
+    name: ConnectorCare
+    full_name: Massachusetts ConnectorCare
+    category: Healthcare
+    agency: State
+    status: partial
+    coverage: MA
+    variable: ma_connector_care
+    parameter_prefix: gov.states.ma.hic.connector_care
+    verified_start_year: 2026
+    notes: Models the premium-assistance axis only; cost-sharing reductions, dental, and non-emergency medical transportation are out of scope.
+
+  - id: nj_njhps
+    name: NJ Health Plan Savings
+    full_name: New Jersey Health Plan Savings (NJHPS)
+    category: Healthcare
+    agency: DOBI (Get Covered New Jersey)
+    status: complete
+    coverage: NJ
+    variable: nj_njhps
+    parameter_prefix: gov.states.nj.dobi.njhps
+    verified_start_year: 2026
+
   - id: nj_unemployment_insurance
     name: New Jersey Unemployment Insurance
     full_name: New Jersey Unemployment Insurance
@@ -1395,6 +1511,28 @@ programs:
     coverage: Harris County, TX
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
+
+  - id: vt_premium_assistance
+    name: Vermont Premium Assistance
+    full_name: Vermont Premium Assistance
+    category: Healthcare
+    agency: DVHA (Vermont Health Connect)
+    status: complete
+    coverage: VT
+    variable: vt_premium_assistance
+    parameter_prefix: gov.states.vt.dvha.premium_assistance
+    verified_start_year: 2026
+
+  - id: wa_cascade_care_savings
+    name: Cascade Care Savings
+    full_name: Washington Cascade Care Savings (State Premium Assistance Program)
+    category: Healthcare
+    agency: WAHBE
+    status: complete
+    coverage: WA
+    variable: wa_cascade_care_savings
+    parameter_prefix: gov.states.wa.wahbe.cascade_care_savings
+    verified_start_year: 2026
 
   # --- Local programs ---
   - id: ez_save
@@ -1487,6 +1625,17 @@ programs:
     coverage: Riverside County
     variable: ca_riv_share_payment
     parameter_prefix: gov.local.ca.riv.share
+
+  - id: ca_sbd_general_relief
+    name: San Bernardino County General Relief
+    full_name: San Bernardino County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Bernardino County
+    variable: ca_sbd_general_relief
+    parameter_prefix: gov.local.ca.sbd.general_relief
+    notes: Flat maximum basic grant by assistance unit size (June 2021 design onward) net of countable income; the pre-June-2021 needs-based design, employability screening (100-hour rule and self-employment bar), employable time limits, vehicle-as-residence real-property treatment, and loan repayment are not modeled
 
   - id: ca_ala_general_assistance
     name: Alameda County General Assistance
