@@ -23,7 +23,6 @@ class ny_ccap_family_share_exempt(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ny.ocfs.ccap
         person = spm_unit.members
         # is_tanf_enrolled reflects reported enrollment rather than the
         # computed tanf amount, so reading it does not close the
@@ -31,10 +30,7 @@ class ny_ccap_family_share_exempt(Variable):
         public_assistance = spm_unit("is_tanf_enrolled", period)
         homeless = spm_unit.household("is_homeless", period.this_year)
         foster_care = spm_unit.any(person("is_in_foster_care", period))
-        # Protective and preventive service cases joined the exception list
-        # with the October 2023 regulatory changes; the other three
-        # exceptions apply across both eras.
-        protective_services = p.october_2023_reforms & spm_unit.any(
+        protective_services = spm_unit.any(
             person("receives_or_needs_protective_services", period.this_year)
         )
         return public_assistance | homeless | foster_care | protective_services

@@ -1,95 +1,28 @@
-# 22-OCFS-ADM-18 raised the state income standard limit from 200% to 300%
-# effective 2022-08-01 and applied the 85% state median income ceiling
-# alongside it from the same date. hhs_smi is pinned high in the pre-2023
-# cases so the state income standard limit is the binding one under test.
+# Social Services Law 410-w caps income eligibility at 85% of the state
+# median income, the sole ceiling since October 1, 2023.
 
-- name: Case 1, income at two times the poverty guideline is eligible before August 2022.
-  period: 2022-01
-  input:
-    ny_ccap_countable_income: 50_000
-    spm_unit_fpg: 25_000
-    hhs_smi: 500_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: true
-
-- name: Case 2, income above two times the poverty guideline is ineligible before August 2022.
-  period: 2022-01
-  input:
-    ny_ccap_countable_income: 50_001
-    spm_unit_fpg: 25_000
-    hhs_smi: 500_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: false
-
-# The band between 200% and 300% was excluded until 2022-08-01.
-- name: Case 3, income at three times the poverty guideline is ineligible before August 2022.
-  period: 2022-01
-  input:
-    ny_ccap_countable_income: 75_000
-    spm_unit_fpg: 25_000
-    hhs_smi: 500_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: false
-
-- name: Case 4, income at three times the poverty guideline is eligible from August 2022.
-  period: 2023-01
-  input:
-    ny_ccap_countable_income: 75_000
-    spm_unit_fpg: 25_000
-    hhs_smi: 500_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: true
-
-- name: Case 5, income above three times the poverty guideline is ineligible from August 2022.
-  period: 2023-01
-  input:
-    ny_ccap_countable_income: 75_001
-    spm_unit_fpg: 25_000
-    hhs_smi: 500_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: false
-
-# 22-OCFS-ADM-18: "For family size of eight or more, 85% SMI is lower than
-# 300% SIS." The state median income ceiling binds even though income sits
-# under 300% of the state income standard.
-- name: Case 6, the state median income ceiling binds below the state income standard limit in 2023.
-  period: 2023-01
-  input:
-    ny_ccap_countable_income: 70_000
-    spm_unit_fpg: 25_000
-    hhs_smi: 80_000
-    state_code: NY
-  output:
-    ny_ccap_income_eligible: false
-
-- name: Case 7, income at 85 percent of the state median income is eligible from October 2023.
+- name: Case 1, income at 85 percent of the state median income is eligible.
   period: 2025-01
   input:
     ny_ccap_countable_income: 68_000
-    spm_unit_fpg: 25_000
     hhs_smi: 80_000
     state_code: NY
   output:
     ny_ccap_income_eligible: true
 
-- name: Case 8, income above 85 percent of the state median income is ineligible from October 2023.
+- name: Case 2, income above 85 percent of the state median income is ineligible.
   period: 2025-01
   input:
     ny_ccap_countable_income: 68_001
-    spm_unit_fpg: 25_000
     hhs_smi: 80_000
     state_code: NY
   output:
     ny_ccap_income_eligible: false
 
 # The state income standard limit lapsed on 2023-10-01, so a family far above
-# 300% of it remains eligible while under 85% of the state median income.
-- name: Case 9, the state income standard limit no longer binds from October 2023.
+# a multiple of the poverty guideline remains eligible while under 85% of the
+# state median income.
+- name: Case 3, the poverty guideline plays no part in the income test.
   period: 2025-01
   input:
     ny_ccap_countable_income: 68_000

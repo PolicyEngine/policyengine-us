@@ -1,4 +1,4 @@
-- name: Case 1, Nassau is in current group one.
+- name: Case 1, Nassau is in group one.
   period: 2025-01
   input:
     county_str: NASSAU_COUNTY_NY
@@ -6,7 +6,7 @@
   output:
     ny_ccap_county_group: GROUP_1
 
-- name: Case 2, Albany is in current group two.
+- name: Case 2, Albany is in group two.
   period: 2025-01
   input:
     county_str: ALBANY_COUNTY_NY
@@ -14,7 +14,7 @@
   output:
     ny_ccap_county_group: GROUP_2
 
-- name: Case 3, Allegany is in current group three.
+- name: Case 3, Allegany is in group three.
   period: 2025-01
   input:
     county_str: ALLEGANY_COUNTY_NY
@@ -22,7 +22,7 @@
   output:
     ny_ccap_county_group: GROUP_3
 
-- name: Case 4, Bronx is in current group four.
+- name: Case 4, Bronx is in group four.
   period: 2025-01
   input:
     county_str: BRONX_COUNTY_NY
@@ -38,31 +38,7 @@
   output:
     ny_ccap_county_group: GROUP_3
 
-- name: Case 6, Albany was in historical group four.
-  period: 2024-01
-  input:
-    county_str: ALBANY_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_county_group: GROUP_4
-
-- name: Case 7, Bronx was in historical group five.
-  period: 2024-01
-  input:
-    county_str: BRONX_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_county_group: GROUP_5
-
-- name: Case 8, corrected Westchester identifier is in historical group one.
-  period: 2024-01
-  input:
-    county_str: WESTCHESTER_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_county_group: GROUP_1
-
-- name: Case 9, mixed current counties and an unknown county vectorize.
+- name: Case 6, mixed counties and an unknown county vectorize.
   period: 2025-01
   input:
     people:

@@ -16,7 +16,7 @@
   output:
     ny_ccap_duration_of_care: DAILY
 
-- name: Case 3, care below six daily hours uses the current part-day rate.
+- name: Case 3, care below six daily hours uses the part-day rate.
   period: 2025-01
   input:
     childcare_hours_per_day: 2
@@ -25,27 +25,7 @@
   output:
     ny_ccap_duration_of_care: PART_DAY
 
-- name: Case 4, care below three daily hours used the hourly rate before June 2022.
-  period: 2022-01
-  input:
-    childcare_hours_per_day: 2
-    childcare_days_per_week: 5
-    state_code: NY
-  output:
-    # 19-OCFS-LCM-23 (p.6): fewer than three hours per day was paid hourly;
-    # 22-OCFS-LCM-14 (p.5) abolished hourly rates effective 2022-06-01.
-    ny_ccap_duration_of_care: HOURLY
-
-- name: Case 5, historical care at three daily hours used the part-day rate.
-  period: 2024-01
-  input:
-    childcare_hours_per_day: 3
-    childcare_days_per_week: 5
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: PART_DAY
-
-- name: Case 6, extended daily care retains the daily base category.
+- name: Case 4, extended daily care retains the daily base category.
   period: 2025-01
   input:
     childcare_hours_per_day: 12
@@ -58,7 +38,7 @@
 # week, so a six-day schedule reaching 30 hours is weekly. The extra day is
 # priced as an additional period in ny_ccap_market_rate rather than switching
 # the whole week to a daily rate.
-- name: Case 7, care across six days reaching thirty weekly hours uses the weekly rate.
+- name: Case 5, care across six days reaching thirty weekly hours uses the weekly rate.
   period: 2025-01
   input:
     childcare_hours_per_day: 5
@@ -67,8 +47,9 @@
   output:
     ny_ccap_duration_of_care: WEEKLY
 
-# 415.9(b) allows the daily rate only below 30 hours per week.
-- name: Case 7b, six-hour care over six days exceeds thirty weekly hours and is weekly.
+# 415.9(b) allows the daily rate only below 30 hours per week; contrast with
+# Case 2, where the same six daily hours over four days stay daily.
+- name: Case 6, six-hour care over six days exceeds thirty weekly hours and is weekly.
   period: 2025-01
   input:
     childcare_hours_per_day: 6
@@ -76,23 +57,3 @@
     state_code: NY
   output:
     ny_ccap_duration_of_care: WEEKLY
-
-- name: Case 7c, six-hour care over four days stays under thirty weekly hours and is daily.
-  period: 2025-01
-  input:
-    childcare_hours_per_day: 6
-    childcare_days_per_week: 4
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: DAILY
-
-- name: Case 8, care below three daily hours is part-day after hourly rates ended.
-  period: 2024-01
-  input:
-    childcare_hours_per_day: 2
-    childcare_days_per_week: 5
-    state_code: NY
-  output:
-    # 22-OCFS-LCM-14 (p.5) abolished hourly rates effective 2022-06-01, so
-    # short care falls to the part-day category.
-    ny_ccap_duration_of_care: PART_DAY

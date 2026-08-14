@@ -5,7 +5,6 @@ class NYCCAPDurationOfCare(Enum):
     WEEKLY = "Weekly"
     DAILY = "Daily"
     PART_DAY = "Part-Day"
-    HOURLY = "Hourly"
 
 
 class ny_ccap_duration_of_care(Variable):
@@ -28,7 +27,6 @@ class ny_ccap_duration_of_care(Variable):
     reference = (
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=44",
         "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=5",
-        "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=6",
     )
 
     def formula(person, period, parameters):
@@ -47,65 +45,21 @@ class ny_ccap_duration_of_care(Variable):
             & (hours_per_day < p.duration.daily_maximum_hours)
             & (hours_per_week < p.duration.weekly_minimum_hours)
         )
-
-        if p.current_rates_in_effect:
-            # Care at 12+ hours receives a daily base period plus an excess
-            # period. The base category is modeled; excess periods are not.
-            extended_daily = (hours_per_day >= p.duration.daily_maximum_hours) & ~weekly
-            return select(
-                [
-                    weekly,
-                    daily,
-                    extended_daily,
-                    hours_per_day < p.duration.daily_minimum_hours,
-                ],
-                [
-                    NYCCAPDurationOfCare.WEEKLY,
-                    NYCCAPDurationOfCare.DAILY,
-                    NYCCAPDurationOfCare.DAILY,
-                    NYCCAPDurationOfCare.PART_DAY,
-                ],
-                default=NYCCAPDurationOfCare.PART_DAY,
-            )
-
-        # 19-OCFS-LCM-23 §III.3.c-d: part-day rates apply from the part-day
-        # minimum up to the daily minimum; care below the part-day minimum is
-        # otherwise paid hourly. The minimum drops to zero on June 1, 2022,
-        # when 22-OCFS-LCM-14 abolished hourly rates, making HOURLY
-        # unreachable from that date.
-        historical_daily = (hours_per_day >= p.duration.daily_minimum_hours) & (
-            hours_per_week < p.duration.weekly_minimum_hours
-        )
-        provider_type = person("childcare_provider_type_group", period.this_year)
-        provider_types = provider_type.possible_values
-        # §III.3.c also requires the part-day rate for children enrolled in
-        # pre-kindergarten or a higher grade who receive before or after
-        # school care for less than three hours per day from day care centers
-        # or school-age child care programs that do not charge hourly.
-        # Two conditions of that carve-out are not representable: is_in_k12_school
-        # is an age 5-17 imputation that excludes four-year-olds in pre-K, and
-        # PolicyEngine records neither the before/after-school schedule nor
-        # whether a provider bills hourly. Both are assumed satisfied for
-        # day care center and school-age program care.
-        part_day_carve_out = (
-            (hours_per_day < p.duration.part_day_minimum_hours)
-            & (provider_type == provider_types.DCC_SACC)
-            & person("is_in_k12_school", period.this_year)
-        )
+        # Care at 12+ hours receives a daily base period plus an excess
+        # period. The base category is modeled; excess periods are not.
+        extended_daily = (hours_per_day >= p.duration.daily_maximum_hours) & ~weekly
         return select(
             [
                 weekly,
-                historical_daily,
-                hours_per_day >= p.duration.part_day_minimum_hours,
-                part_day_carve_out,
-                hours_per_day < p.duration.part_day_minimum_hours,
+                daily,
+                extended_daily,
+                hours_per_day < p.duration.daily_minimum_hours,
             ],
             [
                 NYCCAPDurationOfCare.WEEKLY,
                 NYCCAPDurationOfCare.DAILY,
+                NYCCAPDurationOfCare.DAILY,
                 NYCCAPDurationOfCare.PART_DAY,
-                NYCCAPDurationOfCare.PART_DAY,
-                NYCCAPDurationOfCare.HOURLY,
             ],
             default=NYCCAPDurationOfCare.PART_DAY,
         )

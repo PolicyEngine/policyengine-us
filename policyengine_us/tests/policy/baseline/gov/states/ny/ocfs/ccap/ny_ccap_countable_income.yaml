@@ -111,8 +111,8 @@
   output:
     ny_ccap_countable_income: 17_000
 
-# 404.5(b)(5)(vi) counts SSI as public assistance income. The carve-out added
-# in October 2023 reaches only children, so an adult's SSI stays countable.
+# 404.5(b)(5)(vi) counts SSI as public assistance income; the child
+# exclusion reaches only children, so an adult's SSI stays countable.
 - name: Case 7, an adult's SSI is countable.
   period: 2025
   input:
@@ -131,7 +131,7 @@
   output:
     ny_ccap_countable_income: 11_000
 
-- name: Case 8, a child's SSI is excluded from October 2023.
+- name: Case 8, a child's SSI is excluded.
   period: 2025
   input:
     people:
@@ -151,30 +151,9 @@
   output:
     ny_ccap_countable_income: 10_000
 
-# Before the October 2023 rule, 404.5(b)(5)(vi) counted all SSI.
-- name: Case 9, a child's SSI is countable before October 2023.
-  period: 2022
-  input:
-    people:
-      parent:
-        age: 30
-        employment_income: 10_000
-      child:
-        age: 5
-        ssi: 1_000
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code: NY
-  output:
-    ny_ccap_countable_income: 11_000
-
 # TANF is countable under 404.5(b)(5)(vi) but is deliberately omitted to
 # avoid the CCAP-to-TANF circular dependency; this pins that decision.
-- name: Case 10, TANF is not counted.
+- name: Case 9, TANF is not counted.
   period: 2025
   input:
     people:

@@ -21,9 +21,7 @@ class ny_ccap_family_share(Variable):
         state_income_standard = spm_unit("spm_unit_fpg", period)
         income_exceeding_standard = max_(income - state_income_standard, 0)
         p = parameters(period).gov.states.ny.ocfs.ccap
-        # The rate is the district-elected ceiling of 10% under Social
-        # Services Law 410-x(6) until the October 2023 revisions replaced it
-        # with a statewide 1%; both eras are dated values of one parameter.
+        # The October 2023 revisions set a statewide 1% family share rate.
         calculated_share = income_exceeding_standard * p.family_share_rate
         minimum_share = p.minimum_weekly_family_share * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)
         # 415.3(e)(1) exempts families with income at or below 100 percent of

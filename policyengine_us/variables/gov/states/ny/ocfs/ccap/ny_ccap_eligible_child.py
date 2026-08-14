@@ -23,7 +23,6 @@ class ny_ccap_eligible_child(Variable):
     )
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ny.ocfs.ccap
         spm_unit = person.spm_unit
         age_eligible = person("is_ccdf_age_eligible", period.this_year)
         asset_eligible = spm_unit("is_ccdf_asset_eligible", period.this_year)
@@ -36,17 +35,12 @@ class ny_ccap_eligible_child(Variable):
         homeless = spm_unit.household("is_homeless", period.this_year)
         # 415.2(a)(2)(vi) waives the income test for foster care placements
         # and open child protective or preventive services cases.
-        categorically_eligible = (in_foster_care | protective_services) & (
-            p.october_2023_reforms
-        )
+        categorically_eligible = in_foster_care | protective_services
         # Reason for care mirrors the federal test, which already accepts
         # protective services in place of the activity test, and adds the
         # foster care and homelessness routes.
         reason_for_care_eligible = (
-            meets_activity_test
-            | protective_services
-            | (in_foster_care & p.october_2023_reforms)
-            | (homeless & p.october_2023_reforms)
+            meets_activity_test | protective_services | in_foster_care | homeless
         )
         return (
             age_eligible

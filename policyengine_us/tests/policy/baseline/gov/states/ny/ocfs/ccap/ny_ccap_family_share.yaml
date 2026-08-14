@@ -1,4 +1,4 @@
-- name: Case 1, current family share is one percent of income above FPL.
+- name: Case 1, the family share is one percent of income above FPL.
   period: 2025-01
   input:
     ny_ccap_countable_income: 60_000
@@ -15,6 +15,9 @@
     spm_unit_fpg: 25_750
     state_code: NY
   output:
+    # 18 NYCRR 415.3(e)(1) exempts families with income at or below the
+    # state income standard; the 415.3(e)(4) $1 weekly minimum applies only
+    # to families required to pay an income-based share.
     ny_ccap_family_share: 0
 
 - name: Case 3, income just above FPL triggers the weekly minimum.
@@ -24,44 +27,7 @@
     spm_unit_fpg: 25_750
     state_code: NY
   output:
-    ny_ccap_family_share: 52 / 12
-  absolute_error_margin: 0.01
-
-- name: Case 4, historical share applies the statutory ten percent cap.
-  period: 2023-01
-  input:
-    county_str: NASSAU_COUNTY_NY
-    ny_ccap_countable_income: 60_000
-    spm_unit_fpg: 25_750
-    state_code: NY
-  output:
-    # SSL 410-x(6) capped the multiplier at 10% effective 2021-04-16
-    # (21-OCFS-ADM-14), so ($60,000 - $25,750) * 10% / 12.
-    ny_ccap_family_share: (60_000 - 25_750) * 0.1 / 12
-  absolute_error_margin: 0.01
-
-- name: Case 5, income at or below the poverty level owes no family share.
-  period: 2023-01
-  input:
-    county_str: ALBANY_COUNTY_NY
-    ny_ccap_countable_income: 20_000
-    spm_unit_fpg: 21_330
-    state_code: NY
-  output:
-    # 18 NYCRR 415.3(e)(1) exempts families with income at or below the
-    # state income standard; the 415.3(e)(4) $1 weekly minimum applies only
-    # to families required to pay an income-based share.
-    ny_ccap_family_share: 0
-
-- name: Case 6, historical income just above the poverty level pays the weekly minimum.
-  period: 2023-01
-  input:
-    county_str: ALBANY_COUNTY_NY
-    ny_ccap_countable_income: 21_331
-    spm_unit_fpg: 21_330
-    state_code: NY
-  output:
-    # Income-based share is ($21,331 - $21,330) * 10% = $0.10/year, so the
+    # Income-based share is ($25,751 - $25,750) * 1% = $0.01/year, so the
     # 415.3(e)(4) minimum of $1/week ($52/year) binds.
     ny_ccap_family_share: 52 / 12
   absolute_error_margin: 0.01

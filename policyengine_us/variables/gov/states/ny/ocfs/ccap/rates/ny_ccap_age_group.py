@@ -17,8 +17,7 @@ class ny_ccap_age_group(Variable):
     definition_period = MONTH
     defined_for = StateCode.NY
     reference = (
-        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=4",
-        "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5",
+        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=4"
     )
 
     def formula(person, period, parameters):

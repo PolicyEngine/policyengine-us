@@ -33,41 +33,20 @@ class ny_ccap_market_rate(Variable):
         # divided by the weekly maximum days.
         excess_days = max_(days_per_week - p.duration.weekly_maximum_days, 0)
         weekly_multiplier = 1 + excess_days / p.duration.weekly_maximum_days
-
-        if p.current_rates_in_effect:
-            weekly_rate = p.rates.weekly[county_group][provider_type][age_group]
-            daily_rate = p.rates.daily[county_group][provider_type][age_group]
-            part_day_rate = p.rates.part_day[county_group][provider_type][age_group]
-            rate_per_week = select(
-                [
-                    duration == durations.WEEKLY,
-                    duration == durations.DAILY,
-                    duration == durations.PART_DAY,
-                    duration == durations.HOURLY,
-                ],
-                [
-                    weekly_rate * weekly_multiplier,
-                    daily_rate * days_per_week,
-                    part_day_rate * days_per_week,
-                    0,
-                ],
-                default=0,
-            )
-            return rate_per_week * weeks_per_month
-
-        historical_rate = p.historical_rates[county_group][provider_type][duration][
-            age_group
-        ]
-        hours_per_day = person("childcare_hours_per_day", period.this_year)
-        hours_per_week = hours_per_day * days_per_week
-        periods_per_week = select(
+        weekly_rate = p.rates.weekly[county_group][provider_type][age_group]
+        daily_rate = p.rates.daily[county_group][provider_type][age_group]
+        part_day_rate = p.rates.part_day[county_group][provider_type][age_group]
+        rate_per_week = select(
             [
                 duration == durations.WEEKLY,
                 duration == durations.DAILY,
                 duration == durations.PART_DAY,
-                duration == durations.HOURLY,
             ],
-            [weekly_multiplier, days_per_week, days_per_week, hours_per_week],
+            [
+                weekly_rate * weekly_multiplier,
+                daily_rate * days_per_week,
+                part_day_rate * days_per_week,
+            ],
             default=0,
         )
-        return historical_rate * periods_per_week * weeks_per_month
+        return rate_per_week * weeks_per_month

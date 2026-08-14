@@ -1,9 +1,7 @@
 # 18 NYCRR 415.3(e)(1) excepts public assistance families, families
 # experiencing homelessness, families at or below 100% of the state income
 # standard, children in foster care, children receiving child care as a
-# protective or preventive service, and child-only units. 21-OCFS-ADM-14
-# states the earlier era's list as public assistance, homelessness and foster
-# care only, so protective services is dated to October 2023.
+# protective or preventive service, and child-only units.
 
 - name: Case 1, a family with none of the exceptions is not exempt.
   period: 2025-01
@@ -72,7 +70,7 @@
   output:
     ny_ccap_family_share_exempt: true
 
-- name: Case 5, a protective services case is exempt from October 2023.
+- name: Case 5, a protective services case is exempt.
   period: 2025-01
   input:
     people:
@@ -89,44 +87,9 @@
   output:
     ny_ccap_family_share_exempt: true
 
-- name: Case 6, a protective services case is not exempt in the earlier era.
-  period: 2023-01
-  input:
-    people:
-      child:
-        age: 3
-        receives_or_needs_protective_services: true
-    spm_units:
-      spm_unit:
-        members: [child]
-    households:
-      household:
-        members: [child]
-        state_code: NY
-  output:
-    ny_ccap_family_share_exempt: false
-
-- name: Case 7, public assistance and foster care remain exempt in the earlier era.
-  period: 2023-01
-  input:
-    people:
-      child:
-        age: 3
-        is_in_foster_care: true
-    spm_units:
-      spm_unit:
-        members: [child]
-        receives_tanf: true
-    households:
-      household:
-        members: [child]
-        state_code: NY
-  output:
-    ny_ccap_family_share_exempt: true
-
 # The exemption must zero the family share itself, including the $1 weekly
 # minimum that would otherwise apply to a family above the standard.
-- name: Case 8, an exempt family above the state income standard owes nothing.
+- name: Case 6, an exempt family above the state income standard owes nothing.
   period: 2025-01
   input:
     people:
@@ -147,7 +110,7 @@
     ny_ccap_family_share: 0
   absolute_error_margin: 0.01
 
-- name: Case 9, the same family without the exception pays the income-based share.
+- name: Case 7, the same family without the exception pays the income-based share.
   period: 2025-01
   input:
     people:

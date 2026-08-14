@@ -61,84 +61,10 @@
     ny_ccap_market_rate: 55 * 5 * 52 / 12
   absolute_error_margin: 0.01
 
-- name: Case 6, historical group five hourly rate remains available.
-  period: 2024-01
-  input:
-    ny_ccap_county_group: GROUP_5
-    childcare_provider_type_group: DCC_SACC
-    ny_ccap_age_group: SCHOOL_AGE
-    ny_ccap_duration_of_care: HOURLY
-    childcare_hours_per_day: 2
-    childcare_days_per_week: 2
-    state_code: NY
-  output:
-    ny_ccap_market_rate: 10 * 4 * 52 / 12
-  absolute_error_margin: 0.01
-
-# The 2022-06-01 era added 269 rate cells that were reachable only through a
-# blended annual average. These cases pin one cell per county group and
-# provider type directly against 22-OCFS-LCM-14 Attachment A, and pair each
-# with the 2019-era value so the era boundary is load-bearing.
-- name: Case 7, 2022-era group one weekly center infant rate.
-  period: 2023-01
-  input:
-    age: 1
-    childcare_provider_type_group: DCC_SACC
-    childcare_hours_per_day: 8
-    childcare_days_per_week: 5
-    county_str: NASSAU_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: WEEKLY
-    ny_ccap_market_rate: 409 * 52 / 12
-  absolute_error_margin: 0.01
-
-- name: Case 8, 2019-era group one weekly center infant rate.
-  period: 2022-01
-  input:
-    age: 1
-    childcare_provider_type_group: DCC_SACC
-    childcare_hours_per_day: 8
-    childcare_days_per_week: 5
-    county_str: NASSAU_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: WEEKLY
-    ny_ccap_market_rate: 364 * 52 / 12
-  absolute_error_margin: 0.01
-
-- name: Case 9, 2022-era group three daily family day care preschooler rate.
-  period: 2023-01
-  input:
-    age: 4
-    childcare_provider_type_group: FDC_GFDC
-    childcare_hours_per_day: 7
-    childcare_days_per_week: 4
-    county_str: BROOME_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: DAILY
-    ny_ccap_market_rate: 50 * 4 * 52 / 12
-  absolute_error_margin: 0.01
-
-- name: Case 10, 2022-era group five part-day legally exempt school-age rate.
-  period: 2023-01
-  input:
-    age: 8
-    childcare_provider_type_group: LE_STD
-    childcare_hours_per_day: 4
-    childcare_days_per_week: 3
-    county_str: BRONX_COUNTY_NY
-    state_code: NY
-  output:
-    ny_ccap_duration_of_care: PART_DAY
-    ny_ccap_market_rate: 24 * 3 * 52 / 12
-  absolute_error_margin: 0.01
-
 # 18 NYCRR 415.9(b): a sixth day earns an additional period priced at the
 # weekly rate divided by five, rather than re-pricing the week as six daily
 # rates.
-- name: Case 11, a sixth day adds one fifth of the weekly rate.
+- name: Case 6, a sixth day adds one fifth of the weekly rate.
   period: 2025-01
   input:
     age: 1
