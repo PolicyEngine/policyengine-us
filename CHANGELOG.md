@@ -1,3 +1,10 @@
+## [1.805.0] - 2026-08-14
+
+### Added
+
+- Wisconsin Shares child care subsidy program, including activity, asset, and income eligibility, countable income, county-level maximum rates by provider type and age group, and hourly family copayments.
+
+
 ## [1.804.1] - 2026-08-14
 
 ### Changed
