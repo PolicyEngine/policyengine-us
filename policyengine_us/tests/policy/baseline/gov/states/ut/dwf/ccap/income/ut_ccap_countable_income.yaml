@@ -1,0 +1,443 @@
+# Tests for ut_ccap_countable_income (SPMUnit, MONTH, USD).
+# R986-700-710: only the income of the CC client is counted, regardless
+# of who else lives in the household (R986-700-710(4)(a)). Parent clients
+# are identified with own_children_in_household (is_parent); when no
+# parent lives in the household, the tax-unit head or spouse proxies the
+# nonparent caretaker client (R986-700-702(2)). The earned income of a
+# child who is not a parent is not counted (R986-700-710(4)(f)), a child's unearned
+# income stays countable (R986-700-710(4)(d)(i)), and SSI benefits are
+# excluded (R986-700-710(4)(e)). Monthly deductions (R986-700-710(5)):
+# the first $50 of child support received, court-ordered child support
+# and alimony paid out, $100 for each parent with countable earned
+# income, and a $100 automatic medical deduction. Annual person-level
+# income inputs are read with the bare monthly period, so Core
+# auto-divides them to monthly amounts.
+
+- name: Case 1, single earner with earned income and medical deductions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 - 100 (one earner) - 100 (medical) = 2,800
+    ut_ccap_countable_income: 2_800
+
+- name: Case 2, two earners each receive the earned income deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 28
+        employment_income: 24_000  # 2,000/mo
+        own_children_in_household: 1
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # 3,000 + 2,000 - 200 (two earners) - 100 (medical) = 4,700
+    ut_ccap_countable_income: 4_700
+
+- name: Case 3, minor child's earned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 16
+        employment_income: 12_000  # 1,000/mo, minor who is not a parent
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Earned income counts only for parents (R986-700-710(4)(a), (4)(f)),
+    # so the 16-year-old's wages never enter gross income and generate no
+    # earner deduction: 3,000 - 100 (one earner) - 100 (medical) = 2,800
+    ut_ccap_countable_income: 2_800
+
+- name: Case 4, an 18-year-old non-parent's earned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 18
+        employment_income: 12_000  # 1,000/mo, excluded as a non-parent adult
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Only the parent's income counts (R986-700-710(4)(a)): the
+    # 18-year-old is no longer a minor whose unearned income would count,
+    # and as a non-parent adult their earnings are excluded and they draw
+    # no earner deduction: 3,000 - 100 (one earner) - 100 (medical)
+    # = 2,800.
+    ut_ccap_countable_income: 2_800
+
+- name: Case 5, first 50 dollars of child support received is deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        child_support_received: 3_600  # 300/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 + 300 - 50 (child support deduction) - 100 (one earner)
+    # - 100 (medical) = 3,050
+    ut_ccap_countable_income: 3_050
+
+- name: Case 6, child support received below 50 dollars is fully deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        child_support_received: 480  # 40/mo, below the 50 cap
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 + 40 - 40 (full child support amount deducted) - 100 (one
+    # earner) - 100 (medical) = 2,800
+    ut_ccap_countable_income: 2_800
+
+- name: Case 7, court-ordered child support and alimony paid out are deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        child_support_expense: 6_000  # 500/mo deducted
+        alimony_expense: 2_400  # 200/mo deducted
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 - 500 (child support paid) - 200 (alimony paid) - 100 (one
+    # earner) - 100 (medical) = 2,100
+    ut_ccap_countable_income: 2_100
+
+- name: Case 8, SSI benefits are excluded from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        social_security: 12_000  # 1,000/mo, counted as unearned income
+        ssi: 500  # monthly SSI, excluded
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 1,000 (Social Security) + 0 (SSI excluded) - 0 (no earners)
+    # - 100 (medical) = 900
+    ut_ccap_countable_income: 900
+
+- name: Case 9, negative self-employment income is floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_countable_income: 0
+
+- name: Case 10, unemployment compensation counts as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        unemployment_compensation: 6_000  # 500/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 + 500 - 100 (one earner) - 100 (medical) = 3,300
+    ut_ccap_countable_income: 3_300
+
+- name: Case 11, a minor parent's earned income stays counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 18_000  # 1,500/mo
+        own_children_in_household: 1  # minor parent -> is_parent true
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # R986-700-710(4)(f) excludes the earnings of a child who is not a
+    # parent; a 17-year-old who is a parent keeps their earnings counted
+    # (KS CCAP teen-parent precedent):
+    # 1,500 - 100 (one earner) - 100 (medical) = 1,300
+    ut_ccap_countable_income: 1_300
+
+- name: Case 12, deductions exceeding gross income floor at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_200  # 100/mo
+        child_support_expense: 2_400  # 200/mo deducted
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 100 - 200 (child support paid) - 100 (one earner) - 100 (medical)
+    # = -300, floored at zero.
+    ut_ccap_countable_income: 0
+
+- name: Case 13, one member's self-employment loss offsets the other's earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 28
+        self_employment_income: -12_000  # -1,000/mo
+        own_children_in_household: 1
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Gross income sums to 3,000 - 1,000 = 2,000; person2's earned income
+    # is negative, so only person1 receives the 100 earner deduction:
+    # 2,000 - 100 (one earner) - 100 (medical) = 1,800.
+    ut_ccap_countable_income: 1_800
+
+- name: Case 14, the 50 dollar child support deduction caps the family total.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        child_support_received: 480  # 40/mo
+        own_children_in_household: 1
+      person2:
+        age: 28
+        child_support_received: 240  # 20/mo
+        own_children_in_household: 1
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # R986-700-710(5)(a) deducts the first 50 of child support received by
+    # the family, not per recipient: 3,000 + 40 + 20 - 50 (capped family
+    # deduction) - 100 (one earner) - 100 (medical) = 2,810.
+    ut_ccap_countable_income: 2_810
+
+- name: Case 15, a working grandparent's income is excluded from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+      person3:
+        age: 65
+        employment_income: 24_000  # 2,000/mo, excluded
+        social_security: 12_000  # 1,000/mo, excluded
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Only the parent's income counts regardless of who else lives in the
+    # household (R986-700-710(4)(a)): the grandparent's 2,000 wages and
+    # 1,000 Social Security are both excluded, and the grandparent draws
+    # no $100 earner deduction: 3,000 - 100 (one earner) - 100 (medical)
+    # = 2,800.
+    ut_ccap_countable_income: 2_800
+
+- name: Case 16, interest income counts as parent unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        interest_income: 1_200  # 100/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Payments of interest are countable unearned income
+    # (R986-200-235(2)(i)): 3,000 + 100 - 100 (one earner) - 100 (medical)
+    # = 2,900.
+    ut_ccap_countable_income: 2_900
+
+- name: Case 17, a nonparent caretaker's earnings are counted and draw the earner deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # With no parent in the household, the caretaker (tax-unit head) is
+    # the CC client (R986-700-702(2)), so their wages count and they
+    # generate the earner deduction: 3,000 - 100 (one earner)
+    # - 100 (medical) = 2,800.
+    ut_ccap_countable_income: 2_800

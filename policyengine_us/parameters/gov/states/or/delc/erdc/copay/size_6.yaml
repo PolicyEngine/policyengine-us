@@ -1,0 +1,40 @@
+description: Oregon provides these monthly copay amounts for a group of 6 under the Employment Related Day Care program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: Oregon ERDC group size 6 monthly copay
+  reference:
+    - title: OAR 414-175-0050(3)(b), Need group size 6
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0050
+
+# Earlier copayment schedules in the OAR 414-175-0050 rule history (the
+# 2023-07-01, 2024-03-01, and 2025-03-01 versions) are not encoded; the model
+# applies this 2026-03-01 schedule to earlier periods through parameter
+# backdating.
+brackets:
+  - threshold:
+      2026-03-01: -.inf
+    amount:
+      2026-03-01: 0
+  - threshold:
+      2026-03-01: 3_697
+    amount:
+      2026-03-01: 5
+  - threshold:
+      2026-03-01: 5_545
+    amount:
+      2026-03-01: 10
+  - threshold:
+      2026-03-01: 6_470
+    amount:
+      2026-03-01: 25
+  - threshold:
+      2026-03-01: 7_394
+    amount:
+      2026-03-01: 70
+  - threshold:
+      2026-03-01: 8_318
+    amount:
+      2026-03-01: 130

@@ -1,0 +1,87 @@
+description: New Jersey provides this per-member monthly amount under the New Jersey Health Plan Savings program.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: New Jersey Health Plan Savings per-member monthly amount by income band
+  reference:
+    - title: Treasury Office of Tax Analysis Section 1332 methodology addendum, Table 2 (Enhanced subsidy schedule)
+      href: https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=12
+    - title: NJ DOBI FY2025-2026 Budget Discussion Points
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=8
+    - title: P.L. 2020 c.61
+      href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
+    - title: Get Covered NJ - New Jersey Health Plan Savings
+      href: https://www.nj.gov/getcoverednj/financialhelp/premiums/
+
+brackets:
+  # Household income measured as ACA MAGI as a share of the federal poverty line.
+  # CORROBORATION CHAIN: the exact per-member-per-month (PMPM) values below are
+  # the ENHANCED schedule (post-ARP, effective mid-2021) from the U.S. Treasury
+  # Office of Tax Analysis Section 1332 methodology addendum (Nov 2021). These
+  # values appear both as body-text bullets on file p.8 and, more cleanly, in the
+  # side-by-side Table 2 ("Enhanced" column) on file p.12 (the href points at
+  # Table 2). The enhanced schedule states:
+  # "From 138% through 150% of FPL: $20 PMPM"; "From 150% through 200%: $40 PMPM";
+  # "From 200% through 250%: $50 PMPM"; "From 250% through 400%: $100 PMPM";
+  # "From 400% through 600%: $50 PMPM". This is NOT the superseded INITIAL schedule
+  # (Feb 2021: $20/$30/$40/$95, covering only 138-400% FPL) printed in Table 1 on
+  # file p.5, which the model deliberately does not use. The DOBI FY2025-2026
+  # Budget Discussion Points confirm the enhanced schedule remains unchanged/flat
+  # for PY2026 (NJHPS expenditures "projected to remain flat at $212.2" million in
+  # FY2026, continuing "up to 600% FPL"). Neither source alone both states the
+  # values and confirms PY2026 currency, so both are carried. The Get Covered NJ
+  # URL is a secondary (anchorless) corroborating reference, not a value source.
+  # Bands are lower-exclusive / upper-inclusive, so thresholds use the "x.0001"
+  # convention to match the published "from X% through Y%" banding. The 138% floor
+  # is enforced by the eligibility gate; this base band gives $0 below 138% FPL so
+  # the single_amount lookup covers the full domain.
+  # Below 138% FPL (routed to NJ FamilyCare/Medicaid) -> $0 per member per month.
+  - threshold:
+      2026-01-01: 0
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0
+  # 138% through 150% FPL -> $20 per member per month. The schedule is new to the
+  # model for PY2026, so every band is $0 before 2026-01-01. The threshold is set
+  # to 1.3799 (just below the 138% floor) because aca_magi_fraction is a float32
+  # variable and float32(1.38) rounds to 1.37999999..., which is just BELOW a
+  # 1.38 float64 threshold; a household exactly at the 138% FPL floor must land in
+  # the $20 band (inclusive floor, matching the ">=" fpl_floor eligibility gate).
+  - threshold:
+      2026-01-01: 1.3799
+    amount:
+      0000-01-01: 0
+      2026-01-01: 20
+  # 150% through 200% FPL -> $40.
+  - threshold:
+      2026-01-01: 1.5001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 40
+  # 200% through 250% FPL -> $50.
+  - threshold:
+      2026-01-01: 2.0001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 50
+  # 250% through 400% FPL -> $100.
+  - threshold:
+      2026-01-01: 2.5001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 100
+  # 400% through 600% FPL -> $50. In this band the federal APTC is $0 (the 400% FPL
+  # cliff reverts for PY2026), so NJHPS is the sole premium subsidy.
+  - threshold:
+      2026-01-01: 4.0001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 50
+  # Above 600% FPL (ineligible) -> $0.
+  - threshold:
+      2026-01-01: 6.0001
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0

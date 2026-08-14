@@ -1,0 +1,18 @@
+description: Oregon counts these earned income sources under the Employment Related Day Care program.
+values:
+  2026-03-01:
+    - employment_income
+    # Self-employment sources are floored at zero per business so a loss cannot
+    # offset other countable income, per OAR 414-175-0035(81)(a) and (81)(e).
+    - or_erdc_countable_self_employment_income
+    - military_basic_pay
+
+metadata:
+  unit: list
+  period: year
+  label: Oregon ERDC countable earned income sources
+  reference:
+    - title: OAR 414-175-0030(1), General Financial Eligibility Provisions
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0030
+    - title: OAR 414-175-0035, Specific Financial Requirements
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0035

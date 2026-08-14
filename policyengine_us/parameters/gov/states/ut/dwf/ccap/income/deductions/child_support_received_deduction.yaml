@@ -1,0 +1,15 @@
+description: Utah deducts up to this amount of monthly child support received from countable income under the Child Care Assistance program.
+
+# R986-700-710(5)(a): "The first $50 of child support received by the
+# family." The 2020 entry is placed at PolicyEngine's backdating floor; the
+# provision was in effect well before this date.
+values:
+  2020-01-01: 50
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Utah CCAP child support received deduction
+  reference:
+    - title: Utah Admin. Code R986-700-710(5)(a)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-710

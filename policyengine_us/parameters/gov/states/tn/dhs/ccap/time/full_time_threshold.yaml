@@ -1,0 +1,13 @@
+description: Tennessee classifies care of at least this many hours per week as full-time under the Child Care Certificate Program.
+# Full-time care is 20 or more hours per week; part-time care is 19 or fewer hours,
+# which receives half the full-time copay and half the full-time reimbursement rate.
+values:
+  2024-06-01: 20
+
+metadata:
+  unit: hour
+  period: week
+  label: Tennessee CCAP full-time care hours threshold
+  reference:
+    - title: Tennessee CCDF State Plan FFY 2025-2027, Section 3.2.1(b)(i)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=48

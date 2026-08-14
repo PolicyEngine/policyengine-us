@@ -1,0 +1,45 @@
+description: Wyoming pays up to these maximum daily rates for child care center care under the Child Care, Purchase of Service program.
+# DFS maximum daily reimbursement rates, identical on the 04/01/24, 04/01/25,
+# and 04/01/26 Table I charts. The part-day rate peaking at 12-23 months is as
+# printed on the charts. University, community-college, and Wind River
+# Reservation centers also receive the center rate (Manual §1203.G).
+metadata:
+  period: day
+  unit: currency-USD
+  label: Wyoming CCAP child care center daily maximum rates
+  breakdown:
+    - wy_ccap_age_band
+    - wy_ccap_day_length
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/24-03/31/25 (single page)
+      href: https://drive.google.com/file/d/1rG1a7x4V5KKLiipNUwMVmemHBLWZS5MZ/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://drive.google.com/file/d/1T7NWbz6hOlRyAcqwROXExos5JB57NstB/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/26-03/31/27 (single page)
+      href: https://drive.google.com/file/d/1-zjev4TxHdyq7vC8tlh9SCNSNZzZz4Kq/view
+
+AGE_0_TO_11_MONTHS:
+  PART_DAY:
+    2024-04-01: 20.51
+  FULL_DAY:
+    2024-04-01: 36.36
+AGE_12_TO_23_MONTHS:
+  PART_DAY:
+    2024-04-01: 22.05
+  FULL_DAY:
+    2024-04-01: 34.44
+AGE_2_TO_3_YEARS:
+  PART_DAY:
+    2024-04-01: 20.51
+  FULL_DAY:
+    2024-04-01: 32
+AGE_4_TO_5_YEARS:
+  PART_DAY:
+    2024-04-01: 19.78
+  FULL_DAY:
+    2024-04-01: 31.33
+AGE_6_TO_13_YEARS:
+  PART_DAY:
+    2024-04-01: 18.15
+  FULL_DAY:
+    2024-04-01: 29
