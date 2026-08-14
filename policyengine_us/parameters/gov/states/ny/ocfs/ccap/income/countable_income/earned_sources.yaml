@@ -1,0 +1,19 @@
+description: New York excludes these earned income sources for a dependent child under the Child Care Assistance Program.
+# The earned subset of countable_income/sources.yaml. 404.5(b)(6)(xiii)
+# excludes the earnings of a dependent child under 18, so
+# ny_ccap_countable_income subtracts these sources for any member who is a
+# child and is not a parent of the child needing care.
+values:
+  2021-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: New York CCAP earned income sources
+  reference:
+    - title: 18 NYCRR 404.5(b)(6)(xiii), earnings of a dependent child
+      href: https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=12

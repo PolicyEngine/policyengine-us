@@ -627,12 +627,12 @@ programs:
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
       - state: NY
-        status: complete
+        status: partial
         name: CCAP
         full_name: New York Child Care Assistance Program
         variable: ny_ccap
         parameter_prefix: gov.states.ny.ocfs.ccap
-        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes and the statutory family-share exceptions. Household county proxies for provider county and unknown counties default to group 3, which understates rates for the New York City and downstate groups. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3), the discretionary accreditation differential, the special-needs substituted market rate, excess-period payments beyond the base rate period, Title XX income levels above 300 percent of the state income standard, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for a child with special needs, and the statutory family-share exceptions. Excess periods for a sixth or seventh day of care and for hours beyond the daily maximum are priced at the applicable daily or part-day rate under 415.9(d). Household county proxies for provider county and unknown counties default to group 3, which understates rates for the New York City and downstate groups. The SPM unit stands in for the 18 NYCRR 415.1(l) child care services unit, which draws cohabiting adults, 18-to-20-year-olds and child-only units differently. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), the separate school-age child care rate table, safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the guarantee of care to public-assistance families in required work activities under 415.2(a)(1), a child under court supervision, the 12-month eligibility period, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
       - state: OR
         status: complete
         name: Oregon ERDC

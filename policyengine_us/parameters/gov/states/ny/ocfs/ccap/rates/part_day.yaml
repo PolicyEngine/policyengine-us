@@ -1,5 +1,11 @@
 description: New York sets these part-day market rates by county group, provider type, and child age under the Child Care Assistance Program.
-# School-age child care programs share the DCC_SACC rates.
+# School-age child care programs share the DCC_SACC rates for the 3-5 and
+# 6-12 bands only. Attachment A publishes $0 for school-age programs in both
+# infant bands, which childcare_provider_type_group cannot express because it
+# carries a single enum member for day care centers and school-age programs.
+# The LE_GC infant and toddler cells are the $0 that Attachment A publishes,
+# not a missing row: 415.9(g)(1) rates legally exempt group programs off the
+# day care center schedule and OCFS publishes no under-3 rate for them.
 
 GROUP_1:
   DCC_SACC:

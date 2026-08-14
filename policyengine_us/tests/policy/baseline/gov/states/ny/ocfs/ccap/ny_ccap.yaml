@@ -122,8 +122,8 @@
     ny_ccap: 3_000
   absolute_error_margin: 0.01
 
-# An ineligible child must not shrink an eligible sibling's expense share.
-- name: Case 6, expenses prorate across eligible children in care only.
+# A child who is not in paid care must not shrink an eligible sibling's share.
+- name: Case 6, expenses prorate across children in paid care only.
   period: 2025-01
   input:
     people:
@@ -179,4 +179,82 @@
   output:
     ny_ccap_income_eligible: false
     ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# The in-care gate must bite on its own: an eligible child not actually in
+# paid care draws nothing, and does not dilute a sibling's expense share.
+- name: Case 8, an eligible child not in care draws no subsidy.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ny_ccap_eligible_child: true
+        ny_ccap_market_rate: 1_200
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        ny_ccap_family_share: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_ccap: 0
+  absolute_error_margin: 0.01
+
+# An ineligible child who is in paid care keeps their own share of the
+# expenses, so the eligible sibling is reimbursed for half of $3,000 rather
+# than the whole amount.
+- name: Case 9, an ineligible child in paid care keeps their expense share.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ny_ccap_eligible_child: true
+        ny_ccap_market_rate: 3_000
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+      person2:
+        ny_ccap_eligible_child: false
+        ny_ccap_market_rate: 3_000
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+        ny_ccap_family_share: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_ccap: 1_500
+  absolute_error_margin: 0.01
+
+# The lesser-of comparison at exact equality: expenses per child and the
+# market rate both $1,000 a month.
+- name: Case 10, expenses equal to the market rate are fully reimbursed.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ny_ccap_eligible_child: true
+        ny_ccap_market_rate: 1_000
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        ny_ccap_family_share: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ny_ccap: 1_000
   absolute_error_margin: 0.01

@@ -10,43 +10,66 @@ class ny_ccap_market_rate(Variable):
     defined_for = StateCode.NY
     documentation = (
         "The applicable market rate ceiling for one child, converted to a "
-        "monthly amount. Under 18 NYCRR 415.9(b) a weekly schedule running "
-        "beyond the weekly maximum days earns an additional period for each "
-        "extra day, priced at the weekly rate divided by the weekly maximum "
-        "days."
+        "monthly amount. Under 18 NYCRR 415.9(d) care exceeding one weekly or "
+        "daily period earns an additional period, priced at the rate for the "
+        "amount of time that period covers: the daily rate at or above the "
+        "daily minimum hours, the part-day rate below it. A weekly schedule "
+        "earns one additional period per day past the weekly maximum days, "
+        "and any schedule earns one per day for hours past the daily maximum."
     )
     reference = (
-        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=14",
+        "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=6",
         "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=45",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.ocfs.ccap
-        county_group = person.household("ny_ccap_county_group", period)
+        county_group = person.household("ny_ccap_county_group", period.this_year)
         provider_type = person("childcare_provider_type_group", period.this_year)
-        age_group = person("ny_ccap_age_group", period)
-        duration = person("ny_ccap_duration_of_care", period)
+        age_group = person("ny_ccap_age_group", period.this_year)
+        duration = person("ny_ccap_duration_of_care", period.this_year)
         durations = duration.possible_values
+        hours_per_day = person("childcare_hours_per_day", period.this_year)
         days_per_week = person("childcare_days_per_week", period.this_year)
-        weeks_per_month = WEEKS_IN_YEAR / MONTHS_IN_YEAR
-        # 415.9(b): days beyond the weekly maximum are paid at the weekly rate
-        # divided by the weekly maximum days.
-        excess_days = max_(days_per_week - p.duration.weekly_maximum_days, 0)
-        weekly_multiplier = 1 + excess_days / p.duration.weekly_maximum_days
         weekly_rate = p.rates.weekly[county_group][provider_type][age_group]
         daily_rate = p.rates.daily[county_group][provider_type][age_group]
         part_day_rate = p.rates.part_day[county_group][provider_type][age_group]
-        rate_per_week = select(
+        base_rate = select(
             [
                 duration == durations.WEEKLY,
                 duration == durations.DAILY,
                 duration == durations.PART_DAY,
             ],
             [
-                weekly_rate * weekly_multiplier,
+                weekly_rate,
                 daily_rate * days_per_week,
                 part_day_rate * days_per_week,
             ],
             default=0,
         )
-        return rate_per_week * weeks_per_month
+        # A weekly rate covers the weekly maximum days; each further day is an
+        # additional period priced by that day's own hours.
+        excess_days = where(
+            duration == durations.WEEKLY,
+            max_(days_per_week - p.duration.weekly_maximum_days, 0),
+            0,
+        )
+        excess_day_rate = where(
+            hours_per_day >= p.duration.daily_minimum_hours,
+            daily_rate,
+            part_day_rate,
+        )
+        # Hours past the daily maximum add one further period on each day.
+        excess_hours = max_(hours_per_day - p.duration.daily_maximum_hours, 0)
+        excess_hour_rate = where(
+            excess_hours >= p.duration.daily_minimum_hours,
+            daily_rate,
+            part_day_rate,
+        )
+        excess_hour_periods = where(excess_hours > 0, days_per_week, 0)
+        rate_per_week = (
+            base_rate
+            + excess_days * excess_day_rate
+            + excess_hour_periods * excess_hour_rate
+        )
+        return rate_per_week * (WEEKS_IN_YEAR / MONTHS_IN_YEAR)

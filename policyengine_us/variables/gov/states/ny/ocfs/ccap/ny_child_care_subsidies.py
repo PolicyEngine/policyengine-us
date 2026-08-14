@@ -8,4 +8,5 @@ class ny_child_care_subsidies(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
+    reference = "https://www.nysenate.gov/legislation/laws/SOS/410-U"
     adds = ["ny_ccap"]

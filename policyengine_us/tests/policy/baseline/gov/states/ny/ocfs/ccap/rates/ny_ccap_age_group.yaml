@@ -101,3 +101,30 @@
     state_code: NY
   output:
     ny_ccap_age_group: INFANT
+
+- name: Case 12, a newborn is an infant under both provider ladders.
+  period: 2025-01
+  input:
+    age: 0
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 13, a child just below three is a toddler.
+  period: 2025-01
+  input:
+    age: 2.99
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 14, a child just below six is a preschooler.
+  period: 2025-01
+  input:
+    age: 5.99
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: PRESCHOOLER

@@ -31,3 +31,12 @@
     state_code: NY
   output:
     ny_ccap_income_eligible: true
+
+- name: Case 4, income below 85 percent of the state median income is eligible.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 67_999
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: true

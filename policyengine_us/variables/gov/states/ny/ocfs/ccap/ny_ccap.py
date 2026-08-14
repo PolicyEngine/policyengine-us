@@ -22,14 +22,12 @@ class ny_ccap(Variable):
         eligible = person("ny_ccap_eligible_child", period)
         in_care = person("childcare_hours_per_day", period.this_year) > 0
         counted = eligible & in_care
-        child_count = spm_unit.sum(counted)
+        # The unit's expenses are shared across every child in paid care, so
+        # an ineligible child's share stays with that child rather than
+        # raising an eligible sibling against its own rate ceiling.
+        children_in_care = spm_unit.sum(in_care)
         total_expenses = spm_unit("spm_unit_pre_subsidy_childcare_expenses", period)
-        # Only eligible children actually in care draw on the unit's child
-        # care expenses; the shared per-person proration spreads them across
-        # every child under 18.
-        per_child_expenses = where(
-            child_count > 0, total_expenses / max_(child_count, 1), 0
-        )
+        per_child_expenses = total_expenses / max_(children_in_care, 1)
         # 18 NYCRR 415.6(e)(1) and (e)(3): payments do not exceed the actual
         # cost of care, and payments per child do not exceed the applicable
         # rate for the type of provider used and the age of the child. Capping
@@ -38,5 +36,7 @@ class ny_ccap(Variable):
         reimbursable_care = spm_unit.sum(
             min_(spm_unit.project(per_child_expenses), market_rate) * counted
         )
+        # 415.3(e)(5): one family share per family regardless of the number of
+        # children receiving care, so it is subtracted once from the total.
         family_share = spm_unit("ny_ccap_family_share", period)
         return max_(reimbursable_care - family_share, 0)

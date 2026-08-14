@@ -14,7 +14,7 @@ class ny_ccap_county_group(Variable):
     default_value = NYCCAPCountyGroup.GROUP_3
     entity = Household
     label = "New York CCAP county group"
-    definition_period = MONTH
+    definition_period = YEAR
     defined_for = StateCode.NY
     documentation = (
         "New York keys rates to the child care provider's county. "
@@ -34,7 +34,7 @@ class ny_ccap_county_group(Variable):
     )
 
     def formula(household, period, parameters):
-        county = household("county_str", period.this_year)
+        county = household("county_str", period)
         groups = parameters(period).gov.states.ny.ocfs.ccap.county_group
         conditions = [
             np.isin(county, groups.group_1),
