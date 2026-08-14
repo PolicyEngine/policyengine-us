@@ -1,6 +1,13 @@
 description: Oklahoma sets the annual unemployment insurance taxable wage base at this amount under the Unemployment Insurance program.
 
 values:
+  # 40 O.S. §1-223 sets the taxable wage base as a conditional-factor share of
+  # the state's average annual wage. The pre-Laws-2025 ladder ran 40 / 42.5 /
+  # 45 / 47.5 / 50% across factors A-D; conditional factor "D" applies for
+  # 2022-2025 and factor "A" for 2026. The Laws 2025 ladder (effective
+  # Nov. 1, 2025) resets these shares, which is why the 2026 base falls below
+  # the 2025 base rather than rising. Values below are the OESC-published
+  # taxable wage bases, so no recomputation from the ladder is required.
   0000-01-01: 27_000
   2022-01-01: 24_800
   2023-01-01: 25_700
@@ -25,8 +32,8 @@ metadata:
       href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=56
     - title: 40 O.S. §2-207
       href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77177
-    - title: Oklahoma UI Tax Rates by Industry, Size, and County, 2021
-      href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=2
+    - title: Oklahoma Unemployment Insurance Tax Rates by Industry, Size, and County (2022 column)
+      href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=6
     - title: OESC Important Numbers for 2023
       href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2023.pdf#page=1
     - title: OESC Important Numbers for 2024

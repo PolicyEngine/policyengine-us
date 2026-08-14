@@ -1,7 +1,7 @@
 # Integration tests for Oklahoma Unemployment Insurance (OK UI).
 # End-to-end scenarios checking ok_ui together with intermediate variables.
 # References: 40 O.S. §§1-202, 1-218, 1-223, 1-231, 2-102, 2-104, 2-105, 2-106, 2-207;
-# OESC Claimant Handbook OES-339 (Rev. 05-2025); OESC Important Numbers 2024/2025/2026.
+# OESC Claimant Handbook OES-339; OESC Important Numbers 2024/2025/2026.
 
 - name: Case 1, eligible single claimant with mid-range wages in 2024.
   period: 2024
@@ -11,6 +11,7 @@
       person1:
         age: 35
         ok_ui_high_quarter_taxable_wages: 11_500
+        ok_ui_high_quarter_total_wages: 11_500
         ok_ui_base_period_taxable_wages: 11_500
         ok_ui_base_period_total_wages: 35_000
         ok_ui_gross_weekly_earnings: 0
@@ -42,6 +43,7 @@
       person1:
         age: 40
         ok_ui_high_quarter_taxable_wages: 5_000
+        ok_ui_high_quarter_total_wages: 5_000
         ok_ui_base_period_taxable_wages: 500
         ok_ui_base_period_total_wages: 5_000
         ok_ui_gross_weekly_earnings: 0
@@ -69,6 +71,7 @@
       person1:
         age: 45
         ok_ui_high_quarter_taxable_wages: 30_000
+        ok_ui_high_quarter_total_wages: 30_000
         ok_ui_base_period_taxable_wages: 30_000
         ok_ui_base_period_total_wages: 90_000
         ok_ui_gross_weekly_earnings: 0
@@ -99,6 +102,7 @@
         age: 32
         # HQW $9,200 -> WBA = $400.
         ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_high_quarter_total_wages: 9_200
         ok_ui_base_period_taxable_wages: 9_200
         ok_ui_base_period_total_wages: 30_000
         ok_ui_gross_weekly_earnings: 200
@@ -131,6 +135,7 @@
         age: 38
         # HQW $6,900 -> WBA = $300.
         ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_high_quarter_total_wages: 6_900
         ok_ui_base_period_taxable_wages: 6_900
         ok_ui_base_period_total_wages: 20_700
         ok_ui_gross_weekly_earnings: 0
@@ -160,6 +165,7 @@
       person1:
         age: 50
         ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_high_quarter_total_wages: 20_000
         ok_ui_base_period_taxable_wages: 2_000
         ok_ui_base_period_total_wages: 28_500
         ok_ui_gross_weekly_earnings: 0

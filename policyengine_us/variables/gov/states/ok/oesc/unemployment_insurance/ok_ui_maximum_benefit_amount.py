@@ -9,8 +9,7 @@ class ok_ui_maximum_benefit_amount(Variable):
     definition_period = YEAR
     defined_for = StateCode.OK
     reference = (
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=48",
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=51",
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=52",
     )
 
     def formula(person, period, parameters):

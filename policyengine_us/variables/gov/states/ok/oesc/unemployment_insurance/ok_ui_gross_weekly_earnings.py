@@ -11,7 +11,11 @@ class ok_ui_gross_weekly_earnings(Variable):
 
     value_type = float
     entity = Person
-    label = "Oklahoma UI average weekly earnings (year-period input)"
+    label = "Oklahoma UI average weekly earnings"
+    documentation = (
+        "Stored at the annual definition period but holds an average WEEKLY "
+        "figure, populated via test fixtures or reform."
+    )
     unit = USD
     definition_period = YEAR
     default_value = 0

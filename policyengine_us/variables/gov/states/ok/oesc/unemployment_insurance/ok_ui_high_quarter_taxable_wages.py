@@ -20,6 +20,8 @@ class ok_ui_high_quarter_taxable_wages(Variable):
     default_value = 0
     defined_for = StateCode.OK
     reference = (
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44",
+        # 40 O.S. §1-201(48) — per-calendar-year taxable-wage cap
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23",
+        # 40 O.S. §2-104(A) — weekly benefit amount input
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50",
     )

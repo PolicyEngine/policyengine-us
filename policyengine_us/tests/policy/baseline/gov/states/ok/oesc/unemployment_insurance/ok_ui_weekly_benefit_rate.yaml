@@ -21,7 +21,7 @@
       person1:
         # floor($14,000 / 23) = floor($608.69) = $608.
         # $608 > $519 (2024 max) -> clamped to $519.
-        # Matches OES-339 Rev. 05-2025 page 4 worked example.
+        # Matches OES-339 page 4 worked example.
         ok_ui_weekly_benefit_rate: 519
 
 - name: Case 2, low HQW lifted to statutory minimum $16.

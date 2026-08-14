@@ -236,3 +236,33 @@
         # Guard: max(-$5,000, 0) = $0; share cap = 0.4 * $0 = $0.
         # min(min($400 * 16 = $6,400, $8,656), $0) = $0 (not negative).
         ok_ui_maximum_benefit_amount: 0
+
+# --- C3: statewide max_amount ($9,900) actually BINDS in 2022 under the 26-week
+# regime. Because the 2023-2026 max_amount values are published as 16 x maximum
+# WBA, WBR*max_weeks can never exceed max_amount once max_weeks = 16, so
+# max_amount is structurally unfalsifiable after 2022. 2022 is the only year the
+# suite can demonstrate it binding, since 26 weeks lets WBR*max_weeks overshoot. ---
+
+- name: Case 11, 2022 - statewide max_amount $9,900 binds under the 26-week regime.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $20,000 -> floor($20,000 / 23) = $869 -> clamped to $476 (2022 max WBA).
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_base_period_taxable_wages: 20_000
+        ok_ui_base_period_total_wages: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 476
+        # 26-week product $476 * 26 = $12,376 exceeds the $9,900 max_amount, and
+        # the share cap 0.4 * $100,000 = $40,000 is larger still, so the
+        # statewide $9,900 max_amount is the binding constraint.
+        ok_ui_maximum_benefit_amount: 9_900

@@ -9,7 +9,10 @@ class ok_ui_weekly_benefit_rate(Variable):
     definition_period = YEAR
     defined_for = StateCode.OK
     reference = (
+        # 40 O.S. §2-104 — weekly benefit amount
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=50",
+        # 40 O.S. §2-102 — rounding down to the next lower whole dollar
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=49",
     )
 
     def formula(person, period, parameters):

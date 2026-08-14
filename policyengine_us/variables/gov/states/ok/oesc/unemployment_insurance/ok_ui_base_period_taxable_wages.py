@@ -21,7 +21,7 @@ class ok_ui_base_period_taxable_wages(Variable):
     defined_for = StateCode.OK
     reference = (
         # 40 O.S. §1-201(48) — Taxable wages / base period definitions
-        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=19",
+        "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=23",
         # 40 O.S. §1-223 — Taxable wage base
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=44",
     )
