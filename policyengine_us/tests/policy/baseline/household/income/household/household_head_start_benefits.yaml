@@ -22,7 +22,7 @@
     household_head_start_benefits: 29_000
     household_benefits: 29_000
 
-- name: Case 3, the flag also governs the 2022 benefit list bracket.
+- name: Case 3, flag on composes through the pre-2024 household_benefits bracket.
   period: 2023
   absolute_error_margin: 0.01
   input:
@@ -63,3 +63,23 @@
     household_health_benefits: 500
     household_head_start_benefits: 0
     household_benefits: 500
+
+- name: Case 6, per-person values aggregate to the household level.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 4
+        head_start: 8_000
+      child2:
+        age: 1
+        early_head_start: 21_000
+    households:
+      household:
+        members: [parent, child1, child2]
+  output:
+    household_head_start_benefits: 29_000
