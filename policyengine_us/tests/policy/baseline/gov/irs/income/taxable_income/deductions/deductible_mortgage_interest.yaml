@@ -106,3 +106,41 @@
     first_home_mortgage_origination_year: 2018
   output:
     deductible_mortgage_interest_tax_unit: 37_500
+
+- name: Person-level input is canonical when both input styles are supplied (issue #9275)
+  period: 2024
+  input:
+    people:
+      head:
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        standard_deduction: 0
+        first_home_mortgage_interest: 10_000
+  output:
+    # Person-level wins; the deprecated structured input is ignored when
+    # person-level interest is reported.
+    home_mortgage_interest_tax_unit: 12_000
+    deductible_mortgage_interest_tax_unit: 12_000
+    interest_deduction: 12_000
+
+- name: Person-level interest still passes through the acquisition-debt caps
+  period: 2024
+  input:
+    people:
+      head:
+        home_mortgage_interest: 45_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        tax_unit_itemizes: true
+        standard_deduction: 0
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2018
+  output:
+    # Post-TCJA cap: 45,000 x 750,000 / 900,000 = 37,500
+    deductible_mortgage_interest_tax_unit: 37_500
