@@ -7,8 +7,7 @@ class ny_ui_gross_weekly_earnings(Variable):
     label = "New York unemployment insurance gross weekly earnings"
     unit = USD
     definition_period = YEAR
-    default_value = 0
-    reference = "https://www.nysenate.gov/legislation/laws/LAB/590"
+    reference = "https://dol.ny.gov/system/files/documents/2025/10/p803-partial-ui-faqs-10-3-25.pdf#page=1"
     documentation = (
         "Claim-week gross earnings used for the partial-benefit earnings gate "
         "and the $869 earnings cutoff. Per NYSDOL P803, self-employment "

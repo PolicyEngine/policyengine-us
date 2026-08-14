@@ -7,7 +7,11 @@ class ny_ui_weekly_payable(Variable):
     label = "New York unemployment insurance weekly payable amount"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.nysenate.gov/legislation/laws/LAB/590"
+    reference = (
+        "https://www.nysenate.gov/legislation/laws/LAB/590",
+        "https://www.nysenate.gov/legislation/laws/LAB/525",
+        "https://dol.ny.gov/system/files/documents/2025/10/p803-partial-ui-faqs-10-3-25.pdf#page=1",
+    )
     documentation = (
         "Hybrid partial-benefit rule. The paid amount follows the P803 "
         "hours-tier fraction times the weekly benefit rate; the earnings "

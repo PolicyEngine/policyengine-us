@@ -23,7 +23,7 @@ class ny_ui_raw_weekly_benefit_rate(Variable):
 
         # Four-quarter formula: high quarter wages divided by the standard
         # divisor (or the low divisor when wages are at or below the low
-        # threshold). Divisor-26 cases have a $143 formula floor per P832 p.2.
+        # threshold). Divisor-26 cases have a formula floor per P832 p.2.
         above_low_threshold = high_quarter_wages > p.low_hq_threshold
         raw_four_quarter_divisor_26 = max_(
             np.floor(high_quarter_wages / p.standard_divisor),
@@ -37,15 +37,17 @@ class ny_ui_raw_weekly_benefit_rate(Variable):
         )
 
         # Two- or three-quarter formula has three tiers:
-        #   Tier 1: high quarter wages above two-quarter threshold ($4,000) →
+        #   Tier 1: high quarter wages above the two-quarter threshold →
         #       average of two highest quarters divided by standard divisor.
-        #   Tier 2: high quarter wages above low threshold ($3,575) but at or
-        #       below two-quarter threshold → high quarter wages / standard
+        #   Tier 2: high quarter wages above the low threshold but at or below
+        #       the two-quarter threshold → high quarter wages / standard
         #       divisor.
-        #   Tier 3: high quarter wages at or below low threshold → high
+        #   Tier 3: high quarter wages at or below the low threshold → high
         #       quarter wages / low divisor.
-        # Tiers 1 and 2 use divisor 26 and therefore have a $143 formula floor
-        # per P832 p.2; tier 3 (divisor 25) does not.
+        # Tiers 1 and 2 use divisor 26 and therefore have a formula floor per
+        # P832 p.2; tier 3 (divisor 25) does not.
+        # Two-quarter average of the two highest base-period quarters (divide by
+        # the fixed count of two quarters, not a policy parameter).
         average_two_quarters = (high_quarter_wages + second_high_quarter_wages) / 2
         raw_two_three_tier_1 = max_(
             np.floor(average_two_quarters / p.standard_divisor),

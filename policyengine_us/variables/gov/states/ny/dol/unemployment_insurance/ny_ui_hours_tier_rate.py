@@ -12,9 +12,10 @@ class ny_ui_hours_tier_rate(Variable):
     )
     documentation = (
         "Partial-unemployment benefit fraction from the hours-based tier system "
-        "in NYSDOL P803, enacted by Ch. 305 of the Laws of 2021 (S7148) § 31. "
-        "The NY Lab. Law § 590(5)(c) earnings-offset regime is enacted but not "
-        "administered; its activation is contingent (Ch. 56 of 2025 Part KK § 4)."
+        "in NYSDOL P803, enacted by Ch. 277 of the Laws of 2021 § 31 (as added "
+        "by Ch. 305 of the Laws of 2021 § 14). The NY Lab. Law § 590(5)(c) "
+        "earnings-offset regime remains displaced by the § 31 hours-tier system, "
+        "whose sunset awaits the IT certification required by Ch. 277 § 33."
     )
     defined_for = StateCode.NY
 

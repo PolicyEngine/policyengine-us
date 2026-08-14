@@ -135,7 +135,7 @@
         # 0.5 * $307 = $153.50; ceil($153.50) = $154; max($154, $100) = $154.
         ny_ui_partial_benefit_credit: 154
 
-- name: Case 7, WBR $869 after October 2025 yields $435 PBC.
+- name: Case 7, WBR $869 in 2026 yields $435 PBC.
   period: 2026
   absolute_error_margin: 0.01
   input:

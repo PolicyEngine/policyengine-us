@@ -3,7 +3,11 @@ description: New York sets this maximum weekly benefit rate under the Unemployme
 # The $869 step takes effect 2025-10-06, the first Monday of October 2025 (the
 # statutory effective point); the P832 reference to the "week of Oct 13"
 # reflects the benefit-payment lag, not a different effective date. The $869
-# value is set by Ch. 56 of the Laws of 2025.
+# value is set by Ch. 56 of the Laws of 2025. Within the YEAR period 2025 this
+# 2025-10-06 step is inert: the parameter resolves to $504 for all of 2025 and
+# the $869 value first bites in 2026. The $504 rate held flat 2019-2025 because
+# the NY Lab. Law § 590(5)(b) automatic increases were suspended while the UI
+# trust fund carried a federal advance balance.
 # FOLLOW-UP: a further step effective 2026-10-05 sets the maximum WBR to 50% of
 # the state average weekly wage per NY Lab. Law § 590(5). That value is not yet
 # published and may be suspended depending on the UI trust fund balance, so it

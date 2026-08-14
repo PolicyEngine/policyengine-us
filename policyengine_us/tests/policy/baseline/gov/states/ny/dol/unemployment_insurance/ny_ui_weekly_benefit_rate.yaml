@@ -296,3 +296,107 @@
       person1:
         ny_ui_raw_weekly_benefit_rate: 0
         ny_ui_weekly_benefit_rate: 0
+
+# Cases 14-18 exercise the pre-2025 min_amount values (A9, Ziming review).
+# All use HQ $2,500 (<= $3,575 -> divisor 25): floor($2,500 / 25) = $100, which
+# is below every pre-2025 minimum, so the WBR is lifted to that year's floor.
+# A typo in any of these min_amount values would flip the asserted WBR.
+- name: Case 14, 2020 minimum floor lifts a low raw WBR to $104.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_base_period_wages: 9_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($2,500 / 25) = $100 < $104 (2020 minimum) -> WBR = $104.
+        ny_ui_weekly_benefit_rate: 104
+
+- name: Case 15, 2021 minimum floor lifts a low raw WBR to $108.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_base_period_wages: 9_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($2,500 / 25) = $100 < $108 (2021 minimum) -> WBR = $108.
+        ny_ui_weekly_benefit_rate: 108
+
+- name: Case 16, 2022 minimum floor lifts a low raw WBR to $116.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_base_period_wages: 9_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($2,500 / 25) = $100 < $116 (2022 minimum) -> WBR = $116.
+        ny_ui_weekly_benefit_rate: 116
+
+- name: Case 17, 2023 minimum floor lifts a low raw WBR to $124.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_base_period_wages: 9_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($2,500 / 25) = $100 < $124 (2023 minimum) -> WBR = $124.
+        ny_ui_weekly_benefit_rate: 124
+
+- name: Case 18, 2024 minimum floor lifts a low raw WBR to $132.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_base_period_wages: 9_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # floor($2,500 / 25) = $100 < $132 (2024 minimum) -> WBR = $132.
+        ny_ui_weekly_benefit_rate: 132

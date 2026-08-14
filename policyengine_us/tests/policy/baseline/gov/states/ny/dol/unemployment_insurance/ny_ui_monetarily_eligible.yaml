@@ -345,3 +345,89 @@
       person1:
         # HQ $0 < $3,400 (2025 minimum) -> fails test 1 -> ineligible.
         ny_ui_monetarily_eligible: false
+
+# Cases 18-21 regression-guard the C3 high_quarter_minimum backfill (A9, Ziming
+# review). Before the backfill, core silently extrapolated the 2025 value
+# ($3,400) to 2020-2024; the correct 2023 minimum is $3,100 and 2024 is $3,300.
+# These boundary pairs would fail if either value regressed to $3,400.
+- name: Case 18, boundary - HQ one dollar below 2023 minimum fails test 1.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_099
+        ny_ui_base_period_wages: 15_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $3,099 < $3,100 (2023 minimum) -> fails test 1.
+        ny_ui_monetarily_eligible: false
+
+- name: Case 19, boundary - HQ exactly at 2023 minimum passes test 1.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_100
+        ny_ui_base_period_wages: 15_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $3,100 >= $3,100 (2023 minimum) -> test 1 passes (uses >=).
+        # Base $15,000 >= 1.5 * $3,100 = $4,650 -> test 3 passes.
+        ny_ui_monetarily_eligible: true
+
+- name: Case 20, boundary - HQ one dollar below 2024 minimum fails test 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_299
+        ny_ui_base_period_wages: 15_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $3,299 < $3,300 (2024 minimum) -> fails test 1.
+        # (Before the C3 backfill core used $3,400 here, so this passed
+        # incorrectly - the exact bug Ziming flagged.)
+        ny_ui_monetarily_eligible: false
+
+- name: Case 21, boundary - HQ exactly at 2024 minimum passes test 1.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_300
+        ny_ui_base_period_wages: 15_000
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $3,300 >= $3,300 (2024 minimum) -> test 1 passes (uses >=).
+        # Base $15,000 >= 1.5 * $3,300 = $4,950 -> test 3 passes.
+        # (Before the C3 backfill core used $3,400 here, so this failed
+        # incorrectly.)
+        ny_ui_monetarily_eligible: true
