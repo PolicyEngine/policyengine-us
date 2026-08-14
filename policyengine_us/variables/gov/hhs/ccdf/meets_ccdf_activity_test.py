@@ -13,4 +13,4 @@ class meets_ccdf_activity_test(Variable):
         "programs, SNAP E&T, VIEW participation, CPS referral, or "
         "temporary leave from work or school."
     )
-    label = "Whether the SPM unit meets an unmodeled CCDF activity test"
+    label = "Activity test for CCDF"
