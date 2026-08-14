@@ -1,3 +1,10 @@
+## [1.804.1] - 2026-08-14
+
+### Changed
+
+- Made the person-level home_mortgage_interest input canonical for the federal mortgage interest deduction; the structured first and second home mortgage interest inputs are deprecated and now used only when no person-level interest is reported.
+
+
 ## [1.804.0] - 2026-08-13
 
 ### Added
