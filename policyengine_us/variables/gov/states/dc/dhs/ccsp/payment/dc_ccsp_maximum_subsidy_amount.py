@@ -8,7 +8,10 @@ class dc_ccsp_maximum_subsidy_amount(Variable):
     unit = USD
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/FY25%20Subsidy%20Reimbursement%20Rates%20English.pdf#page=2"
     definition_period = MONTH
-    defined_for = StateCode.DC
+    # dc_ccsp sums this over every SPM unit member, so it is gated on the
+    # eligible child rather than on residence: an adult or an over-age child
+    # with authorized days of care would otherwise add to the subsidy.
+    defined_for = "dc_ccsp_eligible_child"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.dc.dhs.ccsp.reimbursement_rates
