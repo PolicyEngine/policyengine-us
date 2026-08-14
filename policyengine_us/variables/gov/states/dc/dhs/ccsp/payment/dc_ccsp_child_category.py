@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.dc.dhs.ccsp.payment.dc_ccsp_age_category import (
+    DCCCSPAgeCategory,
+)
 
 
 class DCCCSPChildCategory(Enum):
@@ -22,26 +25,25 @@ class dc_ccsp_child_category(Variable):
     reference = "https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/FY25%20Subsidy%20Reimbursement%20Rates%20English.pdf"
 
     def formula(person, period, parameters):
-        # The reimbursement rate sheet names three age bands, defined in
-        # 5-A DCMR 199: infants and toddlers (under 36 months), preschoolers
-        # (36 to 60 months), and school-age children (60 months and over,
-        # who receive only out-of-school-time care).
-        p = parameters(period).gov.states.dc.dhs.ccsp.child_category
-        # monthly_age preserves the age in years at monthly granularity, so
-        # read age over the year and scale it to months instead.
-        age_in_months = person("age", period.this_year) * MONTHS_IN_YEAR
-        # Preschool and Preschool Before and After carry identical rates in
-        # every column of every quality tier, so the plain preschool category
-        # is the safe default. School-age Before and After matches School-Age
-        # Before or After on the full-time traditional rate and covers the
-        # extended and nontraditional columns that Before or After lacks.
-        # The two special needs categories, and the school-age Before or After
+        # The reimbursement rate sheet fuses the age band with the service
+        # authorized, so map the age category onto the rate row that the band
+        # alone determines. Preschool and Preschool Before and After carry
+        # identical rates in every column of every quality tier, and School-Age
+        # Before and After matches School-Age Before or After on the full-time
+        # traditional rate while also covering the extended day and
+        # nontraditional columns that Before or After lacks.
+        #
+        # The two special needs rows, and the School-Age Before or After
         # part-time rate, depend on the service authorized rather than on the
-        # child's age, so set this variable directly for those cases.
+        # child's age, so set this variable directly for those cases. Special
+        # needs is deliberately not derived from is_disabled: the rate sheet
+        # publishes no special needs row for child development homes, so a
+        # disabled child at a home provider would be priced at zero.
+        age_category = person("dc_ccsp_age_category", period)
         return select(
             [
-                age_in_months < p.infant_and_toddler_max,
-                age_in_months < p.preschool_max,
+                age_category == DCCCSPAgeCategory.INFANT_AND_TODDLER,
+                age_category == DCCCSPAgeCategory.PRESCHOOL,
             ],
             [
                 DCCCSPChildCategory.INFANT_AND_TODDLER,
