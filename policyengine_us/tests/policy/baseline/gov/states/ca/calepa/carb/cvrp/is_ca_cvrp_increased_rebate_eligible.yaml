@@ -32,3 +32,22 @@
     receives_ssi: true
   output:
     is_ca_cvrp_increased_rebate_eligible: true
+
+- name: Child support received counts in the income base, pushing over 400% FPL.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 62_000
+    child_support_received: 3_000
+    medicaid_enrolled: false
+  output:
+    is_ca_cvrp_increased_rebate_eligible: false
+
+- name: Same earnings without child support stay under 400% FPL.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 62_000
+    medicaid_enrolled: false
+  output:
+    is_ca_cvrp_increased_rebate_eligible: true
