@@ -1,3 +1,10 @@
+## [1.807.0] - 2026-08-14
+
+### Added
+
+- Added Utah Unemployment Insurance (UI), including weekly benefit amount, duration, and maximum benefit calculation using the High Quarter Wage formula.
+
+
 ## [1.806.0] - 2026-08-14
 
 ### Added
