@@ -19,7 +19,10 @@ class ok_ui_base_period_total_wages(Variable):
     default_value = 0
     defined_for = StateCode.OK
     reference = (
+        # 40 O.S. §1-201(4) — Base period definition
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=19",
+        # 40 O.S. §1-218 — Wages definition
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=42",
+        # 40 O.S. §2-207 — Total wages used in monetary-eligibility tests
         "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=56",
     )
