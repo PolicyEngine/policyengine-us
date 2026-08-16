@@ -1,0 +1,73 @@
+# Reform tests for Head Start income eligibility flexibilities.
+#
+# 45 CFR 1302.12(c)(1)(i) sets the statutory floor (income at or below 100%
+# of the federal poverty guidelines), which the baseline models. Two
+# grantee-discretionary flexibilities are exposed as parameters, off by
+# default, so reforms and screeners can activate them:
+#
+# - 1302.12(d): programs may fill a share of slots with families between
+#   100% and 130% of the poverty guidelines
+#   (gov.hhs.head_start.income_limit).
+# - The 2024 final rule (89 FR 67720, Aug 21, 2024; effective October 2024)
+#   lets programs deduct housing costs exceeding a share of gross income
+#   (gov.hhs.head_start.housing_cost_adjustment).
+
+- name: Discretionary band reform, 120% of FPG is inside the 1302.12(d) band
+  period: 2025
+  input:
+    gov.hhs.head_start.income_limit: 1.3
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+  output:
+    is_head_start_income_eligible: true
+
+- name: Discretionary band reform, exactly 130% of FPG is within the ceiling
+  period: 2025
+  input:
+    gov.hhs.head_start.income_limit: 1.3
+    adjusted_gross_income: 26_000
+    tax_unit_fpg: 20_000
+  output:
+    is_head_start_income_eligible: true
+
+- name: Discretionary band reform, 135% of FPG exceeds the discretionary ceiling
+  period: 2025
+  input:
+    gov.hhs.head_start.income_limit: 1.3
+    adjusted_gross_income: 27_000
+    tax_unit_fpg: 20_000
+  output:
+    is_head_start_income_eligible: false
+
+- name: Housing cost adjustment reform, excess housing costs make the family eligible
+  period: 2025
+  input:
+    gov.hhs.head_start.housing_cost_adjustment.in_effect: true
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+    housing_cost: 12_000
+  output:
+    # Threshold = 30% x 24,000 = 7,200; excess = 12,000 - 7,200 = 4,800;
+    # countable income = 24,000 - 4,800 = 19,200 <= 20,000.
+    is_head_start_income_eligible: true
+
+- name: Housing cost adjustment reform, a small excess leaves the family over income
+  period: 2025
+  input:
+    gov.hhs.head_start.housing_cost_adjustment.in_effect: true
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+    housing_cost: 8_000
+  output:
+    # Excess = 8,000 - 7,200 = 800; countable income = 23,200 > 20,000.
+    is_head_start_income_eligible: false
+
+- name: Housing cost adjustment reform, no housing costs changes nothing
+  period: 2025
+  input:
+    gov.hhs.head_start.housing_cost_adjustment.in_effect: true
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+    housing_cost: 0
+  output:
+    is_head_start_income_eligible: false

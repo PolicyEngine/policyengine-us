@@ -17,19 +17,18 @@ class is_head_start_income_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.head_start
-        federal_agi = person.tax_unit("adjusted_gross_income", period)
+        countable_income = person.tax_unit("adjusted_gross_income", period)
         # Grantees may deduct housing costs exceeding a share of gross income
         # (2024 final rule); adoption is at grantee discretion, so the
         # adjustment only applies when switched on.
-        housing_cost = person.spm_unit("housing_cost", period)
-        excess_housing_cost = max_(
-            housing_cost
-            - p.housing_cost_adjustment.income_share_threshold * federal_agi,
-            0,
-        )
-        countable_income = federal_agi - where(
-            p.housing_cost_adjustment.in_effect, excess_housing_cost, 0
-        )
+        if p.housing_cost_adjustment.in_effect:
+            housing_cost = person.spm_unit("housing_cost", period)
+            excess_housing_cost = max_(
+                housing_cost
+                - p.housing_cost_adjustment.income_share_threshold * countable_income,
+                0,
+            )
+            countable_income = countable_income - excess_housing_cost
         fpg = person.tax_unit("tax_unit_fpg", period)
         # The baseline income limit is the 1302.12(c)(1)(i) statutory floor
         # (100% of the poverty guidelines); 1302.12(d) grantees may extend it
