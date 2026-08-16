@@ -7,11 +7,31 @@ class is_head_start_income_eligible(Variable):
     label = "Early Head Start or Head Start income eligible"
     definition_period = YEAR
     reference = (
-        "https://eclkc.ohs.acf.hhs.gov/policy/45-cfr-chap-xiii/1302-12-determining-verifying-documenting-eligibility"
-        "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html"
+        "https://www.ecfr.gov/current/title-45/subtitle-B/chapter-XIII/subchapter-B/part-1302/subpart-A/section-1302.12",
+        "https://www.hhs.gov/answers/programs-for-families-and-children/how-can-i-get-my-child-into-head-start/index.html",
+        # The 2024 final rule (effective October 2024) lets grantees deduct
+        # excessive housing costs from gross income when determining
+        # eligibility.
+        "https://www.federalregister.gov/documents/2024/08/21/2024-18279/supporting-the-head-start-workforce-and-consistent-quality-programming",
     )
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        return federal_agi <= tax_unit("tax_unit_fpg", period)
+        p = parameters(period).gov.hhs.head_start
+        federal_agi = person.tax_unit("adjusted_gross_income", period)
+        # Grantees may deduct housing costs exceeding a share of gross income
+        # (2024 final rule); adoption is at grantee discretion, so the
+        # adjustment only applies when switched on.
+        housing_cost = person.spm_unit("housing_cost", period)
+        excess_housing_cost = max_(
+            housing_cost
+            - p.housing_cost_adjustment.income_share_threshold * federal_agi,
+            0,
+        )
+        countable_income = federal_agi - where(
+            p.housing_cost_adjustment.in_effect, excess_housing_cost, 0
+        )
+        fpg = person.tax_unit("tax_unit_fpg", period)
+        # The baseline income limit is the 1302.12(c)(1)(i) statutory floor
+        # (100% of the poverty guidelines); 1302.12(d) grantees may extend it
+        # to 130% by reforming the limit.
+        return countable_income <= fpg * p.income_limit

@@ -21,3 +21,24 @@
     tax_unit_fpg: 0
   output:
     is_head_start_income_eligible: false
+
+# The 45 CFR 1302.12(d) discretionary band (100-130% FPG) is off by default:
+# the baseline models the statutory floor of 1302.12(c)(1)(i).
+- name: Income inside the 100-130% FPG band is ineligible in the baseline
+  period: 2022
+  input:
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+  output:
+    is_head_start_income_eligible: false
+
+# The 2024 final rule's excessive housing cost adjustment is
+# grantee-discretionary and off by default.
+- name: Housing costs do not adjust income in the baseline
+  period: 2025
+  input:
+    adjusted_gross_income: 24_000
+    tax_unit_fpg: 20_000
+    housing_cost: 12_000
+  output:
+    is_head_start_income_eligible: false
