@@ -266,3 +266,40 @@
     nc_scca_maximum_payment: 2_390
     # Expenses 4_000/mo - 412 fee = 3_588 > 2_390, so the market-rate cap binds.
     nc_scca: 2_390
+
+- name: Wake family of three, disabled 9-year-old and non-disabled 7-year-old, income between 133% and 200% FPL, only the disabled child is served.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 9
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        # 2026 FPG for 3 = 2_276.67/mo; 133% = 3_027.97, 200% = 4_553.33.
+        nc_scca_countable_income: 3_500
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: WAKE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_child_income_eligible: [false, true, false]
+    nc_scca_child_eligible: [false, true, false]
+    nc_scca_entry_eligible: true
+    nc_scca_market_rate: [0, 455, 0]
+    nc_scca_parent_fee: 350
+    # Wake school-age rate 455 - fee 350 = 105.
+    nc_scca_maximum_payment: 105
+    # Monthly expenses 1_000: min(1_000 - 350, 105) = 105.
+    nc_scca: 105
