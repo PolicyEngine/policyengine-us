@@ -1,12 +1,8 @@
 description: Illinois defines the following counties as covered counties under the Commodity Supplemental Food Program.
 
-# Counties are the service areas of the three local agencies under the Illinois
-# CSFP State Plan: Greater Chicago Food Depository (Cook), St. Louis Area Foodbank
-# (southwestern Illinois), and Tri-State Foodbank (southeastern Illinois).
-# The IDHS program page lists 24 counties; the IDHS-affiliated We Got You Illinois
-# site lists 29. The five additional counties (Calhoun, Lawrence, Monroe, Perry,
-# Wayne) are included here so income-eligible seniors are not wrongly excluded;
-# the IDHS grant notice names Calhoun in the Metro St. Louis service area.
+# Counties are the service areas of the three local agencies listed by IDHS:
+# Greater Chicago Food Depository (Cook), St. Louis Area Foodbank (southwestern
+# Illinois), and Tri-State Foodbank (southeastern Illinois).
 metadata:
   unit: list
   period: year
@@ -14,15 +10,10 @@ metadata:
   reference:
     - title: Illinois Department of Human Services Commodity Supplemental Food Program
       href: https://www.dhs.state.il.us/page.aspx?item=31874
-    - title: We Got You Illinois Commodity Supplemental Food Program
-      href: https://wegotyouillinois.org/csfp/
-    - title: Illinois Department of Human Services Commodity Supplemental Food Program grant notice (27-444-80-0667)
-      href: https://www.dhs.state.il.us/page.aspx?item=175757
 
 values:
   2025-01-01:
     - ALEXANDER_COUNTY_IL
-    - CALHOUN_COUNTY_IL
     - CLINTON_COUNTY_IL
     - COOK_COUNTY_IL
     - EDWARDS_COUNTY_IL
@@ -33,11 +24,8 @@ values:
     - JACKSON_COUNTY_IL
     - JERSEY_COUNTY_IL
     - JOHNSON_COUNTY_IL
-    - LAWRENCE_COUNTY_IL
     - MADISON_COUNTY_IL
     - MASSAC_COUNTY_IL
-    - MONROE_COUNTY_IL
-    - PERRY_COUNTY_IL
     - POPE_COUNTY_IL
     - PULASKI_COUNTY_IL
     - RANDOLPH_COUNTY_IL
@@ -47,6 +35,5 @@ values:
     - UNION_COUNTY_IL
     - WABASH_COUNTY_IL
     - WASHINGTON_COUNTY_IL
-    - WAYNE_COUNTY_IL
     - WHITE_COUNTY_IL
     - WILLIAMSON_COUNTY_IL

@@ -49,7 +49,7 @@
   output:
     il_dhs_csfp_county_eligible: true
 
-- name: Case 4, Illinois household in a county listed only by We Got You Illinois.
+- name: Case 4, Illinois household in a Metro St. Louis county not listed by IDHS.
   period: 2025
   input:
     people:
@@ -64,7 +64,7 @@
         state_code: IL
         county_str: CALHOUN_COUNTY_IL
   output:
-    il_dhs_csfp_county_eligible: true
+    il_dhs_csfp_county_eligible: false
 
 - name: Case 5, Illinois household in central Illinois outside CSFP covered counties.
   period: 2025

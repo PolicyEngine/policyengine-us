@@ -7,10 +7,7 @@ class il_dhs_csfp_county_eligible(Variable):
     definition_period = YEAR
     label = "Illinois DHS CSFP county eligible"
     defined_for = StateCode.IL
-    reference = (
-        "https://www.dhs.state.il.us/page.aspx?item=31874",
-        "https://wegotyouillinois.org/csfp/",
-    )
+    reference = "https://www.dhs.state.il.us/page.aspx?item=31874"
 
     def formula(household, period, parameters):
         county = household("county_str", period)
