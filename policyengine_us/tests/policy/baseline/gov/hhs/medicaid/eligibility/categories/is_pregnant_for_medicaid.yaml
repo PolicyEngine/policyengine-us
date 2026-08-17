@@ -79,3 +79,47 @@
     medicaid_income_level: 2.06
   output:
     is_pregnant_for_medicaid: false
+
+# Missouri applies the MPW limit (196% FPL plus the 5% disregard) as the
+# Appendix A monthly-dollar maximum, rounded up to the next whole dollar.
+# The unborn child counts in the applicant's household, so a pregnant
+# person living alone is a household of 2 in 2026:
+# 21,640 x 2.01 / 12 = 3,624.67 -> $3,625.
+- name: MO pregnant person at exactly the Appendix A $3,625 monthly maximum, eligible although the exact ratio is 2.0102
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        employment_income: 43_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    medicaid_household_size: 2
+    is_pregnant_for_medicaid_fc: true
+    is_pregnant_for_medicaid: true
+
+- name: MO pregnant person $1 above the Appendix A monthly maximum ($3,626), ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+        employment_income: 43_512
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_pregnant_for_medicaid_fc: false
+    is_pregnant_for_medicaid: false

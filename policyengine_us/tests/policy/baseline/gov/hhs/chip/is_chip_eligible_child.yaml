@@ -199,3 +199,47 @@
   output:
     has_chip_disqualifying_health_coverage: True
     is_chip_eligible_child: False
+
+# Missouri applies the CHIP 75 limit (300% FPL plus the 5% disregard) as the
+# Appendix A monthly-dollar maximum, rounded up to the next whole dollar:
+# household of 2 in 2026, 21,640 x 3.05 / 12 = 5,500.17 -> $5,501.
+- name: MO child at exactly the $5,501 CHIP 75 maximum is CHIP-eligible although the exact ratio is 3.0505
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 66_012
+      child:
+        age: 8
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: MO child $1 above the $5,501 CHIP 75 maximum is not CHIP-eligible
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 66_024
+      child:
+        age: 8
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    is_chip_eligible_child: [false, false]

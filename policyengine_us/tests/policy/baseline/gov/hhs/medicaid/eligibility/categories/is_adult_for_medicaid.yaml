@@ -216,3 +216,121 @@
   output:
     is_adult_for_medicaid_nfc: true
     is_adult_for_medicaid: false
+
+# Missouri applies the AEG adult limit (133% FPL plus the 5% disregard) as
+# the Appendix A monthly-dollar maximum, rounded up to the next whole
+# dollar: household of 1 in 2026, 15,960 x 1.38 / 12 = 1,835.40 -> $1,836.
+- name: MO adult at exactly the Appendix A $1,836 monthly maximum, eligible although the exact ratio is 1.3805
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 22_032
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_adult_for_medicaid_fc: true
+    is_adult_for_medicaid: true
+
+- name: MO adult $1 above the Appendix A monthly maximum ($1,837), ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 22_044
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_adult_for_medicaid_fc: false
+    is_adult_for_medicaid: false
+
+# For a household of 4 in 2026 the exact AEG threshold is already a whole
+# dollar, 33,000 x 1.38 / 12 = $3,795.00, so no rounding occurs and $3,795 is
+# the last eligible dollar.
+- name: MO adult at exactly the $3,795 monthly maximum, eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_540
+      person2:
+        age: 40
+      person3:
+        age: 12
+      person4:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    is_adult_for_medicaid_fc: [true, true, true, true]
+
+# KNOWN LIMITATION: medicaid_income_level measures Missouri income from the
+# whole dollar just below monthly income (ceil(m) - 1). When the exact
+# threshold is a whole dollar, the household $1 above it measures at exactly
+# the limit ($3,795 x 12 / 33,000 = 1.38), and the strict-less-than test
+# still passes because the float32 level compares below the float64
+# parameter, although Missouri would find $3,796 ineligible. This case pins
+# that behavior so a change to it is deliberate rather than silent.
+- name: MO adult $1 above the whole-dollar maximum ($3,796) still measures at the limit (known limitation)
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_552
+      person2:
+        age: 40
+      person3:
+        age: 12
+      person4:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    is_adult_for_medicaid_fc: [true, true, true, true]
+
+- name: MO adult $2 above the whole-dollar maximum ($3,797), ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 45_564
+      person2:
+        age: 40
+      person3:
+        age: 12
+      person4:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    is_adult_for_medicaid_fc: [false, false, false, false]
