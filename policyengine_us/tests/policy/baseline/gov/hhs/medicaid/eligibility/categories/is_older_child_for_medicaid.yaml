@@ -51,3 +51,48 @@
     state_code: MO
   output:
     is_older_child_for_medicaid: false
+
+# Missouri applies the MHK ages 1-18 limit (148% FPL plus the 5% disregard)
+# as the Appendix A monthly-dollar maximum, rounded up to the next whole
+# dollar: household of 3 in 2026, 27,320 x 1.53 / 12 = 3,483.30 -> $3,484.
+- name: MO children at exactly the Appendix A $3,484 monthly maximum, eligible although the exact ratio is 1.5303
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 41_808
+      person2:
+        age: 8
+      person3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_older_child_for_medicaid: [false, true, true]
+
+- name: MO children $1 above the Appendix A monthly maximum ($3,485), ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 41_820
+      person2:
+        age: 8
+      person3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_older_child_for_medicaid: [false, false, false]
