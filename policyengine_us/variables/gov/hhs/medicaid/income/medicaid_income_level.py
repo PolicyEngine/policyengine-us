@@ -29,7 +29,13 @@ class medicaid_income_level(Variable):
         # when the whole dollar just below m (ceil(m) - 1) is strictly under
         # the exact threshold, so Missouri's level is measured from that
         # dollar figure and the downstream FPL-ratio comparisons reproduce the
-        # published dollar boundaries.
+        # published dollar boundaries. When the exact threshold is itself a
+        # whole dollar (no rounding), income $1 above it measures at exactly
+        # the limit, which the "at or below" categories accept and the
+        # strict-less-than categories also accept once the float32 level is
+        # compared with the float64 parameter, so that single dollar of
+        # income remains eligible; the whole-dollar case is rare (in 2026
+        # only the size-4 and size-9 adult thresholds, $3,795 and $7,061).
         monthly_income = np.round(income / MONTHS_IN_YEAR, 2)
         mo_income = max_(np.ceil(monthly_income) - 1, 0) * MONTHS_IN_YEAR
         countable_income = where(state_code == StateCode.MO, mo_income, income)
