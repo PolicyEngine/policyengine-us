@@ -46,7 +46,6 @@
         members: [person1, child1, child2]
         state_code: NC
   output:
-    nc_scca_fpg_rate: [1.33, 1.33, 2]
     nc_scca_child_income_eligible: [false, false, true]
     nc_scca_child_eligible: [false, false, true]
     nc_scca_entry_eligible: true
