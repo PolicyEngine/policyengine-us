@@ -9,50 +9,34 @@ class ny_ui_weekly_payable(Variable):
     definition_period = YEAR
     reference = (
         "https://www.nysenate.gov/legislation/laws/LAB/590",
-        "https://www.nysenate.gov/legislation/laws/LAB/525",
         "https://dol.ny.gov/system/files/documents/2025/10/p803-partial-ui-faqs-10-3-25.pdf#page=1",
     )
     documentation = (
-        "Hybrid partial-benefit rule. The paid amount follows the P803 "
-        "hours-tier fraction times the weekly benefit rate; the earnings "
-        "zero-gate (gross earnings at or above WBR + partial benefit credit) "
-        "follows NY Lab. Law § 525 / § 590(5)(c). The two sources conflict for "
-        "low-WBR, high-earnings weeks: e.g. WBR $150 / 12 hours / $260 earnings "
-        "yields $0 here under the statutory gate versus $112.50 under pure P803. "
-        "The statutory gate is deliberately retained."
+        "Partial-unemployment benefit under the P803 hours-based system "
+        "(Ch. 277 of the Laws of 2021 § 31, effective 2021-08-16), which "
+        "replaced the earlier day/earnings-based reduction. The weekly amount "
+        "is the hours-tier fraction of the weekly benefit rate. The only "
+        "earnings test is the statutory ceiling: gross weekly earnings above "
+        "the maximum benefit rate (e.g. $504 in 2025) disqualify the week "
+        "entirely, regardless of hours. The NY Lab. Law § 525 / § 590(5)(c) "
+        "earnings-taper regime is displaced by the hours-tier system and is "
+        "not applied, consistent with ny_ui_hours_tier_rate."
     )
     defined_for = "ny_ui_monetarily_eligible"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ny.dol.unemployment_insurance.benefit
         weekly_benefit_rate = person("ny_ui_weekly_benefit_rate", period)
-        partial_benefit_credit = person("ny_ui_partial_benefit_credit", period)
         gross_weekly_earnings = person("ny_ui_gross_weekly_earnings", period)
-        weekly_hours_worked = person("ny_ui_weekly_hours_worked", period)
         hours_tier_rate = person("ny_ui_hours_tier_rate", period)
+        # P803 earnings ceiling: gross earnings above the maximum benefit rate
+        # disqualify the entire week, regardless of hours worked.
         earnings_cap_disqualified = gross_weekly_earnings > p.max_amount
-        partially_employed = (weekly_hours_worked > 0) & ~earnings_cap_disqualified
-        # Statutory § 525 / § 590(5)(c) earnings zero-gate: no partial payment
-        # once gross earnings reach WBR + partial benefit credit. This gate is
-        # retained even though the P803 hours-tier amount below would otherwise
-        # pay a positive benefit for the same week (see class documentation).
-        partial_payment_eligible = gross_weekly_earnings < (
-            weekly_benefit_rate + partial_benefit_credit
+        # Otherwise the paid amount is the hours-tier fraction of the WBR (the
+        # 0-10 hour tier pays the full rate, so fully-unemployed weeks return
+        # the WBR). No § 525 earnings taper is applied.
+        return where(
+            earnings_cap_disqualified,
+            0,
+            hours_tier_rate * weekly_benefit_rate,
         )
-        # Paid amount follows the P803 hours-tier fraction of the WBR.
-        partial_amount = hours_tier_rate * weekly_benefit_rate
-
-        amount = select(
-            [
-                earnings_cap_disqualified,
-                partially_employed & partial_payment_eligible,
-                partially_employed & ~partial_payment_eligible,
-            ],
-            [
-                0,
-                partial_amount,
-                0,
-            ],
-            default=weekly_benefit_rate,
-        )
-        return amount

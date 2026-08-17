@@ -3,6 +3,9 @@ description: New York pays this share of the weekly benefit rate based on hours 
 # The hours-based partial-benefit tier system took effect 2021-08-16 (Ch. 277
 # of the Laws of 2021 § 31, as added by Ch. 305 of the Laws of 2021 § 14);
 # bracket start dates reflect that. Values verified for 2025-2026.
+# For periods before 2021-08-16 the earliest bracket set back-extends, so the
+# partial-benefit calculation applies the hours-tier system as an approximation;
+# the pre-reform day/earnings-based reduction is not separately modeled.
 brackets:
   - threshold:
       2021-08-16: 0
