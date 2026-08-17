@@ -1,3 +1,10 @@
+## [1.808.1] - 2026-08-17
+
+### Fixed
+
+- Missouri MAGI Medicaid and CHIP eligibility follows Appendix A's rounded monthly-dollar income maximums, so income at the published dollar limit is eligible.
+
+
 ## [1.808.0] - 2026-08-14
 
 ### Added
