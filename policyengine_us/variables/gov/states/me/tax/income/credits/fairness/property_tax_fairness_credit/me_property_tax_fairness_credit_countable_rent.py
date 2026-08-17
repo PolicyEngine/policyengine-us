@@ -13,14 +13,22 @@ class me_property_tax_fairness_credit_countable_rent(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
         rent = add(tax_unit, period, ["rent"])
-        utilities_included_in_rent = tax_unit("utilities_included_in_rent", period)
-        utility_expenses = add(tax_unit, period, ["utility_expense"])
+        included = tax_unit("utilities_included_in_rent", period)
+        # Dedicated amount of utilities included in rent (Schedule PTFC/STFC
+        # line 5c). This is distinct from the household's general utility_expense
+        # (separately-paid utilities), which is not subtracted from rent here.
+        included_amount = tax_unit("me_ptfc_utilities_included_in_rent", period)
         # Schedule PTFC/STFC line 5c: when rent includes heat/utilities, exclude
-        # the utility portion before taking 15% of rent. If the amount is known,
-        # subtract it; if it is not known, subtract 15% of gross rent instead.
-        amount_known = utility_expenses > 0
-        deductible_utility_expenses = utilities_included_in_rent * where(
-            amount_known, utility_expenses, rent * p.rate.utilities_included_in_rent
+        # the utility portion before taking 15% of rent. If the included amount
+        # is known (> 0), subtract it; if it is not known (0), subtract the
+        # 15%-of-rent estimate instead. When utilities are not included in rent,
+        # nothing is subtracted.
+        amount_known = included_amount > 0
+        utility_portion = included * where(
+            amount_known,
+            included_amount,
+            rent * p.rate.utilities_included_in_rent,
         )
-        net_rent = rent - deductible_utility_expenses
+        # Line 5d (5a - 5c) can never be negative.
+        net_rent = max_(rent - utility_portion, 0)
         return net_rent * p.rate.rent
