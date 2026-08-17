@@ -10,7 +10,7 @@ class ct_child_tax_rebate(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("ct_agi", period)
+        income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.rebate
 
@@ -22,8 +22,12 @@ class ct_child_tax_rebate(Variable):
         increments = np.ceil(excess / increment)
         total_reduction_amount = increments * reduction_per_increment
 
-        count_dependents = tax_unit("tax_unit_count_dependents", period)
-        capped_children = min_(count_dependents, p.child_cap)
+        person = tax_unit.members
+        age = person("age", period)
+        dependent = person("is_tax_unit_dependent", period)
+        eligible_child = (age <= p.age_limit) & dependent
+        count_children = tax_unit.sum(eligible_child)
+        capped_children = min_(count_children, p.child_cap)
         total_rebate = capped_children * p.amount
 
         return max_(total_rebate - total_reduction_amount, 0)

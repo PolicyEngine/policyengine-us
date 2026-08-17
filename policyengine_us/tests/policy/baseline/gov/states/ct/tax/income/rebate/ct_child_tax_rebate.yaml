@@ -1,29 +1,184 @@
-- name: Single with $101,000 AGI and 2 dependents
+- name: Single with $101,000 federal AGI and 2 dependent children
   period: 2021
   input:
-    state_code: CT
-    ct_agi: 101_000
-    filing_status: SINGLE
-    tax_unit_count_dependents: 2
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 101_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CT
   output:
+    # 2 * 250 = 500; excess 1,000 over 100,000 -> 1 increment * 100 = 100 reduction.
     ct_child_tax_rebate: 400
 
-- name: Joint with $180,000 AGI and 1 dependent
+- name: Joint with $180,000 federal AGI and 1 dependent child
   period: 2021
   input:
-    state_code: CT
-    ct_agi: 180_000
-    filing_status: JOINT
-    tax_unit_count_dependents: 1
+    people:
+      parent1:
+        age: 40
+        is_tax_unit_dependent: false
+      parent2:
+        age: 38
+        is_tax_unit_dependent: false
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1]
+        adjusted_gross_income: 180_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: CT
   output:
+    # 1 * 250 = 250; 180,000 below joint threshold of 200,000 -> no reduction.
     ct_child_tax_rebate: 250
 
-- name: Head of household with $170,000 AGI and 5 dependents
+- name: Head of household with $165,000 federal AGI and 5 dependent children
   period: 2021
   input:
-    state_code: CT
-    ct_agi: 165_000
-    filing_status: HEAD_OF_HOUSEHOLD
-    tax_unit_count_dependents: 5
+    people:
+      parent:
+        age: 45
+        is_tax_unit_dependent: false
+      child1:
+        age: 15
+        is_tax_unit_dependent: true
+      child2:
+        age: 13
+        is_tax_unit_dependent: true
+      child3:
+        age: 11
+        is_tax_unit_dependent: true
+      child4:
+        age: 9
+        is_tax_unit_dependent: true
+      child5:
+        age: 7
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5]
+        adjusted_gross_income: 165_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5]
+        state_code: CT
   output:
+    # 5 children capped at 3 -> 750; excess 5,000 over 160,000 HoH threshold
+    # -> 5 increments * 100 = 500 reduction; 750 - 500 = 250.
     ct_child_tax_rebate: 250
+
+- name: Only dependent is age 21 - no eligible child (age gate)
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_dependent: false
+      dependent:
+        age: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, dependent]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, dependent]
+        state_code: CT
+  output:
+    # Sole dependent exceeds the age 18 limit -> 0 eligible children -> rebate 0.
+    ct_child_tax_rebate: 0
+
+- name: Mixed minor and adult dependents - only the minor counts
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_dependent: false
+      minor:
+        age: 10
+        is_tax_unit_dependent: true
+      adult_dependent:
+        age: 21
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, minor, adult_dependent]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, minor, adult_dependent]
+        state_code: CT
+  output:
+    # Only the age 10 dependent qualifies (age <= 18) -> 1 * 250 = 250, not 500.
+    ct_child_tax_rebate: 250
+
+- name: Federal AGI above threshold while CT AGI below it - federal phase-out applies
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 130_000
+        ct_agi: 90_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # Phase-out reads federal AGI (130,000), not ct_agi (90,000). 1 * 250 = 250;
+    # excess 30,000 over 100,000 -> 30 increments * 100 = 3,000 reduction -> 0.
+    ct_child_tax_rebate: 0
+
+- name: Sunset - 2023 tax unit with a qualifying child receives no rebate
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_dependent: false
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_code: CT
+  output:
+    # amount and child_cap sunset to 0 at 2022-01-01 -> one-time 2021 rebate only.
+    ct_child_tax_rebate: 0
