@@ -1,3 +1,10 @@
+## [1.811.1] - 2026-08-18
+
+### Fixed
+
+- Apply the NC SCCA age-based income limit per child so a school-age child over 133% FPL is excluded from the estimated savings even when a preschool sibling qualifies under 200% FPL.
+
+
 ## [1.811.0] - 2026-08-18
 
 ### Added
