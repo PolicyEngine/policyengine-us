@@ -1,3 +1,10 @@
+## [1.815.1] - 2026-08-18
+
+### Fixed
+
+- Fix the Arkansas additional tax credit for qualified individuals, which was granted to unmarried head-of-household filers by routing them through the married-filing-separately path; only married couples can file separately on the Arkansas return.
+
+
 ## [1.815.0] - 2026-08-18
 
 ### Added

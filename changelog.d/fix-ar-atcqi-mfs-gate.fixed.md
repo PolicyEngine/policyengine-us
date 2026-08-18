@@ -1,1 +1,0 @@
-Fix the Arkansas additional tax credit for qualified individuals, which was granted to unmarried head-of-household filers by routing them through the married-filing-separately path; only married couples can file separately on the Arkansas return.
