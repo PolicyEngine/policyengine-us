@@ -112,6 +112,37 @@
     ny_ccap_market_rate: (484 + 5 * 65) * 52 / 12
   absolute_error_margin: 0.01
 
+# 24-OCFS-LCM-22 sec. III.4: "12 hours or more in a day" earns the additional
+# period, so exactly 12 hours draws a part-day rate on each day, priced for
+# the zero hours over the maximum.
+- name: Case 8a, exactly the daily maximum hours adds a part-day period each day.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 12
+    childcare_days_per_week: 5
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: (484 + 5 * 65) * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 8b, just below the daily maximum hours adds no period.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 11.99
+    childcare_days_per_week: 5
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: 484 * 52 / 12
+  absolute_error_margin: 0.01
+
 # The highest-value cell in the schedule, checked across all three duration
 # tables at one county group and age group (Cases 9-11).
 - name: Case 9, group four center infant weekly rate.

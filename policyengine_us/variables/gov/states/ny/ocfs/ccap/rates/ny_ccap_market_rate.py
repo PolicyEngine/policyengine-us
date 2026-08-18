@@ -15,7 +15,8 @@ class ny_ccap_market_rate(Variable):
         "amount of time that period covers: the daily rate at or above the "
         "daily minimum hours, the part-day rate below it. A weekly schedule "
         "earns one additional period per day past the weekly maximum days, "
-        "and any schedule earns one per day for hours past the daily maximum."
+        "and any schedule earns one on each day of care at or above the daily "
+        "maximum hours."
     )
     reference = (
         "https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=6",
@@ -59,14 +60,17 @@ class ny_ccap_market_rate(Variable):
             daily_rate,
             part_day_rate,
         )
-        # Hours past the daily maximum add one further period on each day.
+        # 24-OCFS-LCM-22 sec. III.4: care of 12 hours or more in a day earns
+        # one further period on each day, priced by the time over 12 hours,
+        # so a day of exactly 12 hours draws the part-day rate.
+        reaches_daily_maximum = hours_per_day >= p.duration.daily_maximum_hours
         excess_hours = max_(hours_per_day - p.duration.daily_maximum_hours, 0)
         excess_hour_rate = where(
             excess_hours >= p.duration.daily_minimum_hours,
             daily_rate,
             part_day_rate,
         )
-        excess_hour_periods = where(excess_hours > 0, days_per_week, 0)
+        excess_hour_periods = where(reaches_daily_maximum, days_per_week, 0)
         rate_per_week = (
             base_rate
             + excess_days * excess_day_rate

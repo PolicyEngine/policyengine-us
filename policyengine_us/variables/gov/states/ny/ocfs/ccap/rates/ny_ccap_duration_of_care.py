@@ -21,8 +21,8 @@ class ny_ccap_duration_of_care(Variable):
         "the weekly maximum days, at or above the daily minimum hours. Below "
         "the daily minimum hours 415.9(c) makes the part-day rate mandatory "
         "whatever the weekly total. Everything else at or above the daily "
-        "minimum takes the daily rate. Days past the weekly maximum and hours "
-        "past the daily maximum earn additional periods in "
+        "minimum takes the daily rate. Days past the weekly maximum and days at or "
+        "above the daily maximum hours earn additional periods in "
         "ny_ccap_market_rate rather than changing this base category."
     )
     reference = (
