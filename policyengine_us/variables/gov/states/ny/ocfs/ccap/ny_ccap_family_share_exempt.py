@@ -18,13 +18,13 @@ class ny_ccap_family_share_exempt(Variable):
         "PolicyEngine has no preventive services variable. The exception for "
         "a child care services unit comprised of the eligible children only "
         "is not modeled because PolicyEngine has no variable identifying a "
-        "child-only assistance unit. The regulation has no income-based "
-        "exception; a family at or below the state income standard owes "
-        "nothing because 415.3(e)(3) computes their share as zero, which "
-        "ny_ccap_family_share handles."
+        "child-only assistance unit. The exception for a family with income "
+        "at or below 100 percent of the state income standard is not read "
+        "here: 415.3(e)(3) computes that family's share as zero, which "
+        "ny_ccap_family_share applies arithmetically."
     )
     reference = (
-        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=18",
+        "https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=19",
         "https://ocfs.ny.gov/main/policies/external/2023/adm/23-OCFS-ADM-18.pdf#page=3",
     )
 

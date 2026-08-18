@@ -13,7 +13,10 @@ class ny_ccap_age_eligible(Variable):
         "special needs, and to a full-time secondary student under 19 with "
         "special needs. 415.1(c) defines a child with special needs by "
         "conditions requiring special education or related services, for "
-        "which is_disabled is the closest available variable. The parallel "
+        "which is_disabled is the closest available variable. "
+        "is_full_time_student stands in for the full-time secondary or "
+        "vocational student of 415.1(b)(3), so a post-secondary student with "
+        "special needs is also admitted. The parallel "
         "route for a child under court supervision is not modeled because "
         "PolicyEngine has no variable identifying court supervision."
     )

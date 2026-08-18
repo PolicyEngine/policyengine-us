@@ -8,15 +8,16 @@ class ny_ccap_activity_eligible(Variable):
     definition_period = MONTH
     defined_for = StateCode.NY
     documentation = (
-        "18 NYCRR 415.2(a)(2)(iv)(a) serves a family whose caretakers are "
+        "18 NYCRR 415.2(a)(2)(v)(a) serves a family whose caretakers are "
         "engaged in work, and the section's opening paragraph requires each "
         "caretaker of a two-caretaker family to meet one of the criteria. "
         "415.1(o)(1)(i) defines engaged in work by a minimum weekly hours "
         "figure the Office sets outside Part 415, so any hours count here. "
-        "Educational and vocational activities under 415.2(a)(2)(iv)(d) are "
+        "Educational and vocational activities under 415.2(a)(2)(v)(d) are "
         "read from full-time student status, and 415.2(a)(1)(i) and (iii) "
         "guarantee care to a public assistance family whose caretaker is in "
-        "a required work activity. The remaining pathways — job search, the "
+        "a required work activity; is_tanf_enrolled stands in for that "
+        "required-activity condition. The remaining pathways — job search, the "
         "individual training programs, domestic violence services, substance "
         "abuse treatment, and a caretaker who is incapacitated or has family "
         "duties away from home — are represented by the "
