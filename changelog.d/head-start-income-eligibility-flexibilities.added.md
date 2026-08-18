@@ -1,1 +1,1 @@
-Parameterize Head Start income eligibility: expose the 45 CFR 1302.12(d) discretionary 100-130% FPG band and the 2024 final rule's excessive housing cost income adjustment as reformable parameters, both defaulting to the statutory floor so baseline behavior is unchanged.
+Head Start income eligibility: add SPM-unit inputs for the 45 CFR 1302.12(d) discretionary 130% FPG limit and the 2024 final rule's excessive housing cost adjustment, compute Head Start gross income and housing costs from 45 CFR 1305.2 source lists, and compare at the SPM unit.
