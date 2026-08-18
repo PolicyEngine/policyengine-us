@@ -1,3 +1,10 @@
+## [1.809.1] - 2026-08-18
+
+### Fixed
+
+- Use the shared childcare_attending_days_per_month input in DC CCSP instead of a DC-only duplicate, and derive dc_ccsp_child_category from age.
+
+
 ## [1.809.0] - 2026-08-18
 
 ### Added
