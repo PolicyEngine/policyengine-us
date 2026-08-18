@@ -41,7 +41,7 @@
     il_ccap_copay: 39
     il_ccap: 1_301
 
-- name: Case 2, 2026 licensed home excludes an undocumented child.
+- name: Case 2, 2026 licensed home serves an undocumented child with State dollars.
   period: 2027-01
   absolute_error_margin: 0.01
   input:
@@ -73,7 +73,6 @@
   output:
     il_ccap_countable_income: 0
     il_ccap_income_eligible: true
-    il_ccap_immigration_status_eligible_person: [true, false]
     il_ccap_eligible_child: [false, true]
     il_ccap_parent_meets_working_requirements: true
     il_ccap_eligible: true
@@ -265,3 +264,47 @@
     il_ccap_max_monthly_reimbursement: [0, 920]
     # Negative observed charges floor at zero; defined-for eligibility also blocks payment.
     il_ccap: 0
+
+- name: Case 7, an eligible family receives no payment in the months before the July 2025 activation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # The family meets every 2025 eligibility rule all year; the in_effect
+    # gate alone zeroes January through June. From July the Case 1 arithmetic
+    # applies: 67 * 20 = $1,340 cap, $39 copay, $1,301 payment.
+    il_ccap_eligible:
+      2025-01: true
+      2025-07: true
+    il_ccap_copay:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 39
+    il_ccap:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 1_301

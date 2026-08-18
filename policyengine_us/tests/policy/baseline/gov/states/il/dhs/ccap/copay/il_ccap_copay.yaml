@@ -280,3 +280,51 @@
   output:
     il_ccap_copay:
       2025-10: 0.5
+
+- name: Case 24, the copay is zero in every month before the July 2025 activation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,764 a month charges $18 under the 2025 Table A for two people.
+    il_ccap_countable_income: 21_168
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # The eligibility rules are in force, so only the in_effect gate zeroes June.
+    il_ccap_copay:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 18
+
+- name: Case 25, family size ten above the 2025 chart pays its ceiling until the 2026 chart adds a higher top row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $12,900 a month sits above the 2025 chart's last row for ten people, which
+    # the parameter closes with an .inf bracket at the $855 ceiling; the 2026
+    # chart adds a $900 row from $12,858.
+    il_ccap_countable_income: 154_800
+    spm_unit_size: 10
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2026-06: 855
+      2026-07: 900
+
+- name: Case 26, family size nine above the 2025 chart pays its ceiling until the 2026 chart adds a higher top row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $12,800 a month sits above the 2025 chart's last row for nine people, which
+    # the parameter closes with an .inf bracket at the $835 ceiling; the 2026
+    # chart adds an $896 row from $12,793.
+    il_ccap_countable_income: 153_600
+    spm_unit_size: 9
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2026-06: 835
+      2026-07: 896

@@ -296,3 +296,20 @@
     state_code: IL
   output:
     il_ccap_max_daily_rate: 17
+
+- name: Case 23, the daily rate is zero in every month before the July 2025 activation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_provider_type: LICENSED_CENTER
+    il_ccap_county_group: GROUP_1A
+    il_ccap_child_age_group: UNDER_TWO
+    il_ccap_care_duration: FULL_DAY
+    state_code: IL
+  output:
+    # The child is eligible, so only the in_effect gate zeroes June.
+    il_ccap_max_daily_rate:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 67
