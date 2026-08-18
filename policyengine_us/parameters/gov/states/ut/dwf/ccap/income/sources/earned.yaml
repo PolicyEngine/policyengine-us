@@ -1,0 +1,24 @@
+description: Utah counts these earned income sources as countable income under the Child Care Assistance program.
+
+# R986-700-710(2)(a) determines what is counted as income under rule
+# R986-200: wages, salaries, commissions, tips, and employer-paid sick pay
+# are earned income (R986-200-236(2)(a)-(e)), as is net self-employment
+# income (R986-200-236(2)(h)). Only the income of the eligible child's
+# parent(s) is counted (R986-700-710(4)(a)); the member scoping is applied
+# in the gross income formula.
+values:
+  2020-01-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Utah CCAP countable earned income sources
+  reference:
+    - title: Utah Admin. Code R986-700-710(4)(a)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-710
+    - title: Utah Admin. Code R986-200-236(2)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-236
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=2

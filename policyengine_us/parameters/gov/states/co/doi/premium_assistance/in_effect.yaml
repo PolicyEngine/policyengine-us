@@ -1,0 +1,38 @@
+description: Colorado provides state premium assistance when this is true under the Colorado Premium Assistance program.
+values:
+  # HB25B-1006 (2025 First Extraordinary Session, enrolled act) authorized CPA
+  # only if Congress did not extend the enhanced federal Premium Tax Credit by
+  # 2025-12-31; that trigger condition occurred, so the program went live for
+  # plan year 2026. DOI Amended Regulation 4-2-78 (3 CCR 702-4) sections 3 and 5
+  # implement the program for 2026 and each plan year thereafter.
+  # SB26-178 (signed 2026-06-03) funds Colorado Premium Assistance for plan year
+  # 2027 (SB26-178 section 10-16-1205(2)(f), "each calendar year thereafter").
+  # 2028-01-01: false is a conservative carry-forward, not a repealer: no repealer
+  # touches CPA; the only 2028 date, section 10-16-1212(3), repeals a feasibility
+  # study, not the program itself.
+  # TODO re-verify against the DOI fall-2026 Reg 4-2-78 amendment cycle, which may
+  # extend funded plan years beyond 2027.
+  # Doc note: the Colorado Premium Assistance rulemaking authority is
+  # section 10-16-1207(5); section 10-16-1215 is the OmniSalud rulemaking
+  # authority, a separate program, and does not govern CPA.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Colorado Premium Assistance in effect
+  reference:
+    - title: DOI Amended Regulation 4-2-78 (3 CCR 702-4) sections 3 and 5
+      href: https://drive.google.com/file/d/1GkpvQTauvS4hr97_CSfkSEQCnoYjqrJI/view
+    - title: Colorado DOI Notice of Adoption of Amended Regulation 4-2-78 (403s to non-browser user agents)
+      href: https://doi.colorado.gov/announcements/notice-of-adoption-amended-regulation-4-2-78-concerning-health-insurance
+    - title: HB25B-1006 (enrolled) section 10-16-1207(5) Colorado Premium Assistance rulemaking authority
+      href: https://leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf#page=6
+    - title: HB25B-1006 (enrolled) section 10-16-1205(1)(b)(II) Colorado Premium Assistance payments and funding
+      href: https://leg.colorado.gov/sites/default/files/documents/2025B/bills/2025b_1006_enr.pdf#page=2
+    - title: SB26-178 section 10-16-1205(2)(f) plan year 2027 funding (signed 2026-06-03; the act terms the subsidy a "premium wrap", p.12)
+      href: https://leg.colorado.gov/bill_files/116559/download#page=3
+    - title: Connect for Health Colorado - Colorado Premium Assistance
+      href: https://connectforhealthco.com/new-customers/tips-for-choosing-a-plan/colorado-premium-assistance/

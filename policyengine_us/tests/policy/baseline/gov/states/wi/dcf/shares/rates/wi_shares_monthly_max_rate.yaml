@@ -1,0 +1,99 @@
+# Wisconsin Shares monthly maximum rates: the part-time monthly maximum
+# equals the hourly maximum times 131 part-time monthly hours exactly; the
+# full-time monthly maximum is a separately published cell (a whole-dollar
+# weekly rate times 4.348125), NOT the hourly rate times 153, so a full-time
+# case distinguishes transcription from derivation. Certified providers have
+# no monthly maximum of their own; their payments are capped at the licensed
+# family monthly maximum. Wisconsin Shares Handbook (July 2026) Section
+# 18.5.1; statewide maximum rate table effective 10/1/2025.
+- name: Case 1, Milwaukee County licensed group part-time monthly maximum for a three-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 15
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # 9.72 hourly x 131 part-time monthly hours = 1,273.32.
+    wi_shares_monthly_max_rate: 1_273.32
+
+- name: Case 2, Milwaukee County licensed group full-time monthly maximum for a three-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 40
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Published full-time monthly cell 1,478.37 (340 weekly x 4.348125),
+    # not the 9.72 hourly x 153 = 1,487.16 derivation.
+    wi_shares_monthly_max_rate: 1_478.37
+
+- name: Case 3, Milwaukee County licensed family full-time monthly maximum for a six-year-old.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_hours_per_week: 40
+        wi_shares_provider_type: LICENSED_FAMILY
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    wi_shares_monthly_max_rate: 1_087.04
+
+- name: Case 4, certified full-time care is capped at the licensed family monthly maximum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 40
+        wi_shares_provider_type: CERTIFIED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Certified providers have no monthly maximum of their own; the licensed
+    # family full-time monthly cell for Milwaukee County applies.
+    wi_shares_monthly_max_rate: 1_239.22
+
+- name: Case 5, certified part-time care is capped at the licensed family part-time monthly maximum.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 15
+        wi_shares_provider_type: CERTIFIED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Licensed family hourly 8.15 x 131 part-time monthly hours = 1,067.65,
+    # not the certified hourly (7.34) x 131.
+    wi_shares_monthly_max_rate: 1_067.65

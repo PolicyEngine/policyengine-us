@@ -2,11 +2,15 @@ description: Montana counts these sources as subtractions.
 values:
   2010-01-01:
     - mt_disability_income_exclusion_person
+    - mt_unemployment_compensation_subtraction
   2021-01-01:
     - mt_interest_exemption_person
     - us_govt_interest_person
     - mt_tuition_subtraction_person
     - mt_disability_income_exclusion_person
+    # Former 15-30-2110, MCA exempted unemployment compensation;
+    # SB 399 (2021) repealed the exemption effective tax year 2024.
+    - mt_unemployment_compensation_subtraction
   2024-01-01:
     - mt_interest_exemption_person
     - mt_tuition_subtraction_person

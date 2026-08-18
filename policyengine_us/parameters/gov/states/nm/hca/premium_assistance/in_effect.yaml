@@ -1,0 +1,28 @@
+description: New Mexico provides state premium assistance under the Health Insurance Marketplace Affordability Program when this is true.
+values:
+  # PY2026 comes from the PY2026 MAP Manual and PY2027 from the FINAL PY2027 MAP
+  # Manual (HCA, issued 2026-06-16), whose Table 1 (p.4) confirms the same
+  # effective schedule. The LFC "Program Cost Estimate (2024)" table confirms the
+  # same scale for PY2025, but no 2025 backdating is applied here. The
+  # 2028-01-01: false entry is the "no PY2028 guidance yet" convention.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico Premium Assistance in effect
+  reference:
+    # HCAF is created at SB 317 Sec. 4(A); its premium-reduction purpose is
+    # stated at SB 317 Sec. 4(B)(1).
+    - title: New Mexico SB 317 (2021) Section 4(A)
+      href: https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0317.pdf#page=6
+    - title: New Mexico SB 317 (2021) Section 4(B)(1)
+      href: https://www.nmlegis.gov/Sessions/21%20Regular/final/SB0317.pdf#page=7
+    - title: PY2026 MAP Policy and Procedures Manual, Program Parameters - Effective Date
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, Table 1
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
+    - title: New Mexico Health Care Authority, Health Insurance Marketplace Affordability Program
+      href: https://www.hca.nm.gov/health-insurance-marketplace-affordability-program/

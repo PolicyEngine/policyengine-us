@@ -1,0 +1,17 @@
+description: Wisconsin disregards the earned income and Supplemental Security Income of dependents below this age under the Wisconsin Shares Child Care Subsidy Program.
+
+# The handbook disregards "Earned Income and Supplemental Security Income
+# (SSI) payments of Minor Dependents" without defining "minor"; Wisconsin's
+# age of majority is 18 (Wis. Stat. § 990.01(20)).
+values:
+  2025-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Wisconsin Shares minor dependent income disregard age
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.3 Disregarded Income
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=59
+    - title: Wis. Stat. § 990.01(20)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/990/01/20

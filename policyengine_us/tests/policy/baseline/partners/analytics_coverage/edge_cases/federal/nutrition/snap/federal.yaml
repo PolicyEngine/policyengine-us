@@ -237,6 +237,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -245,6 +246,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id004
@@ -273,8 +275,9 @@
     spm_units:
       spm_unit:
         # Zero-income childless couple pins the 2-person maximum allotment
-        # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr defaults
-        # to 40, so work requirements are met). Net income 0 -> contribution 0 ->
+        # directly (no TANF/SSI confound; weekly_hours_worked_before_lsr is set
+        # to 40 for both adults so work requirements are met). Net income 0 ->
+        # contribution 0 ->
         # benefit = max allotment: 9 x 546 + 3 x 565.28 = 6,609.84.
         snap: 6609.85
         is_snap_eligible: true
@@ -291,6 +294,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id005
@@ -319,9 +323,11 @@
         # Minimum allotment path: net = 20,000/12 x 0.8 - 209 = 1,124.33 ->
         # contribution 337.20 exceeds the 1-person maximum (298), so the normal
         # allotment is negative and the minimum allotment applies (8% of the
-        # 1-person maximum, units of 1-2 people only): Jan-Sep 0.08 x 298 =
-        # 23.84/month; Oct-Dec 0.08 x 308.52 = 24.68/month. Annual = 288.60.
-        snap: 288.61
+        # 1-person maximum, rounded to the nearest whole dollar per 7 CFR
+        # 273.10(e)(2)(ii)(C), units of 1-2 people only): Jan-Sep
+        # 0.08 x 298 = 23.84 -> 24/month; Oct-Dec 0.08 x 308.52 = 24.68 ->
+        # 25/month. Annual = 291.
+        snap: 291
         is_snap_eligible: true
 - name: snap_single_elderly_65_ssi_counts_as_unearned_income (federal)
   period: 2026
@@ -382,6 +388,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
       spouse:
         age: 28
         is_tax_unit_head: false
@@ -390,6 +397,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id007
@@ -1441,6 +1449,7 @@
         is_disabled: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 20_000
+        weekly_hours_worked_before_lsr: 40
       student:
         age: 20
         is_tax_unit_head: false
@@ -1483,6 +1492,7 @@
         # The ineligible student is a nonhousehold member (7 CFR 273.11(d)):
         # their $10,000 earnings are excluded entirely and the unit size is 1;
         # the 130%-FPG gross test passes only because of the exclusion, and
-        # the unit receives the 1-2 person minimum allotment.
-        snap: 288.61
+        # the unit receives the 1-2 person minimum allotment, rounded to the
+        # nearest whole dollar ($24/month Jan-Sep, $25/month Oct-Dec).
+        snap: 291
         is_snap_eligible: true

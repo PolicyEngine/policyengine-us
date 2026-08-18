@@ -3,10 +3,14 @@ values:
   2011-06-28:
     - ssi
     - social_security
+    - railroad_benefits
     - dividend_income
     - interest_income
+    - estate_income
     - rental_income
+    - farm_rent_income
     - pension_income
+    - military_retirement_pay
     - veterans_benefits
     - strike_benefits
     - unemployment_compensation
@@ -18,20 +22,26 @@ metadata:
   period: year
   label: Nebraska Child Care Subsidy unearned income sources
   reference:
-    - title: 392 NAC 3-005.02(1), (7)-(9), (12), (16)-(19), (23)-(25)
-      href: https://dhhs.ne.gov/Documents/Title-392-Complete.pdf#page=13
-    - title: Nebraska DHHS Title 392 Guidance Document, 392 NAC 2-010.01(A)
+    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 2-010.01(A)
       href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=3
+    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 2-010.01(A), continued
+      href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=4
+    - title: Superseded Title 392 manual, 392 NAC 3-005.02 (Manual Letter 53-2011)
+      href: https://dhhs.ne.gov/Documents/Title-392-Complete.pdf#page=13
+    - title: 392 NAC 2-010.04, current exclusions list
+      href: https://rules.nebraska.gov/api/fileStorage/GetAsByteArray/title-pdfs/Title_392.pdf/180#page=12
 # We do not include AABD payments (item 2) at the moment to avoid a circular
 # dependency — `ne_aabd`'s standard of need depends on `housing_cost`, which
 # depends on `housing_assistance`, which depends on TANF, which deducts
 # childcare expenses net of child care subsidies (including this program).
-# 392 NAC 3-005.03 excludes the ADC grant, earned income credits, tax refunds,
+# 392 NAC 2-010.04 excludes the ADC grant, earned income credits, tax refunds,
 # gifts, loans, lump-sum inheritances or insurance payments, capital gains,
 # SNAP and other federal nutrition benefits, educational grants, adoption or
 # guardianship subsidies, energy assistance, HUD or local housing assistance,
 # and military combat pay.
-# We do not track estates, trust funds, land lease income, boarder or lodger
-# payments, royalties, military allotments, contributions, lump-sum payments,
-# annuities, or payments by an absent parent for child care, rent, or house
-# payments (items 10-11, 13-15, 18, 20-22, 26) at the moment.
+# Veterans benefits may include excluded veterans education assistance, which
+# cannot be isolated. The model lacks safe exact mappings for trusts,
+# royalties, boarder or lodger receipts, military allotments, contributions,
+# recurring insurance or annuity income, cash medical support, and direct
+# absent-parent vendor payments. `miscellaneous_income` is not used because it
+# combines countable and legally excluded sources.

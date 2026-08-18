@@ -1,8 +1,9 @@
-# These cases use the minimal default household, which does not trigger any of
-# Idaho's baseline refundable credits (the grocery credit requires residency
-# details these synthetic cases don't set), so id_refundable_credits equals the
-# new EITC alone. Preservation of the baseline refundable credits when they DO
-# apply is covered by id_eitc_preserves_baseline_credits.yaml. See #8775.
+# These cases use the minimal default household with work hours set so the
+# adult meets the SNAP work requirement and receives SNAP (as under the model's
+# prior default); SNAP receipt precludes Idaho's grocery credit, so
+# id_refundable_credits equals the new EITC alone. Preservation of the baseline
+# refundable credits when they DO apply is covered by
+# id_eitc_preserves_baseline_credits.yaml. See #8775.
 - name: Case 1 - ID EITC with 10% match
   period: 2024
   reforms: policyengine_us.reforms.states.id.eitc.id_eitc
@@ -10,6 +11,7 @@
     gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
     state_code: ID
     eitc: 1_000
+    weekly_hours_worked_before_lsr: 40
   output:
     id_eitc: 100
     id_refundable_credits: 100
@@ -21,6 +23,7 @@
     gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.2
     state_code: ID
     eitc: 2_500
+    weekly_hours_worked_before_lsr: 40
   output:
     id_eitc: 500
     id_refundable_credits: 500
@@ -32,6 +35,7 @@
     gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0
     state_code: ID
     eitc: 1_000
+    weekly_hours_worked_before_lsr: 40
   output:
     id_eitc: 0
     id_refundable_credits: 0
@@ -43,6 +47,7 @@
     gov.contrib.states.id.child_poverty_impact_dashboard.eitc.match: 0.1
     state_code: ID
     eitc: 0
+    weekly_hours_worked_before_lsr: 40
   output:
     id_eitc: 0
     id_refundable_credits: 0

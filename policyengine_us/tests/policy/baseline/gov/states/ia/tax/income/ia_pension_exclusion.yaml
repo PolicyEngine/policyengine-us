@@ -117,3 +117,76 @@
         state_code: IA
   output:
     ia_pension_exclusion: [1_000, 7_000]
+
+- name: Married cap is a combined $12,000, prorated across eligible spouses (issue 9155, taxsim issue 1110)
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 22_087
+      person2:
+        is_tax_unit_spouse: true
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 22_087
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # Combined exclusion capped at 12,000, not 12,000 per spouse.
+    ia_pension_exclusion: [6_000, 6_000]
+
+- name: Single eligible spouse takes the full couple limit share (2021 Expanded Instructions p. 27, Example 2)
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_pension_exclusion_eligible: false
+        taxable_pension_income: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # No per-spouse $6,000 sub-cap: the eligible spouse excludes all 8,000
+    # against the couple's combined 12,000 limit.
+    ia_pension_exclusion: [0, 8_000]
+
+- name: Combined cap prorated by each eligible spouse's pension share
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 30_000
+      person2:
+        is_tax_unit_spouse: true
+        ia_pension_exclusion_eligible: true
+        taxable_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    # 12,000 x 30/40 and 12,000 x 10/40.
+    ia_pension_exclusion: [9_000, 3_000]

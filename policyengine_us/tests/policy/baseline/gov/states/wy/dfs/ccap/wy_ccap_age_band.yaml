@@ -1,0 +1,60 @@
+# Unit tests for wy_ccap_age_band (Person, MONTH, Enum).
+# Table I rate columns / Rules Ch. 1 §9(o): 0-11 months, 12-23 months,
+# 2-3 years (24-47 months), 4-5 years (48-71 months), and 6-13 years
+# (72+ months). The formula maps age * 12 onto the age_group/months.yaml
+# brackets, so each integer age below lands mid-band or exactly on a
+# threshold.
+- name: Case 1, every rate age band maps from the child's age in years.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0  # 0 months
+      person2:
+        age: 1  # 12 months
+      person3:
+        age: 3  # 36 months
+      person4:
+        age: 5  # 60 months
+      person5:
+        age: 10  # 120 months
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WY
+  output:
+    wy_ccap_age_band: [AGE_0_TO_11_MONTHS, AGE_12_TO_23_MONTHS, AGE_2_TO_3_YEARS, AGE_4_TO_5_YEARS, AGE_6_TO_13_YEARS]
+
+- name: Case 2, ages exactly on a band threshold enter the higher band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.5  # 18 months, inside the 12-23 month band
+      person2:
+        age: 2  # exactly 24 months
+      person3:
+        age: 4  # exactly 48 months
+      person4:
+        age: 6  # exactly 72 months
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_age_band: [AGE_12_TO_23_MONTHS, AGE_2_TO_3_YEARS, AGE_4_TO_5_YEARS, AGE_6_TO_13_YEARS]
+
+- name: Case 3, a six-month-old infant and a twelve-year-old land in the outer bands.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0.5  # 6 months
+      person2:
+        age: 12  # 144 months
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_age_band: [AGE_0_TO_11_MONTHS, AGE_6_TO_13_YEARS]

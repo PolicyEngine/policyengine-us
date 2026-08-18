@@ -1,0 +1,45 @@
+description: Wyoming pays up to these maximum daily rates for licensed-family-setting child care under the Child Care, Purchase of Service program.
+# DFS maximum daily reimbursement rates, identical on the 04/01/24, 04/01/25,
+# and 04/01/26 Table I charts. The Licensed-Family Setting column covers Family
+# Child Care Homes and Family Child Care Centers. The part-day rate for
+# 6-13 years (20.00) exceeding 4-5 years (18.64) is as printed on the charts.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Wyoming CCAP licensed family setting daily maximum rates
+  breakdown:
+    - wy_ccap_age_band
+    - wy_ccap_day_length
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/24-03/31/25 (single page)
+      href: https://drive.google.com/file/d/1rG1a7x4V5KKLiipNUwMVmemHBLWZS5MZ/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://drive.google.com/file/d/1T7NWbz6hOlRyAcqwROXExos5JB57NstB/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/26-03/31/27 (single page)
+      href: https://drive.google.com/file/d/1-zjev4TxHdyq7vC8tlh9SCNSNZzZz4Kq/view
+
+AGE_0_TO_11_MONTHS:
+  PART_DAY:
+    2024-04-01: 21
+  FULL_DAY:
+    2024-04-01: 31.57
+AGE_12_TO_23_MONTHS:
+  PART_DAY:
+    2024-04-01: 20
+  FULL_DAY:
+    2024-04-01: 30
+AGE_2_TO_3_YEARS:
+  PART_DAY:
+    2024-04-01: 20
+  FULL_DAY:
+    2024-04-01: 30
+AGE_4_TO_5_YEARS:
+  PART_DAY:
+    2024-04-01: 18.64
+  FULL_DAY:
+    2024-04-01: 29.42
+AGE_6_TO_13_YEARS:
+  PART_DAY:
+    2024-04-01: 20
+  FULL_DAY:
+    2024-04-01: 28

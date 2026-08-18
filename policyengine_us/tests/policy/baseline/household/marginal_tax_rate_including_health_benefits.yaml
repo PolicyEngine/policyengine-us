@@ -3,6 +3,7 @@
   period: 2021
   input:
     age: 40
+    weekly_hours_worked_before_lsr: 40
     employment_income: 100_000
     taxable_interest_income: 100_000
     state_fips: 48  # TX
@@ -14,6 +15,7 @@
   period: 2025
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_fips: 54
     employment_income: 30_000
     healthcare_benefit_value: 0
@@ -25,6 +27,7 @@
   period: 2025
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_fips: 54
     employment_income: 30_000
     is_aca_ptc_eligible: true
@@ -36,6 +39,7 @@
   period: 2025
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_fips: 15 # HI
     employment_income: 0
     healthcare_benefit_value: 0
@@ -47,6 +51,7 @@
   period: 2025
   input:
     age: 30
+    weekly_hours_worked_before_lsr: 40
     state_fips: 26 # MI
     employment_income: 0
     is_medicaid_eligible: true

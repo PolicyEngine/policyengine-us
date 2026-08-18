@@ -3,6 +3,7 @@
   input:
     spm_unit_size: 4
     state_group: CONTIGUOUS_US
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_standard_deduction: 184
 
@@ -63,6 +64,7 @@
   input:
     spm_unit_size: 4
     state_group: CONTIGUOUS_US
+    weekly_hours_worked_before_lsr: 40
   output:
     # 223 * 333.952 / 322.561
     snap_standard_deduction: 230.88
