@@ -1,3 +1,10 @@
+## [1.814.0] - 2026-08-18
+
+### Added
+
+- Add New York Unemployment Insurance benefit (ny_ui), scoped to household calculations (claim-week inputs default to 0, so it is inert in microsimulation).
+
+
 ## [1.813.1] - 2026-08-18
 
 ### Fixed
