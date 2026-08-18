@@ -26,13 +26,17 @@ class ny_real_property_tax_credit(Variable):
         equivalent_rent = rent * rptc.rent_tax_equivalent
         real_estate_tax_or_equiv = real_estate_tax + equivalent_rent
 
-        # The credit is keyed to IT-214 household gross income (line 16),
-        # not federal AGI: it adds back nontaxable Social Security and other
-        # income the household received.
-        household_gross_income = tax_unit("ny_household_gross_income", period)
-        income_threshold = household_gross_income * rptc.excess_real_property_tax.calc(
-            household_gross_income
-        )
+        # Income measure. Through 2024 the credit is keyed to IT-214 household
+        # gross income (line 16) - federal AGI plus nontaxable Social Security
+        # and other household income. Part RR of Chapter 59 of the Laws of 2025
+        # amended Tax Law 606(e) so that, for tax years beginning on or after
+        # 2025-01-01, eligibility (and the credit amount) is based on federal
+        # adjusted gross income instead.
+        if rptc.uses_household_gross_income:
+            income = tax_unit("ny_household_gross_income", period)
+        else:
+            income = tax_unit("adjusted_gross_income", period)
+        income_threshold = income * rptc.excess_real_property_tax.calc(income)
         excess_rpt = max_(0, real_estate_tax_or_equiv - income_threshold)
 
         # Means-tested conditions. The renter cap (IT-214 line 21) applies to
@@ -44,14 +48,15 @@ class ny_real_property_tax_credit(Variable):
             rent <= rptc.max_rent
         )
 
-        meets_income_condition = household_gross_income < rptc.max_agi
+        # IT-214 income limit ("$18,000 or less").
+        meets_income_condition = income <= rptc.max_agi
 
         eligible = meets_value_conditions & meets_income_condition
 
         maximum_credit = where(
             meets_age_condition,
-            rptc.maximum.elderly.calc(household_gross_income),
-            rptc.maximum.non_elderly.calc(household_gross_income),
+            rptc.maximum.elderly.calc(income),
+            rptc.maximum.non_elderly.calc(income),
         )
 
         credit_amount = rptc.rate * excess_rpt

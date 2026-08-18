@@ -8,7 +8,21 @@ class ny_household_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-    reference = "https://www.tax.ny.gov/pdf/current_forms/it/it214i.pdf#page=2"  # IT-214 Step 3, lines 9-16
+    documentation = (
+        "IT-214 household gross income (Step 3, line 16) is the eligibility "
+        "and credit-sizing income measure through tax year 2024; from 2025 the "
+        "credit uses federal AGI instead (see ny_real_property_tax_credit). By "
+        "statute (Tax Law 606(e)(1)(C)) household gross income is the income of "
+        "ALL household members; this variable sums at the tax unit as a "
+        "simplification. It also omits statutory line items PolicyEngine does "
+        "not yet add back here: pensions and annuities not in AGI (line 13), "
+        "cash public assistance and TANF (line 14), workers' compensation, "
+        "child support / support money, and veterans' disability pensions "
+        "(line 11)."
+    )
+    # Year-specific 2024 instructions; the current_forms/ URL resolves to the
+    # latest (2025) form, whose Step 3 uses federal AGI, not this measure.
+    reference = "https://www.tax.ny.gov/pdf/2024/inc/it214i_2024.pdf#page=2"  # IT-214 Step 3, lines 9-16
 
     def formula(tax_unit, period, parameters):
         # Form IT-214, Step 3 "Determine household gross income" (line 16 =

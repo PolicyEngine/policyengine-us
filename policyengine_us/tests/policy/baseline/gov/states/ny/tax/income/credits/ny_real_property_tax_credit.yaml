@@ -63,3 +63,31 @@
         state_code: NY
   output:
     ny_real_property_tax_credit: 0
+
+# From tax year 2025 (Part RR of Ch. 59 of the Laws of 2025) eligibility keys
+# on federal AGI, not household gross income: the same filer as the case above,
+# with nontaxable Social Security, now qualifies because FAGI 6,000 <= 18,000.
+# (The 2025 credit *amount* becomes a flat Table A/B lookup rather than 50% of
+# excess - tracked as a follow-up - so the amount here is the pre-2025 formula
+# applied to FAGI; the point of this case is that the credit is no longer zero.)
+- name: 2025 - FAGI keying lets a filer with nontaxable Social Security qualify
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        social_security: 15_000
+        rent: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    adjusted_gross_income: 6_000
+    ny_household_gross_income: 21_000
+    # Non-zero (was 0 before this fix): qualifies on FAGI. The amount is the
+    # pre-2025 formula applied to FAGI; the 2025 flat Table A/B lookup (which
+    # would give $300) is tracked as a follow-up.
+    ny_real_property_tax_credit: 15
