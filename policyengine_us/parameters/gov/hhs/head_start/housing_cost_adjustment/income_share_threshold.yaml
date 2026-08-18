@@ -1,8 +1,10 @@
 description: Head Start and Early Head Start programs applying the excessive housing cost adjustment reduce a family's gross income by housing costs exceeding this share of gross income.
 
 values:
-  # The adjustment took effect on October 21, 2024 (89 FR 67720). The
-  # head_start_applies_housing_cost_adjustment input gates whether it applies.
+  # The adjustment took effect on October 21, 2024 (89 FR 67720). This date
+  # does not gate the calculation: the model backfills the earliest value to
+  # its start year, so the head_start_applies_housing_cost_adjustment input
+  # alone determines whether the adjustment applies in any period.
   2024-10-21: 0.3
 
 metadata:
