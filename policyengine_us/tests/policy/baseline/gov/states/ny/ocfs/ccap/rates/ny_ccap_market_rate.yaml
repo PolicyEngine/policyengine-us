@@ -1,0 +1,198 @@
+- name: Case 1, group one center infant weekly rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 484 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 2, group two family day care toddler daily rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_2
+    childcare_provider_type_group: FDC_GFDC
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 63 * 4 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 3, group three legally exempt group preschool part-day rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_3
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 3
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 29 * 3 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 4, group four standard informal school-age weekly rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: LE_STD
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 188 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 5, group one enhanced informal preschool daily rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_ENH
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 55 * 5 * 52 / 12
+  absolute_error_margin: 0.01
+
+# 18 NYCRR 415.9(d) and 24-OCFS-LCM-22 sec. III.5: a sixth day earns an
+# additional period priced at the rate for the time that day covers. Six
+# hours is at the daily minimum, so the sixth day draws the daily rate.
+- name: Case 6, a sixth day of full-day care adds one daily rate.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 6
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: (484 + 97) * 52 / 12
+  absolute_error_margin: 0.01
+
+# 415.9(c): below six hours a day the part-day rate is mandatory whatever the
+# weekly total, so five hours across six days is six part-day periods rather
+# than a weekly rate plus an excess day.
+- name: Case 7, six short days are priced as six part-day periods.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 6
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+    ny_ccap_market_rate: 65 * 6 * 52 / 12
+  absolute_error_margin: 0.01
+
+# 24-OCFS-LCM-22 sec. III.5 worked example: 16 hours a day Monday through
+# Friday is one weekly market rate plus five part-day rates, because the four
+# hours past the daily maximum fall below the daily minimum.
+- name: Case 8, hours past the daily maximum add a part-day period each day.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 16
+    childcare_days_per_week: 5
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: (484 + 5 * 65) * 52 / 12
+  absolute_error_margin: 0.01
+
+# 24-OCFS-LCM-22 sec. III.4: "12 hours or more in a day" earns the additional
+# period, so exactly 12 hours draws a part-day rate on each day, priced for
+# the zero hours over the maximum.
+- name: Case 8a, exactly the daily maximum hours adds a part-day period each day.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 12
+    childcare_days_per_week: 5
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: (484 + 5 * 65) * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 8b, just below the daily maximum hours adds no period.
+  period: 2025-01
+  input:
+    age: 1
+    childcare_provider_type_group: DCC_SACC
+    childcare_hours_per_day: 11.99
+    childcare_days_per_week: 5
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: 484 * 52 / 12
+  absolute_error_margin: 0.01
+
+# The highest-value cell in the schedule, checked across all three duration
+# tables at one county group and age group (Cases 9-11).
+- name: Case 9, group four center infant weekly rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 500 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 10, group four center infant daily rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: DAILY
+    childcare_days_per_week: 1
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 102 * 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 11, group four center infant part-day rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_4
+    childcare_provider_type_group: DCC_SACC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: PART_DAY
+    childcare_days_per_week: 1
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 68 * 52 / 12
+  absolute_error_margin: 0.01
+
+# Attachment A publishes $0 for legally exempt group care under age 3, so an
+# otherwise eligible infant at such a provider draws no rate.
+- name: Case 12, legally exempt group infant care has a zero rate.
+  period: 2025-01
+  input:
+    ny_ccap_county_group: GROUP_1
+    childcare_provider_type_group: LE_GC
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    state_code: NY
+  output:
+    ny_ccap_market_rate: 0
+  absolute_error_margin: 0.01

@@ -1,0 +1,110 @@
+- name: Case 1, care at the weekly threshold uses the weekly rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+
+- name: Case 2, care below 30 weekly hours and at six daily hours uses the daily rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+- name: Case 3, care below six daily hours uses the part-day rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+- name: Case 4, extended daily care retains the daily base category.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 12
+    childcare_days_per_week: 2
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+# 18 NYCRR 415.9(c) makes the part-day rate mandatory below six hours per
+# day whatever the weekly total, and 415.9(a) measures the 30-hour weekly
+# threshold over five or fewer days. Five hours across six days fails both,
+# so it is six part-day periods, not a weekly rate.
+- name: Case 5, care across six days below six daily hours uses the part-day rate.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 6
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+# The five-day core reaches 30 hours and each day is at the daily minimum, so
+# the week is weekly; the sixth day earns an additional period in
+# ny_ccap_market_rate.
+- name: Case 6, six-hour care over six days is weekly on its five-day core.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 6
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: WEEKLY
+
+# 415.9(a) requires both limbs: 30 weekly hours AND at least the daily
+# minimum. Four hours across seven days reaches 28 hours over a five-day
+# core, and is under six hours a day, so it stays part-day.
+- name: Case 7, care below six daily hours across seven days stays part-day.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 4
+    childcare_days_per_week: 7
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+- name: Case 8, care just below six daily hours over five days is part-day.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 5.99
+    childcare_days_per_week: 5
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: PART_DAY
+
+# 28 weekly hours misses the weekly threshold while each day clears the daily
+# minimum, so the daily rate applies.
+- name: Case 9, care above the daily minimum below thirty weekly hours is daily.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 7
+    childcare_days_per_week: 4
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+- name: Case 10, care above the daily maximum over two days retains the daily category.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 14
+    childcare_days_per_week: 2
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY
+
+- name: Case 11, care just below the daily maximum over two days is daily.
+  period: 2025-01
+  input:
+    childcare_hours_per_day: 11.99
+    childcare_days_per_week: 2
+    state_code: NY
+  output:
+    ny_ccap_duration_of_care: DAILY

@@ -1,0 +1,205 @@
+description: New York sets these daily market rates by county group, provider type, and child age under the Child Care Assistance Program.
+# School-age child care programs share the DCC_SACC rates for the 3-5 and
+# 6-12 bands only. Attachment A publishes $0 for school-age programs in both
+# infant bands, which childcare_provider_type_group cannot express because it
+# carries a single enum member for day care centers and school-age programs.
+# The LE_GC infant and toddler cells are the $0 that Attachment A publishes,
+# not a missing row: 415.9(g)(1) rates legally exempt group programs off the
+# day care center schedule and OCFS publishes no under-3 rate for them.
+
+GROUP_1:
+  DCC_SACC:
+    INFANT:
+      2024-10-01: 97
+    TODDLER:
+      2024-10-01: 90
+    PRESCHOOLER:
+      2024-10-01: 85
+    SCHOOL_AGE:
+      2024-10-01: 75
+  FDC_GFDC:
+    INFANT:
+      2024-10-01: 85
+    TODDLER:
+      2024-10-01: 80
+    PRESCHOOLER:
+      2024-10-01: 78
+    SCHOOL_AGE:
+      2024-10-01: 75
+  LE_GC:
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 64
+    SCHOOL_AGE:
+      2024-10-01: 56
+  LE_STD:
+    INFANT:
+      2024-10-01: 55
+    TODDLER:
+      2024-10-01: 52
+    PRESCHOOLER:
+      2024-10-01: 51
+    SCHOOL_AGE:
+      2024-10-01: 49
+  LE_ENH:
+    INFANT:
+      2024-10-01: 60
+    TODDLER:
+      2024-10-01: 56
+    PRESCHOOLER:
+      2024-10-01: 55
+    SCHOOL_AGE:
+      2024-10-01: 53
+GROUP_2:
+  DCC_SACC:
+    INFANT:
+      2024-10-01: 80
+    TODDLER:
+      2024-10-01: 75
+    PRESCHOOLER:
+      2024-10-01: 70
+    SCHOOL_AGE:
+      2024-10-01: 60
+  FDC_GFDC:
+    INFANT:
+      2024-10-01: 65
+    TODDLER:
+      2024-10-01: 63
+    PRESCHOOLER:
+      2024-10-01: 60
+    SCHOOL_AGE:
+      2024-10-01: 55
+  LE_GC:
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 53
+    SCHOOL_AGE:
+      2024-10-01: 45
+  LE_STD:
+    INFANT:
+      2024-10-01: 42
+    TODDLER:
+      2024-10-01: 41
+    PRESCHOOLER:
+      2024-10-01: 39
+    SCHOOL_AGE:
+      2024-10-01: 36
+  LE_ENH:
+    INFANT:
+      2024-10-01: 46
+    TODDLER:
+      2024-10-01: 44
+    PRESCHOOLER:
+      2024-10-01: 42
+    SCHOOL_AGE:
+      2024-10-01: 39
+GROUP_3:
+  DCC_SACC:
+    INFANT:
+      2024-10-01: 67
+    TODDLER:
+      2024-10-01: 63
+    PRESCHOOLER:
+      2024-10-01: 58
+    SCHOOL_AGE:
+      2024-10-01: 58
+  FDC_GFDC:
+    INFANT:
+      2024-10-01: 58
+    TODDLER:
+      2024-10-01: 56
+    PRESCHOOLER:
+      2024-10-01: 53
+    SCHOOL_AGE:
+      2024-10-01: 53
+  LE_GC:
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 44
+    SCHOOL_AGE:
+      2024-10-01: 44
+  LE_STD:
+    INFANT:
+      2024-10-01: 38
+    TODDLER:
+      2024-10-01: 36
+    PRESCHOOLER:
+      2024-10-01: 34
+    SCHOOL_AGE:
+      2024-10-01: 34
+  LE_ENH:
+    INFANT:
+      2024-10-01: 41
+    TODDLER:
+      2024-10-01: 39
+    PRESCHOOLER:
+      2024-10-01: 37
+    SCHOOL_AGE:
+      2024-10-01: 37
+GROUP_4:
+  DCC_SACC:
+    INFANT:
+      2024-10-01: 102
+    TODDLER:
+      2024-10-01: 92
+    PRESCHOOLER:
+      2024-10-01: 90
+    SCHOOL_AGE:
+      2024-10-01: 69
+  FDC_GFDC:
+    INFANT:
+      2024-10-01: 80
+    TODDLER:
+      2024-10-01: 70
+    PRESCHOOLER:
+      2024-10-01: 65
+    SCHOOL_AGE:
+      2024-10-01: 60
+  LE_GC:
+    INFANT:
+      2024-10-01: 0
+    TODDLER:
+      2024-10-01: 0
+    PRESCHOOLER:
+      2024-10-01: 68
+    SCHOOL_AGE:
+      2024-10-01: 52
+  LE_STD:
+    INFANT:
+      2024-10-01: 52
+    TODDLER:
+      2024-10-01: 46
+    PRESCHOOLER:
+      2024-10-01: 42
+    SCHOOL_AGE:
+      2024-10-01: 39
+  LE_ENH:
+    INFANT:
+      2024-10-01: 56
+    TODDLER:
+      2024-10-01: 49
+    PRESCHOOLER:
+      2024-10-01: 46
+    SCHOOL_AGE:
+      2024-10-01: 42
+
+metadata:
+  unit: currency-USD
+  period: day
+  label: New York CCAP daily market rates
+  breakdown:
+    - ny_ccap_county_group
+    - childcare_provider_type_group
+    - ny_ccap_age_group
+  reference:
+    - title: 24-OCFS-LCM-22 Attachment A, daily market rates for county Groups 1-4 (file pages 15-18), effective October 1, 2024
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=15

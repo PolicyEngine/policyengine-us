@@ -1,0 +1,123 @@
+- name: Case 1, Nassau is in group one.
+  period: 2025-01
+  input:
+    county_str: NASSAU_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_1
+
+- name: Case 2, Albany is in group two.
+  period: 2025-01
+  input:
+    county_str: ALBANY_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_2
+
+- name: Case 3, Allegany is in group three.
+  period: 2025-01
+  input:
+    county_str: ALLEGANY_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_3
+
+- name: Case 4, Bronx is in group four.
+  period: 2025-01
+  input:
+    county_str: BRONX_COUNTY_NY
+    state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_4
+
+- name: Case 5, unknown county defaults to group three.
+  period: 2025-01
+  input:
+    county_str: UNKNOWN
+    state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_3
+
+- name: Case 6, mixed counties and an unknown county vectorize.
+  period: 2025-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    households:
+      household1:
+        members: [person1]
+        county_str: NASSAU_COUNTY_NY
+        state_code: NY
+      household2:
+        members: [person2]
+        county_str: BRONX_COUNTY_NY
+        state_code: NY
+      household3:
+        members: [person3]
+        county_str: UNKNOWN
+        state_code: NY
+  output:
+    ny_ccap_county_group: [GROUP_1, GROUP_4, GROUP_3]
+
+# Groups 1 and 4 carry the highest rates and hold most of New York's child
+# population, and an omitted county falls silently into the lowest-rate
+# group 3, so every member of both groups is named.
+- name: Case 7, every group one and group four county resolves correctly.
+  period: 2025-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+      person4: {}
+      person5: {}
+      person6: {}
+      person7: {}
+      person8: {}
+    households:
+      household1:
+        members: [person1]
+        county_str: PUTNAM_COUNTY_NY
+        state_code: NY
+      household2:
+        members: [person2]
+        county_str: ROCKLAND_COUNTY_NY
+        state_code: NY
+      household3:
+        members: [person3]
+        county_str: SUFFOLK_COUNTY_NY
+        state_code: NY
+      household4:
+        members: [person4]
+        county_str: WESTCHESTER_COUNTY_NY
+        state_code: NY
+      household5:
+        members: [person5]
+        county_str: KINGS_COUNTY_NY
+        state_code: NY
+      household6:
+        members: [person6]
+        county_str: NEW_YORK_COUNTY_NY
+        state_code: NY
+      household7:
+        members: [person7]
+        county_str: QUEENS_COUNTY_NY
+        state_code: NY
+      household8:
+        members: [person8]
+        county_str: RICHMOND_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group:
+      [
+        GROUP_1,
+        GROUP_1,
+        GROUP_1,
+        GROUP_1,
+        GROUP_4,
+        GROUP_4,
+        GROUP_4,
+        GROUP_4,
+      ]
