@@ -1,0 +1,42 @@
+- name: No SSTB income yields zero pprofinc.
+  period: 2024
+  input:
+    people:
+      head:
+        self_employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    taxsim_pprofinc: 0
+
+- name: Head SSTB self-employment income maps to pprofinc.
+  period: 2024
+  input:
+    people:
+      head:
+        sstb_self_employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    taxsim_pprofinc: 40_000
+
+- name: Head and spouse SSTB income sum; dependent SSTB income is excluded.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        sstb_self_employment_income: 30_000
+      spouse:
+        age: 45
+        sstb_self_employment_income: 20_000
+      dependent:
+        age: 16
+        sstb_self_employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+  output:
+    taxsim_pprofinc: 50_000
