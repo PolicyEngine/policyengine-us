@@ -1,0 +1,168 @@
+# Tests for Utah UI weekly benefit amount.
+# Formula: WBA = floor(high_quarter_wages / 26) - $5 (§ 35A-4-401(2)(a)(ii)).
+# Then capped at the annual max WBA (§ 35A-4-401(2)(b)(ii)):
+#   2024: $746; 2025: $777; 2026: $806.
+# WBA = 0 when claimant is not monetarily eligible.
+
+- name: Case 1, standard WBA from $10,000 high quarter.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $25,000 >= $5,300 and >= 1.5 * $10,000 = $15,000.
+        # WBA = floor($10,000 / 26) - $5 = $384 - $5 = $379.
+        # $379 below 2025 cap of $777, so no cap applies.
+        ut_ui_weekly_benefit_amount: 379
+
+- name: Case 2, WBA capped at 2024 max of $746.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 50_000
+        ut_ui_high_quarter_wages: 20_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $50,000 >= 1.5 * $20,000 = $30,000.
+        # Raw WBA = floor($20,000 / 26) - $5 = $769 - $5 = $764.
+        # 2024 cap = $746, so WBA = $746.
+        ut_ui_weekly_benefit_amount: 746
+
+- name: Case 3, WBA capped at 2026 max of $806.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 80_000
+        ut_ui_high_quarter_wages: 25_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Monetarily eligible: $80,000 >= 1.5 * $25,000 = $37,500.
+        # Raw WBA = floor($25,000 / 26) - $5 = $961 - $5 = $956.
+        # 2026 cap = $806, so WBA = $806.
+        ut_ui_weekly_benefit_amount: 806
+
+- name: Case 4, monetarily ineligible yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_000
+        ut_ui_high_quarter_wages: 2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # $5,000 < $5,300 minimum -> not monetarily eligible.
+        # WBA = 0 regardless of high-quarter calculation.
+        ut_ui_weekly_benefit_amount: 0
+
+# ---------------------------------------------------------------------------
+# S9(b) RAW WBA SUBTRACTION FLOOR — max_(floor(HQ/26) - 5, 0) zero-crossing.
+# The raw amount turns positive between HQ $130 (floor 5 -> 5-5 = 0) and
+# HQ $156 (floor 6 -> 6-5 = 1). Because HQ is the single highest quarter,
+# base-period wages can never exceed 4 x HQ, so a claimant with HQ in this
+# range ($<= $624 base) is always far below the $5,300 minimum and thus not
+# monetarily eligible. Both boundary cases therefore output WBA = 0; the pair
+# documents that the raw subtraction floor never emits a negative value.
+- name: Case 5, raw WBA subtraction at exactly zero (HQ $130) yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 520
+        ut_ui_high_quarter_wages: 130
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Raw WBA = floor(130/26) - 5 = 5 - 5 = 0 (crossing point).
+        # Not monetarily eligible ($520 < $5,300) -> WBA = 0.
+        ut_ui_monetarily_eligible: false
+        ut_ui_weekly_benefit_amount: 0
+
+- name: Case 6, raw WBA subtraction just positive (HQ $156) still yields zero WBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 624
+        ut_ui_high_quarter_wages: 156
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Raw WBA = floor(156/26) - 5 = 6 - 5 = 1 (just above the crossing).
+        # Not monetarily eligible ($624 < $5,300) -> WBA still forced to 0.
+        ut_ui_monetarily_eligible: false
+        ut_ui_weekly_benefit_amount: 0
+
+# ---------------------------------------------------------------------------
+# G5 DEFENSIVE — negative high-quarter wages (data error) never inflate WBA.
+- name: Case 7, negative high-quarter wages yield zero WBA (no negative benefit).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: -5_000
+        ut_ui_high_quarter_wages: -2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Negative base wages fail the $5,300 minimum -> not eligible.
+        # Raw WBA = floor(-2000/26) - 5 = -78 - 5 = -83 -> max_(.,0) = 0.
+        ut_ui_monetarily_eligible: false
+        ut_ui_weekly_benefit_amount: 0

@@ -9,9 +9,14 @@ metadata:
     - title: DC CCSP copay scale
       href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/Sliding%20Fee%20Scale.pdf
 
+# The published scale is not monotonic and these values match it as printed:
+# the second-child fee exceeds the first-child fee at 151-160% of poverty
+# ($1.92 against $1.85), drops from $2.04 to $1.12 at 171-180%, and falls to
+# $0.60 at 231-240% between $1.90 and $2.59. Verified against the OSSE sliding
+# fee scale; do not "correct" them without a newer source.
 brackets:
   - threshold:
-      2024-10-01: 0 
+      2024-10-01: 0
     amount:
       2024-10-01: 0
   - threshold:

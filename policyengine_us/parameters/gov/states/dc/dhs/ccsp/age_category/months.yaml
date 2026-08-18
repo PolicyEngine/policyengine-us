@@ -1,0 +1,34 @@
+description: The District of Columbia maps a child's age in months to a Child Care Subsidy Program rate age category, where 0 is infant and toddler, 1 is preschool, and 2 is school-age.
+# 0 = INFANT_AND_TODDLER (under 36 months)
+# 1 = PRESCHOOL (36-59 months)
+# 2 = SCHOOL_AGE (60+ months)
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: DC CCSP child age category by age in months
+  reference:
+    - title: 5-A DCMR § 199 — Infant defined as younger than 12 months; preschooler as 36 to 60 months of age but younger than school age
+      href: http://dcrules.elaws.us/dcmr/5-a199
+    - title: DC Child Care Subsidy Program Policy Manual — school-age children, ages 5 and older, may participate only for out-of-school-time care
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=5
+
+brackets:
+  # Infant and toddler: under 36 months. The QIN, which serves infants and
+  # toddlers, ends eligibility the year the child turns 3.
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0
+  # Preschool: 36 to under 60 months.
+  - threshold:
+      2020-01-01: 36
+    amount:
+      2020-01-01: 1
+  # School-age: 60 months and over, out-of-school-time care only.
+  - threshold:
+      2020-01-01: 60
+    amount:
+      2020-01-01: 2

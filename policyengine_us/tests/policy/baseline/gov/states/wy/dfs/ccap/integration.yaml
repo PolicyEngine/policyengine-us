@@ -1,0 +1,315 @@
+# Integration tests for the Wyoming Child Care, Purchase of Service program
+# (wy_ccap), tracing countable income -> Sliding Fee Scale step -> Table I
+# rate lookup -> min(rate, provider charge) x attended days - copay -> the
+# 7 percent gross-income copay cap, through to the federal
+# child_care_subsidies aggregator. 2026 federal poverty guideline
+# (contiguous US): 15_960 + 5_680 per additional person, so monthly FPG is
+# 1_803.33 (size 2), 2_276.67 (size 3), and 2_750 (size 4).
+# Table I values used: center full-day rates 36.36 / 34.44 / 32.00 / 31.33 /
+# 29.00 and part-day 20.51 (2-3 yrs); licensed family 31.57 full (0-11 mos),
+# 20.00 part (6-13 yrs); copays (part/full) Step 2 0.44/0.88, Step 3
+# 0.88/1.76, Step 4 3.20/6.40, Step 5 4.68/9.36, Step 6 6.84/13.68.
+- name: Case 1, single working parent with a three-year-old in full-day center care at Step 3.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Gross: 30_000 / 12 = 2_500. Countable: 2_500 - 200 disregard = 2_300.
+    wy_ccap_gross_income: 2_500
+    wy_ccap_countable_income: 2_300
+    # 2_300 <= 1.75 x 1_803.33 = 3_155.83 initial limit.
+    wy_ccap_income_eligible: true
+    wy_ccap_activity_eligible: true
+    wy_ccap_eligible_child: [false, true]
+    wy_ccap_eligible: true
+    # Ratio 2_300 / 1_803.33 = 1.275: Step 3, full-day copay 1.76 x 10 = 17.60.
+    wy_ccap_copay: 17.6
+    # Rate: center, 2-3 years, full day = 32.00; charge 6_000 / 12 / 10 days
+    # = 50 per day, so the rate binds.
+    wy_ccap_max_rate: [0, 32]
+    wy_ccap_daily_benefit: [0, 32]
+    # 32 x 10 - 17.60 = 302.40, flowing into the federal aggregator.
+    wy_ccap: 302.4
+    wy_child_care_subsidies: 302.4
+    child_care_subsidies: 302.4
+
+- name: Case 2, two working parents with an infant and a school-age child in licensed family care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        employment_income: 18_000
+        weekly_hours_worked_before_lsr: 20
+      person3:
+        age: 0
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: LICENSED_FAMILY
+      person4:
+        age: 8
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: LICENSED_FAMILY
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    # Gross: (36_000 + 18_000) / 12 = 4_500. Countable: (3_000 - 200) +
+    # (1_500 - 200) = 4_100, one disregard per working adult.
+    wy_ccap_gross_income: 4_500
+    wy_ccap_countable_income: 4_100
+    # 4_100 <= 1.75 x 2_750 = 4_812.50; both caretakers work.
+    wy_ccap_income_eligible: true
+    wy_ccap_activity_eligible: true
+    wy_ccap_eligible: true
+    # Parents have no reported care hours, so they read as part day.
+    wy_ccap_day_length: [PART_DAY, PART_DAY, FULL_DAY, PART_DAY]
+    # Ratio 4_100 / 2_750 = 1.491: Step 3. Copay = (1.76 full + 0.88 part)
+    # x 10 days = 26.40; the 7 percent cap 0.07 x 4_500 = 315 does not bind.
+    wy_ccap_copay: 26.4
+    # Rates: licensed family 0-11 months full day 31.57; 6-13 years part day
+    # 20.00. Charge: 9_600 / 12 = 800 split over 2 children = 400 each /
+    # 10 days = 40 per day, so both rates bind.
+    wy_ccap_max_rate: [0, 0, 31.57, 20]
+    wy_ccap_daily_benefit: [0, 0, 31.57, 20]
+    # (31.57 + 20) x 10 - 26.40 = 515.70 - 26.40 = 489.30.
+    wy_ccap: 489.3
+    wy_child_care_subsidies: 489.3
+    child_care_subsidies: 489.3
+
+- name: Case 3, a non-working POWER recipient is categorically eligible with no copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 2
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Enrolled for the full year so the annual child_care_subsidies
+        # aggregator sums twelve eligible months.
+        is_tanf_enrolled:
+          2026: true
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 0
+    # POWER participation satisfies both the income and activity tests
+    # (Manual §502); zero countable income lands at Step 1 with no copay.
+    wy_ccap_income_eligible: true
+    wy_ccap_activity_eligible: true
+    wy_ccap_eligible: true
+    wy_ccap_copay: 0
+    # Rate: center, 2-3 years, part day = 20.51; charge 3_600 / 12 / 10 days
+    # = 30 per day, so the rate binds.
+    wy_ccap_max_rate: [0, 20.51]
+    wy_ccap_daily_benefit: [0, 20.51]
+    # 20.51 x 10 - 0 = 205.10.
+    wy_ccap: 205.1
+    child_care_subsidies: 205.1
+
+- name: Case 4, a foster child's copay is waived at Step 4 income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_400
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Countable: 38_400 / 12 = 3_200 - 200 = 3_000 <= 3_155.83 limit.
+    wy_ccap_countable_income: 3_000
+    wy_ccap_income_eligible: true
+    wy_ccap_eligible: true
+    # Ratio 3_000 / 1_803.33 = 1.664 is Step 4 (full-day copay would be
+    # 6.40 x 10 = 64), but the foster-care waiver zeroes the family copay.
+    wy_ccap_copay: 0
+    # Rate: center, 4-5 years, full day = 31.33; charge 4_800 / 12 / 10 days
+    # = 40 per day, so the rate binds.
+    wy_ccap_max_rate: [0, 31.33]
+    wy_ccap_daily_benefit: [0, 31.33]
+    # 31.33 x 10 - 0 = 313.30.
+    wy_ccap: 313.3
+    child_care_subsidies: 313.3
+
+- name: Case 5, an enrolled family in the Step 5 transitional band stays eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 52_800
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 1
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+      person3:
+        age: 5
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        wy_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    # Countable: 52_800 / 12 = 4_400 - 200 = 4_200. Size-3 monthly FPG is
+    # 2_276.67: above the 1.75 initial limit (3_984.17) but within the 2.25
+    # continued limit (5_122.50), so only enrollment keeps the unit eligible.
+    wy_ccap_countable_income: 4_200
+    wy_ccap_income_eligible: true
+    wy_ccap_eligible: true
+    # Ratio 4_200 / 2_276.67 = 1.845: Step 5, full-day copay 9.36 x 10 days
+    # x 2 children = 187.20; the cap 0.07 x 4_400 = 308 does not bind.
+    wy_ccap_copay: 187.2
+    # Rates: center full day, 12-23 months = 34.44 and 4-5 years = 31.33;
+    # charge 12_000 / 12 = 1_000 split over 2 children = 500 each / 10 days
+    # = 50 per day, so the rates bind.
+    wy_ccap_max_rate: [0, 34.44, 31.33]
+    wy_ccap_daily_benefit: [0, 34.44, 31.33]
+    # (34.44 + 31.33) x 10 - 187.20 = 657.70 - 187.20 = 470.50.
+    wy_ccap: 470.5
+    child_care_subsidies: 470.5
+
+- name: Case 6, the 7 percent family cap binds for three full-day children at Step 6.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 69_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+      person3:
+        age: 4
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+      person4:
+        age: 7
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        wy_ccap_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    # Gross: 69_000 / 12 = 5_750; countable 5_550, within the enrolled
+    # limit 2.25 x 2_750 = 6_187.50.
+    wy_ccap_gross_income: 5_750
+    wy_ccap_countable_income: 5_550
+    wy_ccap_income_eligible: true
+    wy_ccap_eligible: true
+    # Ratio 5_550 / 2_750 = 2.018: Step 6. Uncapped copay 13.68 x 10 days
+    # x 3 children = 410.40 exceeds 0.07 x 5_750 = 402.50, so the cap binds.
+    wy_ccap_copay: 402.5
+    # Rates: center full day 2-3 years 32.00, 4-5 years 31.33, 6-13 years
+    # 29.00; charge 36_000 / 12 = 3_000 split over 3 children = 1_000 each /
+    # 10 days = 100 per day, so the rates bind.
+    wy_ccap_max_rate: [0, 32, 31.33, 29]
+    wy_ccap_daily_benefit: [0, 32, 31.33, 29]
+    # (32 + 31.33 + 29) x 10 - 402.50 = 923.30 - 402.50 = 520.80.
+    wy_ccap: 520.8
+    child_care_subsidies: 520.8
+
+- name: Case 7, an otherwise-identical family outside Wyoming receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Mirrors Case 1 except for the state; defined_for = StateCode.WY zeroes
+    # the whole chain through the benefit.
+    wy_ccap_eligible: false
+    wy_ccap: 0
+    wy_child_care_subsidies: 0

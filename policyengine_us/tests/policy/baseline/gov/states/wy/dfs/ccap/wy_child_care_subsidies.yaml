@@ -1,0 +1,75 @@
+# Unit test for wy_child_care_subsidies (SPMUnit, YEAR, adds=["wy_ccap"]).
+#
+# The integration cases assert the annual wrapper against a monthly wy_ccap in
+# households whose months are all identical, so a twelve-month sum and a
+# pass-through of one month produce the same number and neither is pinned. This
+# case makes the months differ, so the annual total equals no single month and
+# only a real MONTH -> YEAR roll-up satisfies it.
+#
+# The lever is wy_ccap_enrolled, the only MONTH-period input in the chain that
+# changes eligibility (childcare_hours_per_day, childcare_attending_days_per_month
+# and pre_subsidy_childcare_expenses are all YEAR-defined). Countable income is
+# placed between the initial and continued limits so enrollment alone decides
+# eligibility. All twelve months are stated explicitly: policyengine-core sets
+# auto_carry_over_input_variables, so listing only January would carry that value
+# forward and silently make every month eligible.
+#
+# Family of two, 2026: FPG = 15_960 + 5_680 = 21_640 per year = 1_803.33 per
+# month. Initial limit 1.75 x 1_803.33 = 3_155.83; continued 2.25 x 1_803.33 =
+# 4_057.50. Countable income = 44_400 / 12 - 200 = 3_500, which sits above the
+# initial limit and below the continued one.
+#
+# In an enrolled month:
+#   max rate  = 32.00 (center, 2-3 years, full day)
+#   charge    = 12_000 / 12 / 20 days = 50.00, so min(32.00, 50.00) = 32.00
+#   benefit   = 32.00 x 20 days = 640.00
+#   copay     = min(9.36 x 20, 0.07 x 3_700) = min(187.20, 259.00) = 187.20
+#               (3_500 / 1_803.33 = 1.941 of the guideline: Step 5, full day)
+#   wy_ccap   = 640.00 - 187.20 = 452.80
+# In an unenrolled month countable income exceeds the initial limit, so the unit
+# is income-ineligible and wy_ccap is 0.
+#
+# Six enrolled months => 6 x 452.80 = 2_716.80 for the year. A pass-through
+# would give 452.80 and a full-year sum 5_433.60, so both fail.
+- name: The annual wrapper sums twelve monthly wy_ccap values rather than passing one through.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40  # working caretaker
+        employment_income: 44_400
+      person2:
+        age: 3
+        childcare_hours_per_day: 8  # full day
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 12_000
+        wy_ccap_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        wy_ccap_enrolled:
+          2026-01: true
+          2026-02: true
+          2026-03: true
+          2026-04: true
+          2026-05: true
+          2026-06: true
+          2026-07: false
+          2026-08: false
+          2026-09: false
+          2026-10: false
+          2026-11: false
+          2026-12: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap:
+      2026-01: 452.80  # enrolled: continued limit applies
+      2026-06: 452.80
+      2026-07: 0  # not enrolled: initial limit applies and income exceeds it
+      2026-12: 0
+    wy_child_care_subsidies: 2_716.80  # 6 x 452.80

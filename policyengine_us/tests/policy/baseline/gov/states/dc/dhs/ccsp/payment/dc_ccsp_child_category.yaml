@@ -1,0 +1,117 @@
+# The child category keys the reimbursement rate table, so each case asserts the
+# daily rate it reaches. The category is computed for every DC resident but only
+# pays out for children with authorized days of care.
+- name: A working parent with an infant and a second grader in full-time center care.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 40_000
+      infant:
+        age: 1
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+      second_grader:
+        age: 8
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+    households:
+      household:
+        members: [parent, infant, second_grader]
+        state_code: DC
+  output:
+    dc_ccsp_child_category:
+      [
+        SCHOOL_AGE_BEFORE_OR_AFTER,
+        INFANT_AND_TODDLER,
+        SCHOOL_AGE_BEFORE_OR_AFTER,
+      ]
+    # $98.65 per day for the infant, $36.74 for the second grader, and nothing
+    # for the parent, who has no authorized days of care.
+    dc_ccsp_maximum_subsidy_amount: [0, 1_973, 734.80]
+
+- name: A preschooler in a full-time traditional child development home.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      preschooler:
+        age: 4
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_HOME_AND_EXPANDED_HOME
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+    households:
+      household:
+        members: [preschooler]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: PRESCHOOL
+    # $53.04 per day at a child development home.
+    dc_ccsp_maximum_subsidy_amount: 1_060.80
+
+- name: A disabled infant keeps the ordinary infant rate, because the special needs rate is authorized at the facility rather than by the child's disability.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      disabled_infant:
+        age: 1
+        is_disabled: true
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_TRADITIONAL
+    households:
+      household:
+        members: [disabled_infant]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: INFANT_AND_TODDLER
+    # $98.65 per day, not the $118.38 Infant and Toddler Special Needs rate,
+    # which a provider must request per facility on the Special Needs Rate
+    # Request Form.
+    dc_ccsp_maximum_subsidy_amount: 1_973
+
+- name: A school-age child in part-time after-school care is paid the before or after rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      fifth_grader:
+        age: 11
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: PART_TIME_TRADITIONAL
+    households:
+      household:
+        members: [fifth_grader]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: SCHOOL_AGE_BEFORE_OR_AFTER
+    # $18.37 per day, the single-end rate, rather than the $22.04 School-Age
+    # Before and After part-time rate.
+    dc_ccsp_maximum_subsidy_amount: 367.40
+
+- name: A school-age child on a nontraditional schedule reaches no published before or after rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      fifth_grader:
+        age: 11
+        childcare_attending_days_per_month: 20
+        dc_ccsp_childcare_provider_category: CHILD_CENTER
+        dc_ccsp_schedule_type: FULL_TIME_NONTRADITIONAL
+    households:
+      household:
+        members: [fifth_grader]
+        state_code: DC
+  output:
+    dc_ccsp_child_category: SCHOOL_AGE_BEFORE_OR_AFTER
+    # OSSE prices School-Age Before or After only in the two traditional
+    # columns, so this cell is blank on the rate sheet. Set the category to
+    # SCHOOL_AGE_BEFORE_AND_AFTER to reach the $45.92 nontraditional rate.
+    dc_ccsp_maximum_subsidy_amount: 0

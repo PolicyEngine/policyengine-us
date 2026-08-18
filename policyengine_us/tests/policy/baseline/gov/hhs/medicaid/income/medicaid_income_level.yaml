@@ -138,3 +138,50 @@
     medicaid_income_level: [1, 1.262231]
     tax_unit_medicaid_income_level: 1
   absolute_error_margin: 0.001
+
+# Missouri applies its MAGI limits as the Appendix A monthly-dollar maximums,
+# rounded up from the exact FPL threshold (household of 2 in 2026: MHK ages
+# 1-18 at 148% + 5% = 21,640 x 1.53 / 12 = 2,759.10 -> $2,760), so the level
+# is measured from the whole dollar just below monthly income: at $2,760/month
+# it is 2,759 x 12 / 21,640 = 1.52995 rather than the exact 1.53049.
+- name: Case 5, Missouri measures the level from the whole dollar below monthly income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_120
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_household_size: [2, 2]
+    medicaid_household_income: [33_120, 33_120]
+    medicaid_income_level: [1.52995, 1.52995]
+  absolute_error_margin: 0.00001
+
+- name: Case 6, outside Missouri the level is the exact income-to-FPG ratio.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 33_120
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    medicaid_income_level: [1.53049, 1.53049]
+  absolute_error_margin: 0.00001

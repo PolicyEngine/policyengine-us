@@ -1,0 +1,130 @@
+# Wisconsin Shares eligible child: under age 13 ("includes 12 years, 11
+# months"), or under age 19 with a verified disability, and the child
+# (beneficiary) must be a U.S. citizen or qualified immigrant.
+# Wisconsin Shares Handbook (July 2026) Sections 4.3 and 4.5;
+# Wis. Stat. s. 49.155(1m)(a) intro.
+- name: Case 1, five-year-old citizen is an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: true
+
+- name: Case 2, twelve-year-old is still an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: true
+
+- name: Case 3, thirteen-year-old without a disability is not an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: false
+
+- name: Case 4, fifteen-year-old with a disability is an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: true
+
+- name: Case 5, nineteen-year-old with a disability is not an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: false
+
+- name: Case 6, undocumented child is not an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: false
+
+- name: Case 7, refugee child is a qualified immigrant and an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: true
+
+- name: Case 8, eighteen-year-old with a disability is still an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible_child: true
+
+- name: Case 9, undocumented teenager with a disability is not an eligible child.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # Age eligible through the disability pathway, but the immigration
+    # requirement applies to every pathway.
+    wi_shares_eligible_child: false

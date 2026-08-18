@@ -1,3 +1,102 @@
+## [1.811.2] - 2026-08-18
+
+### Fixed
+
+- Align the Medicaid optional senior-or-disabled pathway with Missouri MHABD budgeting:
+  - round the Missouri income standard up to the next whole monthly dollar, matching the Appendix J published amounts
+  - apply the earned income exemption before the standard exemption and round countable income down to the whole dollar
+  - count an ineligible spouse's gross income without the SSI FBR-differential deeming threshold
+
+
+## [1.811.1] - 2026-08-18
+
+### Fixed
+
+- Apply the NC SCCA age-based income limit per child so a school-age child over 133% FPL is excluded from the estimated savings even when a preschool sibling qualifies under 200% FPL.
+
+
+## [1.811.0] - 2026-08-18
+
+### Added
+
+- Add Illinois county eligibility filtering for the Commodity Supplemental Food Program.
+
+
+## [1.810.0] - 2026-08-18
+
+### Added
+
+- Add Oklahoma Unemployment Insurance.
+  The Oklahoma taxable wage base is now dated 2022-2026, which corrects ok_employer_state_unemployment_tax in four of five years.
+
+
+## [1.809.1] - 2026-08-18
+
+### Fixed
+
+- Use the shared childcare_attending_days_per_month input in DC CCSP instead of a DC-only duplicate, and derive dc_ccsp_child_category from age.
+
+
+## [1.809.0] - 2026-08-18
+
+### Added
+
+- Implement Alabama Unemployment Insurance (al_ui).
+
+
+## [1.808.1] - 2026-08-17
+
+### Fixed
+
+- Missouri MAGI Medicaid and CHIP eligibility follows Appendix A's rounded monthly-dollar income maximums, so income at the published dollar limit is eligible.
+
+
+## [1.808.0] - 2026-08-14
+
+### Added
+
+- CSFP fixes from partner-reported issues:
+  - 2026 benefit amount of $651 per the FY2026 caseload memo ($460M / 707,000 slots).
+  - Count child support received in school meal countable income (feeds CSFP and school meals).
+  - Remove Missouri CSFP county filtering — the program covers all Missouri counties.
+
+
+## [1.807.0] - 2026-08-14
+
+### Added
+
+- Added Utah Unemployment Insurance (UI), including weekly benefit amount, duration, and maximum benefit calculation using the High Quarter Wage formula.
+
+
+## [1.806.0] - 2026-08-14
+
+### Added
+
+- Fixed entity broadcast error in the Texas CCS work requirement eligibility formula that crashed vectorized simulations with multiple SPM units.
+  Added Texas CCS to the federal child care subsidies aggregate.
+
+
+## [1.805.0] - 2026-08-14
+
+### Added
+
+- Wisconsin Shares child care subsidy program, including activity, asset, and income eligibility, countable income, county-level maximum rates by provider type and age group, and hourly family copayments.
+
+
+## [1.804.1] - 2026-08-14
+
+### Changed
+
+- Made the person-level home_mortgage_interest input canonical for the federal mortgage interest deduction; the structured first and second home mortgage interest inputs are deprecated and now used only when no person-level interest is reported.
+
+
+## [1.804.0] - 2026-08-13
+
+### Added
+
+- Wyoming Child Care Subsidy Program (CCAP).
+
+
 ## [1.803.0] - 2026-08-13
 
 ### Added
