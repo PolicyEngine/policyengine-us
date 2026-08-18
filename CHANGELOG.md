@@ -1,3 +1,10 @@
+## [1.811.0] - 2026-08-18
+
+### Added
+
+- Add Illinois county eligibility filtering for the Commodity Supplemental Food Program.
+
+
 ## [1.810.0] - 2026-08-18
 
 ### Added
