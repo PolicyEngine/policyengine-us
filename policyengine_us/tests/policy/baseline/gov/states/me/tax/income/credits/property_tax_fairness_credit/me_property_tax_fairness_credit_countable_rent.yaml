@@ -57,3 +57,14 @@
   output:
     me_property_tax_fairness_credit_countable_rent: 0
     # net rent = max(2400 - 3600, 0) = 0; 0 * 0.15 = 0 (not negative).
+
+- name: Case 6, utilities included and known amount exactly equals rent, net rent clamps to 0 (boundary)
+  period: 2022
+  input:
+    state_code: ME
+    rent: 3_000
+    utilities_included_in_rent: true
+    me_ptfc_utilities_included_in_rent: 3_000
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # net rent = max(3000 - 3000, 0) = 0; 0 * 0.15 = 0 (boundary, not negative).
