@@ -1,2 +1,0 @@
-- Adds Illinois Child Care Assistance Program copay and provider payment rate calculations.
-- Removes the child immigration status test from Illinois CCAP child eligibility, since IDHS CCAP Policy 01.01.03 does not deny eligibility based on citizenship status.
