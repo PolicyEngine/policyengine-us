@@ -8,6 +8,10 @@ class ct_child_tax_rebate(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CT
+    reference = (
+        "https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=549",
+        "https://portal.ct.gov/-/media/drs/publications/tssb/2022/tssb-2022-5.pdf",
+    )
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
@@ -15,12 +19,6 @@ class ct_child_tax_rebate(Variable):
         p = parameters(period).gov.states.ct.tax.income.rebate
 
         reduction_start = p.reduction.start[filing_status]
-        increment = p.reduction.increment
-        reduction_per_increment = p.reduction.rate * increment
-
-        excess = max_(income - reduction_start, 0)
-        increments = np.ceil(excess / increment)
-        total_reduction_amount = increments * reduction_per_increment
 
         person = tax_unit.members
         age = person("age", period)
@@ -30,4 +28,8 @@ class ct_child_tax_rebate(Variable):
         capped_children = min_(count_children, p.child_cap)
         total_rebate = capped_children * p.amount
 
-        return max_(total_rebate - total_reduction_amount, 0)
+        excess = max_(income - reduction_start, 0)
+        increments = np.ceil(excess / p.reduction.increment)
+        reduction_share = min_(increments * p.reduction.rate, 1)
+
+        return total_rebate * (1 - reduction_share)
