@@ -1,0 +1,100 @@
+- name: Case 1, post-HR1 non-exempt adult with no dependents is subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: true
+
+- name: Case 2, post-HR1 age 62 is within the extended ABAWD age range and is subject.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: true
+
+- name: Case 3, pre-HR1 age 62 is above the ABAWD age range and is not subject.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 62
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 4, post-HR1 age 65 is above the ABAWD age range and is not subject.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 5, disabled adult is exempt and is not subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_subject_to_snap_abawd: false
+
+- name: Case 6, adult residing with a household child under 14 is not subject to ABAWD.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # The child (age 10 < 14) routes the parent around the ABAWD time limit;
+    # the child itself is below the ABAWD age range.
+    is_subject_to_snap_abawd: [false, false]
