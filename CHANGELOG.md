@@ -1,3 +1,11 @@
+## [1.810.0] - 2026-08-18
+
+### Added
+
+- Add Oklahoma Unemployment Insurance.
+  The Oklahoma taxable wage base is now dated 2022-2026, which corrects ok_employer_state_unemployment_tax in four of five years.
+
+
 ## [1.809.1] - 2026-08-18
 
 ### Fixed
