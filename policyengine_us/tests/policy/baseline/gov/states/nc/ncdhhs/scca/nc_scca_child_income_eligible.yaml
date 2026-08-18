@@ -6,7 +6,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: true
+    nc_scca_child_income_eligible: true
 
 - name: Family size of 2, with income less than the 133% fpl limit, income eligible.
   period: 2024
@@ -16,7 +16,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: true
+    nc_scca_child_income_eligible: true
 
 - name: Family size of 2, with income equals the 133% fpl limit, income not eligible.
   period: 2024
@@ -26,7 +26,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: false
+    nc_scca_child_income_eligible: false
 
 - name: Family size of 2, with income greater than 133% fpl limit, income not eligible.
   period: 2024
@@ -36,7 +36,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: false
+    nc_scca_child_income_eligible: false
 
 - name: Family size of 2, with income less than 200% fpl limit, income eligible.
   period: 2024
@@ -46,7 +46,7 @@
     nc_scca_fpg_rate: 2
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: true
+    nc_scca_child_income_eligible: true
 
 - name: Family size of 4, with income equals the 133% fpl, income not eligible.
   period: 2024
@@ -56,7 +56,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: false
+    nc_scca_child_income_eligible: false
 
 - name: Family size of 4, with income less than the 133% fpl, income eligible.
   period: 2024
@@ -66,7 +66,7 @@
     nc_scca_fpg_rate: 1.33
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: true
+    nc_scca_child_income_eligible: true
 
 - name: Family size of 4, with income less than the 200% fpl, income eligible.
   period: 2024
@@ -76,7 +76,7 @@
     nc_scca_fpg_rate: 2
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: true
+    nc_scca_child_income_eligible: true
 
 - name: Family size of 4, with income equals the 200% fpl, income not eligible.
   period: 2024
@@ -86,7 +86,7 @@
     nc_scca_fpg_rate: 2
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: false
+    nc_scca_child_income_eligible: false
 
 - name: Family size of 4, with income equals the 200% fpl, income not eligible.
   period: 2025
@@ -96,4 +96,4 @@
     nc_scca_fpg_rate: 2
     state_code: NC
   output:
-    nc_scca_entry_income_eligible: false
+    nc_scca_child_income_eligible: false

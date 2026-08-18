@@ -1,0 +1,51 @@
+- name: A DC family with four children falls into the three rate age categories.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 34
+      infant:
+        age: 0
+      toddler:
+        age: 2
+      preschooler:
+        age: 4
+      second_grader:
+        age: 8
+    households:
+      household:
+        members: [parent, infant, toddler, preschooler, second_grader]
+        state_code: DC
+  output:
+    dc_ccsp_age_category:
+      [SCHOOL_AGE, INFANT_AND_TODDLER, INFANT_AND_TODDLER, PRESCHOOL, SCHOOL_AGE]
+
+- name: A child moves up a category on their third and fifth birthdays.
+  period: 2025-01
+  input:
+    people:
+      turns_three_next_month:
+        # 34.8 months, still under the 36-month preschool threshold.
+        age: 2.9
+      just_turned_three:
+        # 36 months, the first preschool month.
+        age: 3
+      turns_five_next_month:
+        # 58.8 months, still under the 60-month school-age threshold.
+        age: 4.9
+      just_turned_five:
+        # 60 months, the first school-age month.
+        age: 5
+    households:
+      household:
+        members:
+          [
+            turns_three_next_month,
+            just_turned_three,
+            turns_five_next_month,
+            just_turned_five,
+          ]
+        state_code: DC
+  output:
+    dc_ccsp_age_category:
+      [INFANT_AND_TODDLER, PRESCHOOL, PRESCHOOL, SCHOOL_AGE]

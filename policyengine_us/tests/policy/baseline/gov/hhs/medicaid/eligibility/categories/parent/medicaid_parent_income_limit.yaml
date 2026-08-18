@@ -151,7 +151,7 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.113461
+    medicaid_parent_income_limit: 0.113277
   absolute_error_margin: 0.0001
 
 - name: Case 11, Missouri uses the same dollar limit but a lower FPL ratio in 2026.
@@ -167,10 +167,11 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.110197
+    medicaid_parent_income_limit: 0.110018
   absolute_error_margin: 0.0001
 
-# $301/month * 12 / ($15,650 + 2 * $5,500) = 0.1355347.
+# Missouri limits sit on the same whole-dollar-minus-one scale as its
+# medicaid_income_level: ($301 - $1) x 12 / ($15,650 + 2 x $5,500) = 0.1350844.
 - name: Case 12, Missouri uses the size-3 MHF monthly dollar parent limit.
   period: 2025
   input:
@@ -184,11 +185,11 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.135535
+    medicaid_parent_income_limit: 0.135084
   absolute_error_margin: 0.0001
 
-# ($1,120/month + 3 * $42/month) * 12
-# / ($15,650 + 24 * $5,500) = 0.1012665.
+# ($1,120/month + 3 x $42/month - $1) x 12
+# / ($15,650 + 24 x $5,500) = 0.1011852.
 - name: Case 13, Missouri extends the MHF table for a size-25 household.
   period: 2025
   input:
@@ -202,14 +203,14 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.101267
+    medicaid_parent_income_limit: 0.101185
   absolute_error_margin: 0.0001
 
 # Before the adult expansion (effective July 1, 2021), the 5% FPL
 # disregard applied at the MHF level: the archived Appendix A (revised
 # 11/2020) publishes an "MHF Adult" row of $392 for a household of 3,
-# i.e. $301 + 5% x $1,810 monthly FPG.
-# $301 x 12 / $21,720 (2020 FPG for 3) + 0.05 = 0.216298.
+# i.e. $301 + 5% x $1,810 monthly FPG = $391.50, rounded up.
+# ($392 - $1) x 12 / $21,720 (2020 FPG for 3) = 0.216022.
 - name: Case 14, Missouri MHF limit included the 5% FPL disregard before the adult expansion.
   period: 2020
   input:
@@ -223,12 +224,12 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.216298
+    medicaid_parent_income_limit: 0.216022
   absolute_error_margin: 0.0001
 
 # Both sides of the 2021 transition at year granularity:
 # 2021 reads the January 1 value, so the disregard still applies.
-# $301 x 12 / $21,960 (2021 FPG for 3) + 0.05 = 0.214481.
+# $301 + 5% x $1,830 = $392.50 -> $393; ($393 - $1) x 12 / $21,960 = 0.214208.
 - name: Case 15, Missouri MHF limit keeps the disregard in 2021, the expansion's first year.
   period: 2021
   input:
@@ -242,10 +243,10 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.214481
+    medicaid_parent_income_limit: 0.214208
   absolute_error_margin: 0.0001
 
-# $301 x 12 / $23,030 (2022 FPG for 3) with no disregard = 0.156839.
+# ($301 - $1) x 12 / $23,030 (2022 FPG for 3) with no disregard = 0.156318.
 - name: Case 16, Missouri MHF limit drops the disregard from 2022.
   period: 2022
   input:
@@ -259,5 +260,5 @@
         state_code: MO
         state_group_str: CONTIGUOUS_US
   output:
-    medicaid_parent_income_limit: 0.156839
+    medicaid_parent_income_limit: 0.156318
   absolute_error_margin: 0.0001

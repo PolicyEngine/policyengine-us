@@ -127,6 +127,7 @@
 
 # Restructured from PR #9200 with an actual dependent child, which the
 # caretaker-relative check requires.
+# $300/month is just below the size-3 MHF limit of $301/month.
 - name: Missouri parent just below the size-3 MHF limit is eligible
   period: 2025
   input:
@@ -135,12 +136,11 @@
         age: 34
         is_tax_unit_head: true
         medicaid_household_size: 3
-        medicaid_income_level: 0.13553
+        employment_income: 3_600
       child:
         age: 5
         is_tax_unit_dependent: true
         medicaid_household_size: 3
-        medicaid_income_level: 0.13553
     tax_units:
       tax_unit:
         members: [person1, child]
@@ -593,3 +593,43 @@
         state_code: TX
   output:
     is_parent_for_medicaid: [true, false]
+
+# Missouri finds income at or below the published Appendix A dollar maximum
+# eligible; the MHF/MPW MHF row for a household of 2 is $241 per month.
+- name: Missouri parent at exactly the $241 MHF monthly limit is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 2_892
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [true, false]
+
+- name: Missouri parent $1 above the MHF monthly limit ($242) is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 2_904
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: MO
+  output:
+    is_parent_for_medicaid: [false, false]

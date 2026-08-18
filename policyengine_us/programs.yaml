@@ -1132,6 +1132,17 @@ programs:
     verified_start_year: 2023
 
   # --- State programs ---
+  - id: al_ui
+    name: Alabama UI
+    full_name: Alabama Unemployment Compensation
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: AL
+    variable: al_ui
+    parameter_prefix: gov.states.al.dol.unemployment_insurance
+    verified_years: "2024"
+
   - id: co_oap
     name: Colorado OAP
     full_name: Colorado Old Age Pension
@@ -1459,6 +1470,17 @@ programs:
     coverage: NY
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
+
+  - id: ok_ui
+    name: Oklahoma UI
+    full_name: Oklahoma Unemployment Insurance
+    category: Benefits
+    agency: Oklahoma Employment Security Commission
+    status: complete
+    coverage: OK
+    variable: ok_ui
+    parameter_prefix: gov.states.ok.oesc.unemployment_insurance
+    verified_years: "2022-2026"
 
   - id: ut_ui
     name: Utah UI
