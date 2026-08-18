@@ -1,3 +1,10 @@
+## [1.812.0] - 2026-08-18
+
+### Added
+
+- Head Start income eligibility: add SPM-unit inputs for the 45 CFR 1302.12(d) discretionary 130% FPG limit and the 2024 final rule's excessive housing cost adjustment, compute Head Start gross income and housing costs from 45 CFR 1305.2 source lists, and compare at the SPM unit.
+
+
 ## [1.811.2] - 2026-08-18
 
 ### Fixed
