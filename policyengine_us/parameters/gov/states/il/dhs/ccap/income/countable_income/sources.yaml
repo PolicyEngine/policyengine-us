@@ -2,6 +2,7 @@ description: Illinois counts these income sources as countable income under the 
 values:
   2020-01-01:
     - employment_income
+    - farm_operations_income
     - self_employment_income
     - sstb_self_employment_income
     - rental_income
@@ -10,18 +11,14 @@ values:
     - pension_income
     - veterans_benefits
     - unemployment_compensation
-    # - capital_gains exempted
-    # - snap exempted
-    # - child_support_received exempted
-    # - alimony_income exempted
-    # - social_security exempted
-    # - pension_survivors exempted
-    # - railroad_benefits exempted
+    - workers_compensation
 
 metadata:
   unit: list
   period: year
   label: Illinois CCAP countable income sources
   reference:
-    - title: Ill. Admin. Code tit. 89, § 50.235 - Income Eligibility Criteria
-      href: https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-50.235
+    - title: IDHS CCAP Policy 01.02.02, Non-Exempt Income
+      href: https://www.dhs.state.il.us/page.aspx?item=10163
+    - title: IDHS CCAP Policy 01.02.03, Exempt Income
+      href: https://www.dhs.state.il.us/page.aspx?item=10160
