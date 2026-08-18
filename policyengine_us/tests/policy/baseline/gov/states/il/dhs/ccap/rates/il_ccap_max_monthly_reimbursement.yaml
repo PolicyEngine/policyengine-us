@@ -1,0 +1,87 @@
+- name: Case 1, daily maximum is multiplied by attending days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 67
+    childcare_attending_days_per_month: 20
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 1_340
+
+- name: Case 2, zero attending days produce zero reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 67
+    childcare_attending_days_per_month: 0
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 0
+
+- name: Case 3, missing attending days produce zero reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 67
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 0
+
+- name: Case 4, negative attending days do not create negative reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 67
+    childcare_attending_days_per_month: -1
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 0
+
+- name: Case 5, a partial month is reimbursed on attended days only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 67
+    childcare_attending_days_per_month: 14
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 938
+
+- name: Case 6, a lower daily maximum scales the monthly reimbursement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_eligible_child: true
+    il_ccap_max_daily_rate: 30
+    childcare_attending_days_per_month: 14
+    state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: 420
+
+- name: Case 7, each child is reimbursed on their own attending days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        il_ccap_eligible_child: true
+        il_ccap_max_daily_rate: 10
+        childcare_attending_days_per_month: 10
+      person2:
+        il_ccap_eligible_child: true
+        il_ccap_max_daily_rate: 10
+        childcare_attending_days_per_month: 18
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_ccap_max_monthly_reimbursement: [100, 180]

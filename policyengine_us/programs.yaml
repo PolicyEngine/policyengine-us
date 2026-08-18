@@ -519,9 +519,8 @@ programs:
         status: complete
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
-        variable: il_ccap_eligible
+        variable: il_ccap
         parameter_prefix: gov.states.il.dhs.ccap
-        notes: Only includes eligibility rules
       - state: ID
         status: complete
         name: ICCP
