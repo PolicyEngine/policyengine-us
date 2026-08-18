@@ -213,3 +213,27 @@
         # Note: intermediate variables (eligibility, WBA, etc.) may still
         # compute, but the top-level ok_ui is gated to OK households only.
         ok_ui: 0
+
+- name: Case 8, OK UI feeds unemployment compensation income flows.
+  # Reuses Case 1's monetarily-eligible input set (ok_ui = $8,000) and asserts
+  # the state benefit also surfaces through the federal unemployment
+  # compensation income chain (unemployment_compensation adds ok_ui).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 35
+    state_code: OK
+    employment_income: 100_000
+    is_tax_unit_dependent: false
+    ok_ui_high_quarter_taxable_wages: 11_500
+    ok_ui_high_quarter_total_wages: 11_500
+    ok_ui_base_period_taxable_wages: 11_500
+    ok_ui_base_period_total_wages: 35_000
+    ok_ui_gross_weekly_earnings: 0
+    weeks_unemployed: 16
+  output:
+    ok_ui: 8_000
+    unemployment_compensation: 8_000
+    tax_unit_unemployment_compensation: 8_000
+    taxable_unemployment_compensation: 8_000
+    tax_unit_taxable_unemployment_compensation: 8_000
