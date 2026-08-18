@@ -1,3 +1,11 @@
+## [1.813.1] - 2026-08-18
+
+### Fixed
+
+- Fix West Virginia adjusted gross and taxable income to apply the low-income earned-income exclusion exactly once.
+- Pin Michigan's 2026 individual income tax rate to the official 4.25 percent annual determination.
+
+
 ## [1.813.0] - 2026-08-18
 
 ### Added
