@@ -1132,6 +1132,17 @@ programs:
     verified_start_year: 2023
 
   # --- State programs ---
+  - id: al_ui
+    name: Alabama UI
+    full_name: Alabama Unemployment Compensation
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: AL
+    variable: al_ui
+    parameter_prefix: gov.states.al.dol.unemployment_insurance
+    verified_years: "2024"
+
   - id: co_oap
     name: Colorado OAP
     full_name: Colorado Old Age Pension
