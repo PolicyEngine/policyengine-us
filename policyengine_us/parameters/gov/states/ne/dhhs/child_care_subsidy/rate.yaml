@@ -1,14 +1,16 @@
-description: Nebraska sets the child care family fee to this share of household gross income under the Child Care Subsidy program.
+description: Nebraska sets the monthly family fee to this share of family gross income under the Child Care Subsidy program.
 
 values:
-  2021-08-28: 0.07
+  2020-07-01: 0.07
 
 metadata:
   unit: /1
   period: year
-  label: Nebraska child care subsidy family fee rate
+  label: Nebraska Child Care Subsidy family fee rate
   reference:
-    - title: Nebraska DHHS, Department of Health and Human Services, LB 485 FAQ
-      href: https://dhhs.ne.gov/Child%20Care%20Documents/LB%20485%20FAQ.pdf#page=4
-    - title: Nebraska DHHS Title 392 Guidance Document, 392 NAC 2-011
+    - title: Nebraska CCDF State Plan amended June 11, 2020, Section 3.4.1b
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Approved%20CCDF%20State%20Plan,%20Amended%2006-11-2020.pdf#page=100
+    - title: Nebraska DHHS Title 392 Guidance, 392 NAC 2-011
       href: https://dhhs.ne.gov/Guidance%20Docs/Title%20392%20-%20Child%20Care%20Subsidy.pdf#page=4
+    - title: Nebraska FFY 2025-2027 CCDF State Plan, Section 3.1.2
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/ACF-118%20CCDF%20FFY%202025-2027%20For%20Nebraska%20-%20APPROVED.pdf#page=37

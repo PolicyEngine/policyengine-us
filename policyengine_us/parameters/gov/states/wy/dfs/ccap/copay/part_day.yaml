@@ -1,0 +1,57 @@
+description: Wyoming charges this daily copayment per child for part-day care based on the assistance unit's countable income as a share of the federal poverty guideline under the Child Care, Purchase of Service program.
+# The Table I column header reads "Monthly Gross Income," but Rules Ch. 1
+# §8(e)(iv)(G)(II) and (D)(III)(5.) place the unit on a step by countable
+# income: gross earned income less the $200-per-working-adult disregard,
+# plus gross unearned income, per the §4(vv)(i) definition.
+# Published daily DFS Parental Co-Pay per child by Sliding Fee Scale step,
+# identical on the 04/01/24, 04/01/25, and 04/01/26 Table I charts. Steps are
+# "above" bands of the federal-poverty-guideline ratio (Step 2 = above 100%
+# through 125%), and a unit at or below 100% FPG (Step 1) owes no copay per
+# W.S. 42-2-103(f)(i)(A). single_amount brackets are "at or above threshold,"
+# so each threshold above the first is shifted by 0.0001 to keep exact
+# multiples in the lower step. The statutory hourly copay formula in
+# W.S. 42-2-103(f)(i) does not reconcile with the published chart; the chart
+# is the operative schedule and the statute is cited as enabling authority
+# only. Ratios above 2.25 (Step 6) are income-ineligible, so the top bracket
+# is unreachable beyond that point.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: day
+  label: Wyoming CCAP part-day daily copayment per child by FPG ratio
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/24-03/31/25 (single page)
+      href: https://drive.google.com/file/d/1rG1a7x4V5KKLiipNUwMVmemHBLWZS5MZ/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://drive.google.com/file/d/1T7NWbz6hOlRyAcqwROXExos5JB57NstB/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/26-03/31/27 (single page)
+      href: https://drive.google.com/file/d/1-zjev4TxHdyq7vC8tlh9SCNSNZzZz4Kq/view
+    - title: W.S. 42-2-103(f)(i) (enabling authority for the sliding fee scale copayments)
+      href: https://wyoleg.gov/statutes/compress/title42.pdf#page=13
+
+brackets:
+  - threshold:
+      2024-04-01: 0
+    amount:
+      2024-04-01: 0  # Step 1: at or below 100% FPG
+  - threshold:
+      2024-04-01: 1.0001  # Step 2: above 100% through 125% FPG
+    amount:
+      2024-04-01: 0.44
+  - threshold:
+      2024-04-01: 1.2501  # Step 3: above 125% through 150% FPG
+    amount:
+      2024-04-01: 0.88
+  - threshold:
+      2024-04-01: 1.5001  # Step 4: above 150% through 175% FPG
+    amount:
+      2024-04-01: 3.2
+  - threshold:
+      2024-04-01: 1.7501  # Step 5: above 175% through 200% FPG
+    amount:
+      2024-04-01: 4.68
+  - threshold:
+      2024-04-01: 2.0001  # Step 6: above 200% through 225% FPG
+    amount:
+      2024-04-01: 6.84

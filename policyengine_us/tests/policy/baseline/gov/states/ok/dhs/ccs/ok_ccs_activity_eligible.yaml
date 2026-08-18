@@ -7,6 +7,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000  # $2,000/month.
       person2:
         age: 4
@@ -26,10 +27,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         employment_income: 24_000  # $2,000/month.
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_spouse: true
       person3:
         age: 4
@@ -49,10 +52,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         employment_income: 24_000  # $2,000/month.
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_spouse: true
         is_full_time_student: true
       person3:
@@ -73,6 +78,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         self_employment_income: -6_000  # -$500/month.
       person2:
         age: 4
@@ -92,6 +98,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -111,6 +118,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         receives_or_needs_protective_services: true
       person2:
         age: 4
@@ -130,6 +138,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -149,6 +158,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
       person2:
         age: 4
     spm_units:
@@ -227,10 +237,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         is_full_time_college_student: true
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_spouse: true
         is_full_time_college_student: true
       person3:
@@ -251,6 +263,7 @@
     people:
       person1:
         age: 45
+        weekly_hours_worked_before_lsr: 40
         is_tax_unit_head: true
         employment_income: 24_000
       person2:

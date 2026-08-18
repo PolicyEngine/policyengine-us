@@ -377,3 +377,50 @@
     # fails (in-band, no dependent child, not working), so the person fails and
     # the single-person SPM unit fails.
     meets_snap_work_requirements: false
+
+# Alaska good-faith exemption window (7 U.S.C. 2015(o)(7), 2025-11-01 through
+# 2026-10-31) temporarily restores the pre-HR1 dependent-child threshold (18),
+# so a household with a child aged 14-17 keeps the ABAWD exemption even though
+# HR1 is otherwise in effect for Alaska. After the window, the post-HR1
+# threshold (14) applies again. These cases inject the ABAWD/general sub-
+# results to isolate the household-child gate.
+- name: Case 18, AK good-faith window raises the household-child threshold through October 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        monthly_age:
+          2026-10: 30
+          2026-11: 30
+        is_tax_unit_dependent: false
+        meets_snap_general_work_requirements:
+          2026-10: true
+          2026-11: true
+        meets_snap_abawd_work_requirements:
+          2026-10: false
+          2026-11: false
+      # Age 15 is under the window-restored threshold of 18, so it waives the
+      # ABAWD test household-wide through October. It is at/above the post-HR1
+      # threshold of 14 after the window closes in November.
+      person2:
+        monthly_age:
+          2026-10: 15
+          2026-11: 15
+        is_tax_unit_dependent: true
+        meets_snap_general_work_requirements:
+          2026-10: true
+          2026-11: true
+        meets_snap_abawd_work_requirements:
+          2026-10: false
+          2026-11: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    meets_snap_work_requirements:
+      2026-10: true
+      2026-11: false

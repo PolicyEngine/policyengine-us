@@ -10,6 +10,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_490  # 75% FPG; 0.5% of 1,707.50 = 8.54 < 10
       person2:
         age: 4
@@ -32,6 +33,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 27_320  # 100% FPG, ratio 1.0 -> 0.5%
       person2:
         age: 4
@@ -55,6 +57,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 41_520  # 3,460/mo, 152% of size-3 FPG
       person2:
         age: 4
@@ -79,6 +82,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 49_716  # 4,143/mo, 182% of size-3 FPG
       person2:
         age: 4
@@ -103,6 +107,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 46_992  # 3,916/mo, 172% of size-3 FPG
       person2:
         age: 4
@@ -126,6 +131,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 40_980  # would be 119.53 on the scale
       person2:
         age: 4
@@ -153,6 +159,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 0
       person2:
         age: 4
@@ -176,6 +183,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000  # 2,000/mo; 0.5% of 2,000 = 10 exactly
       person2:
         age: 4
@@ -200,6 +208,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 28_140  # 103% of size-3 FPG (2,345/mo)
       person2:
         age: 4
@@ -223,6 +232,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 29_520  # 108% of size-3 FPG (2,460/mo)
       person2:
         age: 4
@@ -247,6 +257,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_600  # 112% of size-3 FPG (2,550/mo)
       person2:
         age: 4
@@ -270,6 +281,7 @@
   input:
     people:
       person1:
+        weekly_hours_worked_before_lsr: 40
         employment_income: 32_280  # 118% of size-3 FPG (2,690/mo)
       person2:
         age: 4

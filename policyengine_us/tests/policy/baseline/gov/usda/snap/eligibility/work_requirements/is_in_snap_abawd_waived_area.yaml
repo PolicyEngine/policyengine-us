@@ -48,7 +48,13 @@
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
 
-- name: Case 4, AK household without county geography falls back to no area waiver.
+# With county names matched via county_str, a household with no county
+# geography falls back to the first county alphabetically in its state.
+# For Alaska that is the waived Aleutians East Borough, so unknown-county
+# AK households are treated as waived (29 of 30 AK county-equivalents are
+# waived; households in Anchorage, the only exception, must supply their
+# county — see Cases 2 and 29).
+- name: Case 4, AK household without county geography falls back to the first county in the state (Aleutians East Borough), which is waived.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -57,8 +63,8 @@
     is_disabled: false
     state_code: AK
   output:
-    is_in_snap_abawd_waived_area: false
-    meets_snap_abawd_work_requirements: false
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
 
 - name: Case 5, pre-HR1 AK resident of waived census area (Bethel) meets ABAWD requirements via area waiver.
   period: 2025-01
@@ -325,9 +331,10 @@
     meets_snap_abawd_work_requirements: false
 
 # Statewide waiver expiry (2026-01-31) with no county geography: after the
-# CA and IL statewide waivers expire, a household with no county FIPS has no
-# remaining waiver (only the seven CA counties stay waived through
-# 2026-10-31).
+# CA and IL statewide waivers expire, a household with no county information
+# falls back to the first county alphabetically in its state — for CA that
+# is Alameda County, which is not waived — so no waiver remains (only the
+# seven CA counties stay waived through 2026-10-31).
 
 - name: Case 21, CA household without county geography (2026-02, after the statewide waiver expired) is not exempt.
   period: 2026-02
@@ -438,3 +445,338 @@
   output:
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
+
+# Households identified by county name (county_str) rather than county
+# FIPS code, as API partners send them: county_str is matched directly
+# against the waived_counties parameter, so both input forms receive
+# county-level waivers.
+
+- name: Case 27, CA resident of waived Tulare County identified by county_str (2026-03, after the statewide waiver expired) is exempt via the county waiver.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: TULARE_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 28, CA resident of non-waived Los Angeles County identified by county_str (2026-03) is not exempt.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: LOS_ANGELES_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 29, AK resident of non-waived Municipality of Anchorage identified by county_str (2026-01) is subject to the time limit.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 30, TX resident of Harris County identified by county_str (2026-01) is unaffected by any waiver.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TX
+    county_str: HARRIS_COUNTY_TX
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 31, CA resident of Tulare County identified by county_str (2026-11, after the county waiver approval end date) is no longer exempt.
+  period: 2026-11
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: TULARE_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# Alameda County is the first county alphabetically in California, so it
+# is the county the unknown-county fallback resolves to (see Case 21).
+# Pinning it explicitly as not waived keeps the CA fallback behavior
+# stable if the waived-county list changes.
+- name: Case 32, CA resident of Alameda County identified by county_str (2026-02) is not exempt.
+  period: 2026-02
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+    county_str:
+      2026: ALAMEDA_COUNTY_CA
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# FY2025 partial-state waivers (FNS FY2025 Q1 status report; USDA February 26,
+# 2026 Appendix A terminations). Kentucky's 117-county waiver runs 2024-12-01
+# through 2025-11-30, so a Kentucky county is waived within the window and
+# reverts to the time limit the month after termination. Adair County (FIPS
+# 21001) appears in every KY block from 2024-12-01 through 2025-11-01, and is
+# absent from the 2025-12-01 block onward.
+
+- name: Case 33, KY resident of waived Adair County (2025-01, within the FY2025 waiver window) is exempt via the county waiver.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: KY
+    county_fips: "21001"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 34, KY resident of Adair County (2025-12, after the reinstated waiver expired on 2025-11-30) is subject to the time limit.
+  period: 2025-12
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: KY
+    county_fips:
+      2025: "21001"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# Staggered start. Washington's 38-county waiver takes effect 2025-02-01, so a
+# Washington county is NOT waived in January 2025 (Spokane County, FIPS 53063,
+# is absent from the 2025-01-01 block) but IS waived from 2025-02-01 onward
+# (present in the 2025-02-01 and 2025-03-01 blocks).
+
+- name: Case 35, WA resident of Spokane County (2025-01, before the WA waiver takes effect on 2025-02-01) is subject to the time limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: WA
+    county_fips: "53063"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 36, WA resident of waived Spokane County (2025-03, after the WA waiver takes effect on 2025-02-01) is exempt via the county waiver.
+  period: 2025-03
+  input:
+    age:
+      2025: 30
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: WA
+    county_fips:
+      2025: "53063"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Alaska persistence. Alaska's good faith exemption waiver (P.L. 119-21 section
+# 10102) covers the 29 boroughs and census areas through 2026-10-31, so
+# Fairbanks North Star Borough (FIPS 02090) remains waived in 2026-03, a month
+# in which every FY2025 partial-state waiver has already terminated (Kentucky
+# 2025-11-30, Oregon 2025-12-31, New Jersey and Washington 2026-01-31, Michigan
+# 2026-02-28). Fairbanks is present in the 2026-03-01 block.
+
+- name: Case 37, AK resident of waived Fairbanks North Star Borough (2026-03, after all FY2025 partial-state waivers terminated) remains exempt via the Alaska good faith exemption waiver.
+  period: 2026-03
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02090"
+  output:
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
+
+# Control: neighbor of a waived state. Tennessee borders Kentucky but received
+# no FNS ABAWD waiver in any modeled block (no TN county appears in
+# waived_counties, and TN is not in waived_states). Davidson County (FIPS
+# 47037) is never waived, confirming the KY waiver does not spill into a
+# neighboring state.
+
+- name: Case 38, TN resident of Davidson County (2025-01) is unaffected by Kentucky's neighboring-state waiver.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: TN
+    county_fips: "47037"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+# Approval boundaries. Massachusetts, Pennsylvania, and Arizona represent the
+# three corrected FY2024/FY2025 county-waiver schedules.
+
+- name: Case 39, MA waiver starts in July 2024.
+  period: 2024
+  input:
+    state_code: MA
+    county_fips: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-06: false
+      2024-07: true
+
+- name: Case 40, MA waiver ends in July 2025.
+  period: 2025
+  input:
+    state_code: MA
+    county_fips: "25003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 41, PA waiver starts in September 2024.
+  period: 2024
+  input:
+    state_code: PA
+    county_fips: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-08: false
+      2024-09: true
+
+- name: Case 42, PA waiver ends in September 2025.
+  period: 2025
+  input:
+    state_code: PA
+    county_fips: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-08: true
+      2025-09: false
+
+- name: Case 43, AZ waiver starts in October 2024.
+  period: 2024
+  input:
+    state_code: AZ
+    county_fips: "04001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-09: false
+      2024-10: true
+
+- name: Case 44, AZ waiver ends in October 2025.
+  period: 2025
+  input:
+    state_code: AZ
+    county_fips: "04001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-09: true
+      2025-10: false
+
+# Replacement approvals effective July 1, 2025. Minnesota adds Norman County
+# and removes Lake County. North Dakota removes Bottineau County but retains
+# Rolette County.
+
+- name: Case 45, MN replacement waiver adds Norman County.
+  period: 2025
+  input:
+    state_code: MN
+    county_fips: "27107"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: false
+      2025-07: true
+
+- name: Case 46, MN replacement waiver removes Lake County.
+  period: 2025
+  input:
+    state_code: MN
+    county_fips: "27075"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 47, ND waiver starts in July 2024.
+  period: 2024
+  input:
+    state_code: ND
+    county_fips: "38009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-06: false
+      2024-07: true
+
+- name: Case 48, ND replacement waiver removes Bottineau County.
+  period: 2025
+  input:
+    state_code: ND
+    county_fips: "38009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+
+- name: Case 49, ND replacement waiver retains Rolette County.
+  period: 2025
+  input:
+    state_code: ND
+    county_fips: "38079"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: true

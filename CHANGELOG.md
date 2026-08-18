@@ -1,3 +1,345 @@
+## [1.811.2] - 2026-08-18
+
+### Fixed
+
+- Align the Medicaid optional senior-or-disabled pathway with Missouri MHABD budgeting:
+  - round the Missouri income standard up to the next whole monthly dollar, matching the Appendix J published amounts
+  - apply the earned income exemption before the standard exemption and round countable income down to the whole dollar
+  - count an ineligible spouse's gross income without the SSI FBR-differential deeming threshold
+
+
+## [1.811.1] - 2026-08-18
+
+### Fixed
+
+- Apply the NC SCCA age-based income limit per child so a school-age child over 133% FPL is excluded from the estimated savings even when a preschool sibling qualifies under 200% FPL.
+
+
+## [1.811.0] - 2026-08-18
+
+### Added
+
+- Add Illinois county eligibility filtering for the Commodity Supplemental Food Program.
+
+
+## [1.810.0] - 2026-08-18
+
+### Added
+
+- Add Oklahoma Unemployment Insurance.
+  The Oklahoma taxable wage base is now dated 2022-2026, which corrects ok_employer_state_unemployment_tax in four of five years.
+
+
+## [1.809.1] - 2026-08-18
+
+### Fixed
+
+- Use the shared childcare_attending_days_per_month input in DC CCSP instead of a DC-only duplicate, and derive dc_ccsp_child_category from age.
+
+
+## [1.809.0] - 2026-08-18
+
+### Added
+
+- Implement Alabama Unemployment Insurance (al_ui).
+
+
+## [1.808.1] - 2026-08-17
+
+### Fixed
+
+- Missouri MAGI Medicaid and CHIP eligibility follows Appendix A's rounded monthly-dollar income maximums, so income at the published dollar limit is eligible.
+
+
+## [1.808.0] - 2026-08-14
+
+### Added
+
+- CSFP fixes from partner-reported issues:
+  - 2026 benefit amount of $651 per the FY2026 caseload memo ($460M / 707,000 slots).
+  - Count child support received in school meal countable income (feeds CSFP and school meals).
+  - Remove Missouri CSFP county filtering — the program covers all Missouri counties.
+
+
+## [1.807.0] - 2026-08-14
+
+### Added
+
+- Added Utah Unemployment Insurance (UI), including weekly benefit amount, duration, and maximum benefit calculation using the High Quarter Wage formula.
+
+
+## [1.806.0] - 2026-08-14
+
+### Added
+
+- Fixed entity broadcast error in the Texas CCS work requirement eligibility formula that crashed vectorized simulations with multiple SPM units.
+  Added Texas CCS to the federal child care subsidies aggregate.
+
+
+## [1.805.0] - 2026-08-14
+
+### Added
+
+- Wisconsin Shares child care subsidy program, including activity, asset, and income eligibility, countable income, county-level maximum rates by provider type and age group, and hourly family copayments.
+
+
+## [1.804.1] - 2026-08-14
+
+### Changed
+
+- Made the person-level home_mortgage_interest input canonical for the federal mortgage interest deduction; the structured first and second home mortgage interest inputs are deprecated and now used only when no person-level interest is reported.
+
+
+## [1.804.0] - 2026-08-13
+
+### Added
+
+- Wyoming Child Care Subsidy Program (CCAP).
+
+
+## [1.803.0] - 2026-08-13
+
+### Added
+
+- Add Vermont Premium Assistance (VPA).
+
+
+## [1.802.0] - 2026-08-13
+
+### Added
+
+- Implement complete current-law Nebraska Child Care Subsidy eligibility, family fees, and provider reimbursement.
+
+### Changed
+
+- Redefine ne_child_care_subsidy as a monthly variable; ne_child_care_subsidies provides the annual total.
+
+
+## [1.801.0] - 2026-08-13
+
+### Added
+
+- Add New Jersey Health Plan Savings (NJHPS) state premium assistance.
+
+
+## [1.800.0] - 2026-08-13
+
+### Added
+
+- Add Utah Child Care Assistance Program (CCAP).
+
+
+## [1.799.0] - 2026-08-13
+
+### Added
+
+- Add Massachusetts ConnectorCare state premium assistance.
+
+
+## [1.798.0] - 2026-08-13
+
+### Added
+
+- Add Tennessee Child Care Payment Assistance (CCAP / Smart Steps) program administered by TN DHS.
+
+
+## [1.797.0] - 2026-08-13
+
+### Added
+
+- Add Washington Cascade Care Savings (state premium assistance program).
+
+
+## [1.796.0] - 2026-08-13
+
+### Added
+
+- Add Oregon Employment Related Day Care eligibility, copays, and 2026 provider reimbursement rates.
+
+
+## [1.795.0] - 2026-08-12
+
+### Added
+
+- Add Covered Connecticut Program premium assistance.
+
+
+## [1.794.4] - 2026-08-12
+
+### Fixed
+
+- Set explicit work hours in the TANF non-cash BBCE gross-income tests that relied on the former 40-hour default of weekly_hours_worked_before_lsr, so they remain green after that default became 0.
+
+
+## [1.794.3] - 2026-08-12
+
+### Fixed
+
+- Default weekly_hours_worked_before_lsr to 0 rather than 40 so that missing hours data fails the SNAP work-requirement hours tests loudly instead of silently satisfying them.
+
+
+## [1.794.2] - 2026-08-11
+
+### Fixed
+
+- Apply Missouri TANF earned income disregards to each earner separately, allow a caretaker-only grant when the only child in the home receives SSI, and exclude SSI recipients' person-level assets from the resource test.
+
+
+## [1.794.1] - 2026-08-11
+
+### Fixed
+
+- Update SNAP broad-based categorical eligibility income limits on each state's own poverty-guideline schedule, rather than the federal October cycle, and raise Arizona's standard to 200% of the poverty guideline from March 2026.
+
+
+## [1.794.0] - 2026-08-11
+
+### Added
+
+- Add New Mexico Premium Assistance (Marketplace Affordability Program NMPA and MIH).
+
+
+## [1.793.0] - 2026-08-11
+
+### Added
+
+- Add Colorado Premium Assistance (Connect for Health Colorado premium wrap).
+
+
+## [1.792.1] - 2026-08-11
+
+### Fixed
+
+- Removed the incorrect low-income AGI cap on the Vermont child and dependent care credit for tax year 2022, which 2022 Act 138 repealed retroactively to January 1, 2022.
+
+
+## [1.792.0] - 2026-08-11
+
+### Added
+
+- Add California Premium Subsidy (Covered California Individual Market Assistance).
+
+
+## [1.791.0] - 2026-08-10
+
+### Added
+
+- Add Maryland Premium Assistance (State-Based Health Insurance Subsidies Program).
+
+
+## [1.790.3] - 2026-08-10
+
+### Fixed
+
+- Count reported SSI and TANF receipt toward categorical eligibility in the school meals, Lifeline, Pell Grant simplified formula, TX DART, IL IHWAP, DC POWER, CA CARE, CVRP increased rebate, and CalWORKs exempt MAP program lists.
+
+
+## [1.790.2] - 2026-08-09
+
+### Fixed
+
+- Convert Georgia, Missouri, and New York CHIP premiums to monthly variables so mid-year schedule changes take effect, align Missouri's tier boundaries with the operative July-to-June Appendix E chart, re-date New York's premium restructuring to October 2022 per SPA NY-22-0033 and remove erroneous 2026 threshold entries, and exempt children under six and in foster care from Georgia's premium.
+
+
+## [1.790.1] - 2026-08-08
+
+### Fixed
+
+- Stop counting in-kind SNAP and WIC as income for the Massachusetts Senior Circuit Breaker credit, following the in-kind public assistance exclusion in M.G.L. c.62 s.6(k)(1); the conflicting DOR guidance is documented in the parameter file.
+
+
+## [1.790.0] - 2026-08-07
+
+### Added
+
+- Added Montana's unemployment compensation subtraction for tax years before 2024, when SB 399 repealed the exemption; previously unemployment income was incorrectly taxed by Montana and inflated Montana-taxable Social Security.
+
+
+## [1.789.2] - 2026-08-07
+
+### Fixed
+
+- Count reported SNAP and WIC receipt toward categorical eligibility in the school meals, Lifeline, ACP, MA MBTA reduced fare, CA CARE, TX DART, and Pell Grant simplified formula program lists.
+
+
+## [1.789.1] - 2026-08-07
+
+### Fixed
+
+- Model Alaska's SNAP ABAWD good-faith-effort exemption (7 U.S.C. 2015(o)(7)) as a separate window overlay: Alaska adopts HR1 statewide from 2025-11-01 (keeping the new Alaska Native/Indian exception in effect), and during 2025-11-01 through 2026-10-31 temporarily retains only the approved pre-HR1 exceptions (ages 56-64, households with children aged 14-17, veterans, people experiencing homelessness, and former foster youth aged 18-24) on top of the post-HR1 exception set, rather than deferring the statewide HR1 toggle.
+
+
+## [1.789.0] - 2026-08-07
+
+### Added
+
+- Add FNS FY2025 Q1 partial-state ABAWD waiver county coverage with litigation-aware termination dates.
+
+
+## [1.788.0] - 2026-08-07
+
+### Added
+
+- Add primary residence value and derive assessed property value from state assessment rates.
+
+
+## [1.787.0] - 2026-08-06
+
+### Added
+
+- NC SCCA (from 2024) and DC CCSP (from 2025) in the child care subsidies and household state benefits aggregates (via new `nc_child_care_subsidies` and `dc_child_care_subsidies` wrappers), and the NY additional CTC (2021 and 2023) and RI CTC (2027 onwards) in the state CTC aggregate.
+
+### Fixed
+
+- NY supplemental EITC in the state EITC aggregate (from 2019) and the Ohio CDCC in the state CDCC aggregate (from 2021), with structural tests guarding aggregate lists against undefined members, missing state gates, and silent year-block drops.
+
+
+## [1.786.5] - 2026-08-05
+
+### Fixed
+
+- Restrict the Missouri TANF assistance unit to dependent children and their caretaker parents per DSS Manual 0210.005.10 and 13 CSR 40-2.325, excluding household members age 19 and over who are not dependent children from the unit's needs and counting only unit members' income, require an actual dependent child for eligibility per RSMo 208.040 (pregnancy alone no longer qualifies), exempt student children's and student teen parents' earnings per DSS Manual 0210.015.35.10 and 0210.015.35.15, exclude SSI recipients' needs and income from the unit per 13 CSR 40-2.310(1)(F), apply the earned income disregards in the sequence the DSS manual specifies (work exemption, then $30, then one-third of the remainder for new applicants; two-thirds of gross first, then the work exemption for active participants) with exact fractions, and count income in the Standard of Need test per 13 CSR 40-2.310(11) — without the work expense, $30-based, or dependent care disregards, while applying the two-thirds disregard for active participants.
+
+
+## [1.786.4] - 2026-08-04
+
+### Changed
+
+- Revert the Missouri TANF assistance unit, dependent-child eligibility, student-earnings, and SSI-exclusion changes that reached main without review; they return for review in PR #9229.
+
+
+## [1.786.3] - 2026-08-04
+
+### Fixed
+
+- Restrict the Missouri TANF assistance unit to dependent children and their caretaker parents per DSS Manual 0210.005.10 and 13 CSR 40-2.325, excluding household members age 19 and over who are not dependent children from the unit's needs and counting only unit members' income, require an actual dependent child for eligibility per RSMo 208.040 (pregnancy alone no longer qualifies), exempt student children's and student teen parents' earnings per DSS Manual 0210.015.35.10 and 0210.015.35.15, and exclude SSI recipients' needs and income from the unit per 13 CSR 40-2.310(1)(F).
+
+
+## [1.786.2] - 2026-08-04
+
+### Fixed
+
+- Refactor the Missouri Property Tax Credit to the statutory table method with the 2026 H.B. 594 parameters, upper income limits, and corrected eligibility pathways.
+
+
+## [1.786.1] - 2026-08-04
+
+### Changed
+
+- Match SNAP ABAWD area waivers on County enum names (county_str) instead of county FIPS codes, so households identified by either the county enum name or a county FIPS code receive county-level waivers.
+
+### Fixed
+
+- Add the federal Medicare and mandatory-coverage SSI exclusions and Missouri's SSI-receipt exclusion to the Medicaid adult expansion group, a caretaker-relative and dependent-child check to the Medicaid parent category, Missouri's MHABD 100% FPL income standard for blind applicants, and the 5% FPL disregard that applied to Missouri's MHF parent income limit before the July 2021 adult expansion, and treat every state's optional senior-or-disabled income limit as an inclusive maximum.
+
+
+## [1.786.0] - 2026-08-04
+
+### Added
+
+- San Bernardino County General Relief program.
+
+
 ## [1.785.0] - 2026-08-04
 
 ### Added

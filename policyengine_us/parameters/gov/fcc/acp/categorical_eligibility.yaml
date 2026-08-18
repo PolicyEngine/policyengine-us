@@ -9,6 +9,7 @@ values:
     - pell_grant # 47 USC 1752(a)(6)(C)
     # Also a broadband provider's existing low-income program.
     - wic # 47 USC 1752(a)(6)(E)
+    - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
 metadata:
   period: month
   reference:

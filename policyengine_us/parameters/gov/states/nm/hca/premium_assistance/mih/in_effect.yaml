@@ -1,0 +1,27 @@
+description: New Mexico provides Middle Income Household premium assistance above 400% of the federal poverty line under the Health Insurance Marketplace Affordability Program when this is true.
+values:
+  # The Addendum carries a condition precedent (not a sunset): had the federal
+  # government extended the enhanced premium tax credit capping premiums at 8.5%
+  # of income for individuals over 400% FPL before January 1, 2026, the Addendum
+  # would not have taken effect. Congress did not extend it, so the Middle Income
+  # Household component is in effect. The underlying authority is permanent, with
+  # no sunset: NMSA 1978 Section 59A-23F-12(A)(2)(b) as amended by Laws 2025
+  # (1st S.S.) ch. 1 Section 2 (HB 2), implemented by 8.401.2 NMAC (permanent,
+  # effective 5/5/2026), and funded by HB 1 Section 4(C) FY26 $17.3M plus the
+  # FY27 GAA $38.1M. The 2028-01-01: false entry is the "no PY2028 guidance yet"
+  # convention.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: New Mexico Premium Assistance Middle Income Household component in effect
+  reference:
+    - title: NMSA 1978 Section 59A-23F-12(A)(2)(b), as amended by Laws 2025 (1st S.S.) ch. 1 Section 2
+      href: https://www.nmlegis.gov/Sessions/25%20Special/final/HB0002.pdf
+    - title: 8.401.2 NMAC
+      href: https://www.srca.nm.gov/parts/title08/08.401.0002.html
+    - title: Addendum 1 to PY2026 MAP Policy and Procedures Manual, Effective Date and condition precedent
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/50c9a4d0-d5c8-48aa-8b9a-5c43e8fa23bc/Addendum%201_MAP%20P%26P%20Middle%20Income%20Household.pdf#page=2

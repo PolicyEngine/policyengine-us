@@ -1,0 +1,68 @@
+# Person-level gross earned income sums the earned sources (employment,
+# self-employment, and specified-service self-employment income).
+- name: Case 1, employment income converts to a monthly amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 12,000 / 12 = 1,000 per month.
+    ca_sbd_general_relief_gross_earned_income: 1_000
+
+- name: Case 2, employment and self-employment income are summed.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: 6_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 1,000 + 500 = 1,500 per month.
+    ca_sbd_general_relief_gross_earned_income: 1_500
+
+- name: Case 3, a self-employment loss nets against the person's own wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: -6_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 1,000 - 500 = 500 per month; the zero floor is applied downstream in
+    # the unit-level countable income calculation.
+    ca_sbd_general_relief_gross_earned_income: 500
+
+- name: Case 4, specified-service self-employment income is an earned source.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        sstb_self_employment_income: 6_000
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 6,000 / 12 = 500 per month.
+    ca_sbd_general_relief_gross_earned_income: 500

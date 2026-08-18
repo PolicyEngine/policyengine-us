@@ -8,6 +8,7 @@ values:
     - dividend_income
     - interest_income
     - gi_cash_assistance
+    - child_support_received
     - social_security
     - ssi
     - tanf
@@ -24,5 +25,7 @@ values:
 
 metadata:
   reference:
-    - title: United States Code, Title 7, Subsection 273.9(b)
+    - title: Code of Federal Regulations, 7 CFR 273.9(b)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b
+    - title: Code of Federal Regulations, 7 CFR 247.9(d)(1)
+      href: https://www.ecfr.gov/current/title-7/part-247/section-247.9#p-247.9(d)(1)

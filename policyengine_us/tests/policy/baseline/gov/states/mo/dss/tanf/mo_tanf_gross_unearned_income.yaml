@@ -1,0 +1,52 @@
+- name: Unit members' unearned income is counted
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation: 6_000  # $500/month
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_tanf_gross_unearned_income: 500
+
+- name: Unearned income of a non-member 19-year-old is not counted
+  period: 2024-01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation: 6_000  # $500/month
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+      adult_child:
+        age: 19
+        social_security: 3_600  # $300/month
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+      tax_unit_2:
+        members: [adult_child]
+    spm_units:
+      spm_unit:
+        members: [parent, child, adult_child]
+    households:
+      household:
+        members: [parent, child, adult_child]
+        state_code: MO
+  output:
+    # DSS Manual 0210.005.10: excluded household members contribute
+    # neither needs nor income.
+    mo_tanf_gross_unearned_income: 500

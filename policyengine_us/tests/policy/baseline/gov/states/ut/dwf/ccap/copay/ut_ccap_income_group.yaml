@@ -1,0 +1,274 @@
+# Tests for ut_ccap_income_group (SPMUnit, MONTH, int).
+# Table 4 (effective April 1, 2026) classifies monthly countable income
+# into 16 groups per household size (2 through 12 or more). Each encoded
+# limit is the inclusive upper bound of its group; income above a bound
+# falls in the next group. Countable income is set directly to isolate the
+# classification.
+
+- name: Case 1, size 2 with low income lands in group 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 1
+
+- name: Case 2, size 2 at the group 1 upper bound stays in group 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 1_763  # inclusive group 1 upper bound
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 1
+
+- name: Case 3, size 2 just above the group 1 bound moves to group 2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 1_764  # above 1,763, group 2 (1,763.01-2,082)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 2
+
+- name: Case 4, size 2 at the group 5 upper bound stays in group 5.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 3_041  # inclusive group 5 upper bound
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 5
+
+- name: Case 5, size 2 just above the group 5 bound moves to group 6.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 3_042  # above 3,041, group 6 (3,041.01-3,361)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 6
+
+- name: Case 6, size 2 near the top of the schedule lands in group 16.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 5_600  # group 16 (5,418.01-5,668)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 16
+
+- name: Case 7, size 4 with low income lands in group 1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 2_679  # inclusive size 4 group 1 upper bound
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 1
+
+- name: Case 8, size 4 middle income lands in group 8.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 5_700  # group 8 (5,426.01-5,883)
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 8
+
+- name: Case 9, size 4 near the top of the schedule lands in group 16.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ut_ccap_countable_income: 8_300  # group 16 (7,967.01-8,335)
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 16
+
+- name: Case 10, size 13 household uses the size 12 column.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+      person12:
+        age: 3
+      person13:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        ut_ccap_countable_income: 7_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13]
+        state_code: UT
+  output:
+    # Household size is capped at 12; in the size 12 column, 7,000 exceeds
+    # the group 2 bound (6,700) and is at or below the group 3 bound
+    # (7,054), so it lands in group 3.
+    ut_ccap_income_group: 3
+
+- name: Case 11, size 1 household uses the size 2 column.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ut_ccap_countable_income: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Household size is floored at 2 (the smallest published Table 4 row);
+    # in the size 2 column, 2,000 exceeds the group 1 bound (1,763) and is
+    # at or below the group 2 bound (2,082), so it lands in group 2.
+    ut_ccap_income_group: 2
+
+- name: Case 12, income above the group 16 bound stays in group 16.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 10_000  # above the size 2 group 16 bound of 5,668
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Classification never exceeds group 16; the 85% state median income
+    # eligibility ceiling is applied separately in ut_ccap_income_eligible.
+    ut_ccap_income_group: 16

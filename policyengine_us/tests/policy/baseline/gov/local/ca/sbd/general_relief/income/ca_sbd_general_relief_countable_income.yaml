@@ -1,0 +1,326 @@
+# Countable income = max(unit earned - $10, 0) x (1 - 0.20) + unit unearned,
+# summed over members not barred for other-cash-assistance receipt: a
+# barred SSI/SSP/CAPI recipient is supported by the other program's budget,
+# so neither their benefit check nor their other income is charged to the
+# AU. The $10 + 20% earned exemption applies once per assistance unit.
+- name: Case 1, the earned income disregard applies to monthly earnings of 200 dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Earned 200: (200 - 10) x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152
+
+- name: Case 2, earnings below the 10 dollar flat exemption count as zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 96
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Earned 8: max(8 - 10, 0) = 0.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 3, earnings exactly at the 10 dollar flat exemption count as zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Earned 10: max(10 - 10, 0) x 0.8 = 0.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 4, unearned income counts in full with no exemptions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 3_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member and count as
+        # unit income.
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Unearned 300 counts in full; the $10 + 20% exemption is earned-only.
+    ca_sbd_general_relief_countable_income: 300
+
+- name: Case 5, mixed earned and unearned income only discounts the earned part.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000
+        social_security: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Earned 500: (500 - 10) x 0.8 = 392; unearned 100; total 492.
+    ca_sbd_general_relief_countable_income: 492
+
+- name: Case 6, two earners share a single per-unit disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 1_200
+        ssi: 0
+      person2:
+        age: 28
+        employment_income: 1_800
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # Unit earned 100 + 150 = 250; (250 - 10) x 0.8 = 192. The exemption is
+    # applied once per assistance unit, not once per earner.
+    ca_sbd_general_relief_countable_income: 192
+
+- name: Case 7, a self-employment loss cannot push countable earned income negative.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 6_000
+        ssi: 0
+      person2:
+        age: 28
+        self_employment_income: -12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # Unit earned 500 + (-1,000) = -500; max(-500 - 10, 0) = 0.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 8, a self-employment loss does not offset unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        self_employment_income: -12_000
+        social_security: 3_600
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Earned -1,000 floors to 0 before unearned is added: 0 + 300 = 300.
+    ca_sbd_general_relief_countable_income: 300
+
+- name: Case 9, a rental loss passes through countable income as a negative amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        rental_income: -2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Unearned -200; the benefit formula (not this variable) floors
+    # countable income at zero so the loss cannot inflate the grant.
+    ca_sbd_general_relief_countable_income: -200
+
+- name: Case 10, an undocumented member's wages still count toward unit income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        immigration_status: UNDOCUMENTED
+        # $2,400 per year is $200 per month of wages.
+        employment_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The undocumented member is excluded from the assistance unit count,
+    # but unlike an SSI/SSP/CAPI recipient they are not supported by
+    # another program: they remain a family member whose income supports
+    # the AU, so their wages still count (the CalWORKs excluded-member
+    # pattern).
+    ca_sbd_general_relief_assistance_unit_size: 1
+    # (200 - 10) x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152
+
+- name: Case 11, a barred CAPI recipient's cash does not enter AU income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Without 40 qualifying work quarters (the input defaults to 40),
+        # the LPR is not an SSI-qualified noncitizen — the population CAPI
+        # serves.
+        ssi_qualifying_quarters_earnings: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,400 per year is $200 per month of CAPI.
+        ca_capi: 2_400
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # CAPI receipt bars the aged noncitizen from the AU, and a barred
+    # member's income is excluded from AU income entirely.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 12, a barred SSP recipient's supplement is not charged to the AU.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $200 per month of state supplement (an SSP-only case).
+        ca_state_supplement: 200
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The SSP recipient is barred from the AU, and a barred member's
+    # income is excluded from AU income entirely.
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 13, farm operations income is earned income with the standard disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # $2,400 per year is $200 per month of Schedule F farming income.
+        farm_operations_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # (200 - 10) x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152
+
+- name: Case 14, farm rental income counts as unearned income in full.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $2,400 per year is $200 per month of farmland rent.
+        farm_rent_income: 2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_countable_income: 200

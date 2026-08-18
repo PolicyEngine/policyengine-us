@@ -1,0 +1,28 @@
+description: New Jersey provides Health Plan Savings premium assistance when this is true under the New Jersey Health Plan Savings program.
+values:
+  # New Jersey Health Plan Savings (NJHPS) is established by P.L. 2020 c.61, which
+  # created the Health Insurance Affordability Fund and the state premium subsidy
+  # (permanent law with no statutory sunset). The subsidy began lowering premiums
+  # for coverage starting January 1, 2021, and the enhanced schedule extending
+  # through 600% FPL took force in mid-2021. Only the PY2026 design is modeled: the
+  # enhanced flat per-member-per-month schedule across 138-600% FPL, so the flag is
+  # false before 2026-01-01. The pre-2026 enhanced schedule is left unmodeled and
+  # carried as a backdating backlog item.
+  # No end date: the program is permanent law, so PY2027+ carries the PY2026 design
+  # forward as a current-law assumption. The DOBI FY2026 budget confirms NJHPS
+  # continues "up to 600% FPL" with expenditures projected to remain flat at
+  # $212.2M in FY2026.
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: New Jersey Health Plan Savings in effect
+  reference:
+    - title: P.L. 2020 c.61
+      href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
+    - title: NJ DOBI FY2025-2026 Budget Discussion Points
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=8
+    - title: Get Covered NJ - New Jersey Health Plan Savings
+      href: https://www.nj.gov/getcoverednj/financialhelp/premiums/

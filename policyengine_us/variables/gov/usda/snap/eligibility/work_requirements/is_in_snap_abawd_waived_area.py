@@ -12,24 +12,31 @@ class is_in_snap_abawd_waived_area(Variable):
         "https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=4",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-79.pdf#page=6",
         "https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2026/26-15.pdf#page=6",
+        "https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2",
     )
     documentation = (
         "Whether the person lives in an area where the USDA Food and "
         "Nutrition Service has waived the SNAP ABAWD time limit under "
-        "7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f). Waived areas are "
-        "identified by county FIPS code (sub-state waivers) or by state "
-        "code (statewide waivers, including waivers litigation kept in "
-        "effect after Rhode Island State Council of Churches v. Rollins, "
-        "D.R.I. No. 1:25-cv-00569). When a dataset does not include county "
-        "geography, county_fips defaults to an empty string and no "
-        "county-level waiver applies; statewide waivers still apply via "
-        "state_code."
+        "7 U.S.C. 2015(o)(4) and 7 CFR 273.24(f). Sub-state waivers are "
+        "matched on the County enum name via county_str (which derives "
+        "from county_fips when a FIPS code is provided, so either input "
+        "form matches); statewide waivers are matched on state_code. A "
+        "household with no county information falls back to the first "
+        "county alphabetically in its state, which for Alaska is the "
+        "waived Aleutians East Borough — see the waived_counties state "
+        "parameters for "
+        "the waiver provenance and this fallback's implications."
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.abawd
-        county_fips = person.household("county_fips", period.this_year)
+        county = person.household("county_str", period.this_year)
         state_code = person.household("state_code_str", period.this_year)
-        in_waived_county = np.isin(county_fips, p.waived_county_fips)
+        in_waived_county = np.zeros_like(state_code, dtype=bool)
+        for state in p.waived_counties._children:
+            in_waived_county |= (state_code == state.upper()) & np.isin(
+                county,
+                p.waived_counties[state],
+            )
         in_waived_state = np.isin(state_code, p.waived_states)
         return in_waived_county | in_waived_state

@@ -1,0 +1,22 @@
+description: Wyoming pays up to these maximum daily rates for legally exempt child care providers under the Child Care, Purchase of Service program.
+# Flat rates with no age variation for legally exempt (unlicensed relative and
+# non-relative) providers, identical on the 04/01/24, 04/01/25, and 04/01/26
+# Table I charts.
+metadata:
+  period: day
+  unit: currency-USD
+  label: Wyoming CCAP legally exempt provider daily maximum rates
+  breakdown:
+    - wy_ccap_day_length
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/24-03/31/25 (single page)
+      href: https://drive.google.com/file/d/1rG1a7x4V5KKLiipNUwMVmemHBLWZS5MZ/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://drive.google.com/file/d/1T7NWbz6hOlRyAcqwROXExos5JB57NstB/view
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/26-03/31/27 (single page)
+      href: https://drive.google.com/file/d/1-zjev4TxHdyq7vC8tlh9SCNSNZzZz4Kq/view
+
+PART_DAY:
+  2024-04-01: 12.09
+FULL_DAY:
+  2024-04-01: 24.19

@@ -1,0 +1,26 @@
+# During an approved good-faith-effort exemption window under
+# 7 U.S.C. 2015(o)(7), a noncontiguous State may temporarily retain a
+# pre-HR1 age exception for older adults on top of the post-HR1 exception
+# set. Per Alaska's FNS approval (the only currently approved good-faith
+# window, effective 2025-11-01 through 2026-10-31), the retained age band
+# is 56 through 64: individuals at or above this minimum age keep the
+# exemption during the window. The upper bound (64) is not encoded here
+# because ages 65 and older are already exempt under the post-HR1 age
+# threshold, so a single lower bound reproduces the 56-64 band exactly.
+# Note this floor (56) is deliberately NOT the pre-HR1 general ABAWD age
+# threshold (55): Alaska's approval retained 56-64, not the full pre-HR1
+# 55-and-older exemption.
+description: During a Supplemental Nutrition Assistance Program good-faith-effort exemption window, Able-Bodied Adults Without Dependents at or above this age retain the temporary pre-HR1 age exemption.
+
+values:
+  2025-11-01: 56
+
+metadata:
+  unit: year
+  period: year
+  label: SNAP ABAWD good-faith exemption retained minimum age
+  reference:
+    - title: Alaska Department of Health, H.R. 1 - AK Impacts
+      href: https://health.alaska.gov/en/education/hr-1-ak-impacts/
+    - title: 7 U.S.C. 2015(o)(7) - Good faith exemptions for Alaska and Hawaii
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim
