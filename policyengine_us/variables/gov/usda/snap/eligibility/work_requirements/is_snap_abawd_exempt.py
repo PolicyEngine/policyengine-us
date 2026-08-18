@@ -68,9 +68,7 @@ class is_snap_abawd_exempt(Variable):
             age <= p_pre.age_threshold.former_foster_care
         )
         post_hr1_exempt = exempt_base | is_indian_exempt
-        pre_hr1_exempt = (
-            exempt_base | is_homeless | is_veteran | former_foster_youth
-        )
+        pre_hr1_exempt = exempt_base | is_homeless | is_veteran | former_foster_youth
         # Good-faith-effort exemption window — 7 U.S.C. 2015(o)(7). A
         # noncontiguous State that has adopted HR1 may temporarily retain a
         # specified set of pre-HR1 exceptions on top of the post-HR1 set.
