@@ -1,3 +1,10 @@
+## [1.809.0] - 2026-08-18
+
+### Added
+
+- Implement Alabama Unemployment Insurance (al_ui).
+
+
 ## [1.808.1] - 2026-08-17
 
 ### Fixed
