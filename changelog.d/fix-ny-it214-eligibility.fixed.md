@@ -1,0 +1,1 @@
+Fix the New York real property tax credit (IT-214): apply the $450/month renter cap to the rent itself rather than 25% of rent, and gate eligibility on IT-214 household gross income (which adds nontaxable Social Security and other income to federal AGI) instead of federal AGI.

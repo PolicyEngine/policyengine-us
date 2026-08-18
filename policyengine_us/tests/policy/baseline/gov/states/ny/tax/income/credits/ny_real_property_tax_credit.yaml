@@ -6,3 +6,60 @@
     real_estate_taxes: 25_000
   output:
     ny_real_property_tax_credit: 65
+
+- name: Renter over the $450/month cap gets no credit (IT-214 line 21)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        rent: 6_000  # $500/month > $450 cap
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Household gross income over $18,000 via nontaxable Social Security gets no credit
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        social_security: 15_000  # nontaxable, but counts toward IT-214 line 16
+        rent: 3_000  # $250/month, under the cap: isolates the income gate
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # AGI 6,000 + nontaxable SS 15,000 = household gross income 21,000 > 18,000
+    ny_real_property_tax_credit: 0
+
+- name: Elderly head with pension and Social Security over cap gets no credit (taxsim 1135)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        taxable_private_pension_income: 6_600
+        social_security: 15_506
+        rent: 17_139  # also over the $450/month cap
+      dep1:
+        age: 8
+        is_tax_unit_dependent: true
+      dep2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [head, dep1, dep2]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
