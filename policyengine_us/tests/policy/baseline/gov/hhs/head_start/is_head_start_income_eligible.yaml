@@ -4,7 +4,7 @@
 # guidelines (1302.12(c)(1)(i)). Two program-discretionary flexibilities are
 # modeled as SPM-unit inputs that default to false:
 # - head_start_uses_discretionary_income_limit: 1302.12(d) lets a program
-#   enroll families up to 130% of the poverty guidelines.
+#   enroll families with income below 130% of the poverty guidelines.
 # - head_start_applies_housing_cost_adjustment: 1302.12(i)(1)(ii) (2024 final
 #   rule) lets a program deduct housing costs above 30% of gross income.
 # Income is Head Start gross income under 45 CFR 1305.2, not AGI.
@@ -197,13 +197,13 @@
   output:
     is_head_start_income_eligible: [true, true]
 
-- name: Exactly 130% of the poverty guideline is eligible under the allowance
+- name: One dollar below 130% of the poverty guideline is eligible under the allowance
   period: 2025
   input:
     people:
       parent:
         age: 30
-        employment_income: 27_495
+        employment_income: 27_494
       child:
         age: 4
     spm_units:
@@ -217,13 +217,14 @@
   output:
     is_head_start_income_eligible: [true, true]
 
-- name: One dollar above 130% of the poverty guideline is ineligible under the allowance
+- name: Exactly 130% of the poverty guideline is ineligible under the allowance
   period: 2025
   input:
     people:
       parent:
         age: 30
-        employment_income: 27_496
+        # 45 CFR 1302.12(d) requires income "below" 130% of the poverty line.
+        employment_income: 27_495
       child:
         age: 4
     spm_units:
