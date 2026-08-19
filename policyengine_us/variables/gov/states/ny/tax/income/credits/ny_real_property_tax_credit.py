@@ -13,12 +13,12 @@ class ny_real_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         rptc = parameters(period).gov.states.ny.tax.income.credits.real_property_tax
 
-        # Age-based eligibility.
+        # Age-based eligibility. The elderly tier (IT-214 line 7) applies if the
+        # filer, spouse, or a claimed dependent is 65 or older.
         person = tax_unit.members
         age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
         aged = age >= rptc.elderly_age
-        meets_age_condition = tax_unit.any(~is_dependent & aged)
+        meets_age_condition = tax_unit.any(aged)
 
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
@@ -57,6 +57,20 @@ class ny_real_property_tax_credit(Variable):
         meets_income_condition = income <= rptc.max_agi
 
         eligible = meets_value_conditions & meets_income_condition
+
+        # From 2025 (Part RR of Chapter 59 of the Laws of 2025) the credit is a
+        # flat amount looked up by federal AGI bracket, allowed only when the
+        # property-tax measure exceeds the FAGI-based threshold (IT-214 line 19
+        # gate). Through 2024 the credit is 50% of excess, capped by the maximum
+        # chart.
+        if rptc.uses_flat_amount_table:
+            flat_amount = where(
+                meets_age_condition,
+                rptc.amount.elderly.calc(income),
+                rptc.amount.non_elderly.calc(income),
+            )
+            gate = excess_rpt > 0
+            return where(eligible & gate, flat_amount, 0)
 
         maximum_credit = where(
             meets_age_condition,
