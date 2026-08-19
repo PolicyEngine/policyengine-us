@@ -1,3 +1,78 @@
+## [1.816.0] - 2026-08-19
+
+### Added
+
+- Passive partnership and S-corporation income input, included in the net investment income tax base.
+
+
+## [1.815.1] - 2026-08-18
+
+### Fixed
+
+- Fix the Arkansas additional tax credit for qualified individuals, which was granted to unmarried head-of-household filers by routing them through the married-filing-separately path; only married couples can file separately on the Arkansas return.
+
+
+## [1.815.0] - 2026-08-18
+
+### Added
+
+- Add the New York Child Care Assistance Program under its own state namespace, encoding current law: the October 2024 market rates by county group, provider type, age group, and duration of care, with excess periods for a sixth or seventh day and for days of care at or above the daily maximum hours, the 85% state median income limit, the 1% family share with the statutory minimum and categorical exceptions, the foster-care and child-protective-services categorical eligibility routes, the age extensions for a child with special needs, a per-child payment cap, and a New York countable-income measure that excludes capital gains and a dependent child's earnings.
+
+
+## [1.814.0] - 2026-08-18
+
+### Added
+
+- Add New York Unemployment Insurance benefit (ny_ui), scoped to household calculations (claim-week inputs default to 0, so it is inert in microsimulation).
+
+
+## [1.813.1] - 2026-08-18
+
+### Fixed
+
+- Fix West Virginia adjusted gross and taxable income to apply the low-income earned-income exclusion exactly once.
+- Pin Michigan's 2026 individual income tax rate to the official 4.25 percent annual determination.
+
+
+## [1.813.0] - 2026-08-18
+
+### Added
+
+- - Adds Illinois Child Care Assistance Program copay and provider payment rate calculations.
+  - Removes the child immigration status test from Illinois CCAP child eligibility, since IDHS CCAP Policy 01.01.03 does not deny eligibility based on citizenship status.
+
+
+## [1.812.0] - 2026-08-18
+
+### Added
+
+- Head Start income eligibility: add SPM-unit inputs for the 45 CFR 1302.12(d) discretionary 130% FPG limit and the 2024 final rule's excessive housing cost adjustment, compute Head Start gross income and housing costs from 45 CFR 1305.2 source lists, and compare at the SPM unit.
+
+
+## [1.811.2] - 2026-08-18
+
+### Fixed
+
+- Align the Medicaid optional senior-or-disabled pathway with Missouri MHABD budgeting:
+  - round the Missouri income standard up to the next whole monthly dollar, matching the Appendix J published amounts
+  - apply the earned income exemption before the standard exemption and round countable income down to the whole dollar
+  - count an ineligible spouse's gross income without the SSI FBR-differential deeming threshold
+
+
+## [1.811.1] - 2026-08-18
+
+### Fixed
+
+- Apply the NC SCCA age-based income limit per child so a school-age child over 133% FPL is excluded from the estimated savings even when a preschool sibling qualifies under 200% FPL.
+
+
+## [1.811.0] - 2026-08-18
+
+### Added
+
+- Add Illinois county eligibility filtering for the Commodity Supplemental Food Program.
+
+
 ## [1.810.0] - 2026-08-18
 
 ### Added

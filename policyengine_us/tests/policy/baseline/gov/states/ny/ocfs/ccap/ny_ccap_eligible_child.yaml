@@ -1,0 +1,295 @@
+# 18 NYCRR 415.2(a)(2)(vi): foster care placements and open child protective
+# or preventive services cases "must be determined eligible without regard to
+# income". The NYS Register waives only the activity requirement for families
+# experiencing homelessness, who stay inside the income test.
+
+- name: Case 1, an over-income child with no categorical route is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+- name: Case 2, an over-income child in foster care is eligible without regard to income.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 3, an over-income child with an open protective services case is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+# Homelessness waives the activity requirement but not the income test.
+- name: Case 4, a homeless family under the income limit is eligible without the activity test.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 40_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+        is_homeless: true
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 5, a homeless family over the income limit remains ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 400_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+        is_homeless: true
+  output:
+    ny_ccap_eligible_child: false
+
+- name: Case 6, a child at or above the federal age limit is ineligible on every route.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 13
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+# 415.2(a) conditions eligibility on family resources not exceeding one
+# million dollars; without a case the asset test could be deleted unnoticed.
+- name: Case 7, a family over the resource limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_assets: 5_000_000
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+- name: Case 8, a family at the resource limit remains eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_assets: 1_000_000
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+# 415.1(b)(2) extends eligibility to a child under 18 with special needs.
+- name: Case 9, a fifteen year old with special needs is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 15
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 10, a fifteen year old without special needs is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+# 415.1(b)(3) reaches a full-time secondary student under 19 with special
+# needs; an eighteen year old without student status falls outside it.
+- name: Case 11, an eighteen year old student with special needs is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 18
+        is_disabled: true
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: true
+
+- name: Case 12, an eighteen year old with special needs who is not a student is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 18
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+# 45 CFR 98.20(a)(1)(ii) conditions CCDF eligibility on the child's status.
+- name: Case 13, an undocumented child is ineligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 20_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: false
+
+# 415.2(a)(2)(vi)(b) attaches the protective services route to the family, so
+# a sibling who is not individually flagged is also eligible without regard
+# to income. Both children are above the income ceiling.
+- name: Case 14, a protective services case reaches every child in the family.
+  period: 2025-01
+  input:
+    people:
+      child1:
+        age: 3
+        receives_or_needs_protective_services: true
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+        ny_ccap_countable_income: 200_000
+        hhs_smi: 80_000
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child1, child2]
+        state_code: NY
+  output:
+    ny_ccap_eligible_child: [true, true]

@@ -1,0 +1,39 @@
+- name: Case 1, day care center maps to licensed center.
+  period: 2026-01
+  input:
+    childcare_provider_type_group: DCC_SACC
+    state_code: IL
+  output:
+    il_ccap_provider_type: LICENSED_CENTER
+
+- name: Case 2, legally exempt group care maps to license-exempt center.
+  period: 2026-01
+  input:
+    childcare_provider_type_group: LE_GC
+    state_code: IL
+  output:
+    il_ccap_provider_type: LICENSE_EXEMPT_CENTER
+
+- name: Case 3, family day care maps to licensed home.
+  period: 2026-01
+  input:
+    childcare_provider_type_group: FDC_GFDC
+    state_code: IL
+  output:
+    il_ccap_provider_type: LICENSED_HOME
+
+- name: Case 4, standard informal care maps to license-exempt home.
+  period: 2026-01
+  input:
+    childcare_provider_type_group: LE_STD
+    state_code: IL
+  output:
+    il_ccap_provider_type: LICENSE_EXEMPT_HOME
+
+- name: Case 5, enhanced informal care maps to license-exempt home.
+  period: 2026-01
+  input:
+    childcare_provider_type_group: LE_ENH
+    state_code: IL
+  output:
+    il_ccap_provider_type: LICENSE_EXEMPT_HOME

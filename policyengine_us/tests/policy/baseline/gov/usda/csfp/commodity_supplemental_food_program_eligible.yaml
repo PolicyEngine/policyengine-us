@@ -277,3 +277,57 @@
         county_str: BARNSTABLE_COUNTY_MA
   output:
     commodity_supplemental_food_program_eligible: false
+
+- name: Case 13, Illinois senior in a CSFP covered county is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    commodity_supplemental_food_program_eligible: true
+
+- name: Case 14, Illinois senior outside CSFP covered counties is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: SANGAMON_COUNTY_IL
+  output:
+    commodity_supplemental_food_program_eligible: false
+
+- name: Case 15, Illinois senior in a CSFP covered county with income above the limit is not eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+        school_meal_fpg_ratio: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    commodity_supplemental_food_program_eligible: false

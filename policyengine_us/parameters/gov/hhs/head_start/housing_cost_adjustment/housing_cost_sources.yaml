@@ -1,0 +1,37 @@
+description: The Administration for Children and Families counts these expenses as housing costs when Head Start and Early Head Start programs apply the excessive housing cost adjustment.
+
+values:
+  2024-10-21:
+    # Rent or mortgage payments, homeowner's insurance, interest, and taxes
+    # on the home. Mortgage interest is part of mortgage payments; renter's
+    # insurance has no model variable.
+    - rent
+    - mortgage_payments
+    - homeowners_insurance
+    - real_estate_taxes
+    # Utilities: electricity, gas, water, sewer, and trash. Electricity is
+    # taken before utility subsidies: the net electricity_expense variable
+    # subtracts subsidies whose eligibility depends on Head Start
+    # participation, which would be circular.
+    - pre_subsidy_electricity_expense
+    - gas_expense
+    # Heating and cooling expense covers fuels such as oil and propane that
+    # are not billed as electricity or gas; the model treats it as additive.
+    - heating_cooling_expense
+    - water_expense
+    - sewage_expense
+    - trash_expense
+
+metadata:
+  unit: list
+  period: year
+  label: Head Start housing cost sources
+  reference:
+    # "Housing costs means the total annual applicable expenses on housing
+    # which may include rent or mortgage payments, homeowner's or renter's
+    # insurance, utilities, interest, and taxes on the home. Utilities
+    # include electricity, gas, water, sewer, and trash."
+    - title: 45 CFR 1305.2 Terms (Housing costs)
+      href: https://www.ecfr.gov/current/title-45/section-1305.2
+    - title: 45 CFR 1302.12(i)(1)(ii)(A) Verifying eligibility
+      href: https://www.ecfr.gov/current/title-45/section-1302.12#p-1302.12(i)(1)(ii)(A)

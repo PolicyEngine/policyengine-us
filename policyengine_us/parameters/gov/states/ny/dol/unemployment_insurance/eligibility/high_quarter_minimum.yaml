@@ -1,0 +1,29 @@
+description: New York requires this minimum amount of wages paid in the high quarter of the base period under the Unemployment Insurance program.
+
+# Pre-2025 values are backfilled from official sources: the 2023 and 2024 high
+# quarter minimums are published directly (USDOL Significant Provisions Jan 2023;
+# NYSDOL P832 Jan 2025), and 2020-2022 are cross-checked via the statutory
+# derivation high_quarter_minimum = 221 x the applicable minimum wage, floored to
+# the next $100 (NY Lab. Law § 527(1)(d)) = min_amount x 25.
+values:
+  2020-01-01: 2_600
+  2021-01-01: 2_700
+  2022-01-01: 2_900
+  2023-01-01: 3_100
+  2024-01-01: 3_300
+  2025-01-01: 3_400
+  2026-01-01: 3_500
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York UI high quarter minimum wages
+  reference:
+    - title: NY Labor Law § 527(1)(d) — Valid original claim
+      href: https://www.nysenate.gov/legislation/laws/LAB/527
+    - title: USDOL ETA, Significant Provisions of State UI Laws, January 2023 (NY row, "1½ × HQW; $3,100 in HQ")
+      href: https://web.archive.org/web/20230902081422/https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2023.pdf#page=4
+    - title: NYSDOL P832 (Jan 2025) — high quarter minimum increased from $3,300 for 2024 claims
+      href: https://dol.ny.gov/system/files/documents/2025/01/p832-how-your-weekly-ui-benefits-are-calculated-1-25.pdf#page=2
+    - title: NYSDOL P832 (Feb 2026)
+      href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

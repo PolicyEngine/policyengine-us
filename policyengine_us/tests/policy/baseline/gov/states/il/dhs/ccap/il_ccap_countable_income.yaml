@@ -1,0 +1,80 @@
+- name: Case 1, adult countable sources are summed monthly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 12_000
+    farm_operations_income: 1_200
+    self_employment_income: 2_400
+    dividend_income: 120
+    interest_income: 120
+    rental_income: 1_200
+    pension_income: 1_200
+    veterans_benefits: 1_200
+    unemployment_compensation: 1_200
+    workers_compensation: 1_200
+    state_code: IL
+  output:
+    # Annual countable sources total $21,840, or $1,820 per month.
+    il_ccap_countable_income: 1_820
+
+- name: Case 2, child earnings are excluded while adult earnings remain.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 12
+        employment_income: 12_000
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_ccap_countable_income: 2_000
+
+- name: Case 3, child support paid is fully deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 24_000
+    child_support_expense: 6_000
+    state_code: IL
+  output:
+    il_ccap_countable_income: 1_500
+
+- name: Case 4, negative net countable income floors at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 1_200
+    child_support_expense: 2_400
+    state_code: IL
+  output:
+    il_ccap_countable_income: 0
+
+- name: Case 5, missing income inputs produce zero countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+  output:
+    il_ccap_countable_income: 0
+
+- name: Case 6, net rental income is counted independently.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    rental_income: 12_000
+    state_code: IL
+  output:
+    il_ccap_countable_income: 1_000

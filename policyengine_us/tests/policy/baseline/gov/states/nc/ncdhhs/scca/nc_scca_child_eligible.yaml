@@ -1,0 +1,51 @@
+- name: Case 1, age eligible and income eligible, child eligible.
+  period: 2024-01
+  input:
+    nc_scca_child_age_eligible: true
+    nc_scca_child_income_eligible: true
+    state_code: NC
+  output:
+    nc_scca_child_eligible: true
+
+- name: Case 2, age eligible but not income eligible, child not eligible.
+  period: 2024-01
+  input:
+    nc_scca_child_age_eligible: true
+    nc_scca_child_income_eligible: false
+    state_code: NC
+  output:
+    nc_scca_child_eligible: false
+
+- name: Case 3, income eligible but not age eligible, child not eligible.
+  period: 2024-01
+  input:
+    nc_scca_child_age_eligible: false
+    nc_scca_child_income_eligible: true
+    state_code: NC
+  output:
+    nc_scca_child_eligible: false
+
+- name: Case 4, siblings with different age-based income limits, only the preschooler is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      child1:
+        age: 7
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, child1, child2]
+        # 2026 FPG for 3 = 27_320/yr = 2_276.67/mo.
+        # 133% = 3_027.97 < 4_500 (age 7 fails); 200% = 4_553.33 > 4_500 (age 4 passes).
+        nc_scca_countable_income: 4_500
+    households:
+      household:
+        members: [person1, child1, child2]
+        state_code: NC
+  output:
+    nc_scca_child_income_eligible: [false, false, true]
+    nc_scca_child_eligible: [false, false, true]
+    nc_scca_entry_eligible: true

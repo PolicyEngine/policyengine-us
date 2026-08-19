@@ -3,7 +3,6 @@
   input:
     age: 3
     is_disabled : false
-    il_ccap_immigration_status_eligible_person: true
     is_tax_unit_dependent: true
     state_code: IL 
   output: 
@@ -14,7 +13,6 @@
   input:
     age: 13
     is_disabled: false
-    il_ccap_immigration_status_eligible_person: true
     is_tax_unit_dependent: true
     state_code: IL 
   output: 
@@ -25,7 +23,6 @@
   input:
     age: 19
     is_disabled: true
-    il_ccap_immigration_status_eligible_person: true
     is_tax_unit_dependent: true
     state_code: IL 
   output: 
@@ -36,7 +33,6 @@
   input:
     age: 18
     is_disabled: true
-    il_ccap_immigration_status_eligible_person: true
     is_tax_unit_dependent: true
     state_code: IL 
   output: 
@@ -47,8 +43,17 @@
   input:
     age: 3
     is_disabled: true
-    il_ccap_immigration_status_eligible_person: true
     is_tax_unit_dependent: false
     state_code: IL 
   output: 
     il_ccap_eligible_child: false
+
+- name: Case 6, an undocumented dependent child remains program eligible.
+  period: 2026-01
+  input:
+    age: 8
+    immigration_status: UNDOCUMENTED
+    is_tax_unit_dependent: true
+    state_code: IL
+  output:
+    il_ccap_eligible_child: true

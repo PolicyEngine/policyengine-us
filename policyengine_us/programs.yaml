@@ -460,7 +460,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VA, VT, WA, WI, WV, WY
+    coverage: AK, AR, AL, AZ, CA, CO, CT, DE, DC, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VA, VT, WA, WI, WV, WY
     state_implementations:
       - state: AK
         status: complete
@@ -519,9 +519,8 @@ programs:
         status: complete
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
-        variable: il_ccap_eligible
+        variable: il_ccap
         parameter_prefix: gov.states.il.dhs.ccap
-        notes: Only includes eligibility rules
       - state: ID
         status: complete
         name: ICCP
@@ -626,6 +625,13 @@ programs:
         full_name: Nevada Child Care and Development Program
         variable: nv_ccdp
         parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: NY
+        status: partial
+        name: CCAP
+        full_name: New York Child Care Assistance Program
+        variable: ny_ccap
+        parameter_prefix: gov.states.ny.ocfs.ccap
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for a child with special needs, and the statutory family-share exceptions. Excess periods for a sixth or seventh day of care and for each day of care at or above the daily maximum hours are priced at the applicable daily or part-day rate under 415.9(d). Household county proxies for provider county and unknown counties default to group 3, the lowest-rate group, which understates rates for the New York City and downstate groups that hold most of the state's children. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because the market rate is priced by duration of care; expenses alone yield no benefit. The pre-2022 hourly rate tier no longer exists - 18 NYCRR 415.9 and 24-OCFS-LCM-22 Attachment A define weekly, daily and part-day rates only. The SPM unit stands in for the 18 NYCRR 415.1(l) child care services unit, which draws cohabiting adults, 18-to-20-year-olds and child-only units differently. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), the separate school-age child care rate table, safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), a child under court supervision, the 12-month eligibility period, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
       - state: OR
         status: complete
         name: Oregon ERDC
@@ -1470,6 +1476,17 @@ programs:
     coverage: NY
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
+
+  - id: ny_ui
+    name: New York Unemployment Insurance
+    full_name: New York Unemployment Insurance
+    category: Benefits
+    agency: New York State Department of Labor
+    status: partial
+    coverage: NY
+    variable: ny_ui
+    parameter_prefix: gov.states.ny.dol.unemployment_insurance
+    verified_years: "2025-2026"
 
   - id: ok_ui
     name: Oklahoma UI

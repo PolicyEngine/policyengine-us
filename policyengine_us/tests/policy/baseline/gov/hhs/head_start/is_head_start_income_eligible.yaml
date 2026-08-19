@@ -1,23 +1,460 @@
-- name: Head Start program income eligible 1
-  period: 2021
-  input:
-    adjusted_gross_income: 10
-    tax_unit_fpg: 10
-  output:
-    is_head_start_income_eligible: true
+# Head Start income eligibility (45 CFR 1302.12).
+#
+# The statutory limit is family income at or below 100% of the poverty
+# guidelines (1302.12(c)(1)(i)). Two program-discretionary flexibilities are
+# modeled as SPM-unit inputs that default to false:
+# - head_start_uses_discretionary_income_limit: 1302.12(d) lets a program
+#   enroll families with income below 130% of the poverty guidelines.
+# - head_start_applies_housing_cost_adjustment: 1302.12(i)(1)(ii) (2024 final
+#   rule) lets a program deduct housing costs above 30% of gross income.
+# Income is Head Start gross income under 45 CFR 1305.2, not AGI.
+#
+# 2025 poverty guideline for a family of two in the contiguous states:
+# 15,650 + 5,500 = 21,150; 130% = 27,495.
 
-- name: Head Start program income eligible 2
-  period: 2021
+- name: Wages exactly at the poverty guideline are eligible
+  period: 2025
   input:
-    adjusted_gross_income: 0
-    tax_unit_fpg: 10
+    people:
+      parent:
+        age: 30
+        employment_income: 21_150
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
   output:
-    is_head_start_income_eligible: true
+    head_start_gross_income: 21_150
+    head_start_countable_income: 21_150
+    is_head_start_income_eligible: [true, true]
 
-- name: Head Start program income ineligible
-  period: 2021
+- name: Wages one dollar above the poverty guideline are ineligible
+  period: 2025
   input:
-    adjusted_gross_income: 10
-    tax_unit_fpg: 0
+    people:
+      parent:
+        age: 30
+        employment_income: 21_151
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
   output:
-    is_head_start_income_eligible: false
+    is_head_start_income_eligible: [false, false]
+
+- name: No income is eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    head_start_gross_income: 0
+    is_head_start_income_eligible: [true, true]
+
+# Income base: 45 CFR 1305.2 gross income counts only wages, business income,
+# unemployment compensation, pensions or annuities, and military income.
+- name: Social Security is not Head Start income, so wages alone are compared
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_000
+        social_security: 8_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 15,000 + 8,000 = 23,000 exceeds 21,150, but Social Security is excluded.
+    head_start_gross_income: 15_000
+    is_head_start_income_eligible: [true, true]
+
+- name: Unemployment compensation is Head Start income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_000
+        unemployment_compensation: 8_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    head_start_gross_income: 23_000
+    is_head_start_income_eligible: [false, false]
+
+- name: Pension income is Head Start income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 15_000
+        taxable_pension_income: 8_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    head_start_gross_income: 23_000
+    is_head_start_income_eligible: [false, false]
+
+# 45 CFR 1302.12(d) discretionary band.
+- name: Income inside the 100-130% band is ineligible when the program does not use the allowance
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_head_start_income_eligible: [false, false]
+
+- name: Income inside the 100-130% band is eligible when the program uses the allowance
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 25_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_head_start_income_eligible: [true, true]
+
+- name: Exactly 100% of the poverty guideline stays eligible under the allowance
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 21_150
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_head_start_income_eligible: [true, true]
+
+- name: One dollar below 130% of the poverty guideline is eligible under the allowance
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 27_494
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_head_start_income_eligible: [true, true]
+
+- name: Exactly 130% of the poverty guideline is ineligible under the allowance
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        # 45 CFR 1302.12(d) requires income "below" 130% of the poverty line.
+        employment_income: 27_495
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    is_head_start_income_eligible: [false, false]
+
+# 45 CFR 1302.12(i)(1)(ii) excessive housing cost adjustment.
+- name: Housing costs do not adjust income when the program does not apply the adjustment
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        rent: 12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    head_start_housing_cost: 12_000
+    head_start_countable_income: 24_000
+    is_head_start_income_eligible: [false, false]
+
+- name: Housing costs above 30% of gross income are deducted when the program applies the adjustment
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        rent: 12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 30% x 24,000 = 7,200; excess = 12,000 - 7,200 = 4,800;
+    # countable income = 24,000 - 4,800 = 19,200 <= 21,150.
+    head_start_countable_income: 19_200
+    is_head_start_income_eligible: [true, true]
+
+- name: A small housing cost excess leaves the family over income
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        rent: 8_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Excess = 8,000 - 7,200 = 800; countable income = 23,200 > 21,150.
+    head_start_countable_income: 23_200
+    is_head_start_income_eligible: [false, false]
+
+- name: Housing costs at or below 30% of gross income change nothing
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        rent: 7_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    head_start_countable_income: 24_000
+    is_head_start_income_eligible: [false, false]
+
+- name: Utilities count as housing costs under 45 CFR 1305.2
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        rent: 7_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        pre_subsidy_electricity_expense: 2_000
+        gas_expense: 1_000
+        water_expense: 1_000
+        trash_expense: 200
+        # Phone service is not a 1305.2 utility.
+        phone_expense: 600
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Housing costs = 7,000 + 2,000 + 1,000 + 1,000 + 200 = 11,200;
+    # excess = 11,200 - 7,200 = 4,000; countable income = 20,000 <= 21,150.
+    head_start_housing_cost: 11_200
+    head_start_countable_income: 20_000
+    is_head_start_income_eligible: [true, true]
+
+- name: Homeowner costs count as housing costs under 45 CFR 1305.2
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        real_estate_taxes: 2_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        mortgage_payments: 8_000
+        homeowners_insurance: 1_200
+        # HOA fees are not listed in the 1305.2 definition.
+        homeowners_association_fees: 1_000
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Housing costs = 8,000 + 2,000 + 1,200 = 11,200; excess = 4,000;
+    # countable income = 20,000 <= 21,150.
+    head_start_housing_cost: 11_200
+    head_start_countable_income: 20_000
+    is_head_start_income_eligible: [true, true]
+
+# Both flexibilities together.
+- name: The housing adjustment brings income under 130% only when both flexibilities apply
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        rent: 12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 30% x 30,000 = 9,000; excess = 3,000; countable income = 27,000 <= 27,495.
+    head_start_countable_income: 27_000
+    is_head_start_income_eligible: [true, true]
+
+- name: The discretionary limit alone does not reach a family at 142% of the poverty guideline
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        rent: 12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_uses_discretionary_income_limit: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 30,000 > 27,495.
+    is_head_start_income_eligible: [false, false]
+
+- name: The housing adjustment alone does not reach the statutory limit for the same family
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+        rent: 12_000
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        head_start_applies_housing_cost_adjustment: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 27,000 > 21,150.
+    is_head_start_income_eligible: [false, false]

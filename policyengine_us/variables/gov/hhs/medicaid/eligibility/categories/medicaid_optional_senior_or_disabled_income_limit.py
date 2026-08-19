@@ -13,6 +13,7 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/0805-015-45-income-maximum/",
+        "https://dssmanuals.mo.gov/wp-content/uploads/2022/07/mhabd-appendix-j.pdf#page=1",
     )
 
     def formula(person, period, parameters):
@@ -34,10 +35,21 @@ class medicaid_optional_senior_or_disabled_income_limit(Variable):
         # old age or permanent and total disability.
         mo_mhabd = parameters(period).gov.states.mo.dss.mhabd.income_limit
         state_code = person.household("state_code", period)
+        is_mo = state_code == StateCode.MO
         is_blind = person("is_blind", period)
         limit_pct = where(
-            (state_code == StateCode.MO) & is_blind,
+            is_mo & is_blind,
             mo_mhabd.blind,
             limit_pct,
         )
-        return limit_pct * tax_unit("tax_unit_fpg", period)
+        fpg = tax_unit("tax_unit_fpg", period)
+        # Missouri publishes its MHABD standards as dollar amounts in
+        # Appendix J: the percentage of the monthly poverty guideline
+        # rounded up to the next whole dollar (e.g., $1,131 for one aged
+        # or disabled person and $1,804 for a blind couple in 2026).
+        mo_monthly_limit = np.ceil(limit_pct * fpg / MONTHS_IN_YEAR)
+        return where(
+            is_mo,
+            mo_monthly_limit * MONTHS_IN_YEAR,
+            limit_pct * fpg,
+        )

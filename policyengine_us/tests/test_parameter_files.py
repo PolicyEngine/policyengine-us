@@ -8,6 +8,7 @@ PARAMETERS_DIR = Path(__file__).resolve().parents[1] / "parameters"
 SOI_LONG_TERM_CAPITAL_GAINS_PATH = (
     PARAMETERS_DIR / "calibration/gov/irs/soi/long_term_capital_gains.yaml"
 )
+MI_INCOME_TAX_RATE_PATH = PARAMETERS_DIR / "gov/states/mi/tax/income/rate.yaml"
 SOI_LONG_TERM_CAPITAL_GAINS_ANCHORS = {
     date(2015, 1, 1): 733_313_255_000,
     date(2020, 1, 1): 1_063_500_316_000,
@@ -146,4 +147,13 @@ def test_soi_long_term_capital_gains_uses_latest_publication_1304_anchor():
     assert max(values) >= date(2023, 1, 1)
     assert parameter["metadata"]["reference"][0]["href"].endswith(
         "publication-1304-basic-tables-part-1"
+    )
+
+
+def test_mi_2026_income_tax_rate_uses_official_annual_determination():
+    parameter = yaml.safe_load(MI_INCOME_TAX_RATE_PATH.read_text())
+
+    assert parameter["values"][date(2026, 1, 1)] == 0.0425
+    assert parameter["metadata"]["reference"][-1]["href"].endswith(
+        "425-income-tax-rate-for-individuals-and-fiduciaries-in-2026-tax-year"
     )

@@ -1,0 +1,76 @@
+description: New York counts these income sources under the Child Care Assistance Program.
+values:
+  2021-10-01:
+    # 404.5(b)(5)(i): wages, salary, commissions, tips and bonuses, counted
+    # before deductions for taxes, bonds, pensions and union dues.
+    - employment_income
+    # 404.5(b)(5)(ii): net income from non-farm self-employment.
+    - self_employment_income
+    - sstb_self_employment_income
+    # 404.5(b)(5)(iii): net income from farm self-employment.
+    - farm_operations_income
+    # 404.5(b)(5)(iv): social security pensions and survivor benefits, and
+    # permanent disability insurance payments made by the Social Security
+    # Administration. social_security already includes the dependents,
+    # disability, retirement and survivors components, so those are not
+    # listed separately.
+    - social_security
+    # 404.5(b)(5)(iv) also counts railroad retirement checks from the
+    # U.S. government, which PolicyEngine records separately.
+    - railroad_benefits
+    # 404.5(b)(5)(v): dividends, interest, income from estates or trusts,
+    # net rental income and royalties.
+    - dividend_income
+    - interest_income
+    - rental_income
+    # 404.5(b)(5)(vii): pensions and annuities. PolicyEngine records military
+    # retirement separately from pension_income.
+    - pension_income
+    - military_retirement_pay
+    # 404.5(b)(5)(viii): unemployment compensation, including strike benefits
+    # received from union funds.
+    - unemployment_compensation
+    - strike_benefits
+    - workers_compensation
+    - alimony_income
+    - child_support_received
+    # 404.5(b)(5)(xii): veterans' pensions.
+    - veterans_benefits
+    #
+    # Counted but not listed here because the amount depends on who receives
+    # it — see ny_ccap_countable_income:
+    # - ssi, countable in full under 404.5(b)(5)(vi) except for the SSI of any
+    #   child in the child care services unit, which 404.5(b)(6)(xxi) excludes.
+    #
+    # Excluded sources, so simply not listed:
+    # - capital_gains, excluded by 404.5(b)(6)(viii), and proceeds from the
+    #   sale of stocks, bonds, a house or a car, excluded by 404.5(b)(6)(ii).
+    # - inheritance and lump-sum insurance payments, 404.5(b)(6)(vii).
+    # - tax refunds 404.5(b)(6)(v), gifts 404.5(b)(6)(vi), scholarships and
+    #   Higher Education Act grants and loans 404.5(b)(6)(xiv)-(xv).
+    # - retirement_distributions. 404.5(b)(5)(vii) counts "periodic receipts
+    #   from annuities or insurance"; a lump-sum distribution is not periodic,
+    #   and 404.5(b)(5) is a closed enumeration.
+    # - gi_cash_assistance, illicit_income and miscellaneous_income, none of
+    #   which appear in the 404.5(b)(5) enumeration.
+    # - tanf and other public assistance. These are countable under
+    #   404.5(b)(5)(vi), but counting them closes a circular dependency:
+    #   ny_ccap_countable_income -> tanf -> childcare_expenses ->
+    #   child_care_subsidies -> ny_ccap -> ny_ccap_countable_income. The same
+    #   hazard is documented on the federal ccdf_income variable and in
+    #   gov/states/in/fssa/ccdf/income/sources.yaml. Omitting them understates
+    #   countable income for public-assistance households, which is partly
+    #   offset because 415.3(e)(1) exempts those households from the family
+    #   share entirely.
+    # - state supplementary payments to SSI recipients, countable under
+    #   404.5(b)(5)(vi). PolicyEngine has no state supplement variable.
+
+metadata:
+  unit: list
+  period: year
+  label: New York CCAP countable income sources
+  reference:
+    - title: 18 NYCRR 404.5(b)(5), monthly gross income sources
+      href: https://ocfs.ny.gov/programs/childcare/regulations/404-Eligibility.pdf#page=10
+    - title: New York FFY 2022-2024 CCDF State Plan, Q3.1.3(a), sources of income counted
+      href: https://ocfs.ny.gov/programs/childcare/stateplan/assets/2022-plan/FFY2022-2024-CCDF-Plan.pdf#page=91
