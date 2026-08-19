@@ -1,1 +1,0 @@
-Fixed the Virginia age deduction so the fixed $12,000 deduction for a filer born on or before January 1, 1939 is no longer reduced by the income-based phase-out that applies only to a spouse born after that date.

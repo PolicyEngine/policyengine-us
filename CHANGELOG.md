@@ -1,3 +1,14 @@
+## [1.817.0] - 2026-08-19
+
+### Added
+
+- Added Medicaid community engagement short-term hardship exceptions for hospitalization or intensive services and long-distance medical travel.
+
+### Fixed
+
+- Fixed the Virginia age deduction so the fixed $12,000 deduction for a filer born on or before January 1, 1939 is no longer reduced by the income-based phase-out that applies only to a spouse born after that date.
+
+
 ## [1.816.1] - 2026-08-19
 
 ### Changed
