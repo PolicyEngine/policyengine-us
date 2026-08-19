@@ -1,0 +1,1 @@
+- Correct FY2026 SNAP utility allowances to the official FNS table (2026-05-21 FY26 SUA table): Wisconsin all standards, Idaho LUA and single standards, Louisiana LUA discontinued, New York LUA values, Maine phone standard eliminated, and one-dollar corrections in AL, MO, SD, NV, MD, and NC (exact cents).

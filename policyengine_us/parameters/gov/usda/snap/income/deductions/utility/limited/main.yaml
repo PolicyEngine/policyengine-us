@@ -215,7 +215,7 @@ ID:
   2022-10-01: 297
   2023-10-01: 301
   2024-10-01: 305
-  2025-10-01: 313
+  2025-10-01: 133
 IL:
   2010-01-01: 0
   2017-10-01: 306
@@ -271,7 +271,7 @@ LA:
   2022-10-01: 227
   2023-10-01: 230
   2024-10-01: 251
-  2025-10-01: 258
+  2025-10-01: 0
 MA:
   2010-01-01: 0
   2017-10-01: 392
@@ -286,7 +286,8 @@ MA:
   2025-10-01: 556
 MD:
   # Maryland SUA is effective January 1, not the federal fiscal year.
-  # Starting FY2026 (10/1/2025), Maryland aligned with the federal cycle.
+  # The FNS FY2026 table footnotes Maryland as still effective January 1;
+  # its FY2026 values are approximated at 10/1/2025 for consistency.
   2010-01-01: 0
   2017-10-01: 254
   2018-01-01: 257
@@ -449,7 +450,7 @@ NY_NAS:
   2022-10-01: 336
   2023-10-01: 363
   2024-10-01: 378
-  2025-10-01: 388
+  2025-10-01: 419
 NY_NYC:
   2010-01-01: 0
   2017-10-01: 313
@@ -471,7 +472,7 @@ NY_ONY:
   2022-10-01: 335
   2023-10-01: 332
   2024-10-01: 346
-  2025-10-01: 355
+  2025-10-01: 388
 OH:
   2010-01-01: 0
   2017-10-01: 342
@@ -629,7 +630,7 @@ WI:
   2022-10-01: 322
   2023-10-01: 347
   2024-10-01: 375
-  2025-10-01: 385
+  2025-10-01: 436
 WV:
   2010-01-01: 0
   2017-10-01: 287
@@ -667,6 +668,8 @@ metadata:
     href: https://docs.google.com/spreadsheets/d/10otJJisAYUDyZ0d7XpZPn8rEql-rteVE/edit?gid=1837348310#gid=1837348310
   - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
+  - title: USDA utility allowances by state spreadsheet (FY2026)
+    href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
   - title: FY 2018 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177
   - title: FY 2019 SNAP QC Technical Documentation, Table F.7
