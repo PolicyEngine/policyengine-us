@@ -1,4 +1,4 @@
-- name: Homeowner with $25 rent and $5k income.
+- name: Homeowner with $25k real estate taxes and $5k income.
   period: 2022
   input:
     employment_income: 5_000
@@ -6,3 +6,109 @@
     real_estate_taxes: 25_000
   output:
     ny_real_property_tax_credit: 65
+
+- name: Renter over the $450/month cap gets no credit (IT-214 line 21)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        rent: 6_000  # $500/month > $450 cap
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+- name: Household gross income over $18,000 via nontaxable Social Security gets no credit
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        social_security: 15_000  # nontaxable, but counts toward IT-214 line 16
+        rent: 3_000  # $250/month, under the cap: isolates the income gate
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # AGI 6,000 + nontaxable SS 15,000 = household gross income 21,000 > 18,000
+    ny_real_property_tax_credit: 0
+
+- name: Elderly head with pension and Social Security over cap gets no credit (taxsim 1135)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        taxable_private_pension_income: 6_600
+        social_security: 15_506
+        rent: 17_139  # also over the $450/month cap
+      dep1:
+        age: 8
+        is_tax_unit_dependent: true
+      dep2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [head, dep1, dep2]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
+
+# From tax year 2025 (Part RR of Ch. 59 of the Laws of 2025) eligibility keys
+# on federal AGI, not household gross income: the same filer as the case above,
+# with nontaxable Social Security, now qualifies because FAGI 6,000 <= 18,000.
+# (The 2025 credit *amount* becomes a flat Table A/B lookup rather than 50% of
+# excess - tracked in #9310 - so the amount here is the pre-2025 formula
+# applied to FAGI.)
+- name: 2025 - FAGI keying lets a filer with nontaxable Social Security qualify
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 6_000
+        social_security: 15_000
+        rent: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    adjusted_gross_income: 6_000
+    ny_household_gross_income: 21_000
+    # Pre-2025 formula on FAGI 6,000: rate 4.5% -> threshold 270; rent
+    # equivalent 25% x 3,000 = 750; excess 480; 50% = 240; elderly cap 273.
+    # (2025 Table A lookup would give $300 - tracked in #9310.)
+    ny_real_property_tax_credit: 240
+
+- name: Negative AGI is floored at zero (IT-214 line 9, "cannot be less than zero")
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        self_employment_income: -20_000
+        social_security: 15_000
+        rent: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    adjusted_gross_income: -20_000
+    # HGI = -20,000 + 15,000 nontaxable SS = -5,000, floored to 0: rate 3.5%
+    # -> threshold 0; rent equivalent 750; excess 750; 50% = 375; elderly cap
+    # at income 0 = 375.
+    ny_real_property_tax_credit: 375

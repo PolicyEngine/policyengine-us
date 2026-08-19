@@ -1,0 +1,3 @@
+Fix the New York real property tax credit (IT-214): apply the $450/month renter cap to the rent itself rather than 25% of rent, and use IT-214 household gross income (which adds nontaxable Social Security and other income to federal AGI) as the income measure through 2024 while keying on federal AGI from 2025 under Part RR of Chapter 59 of the Laws of 2025.
+Fix the New York real property tax credit excess-rate scale (`excess_real_property_tax`) to a single-amount lookup; it was loaded as a marginal-amount scale and summed the bracket rates, overstating the income threshold.
+Floor the New York real property tax credit income measure at zero, as Form IT-214 requires (negative federal AGI previously zeroed the credit).
