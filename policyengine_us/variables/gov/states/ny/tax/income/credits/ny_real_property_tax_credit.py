@@ -36,13 +36,18 @@ class ny_real_property_tax_credit(Variable):
             income = tax_unit("ny_household_gross_income", period)
         else:
             income = tax_unit("adjusted_gross_income", period)
+        # IT-214: "Your federal adjusted gross income cannot be an amount less
+        # than zero. If the amount is less than zero, enter 0."
+        income = max_(income, 0)
         income_threshold = income * rptc.excess_real_property_tax.calc(income)
         excess_rpt = max_(0, real_estate_tax_or_equiv - income_threshold)
 
         # Means-tested conditions. The renter cap (IT-214 line 21) applies to
         # the rent itself (average monthly rent $450 or less, i.e. annual rent
         # up to $5,400) — not to 25% of the rent, which is only used to size
-        # the credit at line 22.
+        # the credit at line 22. The form applies the cap to adjusted rent (net
+        # of heat, gas, electricity, furnishings, and board); PolicyEngine has
+        # only gross rent, so the cap is applied to gross rent.
         assessed_value = add(tax_unit, period, ["assessed_property_value"])
         meets_value_conditions = (assessed_value <= rptc.max_property_value) & (
             rent <= rptc.max_rent
