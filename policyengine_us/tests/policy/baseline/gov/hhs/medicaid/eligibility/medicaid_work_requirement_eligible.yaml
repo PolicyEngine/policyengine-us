@@ -370,3 +370,34 @@
     medicaid_community_engagement_pass_through_eligible: false
   output:
     medicaid_work_requirement_eligible: false
+
+- name: Case 38, hospitalized person qualifies for the short-term hardship exception.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_hospitalized_for_medicaid_ce: true
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 39, long-distance medical travel qualifies for the short-term hardship exception.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    has_long_distance_medical_travel_for_medicaid_ce: true
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: true
+
+- name: Case 40, no hardship and not otherwise exempt remains subject to the requirement.
+  period: 2027
+  input:
+    age: 30
+    monthly_hours_worked: 0
+    is_hospitalized_for_medicaid_ce: false
+    has_long_distance_medical_travel_for_medicaid_ce: false
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_work_requirement_eligible: false
