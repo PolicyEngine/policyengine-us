@@ -1,3 +1,10 @@
+## [1.816.0] - 2026-08-19
+
+### Added
+
+- Passive partnership and S-corporation income input, included in the net investment income tax base.
+
+
 ## [1.815.1] - 2026-08-18
 
 ### Fixed
