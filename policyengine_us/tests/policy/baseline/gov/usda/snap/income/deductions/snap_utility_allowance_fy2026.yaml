@@ -31,7 +31,7 @@
     spm_units:
       spm_unit:
         members: [person]
-        electricity_expense: 80
+        pre_subsidy_electricity_expense: 80
         water_expense: 40
     households:
       household:
@@ -51,7 +51,7 @@
     spm_units:
       spm_unit:
         members: [person]
-        electricity_expense: 80
+        pre_subsidy_electricity_expense: 80
         trash_expense: 30
     households:
       household:
@@ -71,7 +71,7 @@
     spm_units:
       spm_unit:
         members: [person]
-        electricity_expense: 80
+        pre_subsidy_electricity_expense: 80
         phone_expense: 50
     households:
       household:
@@ -121,7 +121,7 @@
     snap_utility_allowance_type: SUA
     snap_utility_allowance: 636.74
 
-- name: South Dakota household with only a phone bill receives the FY2026 phone standard
+- name: South Dakota household with only a phone bill receives the summed FY2026 individual standards
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -138,7 +138,9 @@
         state_code: SD
   output:
     snap_utility_allowance_type: IUA
-    snap_utility_allowance: 60
+    # snap_individual_utility_allowance sums every single-utility standard:
+    # 5 x $109 (electricity, gas, water, sewage, trash) + $60 phone = $605.
+    snap_utility_allowance: 605
 
 # New York, Maine, and Maryland apply the standard allowance to all
 # households with utility costs, so their LUA and individual standards are
