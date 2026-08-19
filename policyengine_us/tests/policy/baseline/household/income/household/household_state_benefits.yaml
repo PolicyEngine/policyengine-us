@@ -1,0 +1,55 @@
+- name: NC SCCA flows into household state benefits from 2024
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        nc_scca:
+          2024-01: 450
+    households:
+      household:
+        members: [parent]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    household_state_benefits: 450
+
+- name: NC SCCA is not counted in household state benefits before 2024
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        nc_scca:
+          2023-01: 450
+    households:
+      household:
+        members: [parent]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    household_state_benefits: 0
+
+- name: DC CCSP flows into household state benefits from 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        dc_ccsp:
+          2025-01: 500
+    households:
+      household:
+        members: [parent]
+        state_code: DC
+  output:
+    household_state_benefits: 500

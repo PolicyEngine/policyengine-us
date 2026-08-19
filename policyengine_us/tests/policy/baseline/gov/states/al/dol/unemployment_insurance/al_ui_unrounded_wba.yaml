@@ -1,0 +1,122 @@
+# Tests for Alabama UI unrounded weekly benefit amount (§ 25-4-72(b)).
+# Formula: unrounded_wba = (high_quarter_wages + second_high_quarter_wages) / 52.
+# Equivalent: average of top-2 quarters / 26.
+# No rounding, no cap, no eligibility gate — used by eligibility and the
+# rounding/capping steps downstream.
+# Reference: Code of Alabama § 25-4-72(b);
+# https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-72/
+
+- name: Case 1, both top quarters equal at $10,000 - unrounded WBA is $384.62.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 10_000
+        al_ui_second_high_quarter_wages: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # (10,000 + 10,000) / 52 = 20,000 / 52 = 384.615...
+        al_ui_unrounded_wba: 384.62
+
+- name: Case 2, unequal top quarters - unrounded WBA averages the two.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 5_200
+        al_ui_second_high_quarter_wages: 2_600
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # (5,200 + 2,600) / 52 = 7,800 / 52 = 150.
+        al_ui_unrounded_wba: 150
+
+- name: Case 3, exactly at the $44.50 ineligibility threshold.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # 44.50 * 52 = 2,314, split evenly between top 2 quarters.
+        al_ui_high_quarter_wages: 1_157
+        al_ui_second_high_quarter_wages: 1_157
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # (1,157 + 1,157) / 52 = 2,314 / 52 = 44.50.
+        al_ui_unrounded_wba: 44.50
+
+- name: Case 4, only one quarter of wages - other top quarter is zero.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 8_000
+        al_ui_second_high_quarter_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # (8,000 + 0) / 52 = 153.846...
+        al_ui_unrounded_wba: 153.85
+
+- name: Case 5, no wages at all - unrounded WBA is zero.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 0
+        al_ui_second_high_quarter_wages: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        al_ui_unrounded_wba: 0
+
+- name: Case 6, well above the WBA cap - formula still returns the raw value.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        al_ui_high_quarter_wages: 25_000
+        al_ui_second_high_quarter_wages: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    people:
+      person1:
+        # (25,000 + 25,000) / 52 = 961.538...
+        # No cap applied here; capping happens in al_ui_weekly_benefit_amount.
+        al_ui_unrounded_wba: 961.54

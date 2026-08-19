@@ -1,0 +1,18 @@
+description: Head Start and Early Head Start programs applying the excessive housing cost adjustment reduce a family's gross income by housing costs exceeding this share of gross income.
+
+values:
+  # The adjustment took effect on October 21, 2024 (89 FR 67720). This date
+  # does not gate the calculation: the model backfills the earliest value to
+  # its start year, so the head_start_applies_housing_cost_adjustment input
+  # alone determines whether the adjustment applies in any period.
+  2024-10-21: 0.3
+
+metadata:
+  unit: /1
+  period: year
+  label: Head Start excessive housing cost income share threshold
+  reference:
+    - title: 45 CFR 1302.12(i)(1)(ii) Verifying eligibility
+      href: https://www.ecfr.gov/current/title-45/section-1302.12#p-1302.12(i)(1)(ii)
+    - title: Supporting the Head Start Workforce and Consistent Quality Programming, 89 FR 67720 (August 21, 2024)
+      href: https://www.federalregister.gov/documents/2024/08/21/2024-18279/supporting-the-head-start-workforce-and-consistent-quality-programming

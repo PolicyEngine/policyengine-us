@@ -247,7 +247,8 @@
     people:
       head:
         # Age 30 has no age route; zero income makes the household
-        # SNAP-eligible, which qualifies for the Discount GoPass.
+        # SNAP-eligible, which qualifies for the Discount GoPass. Work hours
+        # are set so the childless adult meets the SNAP work requirement.
         age: 30
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -256,6 +257,7 @@
         is_full_time_student: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 0
+        weekly_hours_worked_before_lsr: 40
     households:
       household:
         members: &id006

@@ -1,0 +1,20 @@
+
+- name: HoH with net taxable income above the phase-out gets no credit (taxsim 1137)
+  period: 2022
+  input:
+    people:
+      head:
+        employment_income: 26_190
+        is_tax_unit_head: true
+      dependent1:
+        age: 8
+        is_tax_unit_dependent: true
+      dependent2:
+        age: 10
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [head, dependent1, dependent2]
+        state_code: AR
+  output:
+    ar_additional_tax_credit_for_qualified_individuals: 0

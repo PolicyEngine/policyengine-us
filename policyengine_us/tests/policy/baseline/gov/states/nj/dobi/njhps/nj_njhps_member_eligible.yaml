@@ -1,0 +1,269 @@
+# Unit tests for New Jersey Health Plan Savings (NJHPS) member eligibility.
+#
+# nj_njhps_member_eligible (Person, bool, YEAR) is a NON-INCOME enrollee gate that
+# also fires ABOVE 400% FPL, where the federal is_aca_ptc_eligible is False for
+# PY2026 (the 400% APTC cliff reverts). It returns:
+#   pays_aca_premium
+#   & filing_status != SEPARATE
+#   & (fpl_floor <= aca_magi_fraction <= fpl_limit)   [1.38 <= frac <= 6.0]
+#
+# pays_aca_premium is a Person YEAR bool supplied directly so each case is
+# independent of the immigration / MEC / TIN internals. aca_magi_fraction and
+# filing_status are TaxUnit inputs. The band boundaries are inclusive on both ends:
+# 1.38 (138% floor) and 6.0 (600% ceiling).
+
+# --- pays_aca_premium gate ---
+
+- name: Case 1, pays_aca_premium true and within band, member eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: true
+
+- name: Case 2, pays_aca_premium false, member ineligible even within band.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false
+
+# --- SEPARATE filing status exclusion ---
+
+- name: Case 3, married filing separately excludes the member.
+  # filing_status SEPARATE -> not_separate is False -> ineligible despite paying an
+  # ACA premium at a valid 200% FPL fraction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false
+
+# --- Band boundaries (138% floor inclusive) ---
+
+- name: Case 4, just below the 138% floor, member ineligible.
+  # frac 1.37 < 1.38 -> below floor -> ineligible (routed to NJ FamilyCare/Medicaid).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.37
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false
+
+- name: Case 5, exactly at the 138% floor, member eligible.
+  # frac 1.38 == fpl_floor -> floor is inclusive (>=) -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: true
+
+- name: Case 6, exactly at the 600% ceiling, member eligible.
+  # frac 6.0 == fpl_limit -> ceiling is inclusive (<=) -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 6.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: true
+
+- name: Case 7, just above the 600% ceiling, member ineligible.
+  # frac 6.01 > 6.0 -> above ceiling -> ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 6.01
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false
+
+# --- 500% FPL: ABOVE 400%, eligible despite is_aca_ptc_eligible being False ---
+
+- name: Case 8, member at 500% FPL is eligible despite APTC 400% cliff.
+  # frac 5.0 is above the federal 400% APTC cliff, so is_aca_ptc_eligible is False
+  # and aca_ptc is 0 for PY2026. The NJHPS member gate is NON-INCOME (uses
+  # pays_aca_premium, not is_aca_ptc_eligible), so the member remains eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: true
+
+# --- Non-NJ residency ---
+
+- name: Case 9, non-NJ resident is not a NJHPS member.
+  # defined_for StateCode.NJ -> a NY household returns the default False.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    nj_njhps_member_eligible: false
+
+# --- Off-year (program not yet in effect does not affect the member gate) ---
+
+- name: Case 10, member gate in 2025 before the program is in effect.
+  # The member gate itself is not conditioned on in_effect (that lives in
+  # nj_njhps_eligible), so a paying enrollee within band reads eligible in 2025.
+  # This isolates the member test from the in_effect window.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: true
+
+# --- Edge case (appended): mixed household, per-person gate splits on payer ---
+
+- name: Case 11, mixed household, only premium payers are members.
+  # notes: per-person member gate in a multi-person tax unit sharing frac 3.0.
+  # person1/person2 pay an ACA premium -> eligible; person3/person4 do not ->
+  # ineligible. Confirms the gate is evaluated per person, not per tax unit, so the
+  # member COUNT downstream picks up only the payers.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, pays_aca_premium: true}
+      person2: {age: 38, pays_aca_premium: true}
+      person3: {age: 10, pays_aca_premium: false}
+      person4: {age: 8, pays_aca_premium: false}
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 3.0
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: [true, true, false, false]
+
+# --- Negative aca_magi_fraction guard (below the 138% floor) ---
+
+- name: Case 12, negative aca_magi_fraction is below band, member ineligible.
+  # notes: below-band guard for a negative fraction (e.g. from a self-employment
+  # loss driving MAGI toward zero and the floor comparison failing). frac -0.5 <
+  # 1.38 fpl_floor, so the band test (1.38 <= frac <= 6.0) is False -> ineligible
+  # despite paying an ACA premium. Confirms the floor holds for negative inputs,
+  # not just the 1.37 near-floor case (Case 4).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: -0.5
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_member_eligible: false

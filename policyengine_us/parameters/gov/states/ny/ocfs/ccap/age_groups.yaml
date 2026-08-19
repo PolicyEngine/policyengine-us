@@ -1,0 +1,21 @@
+description: New York classifies children into these age bands for Child Care Assistance Program market rates.
+# Center-based providers — day care centers, school-age child care programs,
+# and legally exempt group programs — use a lower infant ceiling than
+# home-based providers.
+# age is a float in PolicyEngine, so 1.5 encodes eighteen months exactly.
+center_infant_upper_bound:
+  2019-05-01: 1.5
+home_infant_upper_bound:
+  2019-05-01: 2
+toddler_upper_bound:
+  2019-05-01: 3
+preschool_upper_bound:
+  2019-05-01: 6
+
+metadata:
+  unit: year
+  period: year
+  label: New York CCAP market-rate age bands
+  reference:
+    - title: 24-OCFS-LCM-22, §III.3, age groups for market rates, center-based and home-based provider sets
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=4

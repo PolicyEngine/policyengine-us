@@ -1,0 +1,23 @@
+description: New Mexico sets the federal poverty line thresholds for the target contribution percentage brackets under the Health Insurance Marketplace Affordability Program.
+values:
+  # PY2027 uses the same bracket thresholds per the FINAL PY2027 MAP Manual
+  # (HCA, issued 2026-06-16), Table 1 (p.4).
+  2026-01-01:
+    - 0
+    - 1.5
+    - 2
+    - 2.5
+    - 3
+    - 4
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Premium Assistance target contribution percentage bracket thresholds
+  reference:
+    - title: PY2026 MAP Policy and Procedures Manual, Table 1 (bands through 200-250%)
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
+    - title: PY2026 MAP Policy and Procedures Manual, Table 1 (bands 250-300%, 300-400%, 400%+)
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=5
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, Table 1
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4

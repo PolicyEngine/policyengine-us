@@ -1,0 +1,42 @@
+- name: Case 1, initial status applies no earned-income disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 24_000
+    ne_child_care_subsidy_gross_earned_income: 18_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_countable_income: 2_000
+
+- name: Case 2, enrolled status disregards ten percent of earned income only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 24_000
+    ne_child_care_subsidy_gross_earned_income: 18_000
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    # Monthly gross 2,000 less 10% of monthly earned income 1,500.
+    ne_child_care_subsidy_countable_income: 1_850
+
+- name: Case 3, zero income remains zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: 0
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_countable_income: 0
+
+- name: Case 4, negative net income is floored at zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    ne_child_care_subsidy_gross_income: -12_000
+    ne_child_care_subsidy_gross_earned_income: -12_000
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_countable_income: 0

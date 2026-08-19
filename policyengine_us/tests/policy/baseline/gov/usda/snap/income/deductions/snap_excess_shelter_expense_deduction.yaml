@@ -11,6 +11,7 @@
     snap_net_income_pre_shelter: 12_000
     housing_cost: 6_000
     snap_utility_allowance: 100
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_shelter_expense_deduction: 100
 
@@ -20,14 +21,16 @@
     snap_net_income_pre_shelter: 6_000
     housing_cost: 6_000
     snap_utility_allowance: 0
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_shelter_expense_deduction: 3_000 # Uncapped since less than 597 * 12 = $7,164.
 
 - name: Caps at $597 per month in contiguous US.
   period: 2022-01
   input:
-    housing_cost: 
+    housing_cost:
       2022: 600 * 12
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_shelter_expense_deduction: 597
 
@@ -37,6 +40,7 @@
     state_code: TX
     housing_cost: 600 * 12
     has_snap_elderly_disabled_member: true
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_excess_shelter_expense_deduction: 600 * 12
 
@@ -79,9 +83,10 @@
     snap_net_income_pre_shelter: 0
     snap_region_str: GU
     housing_cost: 4_800 # 400 monthly 
-    snap_utility_allowance: 300 
+    snap_utility_allowance: 300
     has_snap_elderly_disabled_member: false
     is_homeless: false
+    weekly_hours_worked_before_lsr: 40
   output:
     # cap at 701, 
     snap_excess_shelter_expense_deduction: 700
@@ -92,6 +97,7 @@
   input:
     housing_cost:
       2027: 12_000
+    weekly_hours_worked_before_lsr: 40
   output:
     # 744 * 333.952 / 322.561
     snap_excess_shelter_expense_deduction: 770.27
@@ -103,6 +109,7 @@
     state_code: TX
     is_homeless: true
     housing_cost: 1
+    weekly_hours_worked_before_lsr: 40
   output:
     # 198.99 * 333.952 / 322.561
     snap_excess_shelter_expense_deduction: 206.02

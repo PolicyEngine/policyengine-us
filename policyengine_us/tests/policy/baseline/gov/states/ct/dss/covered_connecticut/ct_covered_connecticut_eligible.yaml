@@ -1,0 +1,254 @@
+# Unit tests for Covered Connecticut Program eligibility (REQ-1, REQ-2, REQ-3,
+# REQ-4). A Connecticut tax unit is eligible when all three gates hold:
+#   in_effect         = parameter gov.states.ct.dss.covered_connecticut.in_effect
+#                       (false before 2026, true from 2026 on)
+#   aptc_eligible     = tax_unit.any(members is_aca_ptc_eligible)
+#   income_eligible   = aca_magi_fraction <= fpl_limit (1.75)
+# defined_for = StateCode.CT gates the whole variable off outside Connecticut.
+# aca_magi_fraction and is_aca_ptc_eligible are supplied directly so each case is
+# exactly determined.
+
+# ---- Income boundary: just below the 175% FPL ceiling ----
+- name: Case 1, 174% FPL APTC-eligible CT tax unit is eligible.
+  # aca_magi_fraction 1.74 <= 1.75, APTC-eligible member, in effect (2026) -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.74
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+
+# ---- Income boundary: exactly at the 175% FPL ceiling (inclusive) ----
+- name: Case 2, exactly 175% FPL is eligible (ceiling is inclusive).
+  # aca_magi_fraction 1.75 <= 1.75 (fpl_limit) -> eligible at the inclusive ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+
+# ---- Income boundary: just above the 175% FPL ceiling ----
+- name: Case 3, 176% FPL above the ceiling is ineligible.
+  # aca_magi_fraction 1.76 > 1.75 -> income-ineligible -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.76
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- No APTC-eligible member ----
+- name: Case 4, no APTC-eligible member is ineligible.
+  # income-eligible (1.50 <= 1.75) but any(is_aca_ptc_eligible) is false -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- Multi-member: one APTC-eligible member suffices ----
+- name: Case 5, multi-member family with one APTC-eligible member is eligible.
+  # any(is_aca_ptc_eligible) is true from person1; aca_magi_fraction 1.60 <= 1.75 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+      person2:
+        is_aca_ptc_eligible: false
+      person3:
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 1.60
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+
+# ---- Non-Connecticut household (defined_for gate) ----
+- name: Case 6, non-Connecticut household is ineligible via defined_for.
+  # defined_for = StateCode.CT; a New York household is gated off -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- Not in effect: pre-2026 year ----
+- name: Case 7, 2025 pre-effective year is ineligible.
+  # in_effect is false before 2026 -> not eligible even though income/APTC gates pass.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- In effect: a later year (2027) remains eligible (open-ended) ----
+- name: Case 8, 2027 later year remains eligible (standing statute, no sunset).
+  # in_effect stays true from 2026 onward -> eligible in 2027.
+  period: 2027
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+
+# ---- Income low end: ~138% FPL just above the Medicaid floor is eligible ----
+- name: Case 9, 138% FPL just above the Medicaid floor is eligible (no explicit floor).
+  # aca_magi_fraction 1.38 <= 1.75; CT imposes no minimum-income floor -- the
+  # ~138% effective lower bound is inherited from the federal APTC/Medicaid
+  # split, so an APTC-eligible unit at 138% FPL is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: true
+
+# ---- T1 [C1]: tightest epsilon above the inclusive 1.75 ceiling ----
+- name: Case 10, 175.01% FPL just above the inclusive ceiling is ineligible.
+  # aca_magi_fraction 1.7501 > 1.75 (fpl_limit) -> income-ineligible even at the
+  # tightest epsilon above the inclusive ceiling -> not eligible. Complements the
+  # existing 1.75 (eligible) and 1.76 (ineligible) boundary cases.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.7501
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- T2 [C2]: MFS-driven ineligibility via a real filing_status input ----
+- name: Case 11, married-filing-separately drives the derived federal PTC gate to ineligible.
+  # filing_status = SEPARATE is a REAL input; is_aca_ptc_eligible is NOT injected.
+  # The federal PTC formula returns pays_aca_premium & ~separate & income_eligible,
+  # so SEPARATE forces the person-level gate to False regardless of income. Income
+  # is inside the 175% band (1.50 <= 1.75), so only the MFS gate drives the result:
+  # any(is_aca_ptc_eligible) is False -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false
+
+# ---- T5 [G1]: pays_aca_premium-false arm via a real immigration-status input ----
+- name: Case 12, an immigration-ineligible enrollee fails pays_aca_premium and is ineligible.
+  # is_aca_ptc_immigration_status_eligible = false is a REAL input; is_aca_ptc_eligible
+  # is NOT injected. pays_aca_premium requires is_status_eligible, so the immigration
+  # gate drives pays_aca_premium -> False -> is_aca_ptc_eligible -> False, even though
+  # income is inside the 175% band (1.50 <= 1.75) -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_immigration_status_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CT
+  output:
+    ct_covered_connecticut_eligible: false

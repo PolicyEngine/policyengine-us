@@ -1,0 +1,84 @@
+description: New York assigns counties to these market-rate groups under the Child Care Assistance Program.
+
+group_1:
+  values:
+    2024-10-01:
+      - NASSAU_COUNTY_NY
+      - PUTNAM_COUNTY_NY
+      - ROCKLAND_COUNTY_NY
+      - SUFFOLK_COUNTY_NY
+      - WESTCHESTER_COUNTY_NY
+group_2:
+  values:
+    2024-10-01:
+      - ALBANY_COUNTY_NY
+      - COLUMBIA_COUNTY_NY
+      - DUTCHESS_COUNTY_NY
+      - ERIE_COUNTY_NY
+      - MONROE_COUNTY_NY
+      - ONONDAGA_COUNTY_NY
+      - ONTARIO_COUNTY_NY
+      - ORANGE_COUNTY_NY
+      - RENSSELAER_COUNTY_NY
+      - SARATOGA_COUNTY_NY
+      - SCHENECTADY_COUNTY_NY
+      - TOMPKINS_COUNTY_NY
+      - ULSTER_COUNTY_NY
+      - WARREN_COUNTY_NY
+group_3:
+  values:
+    2024-10-01:
+      - ALLEGANY_COUNTY_NY
+      - BROOME_COUNTY_NY
+      - CATTARAUGUS_COUNTY_NY
+      - CAYUGA_COUNTY_NY
+      - CHAUTAUQUA_COUNTY_NY
+      - CHEMUNG_COUNTY_NY
+      - CHENANGO_COUNTY_NY
+      - CLINTON_COUNTY_NY
+      - CORTLAND_COUNTY_NY
+      - DELAWARE_COUNTY_NY
+      - ESSEX_COUNTY_NY
+      - FRANKLIN_COUNTY_NY
+      - FULTON_COUNTY_NY
+      - GENESEE_COUNTY_NY
+      - GREENE_COUNTY_NY
+      - HAMILTON_COUNTY_NY
+      - HERKIMER_COUNTY_NY
+      - JEFFERSON_COUNTY_NY
+      - LEWIS_COUNTY_NY
+      - LIVINGSTON_COUNTY_NY
+      - MADISON_COUNTY_NY
+      - MONTGOMERY_COUNTY_NY
+      - NIAGARA_COUNTY_NY
+      - ONEIDA_COUNTY_NY
+      - ORLEANS_COUNTY_NY
+      - OSWEGO_COUNTY_NY
+      - OTSEGO_COUNTY_NY
+      - SCHOHARIE_COUNTY_NY
+      - SCHUYLER_COUNTY_NY
+      - SENECA_COUNTY_NY
+      - ST_LAWRENCE_COUNTY_NY
+      - STEUBEN_COUNTY_NY
+      - SULLIVAN_COUNTY_NY
+      - TIOGA_COUNTY_NY
+      - WASHINGTON_COUNTY_NY
+      - WAYNE_COUNTY_NY
+      - WYOMING_COUNTY_NY
+      - YATES_COUNTY_NY
+group_4:
+  values:
+    2024-10-01:
+      - BRONX_COUNTY_NY
+      - KINGS_COUNTY_NY
+      - NEW_YORK_COUNTY_NY
+      - QUEENS_COUNTY_NY
+      - RICHMOND_COUNTY_NY
+
+metadata:
+  unit: list
+  period: year
+  label: New York CCAP county groups
+  reference:
+    - title: 24-OCFS-LCM-22 Attachment A
+      href: https://ocfs.ny.gov/main/policies/external/2024/lcm/24-OCFS-LCM-22.pdf#page=14

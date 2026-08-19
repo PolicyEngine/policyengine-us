@@ -1,0 +1,53 @@
+- name: Case 1, positive employment income satisfies the activity test.
+  period: 2026-01
+  input:
+    employment_income: 12_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Case 2, full-time study satisfies the activity test.
+  period: 2026-01
+  input:
+    is_full_time_student: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Case 3, an approved unobserved activity satisfies the fallback.
+  period: 2026-01
+  input:
+    meets_ccdf_activity_test: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Case 4, a caretaker with no qualifying activity fails.
+  period: 2026-01
+  input:
+    employment_income: 0
+    is_full_time_student: false
+    meets_ccdf_activity_test: false
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: false
+
+- name: Case 5, positive self-employment income satisfies the activity test.
+  period: 2026-01
+  input:
+    employment_income: 0
+    is_full_time_student: false
+    meets_ccdf_activity_test: false
+    self_employment_income: 12_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true
+
+- name: Case 6, a business loss cannot offset positive wages for activity.
+  period: 2026-01
+  input:
+    employment_income: 10_000
+    self_employment_income: -15_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_eligible_parent: true

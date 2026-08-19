@@ -1,0 +1,183 @@
+- name: Case 1, initial income one dollar below 185 percent FPL is eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_countable_income: 1_849
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 2, initial income at 185 percent FPL is eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_countable_income: 1_850
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 3, initial income one dollar above 185 percent FPL is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_countable_income: 1_851
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: false
+
+- name: Case 4, redetermination income one dollar below 200 percent FPL is eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_at_redetermination: true
+    ne_child_care_subsidy_countable_income: 1_999
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 5, redetermination income at 200 percent FPL is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_at_redetermination: true
+    ne_child_care_subsidy_countable_income: 2_000
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: false
+
+- name: Case 6, redetermination income above 200 percent FPL is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_at_redetermination: true
+    ne_child_care_subsidy_countable_income: 2_001
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: false
+
+- name: Case 7, enrolled income at 85 percent SMI remains eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_smi: 10_000
+    ne_child_care_subsidy_countable_income: 8_500
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 8, enrolled income one dollar above 85 percent SMI is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_smi: 10_000
+    ne_child_care_subsidy_countable_income: 8_501
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: false
+
+- name: Case 9, categorical status waives excessive income.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_categorical_waived: true
+    ne_child_care_subsidy_countable_income: 100_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 10, LB304 preserves 185 percent FPL after the repealed sunset.
+  # LB304 was approved April 14, 2026 and removed the October 1, 2026
+  # reversion; January 2027 is the first YAML-supported month fully after it.
+  period: 2027-01
+  input:
+    ne_child_care_subsidy_countable_income: 1_500
+    ne_child_care_subsidy_fpg: 1_000
+    state_code: NE
+  output:
+    # 150% FPL remains below the 185% initial limit, but exceeds the repealed
+    # 130% limit.
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 11, January uses the prior October FPG vintage.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The 2025 two-person annual guideline is $21,150.
+    ne_child_care_subsidy_fpg: 1_762.5
+
+- name: Case 12, the post-October period uses the current FPG vintage.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The 2026 two-person annual guideline is $21,640.
+    ne_child_care_subsidy_fpg: 1_803.33
+
+- name: Case 13, initial eligibility rounds the published limit up.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_countable_income: 3_261
+    ne_child_care_subsidy_fpg: 1_762.5
+    state_code: NE
+  output:
+    ne_child_care_subsidy_income_eligible: true
+
+- name: Case 14, the 85 percent SMI limit rounds to the nearest dollar.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_smi: 5_794.33
+    ne_child_care_subsidy_countable_income: 4_926
+    ne_child_care_subsidy_enrolled: true
+    state_code: NE
+  output:
+    # Nebraska rounds the SMI column to the nearest dollar, so the limit is
+    # round(0.85 * $5,794.33) = $4,925, one dollar below the income.
+    ne_child_care_subsidy_income_eligible: false
+
+- name: Case 15, the SMI limit switches to the new vintage in October.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      adult:
+        age: 30
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code: NE
+  output:
+    # The two-person adjustment is 0.52 + 0.16 = 0.68 of the state figure:
+    # 0.68 * $118,162 / 12 through September (FFY 2026 vintage) and
+    # 0.68 * $121,844 / 12 from October (FFY 2027 vintage).
+    ne_child_care_subsidy_smi:
+      2026-09: 6_695.85
+      2026-10: 6_904.49

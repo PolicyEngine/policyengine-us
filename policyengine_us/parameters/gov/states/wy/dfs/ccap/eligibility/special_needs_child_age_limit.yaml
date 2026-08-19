@@ -1,0 +1,18 @@
+description: Wyoming extends child eligibility to children with special needs under this age under the Child Care, Purchase of Service program.
+# Rules §8(e)(i)(A) extends eligibility past 13 for special needs but states no
+# upper age. The 18 is Wyoming's elected ceiling in CCDF Plan §2.2.1.b.i, where
+# §2.2.1.b.ii reads "less than 18 years old", so the limit is exclusive; federal
+# law allows up to under 19 (45 CFR 98.20(a)(1)(ii)). The court-supervision
+# pathway and the physician verification are not modeled.
+values:
+  2024-04-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Wyoming CCAP special needs child age limit
+  reference:
+    - title: Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §8(e)(i)(A), eff. 05/07/2025 (PDF p. 16)
+      href: https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254
+    - title: Wyoming CCDF State Plan FFY 2025-2027 §2.2.1.b, upper age 18.00 (PDF p. 15)
+      href: https://drive.google.com/file/d/10TJ3S8d_nwyNxdkkbyk2gzCfHTk7CTcA/view#page=15

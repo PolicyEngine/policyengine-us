@@ -82,12 +82,14 @@
         is_ssi_aged: false
         msp: 0.0
         msp_eligible: false
-        # Zero income <= MA parent limit 1.38 -> PARENT.
+        # The 19-year-old is not a dependent child (42 CFR 435.4), so the
+        # parents qualify through the adult group instead; dollars
+        # unchanged.
         # Household avg SLCSP index = (478.88 + 472.50 + 266.00) / 3 = 405.79;
         # 14,117.21 x 478.88 / 405.79 = 16,659.88.
         medicaid: 16_659.88
         is_medicaid_eligible: true
-        medicaid_category: 5  # PARENT
+        medicaid_category: 4  # ADULT
         chip: 0.0
         is_aca_ptc_eligible: false
       spouse:
@@ -99,7 +101,7 @@
         # 14,117.21 x 472.50 / 405.79 = 16,437.79.
         medicaid: 16_437.79
         is_medicaid_eligible: true
-        medicaid_category: 5  # PARENT
+        medicaid_category: 4  # ADULT
         chip: 0.0
         is_aca_ptc_eligible: false
       child1:

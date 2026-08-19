@@ -41,6 +41,9 @@ class chip_premium(Variable):
     reference = "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-E/section-457.560"
 
     def formula(tax_unit, period, parameters):
+        # State premiums defined monthly (GA, MO, NY, whose schedules change
+        # mid-year) are summed over the twelve months of this year; annually
+        # defined state premiums are read directly.
         uncapped_premium = add(tax_unit, period, STATE_CHIP_PREMIUM_VARIABLES)
         p = parameters(period).gov.hhs.chip.cost_sharing.cap
         annual_family_income = max_(0, tax_unit("medicaid_magi", period))

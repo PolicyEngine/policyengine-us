@@ -1,0 +1,31 @@
+description: Illinois assigns these counties to Group 1B when determining maximum daily provider rates under the Child Care Assistance Program.
+values:
+  2025-07-01:
+    - BOONE_COUNTY_IL
+    - CHAMPAIGN_COUNTY_IL
+    - KANKAKEE_COUNTY_IL
+    - MADISON_COUNTY_IL
+    - MCLEAN_COUNTY_IL
+    - MONROE_COUNTY_IL
+    - OGLE_COUNTY_IL
+    - PEORIA_COUNTY_IL
+    - ROCK_ISLAND_COUNTY_IL
+    - SANGAMON_COUNTY_IL
+    - ST_CLAIR_COUNTY_IL
+    - TAZEWELL_COUNTY_IL
+    - WHITESIDE_COUNTY_IL
+    - WILL_COUNTY_IL
+    - WINNEBAGO_COUNTY_IL
+    - WOODFORD_COUNTY_IL
+
+metadata:
+  unit: list
+  period: year
+  label: Illinois CCAP provider rate Group 1B counties
+  reference:
+    - title: IDHS July 1, 2025 Changes to CCAP Policy memo
+      href: https://www.dhs.state.il.us/OneNetLibrary/27894/documents/DHSChildCare/July%201%202025%20Changes%20to%20CCAP%20Memo%20Final%20A.pdf#page=2
+    - title: IDHS CCAP Policy 06.05.01, Payment Rates Effective 7/1/2025
+      href: https://www.dhs.state.il.us/page.aspx?item=173323
+    - title: IDEC Child Care Payment Rates for Child Care Providers, effective July 1, 2026
+      href: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/pages/ccap-for-providers/IL444-4343%20-%20Child%20Care%20Payment%20Rates%20for%20Child%20Care%20Providers%207.1.26.pdf#page=1

@@ -1,0 +1,294 @@
+# 18 NYCRR 404.5(b)(5) sets what New York counts. Each case adds one source
+# on top of the same $10,000 of employment income so that deleting any single
+# entry from countable_income/sources.yaml fails a test.
+
+- name: Case 1, employment income alone.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+- name: Case 2, child support received is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        child_support_received: 5_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 15_000
+
+- name: Case 3, unemployment compensation is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        unemployment_compensation: 4_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 14_000
+
+- name: Case 4, workers compensation is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        workers_compensation: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 13_000
+
+- name: Case 5, social security is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        social_security_retirement: 6_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 16_000
+
+# 404.5(b)(5): veterans' pensions are countable, and New York's CCDF plan
+# enumerates them explicitly.
+- name: Case 6, veterans benefits are countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        veterans_benefits: 7_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 17_000
+
+# 404.5(b)(5)(vi) counts SSI as public assistance income; the child
+# exclusion reaches only children, so an adult's SSI stays countable.
+- name: Case 7, an adult's SSI is countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 11_000
+
+- name: Case 8, a child's SSI is excluded.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 5
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+# TANF is countable under 404.5(b)(5)(vi) but is deliberately omitted to
+# avoid the CCAP-to-TANF circular dependency; this pins that decision.
+- name: Case 9, TANF is not counted.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+        tanf: 6_000
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+# 404.5(b)(6)(viii) excludes capital gains, so they must not enter through
+# any composite income variable.
+- name: Case 10, capital gains are excluded.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        long_term_capital_gains: 20_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+# 404.5(b)(5)(iv) counts railroad retirement checks alongside social security.
+- name: Case 11, railroad benefits are countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        railroad_benefits: 8_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 18_000
+
+# 404.5(b)(6)(xiii) excludes the earnings of a dependent child under 18 who
+# is not responsible for the child needing care, with no inquiry to be made.
+- name: Case 12, a dependent child's earnings are excluded.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      child:
+        age: 16
+        employment_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 10_000
+
+# The exclusion turns on age, so an 18-year-old member's earnings count.
+- name: Case 13, an eighteen year old's earnings are countable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+      other:
+        age: 18
+        employment_income: 8_000
+    spm_units:
+      spm_unit:
+        members: [parent, other]
+    households:
+      household:
+        members: [parent, other]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 18_000
+
+# The child SSI exclusion and the adult SSI inclusion must both hold in the
+# same unit, which is the only case a unit-level switch would get wrong.
+- name: Case 14, a mixed unit excludes only the child's SSI.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 10_000
+        ssi: 1_000
+      child:
+        age: 5
+        ssi: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 11_000
+
+- name: Case 15, a business loss does not inflate countable income.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -60_000
+    spm_units:
+      spm_unit:
+        members: [parent]
+    households:
+      household:
+        members: [parent]
+        state_code: NY
+  output:
+    ny_ccap_countable_income: -60_000

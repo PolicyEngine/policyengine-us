@@ -20,14 +20,19 @@ class dc_ccsp_qualified_need_eligible(Variable):
         has_disabled_child = spm_unit.any(is_dependent & is_disabled & age_eligible)
         # Income test waived when parent is disabled | child is homeless  | parent is teen parent (age <= 19)
         income_test_waived = spm_unit("dc_ccsp_income_test_waived", period)
-        # parent is age >= 62 or get social_security_disability or ssi
+        # Policy manual 2.4.2.6, children of elder caregivers: an individual
+        # with responsibility for the day-to-day care of the child who is "age
+        # 62 or older or receive[s] Social Security disability benefits or
+        # Supplemental Security Income payments". The test is on the caregiver,
+        # so both prongs are restricted to the head or spouse rather than
+        # counting any household member's age or benefits.
         is_elderly = age >= p.elderly
-        received_ssdi_or_ssi = (
-            add(spm_unit, period, ["social_security_disability", "ssi"]) > 0
-        ) | (add(spm_unit, period, ["receives_ssi"]) > 0)
+        receives_ssdi_or_ssi = (
+            add(person, period, ["social_security_disability", "ssi"]) > 0
+        ) | person("receives_ssi", period)
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        has_elderly_parent = (
-            spm_unit.any(is_head_or_spouse & is_elderly) | received_ssdi_or_ssi
+        has_elder_caregiver = spm_unit.any(
+            is_head_or_spouse & (is_elderly | receives_ssdi_or_ssi)
         )
 
-        return has_disabled_child | income_test_waived | has_elderly_parent
+        return has_disabled_child | income_test_waived | has_elder_caregiver

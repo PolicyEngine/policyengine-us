@@ -1,0 +1,34 @@
+description: Oklahoma limits unemployment compensation benefits to this amount within a benefit year under the Unemployment Insurance program.
+
+values:
+  # 40 O.S. §2-106(2) defines the statutory cap as a conditional-factor
+  # percentage of the state's average annual wage. From 2023 onward the
+  # OESC-published values below are the 16 x maximum-WBA proxies OESC
+  # publishes rather than the statutory %-of-average-annual-wage figure; this
+  # parameter never binds after 2023 because the 16-week duration cap on WBA
+  # is the lesser amount.
+  2022-01-01: 9_900
+  2023-01-01: 7_888
+  2024-01-01: 8_304
+  2025-01-01: 8_656
+  2026-01-01: 10_384
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oklahoma UI maximum benefit amount
+  reference:
+    - title: 40 O.S. §2-106(2)
+      href: https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os40.pdf#page=52
+    - title: 40 O.S. §2-106
+      href: https://www.oscn.net/applications/oscn/DeliverDocument.asp?CiteID=77166
+    - title: Oklahoma Unemployment Insurance Tax Rates by Industry, Size, and County (2022 column)
+      href: https://www.oklahoma.gov/content/dam/ok/en/oesc/documents/labor-market/publications/special-reports/oklahoma-ui-tax-rates-industry-size-county-2021.pdf#page=6
+    - title: OESC Important Numbers for 2023
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2023.pdf#page=1
+    - title: OESC Important Numbers for 2024
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2024.pdf#page=1
+    - title: OESC Important Numbers for 2025
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Important-Numbers-2025.pdf#page=1
+    - title: OESC Important Numbers for 2026
+      href: https://oklahoma.gov/content/dam/ok/en/oesc/images/misc/Employer-Improtant-Numbers-2026.pdf#page=1

@@ -1,0 +1,38 @@
+description: New York sets this minimum weekly benefit rate under the Unemployment Insurance program.
+
+# The 2020-2023 minimum WBR values are corroborated against the archived
+# USDOL ETA "Significant Provisions of State Unemployment Insurance Laws"
+# January editions (NY row min WBA column): 2020 = $104, 2021 = $108,
+# 2022 = $116, 2023 = $124. Values from 2024 onward are documented by the
+# NYS-50 editions and NYSDOL P832. The rolling nys50.htm reference is pinned
+# to a Wayback Machine capture below.
+values:
+  2020-01-01: 104
+  2021-01-01: 108
+  2022-01-01: 116
+  2023-01-01: 124
+  2024-01-01: 132
+  2025-01-01: 136
+  2026-01-01: 140
+
+metadata:
+  unit: currency-USD
+  period: week
+  label: New York UI minimum weekly benefit rate
+  reference:
+    - title: NY Labor Law § 590(5)(a) — Rights to benefits
+      href: https://www.nysenate.gov/legislation/laws/LAB/590
+    - title: USDOL ETA, Significant Provisions of State UI Laws, January 2020 (NY row, minimum WBA, p. 3; archived)
+      href: https://web.archive.org/web/20200324161321/https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2020.pdf#page=3
+    - title: USDOL ETA, Significant Provisions of State UI Laws, January 2021 (NY row, minimum WBA, p. 4; archived)
+      href: https://web.archive.org/web/20210518005701/https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2021.pdf#page=4
+    - title: USDOL ETA, Significant Provisions of State UI Laws, January 2022 (NY row, minimum WBA, p. 4; archived)
+      href: https://web.archive.org/web/20220520080838/https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2022.pdf#page=4
+    - title: USDOL ETA, Significant Provisions of State UI Laws, January 2023 (NY row, minimum WBA, p. 4; archived)
+      href: https://web.archive.org/web/20230902081422/https://oui.doleta.gov/unemploy/content/sigpros/2020-2029/January2023.pdf#page=4
+    - title: 2024 Form NYS-50, Employer's Guide to Unemployment Insurance, Wage Reporting, and Withholding Tax
+      href: https://www.tax.ny.gov/forms/publications/2024/wt/nys50-1224.htm
+    - title: 2025 Form NYS-50, Employer's Guide to Unemployment Insurance, Wage Reporting, and Withholding Tax (archived)
+      href: https://web.archive.org/web/2025id_/https://www.tax.ny.gov/forms/publications/wt/nys50.htm
+    - title: NYSDOL P832 (Feb 2026)
+      href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

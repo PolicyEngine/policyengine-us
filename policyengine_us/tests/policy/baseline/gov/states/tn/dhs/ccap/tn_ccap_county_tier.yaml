@@ -1,0 +1,61 @@
+# tn_ccap_county_tier: Household, Enum (TOP_TIER/LOWER_TIER), MONTH
+# Derived from county_str against the top_tier_counties list. Enum output is
+# exact, so no error margin. The two eras differ only by Dyer County (Top on the
+# Oct 1 2024 chart, Lower on the Jan 1 2026 chart). Gibson is Top in both eras
+# (petition county). Unlisted counties default to Lower Tier.
+
+- name: Case 1, Davidson County is Top Tier (current era).
+  period: 2026-01
+  input:
+    county_str: DAVIDSON_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: TOP_TIER
+
+- name: Case 2, Shelby County is Top Tier (current era).
+  period: 2026-01
+  input:
+    county_str: SHELBY_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: TOP_TIER
+
+- name: Case 3, Cannon County is Lower Tier (not listed).
+  period: 2026-01
+  input:
+    county_str: CANNON_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: LOWER_TIER
+
+- name: Case 4, Gibson County is Top Tier in the current era (petition county).
+  period: 2026-01
+  input:
+    county_str: GIBSON_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: TOP_TIER
+
+- name: Case 5, Dyer County dropped to Lower Tier in the current era.
+  period: 2026-01
+  input:
+    county_str: DYER_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: LOWER_TIER
+
+- name: Case 6, Dyer County was Top Tier in the prior (Oct 2024) era.
+  period: 2025-01
+  input:
+    county_str: DYER_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: TOP_TIER
+
+- name: Case 7, Gibson County was Top Tier in the prior era too.
+  period: 2025-01
+  input:
+    county_str: GIBSON_COUNTY_TN
+    state_code: TN
+  output:
+    tn_ccap_county_tier: TOP_TIER

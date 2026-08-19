@@ -1,0 +1,213 @@
+- name: Case 1, group one weekly center care is capped by the market rate.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 60_000
+        spm_unit_fpg: 25_750
+        # 85% of SMI is the limit from 2023-10-01; $68,000 > $60,000 income.
+        hhs_smi: 80_000
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1]
+        county_str: NASSAU_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_income_eligible: true
+    ny_ccap_county_group: GROUP_1
+    ny_ccap_age_group: INFANT
+    ny_ccap_duration_of_care: WEEKLY
+    # Market rate: $484/week * 52 / 12.
+    ny_ccap_market_rate: 484 * 52 / 12
+    # Family share: ($60,000 - $25,750) * 1% / 12.
+    ny_ccap_family_share: (60_000 - 25_750) * 0.01 / 12
+    # Expenses are $3,000/month, so the market rate binds.
+    ny_ccap: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+    ny_child_care_subsidies: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+    child_care_subsidies: (484 * 52 - (60_000 - 25_750) * 0.01) / 12
+  absolute_error_margin: 0.01
+
+- name: Case 2, group two daily home care is capped by actual expenses.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_provider_type_group: FDC_GFDC
+        childcare_hours_per_day: 7
+        childcare_days_per_week: 4
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 25_750
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1]
+        county_str: ALBANY_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_2
+    ny_ccap_age_group: TODDLER
+    ny_ccap_duration_of_care: DAILY
+    # Market rate: $63/day * 4 days/week * 52 / 12.
+    ny_ccap_market_rate: 63 * 4 * 52 / 12
+    ny_ccap_family_share: 0
+    # Actual expenses are $800/month and bind below the market rate.
+    ny_ccap: 800
+    ny_child_care_subsidies: 800
+    child_care_subsidies: 800
+  absolute_error_margin: 0.01
+
+- name: Case 3, group four part-day informal care applies the minimum share.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 6
+        childcare_provider_type_group: LE_ENH
+        childcare_hours_per_day: 4
+        childcare_days_per_week: 3
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+        ny_ccap_countable_income: 25_751
+        spm_unit_fpg: 25_750
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1]
+        county_str: BRONX_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_4
+    ny_ccap_age_group: SCHOOL_AGE
+    ny_ccap_duration_of_care: PART_DAY
+    # Market rate: $28/part-day * 3 days/week * 52 / 12.
+    ny_ccap_market_rate: 28 * 3 * 52 / 12
+    ny_ccap_family_share: 52 / 12
+    ny_ccap: (28 * 3 * 52 - 52) / 12
+    ny_child_care_subsidies: (28 * 3 * 52 - 52) / 12
+    child_care_subsidies: (28 * 3 * 52 - 52) / 12
+  absolute_error_margin: 0.01
+
+# The activity test is the sole cause of ineligibility here: hhs_smi is set
+# high enough that the income test passes, so the case would fail if the
+# reason-for-care gate were dropped.
+- name: Case 4, failing the activity test alone zeroes the subsidy.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: false
+        ny_ccap_countable_income: 60_000
+        spm_unit_fpg: 25_750
+        hhs_smi: 80_000
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1]
+        county_str: ALLEGANY_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_county_group: GROUP_3
+    ny_ccap_age_group: PRESCHOOLER
+    ny_ccap_duration_of_care: WEEKLY
+    ny_ccap_market_rate: 277 * 52 / 12
+    # 85% of $80,000 is $68,000, above the $60,000 of countable income, so
+    # the reason-for-care gate is what fires.
+    ny_ccap_income_eligible: true
+    ny_ccap_eligible_child: false
+    ny_ccap: 0
+    ny_child_care_subsidies: 0
+    child_care_subsidies: 0
+  absolute_error_margin: 0.01
+
+# The whole chain from raw inputs: a working parent and an infant, with
+# countable income, the poverty guideline and the state median income all
+# derived rather than supplied.
+- name: Case 5, a working parent and an infant build the benefit from raw inputs.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 1
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        county_str: NASSAU_COUNTY_NY
+        state_code: NY
+  output:
+    ny_ccap_countable_income: 40_000 / 12
+    spm_unit_fpg: 21_150 / 12
+    # New York's $127,802 state median income for a family of four, adjusted
+    # to 68% for a family of two; 85% of that is far above $40,000.
+    hhs_smi: 86_905.36 / 12
+    ny_ccap_income_eligible: true
+    ny_ccap_county_group: GROUP_1
+    # Market rate for the infant is $484/week * 52 / 12, which binds below
+    # the $2,500/month of expenses.
+    # Family share: ($40,000 - $21,150) * 1% / 12.
+    ny_ccap_family_share: (40_000 - 21_150) * 0.01 / 12
+    # Expenses are $2,500/month, so the $2,097.33 market rate binds.
+    ny_ccap: 484 * 52 / 12 - (40_000 - 21_150) * 0.01 / 12
+  absolute_error_margin: 0.01
+
+# ny_child_care_subsidies is the annual variable that reaches net income, so
+# the twelve-month sum needs an assertion of its own.
+- name: Case 6, the annual subsidy is twelve times the monthly benefit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+      person2:
+        age: 1
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        county_str: NASSAU_COUNTY_NY
+        state_code: NY
+  output:
+    ny_child_care_subsidies: 12 * (484 * 52 / 12 - (40_000 - 21_150) * 0.01 / 12)
+    child_care_subsidies: 12 * (484 * 52 / 12 - (40_000 - 21_150) * 0.01 / 12)
+  absolute_error_margin: 0.01
