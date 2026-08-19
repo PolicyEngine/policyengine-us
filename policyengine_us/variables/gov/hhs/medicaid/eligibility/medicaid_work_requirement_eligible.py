@@ -85,10 +85,12 @@ class medicaid_work_requirement_eligible(Variable):
         was_recently_incarcerated = person(
             "was_recently_incarcerated_for_medicaid_ce", period
         )
-        # Short-term hardship exceptions (applied when the circumstance is
-        # present): hospitalization / intensive services, and long-distance
-        # medical travel. County-unemployment-threshold and federal-disaster
-        # hardships require external data and are not modeled here (#8270).
+        # Optional short-term hardship exceptions (42 CFR 435.555(d)(1) and
+        # (d)(4)), elected by the state and requested by the person:
+        # hospitalization / services of similar acuity, and travel outside the
+        # community for medical care. The disaster-declaration and
+        # county-unemployment hardships require external data and are not
+        # modeled here (#8270).
         is_hospitalized = person("is_hospitalized_for_medicaid_ce", period)
         has_long_distance_medical_travel = person(
             "has_long_distance_medical_travel_for_medicaid_ce", period
