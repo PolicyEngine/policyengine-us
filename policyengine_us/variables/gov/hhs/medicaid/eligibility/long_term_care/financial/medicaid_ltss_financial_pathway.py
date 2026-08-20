@@ -16,17 +16,23 @@ class medicaid_ltss_financial_pathway(Variable):
     definition_period = MONTH
     documentation = (
         "Identifies the modeled financial pathway for the opt-in Medicaid "
-        "long-term services and supports threshold screen. Institutional "
-        "pathways are modeled for Texas, Delaware, and Washington. HCBS "
-        "pathways are modeled only for Washington's source-named COPES, New "
-        "Freedom, and Residential Support waivers. All other states, settings, "
+        "long-term services and supports threshold screen. Every modeled "
+        "route is SSI-related, so a person who is not aged, blind, or "
+        "disabled is unmodeled (42 CFR 435.236; 42 CFR 435.1005). "
+        "Institutional pathways are modeled for Texas, Delaware, and "
+        "Washington. HCBS pathways are modeled only for Washington's "
+        "source-named COPES, New Freedom, and Residential Support waivers; "
+        "their enabled flags exist for reform analysis, so the disabled "
+        "branch is reform-only-reachable. All other states, settings, "
         "waivers, and unsupported assistance-unit sizes are unmodeled."
     )
     reference = (
+        "https://www.law.cornell.edu/cfr/text/42/435.236",
+        "https://www.law.cornell.edu/cfr/text/42/435.1005",
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
-        "https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/wac-182-515-1505-home-and-community-based-hcb-waiver-services-authorized-home-and-community-services-hcs",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1505",
     )
 
     def formula_2026_01_01(person, period, parameters):
@@ -39,6 +45,7 @@ class medicaid_ltss_financial_pathway(Variable):
         waivers = waiver.possible_values
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
         income = person("medicaid_ltss_qit_adjusted_income", period)
+        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
 
         institutional = (setting == settings.INSTITUTIONAL) & (waiver == waivers.NONE)
         washington_hcbs = (setting == settings.HCBS) & (
@@ -49,11 +56,13 @@ class medicaid_ltss_financial_pathway(Variable):
 
         texas_or_delaware_institutional = (
             institutional
+            & aged_blind_disabled
             & ((state == states.TX) | (state == states.DE))
             & ((assistance_unit_size == 1) | (assistance_unit_size == 2))
         )
         washington_modeled_setting = (
             (state == states.WA)
+            & aged_blind_disabled
             & (institutional | washington_hcbs)
             & (assistance_unit_size == 1)
         )

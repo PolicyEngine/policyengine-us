@@ -12,8 +12,14 @@ class is_medicaid_ltss_income_eligible(Variable):
         "needy expenses and cost of care are trusted inputs; this variable "
         "does not validate a trust, expense, service, or facility rate. The "
         "Washington institutional branch models the WAC 182-513-1395(4) "
-        "payment threshold; it does not model the separate three- or "
-        "six-month spenddown process in subsection (5)."
+        "payment threshold using income only: the excess-resources term in "
+        "subsection (4)(a) is unmodeled (slightly lenient; resources are "
+        "screened separately), as are the three- or six-month spenddown "
+        "process in subsection (5) and the WAC 182-515-1507 categorically "
+        "needy route that bypasses the special income limit. The Delaware "
+        "special income limit is 250% of the SSI standard (DSSM 20100.2.2), "
+        "and its $20 disregard with the needs-based carve-out follows DSSM "
+        "20240.1 and 20990."
     )
     reference = (
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",

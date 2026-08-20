@@ -6,6 +6,13 @@ class is_medicaid_long_term_care_home_equity_eligible(Variable):
     entity = Person
     label = "Medicaid long-term care home equity eligible"
     definition_period = YEAR
+    documentation = (
+        "Annual home-equity test using the national limit, the agricultural "
+        "limit, and household-derived family exceptions. The opt-in monthly "
+        "LTSS screen models the same 42 USC 1396p(f) bar separately with "
+        "state-elected limits and explicit inputs in "
+        "medicaid_ltss_home_equity_eligible."
+    )
     reference = "https://www.congress.gov/bill/119th-congress/house-bill/1/text"
 
     def formula(person, period, parameters):

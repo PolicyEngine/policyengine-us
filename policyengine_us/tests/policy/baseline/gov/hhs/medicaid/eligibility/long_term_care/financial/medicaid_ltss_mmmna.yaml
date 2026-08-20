@@ -1,22 +1,94 @@
-- name: Federal July 2026 MMMNA uses the base, shelter threshold, and maximum.
+- name: Case 1, Texas pays the federal maximum flat regardless of shelter expenses.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      no_shelter:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 0
+      at_shelter_threshold:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 811.50
+      high_shelter:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 2_173
+    tax_units:
+      no_shelter:
+        members: [no_shelter]
+      at_shelter_threshold:
+        members: [at_shelter_threshold]
+      high_shelter:
+        members: [high_shelter]
+    marital_units:
+      no_shelter:
+        members: [no_shelter]
+      at_shelter_threshold:
+        members: [at_shelter_threshold]
+      high_shelter:
+        members: [high_shelter]
+    spm_units:
+      no_shelter:
+        members: [no_shelter]
+      at_shelter_threshold:
+        members: [at_shelter_threshold]
+      high_shelter:
+        members: [high_shelter]
+    households:
+      no_shelter:
+        members: [no_shelter]
+        state_code:
+          2026: TX
+      at_shelter_threshold:
+        members: [at_shelter_threshold]
+        state_code:
+          2026: TX
+      high_shelter:
+        members: [high_shelter]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_mmmna: [4_066.50, 4_066.50, 4_066.50]
+
+- name: Case 2, the Delaware federal formula uses the base, shelter threshold, and maximum.
   period: 2026-07
   absolute_error_margin: 0.01
   input:
     people:
       base:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 0
       shelter_threshold:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 811.50
       maximum:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
@@ -46,14 +118,143 @@
       base:
         members: [base]
         state_code:
-          2026: TX
+          2026: DE
       shelter_threshold:
         members: [shelter_threshold]
         state_code:
-          2026: TX
+          2026: DE
       maximum:
         members: [maximum]
         state_code:
-          2026: TX
+          2026: DE
   output:
     medicaid_ltss_mmmna: [2_705, 2_705, 4_066.50]
+
+- name: Case 3, the Washington formula adds interior excess shelter above the threshold.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      interior_excess:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 1_811.50
+      cent_below_threshold:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 811.49
+    tax_units:
+      interior_excess:
+        members: [interior_excess]
+      cent_below_threshold:
+        members: [cent_below_threshold]
+    marital_units:
+      interior_excess:
+        members: [interior_excess]
+      cent_below_threshold:
+        members: [cent_below_threshold]
+    spm_units:
+      interior_excess:
+        members: [interior_excess]
+      cent_below_threshold:
+        members: [cent_below_threshold]
+    households:
+      interior_excess:
+        members: [interior_excess]
+        state_code:
+          2026: WA
+      cent_below_threshold:
+        members: [cent_below_threshold]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_mmmna: [3_705, 2_705]
+
+- name: Case 4, no community spouse produces no allowance.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: false
+    medicaid_ltss_community_spouse_shelter_expenses: 2_000
+  output:
+    medicaid_ltss_mmmna: 0
+
+- name: Case 5, an unmodeled pathway produces no allowance.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: CA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_community_spouse_shelter_expenses: 2_000
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    medicaid_ltss_mmmna: 0
+
+- name: Case 6, mixed Texas and Delaware spouses diverge in one simulation.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      texas_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 1_000
+      delaware_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_community_spouse_shelter_expenses: 1_000
+    tax_units:
+      texas_spouse:
+        members: [texas_spouse]
+      delaware_spouse:
+        members: [delaware_spouse]
+    marital_units:
+      texas_spouse:
+        members: [texas_spouse]
+      delaware_spouse:
+        members: [delaware_spouse]
+    spm_units:
+      texas_spouse:
+        members: [texas_spouse]
+      delaware_spouse:
+        members: [delaware_spouse]
+    households:
+      texas_spouse:
+        members: [texas_spouse]
+        state_code:
+          2026: TX
+      delaware_spouse:
+        members: [delaware_spouse]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_mmmna: [4_066.50, 2_893.50]

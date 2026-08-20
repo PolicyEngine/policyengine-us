@@ -5,6 +5,8 @@
     state_code:
       2026: TX
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 3_000
@@ -24,6 +26,8 @@
     people:
       texas:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_500
@@ -32,6 +36,8 @@
         medicaid_ltss_home_ownership_share: 1
       delaware:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_500
@@ -40,6 +46,8 @@
         medicaid_ltss_home_ownership_share: 1
       washington:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_500
@@ -94,6 +102,8 @@
     people:
       single:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_000
@@ -103,6 +113,8 @@
         medicaid_ltss_home_ownership_share: 1
       couple:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 5_000
@@ -111,6 +123,8 @@
         medicaid_ltss_home_ownership_share: 0.5
       community_spouse:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_000
@@ -161,3 +175,126 @@
     medicaid_ltss_csra_resource_eligible: [true, true, true]
     medicaid_ltss_home_equity_eligible: [true, false, true]
     is_medicaid_ltss_financial_threshold_eligible: [true, false, true]
+
+- name: A Delaware non-homeowner with qualifying income and resources passes end to end.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_400
+    medicaid_ltss_countable_resources: 1_500
+    medicaid_ltss_home_market_value: 0
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_csra_resource_eligible: true
+    medicaid_ltss_home_equity_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true
+
+- name: A non-aged-blind-disabled applicant with qualifying finances is unmodeled end to end.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: false
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 2_400
+    medicaid_ltss_countable_resources: 1_500
+    medicaid_ltss_home_market_value: 0
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Identical above-SIL facts diverge across TX, DE, and WA income pathways.
+  period: 2026-07
+  input:
+    people:
+      texas:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 3_100
+        medicaid_ltss_countable_resources: 1_500
+        medicaid_ltss_cost_of_care: 3_500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      delaware:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 3_100
+        medicaid_ltss_countable_resources: 1_500
+        medicaid_ltss_cost_of_care: 3_500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      washington:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 3_100
+        medicaid_ltss_countable_resources: 1_500
+        medicaid_ltss_cost_of_care: 3_500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    marital_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    spm_units:
+      texas:
+        members: [texas]
+      delaware:
+        members: [delaware]
+      washington:
+        members: [washington]
+    households:
+      texas:
+        members: [texas]
+        state_code:
+          2026: TX
+      delaware:
+        members: [delaware]
+        state_code:
+          2026: DE
+      washington:
+        members: [washington]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, INSTITUTIONAL_MEDICALLY_NEEDY]
+    is_medicaid_ltss_income_eligible: [false, false, true]
+    medicaid_ltss_csra_resource_eligible: [true, true, true]
+    medicaid_ltss_home_equity_eligible: [true, true, true]
+    is_medicaid_ltss_financial_threshold_eligible: [false, false, true]

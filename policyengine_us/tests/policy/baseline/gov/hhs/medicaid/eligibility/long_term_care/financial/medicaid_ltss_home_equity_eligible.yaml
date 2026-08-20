@@ -4,6 +4,8 @@
     people:
       below:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 751_999
@@ -11,6 +13,8 @@
         medicaid_ltss_home_ownership_share: 1
       at:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 752_000
@@ -18,6 +22,8 @@
         medicaid_ltss_home_ownership_share: 1
       above:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 752_001
@@ -73,6 +79,8 @@
     people:
       below:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 1_129_999
@@ -80,6 +88,8 @@
         medicaid_ltss_home_ownership_share: 1
       at:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 1_130_000
@@ -87,6 +97,8 @@
         medicaid_ltss_home_ownership_share: 1
       above:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_home_market_value: 1_130_001
@@ -142,6 +154,8 @@
     state_code:
       2026: TX
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_home_market_value: 752_001
@@ -157,6 +171,8 @@
     state_code:
       2026: TX
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_home_market_value: 752_001
@@ -172,6 +188,8 @@
     state_code:
       2026: TX
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_home_market_value: 752_001
@@ -187,6 +205,8 @@
     state_code:
       2026: TX
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_home_market_value: 752_001
@@ -196,12 +216,91 @@
   output:
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 7, Delaware remains fail-closed without a modeled numeric home-equity cap.
+- name: Case 7, Delaware applies the federal-minimum cap at the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 751_999
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_001
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: DE
+      at_household:
+        members: [at]
+        state_code:
+          2026: DE
+      above_household:
+        members: [above]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
+    medicaid_ltss_home_equity_eligible: [true, true, false]
+
+- name: Case 8, a Delaware non-homeowner passes the home-equity screen.
   period: 2026-07
   input:
     state_code:
       2026: DE
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_home_market_value: 0
@@ -209,4 +308,169 @@
     medicaid_ltss_home_ownership_share: 1
   output:
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
-    medicaid_ltss_home_equity_eligible: false
+    medicaid_ltss_home_equity_eligible: true
+
+- name: Case 9, encumbrances and ownership share land exactly at the Texas cap.
+  period: 2026-07
+  input:
+    people:
+      at:
+        medicaid_ltss_home_market_value: 1_000_000
+        medicaid_ltss_home_encumbrances: 248_000
+        medicaid_ltss_home_ownership_share: 1
+      above:
+        medicaid_ltss_home_market_value: 1_000_001
+        medicaid_ltss_home_encumbrances: 248_000
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_home_equity_eligible: [true, false]
+
+- name: Case 10, invalid ownership shares fail closed.
+  period: 2026-07
+  input:
+    people:
+      share_above_one:
+        medicaid_ltss_home_market_value: 100_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1.5
+      negative_share:
+        medicaid_ltss_home_market_value: 100_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: -0.5
+    tax_units:
+      share_above_one_tax_unit:
+        members: [share_above_one]
+      negative_share_tax_unit:
+        members: [negative_share]
+    families:
+      share_above_one_family:
+        members: [share_above_one]
+      negative_share_family:
+        members: [negative_share]
+    spm_units:
+      share_above_one_spm_unit:
+        members: [share_above_one]
+      negative_share_spm_unit:
+        members: [negative_share]
+    marital_units:
+      share_above_one_marital_unit:
+        members: [share_above_one]
+      negative_share_marital_unit:
+        members: [negative_share]
+    households:
+      share_above_one_household:
+        members: [share_above_one]
+        state_code:
+          2026: TX
+      negative_share_household:
+        members: [negative_share]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_home_equity_eligible: [false, false]
+
+- name: Case 11, an unmodeled state passes at the federal minimum and fails closed above it.
+  period: 2026-07
+  input:
+    people:
+      no_home:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      at_federal_minimum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      above_federal_minimum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 752_001
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      no_home_tax_unit:
+        members: [no_home]
+      at_federal_minimum_tax_unit:
+        members: [at_federal_minimum]
+      above_federal_minimum_tax_unit:
+        members: [above_federal_minimum]
+    families:
+      no_home_family:
+        members: [no_home]
+      at_federal_minimum_family:
+        members: [at_federal_minimum]
+      above_federal_minimum_family:
+        members: [above_federal_minimum]
+    spm_units:
+      no_home_spm_unit:
+        members: [no_home]
+      at_federal_minimum_spm_unit:
+        members: [at_federal_minimum]
+      above_federal_minimum_spm_unit:
+        members: [above_federal_minimum]
+    marital_units:
+      no_home_marital_unit:
+        members: [no_home]
+      at_federal_minimum_marital_unit:
+        members: [at_federal_minimum]
+      above_federal_minimum_marital_unit:
+        members: [above_federal_minimum]
+    households:
+      no_home_household:
+        members: [no_home]
+        state_code:
+          2026: CA
+      at_federal_minimum_household:
+        members: [at_federal_minimum]
+        state_code:
+          2026: CA
+      above_federal_minimum_household:
+        members: [above_federal_minimum]
+        state_code:
+          2026: CA
+  output:
+    medicaid_ltss_financial_pathway: [UNMODELED, UNMODELED, UNMODELED]
+    medicaid_ltss_home_equity_eligible: [true, true, false]
+    is_medicaid_ltss_financial_threshold_eligible: [false, false, false]

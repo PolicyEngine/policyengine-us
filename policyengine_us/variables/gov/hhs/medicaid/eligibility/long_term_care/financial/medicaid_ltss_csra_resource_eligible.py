@@ -9,16 +9,19 @@ class medicaid_ltss_csra_resource_eligible(Variable):
     documentation = (
         "Tests trusted comprehensive LTSS countable-resource inputs. For an "
         "applicant with a community spouse, the initial CSRA is the greater "
-        "of the applicable state/federal floor or one-half of the couple's "
-        "snapshot resources, capped at the federal maximum. Court and fair-"
-        "hearing adjustments, resource-hardship overrides, and detailed "
-        "state asset exclusions are not modeled."
+        "of the applicable state/federal floor or the fixed statutory "
+        "one-half of the couple's snapshot resources under 42 USC "
+        "1396r-5(f)(2)(A), capped at the federal maximum. Delaware's "
+        "$25,000 state spousal share (DSSM 20910.10) sits below the federal "
+        "minimum, which therefore governs. Court and fair-hearing "
+        "adjustments, resource-hardship overrides, and detailed state asset "
+        "exclusions are not modeled."
     )
     reference = (
-        "https://www.law.cornell.edu/uscode/text/42/1396r-5",
+        "https://www.law.cornell.edu/uscode/text/42/1396r-5#f_2",
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/appendix-xxxi-budget-reference-chart",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78",
-        "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf",
+        "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3",
     )
 
     def formula_2026_01_01(person, period, parameters):

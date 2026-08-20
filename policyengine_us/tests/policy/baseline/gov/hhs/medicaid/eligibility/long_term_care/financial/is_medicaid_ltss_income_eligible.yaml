@@ -4,31 +4,43 @@
     people:
       below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_981
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_982
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_983
       couple_below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 5_963
       couple_at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 5_964
       couple_above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 5_965
@@ -104,6 +116,8 @@
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 2_982
@@ -116,6 +130,8 @@
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 2_983
@@ -130,36 +146,48 @@
     people:
       below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_484
         medicaid_ltss_needs_based_income: 2_484
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_485
         medicaid_ltss_needs_based_income: 2_485
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_486
         medicaid_ltss_needs_based_income: 2_486
       couple_below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_727
         medicaid_ltss_needs_based_income: 3_727
       couple_at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_727.50
         medicaid_ltss_needs_based_income: 3_727.50
       couple_above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_728
@@ -238,36 +266,48 @@
     people:
       below_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_504
         medicaid_ltss_needs_based_income: 0
       at_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_505
         medicaid_ltss_needs_based_income: 0
       above_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_506
         medicaid_ltss_needs_based_income: 0
       couple_below_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_747
         medicaid_ltss_needs_based_income: 0
       couple_at_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_747.50
         medicaid_ltss_needs_based_income: 0
       couple_above_limit_after_disregard:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 2
         medicaid_ltss_qit_adjusted_income: 3_748
@@ -344,6 +384,8 @@
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 2_505
@@ -359,16 +401,22 @@
     people:
       below_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_981
       at_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_982
       above_limit:
         medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_assistance_unit_size: 1
         medicaid_ltss_qit_adjusted_income: 2_983
@@ -415,6 +463,8 @@
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 4_000
@@ -429,6 +479,8 @@
   period: 2026-07
   input:
     medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
     medicaid_ltss_waiver: NONE
     medicaid_ltss_assistance_unit_size: 1
     medicaid_ltss_qit_adjusted_income: 4_000
@@ -438,3 +490,115 @@
       2026: WA
   output:
     is_medicaid_ltss_income_eligible: false
+
+- name: Case 10, zero income is eligible on the special income pathway.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 0
+  output:
+    is_medicaid_ltss_income_eligible: true
+
+- name: Case 11, the Delaware disregard binds at an interior mixed-income value.
+  period: 2026-07
+  input:
+    people:
+      passes_with_partial_disregard:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_480
+        medicaid_ltss_needs_based_income: 2_470
+      fails_with_partial_disregard:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 2_496
+        medicaid_ltss_needs_based_income: 2_486
+    tax_units:
+      passes_with_partial_disregard_tax_unit:
+        members: [passes_with_partial_disregard]
+      fails_with_partial_disregard_tax_unit:
+        members: [fails_with_partial_disregard]
+    marital_units:
+      passes_with_partial_disregard_marital_unit:
+        members: [passes_with_partial_disregard]
+      fails_with_partial_disregard_marital_unit:
+        members: [fails_with_partial_disregard]
+    spm_units:
+      passes_with_partial_disregard_spm_unit:
+        members: [passes_with_partial_disregard]
+      fails_with_partial_disregard_spm_unit:
+        members: [fails_with_partial_disregard]
+    households:
+      passes_with_partial_disregard_household:
+        members: [passes_with_partial_disregard]
+        state_code:
+          2026: DE
+      fails_with_partial_disregard_household:
+        members: [fails_with_partial_disregard]
+        state_code:
+          2026: DE
+  output:
+    is_medicaid_ltss_income_eligible: [true, false]
+
+- name: Case 12, Washington HCBS medically needy net income brackets the income level.
+  period: 2026-07
+  input:
+    people:
+      at_income_level:
+        medicaid_ltss_setting: HCBS
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: WA_COPES
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_medically_needy_expenses: 500
+        medicaid_ltss_cost_of_care: 2_506
+      above_income_level:
+        medicaid_ltss_setting: HCBS
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: WA_COPES
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_qit_adjusted_income: 4_000
+        medicaid_ltss_medically_needy_expenses: 500
+        medicaid_ltss_cost_of_care: 2_505
+    tax_units:
+      at_income_level_tax_unit:
+        members: [at_income_level]
+      above_income_level_tax_unit:
+        members: [above_income_level]
+    marital_units:
+      at_income_level_marital_unit:
+        members: [at_income_level]
+      above_income_level_marital_unit:
+        members: [above_income_level]
+    spm_units:
+      at_income_level_spm_unit:
+        members: [at_income_level]
+      above_income_level_spm_unit:
+        members: [above_income_level]
+    households:
+      at_income_level_household:
+        members: [at_income_level]
+        state_code:
+          2026: WA
+      above_income_level_household:
+        members: [above_income_level]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      [INSTITUTIONAL_MEDICALLY_NEEDY, INSTITUTIONAL_MEDICALLY_NEEDY]
+    is_medicaid_ltss_income_eligible: [true, false]

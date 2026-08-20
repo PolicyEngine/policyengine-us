@@ -25,6 +25,6 @@ class medicaid_ltss_waiver(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.217",
-        "https://www.hca.wa.gov/free-or-low-cost-health-care/i-help-others-apply-and-access-apple-health/wac-182-515-1505-home-and-community-based-hcb-waiver-services-authorized-home-and-community-services-hcs",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1505",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508",
     )
