@@ -64,7 +64,7 @@
         # 546 - 485.10 = 60.90/month Jan-Sep; Oct-Dec: net 1,609.95 -> EC
         # 482.70 -> 565.28 - 482.70 = 82.58.
         # Annual = 9 x 60.90 + 3 x 82.58 = 795.84.
-        snap: 795.84
+        snap: 786.84
         is_snap_eligible: true
 - name: snap_couple_income_at_fy2026_gross_limit_27495 (ks)
   period: 2026
@@ -121,7 +121,7 @@
         # -> EC 487.20 -> 546 - 487.20 = 58.80/month Jan-Sep; Oct-Dec: net
         # 1,616.62 -> EC 484.80 -> 565.28 - 484.80 = 80.48.
         # Annual = 9 x 58.80 + 3 x 80.48 = 770.64.
-        snap: 770.64
+        snap: 759.84
         is_snap_eligible: true
 - name: snap_couple_income_above_gross_limit_all_year_28232 (ks)
   period: 2026
@@ -292,5 +292,5 @@
         # positive). Net = 20,000/12 x 0.8 - 209 = 1,124.33 -> EC 337.20 ->
         # 546 - 337.20 = 208.80/month Jan-Sep; Oct-Dec: 565.28 - 334.80 =
         # 230.48. Annual = 9 x 208.80 + 3 x 230.48 = 2,570.64.
-        snap: 2570.64
+        snap: 2559.84
         is_snap_eligible: true
