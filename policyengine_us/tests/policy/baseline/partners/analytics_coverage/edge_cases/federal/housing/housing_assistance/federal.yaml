@@ -559,7 +559,7 @@
         # Payment standard 1bd 29,640 -> max subsidy 25,065.
         # Gross rent 15,600 - TTP 4,575 = 11,025 (rent side binds).
         housing_assistance: 11_025.0
-- name: housing_assistance_tx_tenant_pays_utilities_no_allowance (federal)
+- name: housing_assistance_tx_tenant_pays_utilities_dallas_allowance (federal)
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -602,11 +602,68 @@
   output:
     spm_units:
       spm_unit:
-        # Guards the utility-allowance surface: the current model only encodes
-        # an LA County utility allowance schedule, so a Dallas tenant paying
-        # utilities gets hud_utility_allowance = 0 and gross rent = 21,600.
+        # Guards the utility-allowance surface: Dallas County (48113) has a
+        # county-keyed 2026 utility allowance schedule (issue #8784), so a
+        # 2-bedroom tenant paying utilities gets hud_utility_allowance =
+        # 322/month = 3,864 and gross rent = 21,600 + 3,864 = 25,464.
         # TTP = max(2,000; 6,000; 25) = 6,000. Payment standard 2bd 34,800 ->
-        # max subsidy 28,800. Gross rent - TTP = 15,600 (rent side binds).
-        # County-keyed TX utility allowance schedules (issue #8784) would
-        # raise this value; that change must surface as a reviewed diff here.
-        housing_assistance: 15_600.0
+        # max subsidy 28,800. Gross rent - TTP = 19,464 (rent side binds).
+        # Schedule changes for Dallas County must surface as a reviewed diff
+        # here.
+        housing_assistance: 19_464.0
+
+- name: housing_assistance_tx_tenant_pays_utilities_no_allowance (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        employment_income_before_lsr: 20_000
+        pre_subsidy_rent: 12_000
+    households:
+      household:
+        members:
+        - head
+        state_code: TX
+        zip_code: '79401'
+        county_str: LUBBOCK_COUNTY_TX
+        county_fips: '48303'
+        bedrooms: 2
+        tenant_pays_utilities: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        tax_unit_is_joint: false
+    families:
+      family:
+        members:
+        - head
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Guards the no-schedule boundary of the utility-allowance surface:
+        # Lubbock County (48303) is outside every encoded schedule (the TDHCA
+        # service area, the six Texas metro PHAs), has no ZIP-level payment
+        # standard, and is not a mandatory-SAFMR metro, so a tenant paying
+        # utilities gets hud_utility_allowance = 0 and gross rent = 12,000.
+        # TTP = max(2,000; 6,000; 25) = 6,000. Payment standard = 2bd county
+        # FMR 1,175/month x 12 = 14,100 -> max subsidy 8,100.
+        # Gross rent - TTP = 6,000 (rent side binds, with 2,100 of payment-
+        # standard headroom). A future Lubbock utility allowance schedule
+        # would raise this value; that change must surface as a reviewed diff
+        # here.
+        housing_assistance: 6_000.0

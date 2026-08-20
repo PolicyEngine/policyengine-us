@@ -218,3 +218,135 @@
   output:
     # 24 CFR 982.604(b): 0.75 * $210 (Wichita 0 BR) = $157.50/month.
     hud_utility_allowance: 157.5 * 12
+
+- name: Dallas County, TX uses the 2026 DHA all-electric apartment schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48113"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 322 * 12
+
+- name: El Paso County, TX uses the 2026 EPCHA all-electric apartment schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48141"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 214 * 12
+
+- name: Tarrant County, TX uses the 2026 TCHAO all-electric multi-family schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48439"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 210 * 12
+
+- name: Travis County, TX uses the 2025 HACA all-electric multi-family elevator schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48453"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 316 * 12
+
+- name: Harris County, TX uses the 2025 HCHA all-electric low-rise apartment schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48201"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 299 * 12
+
+- name: Bexar County, TX uses the 2026 HABC all-electric multi-family schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48029"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 186 * 12
+
+- name: Riley County, KS uses Manhattan HA's 2024 all-electric large-apartment schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20161"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 316 * 12
+
+- name: Sedgwick County, KS uses Wichita HA's 2026 all-electric multi-family schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20173"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 274 * 12
+
+- name: Butler County, KS uses Wichita HA's 2026 all-electric multi-family schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20015"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 274 * 12
+
+- name: Harvey County, KS uses Wichita HA's 2026 all-electric multi-family schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20079"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 274 * 12
+
+- name: Douglas County, KS uses LDCHA's 2025 all-electric high-rise apartment schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "20045"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 320 * 12
+
+- name: McLennan County, TX uses Waco HA's 2025 all-electric multi-family schedule
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    county_fips: "48309"
+    is_sro: false
+    bedrooms: 2
+    tenant_pays_utilities: true
+  output:
+    hud_utility_allowance: 240 * 12
