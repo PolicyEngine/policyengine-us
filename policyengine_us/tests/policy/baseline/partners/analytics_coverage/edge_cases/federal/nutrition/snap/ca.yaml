@@ -73,10 +73,10 @@
         # Gross ratio 36,000/26,650 = 1.35 fails the federal 130% test, but CA
         # BBCE (200% gross + net test) rescues: net = 36,000/12 x 0.8 - 209 =
         # 2,191.00 (SUA 663 < half of pre-shelter net, so no shelter deduction)
-        # <= 2,220.83 Jan-Sep limit -> eligible all year. EC = floor(2,191) x
-        # 0.3 = 657.30 -> 785 - 657.30 = 127.70/month Jan-Sep; Oct-Dec: net
-        # 2,183.62 -> EC 654.90 -> 812.72 - 654.90 = 157.82.
-        # Annual = 9 x 127.70 + 3 x 157.82 = 1,622.76.
+        # <= 2,220.83 Jan-Sep limit -> eligible all year. EC = ceil(2,191 x
+        # 0.3) = 658 -> 785 - 658 = 127.00/month Jan-Sep; Oct-Dec: net
+        # 2,183.62 rounds to 2,184 -> EC 656 -> 812.72 - 656 = 156.72.
+        # Annual = 9 x 127.00 + 3 x 156.72 = 1,613.17.
         snap: 1613.17
         is_snap_eligible: true
 - name: snap_ca_net_income_at_fy2026_net_limit_36447 (ca)
@@ -141,9 +141,9 @@
       spm_unit:
         # At the binding CA net limit: net = 36,447/12 x 0.8 - 209 = 2,220.80,
         # just under the Jan-Sep limit of 26,650/12 = 2,220.83 -> eligible.
-        # EC = floor(2,220) x 0.3 = 666.00 -> 785 - 666.00 = 119.00/month
-        # Jan-Sep; Oct-Dec: net 2,213.42 -> EC 663.90 -> 812.72 - 663.90 =
-        # 148.82. Annual = 9 x 119.00 + 3 x 148.82 = 1,517.46.
+        # EC = ceil(2,221 x 0.3) = 667 -> 785 - 667 = 118.00/month
+        # Jan-Sep; Oct-Dec: net 2,213.42 rounds to 2,213 -> EC 664 ->
+        # 812.72 - 664 = 148.72. Annual = 9 x 118.00 + 3 x 148.72 = 1,508.17.
         snap: 1508.17
         is_snap_eligible: true
 - name: snap_ca_net_income_above_net_limit_all_year_38000 (ca)
