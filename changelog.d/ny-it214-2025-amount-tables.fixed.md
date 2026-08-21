@@ -1,0 +1,1 @@
+Corrected the New York IT-214 real property tax credit: it now uses the 2025+ flat credit-amount tables (Part RR of Chapter 59 of the Laws of 2025) instead of the pre-2025 50%-of-excess formula, grants the elderly amount when a claimed dependent is 65 or older, and applies the single Table-1 rate (rather than a summed schedule) in the income gate.
