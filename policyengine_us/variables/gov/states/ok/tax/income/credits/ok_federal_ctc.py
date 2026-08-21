@@ -20,6 +20,14 @@ class ok_federal_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         non_refundable_credits = parameters(period).gov.irs.credits.non_refundable
+        refundable_ctc = tax_unit("refundable_ctc", period)
+        # Reforms that make the CTC fully refundable (e.g. the American
+        # Family Act contrib) remove non_refundable_ctc from the federal
+        # non-refundable credit list entirely; the whole federal CTC then
+        # flows through the refundable side, and there is no non-refundable
+        # portion to allocate against liability.
+        if "non_refundable_ctc" not in non_refundable_credits:
+            return refundable_ctc
         ctc_index = non_refundable_credits.index("non_refundable_ctc")
         credits_before_ctc = non_refundable_credits[:ctc_index]
         preceding_credits = add(tax_unit, period, credits_before_ctc)
@@ -43,5 +51,4 @@ class ok_federal_ctc(Variable):
             applied_non_refundable_ctc,
             non_refundable_ctc,
         )
-        refundable_ctc = tax_unit("refundable_ctc", period)
         return applied_non_refundable_ctc + refundable_ctc
