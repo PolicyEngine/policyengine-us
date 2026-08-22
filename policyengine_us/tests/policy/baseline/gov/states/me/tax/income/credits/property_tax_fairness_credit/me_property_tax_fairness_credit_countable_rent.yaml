@@ -4,18 +4,67 @@
     state_code: ME
     rent: 1_000
     utilities_included_in_rent: false
-    utility_expense: 50
+    me_ptfc_utilities_included_in_rent: 0
   output:
     me_property_tax_fairness_credit_countable_rent: 150
     # 1000*0.15 = 150
-  
-- name: Case 2, utilities included in rent
+
+- name: Case 2, utilities included in rent, amount known
   period: 2022
   input:
     state_code: ME
     rent: 1_000
     utilities_included_in_rent: true
-    utility_expense: 50
+    me_ptfc_utilities_included_in_rent: 50
   output:
     me_property_tax_fairness_credit_countable_rent: 142.5
-    # 950*0.15 = 142.5
+    # (1000 - 50) * 0.15 = 142.5
+
+- name: Case 3, utilities included in rent but amount unknown, deduct 15% of rent (Schedule PTFC/STFC line 5c)
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_ptfc_utilities_included_in_rent: 0
+  output:
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # utility portion = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5
+
+- name: Case 4, utilities included but amount unknown, with separate general utility_expenses (F1 discriminator ignores utility_expenses)
+  period: 2022
+  input:
+    state_code: ME
+    rent: 12_000
+    utilities_included_in_rent: true
+    me_ptfc_utilities_included_in_rent: 0
+    heating_cooling_expense: 600
+  output:
+    me_property_tax_fairness_credit_countable_rent: 1_530
+    # amount unknown -> line 5c estimate = 15% * 12000 = 1800;
+    # (12000 - 1800) * 0.15 = 10200 * 0.15 = 1530.
+    # General household utility expense (heating_cooling_expense 600, part of
+    # utility_expense) is IGNORED by the discriminator; old buggy discriminator
+    # gave (12000 - 600) * 0.15 = 1710, so this case inverts if F1 is reverted.
+
+- name: Case 5, utilities included and known amount exceeds rent, net rent clamped to 0 (F2 non-negative clamp)
+  period: 2022
+  input:
+    state_code: ME
+    rent: 2_400
+    utilities_included_in_rent: true
+    me_ptfc_utilities_included_in_rent: 3_600
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # net rent = max(2400 - 3600, 0) = 0; 0 * 0.15 = 0 (not negative).
+
+- name: Case 6, utilities included and known amount exactly equals rent, net rent clamps to 0 (boundary)
+  period: 2022
+  input:
+    state_code: ME
+    rent: 3_000
+    utilities_included_in_rent: true
+    me_ptfc_utilities_included_in_rent: 3_000
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # net rent = max(3000 - 3000, 0) = 0; 0 * 0.15 = 0 (boundary, not negative).

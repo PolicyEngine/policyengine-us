@@ -1,0 +1,14 @@
+description: When rent includes heat or utilities and the amount is not known, Maine treats this fraction of gross rent as attributable to utilities and excludes it before computing rent constituting property taxes under the property tax fairness credit.
+values:
+  2014-01-01: 0.15
+metadata:
+  unit: /1
+  period: year
+  label: Maine property tax fairness credit utilities-in-rent fraction
+  reference:
+    - title: 2014 Form 1040ME Schedule PTFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/14_1040_sched%20ptfc_download.pdf#page=2
+    - title: 2022 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
+    - title: 2023 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=1
