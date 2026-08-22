@@ -1,0 +1,41 @@
+# Head Start values compose into ECPA's static household_benefits list when
+# gov.simulation.include_head_start_benefits_in_net_income is on.
+#
+# NOTE: This lives under tests/policy/reform (one subprocess per file) rather
+# than contrib/congress/tlaib because the congress structural batch runs each
+# proposal directory in a single process at its memory ceiling; the extra
+# reformed-system variant this case requires pushed the tlaib batch past the
+# CI runner's RAM and stalled the job.
+
+- name: Head Start values compose into ECPA household benefits when the inclusion switch is on.
+  period: 2023
+  reforms: policyengine_us.reforms.congress.tlaib.end_child_poverty_act.end_child_poverty_act
+  input:
+    gov.contrib.congress.tlaib.end_child_poverty_act.in_effect: true
+    gov.simulation.include_head_start_benefits_in_net_income: true
+    age: 30
+    head_start: 8_000
+    early_head_start: 21_000
+    social_security: 0
+    ssi: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    unemployment_compensation: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_state_benefits: 0
+  output:
+    household_head_start_benefits: 29_000
+    household_benefits: 29_000
