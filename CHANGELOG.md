@@ -1,3 +1,10 @@
+## [1.818.0] - 2026-08-23
+
+### Added
+
+- Detailed and major industry recode and worked-last-year person input variables from the CPS ASEC work-experience block (WEIND, WEMIND, WORKYN).
+
+
 ## [1.817.0] - 2026-08-19
 
 ### Added
