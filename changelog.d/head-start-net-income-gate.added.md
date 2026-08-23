@@ -1,1 +1,0 @@
-Gate Head Start and Early Head Start behind gov.simulation.include_head_start_benefits_in_net_income (default false), so per-enrollee program values no longer enter household net income by default, mirroring the health benefits inclusion switch.
