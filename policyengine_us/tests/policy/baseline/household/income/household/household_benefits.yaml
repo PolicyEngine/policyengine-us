@@ -57,3 +57,33 @@
     household_health_benefits: 0
   output:
     household_benefits: 0
+
+- name: Head Start values are excluded from household benefits by default.
+  period: 2024
+  input:
+    age: 30
+    head_start: 8_000
+    early_head_start: 21_000
+    child_support_received: 0
+    workers_compensation: 0
+    educational_assistance: 0
+    financial_assistance: 0
+    survivor_benefits: 0
+    social_security: 0
+    ssi: 0
+    tanf: 0
+    unemployment_compensation: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    acp: 0
+    ebb: 0
+    basic_income: 0
+    spm_unit_capped_housing_subsidy: 0
+    household_state_benefits: 0
+    commodity_supplemental_food_program: 0
+    household_health_benefits: 0
+  output:
+    household_head_start_benefits: 0
+    household_benefits: 0
