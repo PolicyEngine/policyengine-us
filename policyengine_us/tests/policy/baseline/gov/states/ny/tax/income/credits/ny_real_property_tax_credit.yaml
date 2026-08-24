@@ -5,7 +5,9 @@
     state_code: NY
     real_estate_taxes: 25_000
   output:
-    ny_real_property_tax_credit: 65
+    # HGI exactly 5,000 sits in the 4,001-5,000 row of the credit-limit chart
+    # (2022 IT-214-I page 3): non-elderly cap 67 (not the 5,001-6,000 row's 65).
+    ny_real_property_tax_credit: 67
 
 - name: Renter over the $450/month cap gets no credit (IT-214 line 21)
   period: 2022
@@ -409,3 +411,181 @@
     # (0.35) threshold would be 5,600 -> excess < 0 -> 0, so this case is the
     # one that locks the single_amount gate fix.
     ny_real_property_tax_credit: 150
+
+# --- $1-boundary regressions: Table 1 and the credit-limit chart use closed
+# integer bands ($0-3,000 -> .035; then 3,001-5,000 -> .040), so an income of
+# exactly $3,000 belongs to the LOWER band. These only pass when a value at a
+# band top stays in its band - right=True lookups over band-top thresholds
+# (2025 IT-214 p.3 Table 1; 2024 IT-214-I p.2 Table 1 and p.3 chart).
+
+- name: 2025 - Table 1 boundary, FAGI exactly 3,000 keeps rate 0.035 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 3,000 is 0.035 (last dollar of the 0-3,000 band), so the
+    # threshold is 105 and RPT 110 clears the gate -> Table A 375. Under a
+    # default (right=False) lookup the rate would be 0.040 (threshold 120)
+    # and the gate would wrongly fail.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - Table 1 boundary, FAGI exactly 5,000 keeps rate 0.040 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        real_estate_taxes: 210
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 5,000 is 0.040 -> threshold 200; RPT 210 clears the gate
+    # -> Table B 75. A right=False lookup (0.045, threshold 225) would fail it.
+    ny_real_property_tax_credit: 75
+
+- name: 2025 - Table 1 boundary, FAGI exactly 14,000 keeps rate 0.060 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 14_000
+        real_estate_taxes: 850
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 14,000 is 0.060 -> threshold 840; RPT 850 clears the
+    # gate -> Table A 14,000 (11,001-14,000 band) = 200. A right=False lookup
+    # (0.065, threshold 910) would fail it.
+    ny_real_property_tax_credit: 200
+
+- name: 2024 - credit-limit chart boundary, HGI exactly 1,000 caps at 75 not 73
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+        real_estate_taxes: 400
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate 0.035 -> threshold 35; excess 365; 50% = 182.50; the non-elderly
+    # cap at exactly 1,000 is the $0-1,000 row (75), not the 1,001-2,000 row
+    # (73), so the credit is 75.
+    ny_household_gross_income: 1_000
+    ny_real_property_tax_credit: 75
+
+- name: 2024 - Table 1 boundary, HGI exactly 3,000 uses rate 0.035 in the formula
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 3_000
+        real_estate_taxes: 150
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 3,000 is 0.035 -> threshold 105; excess 45; 50% = 22.50,
+    # below the 2,001-3,000 non-elderly cap of 71. A right=False lookup
+    # (0.040, threshold 120) would yield 15 instead.
+    ny_household_gross_income: 3_000
+    ny_real_property_tax_credit: 22.5
+
+# Fractional income rounds to whole dollars, half up, before any lookup
+# (IT-214-I "How to fill in Form IT-214": "drop amounts below 50 cents and
+# increase amounts from 50 to 99 cents to the next dollar").
+
+- name: 2025 - FAGI 3,000.49 rounds down to 3,000 -> rate 0.035, gate passes
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000.49
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 3,000: rate 0.035 -> threshold 105; RPT 110 clears the
+    # gate -> Table A 375. Unrounded, 3,000.49 would fall in the next band
+    # (rate 0.040, threshold ~120) and wrongly fail the gate.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - FAGI 3,000.50 rounds up to 3,001 -> rate 0.040, gate fails
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000.50
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 3,001: rate 0.040 -> threshold 120.04; RPT 110 is below
+    # it, so no credit ("$2.50 becomes $3" - halves round up).
+    ny_real_property_tax_credit: 0
+
+- name: 2025 - FAGI 18,000.30 rounds to 18,000 -> still within the income limit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 18_000.30
+        real_estate_taxes: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 18,000 is not "more than $18,000": eligible, Table A
+    # 14,001-18,000 band -> 150.
+    ny_real_property_tax_credit: 150
+
+- name: 2025 - FAGI 18,000.50 rounds to 18,001 -> over the income limit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 18_000.50
+        real_estate_taxes: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0
