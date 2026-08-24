@@ -1,3 +1,12 @@
+## [1.820.0] - 2026-08-24
+
+### Added
+
+- - Excluded SNAP recipients subject only to the post-HR1 ABAWD requirement (adults aged 60-64) from the Medicaid community engagement requirement.
+  - Added `is_snap_abawd_exempt`, `is_subject_to_snap_abawd`, and `has_snap_abawd_household_child` SNAP work-requirement status variables.
+  - Added the 7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more hours weekly to the SNAP work-registration exemption set.
+
+
 ## [1.819.0] - 2026-08-23
 
 ### Added
