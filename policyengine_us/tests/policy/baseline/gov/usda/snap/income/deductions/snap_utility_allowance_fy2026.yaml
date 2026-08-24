@@ -1,9 +1,12 @@
 # FY2026 utility allowances validated against the official FNS table
 # (effective October 1, 2025 - September 30, 2026):
 # https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+# Wisconsin revised its SUAs mid-year: the FNS table shows the revised
+# values, which took effect May 1, 2026 (WI DHS Ops Memos 26-22 and 26-30);
+# the October 1, 2025 values are from WI DHS Ops Memo 25-13.
 
-- name: Wisconsin household with heating costs receives the FY2026 HCSUA
-  period: 2026-01
+- name: Wisconsin household with heating costs receives the HCSUA, which rises mid-year on May 1, 2026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -12,17 +15,20 @@
     spm_units:
       spm_unit:
         members: [person]
-        heating_cooling_expense: 200
+        heating_cooling_expense: 2_400
     households:
       household:
         members: [person]
         state_code: WI
   output:
-    snap_utility_allowance_type: SUA
-    snap_utility_allowance: 870
+    # WI DHS Ops Memo 25-13: $553 HSUA effective 10/1/2025;
+    # Ops Memos 26-22/26-30: $870 effective 5/1/2026.
+    snap_utility_allowance:
+      2026-04: 553
+      2026-05: 870
 
-- name: Wisconsin household with electricity and water but no heating receives the FY2026 LUA
-  period: 2026-01
+- name: Wisconsin household with electricity and water but no heating receives the LUA, which rises mid-year on May 1, 2026
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -31,15 +37,18 @@
     spm_units:
       spm_unit:
         members: [person]
-        pre_subsidy_electricity_expense: 80
-        water_expense: 40
+        pre_subsidy_electricity_expense: 960
+        water_expense: 480
     households:
       household:
         members: [person]
         state_code: WI
   output:
-    snap_utility_allowance_type: LUA
-    snap_utility_allowance: 436
+    # WI DHS Ops Memo 25-13: $385 LUA effective 10/1/2025;
+    # Ops Memos 26-22/26-30: $436 effective 5/1/2026.
+    snap_utility_allowance:
+      2026-04: 385
+      2026-05: 436
 
 - name: Idaho household with two non-heating utilities receives the FY2026 LUA
   period: 2026-01
@@ -83,6 +92,70 @@
     snap_utility_allowance_type: IUA
     snap_utility_allowance: 76
 
+- name: Alabama household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: AL
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 637
+
+- name: Nevada household with only a phone bill receives the summed FY2026 individual standards
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    snap_utility_allowance_type: IUA
+    # snap_individual_utility_allowance sums every single-utility standard:
+    # 5 x $77 (electricity, gas, water, sewage, trash) + $52 phone = $437.
+    snap_utility_allowance: 437
+
+- name: Wisconsin household with only a phone bill receives the summed individual standards, which rise mid-year on May 1, 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 600
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    # snap_individual_utility_allowance sums every single-utility standard.
+    # Through April 2026 (WI DHS Ops Memo 25-13): 155 + 48 + 106 + 106
+    # + 28 + 31 = $474. From May 2026 (Ops Memos 26-22/26-30): 139 + 34
+    # + 112 + 112 + 47 + 106 = $550.
+    snap_utility_allowance:
+      2026-04: 474
+      2026-05: 550
+
 - name: Missouri household with heating costs receives the FY2026 HCSUA
   period: 2026-01
   absolute_error_margin: 0.01
@@ -121,6 +194,25 @@
     snap_utility_allowance_type: SUA
     snap_utility_allowance: 636.74
 
+- name: South Dakota household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: SD
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 950
+
 - name: South Dakota household with only a phone bill receives the summed FY2026 individual standards
   period: 2026-01
   absolute_error_margin: 0.01
@@ -152,7 +244,10 @@
     snap_utility_allowance_type: LUA
     snap_utility_region_str: NY_NAS
   output:
-    snap_limited_utility_allowance: 419
+    # OTDA GIS 25DC059 Attachment 1: Basic Utility $388 for Nassau/Suffolk
+    # effective 10/1/2025 (the FNS FY2026 table's NY LUA column misstates
+    # this as $419, New York City's value).
+    snap_limited_utility_allowance: 388
 
 - name: Rest of New York State FY2026 LUA
   period: 2026-01
@@ -161,7 +256,10 @@
     snap_utility_allowance_type: LUA
     snap_utility_region_str: NY_ONY
   output:
-    snap_limited_utility_allowance: 388
+    # OTDA GIS 25DC059 Attachment 1: Basic Utility $355 for the rest of the
+    # state effective 10/1/2025 (the FNS FY2026 table's NY LUA column
+    # misstates this as $388, Nassau/Suffolk's value).
+    snap_limited_utility_allowance: 355
 
 - name: Maine FY2026 individual utility allowance is zero because the phone standard is eliminated
   period: 2026-01
@@ -172,7 +270,10 @@
   output:
     snap_individual_utility_allowance: 0
 
-- name: Maryland FY2026 phone standard
+# Maryland's SUAs are effective January 1 (FNS FY2026 table footnote), so
+# its FY2026 values start 2026-01-01 and its 2025 values run through
+# December 2025.
+- name: Maryland FY2026 phone standard takes effect January 1, 2026
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -180,3 +281,51 @@
     snap_utility_region_str: MD
   output:
     snap_individual_utility_allowance: 41
+
+- name: Maryland phone standard stays at its 2025 value through December 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MD
+  output:
+    snap_individual_utility_allowance:
+      2025-12: 40
+
+- name: Maryland household with heating costs keeps the 2025 HCSUA through December 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    snap_utility_allowance:
+      2025-12: 557
+
+- name: Maryland household with heating costs receives the FY2026 HCSUA from January 1, 2026
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 572

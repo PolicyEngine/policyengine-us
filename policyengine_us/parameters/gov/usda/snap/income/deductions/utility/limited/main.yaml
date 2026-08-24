@@ -286,8 +286,8 @@ MA:
   2025-10-01: 556
 MD:
   # Maryland SUA is effective January 1, not the federal fiscal year.
-  # The FNS FY2026 table footnotes Maryland as still effective January 1;
-  # its FY2026 values are approximated at 10/1/2025 for consistency.
+  # The FNS FY2026 table footnotes Maryland as still effective January 1,
+  # so its FY2026 values take effect on 2026-01-01.
   2010-01-01: 0
   2017-10-01: 254
   2018-01-01: 257
@@ -299,7 +299,7 @@ MD:
   2023-01-01: 309
   2024-01-01: 337
   2025-01-01: 341
-  2025-10-01: 350
+  2026-01-01: 350
 ME:
   2010-01-01: 0
   2017-10-01: 229
@@ -450,7 +450,10 @@ NY_NAS:
   2022-10-01: 336
   2023-10-01: 363
   2024-10-01: 378
-  2025-10-01: 419
+  # OTDA GIS 25DC059: the FFY 2026 Level II (limited) allowance for
+  # Nassau/Suffolk is $388; the FNS FY2026 table lists $419, which is
+  # New York City's value.
+  2025-10-01: 388
 NY_NYC:
   2010-01-01: 0
   2017-10-01: 313
@@ -472,7 +475,10 @@ NY_ONY:
   2022-10-01: 335
   2023-10-01: 332
   2024-10-01: 346
-  2025-10-01: 388
+  # OTDA GIS 25DC059: the FFY 2026 Level II (limited) allowance for the
+  # rest of the state is $355; the FNS FY2026 table lists $388, which is
+  # Nassau/Suffolk's value.
+  2025-10-01: 355
 OH:
   2010-01-01: 0
   2017-10-01: 342
@@ -630,7 +636,11 @@ WI:
   2022-10-01: 322
   2023-10-01: 347
   2024-10-01: 375
-  2025-10-01: 436
+  # WI DHS Ops Memo 25-13: FFY 2026 value effective 10/1/2025.
+  2025-10-01: 385
+  # WI DHS Ops Memo 26-22: new FNS-approved SUA values; Ops Memo 26-30
+  # sets the effective date to 2026-05-01.
+  2026-05-01: 436
 WV:
   2010-01-01: 0
   2017-10-01: 287
@@ -670,6 +680,10 @@ metadata:
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
   - title: USDA utility allowances by state spreadsheet (FY2026)
     href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+  - title: Wisconsin DHS Operations Memo 26-30 (revised SUAs effective May 1, 2026)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-30.pdf#page=2
+  - title: New York OTDA GIS 25DC059 Attachment 1 (FFY 2026 SUAs effective October 1, 2025)
+    href: https://www.otda.ny.gov/policy/gis/2025/25DC059-Attachment-1.pdf
   - title: FY 2018 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177
   - title: FY 2019 SNAP QC Technical Documentation, Table F.7
