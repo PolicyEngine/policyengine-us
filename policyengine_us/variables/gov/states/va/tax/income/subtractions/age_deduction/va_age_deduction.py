@@ -38,16 +38,22 @@ class va_age_deduction(Variable):
             int
         ) + spouse_eligible_for_full_deduction.astype(int)
 
-        # Calculate the maximum allowable deduction amount per filing
-        maximum_allowable_deduction = p.amount * count_eligible
+        # Va. Code § 58.1-322.03(5) grants two distinct age deductions:
+        # (a) a fixed amount for filers born on or before the birth-year
+        # limit, which is *not* income-tested; and (b) an income-based amount
+        # for filers born after the limit, reduced dollar-for-dollar by the
+        # amount their adjusted federal AGI exceeds the threshold. The income
+        # test applies only to the (b) amount, so the fixed (a) amount must be
+        # protected from the reduction.
+        fixed_count = count_eligible_for_full_deduction
+        income_based_count = count_eligible - fixed_count
+
+        fixed_deduction = p.amount * fixed_count
+        income_based_maximum = p.amount * income_based_count
 
         # Calculate the amount that the adjusted federal AGI exceeds the threshold
         excess = max_(agi - p.threshold[filing_status], 0)
 
-        # Reduce by the entire excess, unless both head and spouse (or head only if single)
-        # are eligible for the full deduction
-        reduction = excess * where(
-            count_eligible == count_eligible_for_full_deduction, 0, 1
-        )
+        income_based_deduction = max_(income_based_maximum - excess, 0)
 
-        return max_(maximum_allowable_deduction - reduction, 0)
+        return fixed_deduction + income_based_deduction

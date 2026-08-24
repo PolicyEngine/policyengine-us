@@ -1,3 +1,55 @@
+## [1.819.0] - 2026-08-23
+
+### Added
+
+- Gate Head Start and Early Head Start behind gov.simulation.include_head_start_benefits_in_net_income (default false), so per-enrollee program values no longer enter household net income by default, mirroring the health benefits inclusion switch.
+
+
+## [1.818.0] - 2026-08-23
+
+### Added
+
+- Detailed and major industry recode and worked-last-year person input variables from the CPS ASEC work-experience block (WEIND, WEMIND, WORKYN).
+
+
+## [1.817.0] - 2026-08-19
+
+### Added
+
+- Added Medicaid community engagement short-term hardship exceptions for hospitalization or intensive services and long-distance medical travel.
+
+### Fixed
+
+- Fixed the Virginia age deduction so the fixed $12,000 deduction for a filer born on or before January 1, 1939 is no longer reduced by the income-based phase-out that applies only to a spouse born after that date.
+
+
+## [1.816.1] - 2026-08-19
+
+### Changed
+
+- Documented that the SNAP work-registration sanction flag carries no duration logic and that sanctioned members' income is counted in full under 7 CFR 273.11(c)(1).
+
+### Fixed
+
+- Fix the New York real property tax credit (IT-214): apply the $450/month renter cap to the rent itself rather than 25% of rent, and use IT-214 household gross income (which adds nontaxable Social Security and other income to federal AGI) as the income measure through 2024 while keying on federal AGI from 2025 under Part RR of Chapter 59 of the Laws of 2025.
+  Fix the New York real property tax credit excess-rate scale (`excess_real_property_tax`) to a single-amount lookup; it was loaded as a marginal-amount scale and summed the bracket rates, overstating the income threshold.
+  Floor the New York real property tax credit income measure at zero, as Form IT-214 requires (negative federal AGI previously zeroed the credit).
+
+
+## [1.816.0] - 2026-08-19
+
+### Added
+
+- Passive partnership and S-corporation income input, included in the net investment income tax base.
+
+
+## [1.815.1] - 2026-08-18
+
+### Fixed
+
+- Fix the Arkansas additional tax credit for qualified individuals, which was granted to unmarried head-of-household filers by routing them through the married-filing-separately path; only married couples can file separately on the Arkansas return.
+
+
 ## [1.815.0] - 2026-08-18
 
 ### Added

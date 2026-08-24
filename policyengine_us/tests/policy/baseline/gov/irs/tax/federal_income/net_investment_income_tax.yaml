@@ -20,7 +20,7 @@
   output:
     net_investment_income_tax: 0
 
-- name: Rental income just above threshold
+- name: Rental income calculation unchanged when passive income defaults to zero
   period: 2019
   input:
     taxable_interest_income: 0
@@ -32,7 +32,30 @@
   output:
     net_investment_income_tax: 190
 
-- name: Rental income just above threshold
+- name: Passive pass-through and other investment income above threshold
+  period: 2024
+  input:
+    adjusted_gross_income: 230_000
+    taxable_interest_income: 15_000
+    partnership_s_corp_income: 20_000
+    passive_partnership_s_corp_income: 20_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 35_000
+    net_investment_income_tax: 1_140
+
+- name: Passive pass-through income below the AGI threshold
+  period: 2024
+  input:
+    adjusted_gross_income: 199_000
+    partnership_s_corp_income: 50_000
+    passive_partnership_s_corp_income: 50_000
+    filing_status: SINGLE
+  output:
+    net_investment_income: 50_000
+    net_investment_income_tax: 0
+
+- name: Rental income well above threshold
   period: 2019
   input:
     taxable_interest_income: 0

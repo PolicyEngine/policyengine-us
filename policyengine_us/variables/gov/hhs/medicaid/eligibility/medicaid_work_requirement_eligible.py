@@ -85,6 +85,16 @@ class medicaid_work_requirement_eligible(Variable):
         was_recently_incarcerated = person(
             "was_recently_incarcerated_for_medicaid_ce", period
         )
+        # Optional short-term hardship exceptions (42 CFR 435.555(d)(1) and
+        # (d)(4)), elected by the state and requested by the person:
+        # hospitalization / services of similar acuity, and travel outside the
+        # community for medical care. The disaster-declaration and
+        # county-unemployment hardships require external data and are not
+        # modeled here (#8270).
+        is_hospitalized = person("is_hospitalized_for_medicaid_ce", period)
+        has_long_distance_medical_travel = person(
+            "has_long_distance_medical_travel_for_medicaid_ce", period
+        )
         # parent, guardian, caretaker of a dependent child 13 years of age or under  p.694 (III)
         child_age_eligible = age <= p.dependent_age_limit
         has_eligible_dependent_child = person.tax_unit.any(
@@ -105,6 +115,8 @@ class medicaid_work_requirement_eligible(Variable):
             | treatment_program_participant
             | is_incarcerated
             | was_recently_incarcerated
+            | is_hospitalized
+            | has_long_distance_medical_travel
         )
         meets_base_requirement = (
             meets_monthly_activity_hours
