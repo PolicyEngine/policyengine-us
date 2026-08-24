@@ -1,1 +1,0 @@
-Fixed the Arkansas inflation relief income-tax credit for married couples filing combined (status 4), which now uses the per-spouse single-filer table (maximum $150, phased out from $87,000) instead of the joint table (maximum $300, phased out from $174,000) split between spouses.
