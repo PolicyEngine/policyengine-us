@@ -396,3 +396,71 @@
     snap_expected_contribution: 2
     snap_normal_allotment: 783
     snap: 783
+
+# The two cases below pin half-up rounding against round-half-to-even
+# (banker's rounding, np.round's default). At $3.50 both rules give $4, so
+# only an even-dollar .50 boundary that also straddles an expected-
+# contribution band can distinguish them.
+- name: 3-person household, net income $6.50 rounds up to $7 and receives $782
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_586
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 215.50/month; net 6.50 -> 7 (50 cents round up); 30% = 2.10 -> 3.
+    # Round-half-to-even would give 6 -> 30% = 1.80 -> 2 -> $783 instead.
+    snap_net_income: 6.50
+    snap_expected_contribution: 3
+    snap_normal_allotment: 782
+    snap: 782
+
+- name: 3-person household, net income $10.50 rounds up to $11 and receives $781
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_634
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 219.50/month; net 10.50 -> 11 (50 cents round up); 30% = 3.30 -> 4.
+    # Round-half-to-even would give 10 -> 30% = 3.00 exactly -> 3 -> $782.
+    snap_net_income: 10.50
+    snap_expected_contribution: 4
+    snap_normal_allotment: 781
+    snap: 781
