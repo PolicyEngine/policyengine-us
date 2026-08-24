@@ -1,3 +1,17 @@
+## [1.819.0] - 2026-08-23
+
+### Added
+
+- Gate Head Start and Early Head Start behind gov.simulation.include_head_start_benefits_in_net_income (default false), so per-enrollee program values no longer enter household net income by default, mirroring the health benefits inclusion switch.
+
+
+## [1.818.0] - 2026-08-23
+
+### Added
+
+- Detailed and major industry recode and worked-last-year person input variables from the CPS ASEC work-experience block (WEIND, WEMIND, WORKYN).
+
+
 ## [1.817.0] - 2026-08-19
 
 ### Added
