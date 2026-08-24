@@ -200,3 +200,21 @@
     is_in_substance_use_treatment_program: false
   output:
     is_snap_work_registration_exempt_non_age: false
+
+# --- (vii) Working 30 or more hours weekly ---
+
+- name: Case 15, working exactly 30 hours weekly is exempt.
+  period: 2026-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 30
+  output:
+    is_snap_work_registration_exempt_non_age: true
+
+- name: Case 16, working 29 hours weekly is not exempt.
+  period: 2026-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 29
+  output:
+    is_snap_work_registration_exempt_non_age: false

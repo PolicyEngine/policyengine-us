@@ -13,9 +13,6 @@ class is_snap_work_registration_exempt_non_age(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.usda.snap.work_requirements.general
-        # 7 CFR 273.7(b)(1) exemptions not modeled here:
-        # (vii) Working 30+ hours/week or earning federal min wage × 30
-        #       — handled separately in ABAWD work activity check.
         # Age-based exemptions under (b)(1)(i) are handled in the
         # age-based work registration exemption logic.
         # (ii) Physically or mentally unfit for employment
@@ -50,6 +47,13 @@ class is_snap_work_registration_exempt_non_age(Variable):
         # (vi) Regular participant in a drug addiction or alcoholic
         # treatment and rehabilitation program — 7 CFR 273.7(b)(1)(vi).
         in_treatment_program = person("is_in_substance_use_treatment_program", period)
+        # (vii) Employed or self-employed and working at least 30 hours
+        # weekly. The earnings-equivalent prong (weekly earnings of at least
+        # the federal minimum wage multiplied by 30 hours) is not modeled.
+        # Annual average weekly hours are used as a proxy since survey data
+        # lack monthly work histories.
+        weekly_hours_worked = person("weekly_hours_worked_before_lsr", period.this_year)
+        is_working_30_hours = weekly_hours_worked >= p.weekly_hours_threshold
         return (
             is_disabled
             | complying_with_tanf_work_requirements
@@ -59,4 +63,5 @@ class is_snap_work_registration_exempt_non_age(Variable):
             | receiving_ui
             | applied_for_ui
             | in_treatment_program
+            | is_working_30_hours
         )
