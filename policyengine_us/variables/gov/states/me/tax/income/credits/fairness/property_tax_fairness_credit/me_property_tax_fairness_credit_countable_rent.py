@@ -13,22 +13,25 @@ class me_property_tax_fairness_credit_countable_rent(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.fairness.property_tax
         rent = add(tax_unit, period, ["rent"])
+        # utilities_included_in_rent is the generic household boolean, used here
+        # as a narrower-named proxy for Schedule PTFC/STFC line 5b (does rent
+        # paid include heat, utilities, furniture, or similar items?).
         included = tax_unit("utilities_included_in_rent", period)
-        # Dedicated amount of utilities included in rent (Schedule PTFC/STFC
-        # line 5c). This is distinct from the household's general utility_expense
-        # (separately-paid utilities), which is not subtracted from rent here.
-        included_amount = tax_unit("me_ptfc_utilities_included_in_rent", period)
-        # Schedule PTFC/STFC line 5c: when rent includes heat/utilities, exclude
-        # the utility portion before taking 15% of rent. If the included amount
-        # is known (> 0), subtract it; if it is not known (0), subtract the
-        # 15%-of-rent estimate instead. When utilities are not included in rent,
-        # nothing is subtracted.
-        amount_known = included_amount > 0
-        utility_portion = included * where(
-            amount_known,
-            included_amount,
-            rent * p.rate.utilities_included_in_rent,
+        # Line 5c: the amount of heat, utilities, furniture, or similar items
+        # included in rent paid (line 5a). A zero here is a sentinel meaning the
+        # amount is unknown, so we subtract the 15%-of-rent estimate instead of a
+        # known dollar amount. This is distinct from the household's general
+        # utility_expense (separately-paid utilities), which is not subtracted.
+        included_amount = tax_unit(
+            "me_property_tax_fairness_credit_utilities_in_rent_amount", period
         )
-        # Line 5d (5a - 5c) can never be negative.
+        utility_portion = included * where(
+            included_amount > 0,
+            included_amount,
+            rent * p.rate.utilities_share_of_rent,
+        )
+        # Clamp guards inconsistent user input: on the unknown branch the base is
+        # 0.85 * line 5a (always non-negative), and on the known branch line 5c is
+        # a component of line 5a, so a subtraction below zero reflects bad input.
         net_rent = max_(rent - utility_portion, 0)
         return net_rent * p.rate.rent
