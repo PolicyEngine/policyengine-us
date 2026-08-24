@@ -13,12 +13,12 @@ class ny_real_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         rptc = parameters(period).gov.states.ny.tax.income.credits.real_property_tax
 
-        # Age-based eligibility.
+        # Age-based eligibility. The elderly tier (IT-214 line 7) applies if the
+        # filer, spouse, or a claimed dependent is 65 or older.
         person = tax_unit.members
         age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
         aged = age >= rptc.elderly_age
-        meets_age_condition = tax_unit.any(~is_dependent & aged)
+        meets_age_condition = tax_unit.any(aged)
 
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
@@ -39,7 +39,19 @@ class ny_real_property_tax_credit(Variable):
         # IT-214: "Your federal adjusted gross income cannot be an amount less
         # than zero. If the amount is less than zero, enter 0."
         income = max_(income, 0)
-        income_threshold = income * rptc.excess_real_property_tax.calc(income)
+        # IT-214-I "How to fill in Form IT-214": "enter whole dollar amounts
+        # only ... drop amounts below 50 cents and increase amounts from 50 to
+        # 99 cents to the next dollar" - i.e. round half up (np.round would
+        # round half to even).
+        income = np.floor(income + 0.5)
+        # IT-214's rate and amount tables use closed integer bands ($0-3,000,
+        # then 3,001-5,000, ...), so a value exactly at a band top stays in
+        # that band: calc(..., right=True) over band-top thresholds, with a
+        # -.inf first threshold so an income of exactly $0 lands inside the
+        # first band rather than below the scale.
+        income_threshold = income * rptc.excess_real_property_tax.calc(
+            income, right=True
+        )
         excess_rpt = max_(0, real_estate_tax_or_equiv - income_threshold)
 
         # Means-tested conditions. The renter cap (IT-214 line 21) applies to
@@ -58,10 +70,24 @@ class ny_real_property_tax_credit(Variable):
 
         eligible = meets_value_conditions & meets_income_condition
 
+        # From 2025 (Part RR of Chapter 59 of the Laws of 2025) the credit is a
+        # flat amount looked up by federal AGI bracket, allowed only when the
+        # property-tax measure exceeds the FAGI-based threshold (IT-214 line 19
+        # gate). Through 2024 the credit is 50% of excess, capped by the maximum
+        # chart.
+        if rptc.uses_flat_amount_table:
+            flat_amount = where(
+                meets_age_condition,
+                rptc.amount.elderly.calc(income, right=True),
+                rptc.amount.non_elderly.calc(income, right=True),
+            )
+            gate = excess_rpt > 0
+            return where(eligible & gate, flat_amount, 0)
+
         maximum_credit = where(
             meets_age_condition,
-            rptc.maximum.elderly.calc(income),
-            rptc.maximum.non_elderly.calc(income),
+            rptc.maximum.elderly.calc(income, right=True),
+            rptc.maximum.non_elderly.calc(income, right=True),
         )
 
         credit_amount = rptc.rate * excess_rpt
