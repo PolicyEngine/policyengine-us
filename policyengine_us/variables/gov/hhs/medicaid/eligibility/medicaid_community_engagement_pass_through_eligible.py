@@ -17,11 +17,12 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
         "exemptions OR the ABAWD time-limit exemption set (is_snap_abawd_exempt), "
         "so post-HR1 adults aged 60-64 who are exempt from the general work "
         "requirement but subject to the ABAWD requirement are captured. The "
-        "7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more hours "
-        "weekly is not netted out."
+        "7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more "
+        "hours weekly is included in the registration-exempt set, so such "
+        "workers do not pass through on either prong."
     )
     reference = (
-        "https://www.congress.gov/bill/119th-congress/house-bill/1/text",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=236",
         "https://www.medicaid.gov/federal-policy-guidance/downloads/cib12082025.pdf#page=6",
         "https://www.federalregister.gov/documents/2026/06/03/2026-11094/medicaid-program-community-engagement-requirement-for-certain-individuals",
         "https://www.ecfr.gov/current/title-42/part-435/section-435.554#p-435.554(c)(7)",

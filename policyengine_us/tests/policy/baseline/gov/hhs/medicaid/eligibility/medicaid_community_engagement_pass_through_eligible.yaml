@@ -4,7 +4,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -41,7 +41,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -78,7 +78,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
       person2:
         age: 10
         is_tax_unit_dependent: true
@@ -108,7 +108,7 @@
     people:
       person1:
         age: 15
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -126,7 +126,7 @@
     people:
       person1:
         age: 16
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -144,7 +144,7 @@
     people:
       person1:
         age: 59
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -162,7 +162,7 @@
     people:
       person1:
         age: 60
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -269,7 +269,7 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -292,7 +292,7 @@
     people:
       person1:
         age: 60
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -310,7 +310,7 @@
     people:
       person1:
         age: 64
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -328,7 +328,7 @@
     people:
       person1:
         age: 65
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
     spm_units:
       spm_unit:
         members: [person1]
@@ -350,7 +350,7 @@
     people:
       parent:
         age: 62
-        weekly_hours_worked_before_lsr: 35
+        weekly_hours_worked_before_lsr: 15
       child:
         age: 10
         is_tax_unit_dependent: true
@@ -367,3 +367,69 @@
         state_code: TX
   output:
     medicaid_community_engagement_pass_through_eligible: [false, false]
+
+# A person working 30 or more hours weekly is exempt from SNAP work
+# registration under 7 CFR 273.7(b)(1)(vii) and therefore also exempt from
+# the ABAWD time limit under 7 U.S.C. 2015(o)(3)(D), so they are not
+# subject to either SNAP work requirement and do not pass through.
+- name: Case 18, working 30 or more hours weekly is exempt from both SNAP work requirements and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# Guards the ABAWD prong against over-capture: a 60-64-year-old who is
+# ABAWD-exempt for a non-age reason (pregnancy, 7 U.S.C. 2015(o)(3)(E)) is
+# exempt from both requirements and does not pass through.
+- name: Case 19, post-HR1 age 62 who is pregnant is ABAWD-exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+        is_pregnant: true
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# California delays HR1 ABAWD adoption until 2026-06-01, so in early 2026
+# pre-HR1 rules still apply there: age 62 is above the pre-HR1 ABAWD age
+# range (55+ exempt) and above the general age threshold (60+), so the
+# same person who passes through in Texas (Case 14/15) does not in CA.
+- name: Case 20, age 62 in California before its delayed HR1 adoption does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    medicaid_community_engagement_pass_through_eligible: false

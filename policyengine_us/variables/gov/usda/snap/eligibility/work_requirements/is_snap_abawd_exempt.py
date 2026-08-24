@@ -21,7 +21,8 @@ class is_snap_abawd_exempt(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
-        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+        "https://www.law.cornell.edu/uscode/text/7/2015#o",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=11",
     )
 
     def formula(person, period, parameters):
@@ -39,7 +40,9 @@ class is_snap_abawd_exempt(Variable):
         )
         # (B) Disability — 7 U.S.C. 2015(o)(3)(B)
         is_disabled = person("is_disabled", period)
-        # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D)
+        # (D) Work registration exempt (non-age) — 7 U.S.C. 2015(o)(3)(D),
+        # including the 7 CFR 273.7(b)(1)(vii) exemption for people working
+        # 30 or more hours weekly.
         work_reg_exempt = person("is_snap_work_registration_exempt_non_age", period)
         # (E) Pregnant — 7 U.S.C. 2015(o)(3)(E)
         is_pregnant = person("is_pregnant", period)

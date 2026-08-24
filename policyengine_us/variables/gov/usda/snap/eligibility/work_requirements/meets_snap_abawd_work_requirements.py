@@ -25,7 +25,7 @@ class meets_snap_abawd_work_requirements(Variable):
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.24",
-        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=81",
+        "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=11",
     )
 
     def formula(person, period, parameters):
