@@ -155,6 +155,14 @@
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
     nd_income_tax_before_credits: 3_909.325
 
+# TY2026 boundary cases, one pair per filing status, at and $1 above each of the
+# two bracket thresholds (ND-1ES 2026 p.2). Expected values are hand calculated to
+# avoid whole-dollar rounding, matching this file's existing convention:
+#   at the zero-rate threshold        -> 0 (the first bracket is taxed at 0%)
+#   $1 above it                       -> $1 x 1.95% = 0.0195
+#   at the top-rate threshold         -> (top threshold - zero-rate threshold) x 1.95%
+#   $1 above it                       -> the same base amount + $1 x 2.50%
+# The base amounts reproduce the "your tax is" column printed on the form.
 - name: 2026 single filer at the zero-rate threshold
   period: 2026
   input:
@@ -171,7 +179,7 @@
     nd_taxable_income: 49_576
     state_code: ND
   output:
-    nd_income_tax_before_credits: 0.0195
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
 
 - name: 2026 single filer at the top-rate threshold
   period: 2026
@@ -207,7 +215,7 @@
     nd_taxable_income: 82_801
     state_code: ND
   output:
-    nd_income_tax_before_credits: 0.0195
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
 
 - name: 2026 joint filer at the top-rate threshold
   period: 2026
@@ -243,7 +251,7 @@
     nd_taxable_income: 82_801
     state_code: ND
   output:
-    nd_income_tax_before_credits: 0.0195
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
 
 - name: 2026 surviving spouse at the top-rate threshold
   period: 2026
@@ -279,7 +287,7 @@
     nd_taxable_income: 41_401
     state_code: ND
   output:
-    nd_income_tax_before_credits: 0.0195
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
 
 - name: 2026 separate filer at the top-rate threshold
   period: 2026
@@ -315,7 +323,7 @@
     nd_taxable_income: 66_401
     state_code: ND
   output:
-    nd_income_tax_before_credits: 0.0195
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
 
 - name: 2026 head-of-household filer at the top-rate threshold
   period: 2026
