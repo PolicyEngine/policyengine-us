@@ -1,3 +1,10 @@
+## [1.821.2] - 2026-08-25
+
+### Fixed
+
+- Correct FY2026 SNAP utility allowances against the official FNS table and state issuances: Wisconsin all standards (with the May 1, 2026 mid-year revision), Idaho LUA and single standards, New York LUA values, Maine phone standard ($114 per SNAP Rule #244), Maryland's January 1, 2026 effective date, and one-dollar corrections in AL, MO, SD, NV, MD, VA, and NC.
+
+
 ## [1.821.1] - 2026-08-25
 
 ### Fixed
