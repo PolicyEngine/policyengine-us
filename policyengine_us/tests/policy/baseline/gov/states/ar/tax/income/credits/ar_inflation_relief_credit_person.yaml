@@ -38,7 +38,7 @@
   output:
     ar_inflation_relief_credit_person: 20
 
-- name: Single household with $100,000 taxable income
+- name: Separate couple with $10,000 and $90,000 individual taxable income
   period: 2022
   input:
     people:
@@ -58,26 +58,24 @@
   output:
     ar_inflation_relief_credit_person: [150, 120]
 
-- name: HoH household with $98,200 taxable income
+- name: Single-adult HoH household with $98,200 taxable income
   period: 2022
   input:
     people:
       person1:
         ar_taxable_income_indiv: 0
         ar_net_taxable_income_joint: 98_200
-      person2:
-        ar_taxable_income_indiv: 0
-        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         ar_files_separately: false
         filing_status: HEAD_OF_HOUSEHOLD
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: AR
   output:
+    # $150 - ceil((98,200 - 87,000) / 1,000) * $10 = $150 - 12 * $10 = $30
     ar_inflation_relief_credit_person: 30
 
 - name: Joint household with $175,000 taxable income
@@ -102,26 +100,24 @@
   output:
     ar_inflation_relief_credit_person: [140, 140]
 
-- name: Surviving spouse household with $80,000 taxable income
+- name: Single-adult surviving spouse household with $80,000 taxable income
   period: 2022
   input:
     people:
       person1:
         ar_taxable_income_indiv: 0
         ar_net_taxable_income_joint: 80_000
-      person2:
-        ar_taxable_income_indiv: 0
-        ar_net_taxable_income_joint: 0
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         ar_files_separately: false
         filing_status: SURVIVING_SPOUSE
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: AR
   output:
+    # $80,000 < $87,000 start -> full $150 max
     ar_inflation_relief_credit_person: 150
 
 - name: Joint household with a dependent child does not credit the dependent
@@ -199,3 +195,258 @@
         state_code: AR
   output:
     ar_inflation_relief_credit_person: [0, 0]
+
+# 2023 coverage: locks the corrected 2023 max ($150 single-type / $300 joint)
+# and phase-out starts ($89,600 single-type / $179,200 joint).
+- name: Case 1, 2023 single filer at the phase-out start receives the full max.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 89_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $89,600 = start -> excess $0 -> full $150 max.
+    ar_inflation_relief_credit_person: 150
+  absolute_error_margin: 0.01
+
+- name: Case 2, 2023 single filer mid phase-out is partially reduced.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 96_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $150 - ceil((96,600 - 89,600) / 1,000) * $10 = $150 - 7 * $10 = $80.
+    ar_inflation_relief_credit_person: 80
+  absolute_error_margin: 0.01
+
+- name: Case 3, 2023 single filer above the phase-out end receives nothing.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 103_601
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $150 - ceil((103,601 - 89,600) / 1,000) * $10 = $150 - 15 * $10 = $0.
+    ar_inflation_relief_credit_person: 0
+  absolute_error_margin: 0.01
+
+- name: Case 4, 2023 joint filers at the phase-out start receive the full max.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 179_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # $179,200 = joint start -> full $300 max split in half -> $150 per spouse.
+    # Fails if the JOINT 2023 start row is missing (would inherit $174,000).
+    ar_inflation_relief_credit_person: [150, 150]
+  absolute_error_margin: 0.01
+
+- name: Case 5, 2023 joint filers above the phase-out end receive nothing.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 207_201
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # $300 - ceil((207,201 - 179,200) / 2,000) * $20 = $300 - 15 * $20 = $0.
+    ar_inflation_relief_credit_person: [0, 0]
+  absolute_error_margin: 0.01
+
+# 2024 coverage: locks the credit sunset (max_amount = 0 from 2024).
+- name: Case 6, 2024 single filer receives no credit after the sunset.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # Credit sunset after TY2023 -> $0 max -> no credit in 2024.
+    ar_inflation_relief_credit_person: 0
+  absolute_error_margin: 0.01
+
+- name: Case 7, 2023 single filer at the last dollar with a positive credit.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 103_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        ar_files_separately: false
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AR
+  output:
+    # $150 - ceil((103,600 - 89,600) / 1,000) * $10 = $150 - 14 * $10 = $10.
+    # Pins the ceil zero-crossing: $103,600 -> $10, $103,601 -> $0 (Case 3).
+    ar_inflation_relief_credit_person: 10
+  absolute_error_margin: 0.01
+
+- name: Case 8, 2023 joint filers mid phase-out are partially reduced.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 185_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # $300 - ceil((185,200 - 179,200) / 2,000) * $20 = $300 - 3 * $20 = $240,
+    # split in half -> $120 per spouse. Exercises the joint phase-out slope.
+    ar_inflation_relief_credit_person: [120, 120]
+  absolute_error_margin: 0.01
+
+- name: Case 9, 2023 joint filers at the last dollar with a positive credit.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 207_200
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # $300 - ceil((207,200 - 179,200) / 2,000) * $20 = $300 - 14 * $20 = $20,
+    # split in half -> $10 per spouse ($207,201 -> $0 in Case 5).
+    ar_inflation_relief_credit_person: [10, 10]
+  absolute_error_margin: 0.01
+
+- name: Case 10, 2023 separate filers each use the single-type table on own income.
+  period: 2023
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 89_600
+      person2:
+        ar_taxable_income_indiv: 95_600
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # SEPARATE uses the single-type 2023 table per person on individual income:
+    # person1 $89,600 = start -> $150; person2 $150 - ceil(6,000 / 1,000) * $10 = $90.
+    ar_inflation_relief_credit_person: [150, 90]
+  absolute_error_margin: 0.01
+
+- name: Case 11, 2024 joint filers receive no credit after the sunset.
+  period: 2024
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 150_000
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # Credit sunset after TY2023 -> $0 max for every status -> $0 per spouse.
+    ar_inflation_relief_credit_person: [0, 0]
+  absolute_error_margin: 0.01

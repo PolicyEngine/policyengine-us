@@ -1,0 +1,1 @@
+Corrected the Arkansas inflation relief credit's 2023 maximums ($150/$300, not $50/$100) and restored the missing 2023 joint phase-out start, sunset the parameters to $0 from 2024, and refreshed the dead DFA worksheet reference URLs.
