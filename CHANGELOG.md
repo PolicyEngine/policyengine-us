@@ -1,3 +1,10 @@
+## [1.820.3] - 2026-08-25
+
+### Fixed
+
+- Filter the SNAP individual utility allowance to the utility expenses the household actually incurs, restoring the fix from #3867 that was reverted during the #3903 decomposition.
+
+
 ## [1.820.2] - 2026-08-24
 
 ### Fixed
