@@ -1,3 +1,10 @@
+## [1.821.0] - 2026-08-25
+
+### Added
+
+- Implemented the Schedule PTFC/STFC line 5c rule for the Maine property tax fairness credit: when rent paid (Schedule PTFC/STFC line 5a) includes heat, utilities, furniture, or similar items and the amount is not known, exclude 15% of rent paid before computing rent constituting property taxes.
+
+
 ## [1.820.3] - 2026-08-25
 
 ### Fixed
