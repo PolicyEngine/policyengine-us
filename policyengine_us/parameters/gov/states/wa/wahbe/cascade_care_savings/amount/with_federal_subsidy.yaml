@@ -1,0 +1,19 @@
+description: Washington provides this monthly amount per member with federal subsidies under the Cascade Care Savings program.
+values:
+  # Group 1: enrollees receiving federal subsidies (Advance Premium Tax Credit).
+  # PY2026 maximum per-member per-month (PMPM) assistance is $55 (down from $155
+  # in PY2025). There is NO age split; the survey figure of "$30 per child" was
+  # incorrect. Amount set annually by the WAHBE Board within the appropriation.
+  2026-01-01: 55
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Washington Cascade Care Savings monthly amount per member with federal subsidies
+  reference:
+    - title: WAHBE Plan Year 2026 Final PMPM Methodology (customers with federal subsidies $55 PMPM)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=1
+    - title: WAHBE Plan Year 2026 Final PMPM Methodology (2025-vs-2026 amount exhibit)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-PMPM-Methodology.pdf#page=7
+    - title: WAHBE Plan Year 2026 Final Cascade Care Savings Policy, Section 5(1)(b)-(c)
+      href: https://www.wahbexchange.org/content/dam/wahbe-assets/board/2025/PY2026-Final-CCS-Policy.pdf#page=11

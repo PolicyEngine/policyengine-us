@@ -1,0 +1,491 @@
+description: Nebraska sets these maximum daily reimbursement rates for licensed providers under the Child Care Subsidy program, by location, provider type, child age group, quality tier, and authorized unit.
+metadata:
+  unit: currency-USD
+  period: day
+  label: Nebraska Child Care Subsidy licensed provider rates
+  breakdown:
+    - [URBAN, RURAL]
+    - [HOME_I_II, CENTER]
+    - [INFANT, TODDLER, PRESCHOOL, SCHOOL_AGE]
+    - [BASE, ACCREDITED_STEP_3, STEP_4, STEP_5]
+    - [PARTIAL_DAY, FULL_DAY, FULL_PLUS_PARTIAL]
+  reference:
+    - title: Nebraska 2025-2027 Child Care Subsidy Rates
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf
+    - title: Neb. Rev. Stat. § 68-1206(3)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+    - title: LB304 (2026), Section 1
+      href: https://nebraskalegislature.gov/FloorDocs/109/PDF/Slip/LB304.pdf#page=2
+
+# Nebraska bills 10 through 18 hours as one full-day unit plus one partial-day
+# unit. Each FULL_PLUS_PARTIAL value is the exact sum of the two chart amounts.
+URBAN:
+  HOME_I_II:
+    INFANT:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 35.3
+        FULL_DAY:
+          2025-10-01: 42
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 77.3
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 37.1
+        FULL_DAY:
+          2025-10-01: 44.1
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 81.2
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 39
+        FULL_DAY:
+          2025-10-01: 46.35
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 85.35
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 40.95
+        FULL_DAY:
+          2025-10-01: 48.7
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 89.65
+    TODDLER:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 35
+        FULL_DAY:
+          2025-10-01: 40
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 75
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 36.75
+        FULL_DAY:
+          2025-10-01: 42
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 78.75
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 38.6
+        FULL_DAY:
+          2025-10-01: 44.1
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 82.7
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 40.55
+        FULL_DAY:
+          2025-10-01: 46.35
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 86.9
+    PRESCHOOL:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 34.95
+        FULL_DAY:
+          2025-10-01: 40
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 74.95
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 36.7
+        FULL_DAY:
+          2025-10-01: 42
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 78.7
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 38.55
+        FULL_DAY:
+          2025-10-01: 44.1
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 82.65
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 40.5
+        FULL_DAY:
+          2025-10-01: 46.35
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 86.85
+    SCHOOL_AGE:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 35
+        FULL_DAY:
+          2025-10-01: 37
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 72
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 36.75
+        FULL_DAY:
+          2025-10-01: 38.85
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 75.6
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 38.6
+        FULL_DAY:
+          2025-10-01: 40.8
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 79.4
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 40.55
+        FULL_DAY:
+          2025-10-01: 42.85
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 83.4
+  CENTER:
+    INFANT:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 60
+        FULL_DAY:
+          2025-10-01: 66.35
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 126.35
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 63
+        FULL_DAY:
+          2025-10-01: 69.7
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 132.7
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 66.15
+        FULL_DAY:
+          2025-10-01: 73.2
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 139.35
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 69.5
+        FULL_DAY:
+          2025-10-01: 76.9
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 146.4
+    TODDLER:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 47.15
+        FULL_DAY:
+          2025-10-01: 60.55
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 107.7
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 49.55
+        FULL_DAY:
+          2025-10-01: 63.6
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 113.15
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 52.05
+        FULL_DAY:
+          2025-10-01: 66.8
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 118.85
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 54.7
+        FULL_DAY:
+          2025-10-01: 70.15
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 124.85
+    PRESCHOOL:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 41
+        FULL_DAY:
+          2025-10-01: 55
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 96
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 43.05
+        FULL_DAY:
+          2025-10-01: 57.75
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 100.8
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 45.25
+        FULL_DAY:
+          2025-10-01: 60.65
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 105.9
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 47.55
+        FULL_DAY:
+          2025-10-01: 63.7
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 111.25
+    SCHOOL_AGE:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 36.25
+        FULL_DAY:
+          2025-10-01: 47.5
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 83.75
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 38.1
+        FULL_DAY:
+          2025-10-01: 49.9
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 88
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 40.05
+        FULL_DAY:
+          2025-10-01: 52.4
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 92.45
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 42.1
+        FULL_DAY:
+          2025-10-01: 55.05
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 97.15
+RURAL:
+  HOME_I_II:
+    INFANT:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 30.15
+        FULL_DAY:
+          2025-10-01: 35
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 65.15
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 31.7
+        FULL_DAY:
+          2025-10-01: 36.75
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 68.45
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 33.3
+        FULL_DAY:
+          2025-10-01: 38.6
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 71.9
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 35
+        FULL_DAY:
+          2025-10-01: 40.55
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 75.55
+    TODDLER:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 30
+        FULL_DAY:
+          2025-10-01: 33
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 63
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 31.5
+        FULL_DAY:
+          2025-10-01: 34.65
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 66.15
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 33.1
+        FULL_DAY:
+          2025-10-01: 36.4
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 69.5
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 34.8
+        FULL_DAY:
+          2025-10-01: 38.25
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 73.05
+    PRESCHOOL:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 30
+        FULL_DAY:
+          2025-10-01: 33
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 63
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 31.5
+        FULL_DAY:
+          2025-10-01: 34.65
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 66.15
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 33.1
+        FULL_DAY:
+          2025-10-01: 36.4
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 69.5
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 34.8
+        FULL_DAY:
+          2025-10-01: 38.25
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 73.05
+    SCHOOL_AGE:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 30
+        FULL_DAY:
+          2025-10-01: 32
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 62
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 31.5
+        FULL_DAY:
+          2025-10-01: 33.6
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 65.1
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 33.1
+        FULL_DAY:
+          2025-10-01: 35.3
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 68.4
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 34.8
+        FULL_DAY:
+          2025-10-01: 37.1
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 71.9
+  CENTER:
+    INFANT:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 39.45
+        FULL_DAY:
+          2025-10-01: 45.5
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 84.95
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 41.45
+        FULL_DAY:
+          2025-10-01: 47.8
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 89.25
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 43.55
+        FULL_DAY:
+          2025-10-01: 50.2
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 93.75
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 45.75
+        FULL_DAY:
+          2025-10-01: 52.75
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 98.5
+    TODDLER:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 37
+        FULL_DAY:
+          2025-10-01: 41
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 78
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 38.85
+        FULL_DAY:
+          2025-10-01: 43.05
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 81.9
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 40.8
+        FULL_DAY:
+          2025-10-01: 45.25
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 86.05
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 42.85
+        FULL_DAY:
+          2025-10-01: 47.55
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 90.4
+    PRESCHOOL:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 39
+        FULL_DAY:
+          2025-10-01: 39
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 78
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 40.95
+        FULL_DAY:
+          2025-10-01: 40.95
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 81.9
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 43
+        FULL_DAY:
+          2025-10-01: 43
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 86
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 45.15
+        FULL_DAY:
+          2025-10-01: 45.15
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 90.3
+    SCHOOL_AGE:
+      BASE:
+        PARTIAL_DAY:
+          2025-10-01: 37
+        FULL_DAY:
+          2025-10-01: 37
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 74
+      ACCREDITED_STEP_3:
+        PARTIAL_DAY:
+          2025-10-01: 38.85
+        FULL_DAY:
+          2025-10-01: 38.85
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 77.7
+      STEP_4:
+        PARTIAL_DAY:
+          2025-10-01: 40.8
+        FULL_DAY:
+          2025-10-01: 40.8
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 81.6
+      STEP_5:
+        PARTIAL_DAY:
+          2025-10-01: 42.85
+        FULL_DAY:
+          2025-10-01: 42.85
+        FULL_PLUS_PARTIAL:
+          2025-10-01: 85.7

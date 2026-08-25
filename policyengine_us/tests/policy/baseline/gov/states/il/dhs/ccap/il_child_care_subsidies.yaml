@@ -1,0 +1,48 @@
+- name: Case 1, Illinois annual subsidy flows through the state and federal aggregators.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap: 1_200
+    state_code: IL
+  output:
+    il_child_care_subsidies: 1_200
+    child_care_subsidies: 1_200
+
+- name: Case 2, the annual aggregate sums twelve monthly payments that change at the July re-base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # Licensed center Group 1A under-two full-day cap is 67 * 20 = $1,340 in
+    # both charts. Family-size-two Table A copay at $2,000 a month is $39 under
+    # the 2025 chart (January-June) and $40 under the 2026 chart (July-December).
+    il_ccap:
+      2026-06: 1_301
+      2026-07: 1_300
+    # 6 * $1,301 + 6 * $1,300.
+    il_child_care_subsidies: 15_606
+    child_care_subsidies: 15_606

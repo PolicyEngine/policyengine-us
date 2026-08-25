@@ -7,9 +7,7 @@ class ma_scb_total_income(Variable):
     label = "Total income for the MA Senior Circuit Breaker"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
-    )
+    reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6"  # Subsection (k)(1)
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):

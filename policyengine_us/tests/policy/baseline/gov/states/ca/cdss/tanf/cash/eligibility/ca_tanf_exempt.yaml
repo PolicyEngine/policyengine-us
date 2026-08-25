@@ -1,0 +1,37 @@
+# Unit tests for ca_tanf_exempt
+# California grants the exempt maximum aid payment to assistance units with a
+# member participating in SSI, IHSS, SDI, or workers' compensation.
+
+- name: Assistance unit with a member receiving SSI is exempt.
+  period: 2025
+  input:
+    state_code: CA
+    ssi: 1_000
+    ca_in_home_supportive_services: 0
+    ca_state_disability_insurance: 0
+    workers_compensation: 0
+  output:
+    ca_tanf_exempt: true
+
+- name: Assistance unit reporting SSI receipt with a zero modeled payment is exempt.
+  period: 2025
+  input:
+    state_code: CA
+    ssi: 0
+    receives_ssi: true
+    ca_in_home_supportive_services: 0
+    ca_state_disability_insurance: 0
+    workers_compensation: 0
+  output:
+    ca_tanf_exempt: true
+
+- name: Assistance unit in none of the exempt programs is not exempt.
+  period: 2025
+  input:
+    state_code: CA
+    ssi: 0
+    ca_in_home_supportive_services: 0
+    ca_state_disability_insurance: 0
+    workers_compensation: 0
+  output:
+    ca_tanf_exempt: false

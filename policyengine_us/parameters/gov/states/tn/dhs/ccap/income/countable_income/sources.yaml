@@ -1,0 +1,18 @@
+description: Tennessee counts these income sources under the Child Care Certificate Program.
+# The Section 2.2.4 checklist counts gross wages or salary; self-employment
+# is a qualifying employment activity under Section 2.2.2.a.ii, so its
+# earnings are counted as gross wages.
+values:
+  2024-06-01:
+    - employment_income
+    - self_employment_income
+
+metadata:
+  unit: list
+  period: year
+  label: Tennessee CCAP countable income sources
+  reference:
+    - title: Tennessee CCDF State Plan FFY 2025-2027, Section 2.2.4(c) - income definition checklist (gross wages or salary)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=30
+    - title: Tennessee CCDF State Plan FFY 2025-2027, Section 2.2.2.a.ii - self-employment as a qualifying work activity
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=26

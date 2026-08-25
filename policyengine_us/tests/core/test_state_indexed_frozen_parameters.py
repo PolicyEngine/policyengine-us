@@ -120,6 +120,19 @@ def test_ri_2026_standard_deduction(status, value):
     assert amount[status] == value
 
 
+def test_ri_2026_income_tax_parameters():
+    p = _p("2026-01-01").gov.states.ri.tax.income
+    rates = SYSTEM.parameters.gov.states.ri.tax.income.rate
+
+    assert rates.brackets[1].threshold("2026-01-01") == 82_050
+    assert rates.brackets[2].threshold("2026-01-01") == 186_450
+    assert p.exemption.amount == 5_250
+    assert p.exemption.reduction.start == 261_000
+    assert p.exemption.reduction.increment == 7_450
+    assert p.deductions.standard.phase_out.start == 261_000
+    assert p.deductions.standard.phase_out.increment == 7_450
+
+
 # --- North Dakota: 2026 indexed rate-schedule thresholds (N.D.C.C. 57-38-30.3)
 # brackets[1] = 1.95% start, brackets[2] = 2.5% start.
 ND_2026 = {

@@ -1,0 +1,276 @@
+# tn_ccap_income_eligible: SPMUnit, bool, MONTH
+# Countable monthly income <= monthly SMI * rate.
+#   Initial (new applicant): 85% SMI.
+#   Enrolled at redetermination: 85% SMI, or 100% SMI from 2025-10-01 (Smart Steps Plus).
+# All cases below use a family of 4 (spm_unit_size = 4).
+#   2026-01 FFY (amount 102_735): monthly SMI = 8_561.25; 85% = 7_277.06; 100% = 8_561.25.
+#     (Oct 1 2025 chart HH4: 85% band top 7_277, 100% band top 8_561.)
+#   2025-01 FFY (amount 98_377): monthly SMI = 8_198.08; 85% = 6_968.37.
+# Boolean output, so no error margin.
+
+- name: Case 1, initial applicant well below 85% SMI is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 60_000 / 12 = 5_000/mo <= 7_277.06 -> eligible
+    tn_ccap_income_eligible: true
+
+- name: Case 2, initial applicant at the 85% SMI band top is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 87_324
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 87_324 / 12 = 7_277.00/mo <= 7_277.06 (85% SMI) -> eligible (inclusive limit)
+    tn_ccap_income_eligible: true
+
+- name: Case 3, initial applicant just above 85% SMI is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 87_336
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 87_336 / 12 = 7_278.00/mo > 7_277.06 (85% SMI) -> ineligible
+    tn_ccap_income_eligible: false
+
+- name: Case 4, enrolled family between 85% and 100% SMI is eligible (Smart Steps Plus).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tn_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 100_000 / 12 = 8_333.33/mo; enrolled limit = 100% SMI = 8_561.25
+    # 8_333.33 <= 8_561.25 -> eligible
+    tn_ccap_income_eligible: true
+
+- name: Case 5, same income but not enrolled is ineligible (initial 85% limit).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 8_333.33/mo > 7_277.06 (85% SMI) -> ineligible for a new applicant
+    tn_ccap_income_eligible: false
+
+- name: Case 6, enrolled family above 100% SMI is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 108_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tn_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 108_000 / 12 = 9_000/mo > 8_561.25 (100% SMI) -> ineligible
+    tn_ccap_income_eligible: false
+
+- name: Case 7, zero income is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 0 <= 7_277.06 -> eligible
+    tn_ccap_income_eligible: true
+
+- name: Case 8, enrolled family above 85% SMI before Smart Steps Plus is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 90_000
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tn_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 2025-01: enrolled limit is still 85% SMI (Smart Steps Plus starts 2025-10-01)
+    # 90_000 / 12 = 7_500/mo > 6_968.37 (85% SMI) -> ineligible
+    tn_ccap_income_eligible: false
+
+# ---- Edge cases ----
+
+- name: Case 9, enrolled family just below 100% SMI is eligible (Smart Steps Plus ceiling).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 102_720
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tn_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 102_720 / 12 = 8_560.00/mo <= 8_561.25 (100% SMI) -> eligible (just below the ceiling)
+    tn_ccap_income_eligible: true
+
+- name: Case 10, enrolled family just above 100% SMI is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 102_744
+      person2:
+        age: 32
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        tn_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TN
+  output:
+    # 102_744 / 12 = 8_562.00/mo > 8_561.25 (100% SMI) -> ineligible (just above the ceiling)
+    tn_ccap_income_eligible: false
+
+- name: Case 11, single-person unit (minimum family size) below 85% SMI is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # Size 1 monthly SMI = 102_735 * 0.52 / 12 = 4_451.85; 85% = 3_784.07
+    # 40_000 / 12 = 3_333.33/mo <= 3_784.07 -> eligible (degenerate minimum size)
+    tn_ccap_income_eligible: true

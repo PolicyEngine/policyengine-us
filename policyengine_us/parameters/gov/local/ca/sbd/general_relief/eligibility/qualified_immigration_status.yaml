@@ -1,0 +1,34 @@
+description: San Bernardino County considers people with these immigration statuses as qualified for the General Relief program.
+values:
+  # GRPHB Handbook Letter #7358 (May 2021), Citizenship/Alienage: only
+  # U.S. citizens and legal permanent residents qualify.
+  2021-06-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+  # The GR 101 brochure broadens the rule to "other non-citizen authorized
+  # to live in the United States" without enumerating statuses; this is
+  # mapped to the same noncitizen statuses the model applies for CalWORKs
+  # (gov.states.ca.cdss.tanf.cash.immigration_status.eligible_statuses), a
+  # conservative reading that keeps the two county-administered programs
+  # consistent and excludes lawfully present but non-qualified statuses
+  # such as DACA and TPS. The county does not publish the exact transition
+  # date; the May 2022 brochure is the earliest evidence of the broader
+  # wording.
+  2022-05-01:
+    - CITIZEN
+    - LEGAL_PERMANENT_RESIDENT
+    - REFUGEE
+    - ASYLEE
+    - PAROLED_ONE_YEAR
+
+metadata:
+  unit: list
+  period: year
+  label: San Bernardino County General Relief qualified immigration statuses
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-2 (Citizenship/Alienage, citizen and legal-permanent-resident rule)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx
+    - title: San Bernardino County Transitional Assistance Department, General Relief 101 brochure (May 2022, earliest broader non-citizen wording)
+      href: https://wp.sbcounty.gov/tad/wp-content/uploads/sites/25/2022/06/gr000101.pdf#page=2
+    - title: San Bernardino County Transitional Assistance Department, General Relief 101 brochure (June 2025)
+      href: https://wp.sbcounty.gov/tad/wp-content/uploads/sites/25/2025/06/gr000101-4.pdf#page=2

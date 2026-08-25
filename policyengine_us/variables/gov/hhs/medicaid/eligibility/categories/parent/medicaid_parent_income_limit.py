@@ -17,10 +17,15 @@ class medicaid_parent_income_limit(Variable):
         va_lifc = parameters(period).gov.states.va.dmas.medicaid.lifc
         state = person.household("state_code_str", period)
         state_code = person.household("state_code", period)
+        national_limit = p.income_limit[state]
         if va_lifc.in_effect:
-            return where(
+            national_limit = where(
                 state_code == StateCode.VA,
                 person("va_medicaid_lifc_income_limit", period),
-                p.income_limit[state],
+                national_limit,
             )
-        return p.income_limit[state]
+        return where(
+            state_code == StateCode.MO,
+            person("mo_mhf_parent_income_limit", period),
+            national_limit,
+        )

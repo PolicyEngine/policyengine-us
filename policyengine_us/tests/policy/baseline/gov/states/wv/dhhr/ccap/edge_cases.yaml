@@ -16,6 +16,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -47,6 +48,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # 185% FPL family of 2 = $39,127.50/yr
         employment_income: 39_000
         immigration_status: CITIZEN
@@ -79,6 +81,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # Just above 185% FPL family of 2 ($39,127.50/yr)
         employment_income: 39_200
         immigration_status: CITIZEN
@@ -115,6 +118,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # 185% FPL family of 3 = $49,302.50/yr
         employment_income: 48_000
         immigration_status: CITIZEN
@@ -146,6 +150,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 60_000
         immigration_status: CITIZEN
       person2:
@@ -172,6 +177,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # Just above 185% FPL family of 3 ($49,302.50/yr)
         employment_income: 50_000
         immigration_status: CITIZEN
@@ -207,6 +213,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # 185% FPL family of 11 = $130,702.50/yr
         employment_income: 131_000
         immigration_status: CITIZEN
@@ -232,6 +239,7 @@
         immigration_status: CITIZEN
       person7:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person8:
         age: 1
@@ -269,6 +277,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # Below 185% FPL family of 11 ($130,702.50/yr)
         employment_income: 100_000
         immigration_status: CITIZEN
@@ -294,6 +303,7 @@
         immigration_status: CITIZEN
       person7:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person8:
         age: 1
@@ -336,6 +346,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 0
         immigration_status: CITIZEN
       person2:
@@ -371,6 +382,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 500_000
         immigration_status: CITIZEN
       person2:
@@ -401,6 +413,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -429,6 +442,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -455,6 +469,7 @@
     people:
       person1:
         age: 45
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -482,6 +497,7 @@
     people:
       person1:
         age: 45
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -514,6 +530,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 12_000
         immigration_status: CITIZEN
     tax_units:
@@ -542,6 +559,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # 40% FPL family of 2 = 21_150 * 0.4 = 8_460/yr
         employment_income: 8_460
         immigration_status: CITIZEN
@@ -577,6 +595,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # Just above 40% FPL: need FPL ratio > 0.4001
         # 21_150 * 0.4001 = 8_462.12/yr; use 8_475 -> ratio ~0.4008
         employment_income: 8_475
@@ -618,6 +637,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # ~170% FPL family of 2: 21_150 * 1.7 = 35_955/yr.
         employment_income: 35_955
         immigration_status: CITIZEN
@@ -654,6 +674,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 42_000
         immigration_status: CITIZEN
       person2:
@@ -810,6 +831,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
         immigration_status: CITIZEN
       person2:
@@ -845,6 +867,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 31_000
         immigration_status: CITIZEN
       person2:
@@ -880,10 +903,12 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 15_000
         immigration_status: CITIZEN
     tax_units:
@@ -912,6 +937,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -942,6 +968,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -972,6 +999,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1002,6 +1030,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1031,6 +1060,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1060,6 +1090,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1093,6 +1124,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1123,6 +1155,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1156,6 +1189,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 0.5 = 6 months -> INFANT (0-24 months)
@@ -1181,6 +1215,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 2.5 = 30 months -> TODDLER (25-36 months)
@@ -1206,6 +1241,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 3.25 = 39 months -> PRESCHOOL (37-59 months)
@@ -1231,6 +1267,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 6 = 72 months -> SCHOOL_AGE (60+ months)
@@ -1260,6 +1297,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         # Above 185% FPL family of 2 ($39,127.50/yr); TANF enrolled bypasses.
         employment_income: 60_000
         immigration_status: CITIZEN
@@ -1293,6 +1331,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1329,6 +1368,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -1438,6 +1478,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -1486,6 +1527,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         employment_income: 24_000
         immigration_status: CITIZEN
       person2:
@@ -1520,6 +1562,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 1.0 = 12 months -> INFANT (threshold at 25 months for TODDLER)
@@ -1546,6 +1589,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 2.0 = 24 months -> INFANT (threshold for TODDLER at 25 months)
@@ -1572,6 +1616,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 5.0 = 60 months -> SCHOOL_AGE (threshold at 60 months)
@@ -1602,6 +1647,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 1.5 = 18 months -> UNDER_2
@@ -1628,6 +1674,7 @@
     people:
       person1:
         age: 30
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person2:
         # Age 2.0 = 24 months; Appendix B INFANT covers 0-24 months
@@ -1659,6 +1706,7 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:

@@ -151,3 +151,51 @@
         state_code: AR
   output:
     ar_inflation_relief_credit_person: [150, 150, 0]
+
+# Married couple filing combined (status 4): each spouse uses the single-filer
+# table on their own net income, not the joint table split in half (taxsim #1143).
+- name: Married couple filing combined uses the per-spouse single-filer table
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 90_877
+      person2:
+        ar_taxable_income_indiv: 165_258
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: true
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    # person1: $150 - ceil(3,877 / 1,000) * $10 = $150 - $40 = $110
+    # person2: $165,258 > $101,000 -> $0
+    ar_inflation_relief_credit_person: [110, 0]
+
+# The same couple filing a true joint return uses the joint table on combined
+# income ($256,135 > $174,000 -> $0), split in half.
+- name: Married couple filing a true joint return uses the joint table on combined income
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 90_877
+      person2:
+        ar_taxable_income_indiv: 0
+        ar_net_taxable_income_joint: 165_258
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ar_files_separately: false
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_inflation_relief_credit_person: [0, 0]

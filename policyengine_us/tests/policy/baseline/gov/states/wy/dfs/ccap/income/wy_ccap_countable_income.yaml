@@ -1,0 +1,316 @@
+# Unit tests for wy_ccap_countable_income (SPMUnit, MONTH, USD).
+# Rules Ch. 1 §8(e)(iv)(D): gross earned plus gross unearned income from the
+# counted sources, less deductions. §4(aa) / §8(e)(iv)(D)(III)(5.): a $200
+# earned income disregard per working adult, capped at that adult's earnings
+# (per-person zero floor). Appendix B: wages of dependent children under 18
+# are exempt, but a minor parent with their own child in the unit stays
+# counted (Rules §8(e)(iv)(E)(II); Manual §905.A.6). Manual §907.B: child
+# support paid is deducted. Annual dollar inputs divide by 12 in this
+# monthly variable.
+- name: Case 1, a single earner deducts one earned income disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 per month - 200 = 2_300
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_300
+
+- name: Case 2, each working adult deducts their own disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 - 200 = 1_800
+      person2:
+        age: 33
+        employment_income: 12_000  # 1_000 - 200 = 800
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_600  # 1_800 + 800
+
+- name: Case 3, wages of a dependent child under 18 are exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 - 200 = 1_800
+      person2:
+        age: 16
+        # No own child in the unit (own_children_in_household defaults to
+        # 0), so this teen is a dependent minor, not a minor parent, and
+        # the 500 per month is excluded from countable income.
+        employment_income: 6_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 1_800
+
+- name: Case 4, a minor parent's wages stay counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        # Their own child in the unit marks the 17-year-old as a minor
+        # parent (Rules §8(e)(iv)(E)(II); Manual §905.A.6: use the income
+        # of the minor parent), so the dependent-child wage exemption does
+        # not apply. No tax-role input is injected; the minor-parent status
+        # is derived. 12_000 annual auto-divides to 1_000 per month; the
+        # $200 disregard is adult-only (Rules §4(aa); Manual §907.A "each
+        # working adult"; Manual §200 defines an adult as 18 or over), so
+        # the minor parent's wages count in full: 1_000.
+        employment_income: 12_000
+        own_children_in_household: 1
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 1_000
+
+- name: Case 5, unearned income is counted without a disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 - 200 = 1_800
+        social_security: 12_000  # 1_000 per month, no disregard
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_800  # 1_800 + 1_000
+
+- name: Case 6, a self-employment loss nets against the same person's wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000  # 2_000 per month
+        self_employment_income: -12_000  # -1_000: earned = 1_000 - 200 = 800
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 800
+
+- name: Case 7, one spouse's self-employment loss cannot offset the other's wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 - 200 = 2_300
+      person2:
+        age: 33
+        # -5_000 per month floors at 0 for person2 instead of erasing
+        # person1's countable earnings.
+        self_employment_income: -60_000
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_300
+
+- name: Case 8, child support paid is deducted from countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 - 200 = 2_300
+        child_support_expense: 2_400  # 200 per month deducted
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_100
+
+- name: Case 9, countable income floors at zero when deductions exceed income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000  # 1_000 - 200 = 800
+        child_support_expense: 12_000  # 1_000 per month > 800
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 0
+
+- name: Case 10, a unit with no income has zero countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 0
+
+# Rules §8(e)(iv)(E)(II): in a three-generation unit both the working
+# grandparent (the tax unit head) and the working minor parent are counted;
+# only a dependent minor without their own child would be exempt.
+- name: Case 11, a three-generation unit counts both the grandparent and the minor parent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        employment_income: 24_000  # 2_000 - 200 = 1_800
+        # The grandparent's own child in the household is the 17-year-old;
+        # they are counted through head status either way.
+        own_children_in_household: 1
+      person2:
+        age: 17
+        # Minor parent of person3: wages are not exempt, and the $200
+        # disregard is adult-only (Rules §4(aa); Manual §907.A), so the
+        # full 1_000 per month counts.
+        employment_income: 12_000
+        own_children_in_household: 1
+      person3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_800  # 1_800 + 1_000
+
+# Rules §8(e)(iv)(E)(III): the income of a child who is ineligible for child
+# care assistance is not counted. A 15-year-old with no special need fails the
+# under-13 age test, so their unearned income drops out of countable income
+# while remaining in gross income, which the copay's 7% cap reads.
+- name: An ineligible child's unearned income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 per month - 200 = 2_300
+      person2:
+        age: 4
+      person3:
+        age: 15
+        social_security: 12_000  # 1_000 per month, not counted
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 2_300
+    wy_ccap_gross_income: 3_500  # 2_500 + 1_000
+
+- name: An eligible child's unearned income is counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000  # 2_500 per month - 200 = 2_300
+      person2:
+        age: 4
+        social_security: 12_000  # 1_000 per month, counted
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_countable_income: 3_300  # 2_300 + 1_000

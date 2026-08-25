@@ -1,0 +1,759 @@
+# Unit tests for the Washington Cascade Care Savings amount.
+#
+# All inputs (is_aca_ptc_eligible / immigration_status /
+# wa_apple_health_expansion_eligible per person, aca_magi_fraction, slcsp as an
+# annual value, aca_ptc) are supplied directly so every expected value is exactly
+# hand-verifiable and independent of the rating-area premium lookup. slcsp is a
+# MONTH-period variable; the amount formula annualizes it via
+# add(tax_unit, period, ["slcsp"]). Providing slcsp at the YEAR period sets the
+# annual total, so the values below are annual SLCSP.
+#
+# Formula (REQ-9..13):
+#   n_group1 = count of is_aca_ptc_eligible members
+#   n_group3 = count of (immigration_status UNDOCUMENTED and NOT
+#              wa_apple_health_expansion_eligible) members
+#   base_annual        = 12 * (55*n_group1 + 250*n_group3)
+#   expectation(frac)  = 0 (<=1.5), 10 (>1.5 to 2.0), 15 (>2.0)   [per member per month]
+#   expectation_annual = 12 * expectation(frac) * (n_group1 + n_group3)
+#   cap                = max(0, slcsp_annual - aca_ptc - expectation_annual)
+#   annual             = eligible * min(base_annual, cap)
+# Benchmark bracket thresholds are 1.5001 and 2.0001, so at EXACTLY 200% FPL
+# (frac 2.0) the expectation is still $10, not $15.
+
+# --- Group 1 ($55) path, expectation tiers ---
+
+- name: Case 1, single Group 1 member at 140% FPL, expectation $0.
+  # n_group1=1 -> base_annual = 12*55 = 660. frac 1.4 <= 1.5 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 2, single Group 1 member at 180% FPL, expectation $10.
+  # base_annual = 660. frac 1.8 in (1.5, 2.0] -> expectation 10/mo -> 120/yr.
+  # cap = max(0, 6_000 - 5_000 - 120) = 880. annual = min(660, 880) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.8
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 3, single Group 1 member at exactly 200% FPL, expectation still $10.
+  # frac 2.0 is NOT > 2.0001, so expectation is 10/mo -> 120/yr (not 15).
+  # base_annual = 660. cap = max(0, 6_000 - 5_000 - 120) = 880.
+  # annual = min(660, 880) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 4, Group 1 couple at 220% FPL, expectation $15 each, cap binds.
+  # n_group1=2 -> base_annual = 12*(55*2) = 12*110 = 1_320.
+  # frac 2.2 > 2.0 -> expectation 15/mo each -> 12*15*2 = 360/yr.
+  # cap = max(0, 8_000 - 7_000 - 360) = 640. annual = min(1_320, 640) = 640 (cap binds).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 2.2
+        slcsp: 8_000
+        aca_ptc: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 640
+
+# --- Group 3 ($250) path ---
+
+- name: Case 5, single Group 3 member at 200% FPL, base binds.
+  # n_group3=1 -> base_annual = 12*250 = 3_000. frac 2.0 -> expectation 10/mo ->
+  # 120/yr. cap = max(0, 12_000 - 3_000 - 120) = 8_880. annual = min(3_000, 8_880)
+  # = 3_000. (Group 3 members are APTC-ineligible; aca_ptc reflects any household
+  # PTC, here from other sources -> set to 3_000 to exercise the subtraction.)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 12_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_000
+
+# --- Mixed household: 1 Group 1 + 1 Group 3 ---
+
+- name: Case 6, mixed household with one Group 1 and one Group 3 member.
+  # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 12*305 = 3_660.
+  # frac 1.6 in (1.5, 2.0] -> expectation 10/mo each -> 12*10*2 = 240/yr.
+  # cap = max(0, 10_000 - 4_000 - 240) = 5_760. annual = min(3_660, 5_760) = 3_660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.6
+        slcsp: 10_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_660
+
+# --- Cap edge cases ---
+
+- name: Case 7, cap is zero when SLCSP minus APTC minus expectation is negative.
+  # base_annual = 660. frac 2.2 -> expectation 15/mo -> 180/yr.
+  # slcsp_annual - aca_ptc - expectation = 5_000 - 5_000 - 180 = -180 -> cap = 0.
+  # annual = min(660, 0) = 0 (eligible but the entire premium is already covered).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.2
+        slcsp: 5_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+# --- Ineligible / geographic / time zeros ---
+
+- name: Case 8, income above 250% FPL yields zero.
+  # frac 2.6 > 2.5 -> not wa_cascade_care_savings_eligible -> amount 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.6
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+- name: Case 8b, zero SLCSP forces the cap to zero even when eligible.
+  # Distinct from Case 7 (there slcsp == aca_ptc == 5_000). Here the benchmark
+  # premium is entirely absent: slcsp 0, aca_ptc 0. frac 1.4 -> expectation 0.
+  # cap = max(0, 0 - 0 - 0) = 0. base_annual = 660. annual = min(660, 0) = 0.
+  # Exercises the SLCSP-absent branch of the cap (guards against a nonzero
+  # benefit when no benchmark premium exists to reimburse).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 0
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+- name: Case 9, non-Washington household yields zero.
+  # defined_for StateCode.WA -> Oregon household gets 0 despite a Group 1 member.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    wa_cascade_care_savings: 0
+
+- name: Case 10, program not in effect in 2025 yields zero.
+  # in_effect is false before 2026-01-01 -> amount 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+        slcsp: 6_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+# --- Cap floor and exact-tie edge cases ---
+
+- name: Case 11, expectation exceeds the SLCSP-minus-APTC residual, cap floors at 0.
+  # Distinct from Cases 7 and 8b: here slcsp - aca_ptc = 6_000 - 5_900 = 100 is
+  # POSITIVE, but the benchmark expectation pushes the cap negative before the
+  # floor. frac 2.2 -> expectation 15/mo -> 180/yr. cap = max(0, 100 - 180)
+  # = max(0, -80) = 0. base_annual = 660. annual = min(660, 0) = 0. Confirms the
+  # expectation subtraction is applied before the max_(0, ...) floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.2
+        slcsp: 6_000
+        aca_ptc: 5_900
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+- name: Case 12, base equals cap exactly, min returns the shared value.
+  # frac 1.4 -> expectation 0. slcsp - aca_ptc = 6_000 - 5_340 = 660 = base_annual.
+  # cap = max(0, 660 - 0) = 660. base_annual = 12*55 = 660. annual = min(660, 660)
+  # = 660. Exercises the min_() tie between base and cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_340
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+# --- 1.5 FPL expectation boundary at the amount level (cap binds so the
+#     expectation value is observable). Single Group 3 member, base_annual =
+#     12*250 = 3_000, slcsp 1_000, aca_ptc 0. ---
+
+- name: Case 13, expectation is $0 at exactly 150% FPL (below the 1.5001 threshold).
+  # frac 1.5 is NOT >= 1.5001, so expectation is 0 -> expectation_annual 0.
+  # cap = max(0, 1_000 - 0 - 0) = 1_000. annual = min(3_000, 1_000) = 1_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.5
+        slcsp: 1_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 1_000
+
+- name: Case 14, expectation is $10 at 151% FPL (above the 1.5001 threshold).
+  # frac 1.51 >= 1.5001 -> expectation 10/mo -> 120/yr. cap = max(0, 1_000 - 0
+  # - 120) = 880. annual = min(3_000, 880) = 880. Pairs with Case 13 to bracket
+  # the 1.5001 boundary at the amount level (1_000 vs 880 differs only by the
+  # $0 -> $10 expectation crossing).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.51
+        slcsp: 1_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 880
+
+# --- Larger mixed household: member counting must exclude the Apple-Health member ---
+
+- name: Case 15, 2 Group 1 + 2 undocumented (1 Apple-Health-eligible), n counts 3.
+  # person1, person2 Group 1. person3 undocumented, not Apple-Health -> Group 3.
+  # person4 undocumented but Apple-Health-eligible -> excluded from Group 3.
+  # n_group1=2, n_group3=1, eligible members = 3 (NOT 4).
+  # base_annual = 12*(55*2 + 250*1) = 12*360 = 4_320.
+  # frac 1.6 -> expectation 10/mo each * 3 members -> 12*10*3 = 360/yr.
+  # cap = max(0, 15_000 - 6_000 - 360) = 8_640. annual = min(4_320, 8_640) = 4_320.
+  # Guards both the base sum and the expectation member count against including
+  # the Apple-Health-eligible undocumented member.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+      person4:
+        age: 28
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 1.6
+        slcsp: 15_000
+        aca_ptc: 6_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 4_320
+
+# --- Group 3 gate: undocumented CHILD covered by Apple Health for Kids is NOT
+#     a $250 member (post-fix gate excludes wa_apple_health_kids_eligible). An
+#     undocumented child ABOVE the kids income limit still qualifies for
+#     Group 3. Also pins the Group 1 / Group 3 mutual-exclusivity contract and
+#     the above-2.5-FPL ineligibility with a Group-3 member. ---
+
+- name: Case 17, undocumented Apple-Health-for-Kids child does not add a $250 member.
+  # person1: age 40, is_aca_ptc_eligible -> Group 1 ($55). person2: age 10,
+  # UNDOCUMENTED, wa_apple_health_kids_income_eligible true -> under 19 and
+  # income-eligible so wa_apple_health_kids_eligible is true -> the child has
+  # state MEC and is EXCLUDED from Group 3 (post-C1 gate adds
+  # ~wa_apple_health_kids_eligible). n_group1=1, n_group3=0 -> base reflects the
+  # ADULT ONLY. base_annual = 12*55 = 660. frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  # (A child counted as Group 3 would have produced 12*(55+250) = 3_660.)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 18, undocumented child ABOVE the kids income limit is a Group 3 member.
+  # person1: age 40, is_aca_ptc_eligible -> Group 1 ($55). person2: age 10,
+  # UNDOCUMENTED, wa_apple_health_kids_income_eligible false -> NOT Apple Health
+  # for Kids eligible (income above the kids limit), and undocumented children
+  # cannot get expansion (age < 19) -> the child IS a Group 3 member ($250).
+  # n_group1=1, n_group3=1 -> base_annual = 12*(55 + 250) = 3_660.
+  # frac 1.4 -> expectation 0. cap = max(0, 12_000 - 5_000 - 0) = 7_000.
+  # annual = min(3_660, 7_000) = 3_660. Companion to Case 17: the ONLY difference
+  # is the child's kids income eligibility, and it toggles the $250 member in/out.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_660
+
+- name: Case 19, member flagged both APTC-eligible AND undocumented yields $55, not $305.
+  # Mutual-exclusivity pin against the FIXED contract: Groups 1 and 3 cannot
+  # stack. person1 is set is_aca_ptc_eligible true AND UNDOCUMENTED with
+  # wa_apple_health_expansion_eligible false. Under the post-fix gate Group 3 adds
+  # ~is_aca_ptc_eligible, so this person is Group 1 ONLY. n_group1=1, n_group3=0
+  # -> base_annual = 12*55 = 660 (NOT 12*(55+250) = 3_660). frac 1.4 ->
+  # expectation 0. cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 20, explicit CITIZEN APTC enrollee is a $55 Group 1 member (hygiene).
+  # Guards S6: prior Group 1 cases relied on the default immigration_status not
+  # being UNDOCUMENTED. Here immigration_status CITIZEN is set explicitly and the
+  # person is is_aca_ptc_eligible -> Group 1 only ($55), never $305.
+  # n_group1=1 -> base_annual = 660. frac 1.4 -> expectation 0.
+  # cap = max(0, 6_000 - 5_000 - 0) = 1_000. annual = min(660, 1_000) = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 21, explicit is_aca_ptc_eligible false Group 3 member is $250 (hygiene).
+  # Guards S6: prior Group 3 cases relied on the default is_aca_ptc_eligible being
+  # false. Here it is set false explicitly, immigration_status UNDOCUMENTED,
+  # wa_apple_health_expansion_eligible false -> Group 3 only ($250).
+  # n_group3=1 -> base_annual = 12*250 = 3_000. frac 1.4 -> expectation 0.
+  # cap = max(0, 12_000 - 0 - 0) = 12_000. annual = min(3_000, 12_000) = 3_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_000
+
+- name: Case 22, income above 250% FPL with a Group 3 member yields zero.
+  # Closes the matrix: prior above-limit cases used Group 1 members only. Here the
+  # sole eligible member is Group 3 (UNDOCUMENTED, not Apple-Health-eligible),
+  # is_aca_ptc_eligible false explicitly. frac 2.6 > 2.5 (fpl_limit) -> not
+  # wa_cascade_care_savings_eligible -> amount 0 despite the $250 base.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.6
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 0
+
+# --- Temporal: open-ended in_effect carries the PY2026 design into PY2027 ---
+
+- name: Case 16, program still in effect in 2027 with unchanged amounts.
+  # in_effect has no end date (2026-01-01 true, open-ended), and all amounts and
+  # expectation brackets are open-ended from 2026, so 2027 mirrors Case 1.
+  # base_annual = 660. frac 1.4 -> expectation 0. cap = max(0, 6_000 - 5_000)
+  # = 1_000. annual = min(660, 1_000) = 660.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 660
+
+- name: Case 23, married-filing-separately couple is excluded via real filing_status.
+  # MFS exclusion driven end-to-end, not stubbed: filing_status SEPARATE makes
+  # is_aca_ptc_eligible false for both citizen spouses (the variable ANDs in
+  # ~separate), so neither is a Group 1 member. Both are citizens, so neither is
+  # a Group 3 (undocumented) member either. With no eligible member the tax unit
+  # is ineligible and the amount is 0, even though income (1.4) is within the
+  # 250% FPL limit. aca_magi_fraction is supplied so the exclusion is isolated to
+  # the SEPARATE filing status (removing SEPARATE would make both Group 1 and
+  # produce 12*(55*2) = 1_320 before the cap).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_medicare_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        aca_magi_fraction: 1.4
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    is_aca_ptc_eligible: [false, false]
+    wa_cascade_care_savings_eligible: false
+    wa_cascade_care_savings: 0
+
+- name: Case 24, expectation is still $10 at exactly 200.01% FPL (2.0001 threshold).
+  # Top-tier boundary pin. Single Group 3 member, cap binds so the expectation
+  # value is observable. At frac EXACTLY 2.0001 the $15 tier has not yet engaged
+  # (the bracket requires strictly above 2.0001), so expectation is 10/mo ->
+  # 120/yr. base_annual = 12*250 = 3_000. cap = max(0, 1_000 - 0 - 120) = 880.
+  # annual = min(3_000, 880) = 880. Pairs with Case 3 (frac 2.0, also $10): the
+  # $15 tier engages only ABOVE 2.0001 (see Case 25 at frac 2.5).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0001
+        slcsp: 1_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 880
+
+- name: Case 25, exactly 250% FPL ceiling is eligible with a non-zero $15-tier amount.
+  # Ties the eligibility ceiling (fpl_limit 2.5, inclusive) to a real payout.
+  # frac 2.5 <= 2.5 -> eligible. Single Group 3 member -> base_annual = 12*250 =
+  # 3_000. frac 2.5 > 2.0001 -> expectation 15/mo -> 180/yr.
+  # cap = max(0, 12_000 - 0 - 180) = 11_820. annual = min(3_000, 11_820) = 3_000
+  # (base binds). Confirms the top of the income range still produces the full
+  # base amount rather than dropping to 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.5
+        slcsp: 12_000
+        aca_ptc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3_000

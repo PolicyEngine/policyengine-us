@@ -1,0 +1,388 @@
+# End-to-end integration tests for Colorado Premium Assistance (CPA), PY2026-2027.
+# CPA is a flat state premium wrap on top of the federal ACA premium tax credit:
+# $80/month for the first APTC-eligible member plus $29/month for each additional
+# member (NO member cap), for tax units in Colorado at or below the 400% FPL
+# ceiling (no lower bound), capped at the remaining benchmark premium after the
+# federal credit. In effect for plan years 2026 and 2027 (2028-01-01 sunset
+# verified by SB26-178), unfunded thereafter.
+#
+# To keep expected values exactly hand-verifiable and independent of the
+# rating-area premium lookup, is_aca_ptc_eligible (per person), aca_magi_fraction,
+# slcsp (annual) and aca_ptc are supplied directly, and each scenario asserts the
+# intermediate eligibility flag so a reviewer can follow the arithmetic:
+#   n            = count of is_aca_ptc_eligible members
+#   flat_monthly = (80 + 29*(n-1)) if n >= 1 else 0
+#   residual     = max(0, slcsp_annual - aca_ptc)
+#   amount       = eligible * min(12 * flat_monthly, residual)
+
+- name: Scenario 1, single member at 150% FPL, high residual -> full 12*$80.
+  # n=1 -> flat_monthly = 80 -> 12*80 = 960. residual 9_000-2_400 = 6_600 >= 960.
+  # eligible: in_effect(2026) & any APTC-eligible & 1.0 <= 1.50 <= 4.0 -> true.
+  # amount = min(960, 6_600) = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+        slcsp: 9_000
+        aca_ptc: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Scenario 2, family of three, all APTC-eligible, at 300% FPL -> n=3.
+  # n=3 -> flat_monthly = 80 + 29*2 = 138 -> 12*138 = 1_656.
+  # residual 14_000-4_000 = 10_000 >= 1_656. eligible true (1.0 <= 3.00 <= 4.0).
+  # amount = min(1_656, 10_000) = 1_656.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 3.00
+        slcsp: 14_000
+        aca_ptc: 4_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 1_656
+
+- name: Scenario 3, six members at exactly 400% FPL -> n=6, no cap.
+  # n = 6 -> flat_monthly = 80 + 29*5 = 225 -> 12*225 = 2_700.
+  # residual 22_000-5_000 = 17_000 >= 2_700. eligible true at boundary 4.00.
+  # amount = min(2_700, 17_000) = 2_700. With the 5-member cap removed the amount
+  # scales past five members. NOTE: an injected 4.00-FPL state alongside six
+  # APTC-eligible members is counterfactual in the 2026 baseline (see upstream
+  # #9264); inputs are supplied directly to isolate the amount arithmetic.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 47
+        is_aca_ptc_eligible: true
+      person2:
+        age: 45
+        is_aca_ptc_eligible: true
+      person3:
+        age: 17
+        is_aca_ptc_eligible: true
+      person4:
+        age: 15
+        is_aca_ptc_eligible: true
+      person5:
+        age: 12
+        is_aca_ptc_eligible: true
+      person6:
+        age: 9
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        aca_magi_fraction: 4.00
+        slcsp: 22_000
+        aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_700
+
+- name: Scenario 4, residual cap binding -> couple where SLCSP minus APTC < 12*flat.
+  # n=2 -> flat_monthly = 109 -> 12*109 = 1_308. residual 11_000-10_200 = 800 < 1_308.
+  # eligible true (1.0 <= 2.00 <= 4.0). amount = min(1_308, 800) = 800.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_aca_ptc_eligible: true
+      person2:
+        age: 48
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 2.00
+        slcsp: 11_000
+        aca_ptc: 10_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 800
+
+- name: Scenario 5, APTC zeroes the benchmark premium -> amount 0 despite eligibility.
+  # residual = max(0, 7_500 - 7_500) = 0. n=1 -> 12*80 = 960.
+  # eligible true (1.0 <= 2.50 <= 4.0). amount = min(960, 0) = 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 7_500
+        aca_ptc: 7_500
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 0
+
+- name: Scenario 6, PY2027 in-window verified year -> single member -> 12*$80.
+  # in_effect true for 2027 (SB26-178 window). n=1 -> 12*80 = 960.
+  # residual 9_000-2_000 = 7_000 >= 960. eligible true (1.0 <= 2.50 <= 4.0).
+  # amount = min(960, 7_000) = 960.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 9_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 960
+
+- name: Scenario 7, out-of-window and non-CO cases return 0.
+  # 2025 is before the PY2026 start, so in_effect is false -> eligible false ->
+  # amount 0 even for an otherwise-qualifying single member.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 9_000
+        aca_ptc: 2_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: false
+    co_premium_assistance: 0
+
+- name: Scenario 8, fully DERIVED from raw employment_income (dependency-chain wiring).
+  # Unlike every other case here, this supplies ONLY raw inputs and lets the model
+  # derive aca_magi_fraction, is_aca_ptc_eligible, aca_ptc and slcsp through the
+  # real chain, guarding against a wiring bug (wrong entity, wrong variable name,
+  # MAGI-fraction convention mismatch, or a CO rating-area slcsp lookup returning 0)
+  # that every injected-input case would miss.
+  #
+  # Single CO filer, employment_income 30_000, age 40, no ESHI -> marketplace enrollee.
+  # DERIVED (hand-traced against the model source):
+  #   aca_magi        = AGI = 30_000 (wages only, no adjustments/additions)
+  #   prior-year FPG  = 15_650 (2025 CONTIGUOUS_US, single; the fraction uses last_year)
+  #   aca_magi_fraction = floor(100 * 30_000 / 15_650) / 100
+  #                     = floor(191.69) / 100 = 1.91  -> inside the 100%-400% band
+  #   pays_aca_premium  = true (citizen adult, has TIN, no ineligible coverage)
+  #   is_aca_ptc_eligible = pays_aca_premium & not-MFS & income-eligible = true
+  #   co_premium_assistance_eligible = in_effect(2026) & any(is_aca_ptc_eligible)
+  #                     & 1.0 <= 1.91 <= 4.0 = true
+  # slcsp and aca_ptc derive from the CO (Denver) rating-area premium table and the
+  # required-contribution curve; the final amount is min(12*80, slcsp_annual - aca_ptc).
+  # Values below read from the model run (slcsp is a MONTH-period variable; asserting
+  # it at the YEAR period returns the annual sum of the 12 monthly benchmarks):
+  #   slcsp (annual)  = 6_114.40  (Denver rating-area benchmark, summed over 12 months)
+  #   aca_ptc         = 4_264.54  (federal PTC at 1.91 FPL required-contribution)
+  #   residual        = 6_114.40 - 4_264.54 = 1_849.86 > 12*80 = 960
+  #   n=1 flat cap binds -> co_premium_assistance = min(960, 1_849.86) = 960
+  # The derived residual comfortably exceeds the flat build-up, so the wrap is the
+  # full positive n=1 amount (12*$80 = 960), confirming the end-to-end chain
+  # (aca_magi_fraction -> is_aca_ptc_eligible -> slcsp/aca_ptc -> amount) is wired.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_aca_eshi_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+        county: DENVER_COUNTY_CO
+        three_digit_zip_code: 802
+  output:
+    aca_magi_fraction: 1.91
+    is_aca_ptc_eligible: [true]
+    co_premium_assistance_eligible: true
+    slcsp: 6_114.40 # annual sum of the 12 monthly Denver benchmarks
+    aca_ptc: 4_264.54 # federal PTC at 1.91 FPL required contribution
+    co_premium_assistance: 960 # min(12*$80, 1_849.86 residual) -> flat cap binds
+
+- name: Scenario 9, four-member family at 200% FPL -> n=4 build-up rung ($2_004).
+  # Fills the build-up between Scenario 2 (n=3, $1_656) and Scenario 3 (n=6):
+  # n=4 -> flat_monthly = 80 + 29*3 = 167 -> 12*167 = 2_004.
+  # residual 16_000-3_000 = 13_000 >= 2_004. eligible true (2.00 <= 4.0).
+  # amount = min(2_004, 13_000) = 2_004.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 15
+        is_aca_ptc_eligible: true
+      person4:
+        age: 12
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        aca_magi_fraction: 2.00
+        slcsp: 16_000
+        aca_ptc: 3_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CO
+  output:
+    co_premium_assistance_eligible: true
+    co_premium_assistance: 2_004
+
+- name: Scenario 10, assigned twin flows into household_health_benefits / net income.
+  # With gov.simulation.include_health_benefits_in_net_income on, the ASSIGNED
+  # twin (assigned_co_premium_assistance = co_premium_assistance * take-up)
+  # enters household_health_benefits and thus household_benefits / net income.
+  # Take-up defaults to true, so the twin equals the raw amount. Other health
+  # components are zeroed so the household total equals the CO subsidy.
+  # n=1 -> 12*80 = 960. residual 10_000-2_000 = 8_000 >= 960. amount = 960.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+        md_premium_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the CO subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance: 960
+    assigned_co_premium_assistance: 960
+    household_health_benefits: 960  # assigned twin flows through with the flag on
+    household_benefits: 960  # carried into household_benefits / net income
+
+- name: Scenario 11, take-up false -> assigned twin 0 in net income while raw amount positive.
+  # Same unit as Scenario 10 but takes_up_co_premium_assistance_if_eligible false:
+  # the raw co_premium_assistance stays 960, but the assigned twin is 960 * 0 = 0,
+  # so household_health_benefits / net income pick up nothing. Confirms take-up
+  # gates the net-income contribution without disturbing the underlying benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.include_health_benefits_in_net_income: true
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        medicaid_cost: 0
+        msp_cost: 0
+        chip: 0
+        or_healthier_oregon_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+        slcsp: 10_000
+        aca_ptc: 2_000
+        takes_up_co_premium_assistance_if_eligible: false
+        assigned_aca_ptc: 0
+        basic_health_program: 0
+        co_omnisalud: 0
+        md_premium_assistance: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # zero cash benefits so the household total equals the CO subsidy
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_premium_assistance: 960  # raw amount unchanged
+    assigned_co_premium_assistance: 0  # take-up false zeroes the twin
+    household_health_benefits: 0  # nothing flows into net income
+    household_benefits: 0

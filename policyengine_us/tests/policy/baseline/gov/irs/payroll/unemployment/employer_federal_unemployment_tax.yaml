@@ -21,3 +21,113 @@
   output:
     employer_federal_unemployment_tax_rate: 0.018
     employer_federal_unemployment_tax: 126
+
+- name: Florida's credit reduction applies in 2012.
+  period: 2012
+  input:
+    state_code: FL
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.012
+    employer_federal_unemployment_tax: 84
+
+- name: Florida returns to the standard rate in 2013 after repaying its loans.
+  period: 2013
+  input:
+    state_code: FL
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Georgia returns to the standard rate in 2014 after repaying its loans.
+  period: 2014
+  input:
+    state_code: GA
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Connecticut returns to the standard rate in 2023 after repaying its loans.
+  period: 2023
+  input:
+    state_code: CT
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Illinois returns to the standard rate in 2023 after repaying its loans.
+  period: 2023
+  input:
+    state_code: IL
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Arizona returns to the standard rate in 2013 after repaying its loans.
+  period: 2013
+  input:
+    state_code: AZ
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Arkansas returns to the standard rate in 2014 after repaying its loans.
+  period: 2014
+  input:
+    state_code: AR
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Delaware returns to the standard rate in 2014 after repaying its loans.
+  period: 2014
+  input:
+    state_code: DE
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Florida stays at the standard rate in 2015, two years after exiting (the zero persists).
+  period: 2015
+  input:
+    state_code: FL
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: Florida stays at the standard rate in 2026, well after exiting (the zero does not carry a stale rate forward).
+  period: 2026
+  input:
+    state_code: FL
+    payroll_tax_gross_wages: 10_000
+  output:
+    employer_federal_unemployment_tax_rate: 0.006
+    employer_federal_unemployment_tax: 42
+
+- name: California is still a credit-reduction state in 2023, so the reduction still applies.
+  period: 2023
+  input:
+    state_code: CA
+    payroll_tax_gross_wages: 10_000
+  output:
+    # 2023 credit reduction 0.006 on top of the 0.006 net FUTA rate.
+    employer_federal_unemployment_tax_rate: 0.012
+    employer_federal_unemployment_tax: 84
+
+- name: Connecticut is still reduced in 2022, the year before it exits.
+  period: 2022
+  input:
+    state_code: CT
+    payroll_tax_gross_wages: 10_000
+  output:
+    # 2022 credit reduction 0.003 on top of the 0.006 net FUTA rate.
+    employer_federal_unemployment_tax_rate: 0.009
+    employer_federal_unemployment_tax: 63

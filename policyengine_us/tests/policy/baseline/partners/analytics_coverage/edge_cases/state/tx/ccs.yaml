@@ -6,8 +6,8 @@
 # 7% of income. Benefit = min(childcare expense, board max rate) - copay.
 # tx_ccs_payment_rate is set directly (7,200/year = 600/month) to pin the
 # copay math independent of the provider-rate table; the work requirement
-# (25 hours/week single parent) passes via the weekly_hours_worked_before_lsr
-# default of 40.
+# (25 hours/week single parent) is satisfied by setting
+# weekly_hours_worked_before_lsr to 40 on the working parent.
 - name: tx_ccs_expense_capped_at_max_rate_copay_deducted (tx)
   period: 2026
   absolute_error_margin: 0.1
@@ -22,6 +22,7 @@
         is_full_time_student: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 30_000
+        weekly_hours_worked_before_lsr: 40
       child1:
         age: 5
         is_tax_unit_head: false
@@ -84,6 +85,7 @@
         # 62,500/year = 5,208.33/month, just below the 85% SMI limit of
         # 5,215.68/month (62,588.15/year).
         employment_income_before_lsr: 62_500
+        weekly_hours_worked_before_lsr: 40
       child1:
         age: 5
         is_tax_unit_head: false

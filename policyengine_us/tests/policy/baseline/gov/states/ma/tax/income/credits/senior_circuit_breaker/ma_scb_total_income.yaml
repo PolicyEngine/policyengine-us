@@ -26,3 +26,81 @@
         state_code: MA
   output:
     ma_scb_total_income: 30_000
+
+- name: In-kind SNAP and WIC are not re-added to total income # M.G.L. c.62 s.6(k)(1) re-adds "cash, but not in-kind, public assistance".
+  period: 2021
+  input:
+    people:
+      A:
+        age: 71
+        wic: 1_200
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        ma_gross_income: 25_000
+        members: [A]
+    spm_units:
+      spm_unit:
+        snap: 3_000
+        tanf: 0
+        members: [A]
+    households:
+      household:
+        members: [A]
+        state_code: MA
+  output:
+    # 25_000 gross - 700 aged exemption, with no SNAP or WIC add-back.
+    ma_scb_total_income: 24_300
+
+- name: Cash public assistance is still re-added to total income # SSI, the MA state supplement, and TANF are cash.
+  period: 2021
+  input:
+    people:
+      A:
+        age: 71
+        ssi: 2_000
+        ma_state_supplement: 500
+    tax_units:
+      tax_unit:
+        ma_gross_income: 25_000
+        members: [A]
+    spm_units:
+      spm_unit:
+        snap: 0
+        tanf: 1_000
+        members: [A]
+    households:
+      household:
+        members: [A]
+        state_code: MA
+  output:
+    # 25_000 gross + 2_000 SSI + 500 state supplement + 1_000 TANF - 700 aged exemption.
+    ma_scb_total_income: 27_800
+
+- name: In-kind and cash assistance together, only the cash is re-added
+  period: 2021
+  input:
+    people:
+      A:
+        age: 71
+        wic: 1_200
+        ssi: 2_000
+        ma_state_supplement: 500
+    tax_units:
+      tax_unit:
+        ma_gross_income: 25_000
+        members: [A]
+    spm_units:
+      spm_unit:
+        snap: 3_000
+        tanf: 1_000
+        members: [A]
+    households:
+      household:
+        members: [A]
+        state_code: MA
+  output:
+    # 25_000 gross + 2_000 SSI + 500 state supplement + 1_000 TANF - 700 aged
+    # exemption, with no add-back for the 4_200 of in-kind SNAP and WIC.
+    ma_scb_total_income: 27_800

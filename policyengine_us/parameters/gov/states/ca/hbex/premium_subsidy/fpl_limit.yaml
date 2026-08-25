@@ -1,0 +1,20 @@
+description: California limits income eligibility to this share of the federal poverty line under the California Premium Subsidy program.
+values:
+  2026-01-01: 1.65
+  # PY2027 Program Design V4 (adopted Board Res. 2026-22) extends eligibility to
+  # "under 200%" FPL; with 2-decimal FPL-percentage truncation, <= 1.99 == "<200%".
+  2027-01-01: 1.99
+
+metadata:
+  unit: /1
+  period: year
+  label: California Premium Subsidy income limit as fraction of FPL
+  reference:
+    - title: 2026 California Premium Subsidy Program Design, subdiv. (d)(7)
+      href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+    - title: 2026 California State Premium Subsidy Policy Explainer, eligibility
+      href: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=1
+    - title: 2027 California Premium Subsidy Program Design V4, subdiv. (d)(7)
+      href: https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2
+    - title: Covered California Board Resolution 2026-22
+      href: https://board.coveredca.com/meetings/2026/June%2018,%202026/2026-22.pdf

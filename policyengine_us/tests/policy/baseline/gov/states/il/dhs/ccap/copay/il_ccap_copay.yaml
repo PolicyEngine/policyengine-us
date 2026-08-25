@@ -1,0 +1,330 @@
+- name: Case 1, 2025 family-size-two threshold minus one remains in the lowest band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_763
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 2, 2025 family-size-two exact threshold enters the next band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_764
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 3, 2025 family-size-two threshold plus one remains in the next band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_765
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 4, 2026 family-size-two exact threshold uses the updated table.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_804
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 5, 2025 family-size-five exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_139
+    spm_unit_size: 5
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 31
+
+- name: Case 6, 2025 family-size-eight exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 4_514
+    spm_unit_size: 8
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 45
+
+- name: Case 7, 2025 family-size-ten exact threshold uses its published cell.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 5_430
+    spm_unit_size: 10
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 54
+
+- name: Case 8, family size below two clamps to the size-two table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 1_764
+    spm_unit_size: 1
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 18
+
+- name: Case 9, family size above ten clamps to the size-ten table.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 5_430
+    spm_unit_size: 11
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 54
+
+- name: Case 10, child-only TANF exemption produces a zero copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_000
+    spm_unit_size: 2
+    il_ccap_non_parent_relative_child_only_tanf: true
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 0
+
+- name: Case 11, protective care exemption produces a zero copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 3_000
+    spm_unit_size: 2
+    il_ccap_protective_care_copay_exempt: true
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 0
+
+- name: Case 12, negative income receives the ordinary one-dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: -1
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 13, missing income receives the ordinary one-dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay: 1
+
+- name: Case 14, 2025 annual copay exercises the July activation boundary.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 21_168
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # Jan-Jun: inactive; Jul-Dec: 6 * $18 from the 2025 table.
+    il_ccap_copay: 108
+
+- name: Case 15, 2026 annual copay exercises the July Table A transition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 24_000
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $39 from 2025; Jul-Dec: 6 * $40 from 2026.
+    il_ccap_copay: 474
+
+- name: Case 16, 2026 family-size-five annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 38_688
+    spm_unit_size: 5
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $31 from 2025; Jul-Dec: 6 * $32 from 2026.
+    il_ccap_copay: 378
+
+- name: Case 17, 2026 family-size-eight annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 55_728
+    spm_unit_size: 8
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $45 from 2025; Jul-Dec: 6 * $46 from 2026.
+    il_ccap_copay: 546
+
+- name: Case 18, 2026 family-size-ten annual copay uses both July histories.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    il_ccap_countable_income: 67_092
+    spm_unit_size: 10
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # Jan-Jun: 6 * $54 from 2025; Jul-Dec: 6 * $56 from 2026.
+    il_ccap_copay: 660
+
+# Cases 19-21 pin the Table A vintage against a live federal poverty guideline.
+# The copayment schedule is frozen each July while the guideline re-bases each
+# January, so between January and June a family can sit above the in-force
+# chart's minimum-copayment band while still falling under the current calendar
+# year's poverty guideline. These cases assert the chart, not the guideline, and
+# deliberately leave spm_unit_fpg unset so the real value applies. They run a
+# whole-year period and key the assertion to March, because a non-January month
+# period does not accept scalar inputs.
+
+- name: Case 19, family size two above the 2025 chart minimum band in March 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $1,790 a month; the 2026 guideline for two people is $1,803.33 a month.
+    il_ccap_countable_income: 21_480
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # In-force 2025 table charges $18 from $1,764.
+    il_ccap_copay:
+      2026-03: 18
+
+- name: Case 20, family size five above the 2025 chart minimum band in March 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $3,200 a month; the 2026 guideline for five people is $3,223.33 a month.
+    il_ccap_countable_income: 38_400
+    spm_unit_size: 5
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # In-force 2025 table charges $31 from $3,139.
+    il_ccap_copay:
+      2026-03: 31
+
+- name: Case 21, family size eight above the 2025 chart minimum band in March 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $4,600 a month; the 2026 guideline for eight people is $4,643.33 a month.
+    il_ccap_countable_income: 55_200
+    spm_unit_size: 8
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # In-force 2025 table charges $45 from $4,514.
+    il_ccap_copay:
+      2026-03: 45
+
+- name: Case 22, Table B halves the Table A copayment in a school month.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,764 a month charges $18 under the 2025 Table A for two people.
+    il_ccap_countable_income: 21_168
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    il_ccap_table_b_applies: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2025-10: 9
+
+- name: Case 23, Table B halves the one-dollar minimum to fifty cents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,000 a month falls in the lowest 2025 Table A band for two people.
+    il_ccap_countable_income: 12_000
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    il_ccap_table_b_applies: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2025-10: 0.5
+
+- name: Case 24, the copay is zero in every month before the July 2025 activation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    # $1,764 a month charges $18 under the 2025 Table A for two people.
+    il_ccap_countable_income: 21_168
+    spm_unit_size: 2
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    # The eligibility rules are in force, so only the in_effect gate zeroes June.
+    il_ccap_copay:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 18
+
+- name: Case 25, family size ten above the 2025 chart pays its ceiling until the 2026 chart adds a higher top row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $12,900 a month sits above the 2025 chart's last row for ten people, which
+    # the parameter closes with an .inf bracket at the $855 ceiling; the 2026
+    # chart adds a $900 row from $12,858.
+    il_ccap_countable_income: 154_800
+    spm_unit_size: 10
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2026-06: 855
+      2026-07: 900
+
+- name: Case 26, family size nine above the 2025 chart pays its ceiling until the 2026 chart adds a higher top row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    # $12,800 a month sits above the 2025 chart's last row for nine people, which
+    # the parameter closes with an .inf bracket at the $835 ceiling; the 2026
+    # chart adds an $896 row from $12,793.
+    il_ccap_countable_income: 153_600
+    spm_unit_size: 9
+    il_ccap_eligible: true
+    state_code: IL
+  output:
+    il_ccap_copay:
+      2026-06: 835
+      2026-07: 896

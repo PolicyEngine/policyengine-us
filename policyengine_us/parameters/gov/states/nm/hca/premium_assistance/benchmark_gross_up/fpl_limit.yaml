@@ -1,0 +1,16 @@
+description: New Mexico applies the benchmark gross-up up to this share of the federal poverty line under the Health Insurance Marketplace Affordability Program.
+# PY2026 treats this limit as inclusive (at or below 200% FPL); PY2027 treats it
+# as strict (below 200% FPL). The inclusive-vs-strict switch lives in the
+# boundary_inclusive parameter; this file stores only the 200% FPL threshold.
+values:
+  2026-01-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Premium Assistance benchmark gross-up income limit as fraction of FPL
+  reference:
+    - title: PY2026 MAP Policy and Procedures Manual, Calculating Monthly New Mexico Premium Assistance Payments
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=5
+    - title: PY2027 MAP Policy and Procedures Manual, Calculating Monthly New Mexico Premium Assistance Payments
+      href: https://www.hca.nm.gov/health-insurance-marketplace-affordability-program/#page=5

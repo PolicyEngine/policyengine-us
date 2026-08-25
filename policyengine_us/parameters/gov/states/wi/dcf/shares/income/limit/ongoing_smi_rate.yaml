@@ -1,0 +1,18 @@
+description: Wisconsin limits ongoing eligibility to assistance groups with gross income at or below this share of the state median income under the Wisconsin Shares Child Care Subsidy Program.
+
+# Enrolled assistance groups above 200% of the federal poverty level remain
+# eligible until income exceeds 85% of the state median income for the
+# assistance group size (or the copayment reduces the subsidy to zero). The
+# handbook publishes the corresponding dollar table (effective 3/1/2026).
+values:
+  2025-10-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Shares ongoing income limit as a share of state median income
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.1.2 Ongoing Eligibility Income Limit
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=58
+    - title: Wis. Stat. § 49.155(1m)(c)1d.b.
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/1m/c/1d/b

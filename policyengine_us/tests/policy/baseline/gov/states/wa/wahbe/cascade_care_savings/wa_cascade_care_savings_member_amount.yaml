@@ -1,0 +1,156 @@
+# Unit tests for the Person-level Cascade Care Savings per-member annual amount.
+#
+# wa_cascade_care_savings_member_amount (Person, USD) is the pre-cap base amount
+# attributable to one member:
+#   12 * (55 if Group 1 else 0  +  250 if Group 3 else 0)
+# where Group 1 = is_aca_ptc_eligible and Group 3 = UNDOCUMENTED & ~Apple Health
+# Expansion & ~Apple Health for Kids & ~is_aca_ptc_eligible. Groups 1 and 3 are
+# mutually exclusive, so no member ever receives 12*(55+250) = 3_660.
+# Person-level gates are supplied directly and outputs are asserted per person so
+# any failure localizes to the member. defined_for StateCode.WA.
+
+- name: Case 1, Group 1 member receives the with-federal-subsidy amount ($55 PMPM).
+  # is_aca_ptc_eligible -> Group 1 -> 12*55 = 660.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660]
+
+- name: Case 2, Group 3 member receives the without-federal-subsidy amount ($250 PMPM).
+  # UNDOCUMENTED, not APTC-eligible, not Apple Health -> Group 3 -> 12*250 = 3_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [3_000]
+
+- name: Case 3, member in neither group receives $0.
+  # Citizen, not APTC-eligible -> neither Group 1 nor Group 3 -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [0]
+
+- name: Case 4, undocumented Apple-Health-Expansion adult receives $0.
+  # wa_apple_health_expansion_eligible true removes an undocumented adult from
+  # Group 3 -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [0]
+
+- name: Case 5, undocumented Apple-Health-for-Kids child receives $0.
+  # age 10, UNDOCUMENTED, wa_apple_health_kids_income_eligible true ->
+  # wa_apple_health_kids_eligible true -> excluded from Group 3 -> 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 10
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [0]
+
+- name: Case 6, dual-flagged member yields $55 (Group 1), never $305 (no stacking).
+  # is_aca_ptc_eligible true AND UNDOCUMENTED with Apple Health false. Group 3 adds
+  # ~is_aca_ptc_eligible, so the person is Group 1 ONLY -> 12*55 = 660, NOT
+  # 12*(55+250) = 3_660. Direct mutual-exclusivity pin at the member level.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660]
+
+- name: Case 7, per-person amounts in a mixed household localize to each member.
+  # person1 Group 1 -> 660. person2 Group 3 -> 3_000. person3 neither -> 0.
+  # person4 undocumented but Apple-Health-Expansion eligible -> 0. Asserting each
+  # person separately proves the amount is member-by-member, not broadcast.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+        immigration_status: CITIZEN
+      person2:
+        age: 43
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+        wa_apple_health_kids_income_eligible: false
+      person3:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+      person4:
+        age: 38
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_member_amount: [660, 3_000, 0, 0]

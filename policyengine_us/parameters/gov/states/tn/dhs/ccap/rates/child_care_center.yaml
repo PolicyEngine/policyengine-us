@@ -1,0 +1,39 @@
+description: Tennessee provides this weekly state reimbursement rate for child care centers under the Child Care Certificate Program.
+metadata:
+  period: week
+  unit: currency-USD
+  label: Tennessee CCAP child care center weekly state rates
+  breakdown:
+    - tn_ccap_county_tier
+    - tn_ccap_age_category
+  reference:
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, State Rate column, Child Care Centers (effective October 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Current%20state%20rate%20and%20QRIS%20bonus%20table.pdf
+    - title: TDHS Child Care Certificate Program Provider Weekly Reimbursement Rates, State Rate column, Child Care Centers (effective January 1, 2026)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Reimbursement_Rate_Chart_1.1.26.pdf
+
+# SCHOOL_OUT rates are transcribed for completeness but are currently
+# unreachable: the model has no school-calendar input, so
+# tn_ccap_age_category assigns school-age children SCHOOL_IN year-round.
+TOP_TIER:
+  INFANT:
+    2024-10-01: 260
+  TODDLER:
+    2024-10-01: 240
+  PRESCHOOL:
+    2024-10-01: 208
+  SCHOOL_IN:
+    2024-10-01: 79
+  SCHOOL_OUT:
+    2024-10-01: 143
+LOWER_TIER:
+  INFANT:
+    2024-10-01: 170
+  TODDLER:
+    2024-10-01: 160
+  PRESCHOOL:
+    2024-10-01: 148
+  SCHOOL_IN:
+    2024-10-01: 75
+  SCHOOL_OUT:
+    2024-10-01: 110

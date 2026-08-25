@@ -1,0 +1,15 @@
+description: San Bernardino County caps the assistance unit size at this number of members when looking up the maximum basic grant under the General Relief program.
+# The grant table's largest row applies to assistance units of five or more
+# members.
+values:
+  2021-06-01: 5
+
+metadata:
+  unit: person
+  period: year
+  label: San Bernardino County General Relief maximum grant table unit size
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7364, Chapter A p. A-7 (Maximum Basic Grant Levels, 5 or more persons row)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/eae80072-cef4-49e5-b04e-a9b442290034.docx
+    - title: San Bernardino County Board of Supervisors Agenda Item 64 of December 7, 2021, Record of Action p. 1 (approved grant schedule)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/b2fb756f-da07-452e-bdba-e3c4eda464c5.doc

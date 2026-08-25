@@ -1,0 +1,23 @@
+description: New York limits income to this share of the state median income under the Child Care Assistance Program.
+# 22-OCFS-ADM-18 applied the 85% state median income ceiling to initial
+# eligibility and redetermination from August 1, 2022, alongside the 300%
+# state income standard limit. The revisions to Social Services Law 410-u(2),
+# 410-w(1) and 410-w(3) effective October 1, 2023 then made it the sole
+# limit. 85% of the state median income is the federal CCDF maximum at
+# 45 CFR 98.20(a)(2).
+values:
+  2022-08-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: New York CCAP income limit share of state median income
+  reference:
+    - title: 22-OCFS-ADM-18, Increase in Income Eligibility Levels for Child Care Assistance, sec. III Program Implications (income up to 300% of the state income standard provided it does not exceed 85% state median income)
+      href: https://ocfs.ny.gov/main/policies/external/2022/adm/22-OCFS-ADM-18.pdf#page=2
+    - title: NYS Register, May 1, 2024, Rule Making Activities (OCFS), expansion of income eligibility to 85% of the state median income effective October 1, 2023 (file page 12 = printed page 6)
+      href: https://dos.ny.gov/system/files/documents/2024/05/050124.pdf#page=12
+    - title: NY Social Services Law § 410-w, income eligibility at 85 percent of the state median income
+      href: https://www.nysenate.gov/legislation/laws/SOS/410-W
+    - title: 45 CFR 98.20(a)(2), CCDF income eligibility maximum of 85% of state median income
+      href: https://www.ecfr.gov/current/title-45/section-98.20#p-98.20(a)(2)

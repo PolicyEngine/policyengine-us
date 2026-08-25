@@ -1,0 +1,15 @@
+description: Utah deducts this monthly amount for each person with countable earned income under the Child Care Assistance program.
+
+# R986-700-710(5)(c): "$100 for each person with countable earned income."
+# The 2020 entry is placed at PolicyEngine's backdating floor; the
+# provision was in effect well before this date.
+values:
+  2020-01-01: 100
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Utah CCAP earned income deduction
+  reference:
+    - title: Utah Admin. Code R986-700-710(5)(c)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-710

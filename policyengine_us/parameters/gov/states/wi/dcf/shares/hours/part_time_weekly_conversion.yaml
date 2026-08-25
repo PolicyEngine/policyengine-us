@@ -1,0 +1,17 @@
+description: Wisconsin converts part-time authorizations to this many weekly hours when calculating the monthly subsidy under the Wisconsin Shares Child Care Subsidy Program.
+
+# The benefit calculation uses 30 weekly hours (not the child's actual
+# authorized hours) whenever the authorization is part time: 30 x 4.348125
+# weeks per month = 130.44, rounded up to 131 monthly subsidized hours.
+values:
+  2025-10-01: 30
+
+metadata:
+  unit: hour
+  period: week
+  label: Wisconsin Shares part-time weekly hours conversion
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.5 Subsidy Calculation
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=155
+    - title: Wisconsin Shares Handbook (July 2026), Appendix II Benefit Calculation Examples
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=173
