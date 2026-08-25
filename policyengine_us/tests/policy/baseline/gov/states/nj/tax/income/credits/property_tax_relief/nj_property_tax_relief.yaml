@@ -21,9 +21,11 @@
         state_fips: 34
   output:
     # Stay NJ target = 50% of $10,000 = $5,000.
-    nj_anchor: 1_750
+    # ANCHOR $1,500 (no senior homeowner bonus from 2025) + Senior Freeze $500
+    # + Stay NJ $3,000 = $5,000 total.
+    nj_anchor: 1_500
     nj_capped_senior_freeze: 500
-    nj_staynj: 2_750
+    nj_staynj: 3_000
     nj_property_tax_relief: 5_000
     household_state_benefits: 5_000
 
@@ -49,9 +51,10 @@
         members: [person1]
         state_fips: 34
   output:
-    # ANCHOR = $1,750 and Senior Freeze is capped to the remaining $250.
-    nj_anchor: 1_750
-    nj_capped_senior_freeze: 250
+    # ANCHOR = $1,500 (no senior homeowner bonus from 2025) and Senior Freeze is
+    # capped to the remaining $500 (property taxes $2,000 - ANCHOR $1,500).
+    nj_anchor: 1_500
+    nj_capped_senior_freeze: 500
     nj_staynj: 0
     nj_property_tax_relief: 2_000
     household_state_benefits: 2_000
@@ -105,8 +108,9 @@
   output:
     # Stay NJ target = 50% of $12,000 = $6,000.
     # ANCHOR + capped Senior Freeze exceed that target, while total relief remains below property taxes.
-    nj_anchor: 1_750
+    # ANCHOR $1,500 (no senior homeowner bonus from 2025) + Senior Freeze $6,000.
+    nj_anchor: 1_500
     nj_capped_senior_freeze: 6_000
     nj_staynj: 0
-    nj_property_tax_relief: 7_750
-    household_state_benefits: 7_750
+    nj_property_tax_relief: 7_500
+    household_state_benefits: 7_500

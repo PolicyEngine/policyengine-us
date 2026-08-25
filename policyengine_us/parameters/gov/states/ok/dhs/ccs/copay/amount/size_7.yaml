@@ -1,0 +1,57 @@
+description: Oklahoma sets this monthly family share copayment, by adjusted monthly income, for a household of seven under the Child Care Subsidy Program.
+# Thresholds are the lower bounds of the Appendix C-4 income bands; contiguous
+# $0 bands are merged into the first bracket.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: month
+  period: month
+  label: Oklahoma Child Care Subsidy family share copayment for a household of seven
+  reference:
+    - title: OKDHS Appendix C-4, Child Care Eligibility/Copayment Chart
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-4.pdf#page=2
+    - title: OAC 340:40-5-1(8)-(9)
+      href: https://okrules.elaws.us/oac/340:40-5-1
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0
+  - threshold:
+      2025-10-01: 3_344
+    amount:
+      2025-10-01: 232
+  - threshold:
+      2025-10-01: 3_454
+    amount:
+      2025-10-01: 255
+  - threshold:
+      2025-10-01: 3_838
+    amount:
+      2025-10-01: 282
+  - threshold:
+      2025-10-01: 4_222
+    amount:
+      2025-10-01: 309
+  - threshold:
+      2025-10-01: 4_605
+    amount:
+      2025-10-01: 336
+  - threshold:
+      2025-10-01: 4_989
+    amount:
+      2025-10-01: 363
+  - threshold:
+      2025-10-01: 5_373
+    amount:
+      2025-10-01: 390
+  - threshold:
+      2025-10-01: 5_757
+    amount:
+      2025-10-01: 416
+  - threshold:
+      2025-10-01: 6_140
+    amount:
+      2025-10-01: 443

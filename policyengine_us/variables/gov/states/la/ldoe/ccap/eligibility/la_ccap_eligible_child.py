@@ -16,7 +16,7 @@ class la_ccap_eligible_child(Variable):
         # (verified by a physician or by receipt of SSI). The court-supervision
         # pathway for ages 13-17 is not tracked at the moment.
         incapable = person("is_incapable_of_self_care", period.this_year)
-        receives_ssi = person("ssi", period) > 0
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
         older_child_eligible = (incapable | receives_ssi) & (
             age < p.disabled_child_limit
         )

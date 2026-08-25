@@ -735,3 +735,103 @@
   output:
     # Senior homeowner lower income tier is below property taxes paid.
     nj_anchor: 1_750
+
+# FY2027 Appropriations Act (A-5327): for tax year 2025 the $250 senior bonus no
+# longer applies to homeowners (delivered via Stay NJ instead); senior renters
+# keep the additional $250.
+
+- name: 2025 senior homeowner lower income drops to $1,500 (no senior bonus).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income <= $150K: now $1,500 (was $1,750 with bonus).
+    nj_anchor: 1_500
+
+- name: 2025 senior homeowner upper income drops to $1,000 (no senior bonus).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 200_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior homeowner, income $150K-$250K: now $1,000 (was $1,250 with bonus).
+    nj_anchor: 1_000
+
+- name: 2025 senior renter keeps the $250 bonus at $700.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+        rent: 12_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: RENTER
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Senior renter, income <= $150K: $450 base + $250 senior bonus = $700.
+    nj_anchor: 700
+
+- name: 2025 non-senior homeowner is unaffected by the senior-bonus removal ($1,500).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 5_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # Non-senior homeowner, income <= $150K: still $1,500 (change only affects seniors).
+    nj_anchor: 1_500

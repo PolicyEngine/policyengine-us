@@ -1,0 +1,268 @@
+# Direct branch coverage for the ABAWD exemption set (7 U.S.C. 2015(o)(3);
+# 7 CFR 273.24(c)). The compliance suite (meets_snap_abawd_work_requirements)
+# pins the same set indirectly; this file decouples that coverage from the
+# compliance formula's structure.
+
+- name: Case 1, post-HR1 working-age adult with no exemption is not exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: false
+
+# (A) Age — under 18 or over 65 post-HR1.
+- name: Case 2, age 17 is below the ABAWD age range and exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+- name: Case 3, age 65 is above the post-HR1 ABAWD age range and exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# (B) Medically certified as unfit for employment.
+- name: Case 4, disabled adult is exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# (E) Pregnancy.
+- name: Case 5, pregnant adult is exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# (D) Work registration exemption, 30-hour prong (7 CFR 273.7(b)(1)(vii)).
+- name: Case 6, working 35 hours weekly is registration-exempt and therefore ABAWD-exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# (D) Work registration exemption, UI receipt prong (7 CFR 273.7(b)(1)(v)).
+- name: Case 7, unemployment compensation recipient is registration-exempt and therefore ABAWD-exempt.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        unemployment_compensation: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# (F)-(G) Indian, Urban Indian, or California Indian (added by P.L. 119-21;
+# data-layer input).
+- name: Case 8, Indian status exempts post-HR1.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_snap_abawd_indian_exempt: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# State discretionary exemption (7 U.S.C. 2015(o)(6); data-layer input).
+- name: Case 9, state discretionary exemption applies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_snap_abawd_discretionary_exempt: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+# Pre-HR1 exceptions removed by P.L. 119-21: homeless, veteran, former
+# foster youth (aged 24 or younger).
+- name: Case 10, pre-HR1 homeless adult is exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        is_homeless: true
+  output:
+    is_snap_abawd_exempt: true
+
+- name: Case 11, pre-HR1 veteran is exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_veteran: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+- name: Case 12, pre-HR1 former foster youth aged 23 is exempt.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 23
+        was_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: true
+
+- name: Case 13, post-HR1 the homeless, veteran, and former foster youth exceptions are repealed.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 23
+        is_veteran: true
+        was_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+        is_homeless: true
+  output:
+    is_snap_abawd_exempt: false
+
+# Good-faith-effort window (7 U.S.C. 2015(o)(7)): Alaska retains a 56+ age
+# band and the pre-HR1 exceptions during 2025-11-01 through 2026-10-31.
+- name: Case 14, age 56 is exempt in Alaska during the good-faith window.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 56
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    is_snap_abawd_exempt: true
+
+- name: Case 15, age 56 is not exempt post-HR1 outside a good-faith window.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 56
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_abawd_exempt: false

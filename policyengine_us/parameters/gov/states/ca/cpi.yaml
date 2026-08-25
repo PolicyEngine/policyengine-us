@@ -5,12 +5,16 @@ values:
   2021-01-01: 297.447
   2022-01-01: 322.043
   2023-01-01: 332.035
+  2024-01-01: 342.856
+  2025-01-01: 353.044
 
 metadata:
   unit: currency-USD
   period: year
   label: California income tax CPI uprating
   uprating: gov.irs.uprating
-  reference:  
-    - title: California Consumer Price Index  
-      href: https://www.dir.ca.gov/oprl/CPI/EntireCCPI.PDF
+  reference:
+    - title: California Consumer Price Index (1955-2026), All Urban Consumers, June values
+      href: https://www.dir.ca.gov/oprl/CPI/EntireCCPI.PDF#page=1
+    - title: California Consumer Price Index, 2025-2026 table
+      href: https://www.dir.ca.gov/oprl/CPI/presentccpi.pdf#page=1

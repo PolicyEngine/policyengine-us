@@ -1,0 +1,21 @@
+description: New York applies the capped wages test when high quarter wages reach this amount under the Unemployment Insurance program.
+
+# The $19,118 step takes effect 2025-10-06, the first Monday of October 2025;
+# the P832 reference to the "week of Oct 13" reflects the benefit-payment lag,
+# not a different effective date. This cap tracks the $869 maximum WBR set by
+# Ch. 56 of the Laws of 2025 (high_quarter_cap = 22 x max WBR). Within the YEAR
+# period 2025 this 2025-10-06 step is inert: the parameter resolves to $11,088
+# for all of 2025 and the $19,118 value first bites in 2026.
+values:
+  2020-01-01: 11_088
+  2025-10-06: 19_118
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: New York UI high quarter cap
+  reference:
+    - title: NY Labor Law § 527(1)(d) — Valid original claim
+      href: https://www.nysenate.gov/legislation/laws/LAB/527
+    - title: NYSDOL P832 (Feb 2026)
+      href: https://dol.ny.gov/system/files/documents/2026/03/p832-how-your-weekly-ui-benefits-are-calculated-2-26.pdf#page=2

@@ -64,11 +64,69 @@
   output:
     meets_snap_categorical_eligibility: true
 
-- name: Reported SSI creates eligibility when use_reported_ssi is true.
+# The deprecated use_reported_ssi/ssi_reported pair only affects the
+# applicable_ssi output, which programs no longer read; reported SSI is
+# expressed by sending the ssi input or setting receives_ssi.
+- name: Deprecated use_reported_ssi bridge no longer confers eligibility.
   period: 2022
   input:
     is_tanf_non_cash_eligible: false
     use_reported_ssi: true
     ssi_reported: 1
+  output:
+    meets_snap_categorical_eligibility: false
+
+- name: Reported SSI receipt creates eligibility when computed SSI is zero.
+  period: 2022-01
+  input:
+    is_tanf_non_cash_eligible: false
+    receives_ssi: true
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: Mixed computed and reported SSI across members creates eligibility.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        ssi: 1
+      person2:
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_non_cash_eligible: false
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: Reported TANF receipt creates eligibility without BBCE.
+  period: 2022-01
+  input:
+    is_tanf_non_cash_eligible: false
+    receives_tanf: true
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: Single member reporting SSI in a multi-person SPM unit does not create eligibility.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        receives_ssi: true
+      person2:
+        receives_ssi: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_non_cash_eligible: false
+  output:
+    meets_snap_categorical_eligibility: false
+
+- name: Explicit receives_tanf false does not suppress eligibility from computed TANF.
+  period: 2022-01
+  input:
+    is_tanf_non_cash_eligible: false
+    receives_tanf: false
+    tanf: 3_000
   output:
     meets_snap_categorical_eligibility: true

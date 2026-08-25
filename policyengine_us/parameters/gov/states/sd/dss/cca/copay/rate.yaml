@@ -1,0 +1,17 @@
+description: South Dakota sets the family co-payment as this share of countable income above the co-payment threshold under the Child Care Assistance program.
+
+# The co-payment equals gross monthly countable income in excess of 170% of the
+# federal poverty level multiplied by 5% (a 95% reduction) (Subsidy Manual,
+# Section 9).
+values:
+  2026-08-01: 0.05
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA co-payment rate
+  reference:
+    - title: South Dakota Child Care Assistance Subsidy Manual, Section 9 Recipient Co-payment and Length of Eligibility
+      href: https://dss.sd.gov/docs/childcare/assistance/Subsidy_Manual.pdf#page=21
+    - title: South Dakota 2026 Child Care Subsidy Co-Payments (Sliding Fee Scale)
+      href: https://dss.sd.gov/docs/childcare/assistance/Sliding_Fee_Scale.pdf

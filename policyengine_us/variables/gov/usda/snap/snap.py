@@ -15,21 +15,5 @@ class snap(Variable):
         "gov.usda.snap",
         "gov.ssa",
     ]
-
-    def formula(spm_unit, period, parameters):
-        takes_up = spm_unit("takes_up_snap_if_eligible", period)
-        is_in_microsim = hasattr(spm_unit.simulation, "dataset")
-        if parameters(period).gov.usda.snap.abolish_snap:
-            return 0
-        value = add(
-            spm_unit,
-            period,
-            [
-                "snap_normal_allotment",
-                "snap_emergency_allotment",
-                "dc_snap_temporary_local_benefit",
-            ],
-        )
-        if is_in_microsim:
-            return value * takes_up
-        return value
+    defined_for = "takes_up_snap_if_eligible"
+    adds = ["snap_if_takes_up"]

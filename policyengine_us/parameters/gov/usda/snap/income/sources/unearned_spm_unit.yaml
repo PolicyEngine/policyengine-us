@@ -1,0 +1,12 @@
+description: SPM unit-level income sources that count as unearned income for SNAP
+
+values:
+  2009-01-01:
+    # (i) Unit-level assistance payments are counted in full since they
+    # cannot be attributed to an individual ineligible member.
+    - tanf
+
+metadata:
+  reference:
+    - title: 7 CFR 273.9(b)(2)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2

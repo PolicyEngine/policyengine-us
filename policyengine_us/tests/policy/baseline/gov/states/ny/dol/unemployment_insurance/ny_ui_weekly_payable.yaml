@@ -1,0 +1,230 @@
+# Tests for New York UI weekly payable amount (P803 hours-based system).
+# The weekly amount is the hours-tier fraction of the WBR, with a single
+# earnings ceiling:
+#   - Earnings cap: gross earnings > max WBR -> $0 for the week (P803).
+#   - Hours-tier reduction: fraction of WBR based on weekly hours worked
+#     (0-10 hrs -> full WBR; 11-16 -> 75%; 17-21 -> 50%; 22-30 -> 25%; 31+ -> 0).
+# No § 525 / § 590(5)(c) earnings taper is applied (displaced by the hours system).
+# References: Ch. 277 of the Laws of 2021 § 31; NY Lab. Law § 590; NYSDOL P803.
+
+- name: Case 1, fully unemployed and monetarily eligible - full WBR paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Monetarily eligible (HQ >= $3,400; 4 qtrs; $28,000 >= 1.5 * $10,000).
+        ny_ui_monetarily_eligible: true
+        # WBR = floor($10,000 / 26) = $384.
+        ny_ui_weekly_benefit_rate: 384
+        # 0 hours, 0 earnings -> full WBR payable.
+        ny_ui_weekly_payable: 384
+
+- name: Case 2, partial employment in 11-16 hour tier - 75 percent of WBR paid.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 13
+        ny_ui_gross_weekly_earnings: 200
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384. Earnings $200 <= max WBR ($504) -> not earnings-cap
+        # disqualified. 13 hours -> tier 2, 75% of WBR.
+        # Partial amount = 0.75 * $384 = $288.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 288
+
+- name: Case 3, earnings exceed max WBR - no benefit for the week.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 870
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 2026 max WBR = $869.
+        # Earnings $870 > $869 -> earnings-cap disqualified -> $0.
+        ny_ui_weekly_payable: 0
+
+- name: Case 4, earnings above the old PBC threshold but under the cap - still paid.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 600
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; 2026 max WBR = $869; earnings $600 <= $869 so not
+        # cap-disqualified. Under the P803 hours system there is no § 590(5)(c)
+        # earnings taper: 5 hours is the 0-10 tier (full rate), so the full WBR
+        # is paid even though earnings exceed the former WBR + PBC threshold.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 384
+
+- name: Case 5, monetarily ineligible - no weekly payment regardless of hours.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 1_000
+        ny_ui_base_period_wages: 3_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # HQ $1,000 < $3,400 (2025 minimum) -> monetarily ineligible.
+        ny_ui_monetarily_eligible: false
+        ny_ui_weekly_payable: 0
+
+- name: Case 6, earnings at the former WBR + PBC threshold no longer zero the benefit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 576
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384. Earnings $576 equal the former § 525 WBR + PBC threshold,
+        # which is not applied under the P803 hours system. $576 <= $869 cap and
+        # 5 hours is the full-rate tier, so the full WBR is paid.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 384
+
+- name: Case 7, boundary - earnings exactly equal max WBR remain payable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ny_ui_high_quarter_wages: 50_000
+        ny_ui_base_period_wages: 150_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 5
+        ny_ui_gross_weekly_earnings: 869
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # Earnings equal to the $869 maximum are not above the earnings cap.
+        # WBR = $869; 5 hours -> full tier rate, so weekly payable remains $869.
+        ny_ui_weekly_benefit_rate: 869
+        ny_ui_weekly_payable: 869
+
+- name: Case 8, zero hours with positive earnings under the cap - full WBR.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 0
+        ny_ui_gross_weekly_earnings: 300
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384; 2025 max WBR = $504.
+        # Earnings $300 <= $504 -> not earnings-cap disqualified.
+        # 0 hours -> not "partially employed", so the select default (full WBR)
+        # applies regardless of the earnings offset.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 384
+
+- name: Case 9, boundary - earnings one dollar below WBR + PBC remain payable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 10_000
+        ny_ui_base_period_wages: 28_000
+        ny_ui_quarters_with_wages: 4
+        ny_ui_weekly_hours_worked: 13
+        ny_ui_gross_weekly_earnings: 575
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # WBR = $384. Earnings $575 <= $869 cap -> not disqualified.
+        # 13 hours -> tier 2 (0.75); partial amount = 0.75 * $384 = $288.
+        ny_ui_weekly_benefit_rate: 384
+        ny_ui_weekly_payable: 288

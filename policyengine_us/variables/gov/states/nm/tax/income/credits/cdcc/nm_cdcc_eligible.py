@@ -30,7 +30,9 @@ class nm_cdcc_eligible(Variable):
         joint_eligible = both_have_earnings | disabled_eligible
         employment_eligible = where(joint, joint_eligible, head_has_earnings)
         # Filer can not receive tanf to be eligible
-        receives_tanf = tax_unit.spm_unit("tanf", period) > 0
+        receives_tanf = (tax_unit.spm_unit("tanf", period) > 0) | (
+            add(tax_unit.spm_unit, period, ["receives_tanf"]) > 0
+        )
         # Filers have to have modified gross income at or below a limit
         nm_modified_gross_income = tax_unit("nm_modified_gross_income", period)
         income_limit = (

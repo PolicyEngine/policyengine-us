@@ -21,3 +21,20 @@
     age: 100
   output:
     commodity_supplemental_food_program: 330
+
+- name: Child support received counts toward CSFP income, pushing over the limit
+  period: 2026
+  input:
+    employment_income: 21_600
+    child_support_received: 3_000
+    age: 62
+  output:
+    commodity_supplemental_food_program: 0
+
+- name: Same earnings without child support stay under the limit
+  period: 2026
+  input:
+    employment_income: 21_600
+    age: 62
+  output:
+    commodity_supplemental_food_program: 651

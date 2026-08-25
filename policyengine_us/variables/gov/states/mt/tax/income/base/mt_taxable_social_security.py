@@ -47,13 +47,31 @@ class mt_taxable_social_security(Variable):
         )
         # line 10: get amount based on filing status
         filing_status = person.tax_unit("filing_status", period)
-        threshold_amount = p.lower[filing_status]
+        statuses = filing_status.possible_values
+        # Montana's Taxable Social Security Benefits Schedule computes married
+        # taxpayers in separate columns, applying half the joint base amounts
+        # to each spouse's column (Form 2, page 6, lines 10 and 12: married
+        # filing separately enters $16,000/$6,000 in columns A and B). Map
+        # joint filers to the married-filing-separately thresholds so the base
+        # amounts are applied once per couple rather than in full per spouse.
+        uses_separate_threshold = filing_status == statuses.JOINT
+        lower_amount = where(
+            uses_separate_threshold,
+            p.lower["SEPARATE"],
+            p.lower[filing_status],
+        )
+        upper_amount = where(
+            uses_separate_threshold,
+            p.upper["SEPARATE"],
+            p.upper[filing_status],
+        )
+        threshold_amount = lower_amount
         # line 11: line 9 - line 10 (income_reduced_by_subtractions - threshold_amount)
         income_reduced_by_subtractions_and_threshold = max_(
             0, income_reduced_by_subtractions - threshold_amount
         )
         # line 12: get amount based on filing status
-        amount_lower = p.upper[filing_status] - p.lower[filing_status]
+        amount_lower = upper_amount - lower_amount
         # lien 13: line 11 - line 12
         minimum_tax_threshold = max_(
             0, income_reduced_by_subtractions_and_threshold - amount_lower

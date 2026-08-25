@@ -98,3 +98,36 @@
     # disable test:
     #mo_federal_income_tax_deduction: 678.4
     mo_adjusted_gross_income: 100_000
+
+- name: Refundable CTC does not reduce the deduction base (MO-1040 Line 9 is 1040 Line 22, undiminished by Line 28 — issue 9094)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # taxsim issue 1104 record - HoH, one child, $70,512.51 wages.
+    # Base is 121.50 + 2,800 recovery rebate + 3,000 refundable CTC = 5,921.50;
+    # times 15% (AGI between 50,001 and 100,000) = 888.23.
+    mo_adjusted_gross_income: 70_512.51
+    income_tax: 121.5
+    recovery_rebate_credit: 2_800
+    refundable_ctc: 3_000
+    eitc: 0
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 888.23
+
+- name: 2021 refundable CDCC does not reduce the deduction base (Schedule 3 Line 13g is not in the Line 9 worksheet)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    # Base is 1,000 + 500 = 1,500; times 25% (AGI between 25,001 and 50,000) = 375.
+    mo_adjusted_gross_income: 30_000
+    income_tax: 1_000
+    cdcc: 500
+    recovery_rebate_credit: 0
+    refundable_ctc: 0
+    eitc: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 375

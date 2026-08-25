@@ -25,6 +25,12 @@ class al_tanf_countable_earned_income(Variable):
         p = parameters(period).gov.states.al.dhs.tanf.income
         gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
         work_expense = gross_earned * p.work_expense_rate
-        # Child care is deducted from earned income per r. 660-2-2-.30(2)(c).
+        # Per r. 660-2-2-.30(2)(c), the cost (on an as-paid basis) of child
+        # care or care for an incapacitated adult living in the same home
+        # and receiving FA is deducted from earned income, with no cap.
         childcare_expenses = spm_unit("childcare_expenses", period)
-        return max_(gross_earned - work_expense - childcare_expenses, 0)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
+        return max_(
+            gross_earned - work_expense - childcare_expenses - adult_care_expenses,
+            0,
+        )

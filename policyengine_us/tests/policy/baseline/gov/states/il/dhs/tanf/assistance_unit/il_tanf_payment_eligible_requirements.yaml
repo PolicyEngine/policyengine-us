@@ -24,3 +24,13 @@
     state_code: IL
   output:
     il_tanf_payment_eligible_requirements: false
+
+- name: Case 4, reported SSI receipt makes the person payment ineligible.
+  period: 2022-01
+  input:
+    il_tanf_immigration_status_eligible_person: true
+    ssi: 0
+    receives_ssi: true
+    state_code: IL
+  output:
+    il_tanf_payment_eligible_requirements: false

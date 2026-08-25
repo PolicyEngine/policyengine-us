@@ -1,0 +1,16 @@
+description: Arizona counts this fraction of rent as property taxes paid under its property tax credit; this rate is a modeling assumption, as Arizona applies the landlord-specific property tax factor from Form 201 rather than a statutory fraction.
+metadata:
+  unit: /1
+  period: year
+  label: Arizona property tax credit rent property tax rate
+  reference:
+    - title: 43-1072. Earned credit for property taxes; residents sixty-five years of age or older - (B), (C)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072.htm
+    - title: 2021 Property Tax Refund (Credit) Claim Form 140PTC - Lines 13-15
+      href: https://azdor.gov/sites/default/files/2023-09/FORMS_INDIVIDUAL_2021_140PTC-f.pdf#page=1
+    - title: 2022 Renter's Certificate of Property Taxes Paid Form 201 - Part 3
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_201_f.pdf#page=1
+    # The 0.15 rate matches the assumption applied in NBER TAXSIM, as no
+    # statutory rate exists; the actual factor varies by landlord.
+values:
+  2021-01-01: 0.15

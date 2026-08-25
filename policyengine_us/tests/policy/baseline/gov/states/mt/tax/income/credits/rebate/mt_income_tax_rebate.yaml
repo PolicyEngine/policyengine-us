@@ -1,4 +1,10 @@
-- name: Single filer with liability above the rebate amount
+# The rebate is keyed to the 2021 tax year (MCA 15-30-2191(1)); it was paid out
+# in 2023 but is booked in the eligibility year. All active-year cases therefore
+# run at period 2021. Cases at 2022 and 2023 guard the year-scoping added by
+# amount.yaml's `2022-01-01: 0` entries: without them, backdating fills the 2021
+# amounts forward and every Montana filer receives a phantom rebate credit.
+
+- name: Single filer receives the full single rebate
   period: 2021
   input:
     people:
@@ -13,10 +19,11 @@
         members: [person1]
         state_code: MT
   output:
-    mt_income_tax_rebate: 1_250
+    mt_income_tax_rebate: [1_250]
 
-- name: Joint filers with liability above the rebate amount
+- name: Joint filers split the per-return rebate across each spouse's column
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -35,11 +42,14 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_income_tax_rebate: 2_500
+    # $2,500 per-return cap split $1,250 per spouse (sums to $2,500, not $5,000)
+    mt_income_tax_rebate: [1_250, 1_250]
+    # End to end: 2,518.22 pre-credit - 2,500 pooled rebate = 18.22
+    mt_income_tax: 18.22
 
-- name: Rebate is capped at the income tax liability (MCA 15-30-2191(2)(b))
-  absolute_error_margin: 1
+- name: Rebate cannot drive liability below zero (MCA 15-30-2191(2))
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -58,10 +68,15 @@
         members: [person1, person2]
         state_code: MT
   output:
-    # Lesser of $2,500 or the pre-credit liability, not the flat amount.
-    # (Montana's credit application already floors the applied credit, so
-    # this fixes the variable's reported value, not the tax outcome.)
-    mt_income_tax_rebate: 252.40
+    # The statutory "lesser of the amount or the liability" cap is enforced by
+    # the ordered credit application, not by the rebate variable: the full
+    # $2,500 is reported, but the joint path floors at zero, so a household
+    # whose pre-credit liability is only $252.40 keeps $252.40 of benefit and
+    # no more. (mt_income_tax itself goes to -33.81 here from the refundable
+    # Montana EITC, which is unrelated to the rebate.)
+    mt_income_tax_rebate: [1_250, 1_250]
+    mt_income_tax_before_non_refundable_credits_joint: 252.40
+    mt_income_tax_before_refundable_credits_joint: 0
 
 - name: No rebate outside Montana
   period: 2021
@@ -78,10 +93,11 @@
         members: [person1]
         state_code: AR
   output:
-    mt_income_tax_rebate: 0
+    mt_income_tax_rebate: [0]
 
-- name: No rebate in 2022
+- name: No rebate in 2022, and no phantom credit against 2022 tax
   period: 2022
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -95,4 +111,24 @@
         members: [person1]
         state_code: MT
   output:
-    mt_income_tax_rebate: 0
+    mt_income_tax_rebate: [0]
+    mt_non_refundable_credits: [0]
+    # Without the 2022 zeroing the leaked $1,250 would cut this to 996.00
+    mt_income_tax: 2_246.00
+
+- name: No rebate in 2023, the year the rebate was actually paid out
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_income_tax_rebate: [0]

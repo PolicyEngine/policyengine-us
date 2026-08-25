@@ -1,0 +1,56 @@
+# Guards that in_blind_disabled_property_tax_credit flows through the
+# state_property_tax_credits umbrella (taxsim_state_property_tax_credit) from
+# 2026, stacking with the over-65 credit, and is excluded in 2025 by the
+# year-keyed list (the standalone variable has no in_effect gate).
+
+- name: 2026 umbrella stacks the blind/disabled credit with the over-65 credit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status:
+          2024: SINGLE
+          2026: SINGLE
+        adjusted_gross_income:
+          2024: 30_000
+          2026: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # A disabled senior homeowner qualifies for all three SEA 1 credits, which
+    # stack in the umbrella: over-65 $150 (senior, 2024 AGI 30,000 under the
+    # limit, homeowner) + blind/disabled $125 + supplemental homestead $200
+    # (10% of 2,000, capped at $300) = $475.
+    in_over_65_property_tax_credit: 150
+    in_blind_disabled_property_tax_credit: 125
+    in_supplemental_homestead_credit: 200
+    taxsim_state_property_tax_credit: 475
+
+- name: 2025 umbrella excludes the blind/disabled credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_disabled: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    # The credit is only in the 2026 list block, so the umbrella is 0 in 2025.
+    taxsim_state_property_tax_credit: 0

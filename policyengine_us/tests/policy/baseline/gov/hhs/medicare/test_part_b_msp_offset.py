@@ -140,6 +140,37 @@ def test_msp_part_b_premium_coverage_scales_with_eligible_months():
     )
 
 
+def test_msp_part_a_premium_coverage_scales_with_qmb_eligible_months():
+    monthly_qmb_eligibility = {
+        f"{PERIOD}-{month:02d}": month <= 3 for month in range(1, 13)
+    }
+    sim = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "person": {
+                    "age": {PERIOD: 65},
+                    "is_medicare_eligible": {PERIOD: True},
+                    "medicare_enrolled": {PERIOD: True},
+                    "base_part_a_premium": {PERIOD: 6_216},
+                    "is_qmb_eligible": monthly_qmb_eligibility,
+                }
+            },
+            "households": {"household": {"members": ["person"]}},
+            "tax_units": {"tax_unit": {"members": ["person"]}},
+            "spm_units": {"spm_unit": {"members": ["person"]}},
+            "families": {"family": {"members": ["person"]}},
+            "marital_units": {"marital_unit": {"members": ["person"]}},
+        },
+    )
+
+    assert sim.calculate("msp_part_a_premium_coverage", PERIOD)[0] == pytest.approx(
+        1_554,
+        abs=1e-6,
+    )
+    assert sim.calculate("medicare_part_a_premium", PERIOD)[0] == pytest.approx(4_662)
+
+
 def test_historical_msp_asset_eligibility_uses_federal_default():
     sim = Simulation(
         tax_benefit_system=SYSTEM,

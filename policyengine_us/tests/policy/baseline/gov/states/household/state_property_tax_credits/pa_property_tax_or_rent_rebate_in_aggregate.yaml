@@ -1,0 +1,24 @@
+# Guards against pa_property_tax_or_rent_rebate being dropped from the 2026
+# state property tax credits aggregate again (it was accidentally removed and is
+# restored by this PR). The underlying rebate parameters carry their 2025 values
+# forward, so a qualifying 2026 household must flow through the year-keyed list.
+
+- name: PA rebate flows into the aggregate in 2026
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 0
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 8_550
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_property_tax_or_rent_rebate: 1_000
+    taxsim_state_property_tax_credit: 1_000

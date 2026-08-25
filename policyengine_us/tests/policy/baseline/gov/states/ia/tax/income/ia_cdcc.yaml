@@ -1,8 +1,10 @@
 - name: IA cdcc unit test 1
+  # Pre-2023 the percentage is keyed on net income (IA 1040 line 26),
+  # per the Line 60 worksheet and r. 701-304.15.
   period: 2021
   input:
     cdcc_potential: 1_000
-    ia_taxable_income: 9_999.99
+    ia_net_income: 9_999.99
     state_code: IA
   output:
     ia_cdcc: 750
@@ -11,7 +13,7 @@
   period: 2022
   input:
     cdcc_potential: 1_000
-    ia_taxable_income: 40_000
+    ia_net_income: 40_000
     state_code: IA
   output:
     ia_cdcc: 300
@@ -20,10 +22,104 @@
   period: 2022
   input:
     cdcc_potential: 1_000
-    ia_taxable_income: 90_000
+    ia_net_income: 90_000
     state_code: IA
   output:
     ia_cdcc: 0
+
+- name: IA cdcc denied above 90k net income even when taxable income is below (taxsim #1108)
+  # TaxAct Child Credits worksheet for the policyengine-taxsim#1108
+  # record: line 2 (net income, line 26 A+B) = 97,058 -> decimal
+  # 0.000000 -> line 60 = 0, even though taxable income (80,303,
+  # after the federal-tax and standard deductions) is under 90k.
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 41
+        employment_income: 94_286
+        taxable_interest_income: 2_773
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 2_707
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: IA
+  output:
+    ia_net_income: [97_059, 0]
+    ia_cdcc: 0
+
+- name: IA cdcc 45k threshold gets 30 percent from 2021
+  # r. 701-304.15 2021+ column: "$45,000 or more but less than $90,000" is 30%.
+  period: 2021
+  input:
+    cdcc_potential: 1_000
+    ia_net_income: 45_000
+    state_code: IA
+  output:
+    ia_cdcc: 300
+
+- name: IA cdcc 45k-90k band mid-point 30 percent from 2021
+  period: 2021
+  input:
+    cdcc_potential: 1_000
+    ia_net_income: 60_000
+    state_code: IA
+  output:
+    ia_cdcc: 300
+
+- name: IA cdcc combines both spouses net income for the 90k cutoff
+  # 2021 Expanded Instructions p. 86: "If you are married, your net income
+  # and the net income of your spouse must be combined to determine if you
+  # qualify"; worksheet line 2 is line 26 columns A and B. Each spouse is
+  # under 90k but the combined 100k is over.
+  period: 2021
+  input:
+    people:
+      head:
+        ia_net_income: 50_000
+      spouse:
+        ia_net_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        cdcc_potential: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IA
+  output:
+    ia_cdcc: 0
+
+- name: IA cdcc 45k-90k band gives no credit before 2021
+  # r. 701-304.15: "$45,000 or more but less than $90,000" is
+  # "No Credit" for tax years before January 1, 2021 (the 30% band
+  # extension to 90k starts in 2021).
+  period: 2020
+  input:
+    cdcc_potential: 1_000
+    ia_net_income: 50_000
+    state_code: IA
+  output:
+    ia_cdcc: 0
+
+- name: IA cdcc 40k-45k band still 30 percent before 2021
+  period: 2020
+  input:
+    cdcc_potential: 1_000
+    ia_net_income: 44_000
+    state_code: IA
+  output:
+    ia_cdcc: 300
 
 - name: 2023+ IA CDCC uses ia_taxable_income_consolidated (75% bracket)
   # Post-HF 2317 (2023+) IA tax base is federal taxable income, so the

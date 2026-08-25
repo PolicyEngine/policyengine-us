@@ -1,0 +1,18 @@
+description: Ohio uses this indicator to determine whether the modeled Publicly Funded Child Care rules apply.
+
+# The modeled rules took effect 2025-11-02; this MONTH-period parameter is
+# read at the month start, so the value is set at 2025-11-01 (with the other
+# 2025 parameter values) to cover November 2025.
+values:
+  2000-01-01: false
+  2025-11-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Ohio PFCC rules in effect
+  reference:
+    - title: OAC 5180:6-1-02 — Publicly funded child care application and qualification requirements
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-02
+    - title: OAC 5180:6-1-10 — Reimbursement ceilings for publicly funded child care
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-10

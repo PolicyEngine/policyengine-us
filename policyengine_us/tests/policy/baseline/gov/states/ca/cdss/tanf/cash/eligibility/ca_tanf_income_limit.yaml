@@ -236,3 +236,83 @@
     ca_tanf_region1: true
   output:
     ca_tanf_income_limit: 2_698 * 12
+
+- name: Case 13, 2027 R1 family of 1 gets Jul 2026 MBSAC $963.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 963 * 12
+
+- name: Case 14, 2027 R1 family of 4 gets Jul 2026 MBSAC $2,325.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 4
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 2_325 * 12
+
+- name: Case 15, 2027 R1 family of 10 gets Jul 2026 MBSAC $4,202.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: 4_202 * 12
+
+- name: Case 16, 2027 R1 11-person household uses additional $37 above size 10.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 11
+    ca_tanf_region1: true
+  output:
+    ca_tanf_income_limit: (4_202 + 37) * 12
+
+- name: Case 17, 2027 R2 family of 1 gets Jul 2026 MBSAC $914.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 1
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 914 * 12
+
+- name: Case 18, 2027 R2 family of 3 gets Jul 2026 MBSAC $1,859.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 3
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 1_859 * 12
+
+- name: Case 19, 2027 R2 family of 10 gets Jul 2026 MBSAC $3,997.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 10
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: 3_997 * 12
+
+- name: Case 20, 2027 R2 12-person household uses additional $37 per extra person.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    state_code: CA
+    spm_unit_size: 12
+    ca_tanf_region1: false
+  output:
+    ca_tanf_income_limit: (3_997 + 2 * 37) * 12

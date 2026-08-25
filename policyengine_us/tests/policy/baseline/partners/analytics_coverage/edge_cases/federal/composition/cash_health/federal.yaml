@@ -79,6 +79,9 @@
         employment_income_before_lsr: 0
         # Partners send is_medicare_eligible: true at 65 — enables the MSP branch.
         is_medicare_eligible: true
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
     households:
@@ -111,8 +114,8 @@
         is_ssi_eligible: true
         is_ssi_aged: true
         # QMB (countable income $0 <= 100% FPL, assets $0): covers Part A + Part B premiums.
-        # medicare_quarters_of_coverage defaults to 0 (partners do not send it), so Part A
-        # is not premium-free: ($565 Part A full + $202.90 Part B) x 12 = $9,214.80
+        # medicare_quarters_of_coverage is pinned to 0 above, so Part A is not
+        # premium-free: ($565 Part A full + $202.90 Part B) x 12 = $9,214.80
         # (gov/hhs/medicare/part_a/full_premium.yaml, part_b/base_premium.yaml, 2026).
         msp: 9_214.8
         msp_eligible: true

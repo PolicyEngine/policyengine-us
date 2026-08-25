@@ -675,7 +675,7 @@
         members: [person1, person2]
         county_str: MARIN_COUNTY_CA
         state_code_str: CA
-        household_vehicles_value: 33_000  # over the CalWORKs vehicle limit
+        household_vehicles_value: 50_000  # excess equity over the CalWORKs vehicle limit exceeds the resource limit
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -687,7 +687,8 @@
         members: [person1, person2]
   output:
     # Marin GR excludes adults with dependent children. CalWORKs does NOT catch
-    # this family -- the $33,000 vehicle exceeds the CalWORKs vehicle limit, so
+    # this family -- the $50,000 vehicle's equity above the vehicle limit
+    # ($50,000 - $33,499 = $16,501) exceeds the CalWORKs resource limit, so
     # ca_tanf = 0 -- but the explicit dependent-child gate makes the unit
     # ineligible regardless of CalWORKs receipt.
     ca_tanf: 0

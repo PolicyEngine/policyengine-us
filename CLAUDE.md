@@ -10,12 +10,11 @@ At the START of each session, ask the user:
 1. "Yes, load skills" (Recommended) - Load pattern skills for code quality
 2. "No, skip" - Proceed without loading skills
 
-**If Option 1 selected, load ALL of these:**
-- /policyengine-code-style
-- /policyengine-parameter-patterns
-- /policyengine-period-patterns
-- /policyengine-testing-patterns
-- /policyengine-variable-patterns
+**If Option 1 selected, load ALL of these** (from the `policyengine-claude` plugin):
+- /complete:policyengine-model-development (variable, parameter, period, and testing patterns)
+- /complete:policyengine-standards (code style, formatting, changelog, PR workflow)
+
+If these skills are unavailable (plugin not installed), skip loading and proceed.
 
 ---
 
@@ -44,9 +43,11 @@ policyengine-core test path/to/tests -c policyengine_us [-v]
 # Run microsimulation test
 pytest policyengine_us/tests/microsimulation/test_microsim.py
 
-# Run YAML-specific tests
-make test-yaml-structural
-make test-yaml-no-structural
+# Run YAML-specific tests (the suites are sharded; there is no single
+# `test-yaml-no-structural` target — see the Makefile for all shards)
+make test-yaml-structural            # contrib reforms, non-states
+make test-yaml-no-structural-states  # baseline state YAML tests
+make test-yaml-no-structural-other-irs   # e.g. IRS shard; other shards: household, ssa-usda, rest-a, rest-b, hhs, ...
 
 # Generate documentation
 make documentation
@@ -89,7 +90,7 @@ changelog.d/medicaid-ce-exclusions.md
 **DO NOT** edit `CHANGELOG.md` directly or use `changelog_entry.yaml` (deprecated).
 
 ## Project Requirements
-- Python >= 3.11, < 3.15
+- Python >= 3.11, < 3.15 (`requires-python` in pyproject.toml; CI smoke-imports the package on 3.11–3.14)
 - Follow GitHub Flow with PRs targeting the `main` branch (the default branch is `main`, **not** `master`)
 - Every PR needs a changelog fragment in `changelog.d/`
 - **ALWAYS run `make format` before every commit** - this is mandatory
@@ -109,7 +110,7 @@ changelog.d/medicaid-ce-exclusions.md
 - `policyengine_us/programs.yaml` is the single source of truth for program coverage metadata
 - Served via the `/us/metadata` API and consumed by the model coverage page
 - **When adding a new program**: add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`
-- **When extending year coverage**: update `verified_years` (e.g., `"2022-2026"`) after verifying parameters and tests cover the new year
+- **When extending year coverage**: update the entry's year field — most entries use `verified_start_year`, a few use a `verified_years` range (e.g., `"2022-2026"`) — after verifying parameters and tests cover the new year
 - **When adding state implementations**: add to `state_implementations` list under the parent federal program
 - **Status values**: `complete`, `partial`, `in_progress`
 - Keep entries sorted by: Taxes, then Benefits by agency (USDA, HHS, SSA, HUD, FCC, ED, DOE), then State, then Local

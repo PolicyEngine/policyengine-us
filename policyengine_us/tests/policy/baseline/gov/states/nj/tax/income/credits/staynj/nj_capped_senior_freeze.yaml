@@ -20,7 +20,7 @@
         members: [person1]
         state_fips: 34
   output:
-    # ANCHOR = $1,750, leaving $8,250 before the property-tax cap.
+    # ANCHOR = $1,500 (no senior homeowner bonus from 2025), leaving $8,500 before the property-tax cap.
     nj_capped_senior_freeze: 500
 
 - name: Case 2, Senior Freeze is capped after ANCHOR.
@@ -45,8 +45,8 @@
         members: [person1]
         state_fips: 34
   output:
-    # ANCHOR = $1,750, leaving $250 before the property-tax cap.
-    nj_capped_senior_freeze: 250
+    # ANCHOR = $1,500 (no senior homeowner bonus from 2025), leaving $500 before the property-tax cap.
+    nj_capped_senior_freeze: 500
 
 - name: Case 3, no remaining property taxes after capped ANCHOR.
   period: 2026

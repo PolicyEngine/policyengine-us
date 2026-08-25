@@ -19,3 +19,299 @@
     # First $4800 = $67.2
     # 3.2% of the next $200 = $6.4
     hi_income_tax_before_non_refundable_credits: 73.6
+
+# Act 24 (S.B. 3125 C.D. 1, SLH 2026) restructures the rate schedules for
+# taxable years beginning after December 31, 2026, adding a 13% top bracket.
+# TY2026 inertness tests: pre-2027 results must match the Act 46 (2024)
+# schedule exactly - the new bracket's threshold is infinite before 2027.
+- name: Single filer with $2,000,000 in 2026 is unaffected by Act 24
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 2_000_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    #   1.40% * $9,600                       [$134.40]
+    # + 3.20% * ($14,400 - $9,600)           [$153.60]
+    # + 5.50% * ($19,200 - $14,400)          [$264.00]
+    # + 6.40% * ($24,000 - $19,200)          [$307.20]
+    # + 6.80% * ($36,000 - $24,000)          [$816.00]
+    # + 7.20% * ($48,000 - $36,000)          [$864.00]
+    # + 7.60% * ($125,000 - $48,000)         [$5,852.00]
+    # + 7.90% * ($175,000 - $125,000)        [$3,950.00]
+    # + 8.25% * ($225,000 - $175,000)        [$4,125.00]
+    # + 9.00% * ($275,000 - $225,000)        [$4,500.00]
+    # + 10.00% * ($325,000 - $275,000)       [$5,000.00]
+    # + 11.00% * ($2,000,000 - $325,000)     [$184,250.00]
+    # = $210,216.20
+    hi_income_tax_before_non_refundable_credits: 210_216.20
+
+- name: Joint filers with $2,000,000 in 2026 are unaffected by Act 24
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 2_000_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    #   1.40% * $19,200                      [$268.80]
+    # + 3.20% * ($28,800 - $19,200)          [$307.20]
+    # + 5.50% * ($38,400 - $28,800)          [$528.00]
+    # + 6.40% * ($48,000 - $38,400)          [$614.40]
+    # + 6.80% * ($72,000 - $48,000)          [$1,632.00]
+    # + 7.20% * ($96,000 - $72,000)          [$1,728.00]
+    # + 7.60% * ($250,000 - $96,000)         [$11,704.00]
+    # + 7.90% * ($350,000 - $250,000)        [$7,900.00]
+    # + 8.25% * ($450,000 - $350,000)        [$8,250.00]
+    # + 9.00% * ($550,000 - $450,000)        [$4,500.00 -> $9,000.00]
+    # + 10.00% * ($650,000 - $550,000)       [$10,000.00]
+    # + 11.00% * ($2,000,000 - $650,000)     [$148,500.00]
+    # = $200,432.40
+    hi_income_tax_before_non_refundable_credits: 200_432.40
+
+# TY2027 Act 24 schedule (statutory tables in S.B. 3125 C.D. 1 Section 2):
+# rates 1.40%, 2.50%, 5.00%, 6.40%, 6.80%, 7.20%, 7.60%, 8.25%, 9.00%,
+# 10.00%, 11.00%, and 13.00% above $1,000,000 (joint and surviving spouse),
+# $750,000 (head of household), or $500,000 (single and separate).
+- name: Joint filers just below the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 999_900
+    filing_status: JOINT
+    state_code: HI
+  output:
+    # Statutory base at $1,000,000 is $88,729 (see table below), so
+    # $88,729.20 - 11.00% * $100 = $88,718.20
+    hi_income_tax_before_non_refundable_credits: 88_718.20
+
+- name: Joint filers at the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 1_000_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    #   1.40% * $28,800                      [$403.20]
+    # + 2.50% * ($38,400 - $28,800)          [$240.00]
+    # + 5.00% * ($48,000 - $38,400)          [$480.00]
+    # + 6.40% * ($72,000 - $48,000)          [$1,536.00]
+    # + 6.80% * ($96,000 - $72,000)          [$1,632.00]
+    # + 7.20% * ($250,000 - $96,000)         [$11,088.00]
+    # + 7.60% * ($350,000 - $250,000)        [$7,600.00]
+    # + 8.25% * ($450,000 - $350,000)        [$8,250.00]
+    # + 9.00% * ($550,000 - $450,000)        [$9,000.00]
+    # + 10.00% * ($650,000 - $550,000)       [$10,000.00]
+    # + 11.00% * ($1,000,000 - $650,000)     [$38,500.00]
+    # = $88,729.20 (statute: "Over $1,000,000: $88,729.00 plus 13.00%")
+    hi_income_tax_before_non_refundable_credits: 88_729.20
+
+- name: Joint filers $100,000 above the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 1_100_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    # $88,729.20 + 13.00% * $100,000 = $101,729.20
+    hi_income_tax_before_non_refundable_credits: 101_729.20
+
+- name: Surviving spouse at the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 1_000_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: HI
+  output:
+    # Same schedule as joint filers (HRS 235-51(a)): $88,729.20
+    hi_income_tax_before_non_refundable_credits: 88_729.20
+
+- name: Surviving spouse $100,000 above the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 1_100_000
+    filing_status: SURVIVING_SPOUSE
+    state_code: HI
+  output:
+    # $88,729.20 + 13.00% * $100,000 = $101,729.20
+    hi_income_tax_before_non_refundable_credits: 101_729.20
+
+- name: Head of household just below the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 749_900
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: HI
+  output:
+    # Statutory base at $750,000 is $66,547 (see table below), so
+    # $66,546.90 - 11.00% * $100 = $66,535.90
+    hi_income_tax_before_non_refundable_credits: 66_535.90
+
+- name: Head of household at the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 750_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: HI
+  output:
+    #   1.40% * $21,600                      [$302.40]
+    # + 2.50% * ($28,800 - $21,600)          [$180.00]
+    # + 5.00% * ($36,000 - $28,800)          [$360.00]
+    # + 6.40% * ($54,000 - $36,000)          [$1,152.00]
+    # + 6.80% * ($72,000 - $54,000)          [$1,224.00]
+    # + 7.20% * ($187,500 - $72,000)         [$8,316.00]
+    # + 7.60% * ($262,500 - $187,500)        [$5,700.00]
+    # + 8.25% * ($337,500 - $262,500)        [$6,187.50]
+    # + 9.00% * ($412,500 - $337,500)        [$6,750.00]
+    # + 10.00% * ($487,500 - $412,500)       [$7,500.00]
+    # + 11.00% * ($750,000 - $487,500)       [$28,875.00]
+    # = $66,546.90 (statute: "Over $750,000: $66,547.00 plus 13.00%")
+    hi_income_tax_before_non_refundable_credits: 66_546.90
+
+- name: Head of household $100,000 above the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 850_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: HI
+  output:
+    # $66,546.90 + 13.00% * $100,000 = $79,546.90
+    hi_income_tax_before_non_refundable_credits: 79_546.90
+
+- name: Single filer just below the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 499_900
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # Statutory base at $500,000 is $44,365 (see table below), so
+    # $44,364.60 - 11.00% * $100 = $44,353.60
+    hi_income_tax_before_non_refundable_credits: 44_353.60
+
+- name: Single filer at the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 500_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    #   1.40% * $14,400                      [$201.60]
+    # + 2.50% * ($19,200 - $14,400)          [$120.00]
+    # + 5.00% * ($24,000 - $19,200)          [$240.00]
+    # + 6.40% * ($36,000 - $24,000)          [$768.00]
+    # + 6.80% * ($48,000 - $36,000)          [$816.00]
+    # + 7.20% * ($125,000 - $48,000)         [$5,544.00]
+    # + 7.60% * ($175,000 - $125,000)        [$3,800.00]
+    # + 8.25% * ($225,000 - $175,000)        [$4,125.00]
+    # + 9.00% * ($275,000 - $225,000)        [$4,500.00]
+    # + 10.00% * ($325,000 - $275,000)       [$5,000.00]
+    # + 11.00% * ($500,000 - $325,000)       [$19,250.00]
+    # = $44,364.60 (statute: "Over $500,000: $44,365.00 plus 13.00%")
+    hi_income_tax_before_non_refundable_credits: 44_364.60
+
+- name: Single filer $100,000 above the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    # $44,364.60 + 13.00% * $100,000 = $57,364.60
+    hi_income_tax_before_non_refundable_credits: 57_364.60
+
+- name: Separate filer at the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 500_000
+    filing_status: SEPARATE
+    state_code: HI
+  output:
+    # Same schedule as single filers (HRS 235-51(c)): $44,364.60
+    hi_income_tax_before_non_refundable_credits: 44_364.60
+
+- name: Separate filer $100,000 above the 13% threshold in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 600_000
+    filing_status: SEPARATE
+    state_code: HI
+  output:
+    # $44,364.60 + 13.00% * $100,000 = $57,364.60
+    hi_income_tax_before_non_refundable_credits: 57_364.60
+
+- name: Joint filers in the restructured 2.50% and 5.00% brackets in 2027
+  period: 2027
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 100_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    #   1.40% * $28,800                      [$403.20]
+    # + 2.50% * ($38,400 - $28,800)          [$240.00]
+    # + 5.00% * ($48,000 - $38,400)          [$480.00]
+    # + 6.40% * ($72,000 - $48,000)          [$1,536.00]
+    # + 6.80% * ($96,000 - $72,000)          [$1,632.00]
+    # + 7.20% * ($100,000 - $96,000)         [$288.00]
+    # = $4,579.20 (statute base at $96,000 is $4,291.00)
+    hi_income_tax_before_non_refundable_credits: 4_579.20
+
+# TY2029 Act 24 schedule: the 7.60% band is also removed and the widened
+# Act 24 thresholds apply; the 13% bracket thresholds are unchanged.
+- name: Joint filers above the 13% threshold in 2029
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 1_100_000
+    filing_status: JOINT
+    state_code: HI
+  output:
+    #   1.40% * $38,400                      [$537.60]
+    # + 2.50% * ($48,000 - $38,400)          [$240.00]
+    # + 5.00% * ($72,000 - $48,000)          [$1,200.00]
+    # + 6.40% * ($96,000 - $72,000)          [$1,536.00]
+    # + 6.80% * ($250,000 - $96,000)         [$10,472.00]
+    # + 7.20% * ($350,000 - $250,000)        [$7,200.00]
+    # + 8.25% * ($450,000 - $350,000)        [$8,250.00]
+    # + 9.00% * ($550,000 - $450,000)        [$9,000.00]
+    # + 10.00% * ($650,000 - $550,000)       [$10,000.00]
+    # + 11.00% * ($1,000,000 - $650,000)     [$38,500.00]
+    # + 13.00% * ($1,100,000 - $1,000,000)   [$13,000.00]
+    # = $99,935.60 (statute: "Over $1,000,000: $86,936.00 plus 13.00%")
+    hi_income_tax_before_non_refundable_credits: 99_935.60
+
+- name: Single filer above the 13% threshold in 2029
+  period: 2029
+  absolute_error_margin: 1
+  input:
+    hi_taxable_income: 600_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    #   1.40% * $19,200                      [$268.80]
+    # + 2.50% * ($24,000 - $19,200)          [$120.00]
+    # + 5.00% * ($36,000 - $24,000)          [$600.00]
+    # + 6.40% * ($48,000 - $36,000)          [$768.00]
+    # + 6.80% * ($125,000 - $48,000)         [$5,236.00]
+    # + 7.20% * ($175,000 - $125,000)        [$3,600.00]
+    # + 8.25% * ($225,000 - $175,000)        [$4,125.00]
+    # + 9.00% * ($275,000 - $225,000)        [$4,500.00]
+    # + 10.00% * ($325,000 - $275,000)       [$5,000.00]
+    # + 11.00% * ($500,000 - $325,000)       [$19,250.00]
+    # + 13.00% * ($600,000 - $500,000)       [$13,000.00]
+    # = $56,467.80 (statute: "Over $500,000: $43,468.00 plus 13.00%")
+    hi_income_tax_before_non_refundable_credits: 56_467.80

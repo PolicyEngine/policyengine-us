@@ -21,7 +21,5 @@ class co_federal_ctc_child_individual_maximum(Variable):
     def formula(person, period, parameters):
         age = person("age", period)
         base_amount = parameters(period).gov.irs.credits.ctc.amount.base
-        is_dependent = person("is_tax_unit_dependent", period)
-        p = parameters(period).gov.states.co.tax.income.credits.ctc
-        eligible = is_dependent & (age < p.age_threshold)
+        eligible = person("co_ctc_qualifying_child", period)
         return base_amount.calc(age) * eligible

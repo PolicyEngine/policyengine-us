@@ -1,0 +1,32 @@
+description: Counties in Colorado with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-10-01:
+    - ALAMOSA_COUNTY_CO # FIPS 08003
+    - BACA_COUNTY_CO # FIPS 08009
+    - BENT_COUNTY_CO # FIPS 08011
+    - CONEJOS_COUNTY_CO # FIPS 08021
+    - COSTILLA_COUNTY_CO # FIPS 08023
+    - CROWLEY_COUNTY_CO # FIPS 08025
+    - CUSTER_COUNTY_CO # FIPS 08027
+    - FREMONT_COUNTY_CO # FIPS 08043
+    - HINSDALE_COUNTY_CO # FIPS 08053
+    - HUERFANO_COUNTY_CO # FIPS 08055
+    - KIOWA_COUNTY_CO # FIPS 08061
+    - LAS_ANIMAS_COUNTY_CO # FIPS 08071
+    - LINCOLN_COUNTY_CO # FIPS 08073
+    - MINERAL_COUNTY_CO # FIPS 08079
+    - OTERO_COUNTY_CO # FIPS 08089
+    - PUEBLO_COUNTY_CO # FIPS 08101
+    - RIO_GRANDE_COUNTY_CO # FIPS 08105
+    - SAGUACHE_COUNTY_CO # FIPS 08109
+  2025-10-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Colorado
+  reference:
+    - title: USDA FNS Colorado FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/co-abawd-response-fy2025.pdf

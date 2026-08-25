@@ -426,3 +426,29 @@
         state_code: KY
   output:
     ky_cdcc: 200
+
+- name: KY combined-separate election floors the elderly spouse personal credit per column (taxsim 1076)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 58
+        employment_income: 36_269.69
+        taxable_interest_income: 837.70
+      spouse:
+        age: 66
+        employment_income: 1_651.30
+        taxable_interest_income: 837.70
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: true
+    # 66-year-old spouse's $40 over-65 credit dies in her near-zero column
+    # rather than pooling into the head's column.
+    ky_income_tax: 1_353.50

@@ -3,7 +3,7 @@ metadata:
   unit: currency-USD
   label: ACA benchmark premium uprating
   reference:
-    - title: KFF Marketplace Average Benchmark Premiums, 2014-2025
+    - title: KFF Marketplace Average Benchmark Premiums, 2014-2026
       href: https://www.kff.org/affordable-care-act/state-indicator/marketplace-average-benchmark-premiums/
 values:
   # Historical KFF data - actual national average SLCSP premiums
@@ -19,5 +19,7 @@ values:
   2023-01-01: 456
   2024-01-01: 477
   2025-01-01: 497
-  # Values for 2026-2100 are set programmatically in uprating_extensions.py
-  # based on 2024-2025 growth rate
+  2026-01-01: 625
+  # Values for 2027-2100 are set programmatically in uprating_extensions.py.
+  # The published 2026 actual is 25.8% above 2025; the extension treats that
+  # as a one-off level shift and keeps long-run growth at the 2024-2025 trend.

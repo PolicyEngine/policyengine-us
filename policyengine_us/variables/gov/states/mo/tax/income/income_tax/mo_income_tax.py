@@ -14,7 +14,7 @@ class mo_income_tax(Variable):
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.177&bid=49978&hl=",
     )
     defined_for = StateCode.MO
-    # mo_property_tax_credit is refundable, per pg.17 of: https://dor.mo.gov/forms/4711_2021.pdf and the last reference above.
+    # mo_property_tax_credit is refundable, per https://dor.mo.gov/forms/4711_2021.pdf#page=17 and RSMo 135.020.
 
     adds = ["mo_income_tax_before_refundable_credits"]
     subtracts = ["mo_refundable_credits"]

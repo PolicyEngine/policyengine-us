@@ -21,6 +21,14 @@ class ks_income_tax_before_credits(Variable):
             p.joint.calc(taxable_income),
             p.other.calc(taxable_income),
         )
-        zero_tax_agi_threshold = p.zero_tax_threshold[filing_status]
+        # K.S.A. 79-32,110 zeroes the tax below a taxable-income threshold
+        # through 2023 (the K-40 tax table's married-joint column is 0 up to
+        # $5,000 of line 7 taxable income); from 2024 the AGI-based minimum
+        # filing requirement applies instead.
+        zero_tax_taxable_income_threshold = p.zero_tax_threshold[filing_status]
+        zero_tax_agi_threshold = p.agi_zero_tax_threshold[filing_status]
         agi = tax_unit("ks_agi", period)
-        return where(agi <= zero_tax_agi_threshold, 0, tax)
+        no_tax = (taxable_income <= zero_tax_taxable_income_threshold) | (
+            agi <= zero_tax_agi_threshold
+        )
+        return where(no_tax, 0, tax)

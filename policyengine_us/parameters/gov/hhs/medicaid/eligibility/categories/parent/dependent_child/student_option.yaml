@@ -1,0 +1,183 @@
+description: Whether the state elects the federal option to count an 18-year-old full-time student expected to complete secondary or vocational school as a dependent child for the Medicaid parent and other caretaker relative category.
+metadata:
+  unit: bool
+  period: year
+  label: Medicaid parent category dependent child student option
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.4 - definition of dependent child, paragraph (1)
+      href: https://www.law.cornell.edu/cfr/text/42/435.4
+    - title: Texas Works Handbook A-521 - dependent child "under age 18; or if age 18, attends school full-time"
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-520-relationship
+    - title: Florida approved state plan S25 (FL-13-0015-MM1), student option unchecked
+      href: https://ahca.myflorida.com/content/download/7808/file/S25_CMS_Approval_FL-13-0015-MM1-2.pdf#page=1
+    - title: Fla. Admin. Code R. 65A-1.703(2)(e) - child under age 18, no student extension
+      href: https://www.flrules.org/gateway/ruleno.asp?id=65A-1.703
+    - title: Mississippi approved state plan S25 (MS 13-0019-MM1), student option unchecked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/MS/MS-13-0019-MM1.pdf#page=13
+    - title: Mississippi Eligibility Manual Chapter 101 § 101.02.01 - dependent child under age 18
+      href: https://medicaid.ms.gov/wp-content/uploads/2017/10/Chapter-101.pdf#page=8
+    - title: South Carolina approved state plan S25 (SC-13-0014-MM1), student option checked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/SC/SC-13-0014-MM1.pdf#page=14
+    - title: Tennessee approved state plan S25 (TN-21-0010), student option checked
+      href: https://www.tn.gov/content/dam/tn/tenncare/documents2/SSPPParentsAndOtherCaretakerRelatives.pdf#page=1
+    - title: Missouri DSS Manual § 1810.020.20.20 - Eligibility for 18-Year-Olds
+      href: https://dssmanuals.mo.gov/family-mo-healthnet-magi/1810-000-00/1810-020-00/1810-020-20/1810-020-20-20/
+    - title: Wis. Stat. § 49.471(4)(a)4.a. - dependent child includes an 18-year-old full-time student expected to complete school before 19
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/iv/471
+    - title: Wisconsin approved state plan S25 (WI-13-021-MM1), student option checked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/WI/WI-13-021-MM1.pdf#page=13
+    - title: Wyoming approved state plan S25 (WY-13-0008-MM1), student option unchecked
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/WY/WY-13-0008-MM1.pdf#page=14
+    - title: Wyoming Eligibility Operations Manual POL M1204A - caretaker relative of "a child under the age of 18"
+      href: https://ecom.wyo.gov/m1200-family-and-childrens-programs/m1204-family-care/m1204a-family-care
+# Sourced elections only. States marked false without a comment are not
+# verified non-elections: they apply the federal under-18 floor pending a
+# source. In Medicaid-expansion states the impact is limited to category
+# assignment, since parents there qualify for the adult group regardless.
+# The formula's is_full_time_student proxy is broader than the 42 CFR
+# 435.4 option (a full-time student in secondary school or equivalent
+# vocational or technical training): it also captures full-time college
+# students. The strict is_in_secondary_school input is not required
+# because nothing populates it - it has no formula and the dataset
+# maps no CPS column to it - so requiring it would deny the option
+# wherever that obscure input is left unset and zero it out in
+# microsimulation, where only college enrollment carries signal at 18.
+AK:
+  2014-01-01: false
+# Moot: Alabama's S25 leaves the option unchecked, and its current
+# admin code applies an under-19 age limit with no student condition
+# (see age_limit.yaml).
+AL:
+  2014-01-01: false
+AR:
+  2014-01-01: false
+AZ:
+  2014-01-01: false
+CA:
+  2014-01-01: false
+CO:
+  2014-01-01: false
+CT:
+  2014-01-01: false
+DC:
+  2014-01-01: false
+DE:
+  2014-01-01: false
+# Sourced: Florida's approved S25 leaves the student option unchecked,
+# and Fla. Admin. Code R. 65A-1.703(2)(e) limits the group to children
+# under 18 with no student extension.
+FL:
+  2014-01-01: false
+# Moot: Georgia applies an under-19 age limit with no student condition
+# (see age_limit.yaml).
+GA:
+  2014-01-01: false
+HI:
+  2014-01-01: false
+IA:
+  2014-01-01: false
+ID:
+  2014-01-01: false
+IL:
+  2014-01-01: false
+IN:
+  2014-01-01: false
+# Moot: Kansas operates an under-19 age limit (see age_limit.yaml),
+# subsuming its S25 election of the student option (KS 14-0002-MM1).
+# Guard: if Kansas's age_limit is ever returned to 18, flip this to
+# true - the stored false would otherwise silently drop the state's
+# actual S25 election.
+KS:
+  2014-01-01: false
+KY:
+  2014-01-01: false
+LA:
+  2014-01-01: false
+# Moot: Massachusetts covers caretakers of any child younger than 19
+# (see age_limit.yaml, 130 CMR 505.002(C)).
+MA:
+  2014-01-01: false
+MD:
+  2014-01-01: false
+ME:
+  2014-01-01: false
+MI:
+  2014-01-01: false
+MN:
+  2014-01-01: false
+# Sourced: Missouri elects the option (DSS Manual § 1810.020.20.20).
+MO:
+  2014-01-01: true
+# Sourced: Mississippi's approved S25 leaves the student option
+# unchecked, and Eligibility Manual § 101.02.01 covers caretakers of
+# children "under the age of eighteen (18)" only.
+MS:
+  2014-01-01: false
+MT:
+  2014-01-01: false
+NC:
+  2014-01-01: false
+ND:
+  2014-01-01: false
+NE:
+  2014-01-01: false
+NH:
+  2014-01-01: false
+NJ:
+  2014-01-01: false
+NM:
+  2014-01-01: false
+NV:
+  2014-01-01: false
+NY:
+  2014-01-01: false
+OH:
+  2014-01-01: false
+OK:
+  2014-01-01: false
+OR:
+  2014-01-01: false
+PA:
+  2014-01-01: false
+RI:
+  2014-01-01: false
+# Sourced: South Carolina's approved S25 checks the student option
+# (SC-13-0014-MM1).
+SC:
+  2014-01-01: true
+SD:
+  2014-01-01: false
+# Sourced: Tennessee's current approved S25 checks the student option
+# (TN-21-0010, effective 10/1/2021, carrying forward TN 14-0005).
+TN:
+  2014-01-01: true
+# Sourced: Texas Works Handbook A-521 - "under age 18; or if age 18,
+# attends school full-time and expects to graduate in or before the
+# month of their 19th birthday."
+TX:
+  2014-01-01: true
+UT:
+  2014-01-01: false
+VA:
+  2014-01-01: false
+VT:
+  2014-01-01: false
+WA:
+  2014-01-01: false
+# Sourced: Wisconsin's approved S25 checks the student option
+# (WI-13-021-MM1) and Wis. Stat. § 49.471(4)(a)4.a. requires "a
+# full-time student in secondary school or equivalent vocational or
+# technical training" expected to complete before 19. (The BadgerCare
+# Plus Handbook § 2.2.1.3 paraphrase omits the full-time qualifier;
+# the statute and state plan control.)
+WI:
+  2014-01-01: true
+WV:
+  2014-01-01: false
+# Sourced: Wyoming's approved S25 leaves the student option unchecked
+# (WY-13-0008-MM1), and the Eligibility Operations Manual M1204A covers
+# caretakers of "a child under the age of 18."
+WY:
+  2014-01-01: false

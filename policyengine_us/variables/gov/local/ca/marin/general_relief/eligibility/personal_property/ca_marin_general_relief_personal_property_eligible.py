@@ -14,6 +14,13 @@ class ca_marin_general_relief_personal_property_eligible(Variable):
         # unit at exactly the limit is eligible. Personal property is a
         # year-defined stock; read it with period.this_year so this month-defined
         # formula does not divide the balance across months.
-        personal_property = add(spm_unit, period.this_year, ["personal_property"])
+        countable_property = add(
+            spm_unit,
+            period.this_year,
+            [
+                "personal_property",
+                "ca_marin_general_relief_countable_vehicle_value",
+            ],
+        )
         limit = spm_unit("ca_marin_general_relief_personal_property_limit", period)
-        return personal_property <= limit
+        return countable_property <= limit

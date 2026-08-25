@@ -72,3 +72,19 @@
     # SSA-administered facility categories use the combined SSI/SSP
     # income calculation; mi_ssp_person applies the spillover reduction.
     mi_ssp_eligible: true
+
+- name: Case 6, reported SSI receipt satisfies the strict-category SSI check.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        mi_ssp_payment_category: INDEPENDENT_LIVING
+        is_ssi_eligible: false
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    mi_ssp_eligible: true

@@ -174,3 +174,14 @@
     is_optional_senior_or_disabled_asset_eligible: true
   output:
     is_209b_ssi_recipient_for_medicaid: false
+
+- name: Case 17, Connecticut reported SSI receipt qualifies when computed SSI is zero.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 0
+    receives_ssi: true
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    is_209b_ssi_recipient_for_medicaid: true

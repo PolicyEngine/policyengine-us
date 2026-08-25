@@ -1,9 +1,8 @@
-description: New Jersey limits the Stay NJ Property Tax Credit program benefit to this maximum amount.
-values:
-  2026-01-01: 6_500
-
+description: New Jersey limits the Stay NJ Property Tax Credit program benefit to this maximum amount, which varies by gross income from tax year 2027.
 metadata:
-  unit: currency-USD
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
   period: year
   label: New Jersey Stay NJ maximum benefit
   reference:
@@ -11,5 +10,35 @@ metadata:
       href: https://pub.njleg.state.nj.us/Bills/2022/PL23/75_.PDF#page=3
     - title: P.L. 2024, c.88 - Stay NJ Amendment
       href: https://pub.njleg.state.nj.us/Bills/2024/PL24/88_.PDF
+    - title: P.L.2026, c.27 (A-5327), FY2027 Appropriations Act - Stay NJ income-tiered benefit caps
+      href: https://pub.njleg.state.nj.us/Bills/2026/AL26/27_.PDF#page=261
     - title: NJ Division of Taxation - Stay NJ Program
       href: https://www.nj.gov/treasury/taxation/staynj/index.shtml
+# The calendar-year 2026 benefit (a single quarter under original P.L.2023 c.75
+# rules) uses the flat $6,500 cap at all income levels. The FY2027 Appropriations
+# Act replaced the flat cap with an income-tiered schedule for the calendar-year
+# 2027 benefit. The statute states only half-year (two-quarter) caps of
+# $3,250 / $2,500 / $2,000; the annualized maximums below ($6,500 / $5,000 /
+# $4,000) come from the Governor's signing release and are encoded as the durable
+# annual entitlement, consistent with PolicyEngine's annual model. Note this means
+# 2027 output reflects the annual steady state, not the transitional two-quarter
+# CY2027 disbursement the appropriation itself funds. Bands are upper-inclusive
+# ("not in excess of $X"), so the thresholds sit one cent above each round figure.
+# Claimants with income over $200,000 are ineligible (nj_staynj_eligible).
+
+brackets:
+  - threshold:
+      2026-01-01: -.inf
+    amount:
+      2026-01-01: 6_500
+      2027-01-01: 6_500
+  - threshold:
+      2026-01-01: 100_000.01
+    amount:
+      2026-01-01: 6_500
+      2027-01-01: 5_000
+  - threshold:
+      2026-01-01: 150_000.01
+    amount:
+      2026-01-01: 6_500
+      2027-01-01: 4_000

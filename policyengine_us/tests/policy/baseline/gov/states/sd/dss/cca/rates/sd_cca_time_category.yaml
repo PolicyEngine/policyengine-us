@@ -1,0 +1,103 @@
+# Tests for sd_cca_time_category (Person, MONTH, Enum).
+# Level of service by weekly child care hours: Full-Time 28+ hrs/wk;
+# Part-Time 16 to 27 hrs/wk; Limited-Time 1 to 15 hrs/wk (default).
+# childcare_hours_per_week is a YEAR variable read with period.this_year, so
+# the weekly-hours value passes through directly.
+
+- name: Case 1, 40 hours per week, full time.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: FULL_TIME
+
+- name: Case 2, exactly 28 hours per week, full time (at the threshold).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 28
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: FULL_TIME
+
+- name: Case 3, 27 hours per week, part time (just below full time).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 27
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: PART_TIME
+
+- name: Case 4, exactly 16 hours per week, part time (at the threshold).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 16
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: PART_TIME
+
+- name: Case 5, 15 hours per week, limited time (just below part time).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: LIMITED_TIME
+
+- name: Case 6, 5 hours per week, limited time.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 5
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: LIMITED_TIME
+
+- name: Case 7, zero hours per week, limited time (default).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_time_category: LIMITED_TIME

@@ -94,15 +94,16 @@
       person1:
         age: 59
         taxable_interest_income: 5_505
+        mt_income_tax_rebate: 0  # not in TAXSIM35
       person2:
         age: 59
         employment_income: 27010
         taxable_interest_income: 5_505
+        mt_income_tax_rebate: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2]
         aca_ptc: 0  # not in TAXSIM35
-        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -124,10 +125,12 @@
         age: 33
         employment_income: 7010
         taxable_interest_income: 5505
+        mt_income_tax_rebate: 0  # not in TAXSIM35
       person2:
         age: 33
         employment_income: 136010
         taxable_interest_income: 5505
+        mt_income_tax_rebate: 0  # not in TAXSIM35
       person3:
         age: 16
       person4:
@@ -140,7 +143,6 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         local_income_tax: 0  # not in TAXSIM35
-        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -162,10 +164,12 @@
         age: 66
         employment_income: 17010
         taxable_interest_income: 5505.0
+        mt_income_tax_rebate: 0  # not in TAXSIM35
       person2:
         age: 66
         employment_income: 7010
         taxable_interest_income: 5505.0
+        mt_income_tax_rebate: 0  # not in TAXSIM35
       person3:
         age: 11
       person4:
@@ -178,7 +182,6 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         aca_ptc: 0  # not in TAXSIM35
-        mt_income_tax_rebate: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -511,3 +514,56 @@
     mt_regular_income_tax_joint: 1_918
     mt_capital_gains_tax_joint: 1_022.8
     mt_income_tax: 2_940.8
+
+- name: MT 2021 joint elderly couple taxable SS uses the schedule thresholds once, not per spouse (taxsim 1078)
+  period: 2021
+  absolute_error_margin: 5
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 22_432.51
+        taxable_interest_income: 18_181.87
+        taxable_private_pension_income: 4_484.76
+        social_security_retirement: 40_195.39
+      spouse:
+        age: 71
+        employment_income: 670.88
+        taxable_interest_income: 18_181.86
+        taxable_private_pension_income: 4_484.75
+        social_security_retirement: 40_195.38
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # TaxAct status 2a columns: 34,166 + 20,539
+    mt_taxable_social_security: [34_166, 20_539]
+
+- name: MT 2021 joint couple rebate applies once per return, not per spouse (issue 9012)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 90_000
+      spouse:
+        age: 45
+        employment_income: 70_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # $2,500 per-return cap split $1,250 per spouse (was double-counted to $5,000)
+    mt_income_tax_rebate: [1_250, 1_250]
+    # Files separately: 5,099.51 - 1,250 + 3,719.51 - 1,250 = 6,319.02
+    # (old double-count subtracted $2,500 per column, understating tax by $2,500)
+    mt_income_tax: 6_319.02

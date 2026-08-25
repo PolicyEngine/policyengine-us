@@ -1,0 +1,127 @@
+description: Ohio applies this multiplier to the family's federal-poverty-band maximum monthly income to determine the weekly copayment under the Publicly Funded Child Care program.
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Ohio PFCC copayment multiplier
+  reference:
+    - title: OAC 5180:2-16-05 Appendix A — Copayment Calculation Table
+      href: https://codes.ohio.gov/assets/laws/administrative-code/pdfs/5180/2/16/5180$2-16-05_PH_FF_A_APP5_20221201_0903.pdf
+
+# The formula rounds the family's percentage of the federal poverty guideline
+# up to the next five percent, then looks up the multiplier for that band. Each
+# band label below is the rounded band (1.05 = 105% FPG, etc.), but the
+# thresholds are shifted down by 1e-4 (1.05 -> 1.0499, ...) so that a rounded
+# ratio landing exactly on a band, which float32 stores as e.g. 1.0499999,
+# still lands in that band rather than the prior one. The 0.05 spacing must stay
+# in lockstep with the copay/rounding_increment.yaml grid used in
+# oh_ccap_copay.py.
+brackets:
+  - threshold:
+      2022-12-11: 0
+    amount:
+      2022-12-11: 0
+  - threshold:  # 105% FPG
+      2022-12-11: 1.0499
+    amount:
+      2022-12-11: 0.07
+  - threshold:  # 110% FPG
+      2022-12-11: 1.0999
+    amount:
+      2022-12-11: 0.0735
+  - threshold:  # 115% FPG
+      2022-12-11: 1.1499
+    amount:
+      2022-12-11: 0.077
+  - threshold:  # 120% FPG
+      2022-12-11: 1.1999
+    amount:
+      2022-12-11: 0.0805
+  - threshold:  # 125% FPG
+      2022-12-11: 1.2499
+    amount:
+      2022-12-11: 0.084
+  - threshold:  # 130% FPG
+      2022-12-11: 1.2999
+    amount:
+      2022-12-11: 0.0875
+  # 135% through 200% are a flat plateau at 0.0875.
+  - threshold:  # 205% FPG
+      2022-12-11: 2.0499
+    amount:
+      2022-12-11: 0.09
+  - threshold:  # 210% FPG
+      2022-12-11: 2.0999
+    amount:
+      2022-12-11: 0.1
+  - threshold:  # 215% FPG
+      2022-12-11: 2.1499
+    amount:
+      2022-12-11: 0.11
+  - threshold:  # 220% FPG
+      2022-12-11: 2.1999
+    amount:
+      2022-12-11: 0.12
+  - threshold:  # 225% FPG
+      2022-12-11: 2.2499
+    amount:
+      2022-12-11: 0.13
+  - threshold:  # 230% FPG
+      2022-12-11: 2.2999
+    amount:
+      2022-12-11: 0.14
+  - threshold:  # 235% FPG
+      2022-12-11: 2.3499
+    amount:
+      2022-12-11: 0.15
+  - threshold:  # 240% FPG
+      2022-12-11: 2.3999
+    amount:
+      2022-12-11: 0.16
+  - threshold:  # 245% FPG
+      2022-12-11: 2.4499
+    amount:
+      2022-12-11: 0.17
+  - threshold:  # 250% FPG
+      2022-12-11: 2.4999
+    amount:
+      2022-12-11: 0.18
+  - threshold:  # 255% FPG
+      2022-12-11: 2.5499
+    amount:
+      2022-12-11: 0.19
+  - threshold:  # 260% FPG
+      2022-12-11: 2.5999
+    amount:
+      2022-12-11: 0.2
+  - threshold:  # 265% FPG
+      2022-12-11: 2.6499
+    amount:
+      2022-12-11: 0.21
+  - threshold:  # 270% FPG
+      2022-12-11: 2.6999
+    amount:
+      2022-12-11: 0.22
+  - threshold:  # 275% FPG
+      2022-12-11: 2.7499
+    amount:
+      2022-12-11: 0.23
+  - threshold:  # 280% FPG
+      2022-12-11: 2.7999
+    amount:
+      2022-12-11: 0.24
+  - threshold:  # 285% FPG
+      2022-12-11: 2.8499
+    amount:
+      2022-12-11: 0.25
+  - threshold:  # 290% FPG
+      2022-12-11: 2.8999
+    amount:
+      2022-12-11: 0.26
+  # 295% and 300% share the 0.27 multiplier (300% is the eligibility ceiling).
+  - threshold:  # 295% FPG
+      2022-12-11: 2.9499
+    amount:
+      2022-12-11: 0.27

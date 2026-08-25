@@ -70,9 +70,9 @@
         # selects the SUA (NC 3-person: $768). Jan-Sep: pre-shelter net =
         # 2,857.67; shelter expense = 1,500 + 768 = 2,268 - 1,428.83 = 839.17
         # -> capped at 744 -> net = 2,113.67 -> EC 633.90 -> 785 - 633.90 =
-        # 151.10/month; Oct-Dec (cap 760.68): 802.60 - 627.60 = 175.00.
-        # Annual = 9 x 151.10 + 3 x 175.00 = 1,884.90.
-        snap: 1_884.89
+        # 151.10/month; Oct-Dec (cap 770.27): 812.72 - 624.00 = 188.72.
+        # Annual = 9 x 151.10 + 3 x 188.72 = 1,926.06.
+        snap: 1926.06
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (nc)
   period: 2026
@@ -142,3 +142,138 @@
         # ineligible all year.
         snap: 0.0
         is_snap_eligible: false
+
+# NC is one of the four 7 CFR 273.11(c)(3)(i) hybrid states: an undocumented
+# member's income counts in full under the gross income test (and the BBCE
+# gross screen) while counting at the prorated share on the net side.
+- name: snap_nc_head_immigration_undocumented_gross_test_full_count_denies (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 48_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id901
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id901
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id901
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id901
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # The full $4,000/month exceeds both the 130% gross limit and NC's
+        # 200% BBCE screen for the 2-person unit, though the prorated
+        # $2,666.67 would have passed the BBCE screen.
+        snap: 0
+        is_snap_eligible: false
+
+- name: snap_nc_head_immigration_undocumented_prorated_net_benefit (nc)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id902
+        - head
+        - spouse
+        - child1
+        state_code: NC
+        zip_code: '27601'
+        county_str: WAKE_COUNTY_NC
+    spm_units:
+      spm_unit:
+        members: *id902
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id902
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id902
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # The full $1,666.67/month passes the gross screens and the benefit
+        # is computed from the 2/3-prorated income, matching the TX
+        # prorate-state baseline.
+        snap: 4171.75
+        is_snap_eligible: true

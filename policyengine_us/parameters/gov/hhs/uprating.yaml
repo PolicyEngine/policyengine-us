@@ -1,11 +1,11 @@
 description: The US indexes the federal poverty guidelines according to this schedule, annually updating based on CPI-U in the calendar year.
 values:
-  # Actuals averaged from prior 12mo.
+  # Actuals: calendar-year average CPI-U for the labeled year.
   2022-01-01: 292.6
   2023-01-01: 304.7
   2024-01-01: 313.6
+  2025-01-01: 321.9
   # CBO forecasts.
-  2025-01-01: 320.6
   2026-01-01: 328.4
   2027-01-01: 336.1
   2028-01-01: 343.6
@@ -22,6 +22,8 @@ metadata:
   unit: currency-USD
   label: HHS uprating
   reference:
+    - title: BLS | CPI-U annual averages (CUUR0000SA0; calendar-year average encoded at each year's January instant)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: 2025 Annual Update of the HHS Poverty Guidelines
       href: https://www.govinfo.gov/app/details/FR-2025-01-17/2025-01377
     - title: 2024 Annual Update of the HHS Poverty Guidelines

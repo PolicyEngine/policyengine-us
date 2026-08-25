@@ -1,7 +1,7 @@
 # Head Start (gov/hhs/head_start) federal edge cases — TX-shaped template.
 # Per-slot amount = state spending (2023-09-01, uprated by gov.hhs.uprating) / state enrollment.
 # TX 2026: 540_532_752 x (328.4 / 304.7) / 47_286 = 12_320.27
-# TX 2025: 540_532_752 x (320.6 / 304.7) / 47_286 = 12_027.64
+# TX 2025: 540_532_752 x (321.9 / 304.7) / 47_286 = 12_076.41
 # Eligibility: age in [3, 6) AND (AGI <= tax_unit_fpg OR categorical via SNAP/TANF/SSI/homeless/foster).
 # Model tax_unit_fpg (size 2): 21_640 in 2026; 21_150 in 2025.
 - name: head_start_child_age_2_too_young (federal)
@@ -184,8 +184,8 @@
         head_start: 0.0
       child1:
         # 2025 regime differs from 2026 via the HHS uprating factor applied to the
-        # 2023-09-01 spending: 540_532_752 x (320.6 / 304.7) / 47_286 = 12_027.64.
-        head_start: 12_027.64
+        # 2023-09-01 spending: 540_532_752 x (321.9 / 304.7) / 47_286 = 12_076.41.
+        head_start: 12076.41
 - name: head_start_child_age_5_last_eligible_year (federal)
   period: 2026
   absolute_error_margin: 0.1

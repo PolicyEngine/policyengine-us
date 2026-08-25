@@ -1,0 +1,42 @@
+# Social Services Law 410-w caps income eligibility at 85% of the state
+# median income, the sole ceiling since October 1, 2023.
+
+- name: Case 1, income at 85 percent of the state median income is eligible.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 68_000
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: true
+
+- name: Case 2, income above 85 percent of the state median income is ineligible.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 68_001
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: false
+
+# The state income standard limit lapsed on 2023-10-01, so a family far above
+# a multiple of the poverty guideline remains eligible while under 85% of the
+# state median income.
+- name: Case 3, the poverty guideline plays no part in the income test.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 68_000
+    spm_unit_fpg: 10_000
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: true
+
+- name: Case 4, income below 85 percent of the state median income is eligible.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 67_999
+    hhs_smi: 80_000
+    state_code: NY
+  output:
+    ny_ccap_income_eligible: true

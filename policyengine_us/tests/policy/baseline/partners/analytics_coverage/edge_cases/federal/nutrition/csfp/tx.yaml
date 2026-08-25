@@ -43,8 +43,8 @@
       head:
         # Just below the binding TX cutoff: 2026 size-1 FPG = 15,960; TX 130%
         # cutoff = 20,748; ratio 20,700 / 15,960 = 1.2970 <= 1.3 -> eligible
-        # -> flat 601 (gov/usda/csfp/amount.yaml, 2025 value carried to 2026).
-        commodity_supplemental_food_program: 601.0
+        # -> flat 651 (gov/usda/csfp/amount.yaml 2026 value).
+        commodity_supplemental_food_program: 651.0
 - name: csfp_tx_income_between_130_and_150_fpg_ineligible (tx)
   period: 2026
   absolute_error_margin: 0.1
@@ -84,6 +84,6 @@
       head:
         # State-policy differentiator: ratio 22,000 / 15,960 = 1.3784 is above
         # the TX 130% limit but below the federal 150% limit -> $0 in TX
-        # (the same person in a federal-rule state gets 601; see
+        # (the same person in a federal-rule state gets 651; see
         # csfp_income_between_130_and_150_fpg in federal.yaml).
         commodity_supplemental_food_program: 0.0

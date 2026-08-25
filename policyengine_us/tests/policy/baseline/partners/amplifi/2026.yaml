@@ -79,7 +79,7 @@
       member1:
         medicaid: 7954.03
         is_medicaid_eligible: true
-        wic: 723.15
+        wic: 723.73
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -89,7 +89,7 @@
       member2:
         medicaid: 7954.03
         is_medicaid_eligible: true
-        wic: 722.99
+        wic: 723.57
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -110,8 +110,8 @@
       spm_unit:
         ca_tanf: 0.0
         ca_tanf_eligible: false
-        snap: 0.0
-        is_snap_eligible: false
+        snap: 2392.44
+        is_snap_eligible: true
         lifeline: 228.0
         is_lifeline_eligible: true
         la_general_relief: 0.0
@@ -146,7 +146,7 @@
         income_tax_capped_non_refundable_credits: 2508.0
         income_tax_non_refundable_credits: 2508.0
         income_tax: -4130.43
-        ca_income_tax_before_credits: 505.0
+        ca_income_tax_before_credits: 499.83
         ca_income_tax_before_refundable_credits: 0.0
 - name: amplifi_2026_case_b (2026)
   period: 2026
@@ -229,7 +229,7 @@
       member1:
         medicaid: 7770.45
         is_medicaid_eligible: true
-        wic: 723.15
+        wic: 723.73
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -239,7 +239,7 @@
       member2:
         medicaid: 7770.45
         is_medicaid_eligible: true
-        wic: 723.15
+        wic: 723.73
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -260,7 +260,7 @@
       spm_unit:
         ca_tanf: 0.0
         ca_tanf_eligible: false
-        snap: 1908.29
+        snap: 1942.26
         is_snap_eligible: true
         lifeline: 228.0
         is_lifeline_eligible: true
@@ -296,7 +296,7 @@
         income_tax_capped_non_refundable_credits: 1225.0
         income_tax_non_refundable_credits: 1225.0
         income_tax: -7856.39
-        ca_income_tax_before_credits: 273.0
+        ca_income_tax_before_credits: 267.83
         ca_income_tax_before_refundable_credits: 0.0
 - name: amplifi_2026_case_c (2026)
   period: 2026
@@ -380,7 +380,7 @@
       member1:
         medicaid: 8365.37
         is_medicaid_eligible: true
-        wic: 723.15
+        wic: 723.73
         is_aca_ptc_eligible: false
         is_ssi_aged: false
         is_ssi_eligible: false
@@ -411,7 +411,7 @@
       spm_unit:
         ca_tanf: 13280.0
         ca_tanf_eligible: true
-        snap: 4124.09
+        snap: 4157.17
         is_snap_eligible: true
         lifeline: 228.0
         is_lifeline_eligible: true

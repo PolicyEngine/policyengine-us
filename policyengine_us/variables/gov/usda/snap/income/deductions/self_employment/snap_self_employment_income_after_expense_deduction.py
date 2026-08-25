@@ -10,12 +10,7 @@ class snap_self_employment_income_after_expense_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
         self_employment_income = add(
-            spm_unit,
-            period,
-            [
-                "self_employment_income_before_lsr",
-                "sstb_self_employment_income_before_lsr",
-            ],
+            spm_unit, period, ["snap_gross_self_employment_income_person"]
         )
         expense_deduction = spm_unit("snap_self_employment_expense_deduction", period)
         return max_(self_employment_income - expense_deduction, 0)

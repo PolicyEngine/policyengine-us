@@ -369,3 +369,20 @@
         state_code: MD
   output:
     md_paa_eligible: false
+
+- name: Case 18, reported SSI receipt qualifies when computed SSI is zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 0
+        receives_ssi: true
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true

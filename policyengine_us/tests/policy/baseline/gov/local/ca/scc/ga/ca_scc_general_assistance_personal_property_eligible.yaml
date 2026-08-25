@@ -61,3 +61,73 @@
     in_scc: true
   output:
     ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 9, one vehicle at the $4,650 vehicle limit is exempt, eligible.
+  period: 2024-01
+  input:
+    personal_property: 0
+    household_vehicles_owned: 1
+    household_vehicles_value: 4_650
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 10, one vehicle above the $4,650 vehicle limit, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 0
+    household_vehicles_owned: 1
+    household_vehicles_value: 6_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 11, one high-value vehicle, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 0
+    household_vehicles_owned: 1
+    household_vehicles_value: 36_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 12, personal property plus countable vehicle value at the $500 limit, eligible.
+  period: 2024-01
+  input:
+    personal_property: 100
+    # Two vehicles averaging 400 <= 4,650: one exempt, 400 countable.
+    household_vehicles_owned: 2
+    household_vehicles_value: 800
+    in_scc: true
+  output:
+    # 100 + 400 = 500 (at the limit).
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 13, personal property plus countable vehicle value just over the $500 limit, ineligible.
+  period: 2024-01
+  input:
+    personal_property: 101
+    # Two vehicles averaging 400 <= 4,650: one exempt, 400 countable.
+    household_vehicles_owned: 2
+    household_vehicles_value: 800
+    in_scc: true
+  output:
+    # 101 + 400 = 501 (over the limit).
+    ca_scc_general_assistance_personal_property_eligible: false
+
+- name: Case 14, bank assets at the $500 limit count as personal property, eligible.
+  period: 2024-01
+  input:
+    bank_account_assets: 500
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: true
+
+- name: Case 15, bank assets above the $500 limit, ineligible.
+  period: 2024-01
+  input:
+    bank_account_assets: 501
+    in_scc: true
+  output:
+    ca_scc_general_assistance_personal_property_eligible: false

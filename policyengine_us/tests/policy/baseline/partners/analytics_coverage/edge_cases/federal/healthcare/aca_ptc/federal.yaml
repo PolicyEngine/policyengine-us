@@ -550,6 +550,9 @@
         is_pregnant: false
         immigration_status_str: CITIZEN
         employment_income_before_lsr: 30_000
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
         ssi_countable_resources: 0
         is_aca_eshi_eligible: false
     households:

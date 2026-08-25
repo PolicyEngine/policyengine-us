@@ -260,17 +260,14 @@ from .states.ct.hb5009 import (
 from .states.ct.hb5114 import (
     create_ct_hb5114_reform,
 )
+from .states.tx.rebate import (
+    create_tx_rebate_reform,
+)
 from .congress.watca import (
     create_watca_reform,
 )
 from .congress.mcdonald_rivet import (
     create_working_parents_tax_relief_act_reform,
-)
-from .states.nj.stay_nj import (
-    create_nj_stay_nj_reform,
-)
-from .states.nj.anchor import (
-    create_nj_anchor_reform,
 )
 from .refundable_credit_conversion import (
     create_refundable_credit_conversion_reform,
@@ -535,6 +532,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     ct_tax_rebate_2026 = create_ct_tax_rebate_2026_reform(parameters, period)
     ct_hb5009 = create_ct_hb5009_reform(parameters, period)
     ct_hb5114 = create_ct_hb5114_reform(parameters, period)
+    tx_rebate = create_tx_rebate_reform(parameters, period)
     al_hb527_overtime_deduction = create_al_hb527_overtime_deduction_reform(
         parameters, period
     )
@@ -566,8 +564,6 @@ def create_structural_reforms_from_parameters(parameters, period):
     sc_fully_refundable_eitc = create_sc_fully_refundable_eitc_reform(
         parameters, period
     )
-    nj_stay_nj = create_nj_stay_nj_reform(parameters, period)
-    nj_anchor = create_nj_anchor_reform(parameters, period)
     working_parents_tax_relief_act = create_working_parents_tax_relief_act_reform(
         parameters, period
     )
@@ -682,6 +678,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         ct_hb5114,
         ct_sb100,
         ct_tax_rebate_2026,
+        tx_rebate,
         al_hb527_overtime_deduction,
         ca_ab2591,
         ga_sb520,
@@ -707,8 +704,6 @@ def create_structural_reforms_from_parameters(parameters, period):
         oh_refundable_eitc,
         ut_fully_refundable_eitc,
         sc_fully_refundable_eitc,
-        nj_stay_nj,
-        nj_anchor,
         working_parents_tax_relief_act,
         refundable_credit_conversion,
     ]

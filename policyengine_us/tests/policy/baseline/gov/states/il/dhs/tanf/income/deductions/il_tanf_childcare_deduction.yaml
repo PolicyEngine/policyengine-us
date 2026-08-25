@@ -37,3 +37,49 @@
     childcare_expenses: 250 * 12
   output:
     il_tanf_childcare_deduction: 0
+
+- name: Case 5, incapacitated adult care expenses count toward the deduction.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Per 89 Ill. Adm. Code 112.143(b)(1)(C): incapacitated adult care
+    # at the $175/month age-2+ tier. Expenses = 1,200 / 12 = 100/month.
+    il_tanf_childcare_deduction: 100
+
+- name: Case 6, adult care expenses without incapacity are not deducted.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    il_tanf_childcare_deduction: 0

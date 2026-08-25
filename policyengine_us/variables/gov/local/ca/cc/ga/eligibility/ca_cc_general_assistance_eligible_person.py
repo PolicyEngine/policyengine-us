@@ -26,6 +26,7 @@ class ca_cc_general_assistance_eligible_person(Variable):
         # general_assistance.countable_income.sources list.
         receives_categorical = (
             (person("ssi", period) > 0)
+            | person("receives_ssi", period)
             | (person("social_security_disability", period.this_year) > 0)
             | (person("unemployment_compensation", period.this_year) > 0)
             | (person("ca_state_disability_insurance", period.this_year) > 0)

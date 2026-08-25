@@ -10,7 +10,6 @@ class az_property_tax_credit(Variable):
     defined_for = "az_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         p = parameters(period).gov.states.az.tax.income.credits.property_tax
         income = tax_unit("az_property_tax_credit_income", period)
 
@@ -34,8 +33,13 @@ class az_property_tax_credit(Variable):
             p.amount.living_alone.calc(income),
         )
 
-        # Rent counts equally to property taxes.
-        property_tax_plus_rent = add(tax_unit, period, ["real_estate_taxes", "rent"])
-        # property_tax and rent are equally weighted
+        # ARS 43-1072(B): the credit is the lesser of the table amount and
+        # property taxes paid. For renters, taxes paid is rent multiplied by
+        # the landlord's property tax factor from Form 201 (Form 140PTC line
+        # 13); the rent_property_tax_rate parameter approximates this
+        # landlord-specific factor.
+        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        rent = add(tax_unit, period, ["rent"])
+        property_taxes_paid = real_estate_taxes + p.rent_property_tax_rate * rent
 
-        return min_(cap, property_tax_plus_rent)
+        return min_(cap, property_taxes_paid)

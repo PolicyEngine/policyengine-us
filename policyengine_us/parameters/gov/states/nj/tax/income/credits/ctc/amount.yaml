@@ -17,6 +17,10 @@ metadata:
     - title: 2025 NJ-1040 Instructions (Line 65)
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=46
       # New Jersey child tax credit was introduced in 2022
+    - title: P.L.2026, c.26 (S-4531), enacted 2026-06-30 - increases the child tax credit 25% for tax years 2026-2028 (bill passed unamended; introduced text linked as the chaptered PDF is not yet posted)
+      href: https://pub.njleg.state.nj.us/Bills/2026/S5000/4531_I1.HTM
+      # The FY2027 budget raises each amount by 25% for tax years 2026, 2027, and
+      # 2028 only; the credit reverts to the prior amounts in tax year 2029.
 
 brackets:
   - threshold:
@@ -24,26 +28,36 @@ brackets:
     amount:
       2022-01-01: 500
       2023-01-01: 1_000
+      2026-01-01: 1_250
+      2029-01-01: 1_000
   - threshold:
       2022-01-01: 30_000
     amount:
       2022-01-01: 400
       2023-01-01: 800
+      2026-01-01: 1_000
+      2029-01-01: 800
   - threshold:
       2022-01-01: 40_000
     amount:
       2022-01-01: 300
       2023-01-01: 600
+      2026-01-01: 750
+      2029-01-01: 600
   - threshold:
       2022-01-01: 50_000
     amount:
       2022-01-01: 200
       2023-01-01: 400
+      2026-01-01: 500
+      2029-01-01: 400
   - threshold:
       2022-01-01: 60_000
     amount:
       2022-01-01: 100
       2023-01-01: 200
+      2026-01-01: 250
+      2029-01-01: 200
   - threshold:
       2022-01-01: 80_000
     amount:

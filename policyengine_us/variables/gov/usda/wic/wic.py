@@ -15,17 +15,5 @@ class wic(Variable):
     )
     unit = USD
     exhaustive_parameter_dependencies = "gov.usda.wic"
-    defined_for = "is_wic_eligible"
-
-    def formula(person, period, parameters):
-        food_package = person("wic_food_package_str", period)
-        p = parameters(period).gov.usda.wic
-        base_value = p.value[food_package]
-        current_cvb = p.cvb.current[food_package]
-        included_cvb = p.cvb.included_in_value[food_package]
-        cvb_adjustment = p.cvb.replaces_included_value * (current_cvb - included_cvb)
-        value_if_eligible = max_(0, base_value + cvb_adjustment)
-        would_takeup = person("would_claim_wic", period)
-        if p.abolish_wic:
-            return 0
-        return would_takeup * value_if_eligible
+    defined_for = "takes_up_wic_if_eligible"
+    adds = ["wic_if_takes_up"]

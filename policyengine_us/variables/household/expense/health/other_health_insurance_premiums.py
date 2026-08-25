@@ -10,5 +10,6 @@ class other_health_insurance_premiums(Variable):
     uprating = "calibration.gov.hhs.cms.moop_per_capita"
     documentation = (
         "Person-level health insurance premiums not otherwise represented by "
-        "modeled Marketplace, CHIP, Medicaid, or Medicare Part B premiums."
+        "modeled Marketplace, CHIP, Medicaid, Medicare Part A or Part B "
+        "premiums, or the Part D IRMAA surcharge."
     )

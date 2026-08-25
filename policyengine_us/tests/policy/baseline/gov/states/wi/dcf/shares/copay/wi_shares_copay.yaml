@@ -1,0 +1,276 @@
+# Wisconsin Shares assistance group copayment: copay hours (131 part time /
+# 152 full time per child, group total capped at 760) times the hourly
+# copayment, plus the exit-period addition of $1 for every full $5 of income
+# above 200% FPL for enrolled groups. Foster children and W-2 participant
+# families have a $0 copayment type. Wisconsin Shares Handbook (July 2026)
+# Sections 18.2-18.4 and Appendix II; Wis. Stat. s. 49.155(1m)(c)1d.a.
+# Cases 1 and 2 reproduce Appendix II Example 1 (Juniper) and Case 4
+# reproduces the Appendix II Exit-period example (Renee); incomes are derived
+# from FPL ratios with spm_unit_fpg set explicitly.
+- name: Case 1, two part-time children at 115% FPL owe $170.30 (Appendix II Example 1).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 2
+        childcare_hours_per_week: 20
+      person3:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # 0.65/hour x (131 + 131) copay hours = 170.30.
+    wi_shares_copay: 170.30
+
+- name: Case 2, the same family full time owes $197.60 (Appendix II Example 1, summer).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 2
+        childcare_hours_per_week: 40
+      person3:
+        age: 4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # 0.65/hour x (152 + 152) capped copay hours = 197.60.
+    wi_shares_copay: 197.60
+
+- name: Case 3, family at 100% FPL owes no copayment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_copay: 0
+
+- name: Case 4, enrolled family at 207% FPL owes the 200% rate plus a $31 exit copayment (Appendix II).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_511  # 4,709.25/month = 207% of the 27,300 FPG.
+      person2:
+        age: 1
+        childcare_hours_per_week: 15
+      person3:
+        age: 3
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 27_300  # 2,275/month; 200% = 4,550/month.
+        hhs_smi: 120_000  # 85% = 8,500/month, above the family's income.
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # Initial copay: 1.46/hour x (131 + 131) = 382.52.
+    # Exit addition: floor((4,709.25 - 4,550) / 5) = floor(31.85) = 31.
+    # Total: 382.52 + 31 = 413.52.
+    wi_shares_copay: 413.52
+
+- name: Case 5, W-2 participant family has a $0 copayment type.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_copay: 0
+
+- name: Case 6, foster child has a $0 copayment type.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 40
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_copay: 0
+
+- name: Case 7, six full-time children hit the 760-hour assistance group cap.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month = 150% FPL.
+      person2:
+        age: 1
+        childcare_hours_per_week: 40
+      person3:
+        age: 2
+        childcare_hours_per_week: 40
+      person4:
+        age: 3
+        childcare_hours_per_week: 40
+      person5:
+        age: 4
+        childcare_hours_per_week: 40
+      person6:
+        age: 5
+        childcare_hours_per_week: 40
+      person7:
+        age: 6
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 144_000  # 2,000/month per child.
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Each full-time child contributes 152 copayment hours.
+    wi_shares_copay_hours: [0, 152, 152, 152, 152, 152, 152]
+    # Uncapped copay hours 6 x 152 = 912, capped at 760; five-or-more-children
+    # rate at 150% FPL is 0.63/hour: 0.63 x 760 = 478.80.
+    wi_shares_copay: 478.80
+    # The per-child copayment shares use the uncapped 912-hour pool as the
+    # denominator, so each child bears 478.80 x 152 / 912 = 79.80 and the six
+    # shares still sum to exactly the capped group copayment (6 x 79.80 =
+    # 478.80). Milwaukee licensed group full-time subsidies, min(hourly x 153,
+    # 2,000 provider price, full-time cell), each less the 79.80 share:
+    # person2 (age 1): min(11.15 x 153 = 1,705.95, 2,000, 1,695.77) = 1,695.77
+    #   - 79.80 = 1,615.97.
+    # person3 (age 2): min(9.72 x 153 = 1,487.16, 2,000, 1,478.37) = 1,478.37
+    #   - 79.80 = 1,398.57.
+    # person4 (age 3): same as person3 = 1,398.57.
+    # person5 (age 4): min(8.72 x 153 = 1,334.16, 2,000, 1,326.18) = 1,326.18
+    #   - 79.80 = 1,246.38.
+    # person6 (age 5): same as person5 = 1,246.38.
+    # person7 (age 6): min(7.86 x 153 = 1,202.58, 2,000, 1,195.74) = 1,195.74
+    #   - 79.80 = 1,115.94.
+    wi_shares_child_subsidy: [0, 1_615.97, 1_398.57, 1_398.57, 1_246.38, 1_246.38, 1_115.94]
+    # Total subsidies 8,500.61 less the full 478.80 copayment = 8,021.81,
+    # confirming the allocation distributes the entire group copayment.
+    wi_shares: 8_021.81
+
+- name: Case 8, a foster child is excluded from the copayment pool while the sibling still pays.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        is_in_foster_care: true
+      person3:
+        age: 5
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # The foster child contributes no copayment hours, so only one child
+    # counts toward the schedule column: 1.03/hour at 115% FPL.
+    wi_shares_copay_per_hour: 1.03
+    # 1.03 x 152 full-time copay hours for the non-foster sibling.
+    wi_shares_copay: 156.56
+
+- name: Case 9, an enrolled family less than $5 above 200% FPL pays no exit addition.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_048  # 4,004/month, $4 above 4,000 (200% FPL).
+      person2:
+        age: 4
+        childcare_hours_per_week: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000  # 85% = 6,800/month, above the family's income.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Top one-child rate 2.34 x 152 copay hours = 355.68; the exit addition
+    # is $1 per FULL $5 above the limit: floor(4 / 5) = 0.
+    wi_shares_copay: 355.68

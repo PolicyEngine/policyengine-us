@@ -1,0 +1,635 @@
+# Integration tests for 7 CFR 273.11(c)/(d): treatment of income and
+# deductible expenses of ineligible household members.
+# Family of 3: working parent earns $24,000/year ($2,000/month),
+# non-working spouse, child age 8.
+
+- name: Case 1, all-citizen baseline household.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 3
+    snap_earned_income: 2_000
+    snap: 367.7
+
+- name: Case 2, refugee earner is prorated after OBBBA.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: REFUGEE
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    # Counted share: 2 eligible / 3 household members.
+    # $2,000 x 2/3 = $1,333.33
+    snap_earned_income: 1_333.33
+    snap: 288.9
+
+- name: Case 3, undocumented earner in a prorating state.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    snap_earned_income: 1_333.33
+    snap: 288.9
+
+- name: Case 4, undocumented earner in a count-all state.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    snap_unit_size: 2
+    # Massachusetts counts all of the undocumented member's income.
+    snap_earned_income: 2_000
+    snap: 194.4
+
+- name: Case 5, undocumented earner in a hybrid gross-test state.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    snap_unit_size: 2
+    # Net side prorated, gross test counts the full income.
+    snap_earned_income: 1_333.33
+    snap_gross_test_income: 2_000
+    snap: 288.9
+
+- name: Case 6, prorated member's shares of shelter and dependent care expenses are not deductible.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_cost: 12_000
+        childcare_expenses: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # With 2 household members and 1 prorated member paying per capita:
+    # the eligible member's half counts in full and the prorated member's
+    # half is divided evenly, with the eligible member's share counted:
+    # 1/2 + 1/2 x 1/2 = 0.75.
+    snap_expense_counted_share: 0.75
+    # $200/month childcare x 0.75 = $150
+    snap_dependent_care_deduction: 150
+    # ($1,000/month housing x 0.75) - 0.5 x net income pre-shelter = $529.50
+    snap_excess_shelter_expense_deduction: 529.5
+    snap_earned_income: 1_000
+    # Net income is fully offset by deductions, so the unit receives the
+    # one-person maximum allotment.
+    snap: 298
+
+- name: Case 7, ineligible student's income is not counted.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 12_000
+        employment_income_before_lsr: 12_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 20
+        dividend_income: 2_400
+        is_full_time_college_student: true
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_unit_size: 1
+    snap_earned_income: 1_000
+    # The ineligible student's dividend income is excluded entirely.
+    snap_unearned_income: 0
+    snap: 120.7
+
+- name: Case 8, California delays OBBBA so refugees remain eligible in January 2026.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: REFUGEE
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    snap_unit_size: 3
+    snap_income_counted_share: [1, 1, 1]
+    snap_earned_income: 2_000
+    snap: 225.2
+
+- name: Case 9, household with no eligible members receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_eligible: false
+    snap: 0
+
+- name: Case 10, excluded K-12 child earner's self-employment income is not counted.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+        self_employment_income_before_lsr: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 16
+        is_in_k12_school: true
+        self_employment_income: 18_000
+        self_employment_income_before_lsr: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Texas takes no flat percentage deduction, so the parent's $2,000
+    # monthly self-employment income is counted and the child's $1,500 is
+    # excluded under 7 CFR 273.9(c)(7).
+    snap_earned_income: 2_000
+    # Net income: $2,000 - $400 earned income deduction - $209 standard
+    # deduction = $1,391; benefit: $546 - 0.3 x $1,391 = $128.70.
+    snap: 128.7
+
+- name: Case 11, prorated member's self-employment income is prorated like employment income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+        self_employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    # $2,000 monthly self-employment income x 2/3, mirroring Case 3.
+    snap_earned_income: 1_333.33
+    snap: 288.9
+
+- name: Case 12, prorated member's self-employment loss does not offset other members' income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+        self_employment_income_before_lsr: 24_000
+      person2:
+        age: 33
+        self_employment_income: -12_000
+        self_employment_income_before_lsr: -12_000
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    # 7 CFR 273.11(a)(2)(ii) offsets self-employment losses against other
+    # household income only for farming operations, so the prorated
+    # member's $1,000 monthly non-farm loss is dropped and the eligible
+    # member's $2,000 monthly income counts in full.
+    snap_earned_income: 2_000
+    # Net income: $2,000 - $400 earned income deduction - $209 standard
+    # deduction = $1,391; benefit: $546 - 0.3 x $1,391 = $128.70.
+    snap: 128.7
+
+- name: Case 13, excluded elderly member does not confer the gross income test exemption.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 70
+        immigration_status: UNDOCUMENTED
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    snap_unit_size: 3
+    # The elderly grandparent is an excluded member (7 CFR 273.11(c)) and
+    # does not confer household-wide elderly status, so the household's
+    # $4,000 monthly income faces (and fails) the 130% gross income test.
+    has_snap_elderly_disabled_member: false
+    meets_snap_gross_income_test: false
+    snap: 0
+
+- name: Case 14, eligible elderly member confers the gross income test exemption.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 48_000
+        employment_income_before_lsr: 48_000
+      person2:
+        age: 33
+      person3:
+        age: 70
+        immigration_status: CITIZEN
+      person4:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    snap_unit_size: 4
+    has_snap_elderly_disabled_member: true
+    meets_snap_gross_income_test: true
+
+- name: Case 15, the standard utility allowance is not prorated.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_cost: 6_000
+        snap_utility_allowance: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_expense_counted_share: 0.75
+    # Only the $500 monthly housing cost is prorated; the $300 standard
+    # utility allowance is not an expense paid by or billed to the
+    # prorated member, so it counts in full (7 CFR 273.11(c)(2)(iii)):
+    # (0.75 x $500 + $300) - 0.5 x $591 net income pre-shelter = $379.50.
+    # Prorating the allowance as well would yield $304.50.
+    snap_excess_shelter_expense_deduction: 379.5
+
+- name: Case 16, prorated member's unearned income is prorated like earned income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        social_security_retirement: 12_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    # $1,000 monthly Social Security x 2/3.
+    snap_unearned_income: 666.67
+
+- name: Case 17, unit-level assistance counts in full despite a prorated member.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_unit_size: 2
+    # The $200 monthly TANF grant is paid to the unit as a whole and
+    # cannot be attributed to the prorated member, so it counts in full.
+    snap_unearned_income: 200
+
+- name: Case 18, excluded elderly member does not waive the shelter deduction cap.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 70
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        housing_cost: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    has_snap_elderly_disabled_member: false
+    # Counted shelter: 0.75 x $2,000 = $1,500; uncapped deduction
+    # $1,500 - 0.5 x $1,391 = $804.50 exceeds the $744 cap, which applies
+    # because the excluded elderly member does not waive it.
+    snap_excess_shelter_expense_deduction: 744
+
+- name: Case 19, California refugee is prorated once the OBBBA delay lapses.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: REFUGEE
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:
+    # California's ACL 25-92 delay ends 2026-04-01, so by 2027 the
+    # refugee is an excluded member with prorated income, matching the
+    # treatment in non-delaying states.
+    snap_unit_size: 2
+    snap_income_counted_share: [0.6667, 1, 1]
+    snap_earned_income: 1_333.33
+
+- name: Case 20, student, prorated alien, and sanctioned member in one household.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 20
+        is_snap_ineligible_student: true
+      person2:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        # Registration compliance is assumed in baseline; the sanction is
+        # modeled with the explicit noncompliance hook (7 CFR 273.7(f)).
+        is_snap_work_registration_noncompliant: true
+      person4:
+        age: 33
+      person5:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    # Household members exclude the student: 4; unit members exclude the
+    # student, the prorated alien, and the sanctioned member: 2. The
+    # proration fraction is 2/4 and the sanctioned member's share is 1.
+    snap_unit_size: 2
+    snap_prorated_income_fraction: 0.5
+    snap_income_counted_share: [0, 0.5, 1, 1, 1]
+    # Expense share: 1 - (1 + 0.5) / 5 = 0.7.
+    snap_expense_counted_share: 0.7
+    snap_earned_income: 1_000
+
+- name: Case 21, all-ineligible multi-member household receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    snap_unit_size: 0
+    snap_prorated_income_fraction: 0
+    is_snap_eligible: false
+    snap: 0
+
+- name: Case 22, refugee earner counts fully before OBBBA.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: REFUGEE
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Refugees remain SNAP-eligible until OBBBA takes effect in November
+    # 2025, so the earner is a unit member with fully counted income.
+    snap_unit_size: 3
+    snap_income_counted_share: [1, 1, 1]
+    snap_earned_income: 2_000

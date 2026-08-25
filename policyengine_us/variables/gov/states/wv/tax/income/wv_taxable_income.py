@@ -7,7 +7,7 @@ class wv_taxable_income(Variable):
     label = "West Virginia taxable income"
     unit = USD
     definition_period = YEAR
-    reference = "https://code.wvlegislature.gov/11-21-4E/"
+    reference = "https://code.wvlegislature.gov/11-21-11/"
     defined_for = StateCode.WV
 
     def formula(tax_unit, period, parameters):

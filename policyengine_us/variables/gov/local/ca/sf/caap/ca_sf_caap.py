@@ -23,8 +23,9 @@ class ca_sf_caap(Variable):
     #     disability + pending SSI).
     #   - The 15/30-day continuous-residency requirement (SEC. 20.7-11).
     #   - The real-property / home-value test (SEC. 20.7-12).
-    #   - Asset exemptions beyond liquid cash (burial funds, life insurance,
-    #     one vehicle); spm_unit_cash_assets already excludes these (SEC. 20.7-13).
+    #   - Asset exemptions beyond liquid cash (burial funds, life insurance);
+    #     spm_unit_cash_assets already excludes these (SEC. 20.7-13). The
+    #     one-vehicle rule is modeled in ca_sf_caap_vehicle_eligible.
     #   - Identification, finger/photo imaging, fleeing-felon, CalWORKs
     #     time-limit, and SUD-treatment gates (SEC. 20.7-16..20).
     #   - The Mandatory Direct Rent Payment routing (SEC. 20.7-33); we treat the

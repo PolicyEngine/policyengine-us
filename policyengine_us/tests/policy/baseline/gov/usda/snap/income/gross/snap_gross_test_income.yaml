@@ -1,0 +1,147 @@
+- name: Case 1, hybrid state counts the undocumented member's full income under the gross test only.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Net side counts 2/3 of the undocumented member's $2,000: $1,333.33.
+    snap_gross_income: 1_333.33
+    # Gross test counts the full $2,000.
+    snap_gross_test_income: 2_000
+
+- name: Case 2, prorating state uses the prorated income for both tests.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    snap_gross_income: 1_333.33
+    snap_gross_test_income: 1_333.33
+
+- name: Case 3, hybrid state counts the full-count alien's child support deduction in full under the gross test.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        employment_income_before_lsr: 24_000
+        child_support_expense: 3_600
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Arkansas deducts child support from gross income. Net side counts
+    # 2/3 of the $2,000 earnings and 2/3 of the $300 child support:
+    # $1,333.33 - $200 = $1,133.33.
+    snap_gross_income: 1_133.33
+    # Gross test counts the full earnings and the full child support
+    # payment: $2,000 - $300 = $1,700.
+    snap_gross_test_income: 1_700
+
+- name: Case 4, hybrid state counts the full-count alien's self-employment income in full under the gross test only.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+        self_employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Provide the unit-level net directly so the test does not depend
+        # on the state's self-employment expense deduction election.
+        snap_self_employment_income_after_expense_deduction: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # The unit's $2,000 monthly net self-employment income is attributed
+    # to the alien, prorated at 2/3 on the net side and counted in full
+    # under the gross test.
+    snap_earned_income: 1_333.33
+    snap_gross_income: 1_333.33
+    snap_gross_test_income: 2_000
+
+- name: Case 5, another member's self-employment loss neither offsets nor inflates the full-count alien's income.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 24_000
+        self_employment_income_before_lsr: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+        self_employment_income: -12_000
+        self_employment_income_before_lsr: -12_000
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_self_employment_income_after_expense_deduction: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # The eligible member's non-farm loss is floored at zero
+    # (7 CFR 273.11(a)(2)(ii) offsets only farm losses), so the whole
+    # $2,000 monthly net amount is attributed to the alien: the
+    # attribution ratio stays bounded with mixed-sign gross amounts.
+    snap_earned_income: 1_333.33
+    snap_gross_income: 1_333.33
+    snap_gross_test_income: 2_000

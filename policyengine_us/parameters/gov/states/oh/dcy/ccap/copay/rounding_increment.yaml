@@ -1,0 +1,13 @@
+description: Ohio rounds the family's federal-poverty-level ratio up to the next multiple of this increment when computing the copayment under the Publicly Funded Child Care program.
+values:
+  2022-12-11: 0.05
+
+# The increment's spacing must stay in lockstep with the threshold spacing in
+# copay/multiplier.yaml (1.05, 1.10, ...).
+metadata:
+  unit: /1
+  period: year
+  label: Ohio PFCC copayment poverty-ratio rounding increment
+  reference:
+    - title: OAC 5180:2-16-05(B)(3)
+      href: https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-05_20221211.pdf#page=2

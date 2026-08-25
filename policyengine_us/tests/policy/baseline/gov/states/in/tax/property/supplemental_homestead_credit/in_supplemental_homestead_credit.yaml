@@ -1,0 +1,109 @@
+# Indiana supplemental homestead credit (Senate Enrolled Act 1, 2025;
+# IC 6-1.1-20.6-7.7): the lesser of 10% of the homestead property tax liability
+# or $300, for taxes first due and payable in 2026 and after. No age or income
+# limit.
+
+- name: Case 1, 2026 homeowner below the cap receives 10% of property tax.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_supplemental_homestead_credit: 200
+
+- name: Case 2, 2026 homeowner at the $3,000 liability boundary receives the $300 cap.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_supplemental_homestead_credit: 300
+
+- name: Case 3, 2026 homeowner above the cap is limited to $300.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_supplemental_homestead_credit: 300
+
+- name: Case 4, 2026 renter with no real estate taxes receives no credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_supplemental_homestead_credit: 0
+
+- name: Case 5, 2026 non-Indiana homeowner receives no credit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    in_supplemental_homestead_credit: 0
+
+- name: Case 6, 2026 multi-person tax unit is capped once per return.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 1_500
+      person2:
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # 10% of the combined $3,000 is $300, exactly the cap, for the tax unit.
+    in_supplemental_homestead_credit: 300

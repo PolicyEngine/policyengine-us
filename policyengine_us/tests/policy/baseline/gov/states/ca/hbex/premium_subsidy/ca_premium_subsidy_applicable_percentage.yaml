@@ -1,0 +1,345 @@
+# Unit tests for the California Premium Subsidy applicable percentage.
+# Bracket-interpolated from
+# gov.states.ca.hbex.premium_subsidy.applicable_percentage:
+#   threshold: [1.0, 1.5, 1.65]
+#   initial:   [0,   0.0319]
+#   final:     [0,   0.0391]
+# Bands (initial -> final over the FPL band):
+#   100-150% FPL: 0%              (flat)
+#   150-165% FPL: 3.19% -> 3.91%  (interpolated linearly)
+# The percentage depends only on aca_magi_fraction; every expected value is
+# hand-computed inline. The variable itself has no income-band cap (out-of-band
+# clamping to the nearest bracket rate is fine; the ca_premium_subsidy_eligible
+# gate zeroes the subsidy outside 100-165% FPL), so this file checks the raw
+# interpolation, including clamps at 0.99 and 1.66.
+
+# ---- Knot points ----
+
+- name: Case 1, exactly 100% FPL -> 0.00% (start of the flat 100-150% band).
+  # searchsorted([1.0,1.5,1.65], 1.00, "right") = 1, -1 -> bracket 0 [1.0,1.5].
+  # initial 0, final 0 -> 0 regardless of position.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.00
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 2, exactly 150% FPL -> 3.19% (start of the 150-165% ramp).
+  # searchsorted([1.0,1.5,1.65], 1.50, "right") = 2, -1 -> bracket 1 [1.5,1.65].
+  # position (1.50-1.50)/0.15 = 0 -> initial rate 0.0319.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.50
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0319
+
+- name: Case 3, exactly 165% FPL -> 3.91% (top of the ramp).
+  # searchsorted([1.0,1.5,1.65], 1.65, "right") = 3, -1 = 2, clipped to bracket 1.
+  # bracket_start 1.5, bracket_end 1.65, position (1.65-1.5)/0.15 = 1 -> final 0.0391.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.65
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0391
+
+# ---- Mid-bracket interpolations ----
+
+- name: Case 4, 125% FPL -> 0.00% (mid the flat 100-150% band).
+  # bracket 0 [1.0,1.5]: initial 0, final 0 -> 0 regardless of position.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.25
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 5, 157.5% FPL (midpoint of 150-165% band) -> 3.55%.
+  # bracket 1 [1.5,1.65]: position (1.575-1.5)/0.15 = 0.5.
+  # 0.0319 + 0.5*(0.0391-0.0319) = 0.0319 + 0.5*0.0072 = 0.0319 + 0.0036 = 0.0355.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.575
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0355
+
+- name: Case 6, 160% FPL -> 3.67% (upper third of the 150-165% band).
+  # bracket 1 [1.5,1.65]: position (1.60-1.5)/0.15 = 0.6667.
+  # 0.0319 + (2/3)*0.0072 = 0.0319 + 0.0048 = 0.0367.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.60
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0367
+
+# ---- Bracket-boundary / out-of-band clamp semantics ----
+
+- name: Case 7, just above 150% FPL (1.51) -> 3.238% (start of the ramp).
+  # bracket 1 [1.5,1.65]: position (1.51-1.5)/0.15 = 0.0667.
+  # 0.0319 + 0.0667*0.0072 = 0.0319 + 0.00048 = 0.03238.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.51
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.03238
+
+- name: Case 8, just below 150% FPL (1.49) -> 0.00% (top of the flat band).
+  # bracket 0 [1.0,1.5]: initial 0, final 0 -> 0 regardless of position.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.49
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 9, below the 100% floor (0.99) clamps to the first bracket -> 0.00%.
+  # searchsorted([1.0,1.5,1.65], 0.99, "right") = 0, -1 = -1, clipped to bracket 0.
+  # bracket 0 [1.0,1.5]: position (0.99-1.0)/0.5 = -0.02 clipped to 0; initial 0 -> 0.
+  # The eligible gate (fpl_floor 1.0) separately zeroes the subsidy here.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+
+- name: Case 10, above the 165% cap (1.66) clamps to the top bracket rate -> 3.91%.
+  # searchsorted([1.0,1.5,1.65], 1.66, "right") = 3, -1 = 2, clipped to bracket 1.
+  # position (1.66-1.5)/0.15 = 1.067 clipped to 1 -> final 0.0391. The eligible
+  # gate (fpl_limit 1.65) separately zeroes the subsidy above the band, so this
+  # confirms the schedule variable itself does not extrapolate past 3.91%.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.66
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0391
+
+- name: Case 11, negative FPL fraction clamps to the first bracket -> 0.00%.
+  # searchsorted([1.0,1.5,1.65], -0.5, "right") = 0, -1 = -1, clipped to bracket 0.
+  # position (-0.5-1.0)/0.5 = -3 clipped to 0; initial 0 -> 0. Guards against a
+  # negative aca_magi_fraction producing a spurious rate.
+  period: 2026
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: -0.50
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0
+
+# ---- Carry-forward ----
+
+- name: Case 12, PY2027 schedule at 157.5% FPL -> 3.05% (revised 150-165% band).
+  # PY2027 Program Design V4 (Board Res. 2026-22) changes the 150-165% band to
+  # initial 0.0269 -> final 0.0341. bracket 1 [1.5,1.65]:
+  # position (1.575-1.5)/0.15 = 0.5 -> 0.0269 + 0.5*(0.0341-0.0269)
+  # = 0.0269 + 0.5*0.0072 = 0.0269 + 0.0036 = 0.0305.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.575
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0305
+
+# ---- PY2027 new 165-200% FPL tier ----
+
+- name: Case 13, PY2027 exactly 165% FPL -> 3.41% (start of the new 165-200% tier).
+  # PY2027 thresholds [1,1.5,1.65,2.0]. searchsorted(..., 1.65, "right") = 3,
+  # -1 = 2 -> bracket 2 [1.65,2.0], position 0 -> initial rate 0.0341. The 165%
+  # knot now takes the NEW tier's initial rate (2026 had 0.0391 at this point).
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.65
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.0341
+
+- name: Case 14, PY2027 182.5% FPL (midpoint of the new 165-200% tier) -> 4.255%.
+  # bracket 2 [1.65,2.0]: position (1.825-1.65)/0.35 = 0.5.
+  # 0.0341 + 0.5*(0.051-0.0341) = 0.0341 + 0.5*0.0169 = 0.0341 + 0.00845 = 0.04255.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.825
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.04255
+
+- name: Case 15, PY2027 199% FPL (top of the eligible band) -> ~5.05%.
+  # bracket 2 [1.65,2.0]: position (1.99-1.65)/0.35 = 0.34/0.35 = 0.971428...
+  # 0.0341 + 0.971428*(0.051-0.0341) = 0.0341 + 0.971428*0.0169 = 0.0341 +
+  # 0.016417 = 0.050517. Derived (non-round position); confirm against the model.
+  period: 2027
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.99
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_applicable_percentage: 0.050517  # model computes 0.05051714

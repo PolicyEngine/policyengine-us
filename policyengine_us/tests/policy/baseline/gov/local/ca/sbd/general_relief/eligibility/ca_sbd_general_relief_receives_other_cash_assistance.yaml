@@ -1,0 +1,179 @@
+# GR will not subsidize any other cash-assistance program; the handbook
+# names SSI/SSP and CalWORKs recipients, and CAPI falls under the same
+# bar. SSI, SSP, and CAPI bar only the individual recipient; CalWORKs
+# receipt is unit-level and bars every member.
+- name: Case 1, a person with no SSI and no CalWORKs is not barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: false
+
+- name: Case 2, an SSI recipient is barred.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 3, a person reported to receive SSI is barred even with a zero computed amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 4, CalWORKs receipt bars every member of the unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $3,600 per year is $300 per month of TANF (CalWORKs in California).
+        tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: [true, true]
+
+- name: Case 5, a unit reported to receive TANF is barred even with a zero computed amount.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        receives_tanf: true
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 6, an SSP-only recipient is barred like an SSI recipient.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # An SSP-only case: a positive state supplement with no federal SSI.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The handbook's named program pair is "SSI/SSP", so a state-supplement-
+    # only payment also bars its aged recipient.
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+
+- name: Case 7, CAPI receipt bars its recipient and excludes their income from the AU.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        # Without 40 qualifying work quarters (the input defaults to 40),
+        # the LPR is not an SSI-qualified noncitizen — the population CAPI
+        # serves.
+        ssi_qualifying_quarters_earnings: 0
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # $2,400 per year is $200 per month of CAPI.
+        ca_capi: 2_400
+        # Pin the CA state supplement off so only CAPI is in play.
+        ca_state_supplement: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # CAPI is another cash-assistance program, so its aged noncitizen
+    # recipient is barred like an SSI recipient, and a barred member's
+    # income is excluded from AU income entirely.
+    ca_sbd_general_relief_receives_other_cash_assistance: true
+    ca_sbd_general_relief_countable_income: 0
+
+- name: Case 8, declined SSI take-up lifts the SSP bar.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 68
+        ssi: 0
+        takes_up_ssi_if_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        # A positive computed supplement that is never actually received,
+        # since the SSI/SSP payment is not taken up.
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        state_code: CA
+  output:
+    # ca_state_supplement is an ungated computed entitlement; with take-up
+    # declined no SSP check arrives, so the bar lifts like the ssi arm.
+    ca_sbd_general_relief_receives_other_cash_assistance: false

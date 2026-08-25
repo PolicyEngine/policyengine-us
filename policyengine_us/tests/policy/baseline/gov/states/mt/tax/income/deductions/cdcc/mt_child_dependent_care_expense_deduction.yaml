@@ -1,188 +1,396 @@
 - name: Care expense greater than maximum amount with low AGI and 1 child
   period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
-    tax_unit_childcare_expenses: 2_401
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 1_200
-
-- name: Care expense greater than maximum amount with moderate AGI and 1 child
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
-    tax_unit_childcare_expenses: 2_401
-    mt_agi_indiv: 20_000 #Partial reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 700
-
-- name: Care expense greater than maximum amount with high AGI and 1 child
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
-    tax_unit_childcare_expenses: 2_401
-    mt_agi_indiv: 30_000 #Full reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Care expense greater than maximum amount with low AGI and 2 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 3_601
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 1_800
-
-- name: Care expense greater than maximum amount with moderate AGI and 2 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 3_601
-    mt_agi_indiv: 22_000 #Partial reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 800
-
-- name: Care expense greater than maximum amount with high AGI and 2 children
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 3_601
-    mt_agi_indiv: 35_000 #Full reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Care expense greater than maximum amount with low AGI and 3 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 3
-    tax_unit_childcare_expenses: 4_801
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 2_400
-
-- name: Care expense greater than maximum amount with moderate AGI and 3 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 3
-    tax_unit_childcare_expenses: 4_801
-    mt_agi_indiv: 24_000 #Partial reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 900
-
-- name: Care expense greater than maximum amount with high AGI and 3 children
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 4_801
-    mt_agi_indiv: 34_000 #Full reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Care expense less than maximum amount with low AGI and 1 child
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
-    tax_unit_childcare_expenses: 2_000
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 1_000
-
-- name: Care expense less than maximum amount with high AGI and 1 child
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 1
-    tax_unit_childcare_expenses: 2_000
-    mt_agi_indiv: 30_000 #Full reduction
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Care expense less than maximum amount with low AGI and 2 children
-  period: 2021
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 3_000
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 1_500
-
-- name: Care expense less than maximum amount with high AGI and 2 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 2
-    tax_unit_childcare_expenses: 3_000
-    mt_agi_indiv: 24_000 #Full reduction
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Care expense less than maximum amount with low AGI and 3 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 3
-    tax_unit_childcare_expenses: 4_000
-    mt_agi_indiv: 18_000 #No reduction needed
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 2_000
-
-- name: Care expense less than maximum amount with high AGI and 3 children
-  period: 2021
-  absolute_error_margin: 1
-  input:
-    mt_child_dependent_care_expense_deduction_eligible_children: 3
-    tax_unit_childcare_expenses: 4_000
-    mt_agi_indiv: 26_000 #Full reduction
-    state_code: MT
-  output:
-    mt_child_dependent_care_expense_deduction: 0
-
-- name: Amount distributed equitably between head and spouse
-  period: 2021
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         is_tax_unit_head_or_spouse: true
-        mt_agi_indiv: 10_000
+        mt_agi_indiv: 18_000 #No reduction needed
       person2:
-        is_tax_unit_head_or_spouse: true
-        mt_agi_indiv: 8_000
+        age: 10
+        is_tax_unit_dependent: true
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_child_dependent_care_expense_deduction_eligible_children: 3
-        tax_unit_childcare_expenses: 4_000
+        tax_unit_childcare_expenses: 2_401
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: [2_000, 2_000]
+    # One qualifying individual caps expenses at 2_400.
+    # Head receives half: 2_400 * 0.5 = 1_200.
+    mt_child_dependent_care_expense_deduction: [1_200, 0]
 
-- name: Amount distributed equitably between head and spouse, not including dependents
+- name: Care expense greater than maximum amount with moderate AGI and 1 child
   period: 2021
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 20_000 #Partial reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_401
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 2_400 - 0.5 * (20_000 - 18_000) = 1_400.
+    # Head receives half: 1_400 * 0.5 = 700.
+    mt_child_dependent_care_expense_deduction: [700, 0]
+
+- name: Care expense greater than maximum amount with high AGI and 1 child
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 30_000 #Full reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_401
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0]
+
+- name: Care expense greater than maximum amount with low AGI and 2 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_601
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Two qualifying individuals cap expenses at 3_600.
+    # Head receives half: 3_600 * 0.5 = 1_800.
+    mt_child_dependent_care_expense_deduction: [1_800, 0, 0]
+
+- name: Care expense greater than maximum amount with moderate AGI and 2 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 22_000 #Partial reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_601
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # 3_600 - 0.5 * (22_000 - 18_000) = 1_600.
+    # Head receives half: 1_600 * 0.5 = 800.
+    mt_child_dependent_care_expense_deduction: [800, 0, 0]
+
+- name: Care expense greater than maximum amount with high AGI and 2 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 35_000 #Full reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_601
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0, 0]
+
+- name: Care expense greater than maximum amount with low AGI and 3 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_801
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # Three qualifying individuals cap expenses at 4_800.
+    # Head receives half: 4_800 * 0.5 = 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 0, 0, 0]
+
+- name: Care expense greater than maximum amount with moderate AGI and 3 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 24_000 #Partial reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_801
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # 4_800 - 0.5 * (24_000 - 18_000) = 1_800.
+    # Head receives half: 1_800 * 0.5 = 900.
+    mt_child_dependent_care_expense_deduction: [900, 0, 0, 0]
+
+- name: Care expense greater than maximum amount with high AGI and 3 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 34_000 #Full reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_801
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0, 0, 0]
+
+- name: Care expense less than maximum amount with low AGI and 1 child
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Head receives half: 2_000 * 0.5 = 1_000.
+    mt_child_dependent_care_expense_deduction: [1_000, 0]
+
+- name: Care expense less than maximum amount with high AGI and 1 child
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 30_000 #Full reduction
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0]
+
+- name: Care expense less than maximum amount with low AGI and 2 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Head receives half: 3_000 * 0.5 = 1_500.
+    mt_child_dependent_care_expense_deduction: [1_500, 0, 0]
+
+- name: Care expense less than maximum amount with high AGI and 2 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 24_000 #Full reduction
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0, 0]
+
+- name: Care expense less than maximum amount with low AGI and 3 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # Head receives half: 4_000 * 0.5 = 2_000.
+    mt_child_dependent_care_expense_deduction: [2_000, 0, 0, 0]
+
+- name: Care expense less than maximum amount with high AGI and 3 children
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 26_000 #Full reduction
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0, 0, 0]
+
+- name: Amount distributed equitably between head and spouse
+  period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -192,15 +400,246 @@
         is_tax_unit_head_or_spouse: true
         mt_agi_indiv: 8_000
       person3:
-        is_tax_unit_head_or_spouse: false
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+      person5:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [2_000, 2_000, 0, 0, 0]
+
+- name: Case 17, adult dependent care is capped by the one-qualifying-individual tier.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000 #No reduction needed
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
+    # Head receives half: 2_400 * 0.5 = 1_200.
+    mt_child_dependent_care_expense_deduction: [1_200, 0]
+
+- name: Case 18, capable disabled adult care expenses are excluded.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 30
+        is_disabled: true
+        is_tax_unit_dependent: true
+        care_expenses: 2_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        mt_child_dependent_care_expense_deduction_eligible_children: 3
-        tax_unit_childcare_expenses: 4_000
+        tax_unit_childcare_expenses: 1_000
     households:
       household:
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_child_dependent_care_expense_deduction: [2_000, 2_000, 0]
+    # Only the child qualifies, so 2_000 of adult care expenses are excluded.
+    # Head receives half of the 1_000 childcare expense deduction.
+    mt_child_dependent_care_expense_deduction: [500, 0, 0]
+
+- name: Case 19, a child and an incapacitated adult dependent both count toward the tier.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Two qualifying individuals cap expenses at 3_600 (Form 2441-M line 2).
+    # Childcare 3_000 + adult care 1_000 = 4_000, capped at 3_600.
+    # Head receives half: 3_600 * 0.5 = 1_800.
+    mt_child_dependent_care_expense_deduction: [1_800, 0, 0]
+
+- name: Case 20, adult care expenses cannot exceed the one-qualifying-individual tier cap.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
+    # Head receives half: 2_400 * 0.5 = 1_200.
+    mt_child_dependent_care_expense_deduction: [1_200, 0]
+
+- name: Case 21, incapacitated spouse care expenses qualify.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi_indiv: 9_000
+      person2:
+        age: 30
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: true
+        care_expenses: 4_000
+        mt_agi_indiv: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The incapacitated spouse is one qualifying individual, capping
+    # expenses at 2_400 (Form 2441-M line 2).
+    # The deduction is divided equally between spouses: 2_400 * 0.5 = 1_200.
+    mt_child_dependent_care_expense_deduction: [1_200, 1_200]
+
+- name: Case 22, the deduction is repealed beginning in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction: [0, 0, 0]
+
+- name: Case 23, care expenses for an incapacitated child under 15 count toward the deduction.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head_or_spouse: true
+        mt_agi_indiv: 18_000
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 1_500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # One qualifying individual caps expenses at 2_400 (Form 2441-M line 2).
+    # Childcare 1_500 + care expenses 1_000 = 2_500, capped at 2_400.
+    # Head receives half: 2_400 * 0.5 = 1_200.
+    mt_child_dependent_care_expense_deduction: [1_200, 0]
+
+- name: Case 24, combined childcare and adult care expenses are capped by the three-qualifying-individual tier.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi_indiv: 9_000
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: true
+        care_expenses: 2_000
+        mt_agi_indiv: 9_000
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+      person4:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 4_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MT
+  output:
+    # Three qualifying individuals (two children under 15 and the
+    # incapacitated spouse) cap expenses at 4_800 (Form 2441-M line 2).
+    # Childcare 4_000 + adult care 2_000 = 6_000, capped at 4_800.
+    # The deduction is divided equally between spouses: 4_800 * 0.5 = 2_400.
+    mt_child_dependent_care_expense_deduction: [2_400, 2_400, 0, 0]

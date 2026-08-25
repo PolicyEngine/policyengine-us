@@ -658,3 +658,30 @@
     # June 9, 2022, which include IRC 152(c)(3)(B). The disabled adult
     # dependent is a qualifying child, so the WFTC pays the 1-child amount.
     wa_working_families_tax_credit: 660
+
+- name: No credit before tax year 2022, the program's first year (issue 9056).
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 36
+        employment_income: 5_306
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WA
+  output:
+    wa_working_families_tax_credit: 0

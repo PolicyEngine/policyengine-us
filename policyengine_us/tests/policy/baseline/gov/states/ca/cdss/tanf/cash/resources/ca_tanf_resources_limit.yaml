@@ -195,3 +195,75 @@
         state_code: CA
   output:
     ca_tanf_resources_limit: 12_137
+
+- name: Case 5, 2024 lower limit is $11,634.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 11_634
+
+- name: Case 6, 2024 higher limit for household with elderly member is $17,452.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 17_452
+
+- name: Case 7, 2026 lower limit is $12,552.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 12_552
+
+- name: Case 8, 2026 higher limit for household with disabled member is $18,829.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_tanf_resources_limit: 18_829

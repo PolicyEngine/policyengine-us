@@ -1,0 +1,36 @@
+- name: Medicare Part A premium equals base premium when no MSP coverage.
+  period: 2026
+  input:
+    medicare_enrolled: true
+    base_part_a_premium: 6_780
+    msp_part_a_premium_coverage: 0
+  output:
+    medicare_part_a_premium: 6_780
+
+- name: Medicare Part A premium is net of MSP coverage.
+  period: 2026
+  input:
+    medicare_enrolled: true
+    base_part_a_premium: 6_780
+    msp_part_a_premium_coverage: 6_780
+  output:
+    medicare_part_a_premium: 0
+
+- name: Medicare Part A premium floors at zero after MSP coverage.
+  period: 2026
+  input:
+    medicare_enrolled: true
+    base_part_a_premium: 6_780
+    msp_part_a_premium_coverage: 7_000
+  output:
+    medicare_part_a_premium: 0
+
+- name: Medicare Part A premium is zero when quarters of coverage are unobserved.
+  period: 2026
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    base_part_a_premium: 0
+    medicare_part_a_premium: 0

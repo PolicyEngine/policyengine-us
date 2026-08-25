@@ -1,0 +1,151 @@
+# Virginia eligible educator expense deduction (Va. Code 58.1-322.03): the lesser
+# of $500 or eligible educator expenses not claimed federally, per eligible
+# educator. Reinstated for TY2026+ by the 2026 Appropriation Act (HB 30); it did
+# not apply for TY2025. Eligible expenses are an explicit input (default $0).
+
+- name: 2026 educator deduction defaults to zero with no expenses
+  period: 2026
+  input:
+    state_code: VA
+  output:
+    va_educator_expense_deduction: 0
+
+- name: 2026 educator deduction is the lesser of expenses and the $500 cap
+  period: 2026
+  input:
+    people:
+      person1:
+        va_educator_expenses: 800
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 500
+
+- name: 2026 educator deduction below the cap equals the expenses
+  period: 2026
+  input:
+    people:
+      person1:
+        va_educator_expenses: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 300
+
+- name: 2025 educator deduction is unavailable even with expenses
+  period: 2025
+  input:
+    people:
+      person1:
+        va_educator_expenses: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 0
+
+- name: 2026 non-Virginia filer receives no educator deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        va_educator_expenses: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    va_educator_expense_deduction: 0
+
+- name: 2026 the $500 cap applies per eligible educator
+  period: 2026
+  input:
+    people:
+      person1:
+        va_educator_expenses: 500
+      person2:
+        va_educator_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 1_000
+
+- name: 2026 educator deduction reduces Virginia taxable income
+  period: 2026
+  input:
+    people:
+      person1:
+        va_educator_expenses: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        va_agi: 50_000
+        va_deductions: 0
+        va_total_exemptions: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 400
+    va_taxable_income: 49_600
+
+- name: 2024 educator deduction was available under prior law
+  period: 2024
+  input:
+    people:
+      person1:
+        va_educator_expenses: 800
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 500
+
+# Regression: the cap is defined before 2022 (0), so pre-2022 VA taxable-income
+# calculations do not error on a missing parameter value.
+- name: 2021 educator deduction is zero and taxable income still computes
+  period: 2021
+  input:
+    people:
+      person1:
+        va_educator_expenses: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        va_agi: 50_000
+        va_deductions: 0
+        va_total_exemptions: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_educator_expense_deduction: 0
+    va_taxable_income: 50_000

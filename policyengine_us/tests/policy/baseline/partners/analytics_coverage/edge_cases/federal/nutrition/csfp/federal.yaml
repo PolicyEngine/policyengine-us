@@ -84,9 +84,9 @@
     people:
       head:
         # Eligible-side age boundary (60 >= min_age 60) at $0 income.
-        # Full flat benefit: gov/usda/csfp/amount.yaml 2025 value 601,
-        # carried into 2026 (no uprating metadata).
-        commodity_supplemental_food_program: 601.0
+        # Full flat benefit: gov/usda/csfp/amount.yaml 2026 value 651
+        # ($460M FY2026 funding / 707,000 caseload slots).
+        commodity_supplemental_food_program: 651.0
 - name: csfp_income_between_130_and_150_fpg (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -127,9 +127,9 @@
         # Federal 150% route, just-below-boundary and inside the 130-150% band
         # that distinguishes the federal rule from the TX 130% rule:
         # 2026 size-1 FPG (contiguous) = 15,960; ratio 23,900 / 15,960 = 1.4975
-        # <= 1.5 federal fpg_limit -> eligible -> 601. Age 62 keeps ssi = 0
+        # <= 1.5 federal fpg_limit -> eligible -> 651. Age 62 keeps ssi = 0
         # (below SSI aged threshold 65) so earnings alone set the ratio.
-        commodity_supplemental_food_program: 601.0
+        commodity_supplemental_food_program: 651.0
 - name: csfp_income_just_above_150_fpg_ineligible (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -222,10 +222,10 @@
         # 60+ with $0 earnings. The zero-income aged couple picks up SSI
         # (couple FBR 1,491/mo x 12 = 17,892), which counts in the school-meal
         # income base: ratio 17,892 / 21,640 size-2 FPG = 0.8268 <= 1.5 ->
-        # each receives the flat 601 (household total 1,202).
-        commodity_supplemental_food_program: 601.0
+        # each receives the flat 651 (household total 1,302).
+        commodity_supplemental_food_program: 651.0
       spouse:
-        commodity_supplemental_food_program: 601.0
+        commodity_supplemental_food_program: 651.0
 - name: csfp_elderly_parent_in_family_of_4 (federal)
   period: 2026
   absolute_error_margin: 0.1
@@ -301,9 +301,9 @@
       # 70-year-old draws full SSI (FBR 994/mo x 12 = 11,928), which counts in
       # the school-meal income base: (30,000 + 11,928) / 33,000 = 1.2705
       # <= 1.5 -> income-eligible; only the 70-year-old passes the age gate ->
-      # grandparent 601, under-60 members 0.
+      # grandparent 651, under-60 members 0.
       grandparent:
-        commodity_supplemental_food_program: 601.0
+        commodity_supplemental_food_program: 651.0
       head:
         commodity_supplemental_food_program: 0.0
       spouse:
@@ -349,9 +349,9 @@
       head:
         # Robustness: negative self-employment income gives a negative FPG
         # ratio (-5,000 / 15,960 = -0.31 <= 1.5) -> still exactly the flat
-        # 601, no inflation or sign artifact from negative income (age 62
+        # 651, no inflation or sign artifact from negative income (age 62
         # keeps ssi = 0 out of the income base).
-        commodity_supplemental_food_program: 601.0
+        commodity_supplemental_food_program: 651.0
 - name: csfp_income_within_150_fpg_2025 (federal)
   period: 2025
   absolute_error_margin: 0.1

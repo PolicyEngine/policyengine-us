@@ -69,9 +69,9 @@
         # Jan-Sep: pre-shelter net = 2,857.67; shelter expense = 1,500 housing
         # + 914 MA SUA = 2,414 - 1,428.83 = 985.17 -> capped at 744 -> net =
         # 2,113.67 -> EC 633.90 -> 785 - 633.90 = 151.10/month; Oct-Dec (cap
-        # 760.68): 802.60 - 627.60 = 175.00.
-        # Annual = 9 x 151.10 + 3 x 175.00 = 1,884.90.
-        snap: 1_884.89
+        # 770.27): 812.72 - 624.00 = 188.72.
+        # Annual = 9 x 151.10 + 3 x 188.72 = 1,926.06.
+        snap: 1926.06
         is_snap_eligible: true
 - name: snap_income_above_200_pct_bbce_limit_54740 (ma)
   period: 2026
@@ -141,3 +141,69 @@
         # ineligible all year.
         snap: 0.0
         is_snap_eligible: false
+
+# MA is one of the nine 7 CFR 273.11(c)(3)(i) count-all states: the
+# undocumented head is excluded from the unit size but their income counts
+# in full rather than at the prorated share used in the TX baseline.
+- name: snap_ma_head_immigration_undocumented_count_all_state (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 20_000
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id801
+        - head
+        - spouse
+        - child1
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id801
+        snap_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id801
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id801
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        snap: 3840.54
+        is_snap_eligible: true

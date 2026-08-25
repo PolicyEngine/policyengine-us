@@ -1,0 +1,23 @@
+description: New Mexico sets this initial target contribution percentage for each bracket under the Health Insurance Marketplace Affordability Program.
+values:
+  # Bands: 0-150%, 150-200%, 200-250%, 250-300%, 300-400% FPL.
+  # PY2027 uses the same scale per the FINAL PY2027 MAP Manual (HCA, issued
+  # 2026-06-16), Table 1 (p.4).
+  2026-01-01:
+    - 0     # 0-150%: flat 0%
+    - 0     # 150-200%: flat 0%
+    - 0     # 200-250%: 0% -> 2%
+    - 0.02  # 250-300%: 2% -> 5%
+    - 0.05  # 300-400%: 5% -> 8.5%
+
+metadata:
+  unit: /1
+  period: year
+  label: New Mexico Premium Assistance target contribution percentage - initial rate per bracket
+  reference:
+    - title: PY2026 MAP Policy and Procedures Manual, Table 1 (bands through 200-250%)
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
+    - title: PY2026 MAP Policy and Procedures Manual, Table 1 (bands 250-300%, 300-400%, 400%+)
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/15a6c1dd-e12b-4ffb-95af-bb54262218f3/FINAL-PY26%20%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=5
+    - title: FINAL PY2027 MAP Policy and Procedures Manual, Table 1
+      href: https://api.realfile.rtsclients.com/PublicFiles/6c91aefc960e463485b3474662fd7fd2/b61d3073-c0e6-4426-bb40-4cfef26fdca4/FINAL%202027%20MAP%20Policy%20and%20Procedures%20Manual.pdf#page=4
