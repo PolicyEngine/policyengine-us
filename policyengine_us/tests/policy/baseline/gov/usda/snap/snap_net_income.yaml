@@ -53,7 +53,9 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_net_income: 428.5 * 12
+    # Monthly net income of 428.50 rounds up to 429 per
+    # 7 CFR 273.10(e)(1)(ii)(A).
+    snap_net_income: 429 * 12
 
 - name: SNAP child support deduction integration test
   period: 2024

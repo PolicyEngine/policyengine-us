@@ -41,7 +41,7 @@
 
 - name: North Carolina 2025, yearly integration test
   period: 2025
-  absolute_error_margin: 0.3
+  absolute_error_margin: 0.01
   input:
     people:   
       person1:
@@ -58,7 +58,8 @@
   # due to higher federal poverty guidelines
     snap_self_employment_income_after_expense_deduction: 0
     snap_self_employment_expense_deduction: 0
-    snap: 71.75 
+    # Three months at the FY2026 minimum allotment of $24 (Oct-Dec).
+    snap: 72
 
 - name: Self-employment income deduction integration test
   period: 2025
@@ -87,8 +88,10 @@
     snap_deductions: 0
     snap_earned_income: 5_000
     snap_gross_income: 5_000
-    snap_net_income: 5_000
-    snap: 2_024.40
+    # Monthly net income of 416.67 rounds to 417 per
+    # 7 CFR 273.10(e)(1)(ii)(A), so the annual value is 12 x 417.
+    snap_net_income: 5_004
+    snap: 2_010
 
 - name: Counterfactual test, self-employment income deduction allowed
   period: 2025
@@ -196,7 +199,7 @@
     snap_income_counted_share: [1, 0.5]
     snap_earned_income: 500
     snap_gross_income: 500
-    snap: 230.40
+    snap: 230
 
 - name: Case 7, income of an adult sanctioned under the general work requirements is counted in full.
   period: 2024-01
@@ -237,8 +240,8 @@
     snap_earned_income: 1_000
     snap_gross_income: 1_000
     # Net income: $1,000 - $200 earned income deduction - $198 standard
-    # deduction = $602; benefit: $291 - 0.3 x $602 = $110.40.
-    snap: 110.40
+    # deduction = $602; benefit: $291 - $181 (30% of $602 rounded up) = $110.
+    snap: 110
 
 # Acceptance-criteria integration tests for issue #8862 (person-level SNAP work
 # requirements). Period 2024-01 is pre-HR1 (ABAWD band 18-52, dependent-child
