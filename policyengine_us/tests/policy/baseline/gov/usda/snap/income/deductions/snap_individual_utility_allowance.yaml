@@ -1,3 +1,5 @@
+# Households receive an individual standard only for each utility expense
+# they actually incur (7 CFR 273.9(d)(6)(iii)(A)).
 - name: Test in 2022 with phone expenses
   period: 2022-01
   absolute_error_margin: 1
@@ -18,68 +20,152 @@
   output:
     snap_individual_utility_allowance: 19
 
-- name: Test in 2022 with trash expenses
+- name: Trash-only household receives only the trash standard in 2022
   period: 2022-01
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: AK_C
     trash_expense: 20
   output:
-    snap_individual_utility_allowance: 380
-    # AK_C FY22: elec=110 + gas=114 + water=56 + sewer=55 + trash=30 + phone=15
+    # AK_C FY22 trash standard only, not the sum of all six standards
+    snap_individual_utility_allowance: 30
 
-- name: Test in 2024 with trash expenses
+- name: Trash-only household receives only the trash standard in 2024
   period: 2024-01
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: AK_C
     trash_expense: 20
   output:
-    snap_individual_utility_allowance: 638
+    # AK_C FY24 trash standard only
+    snap_individual_utility_allowance: 36
+
+- name: Water and sewage household receives both incurred standards in 2022
+  period: 2022-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: AK_C
+    water_expense: 240
+    sewage_expense: 240
+  output:
+    # AK_C FY22: water=56 + sewage=55
+    snap_individual_utility_allowance: 111
+
+- name: MO phone-only household receives the telephone standard in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    phone_expense: 972
+  output:
+    # MO FY26 phone standard, not the $891 sum of all six standards
+    snap_individual_utility_allowance: 81
+
+- name: MO electricity-only household receives the electricity standard in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    pre_subsidy_electricity_expense: 1_200
+    # Overriding electricity_expense to 0 pins that the formula reads the
+    # pre-subsidy variable. No naturally occurring household can distinguish
+    # the two by value: the only subsidies (ca_care, ca_fera, ca_la_ez_save)
+    # are California-only and CA's electricity standard is 0.
+    electricity_expense: 0
+  output:
+    # MO FY26 electricity standard
+    snap_individual_utility_allowance: 162
+
+- name: MO gas-only household receives the gas standard in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    gas_expense: 2_400
+  output:
+    # MO FY26 gas standard, read via the gas_and_fuel_expense -> gas_expense
+    # variable mapping
+    snap_individual_utility_allowance: 162
 
 # HI individual utility allowances vary by household size
 # HH1 FY2025: elec=291 + gas=291 + water=65 + sewage=97 + trash=97 + phone=42 = 883
-- name: HI IUA HH size 1 in FY2025
+- name: HI IUA HH size 1 with all utility expenses in FY2025
   period: 2025-01
   absolute_error_margin: 1
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: HI
     spm_unit_size: 1
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 240
+    water_expense: 240
+    sewage_expense: 240
+    phone_expense: 240
+    trash_expense: 240
   output:
     snap_individual_utility_allowance: 883
 
 # HH3 FY2025: elec=366 + gas=366 + water=81 + sewage=97 + trash=97 + phone=42 = 1049
-- name: HI IUA HH size 3 in FY2025
+- name: HI IUA HH size 3 with all utility expenses in FY2025
   period: 2025-01
   absolute_error_margin: 1
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: HI
     spm_unit_size: 3
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 240
+    water_expense: 240
+    sewage_expense: 240
+    phone_expense: 240
+    trash_expense: 240
   output:
     snap_individual_utility_allowance: 1_049
 
+- name: HI IUA HH size 3 with only electricity expenses in FY2025
+  period: 2025-01
+  absolute_error_margin: 1
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: HI
+    spm_unit_size: 3
+    pre_subsidy_electricity_expense: 1_200
+  output:
+    # HI HH3 FY2025 electricity standard only
+    snap_individual_utility_allowance: 366
+
 # GU individual utility allowances vary by household size
 # HH1 FY2025: elec=188 + gas=36 + water=38 + sewage/trash/phone uprated from FY2024
-- name: GU IUA HH size 1 in FY2025
+- name: GU IUA HH size 1 with all utility expenses in FY2025
   period: 2025-01
   absolute_error_margin: 3
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: GU
     spm_unit_size: 1
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 240
+    water_expense: 240
+    sewage_expense: 240
+    phone_expense: 240
+    trash_expense: 240
   output:
     snap_individual_utility_allowance: 350
 
 # HH2 FY2025: elec=218 + gas=36 + water=50 + sewage/trash/phone uprated from FY2024
-- name: GU IUA HH size 2 in FY2025
+- name: GU IUA HH size 2 with all utility expenses in FY2025
   period: 2025-01
   absolute_error_margin: 3
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: GU
     spm_unit_size: 2
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 240
+    water_expense: 240
+    sewage_expense: 240
+    phone_expense: 240
+    trash_expense: 240
   output:
     snap_individual_utility_allowance: 392
 
@@ -90,5 +176,46 @@
     snap_utility_allowance_type: IUA
     snap_utility_region_str: NC
     spm_unit_size: 1
+    phone_expense: 240
   output:
     snap_individual_utility_allowance: 41
+
+- name: Household with no utility expenses receives no individual allowance
+  period: 2025-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+  output:
+    snap_individual_utility_allowance: 0
+
+# The individual allowance is 0 on the non-IUA paths even when the household
+# incurs utility expenses; snap_utility_allowance sums the SUA, LUA, and IUA
+# components, so a nonzero value here would double count.
+- name: SUA household receives no individual allowance despite utility bills
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: MO
+    heating_cooling_expense: 2_400
+    phone_expense: 600
+  output:
+    snap_individual_utility_allowance: 0
+
+- name: LUA household receives no individual allowance despite utility bills
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: MO
+    water_expense: 480
+    trash_expense: 360
+  output:
+    snap_individual_utility_allowance: 0
+
+- name: NONE-type household receives no individual allowance despite a utility bill
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: NONE
+    snap_utility_region_str: MO
+    phone_expense: 600
+  output:
+    snap_individual_utility_allowance: 0
