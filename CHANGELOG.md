@@ -1,3 +1,11 @@
+## [1.821.1] - 2026-08-25
+
+### Fixed
+
+- Round SNAP net income to the nearest dollar per 7 CFR 273.10(e)(1)(ii)(A), and round 30 percent of net income up to the next dollar in the expected food contribution per 7 CFR 273.10(e)(2)(ii)(A)(1).
+- Corrected the Arkansas inflation relief credit's 2023 maximums ($150/$300, not $50/$100) and restored the missing 2023 joint phase-out start, sunset the parameters to $0 from 2024, and refreshed the dead DFA worksheet reference URLs.
+
+
 ## [1.821.0] - 2026-08-25
 
 ### Added
