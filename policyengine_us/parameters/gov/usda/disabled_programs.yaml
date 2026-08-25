@@ -1,8 +1,12 @@
-description: Program participation that qualify individuals as disabled under USDA rules
+description: Benefit receipt that qualifies individuals as elderly or disabled members for SNAP.
 
 values:
   2021-01-01:
-    - is_ssi_disabled
+    # 7 CFR 271.2 defines "elderly or disabled member" by benefit receipt
+    # ("receives supplemental security income benefits ... or disability or
+    # blindness payments"), not by meeting the disability criteria alone.
+    - receives_ssi
+    - ssi
     - social_security_disability
     - is_permanently_disabled_veteran
     - is_surviving_spouse_of_disabled_veteran
@@ -12,3 +16,5 @@ metadata:
   reference:
     - title: "SNAP Special Rules for the Elderly or Disabled"
       href: https://www.fns.usda.gov/snap/eligibility/elderly-disabled-special-rules#Who%20is%20elderly?
+    - title: 7 CFR 271.2 (definition of elderly or disabled member)
+      href: https://www.law.cornell.edu/cfr/text/7/271.2

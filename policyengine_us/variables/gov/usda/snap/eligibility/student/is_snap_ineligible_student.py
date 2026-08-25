@@ -23,8 +23,12 @@ class is_snap_ineligible_student(Variable):
         # would make the ~ below a bitwise negation instead of a logical one.
         meets_age_exception = p.age_threshold.calc(age).astype(bool)
 
-        # Exception 2: Not physically or mentally fit (disabled)
-        meets_disability_exception = person("is_disabled", period)
+        # Exception 2: Not physically or mentally fit (disabled); receipt of
+        # disability benefits establishes unfitness (7 CFR 273.7(b)(1)(ii)),
+        # so the USDA receipt-based definition also qualifies.
+        meets_disability_exception = person("is_disabled", period) | person(
+            "is_usda_disabled", period
+        )
 
         # Exceptions 3 and 7: Placed in or enrolled in an institution of
         # higher education through a qualifying program — an employment and

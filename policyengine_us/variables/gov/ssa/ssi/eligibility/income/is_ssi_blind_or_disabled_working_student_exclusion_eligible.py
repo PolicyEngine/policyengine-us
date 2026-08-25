@@ -13,9 +13,13 @@ class is_ssi_blind_or_disabled_working_student_exclusion_eligible(Variable):
         p = parameters(
             period
         ).gov.ssa.ssi.income.exclusions.blind_or_disabled_working_student
+        # "Blind or disabled" takes SSA's own meaning here: the exclusion
+        # applies to a blind or disabled SSI claimant (20 CFR 416.1112(c)(3)),
+        # so the SSI disability test (SSI criteria and not engaged in SGA)
+        # governs rather than the generic disability flag.
         is_blind = person("is_blind", period)
-        is_disabled = person("is_disabled", period)
-        demographic_eligible = is_blind | is_disabled
+        is_ssi_disabled = person("is_ssi_disabled", period)
+        demographic_eligible = is_blind | is_ssi_disabled
         under_age_limit = person("age", period) < p.age_limit
         eligible_student = under_age_limit & person("is_full_time_student", period)
         return eligible_student & demographic_eligible

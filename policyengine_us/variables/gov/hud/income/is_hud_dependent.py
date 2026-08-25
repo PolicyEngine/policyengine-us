@@ -23,9 +23,14 @@ class is_hud_dependent(Variable):
             & ~is_head
         )
         is_hud_head_or_spouse = is_head | is_head_spouse
+        # The "person with disabilities" definition (42 U.S.C. 1437a(b)(3)(E))
+        # includes the section 223 SSA disability standard, so the SSI/SSDI
+        # paths qualify alongside the generic disability flag.
         meets_dependent_condition = (
             person("is_child", period)
             | person("is_disabled", period)
+            | person("is_ssi_disabled", period)
+            | (person("social_security_disability", period) > 0)
             | person("is_full_time_student", period)
         )
         is_foster = person("is_in_foster_care", period)

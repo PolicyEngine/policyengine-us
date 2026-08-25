@@ -15,8 +15,13 @@ class is_snap_work_registration_exempt_non_age(Variable):
         p = parameters(period).gov.usda.snap.work_requirements.general
         # Age-based exemptions under (b)(1)(i) are handled in the
         # age-based work registration exemption logic.
-        # (ii) Physically or mentally unfit for employment
-        is_disabled = person("is_disabled", period)
+        # (ii) Physically or mentally unfit for employment; per 7 CFR
+        # 273.7(b)(1)(ii), receipt of temporary or permanent disability
+        # benefits establishes unfitness, so the USDA receipt-based
+        # definition also exempts.
+        is_disabled = person("is_disabled", period) | person(
+            "is_usda_disabled", period.this_year
+        )
         # (iii) Subject to and complying with TANF work requirements.
         # TANF enrollment is an existing SPM-unit input; person-level
         # compliance is a documented input the data layer may not yet
