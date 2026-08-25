@@ -106,7 +106,7 @@
     meets_snap_gross_income_test: false
     is_snap_eligible: true
     # Gross 3,375 + 100 = 3,475; net 3,475 - 675 - 209 = 2,591;
-    # 30% = 777.30, rounded up to 778 (7 CFR 273.10(e)(2)(ii)(A)); 785 - 778 = 7.
+    # 30% = 777.30, rounded up to 778 (7 CFR 273.10(e)(2)(ii)(A)(1)); 785 - 778 = 7.
     snap_net_income: 2_591
     snap_expected_contribution: 778
     snap_normal_allotment: 7

@@ -1,9 +1,13 @@
 # Net income boundaries from the FNS Basis of Coupon/EBT Issuance table,
 # 48 States & DC, October 1, 2025 (3-person column, maximum allotment $785):
-# https://dssmanuals.mo.gov/wp-content/uploads/2022/09/snap-basis-issuance-table.pdf#page=1
+# https://web.archive.org/web/20251101194701/https://dssmanuals.mo.gov/wp-content/uploads/2022/09/snap-basis-issuance-table.pdf#page=1
+# (Wayback capture of the Missouri DSS mirror, which is replaced in place
+# each October; FNS does not publish the full table on fns.usda.gov.)
+# FY2026 maximum allotments: https://www.fns.usda.gov/snap/allotment/cola/fy26
 # The household's only income is a reported TANF grant, so net income equals
 # the grant minus the $209 standard deduction (FY2026, 1-3 persons).
-# 7 CFR 273.10(e)(2)(ii)(A): 30% of net income is rounded up to the next dollar.
+# 7 CFR 273.10(e)(2)(ii)(A)(1): 30% of net income is rounded up to the next
+# dollar.
 
 - name: 3-person household, net income $0 (table row 0 - 0) receives $785
   period: 2026-01
@@ -180,8 +184,10 @@
         state_code: MO
   output:
     is_snap_eligible: true
-    # 7 - 10: 30% = 3.00 exactly
+    # 7 - 10: 30% = 3.00 exactly. float32(10 * 0.3) is exact, so this case
+    # does not exercise the cents guard; see the net-$50 case for that.
     snap_net_income: 10
+    snap_expected_contribution: 3
     snap_normal_allotment: 782
     snap: 782
 
@@ -300,8 +306,12 @@
         state_code: MO
   output:
     is_snap_eligible: true
-    # 47 - 50: 30% = 15.00 exactly
+    # 47 - 50: 30% = 15.00 exactly. float32(50 * 0.3) = 15.0000009..., so
+    # this is the only case in the SNAP suite that fails if the
+    # np.round(..., 2) cents guard in snap_expected_contribution is
+    # removed (an unguarded ceil would return 16 and pay $769).
     snap_net_income: 50
+    snap_expected_contribution: 15
     snap_normal_allotment: 770
     snap: 770
 
@@ -361,7 +371,7 @@
   output:
     is_snap_eligible: true
     # TANF 212.49/month; net 3.49 -> 3 (1-49 cents round down); 30% = 0.90 -> 1
-    snap_net_income: 3.49
+    snap_net_income: 3
     snap_expected_contribution: 1
     snap_normal_allotment: 784
     snap: 784
@@ -392,7 +402,7 @@
   output:
     is_snap_eligible: true
     # TANF 212.50/month; net 3.50 -> 4 (50-99 cents round up); 30% = 1.20 -> 2
-    snap_net_income: 3.50
+    snap_net_income: 4
     snap_expected_contribution: 2
     snap_normal_allotment: 783
     snap: 783
@@ -428,7 +438,7 @@
     is_snap_eligible: true
     # TANF 215.50/month; net 6.50 -> 7 (50 cents round up); 30% = 2.10 -> 3.
     # Round-half-to-even would give 6 -> 30% = 1.80 -> 2 -> $783 instead.
-    snap_net_income: 6.50
+    snap_net_income: 7
     snap_expected_contribution: 3
     snap_normal_allotment: 782
     snap: 782
@@ -460,7 +470,7 @@
     is_snap_eligible: true
     # TANF 219.50/month; net 10.50 -> 11 (50 cents round up); 30% = 3.30 -> 4.
     # Round-half-to-even would give 10 -> 30% = 3.00 exactly -> 3 -> $782.
-    snap_net_income: 10.50
+    snap_net_income: 11
     snap_expected_contribution: 4
     snap_normal_allotment: 781
     snap: 781
