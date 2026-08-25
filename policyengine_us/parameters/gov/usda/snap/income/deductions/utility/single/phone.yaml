@@ -16,8 +16,12 @@ metadata:
     href: https://docs.google.com/spreadsheets/d/10otJJisAYUDyZ0d7XpZPn8rEql-rteVE/edit?gid=1837348310#gid=1837348310
   - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
-  - title: USDA utility allowances by state spreadsheet (FY2026)
+  - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
     href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+  - title: Wisconsin DHS Operations Memo 25-13 (FFY 2026 standard utility allowances effective October 1, 2025)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2025-13.pdf#page=3
+  - title: Maine SNAP Rule #244 Chart 8 (FFY 2026 phone only utility allowance, retroactive to October 1, 2025)
+    href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2026-02/SNAP%20244P%20Rule%20Pages%20%28TC%29.pdf#page=8
   - title: Wisconsin DHS Operations Memo 26-30 (revised SUAs effective May 1, 2026)
     href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-30.pdf#page=2
   - title: FY 2018 SNAP QC Technical Documentation, Table F.7
@@ -327,7 +331,11 @@ ME:
   2022-10-01: 62
   2023-10-01: 58
   2024-10-01: 60
-  2025-10-01: 0
+  # Maine SNAP Rule #244 Chart 8: the FFY 2026 Phone Only Utility
+  # Allowance (PhUA) is $114, retroactive to 10/1/2025. The FNS FY2026
+  # table misaligns Maine's row, printing the $114 under the adjacent
+  # SMD Offset column and $0 under Phone; the state rule governs.
+  2025-10-01: 114
 MI:
   2010-01-01: 0
   2017-10-01: 32
@@ -391,7 +399,7 @@ NC:
   2022-10-01: 40
   2023-10-01: 41
   2024-10-01: 41
-  2025-10-01: 42.11
+  2025-10-01: 42
 ND:
   2010-01-01: 0
   2017-10-01: 33
