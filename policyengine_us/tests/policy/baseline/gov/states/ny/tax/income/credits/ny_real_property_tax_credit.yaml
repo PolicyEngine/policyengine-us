@@ -5,7 +5,9 @@
     state_code: NY
     real_estate_taxes: 25_000
   output:
-    ny_real_property_tax_credit: 65
+    # HGI exactly 5,000 sits in the 4,001-5,000 row of the credit-limit chart
+    # (2022 IT-214-I page 3): non-elderly cap 67 (not the 5,001-6,000 row's 65).
+    ny_real_property_tax_credit: 67
 
 - name: Renter over the $450/month cap gets no credit (IT-214 line 21)
   period: 2022
@@ -87,10 +89,11 @@
   output:
     adjusted_gross_income: 6_000
     ny_household_gross_income: 21_000
-    # Pre-2025 formula on FAGI 6,000: rate 4.5% -> threshold 270; rent
-    # equivalent 25% x 3,000 = 750; excess 480; 50% = 240; elderly cap 273.
-    # (2025 Table A lookup would give $300 - tracked in #9310.)
-    ny_real_property_tax_credit: 240
+    # Qualifies on FAGI 6,000 <= 18,000. Gate: rent equiv 3,000 x 0.25 = 750;
+    # single excess rate at FAGI 6,000 = 0.045, threshold =
+    # 6,000 x 0.045 = 270; excess = 750 - 270 = 480 > 0 -> gate passes. Elderly
+    # (age 71) -> Table A, FAGI 6,000 (5,001-7,000 band) -> 300.
+    ny_real_property_tax_credit: 300
 
 - name: Negative AGI is floored at zero (IT-214 line 9, "cannot be less than zero")
   period: 2024
@@ -112,3 +115,477 @@
     # -> threshold 0; rent equivalent 750; excess 750; 50% = 375; elderly cap
     # at income 0 = 375.
     ny_real_property_tax_credit: 375
+
+# --- 2025 flat Table A/B coverage (Part RR of Ch. 59 of the Laws of 2025) ---
+# Elderly (any member 65+) -> Table A; homeowner real_estate_taxes clears the
+# gate. Gate: real_estate_taxes > FAGI x excess_real_property_tax.calc(FAGI).
+
+- name: 2025 - elderly Table A, FAGI 2,000 -> 375
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 2_000
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 2,000 = 0.035, threshold = 70;
+    # excess = 500 - 70 = 430 > 0. Table A FAGI 2,000 (0-3,000) -> 375.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - elderly Table A, FAGI 10,000 -> 230
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 10_000
+        real_estate_taxes: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: excess_real_property_tax is a single-amount rate; at FAGI
+    # 10,000 its calc = 0.055, threshold = 10,000 x 0.055 = 550; excess =
+    # 3,000 - 550 = 2,450 > 0. Table A FAGI 10,000 (9,001-11,000) -> 230.
+    ny_real_property_tax_credit: 230
+
+- name: 2025 - elderly Table A, FAGI 16,000 -> 150
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 16_000
+        real_estate_taxes: 6_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 16,000 = 0.065, threshold = 16,000 x
+    # 0.065 = 1,040; excess = 6,000 - 1,040 = 4,960 > 0. Table A FAGI 16,000
+    # (14,001-18,000) -> 150.
+    ny_real_property_tax_credit: 150
+
+- name: 2025 - Table A boundary, FAGI 3,000 -> 375 (last dollar of top band)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 3,000 = 0.035, threshold = 105;
+    # excess = 500 - 105 = 395 > 0. Table A FAGI 3,000 still in 0-3,000 -> 375.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - Table A boundary, FAGI 3,001 -> 330 (first dollar of next band)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_001
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 3,001 = 0.040, threshold =
+    # 3,001 x 0.040 = 120.04; excess = 500 - 120.04 = 379.96 > 0. Table A FAGI
+    # 3,001 (3,001-5,000) -> 330.
+    ny_real_property_tax_credit: 330
+
+# Non-elderly (no member 65+) -> Table B.
+
+- name: 2025 - non-elderly Table B, FAGI 4,000 -> 75
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 4_000
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 4,000 = 0.040, threshold = 160;
+    # excess = 500 - 160 = 340 > 0. Table B FAGI 4,000 (0-5,000) -> 75.
+    ny_real_property_tax_credit: 75
+
+- name: 2025 - non-elderly Table B, FAGI 12,000 -> 60
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 12_000
+        real_estate_taxes: 4_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 12,000 = 0.060, threshold = 12,000 x
+    # 0.060 = 720; excess = 4,000 - 720 = 3,280 > 0. Table B FAGI 12,000
+    # (9,001-14,000) -> 60.
+    ny_real_property_tax_credit: 60
+
+- name: 2025 - Table B boundary, FAGI 5,000 -> 75 (last dollar of top band)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        real_estate_taxes: 500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 5,000 = 0.040, threshold = 200;
+    # excess = 500 - 200 = 300 > 0. Table B FAGI 5,000 still in 0-5,000 -> 75.
+    ny_real_property_tax_credit: 75
+
+- name: 2025 - Table B boundary, FAGI 5,001 -> 70 (first dollar of next band)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_001
+        real_estate_taxes: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 5,001 = 0.045, threshold = 5,001 x
+    # 0.045 = 225.045; excess = 1,000 - 225.045 = 774.955 > 0. Table B FAGI 5,001
+    # (5,001-9,000) -> 70.
+    ny_real_property_tax_credit: 70
+
+- name: 2025 - gate fails, property-tax measure below FAGI x rate -> 0
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 10_000
+        real_estate_taxes: 100
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 10,000 = 0.055, threshold = 550;
+    # excess = max(0, 100 - 550) = 0 -> gate fails. No credit despite an
+    # otherwise-eligible elderly filer.
+    ny_real_property_tax_credit: 0
+
+# Issue item 2: the ONLY 65+ person is a claimed dependent (head under 65).
+# Dropping the ~is_dependent term means the dependent's age still qualifies the
+# unit for elderly Table A. If ~is_dependent were still present this would fall
+# to Table B (75) and fail.
+- name: 2025 - dependent aged 66 qualifies unit for elderly Table A
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 2_000
+        real_estate_taxes: 500
+      dep1:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1]
+    households:
+      household:
+        members: [head, dep1]
+        state_code: NY
+  output:
+    # Gate: single excess rate at FAGI 2,000 = 0.035, threshold = 70;
+    # excess = 500 - 70 = 430 > 0. Any member 65+ (dependent age 66) -> Table A
+    # FAGI 2,000 -> 375 (not the Table B value of 75 that ~is_dependent would
+    # have produced).
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - FAGI over 18,000 -> 0 (income limit unchanged)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 20_000
+        real_estate_taxes: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # FAGI 20,000 > 18,000 income limit -> ineligible regardless of gate/table.
+    ny_real_property_tax_credit: 0
+
+# Item 2 also affects tax years through 2024 (old 50%-of-excess formula, elderly
+# maximum chart). The only 65+ person is a claimed dependent -> the elderly cap
+# now applies. Income measure through 2024 is household gross income.
+- name: 2024 - dependent aged 66 makes the elderly maximum cap apply
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 2_000
+        real_estate_taxes: 10_000
+      dep1:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1]
+    households:
+      household:
+        members: [head, dep1]
+        state_code: NY
+  output:
+    # Through 2024 the income measure is household gross income (13,316 here,
+    # including imputed dependent income). Single excess rate at
+    # 13,316 = 0.06, threshold = 13,316 x 0.06 = 799; excess = 10,000 - 799 = 9,201;
+    # credit = 0.5 x 9,201 = 4,600.5, capped by the elderly maximum at 13,316
+    # (13,000-14,000 band) = 154 -> 154. If ~is_dependent still applied, the
+    # non-elderly cap (49) would bind instead, so this locks in item 2 for 2024.
+    ny_household_gross_income: 13_316
+    ny_real_property_tax_credit: 154
+
+# Regression: nonzero ONLY under the corrected single-amount gate. This locks in
+# the excess_real_property_tax type: single_amount fix - under the old summed
+# (marginal) schedule the gate would sum to 0.35 at FAGI 16,000, giving a
+# threshold of 5,600 and negative excess (0 credit).
+- name: 2025 - single-amount gate regression, FAGI 16,000 taxes 2,000 -> 150
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 16_000
+        real_estate_taxes: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Single excess rate at FAGI 16,000 = 0.065, threshold = 16,000 x 0.065 =
+    # 1,040; excess = 2,000 - 1,040 = 960 > 0 -> gate passes. Elderly (age 71)
+    # -> Table A, FAGI 16,000 (14,001-18,000) -> 150. Under the OLD summed rate
+    # (0.35) threshold would be 5,600 -> excess < 0 -> 0, so this case is the
+    # one that locks the single_amount gate fix.
+    ny_real_property_tax_credit: 150
+
+# --- $1-boundary regressions: Table 1 and the credit-limit chart use closed
+# integer bands ($0-3,000 -> .035; then 3,001-5,000 -> .040), so an income of
+# exactly $3,000 belongs to the LOWER band. These only pass when a value at a
+# band top stays in its band - right=True lookups over band-top thresholds
+# (2025 IT-214 p.3 Table 1; 2024 IT-214-I p.2 Table 1 and p.3 chart).
+
+- name: 2025 - Table 1 boundary, FAGI exactly 3,000 keeps rate 0.035 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 3,000 is 0.035 (last dollar of the 0-3,000 band), so the
+    # threshold is 105 and RPT 110 clears the gate -> Table A 375. Under a
+    # default (right=False) lookup the rate would be 0.040 (threshold 120)
+    # and the gate would wrongly fail.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - Table 1 boundary, FAGI exactly 5,000 keeps rate 0.040 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        real_estate_taxes: 210
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 5,000 is 0.040 -> threshold 200; RPT 210 clears the gate
+    # -> Table B 75. A right=False lookup (0.045, threshold 225) would fail it.
+    ny_real_property_tax_credit: 75
+
+- name: 2025 - Table 1 boundary, FAGI exactly 14,000 keeps rate 0.060 (gate flip)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 14_000
+        real_estate_taxes: 850
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 14,000 is 0.060 -> threshold 840; RPT 850 clears the
+    # gate -> Table A 14,000 (11,001-14,000 band) = 200. A right=False lookup
+    # (0.065, threshold 910) would fail it.
+    ny_real_property_tax_credit: 200
+
+- name: 2024 - credit-limit chart boundary, HGI exactly 1,000 caps at 75 not 73
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+        real_estate_taxes: 400
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate 0.035 -> threshold 35; excess 365; 50% = 182.50; the non-elderly
+    # cap at exactly 1,000 is the $0-1,000 row (75), not the 1,001-2,000 row
+    # (73), so the credit is 75.
+    ny_household_gross_income: 1_000
+    ny_real_property_tax_credit: 75
+
+- name: 2024 - Table 1 boundary, HGI exactly 3,000 uses rate 0.035 in the formula
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 3_000
+        real_estate_taxes: 150
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rate at exactly 3,000 is 0.035 -> threshold 105; excess 45; 50% = 22.50,
+    # below the 2,001-3,000 non-elderly cap of 71. A right=False lookup
+    # (0.040, threshold 120) would yield 15 instead.
+    ny_household_gross_income: 3_000
+    ny_real_property_tax_credit: 22.5
+
+# Fractional income rounds to whole dollars, half up, before any lookup
+# (IT-214-I "How to fill in Form IT-214": "drop amounts below 50 cents and
+# increase amounts from 50 to 99 cents to the next dollar").
+
+- name: 2025 - FAGI 3,000.49 rounds down to 3,000 -> rate 0.035, gate passes
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000.49
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 3,000: rate 0.035 -> threshold 105; RPT 110 clears the
+    # gate -> Table A 375. Unrounded, 3,000.49 would fall in the next band
+    # (rate 0.040, threshold ~120) and wrongly fail the gate.
+    ny_real_property_tax_credit: 375
+
+- name: 2025 - FAGI 3,000.50 rounds up to 3,001 -> rate 0.040, gate fails
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 3_000.50
+        real_estate_taxes: 110
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 3,001: rate 0.040 -> threshold 120.04; RPT 110 is below
+    # it, so no credit ("$2.50 becomes $3" - halves round up).
+    ny_real_property_tax_credit: 0
+
+- name: 2025 - FAGI 18,000.30 rounds to 18,000 -> still within the income limit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 18_000.30
+        real_estate_taxes: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # Rounded FAGI 18,000 is not "more than $18,000": eligible, Table A
+    # 14,001-18,000 band -> 150.
+    ny_real_property_tax_credit: 150
+
+- name: 2025 - FAGI 18,000.50 rounds to 18,001 -> over the income limit
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 71
+        employment_income: 18_000.50
+        real_estate_taxes: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    ny_real_property_tax_credit: 0

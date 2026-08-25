@@ -1,3 +1,38 @@
+## [1.820.3] - 2026-08-25
+
+### Fixed
+
+- Filter the SNAP individual utility allowance to the utility expenses the household actually incurs, restoring the fix from #3867 that was reverted during the #3903 decomposition.
+
+
+## [1.820.2] - 2026-08-24
+
+### Fixed
+
+- Return the FUTA credit reduction rate to zero for AR, AZ, CT, DE, FL, GA, and IL in the year each state exited credit-reduction status, per IRS Schedule A (Form 940).
+
+
+## [1.820.1] - 2026-08-24
+
+### Fixed
+
+- Fixed the Arkansas inflation relief income-tax credit for married couples filing combined (status 4), which now uses the per-spouse single-filer table (maximum $150, phased out from $87,000) instead of the joint table (maximum $300, phased out from $174,000) split between spouses.
+- Corrected the New York IT-214 real property tax credit:
+  - uses the 2025+ flat credit-amount tables (Part RR of Chapter 59 of the Laws of 2025) instead of the pre-2025 50%-of-excess formula
+  - grants the elderly amount when a claimed dependent is 65 or older
+  - keeps income exactly at a band top in that band (Table 1 rate, Tables A and B, and the pre-2025 credit-limit chart previously shifted it to the next band)
+  - rounds income to whole dollars, half up, before the income-band lookups and the $18,000 limit, per the IT-214 instructions
+
+
+## [1.820.0] - 2026-08-24
+
+### Added
+
+- - Excluded SNAP recipients subject only to the post-HR1 ABAWD requirement (adults aged 60-64) from the Medicaid community engagement requirement.
+  - Added `is_snap_abawd_exempt`, `is_subject_to_snap_abawd`, and `has_snap_abawd_household_child` SNAP work-requirement status variables.
+  - Added the 7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more hours weekly to the SNAP work-registration exemption set.
+
+
 ## [1.819.0] - 2026-08-23
 
 ### Added
