@@ -17,6 +17,9 @@ class snap_individual_utility_allowance(Variable):
     unit = USD
     documentation = "The individual utility allowance deduction for SNAP"
     definition_period = MONTH
+    reference = (
+        "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)"
+    )
 
     def formula(spm_unit, period, parameters):
         utility = parameters(period).gov.usda.snap.income.deductions.utility
@@ -36,8 +39,6 @@ class snap_individual_utility_allowance(Variable):
 
         hh_size_utilities = {"electricity", "gas_and_fuel", "water"}
 
-        # Households receive an individual standard only for each utility
-        # expense they actually incur (7 CFR 273.9(d)(6)(iii)(A)).
         sum_of_individual_allowances = 0
         for expense in expense_types:
             util_name = expense.replace("_expense", "")

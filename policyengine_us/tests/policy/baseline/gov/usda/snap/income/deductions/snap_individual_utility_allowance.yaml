@@ -67,8 +67,24 @@
     snap_utility_allowance_type: IUA
     snap_utility_region_str: MO
     pre_subsidy_electricity_expense: 1_200
+    # Overriding electricity_expense to 0 pins that the formula reads the
+    # pre-subsidy variable. No naturally occurring household can distinguish
+    # the two by value: the only subsidies (ca_care, ca_fera, ca_la_ez_save)
+    # are California-only and CA's electricity standard is 0.
+    electricity_expense: 0
   output:
     # MO FY26 electricity standard
+    snap_individual_utility_allowance: 162
+
+- name: MO gas-only household receives the gas standard in 2026
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    gas_expense: 2_400
+  output:
+    # MO FY26 gas standard, read via the gas_and_fuel_expense -> gas_expense
+    # variable mapping
     snap_individual_utility_allowance: 162
 
 # HI individual utility allowances vary by household size
@@ -169,5 +185,37 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: MO
+  output:
+    snap_individual_utility_allowance: 0
+
+# The individual allowance is 0 on the non-IUA paths even when the household
+# incurs utility expenses; snap_utility_allowance sums the SUA, LUA, and IUA
+# components, so a nonzero value here would double count.
+- name: SUA household receives no individual allowance despite utility bills
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: SUA
+    snap_utility_region_str: MO
+    heating_cooling_expense: 2_400
+    phone_expense: 600
+  output:
+    snap_individual_utility_allowance: 0
+
+- name: LUA household receives no individual allowance despite utility bills
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: MO
+    water_expense: 480
+    trash_expense: 360
+  output:
+    snap_individual_utility_allowance: 0
+
+- name: NONE-type household receives no individual allowance despite a utility bill
+  period: 2026-01
+  input:
+    snap_utility_allowance_type: NONE
+    snap_utility_region_str: MO
+    phone_expense: 600
   output:
     snap_individual_utility_allowance: 0
