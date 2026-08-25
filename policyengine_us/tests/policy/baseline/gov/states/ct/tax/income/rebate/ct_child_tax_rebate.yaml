@@ -633,7 +633,7 @@
     # Rebate: 1 * 250 = 250, AGI 50,000 below 100,000 -> no reduction.
     ct_child_tax_rebate: 250
     # ct_eitc = federal eitc 2,000 * 2021 match 0.305 = 610 (nonzero, unlike the
-    # degenerate line-237 case where ct_eitc is 0).
+    # zero-earned-income rebate-only case above where ct_eitc is 0).
     ct_eitc: 610
     # Refundable aggregate = ct_eitc 610 + ct_child_tax_rebate 250 = 860.
     ct_refundable_credits: 860
@@ -739,4 +739,78 @@
     # Explicit 2015-01-01: 0 in amount.yaml/child_cap.yaml blocks backdating from
     # phantoming the 2021 value into 2020 -> rebate 0 despite a qualifying child.
     ct_child_tax_rebate: 0
+  absolute_error_margin: 0.01
+
+# ---------------------------------------------------------------------------
+# S5 - JOINT exactly at threshold takes no reduction (full rebate)
+# ---------------------------------------------------------------------------
+
+- name: Case 30, JOINT exactly at 200,000 threshold takes no reduction.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_dependent: false
+      person2:
+        age: 38
+        is_tax_unit_dependent: false
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        adjusted_gross_income: 200_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CT
+  output:
+    # JOINT threshold 200,000; excess max(200,000 - 200,000, 0) = 0 -> no increments;
+    # reduction only applies to AGI OVER the threshold. 2 * 250 = 500 * (1 - 0) = 500.
+    # Mirrors the SINGLE at-threshold precedent (Case 14) for the JOINT threshold.
+    ct_child_tax_rebate: 500
+  absolute_error_margin: 0.01
+
+# ---------------------------------------------------------------------------
+# S6 - child-cap boundary at exactly 4 children (first count over the cap)
+# ---------------------------------------------------------------------------
+
+- name: Case 31, exactly 4 children caps to 3 (750, no phase-out).
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_dependent: false
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+      person4:
+        age: 8
+        is_tax_unit_dependent: true
+      person5:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        adjusted_gross_income: 50_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CT
+  output:
+    # 4 eligible children capped at child_cap 3 -> 3 * 250 = 750; AGI 50,000 below
+    # HoH threshold 160,000 -> excess 0 -> no reduction -> 750. Pins the child cap.
+    ct_child_tax_rebate: 750
   absolute_error_margin: 0.01

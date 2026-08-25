@@ -8,7 +8,7 @@ class ct_child_tax_rebate(Variable):
     unit = USD
     definition_period = YEAR
     # Assumes 100% take-up: PA 22-118 Sec. 411(b)(3) required an electronic
-    # application to DRS by 2022-07-31 (TSSB 2022-5 Q5), which PolicyEngine does
+    # application to DRS by 2022-07-31 (TSSB 2022-5 Q6), which PolicyEngine does
     # not model, so the 2021 aggregate is an upper bound. DRS's offset of the
     # rebate against outstanding tax debts (Q19) is likewise unmodeled.
     defined_for = StateCode.CT
@@ -42,6 +42,9 @@ class ct_child_tax_rebate(Variable):
 
         excess = max_(income - reduction_start, 0)
         increments = np.ceil(excess / p.reduction.increment)
+        # At exactly AGI $110,000 a single filer hits 10 increments x 10% = 100%
+        # reduction = $0, which Sec. 411(b)(2) controls; TSSB 2022-5 Q12's "less
+        # than or equal to $110,000" wording reads loosely but is not a discrepancy.
         reduction_share = min_(increments * p.reduction.rate, 1)
 
         return total_rebate * (1 - reduction_share)
