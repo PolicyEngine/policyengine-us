@@ -135,7 +135,7 @@
     snap_utility_allowance_type: SUA
     snap_utility_allowance: 637
 
-- name: Nevada household with only a phone bill receives the summed FY2026 individual standards
+- name: Nevada household with only a phone bill receives the FY2026 phone standard
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -152,11 +152,11 @@
         state_code: NV
   output:
     snap_utility_allowance_type: IUA
-    # snap_individual_utility_allowance sums every single-utility standard:
-    # 5 x $77 (electricity, gas, water, sewage, trash) + $52 phone = $437.
-    snap_utility_allowance: 437
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 52
 
-- name: Wisconsin household with only a phone bill receives the summed individual standards, which rise mid-year on May 1, 2026
+- name: Wisconsin household with only a phone bill receives the phone standard, which rises mid-year on May 1, 2026
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -172,15 +172,11 @@
         members: [person]
         state_code: WI
   output:
-    # snap_individual_utility_allowance sums every single-utility standard
-    # in the parameter tree: 155 + 48 + 106 + 106 + 28 + 31 = $474 through
-    # April 2026 and 139 + 34 + 112 + 112 + 47 + 106 = $550 from May 2026.
-    # Note the water and sewage entries repeat Wisconsin's single combined
-    # Water and Sewer Allowance (the FNS table grid has no combined
-    # column), so these sums count it twice; the WI memos publish one WUA.
+    # Only the phone standard applies: $31 through April 2026 (WI DHS
+    # Ops Memo 25-13), $106 from May 2026 (Ops Memos 26-22/26-30).
     snap_utility_allowance:
-      2026-04: 474
-      2026-05: 550
+      2026-04: 31
+      2026-05: 106
 
 - name: Missouri household with heating costs receives the FY2026 HCSUA
   period: 2026-01
@@ -242,7 +238,7 @@
     snap_utility_allowance_type: SUA
     snap_utility_allowance: 950
 
-- name: South Dakota household with only a phone bill receives the summed FY2026 individual standards
+- name: South Dakota household with only a phone bill receives the FY2026 phone standard
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -259,9 +255,9 @@
         state_code: SD
   output:
     snap_utility_allowance_type: IUA
-    # snap_individual_utility_allowance sums every single-utility standard:
-    # 5 x $109 (electricity, gas, water, sewage, trash) + $60 phone = $605.
-    snap_utility_allowance: 605
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 60
 
 # New York, Maine, and Maryland apply the standard allowance to all
 # households with utility costs, so their LUA and individual standards are
@@ -296,6 +292,7 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: ME
+    phone_expense: 50
   output:
     # Maine SNAP Rule #244 Chart 8 re-adopts the PhUA at $114 retroactive
     # to 10/1/2025; the FNS FY2026 table misprints it under the SMD
@@ -311,6 +308,7 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: MD
+    phone_expense: 50
   output:
     snap_individual_utility_allowance: 41
 
@@ -320,6 +318,7 @@
   input:
     snap_utility_allowance_type: IUA
     snap_utility_region_str: MD
+    phone_expense: 600
   output:
     snap_individual_utility_allowance:
       2025-12: 40
@@ -411,7 +410,7 @@
     snap_utility_allowance_type: SUA
     snap_utility_allowance: 390
 
-- name: Idaho household with only a phone bill receives the summed FY2026 individual standards
+- name: Idaho household with only a phone bill receives the FY2026 phone standard
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -428,9 +427,9 @@
         state_code: ID
   output:
     snap_utility_allowance_type: IUA
-    # snap_individual_utility_allowance sums every single-utility standard:
-    # 5 x $133 (electricity, gas, water, sewage, trash) + $49 phone = $714.
-    snap_utility_allowance: 714
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 49
 
 - name: North Carolina household with only a phone bill receives the FY2026 phone standard
   period: 2026-01
