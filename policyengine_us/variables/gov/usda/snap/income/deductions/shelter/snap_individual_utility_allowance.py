@@ -1,5 +1,14 @@
 from policyengine_us.model_api import *
 
+# Expense input variables that differ from the <type>_expense naming of the
+# utility_types parameter entries. Electricity uses pre-subsidy expenses to
+# avoid circular references since electricity subsidies depend on SNAP
+# enrollment.
+EXPENSE_VARIABLE_OVERRIDES = {
+    "electricity_expense": "pre_subsidy_electricity_expense",
+    "gas_and_fuel_expense": "gas_expense",
+}
+
 
 class snap_individual_utility_allowance(Variable):
     value_type = float
@@ -26,23 +35,14 @@ class snap_individual_utility_allowance(Variable):
         safe_region = where(is_hh_size_state, region, "HI")
 
         hh_size_utilities = {"electricity", "gas_and_fuel", "water"}
+
         # Households receive an individual standard only for each utility
         # expense they actually incur (7 CFR 273.9(d)(6)(iii)(A)).
-        # Use pre-subsidy electricity expenses to avoid circular references
-        # since electricity subsidies depend on SNAP enrollment.
-        expense_variables = {
-            "electricity": "pre_subsidy_electricity_expense",
-            "gas_and_fuel": "gas_expense",
-            "water": "water_expense",
-            "sewage": "sewage_expense",
-            "phone": "phone_expense",
-            "trash": "trash_expense",
-        }
-
         sum_of_individual_allowances = 0
         for expense in expense_types:
             util_name = expense.replace("_expense", "")
-            incurs_expense = spm_unit(expense_variables[util_name], period) > 0
+            expense_variable = EXPENSE_VARIABLE_OVERRIDES.get(expense, expense)
+            incurs_expense = spm_unit(expense_variable, period) > 0
             flat_val = utility.single[util_name][region]
             if util_name in hh_size_utilities:
                 hh_val = utility.single.by_household_size[util_name][safe_region][
