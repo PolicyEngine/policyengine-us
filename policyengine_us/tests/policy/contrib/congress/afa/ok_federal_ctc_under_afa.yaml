@@ -1,0 +1,35 @@
+# [S2] Companion YAML case locking the ok_federal_ctc guard into the
+# policyengine-core contrib YAML shard. The American Family Act contrib makes
+# the CTC fully refundable and removes non_refundable_ctc from the federal
+# non-refundable credit list; ok_federal_ctc's guard then returns the
+# refundable CTC. This activates the reform through the same mechanism the
+# neighboring afa_other_dependent_credit.yaml uses: the
+# gov.contrib.congress.afa.in_effect input flag, which auto-applies the AFA
+# structural reform. A single Oklahoma parent with one age-4 child and 30k of
+# earnings gets the full AFA CTC (base 3,600 x 1.2 under-6 multiplier = 4,320
+# at 2025, fully refundable, no phase-out at this income), and the Oklahoma
+# federal-CTC-allowed equals that refundable CTC.
+- name: Oklahoma federal CTC equals the refundable CTC under the AFA (guard path)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.congress.afa.in_effect: true
+    people:
+      parent:
+        age: 35
+        employment_income: 30_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_name: OK
+  output:
+    refundable_ctc: 4_320
+    ok_federal_ctc: 4_320
