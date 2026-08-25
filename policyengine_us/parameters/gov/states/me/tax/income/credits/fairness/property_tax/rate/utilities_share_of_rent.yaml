@@ -1,0 +1,23 @@
+description: Maine excludes this share of rent paid as attributable to heat, utilities, furniture, or similar items when the amount is not known under the property tax fairness credit.
+# §5219-KK(1)(E) is cited only for the utilities-exclusion concept, not for the
+# 15% value: the statute contains no unknown-amount estimate (that 15% is
+# form-instructions-only).
+values:
+  2014-01-01: 0.15
+metadata:
+  unit: /1
+  period: year
+  label: Maine property tax fairness credit utilities share of rent estimate
+  reference:
+    - title: §5219-KK. Property tax fairness credit (1) (E)
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: 2014 Form 1040ME Schedule PTFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/14_1040_sched%20ptfc_download.pdf#page=2
+    - title: 2022 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
+    - title: 2023 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/23_1040me_sched_pstfc_ff.pdf#page=1
+    - title: 2024 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/24_Form%201040ME_Sch%20PTFC_ff.pdf#page=1
+    - title: 2025 Form 1040ME Schedule PTFC/STFC, line 5c
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_sch_ptfc_fillable.pdf#page=1

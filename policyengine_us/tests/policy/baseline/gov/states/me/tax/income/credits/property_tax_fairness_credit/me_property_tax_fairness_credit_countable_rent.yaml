@@ -1,21 +1,223 @@
-- name: Case 1, utilities did not include in rent
+# Note: p.rate.utilities_share_of_rent and p.rate.rent are both 0.15, so
+# baseline cases cannot distinguish the two rates. Avoid any known-amount case
+# where the amount equals 0.15 * rent (both branches would coincide).
+- name: Case 1, utilities not included in rent, full rent counts.
   period: 2022
   input:
     state_code: ME
     rent: 1_000
     utilities_included_in_rent: false
-    utility_expense: 50
   output:
     me_property_tax_fairness_credit_countable_rent: 150
-    # 1000*0.15 = 150
-  
-- name: Case 2, utilities included in rent
+    # 1000 * 0.15 = 150
+  absolute_error_margin: 0.01
+
+- name: Case 2, utilities included in rent, amount known.
   period: 2022
   input:
     state_code: ME
     rent: 1_000
     utilities_included_in_rent: true
-    utility_expense: 50
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 50
   output:
     me_property_tax_fairness_credit_countable_rent: 142.5
-    # 950*0.15 = 142.5
+    # (1000 - 50) * 0.15 = 142.5
+  absolute_error_margin: 0.01
+
+- name: Case 3, utilities included but amount unknown, deduct 15% of rent (line 5c).
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+  output:
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # utility portion = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5
+  absolute_error_margin: 0.01
+
+- name: Case 4, utilities included, amount unknown; separately-paid utility expenses ignored.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 12_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    heating_cooling_expense: 600
+  output:
+    me_property_tax_fairness_credit_countable_rent: 1_530
+    # amount unknown -> line 5c estimate = 15% * 12000 = 1800;
+    # (12000 - 1800) * 0.15 = 10200 * 0.15 = 1530.
+    # The household's separately-paid utility expense (heating_cooling_expense
+    # 600, part of utility_expense) is not subtracted from rent paid.
+  absolute_error_margin: 0.01
+
+- name: Case 5, known amount exceeds rent, net rent clamped to 0 (invalid-input guard).
+  period: 2022
+  input:
+    state_code: ME
+    rent: 2_400
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 3_600
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # Invalid input: line 5c (3600) exceeds line 5a rent (2400). The clamp guards
+    # this inconsistency; this is not a Maine-published result.
+    # net rent = max(2400 - 3600, 0) = 0; 0 * 0.15 = 0.
+  absolute_error_margin: 0.01
+
+- name: Case 6, known amount exactly equals rent, net rent clamps to 0 (invalid-input guard).
+  period: 2022
+  input:
+    state_code: ME
+    rent: 3_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 3_000
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # Invalid input: line 5c (3000) equals line 5a rent (3000). The clamp is
+    # exercised at the boundary; this is not a Maine-published result.
+    # net rent = max(3000 - 3000, 0) = 0; 0 * 0.15 = 0.
+  absolute_error_margin: 0.01
+
+- name: Case 7, utilities not included but nonzero amount recorded, amount ignored.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: false
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 400
+  output:
+    me_property_tax_fairness_credit_countable_rent: 150
+    # Line 5b is "no", so line 5c is entered as 0 regardless of the recorded
+    # amount. Full rent counts: 1000 * 0.15 = 150. An ungated subtraction would
+    # instead give (1000 - 400) * 0.15 = 90.
+  absolute_error_margin: 0.01
+
+- name: Case 8, utilities included, known amount, separately-paid utility expenses ignored.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 12_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 1_200
+    heating_cooling_expense: 600
+  output:
+    me_property_tax_fairness_credit_countable_rent: 1_620
+    # Known amount 1200 subtracted: (12000 - 1200) * 0.15 = 10800 * 0.15 = 1620.
+    # A reintroduced utility_expense subtraction would give
+    # (12000 - 1200 - 600) * 0.15 = 1530.
+  absolute_error_margin: 0.01
+
+- name: Case 9, multi-person joint filers, rent aggregated across members, amount unknown.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 40
+        rent: 6_000
+      person2:
+        age: 40
+        rent: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        utilities_included_in_rent: true
+        me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    me_property_tax_fairness_credit_countable_rent: 1_275
+    # Rent aggregates to 6000 + 4000 = 10000; amount unknown -> line 5c estimate
+    # = 15% * 10000 = 1500; (10000 - 1500) * 0.15 = 8500 * 0.15 = 1275.
+  absolute_error_margin: 0.01
+
+- name: Case 10, zero rent with utilities included, amount known, countable rent 0.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 0
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 500
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # net rent = max(0 - 500, 0) = 0; 0 * 0.15 = 0.
+  absolute_error_margin: 0.01
+
+- name: Case 11, zero rent with utilities included, amount unknown, countable rent 0.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 0
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+  output:
+    me_property_tax_fairness_credit_countable_rent: 0
+    # estimate = 15% * 0 = 0; (0 - 0) * 0.15 = 0.
+  absolute_error_margin: 0.01
+
+- name: Case 12, one-dollar known amount just above the zero sentinel, estimate not used.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 1
+  output:
+    me_property_tax_fairness_credit_countable_rent: 149.85
+    # Amount 1 > 0 so it is treated as known: (1000 - 1) * 0.15 = 149.85.
+    # At amount 0 the estimate branch gives 127.5, so 1 dollar pins the >0
+    # sentinel boundary.
+  absolute_error_margin: 0.01
+
+- name: Case 13, negative recorded amount falls into the unknown estimate branch.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: -100
+  output:
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # amount is not > 0, so the 15%-of-rent estimate applies: same as unknown.
+    # estimate = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5.
+  absolute_error_margin: 0.01
+
+- name: Case 14, default inputs, rent only with nothing else set, plain 15% of rent.
+  period: 2022
+  input:
+    state_code: ME
+    rent: 1_000
+  output:
+    me_property_tax_fairness_credit_countable_rent: 150
+    # utilities_included_in_rent defaults to false -> utility portion 0;
+    # 1000 * 0.15 = 150. This is the path the microdata population takes.
+  absolute_error_margin: 0.01
+
+- name: Case 15, unknown branch at the 2014 program start pins the start date.
+  period: 2014
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+  output:
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # estimate = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5. Confirms the
+    # utilities_share_of_rent parameter is in effect from 2014-01-01.
+  absolute_error_margin: 0.01
+
+- name: Case 16, unknown branch at 2024 confirms parameter continuity.
+  period: 2024
+  input:
+    state_code: ME
+    rent: 1_000
+    utilities_included_in_rent: true
+    me_property_tax_fairness_credit_utilities_in_rent_amount: 0
+  output:
+    me_property_tax_fairness_credit_countable_rent: 127.5
+    # estimate = 15% * 1000 = 150; (1000 - 150) * 0.15 = 127.5.
+  absolute_error_margin: 0.01
