@@ -1,3 +1,10 @@
+## [1.821.3] - 2026-08-26
+
+### Fixed
+
+- Move the Connecticut child tax rebate to the 2021 eligibility year as a refundable credit, matching how the analogous Rhode Island and New Mexico prior-year rebates are booked, so it no longer reduces 2022 Connecticut income tax.
+
+
 ## [1.821.2] - 2026-08-25
 
 ### Fixed
