@@ -16,6 +16,8 @@ Sources (one per state; see the parameter YAML ``reference`` blocks for the rest
     (rev. May 5, 2026) and the 2026 Estimated Tax Worksheet phase-out worksheets
     (rev. Dec. 2025).
   * RI -- RI Division of Taxation Advisory ADV 2025-22 (Nov. 3, 2025).
+  * ND -- 2026 North Dakota Form ND-1ES tax rate schedules (SFN 28709,
+    Dec. 2025), page 2.
   * NY -- Form IT-196-I "Table 1" applicable amounts, tax years 2024 and 2025.
 """
 
@@ -129,6 +131,24 @@ def test_ri_2026_income_tax_parameters():
     assert p.exemption.reduction.increment == 7_450
     assert p.deductions.standard.phase_out.start == 261_000
     assert p.deductions.standard.phase_out.increment == 7_450
+
+
+# --- North Dakota: 2026 indexed rate-schedule thresholds (N.D.C.C. 57-38-30.3)
+# brackets[1] = 1.95% start, brackets[2] = 2.5% start.
+ND_2026 = {
+    "single": (49_575, 250_400),
+    "joint": (82_800, 304_850),
+    "surviving_spouse": (82_800, 304_850),
+    "separate": (41_400, 152_425),
+    "head_of_household": (66_400, 277_600),
+}
+
+
+@pytest.mark.parametrize("status,thresholds", ND_2026.items())
+def test_nd_2026_income_tax_brackets(status, thresholds):
+    rates = getattr(SYSTEM.parameters.gov.states.nd.tax.income.rates, status)
+    got = tuple(rates.brackets[i].threshold("2026-01-01") for i in (1, 2))
+    assert got == thresholds
 
 
 # --- New York: 2024 and 2025 itemized-deduction phase-out applicable amount ----
