@@ -1,3 +1,10 @@
+## [1.821.4] - 2026-08-26
+
+### Fixed
+
+- Fix North Dakota's 2026 individual income tax schedule thresholds using the official Form ND-1ES.
+
+
 ## [1.821.3] - 2026-08-26
 
 ### Fixed
