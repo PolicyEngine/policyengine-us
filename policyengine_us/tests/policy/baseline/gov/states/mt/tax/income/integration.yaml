@@ -567,3 +567,39 @@
     # Files separately: 5,099.51 - 1,250 + 3,719.51 - 1,250 = 6,319.02
     # (old double-count subtracted $2,500 per column, understating tax by $2,500)
     mt_income_tax: 6_319.02
+
+- name: MT property tax rebate is not a Form 2 credit and is not tripled (issue 9347)
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 26
+        employment_income: 110_625.07
+        taxable_interest_income: 204.41
+        real_estate_taxes: 2_754.52
+      person2:
+        is_tax_unit_spouse: true
+        age: 25
+        employment_income: 3_414.32
+      person3:
+        is_tax_unit_dependent: true
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_fips: 30
+  output:
+    # The $675 standalone property tax rebate is still computed as its own variable
+    mt_property_tax_rebate: 675
+    # but it is not a Form 2 non-refundable credit. Before the fix it was booked
+    # as a credit and projected onto every household member (675 x 3 = 2,025),
+    # understating Montana income tax; it must contribute 0 to each person.
+    mt_non_refundable_credits: [0, 0, 0]
