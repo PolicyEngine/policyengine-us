@@ -95,7 +95,7 @@
   output:
     mt_income_tax_rebate: [0]
 
-- name: No rebate in 2022, and no phantom credit against 2022 tax
+- name: No phantom rebate value in 2022
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -111,9 +111,16 @@
         members: [person1]
         state_code: MT
   output:
+    # This is the discriminating assertion: without amount.yaml's 2022
+    # zeroing, backdating fills the 2021 amount forward and this reads
+    # 1_250. Montana tax is NOT affected either way, because
+    # credits/non_refundable.yaml already drops mt_income_tax_rebate from
+    # the list at 2022-01-01 - so the defect is the variable's reported
+    # value, which mis-feeds consumers such as the TAXSIM srebate
+    # comparison, not the tax outcome. mt_income_tax and
+    # mt_non_refundable_credits are pinned here as unchanged controls.
     mt_income_tax_rebate: [0]
     mt_non_refundable_credits: [0]
-    # Without the 2022 zeroing the leaked $1,250 would cut this to 996.00
     mt_income_tax: 2_246.00
 
 - name: No rebate in 2023, the year the rebate was actually paid out
