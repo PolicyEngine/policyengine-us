@@ -1,3 +1,46 @@
+## [1.821.4] - 2026-08-26
+
+### Fixed
+
+- Fix North Dakota's 2026 individual income tax schedule thresholds using the official Form ND-1ES.
+
+
+## [1.821.3] - 2026-08-26
+
+### Fixed
+
+- Move the Connecticut child tax rebate to the 2021 eligibility year as a refundable credit, matching how the analogous Rhode Island and New Mexico prior-year rebates are booked, so it no longer reduces 2022 Connecticut income tax.
+
+
+## [1.821.2] - 2026-08-25
+
+### Fixed
+
+- Correct FY2026 SNAP utility allowances against the official FNS table and state issuances: Wisconsin all standards (with the May 1, 2026 mid-year revision), Idaho LUA and single standards, New York LUA values, Maine phone standard ($114 per SNAP Rule #244), Maryland's January 1, 2026 effective date, and one-dollar corrections in AL, MO, SD, NV, MD, VA, and NC.
+
+
+## [1.821.1] - 2026-08-25
+
+### Fixed
+
+- Round SNAP net income to the nearest dollar per 7 CFR 273.10(e)(1)(ii)(A), and round 30 percent of net income up to the next dollar in the expected food contribution per 7 CFR 273.10(e)(2)(ii)(A)(1).
+- Corrected the Arkansas inflation relief credit's 2023 maximums ($150/$300, not $50/$100) and restored the missing 2023 joint phase-out start, sunset the parameters to $0 from 2024, and refreshed the dead DFA worksheet reference URLs.
+
+
+## [1.821.0] - 2026-08-25
+
+### Added
+
+- Implemented the Schedule PTFC/STFC line 5c rule for the Maine property tax fairness credit: when rent paid (Schedule PTFC/STFC line 5a) includes heat, utilities, furniture, or similar items and the amount is not known, exclude 15% of rent paid before computing rent constituting property taxes.
+
+
+## [1.820.3] - 2026-08-25
+
+### Fixed
+
+- Filter the SNAP individual utility allowance to the utility expenses the household actually incurs, restoring the fix from #3867 that was reverted during the #3903 decomposition.
+
+
 ## [1.820.2] - 2026-08-24
 
 ### Fixed

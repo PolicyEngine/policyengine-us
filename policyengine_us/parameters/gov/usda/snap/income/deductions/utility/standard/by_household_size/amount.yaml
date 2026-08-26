@@ -416,6 +416,10 @@ metadata:
     - State
     - Household size
   reference:
+    - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
+      href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+    # The SNAP Screener compilation backs the pre-FY2022 historical values;
+    # the official FNS tables are authoritative from FY2025 onward.
     - title: SNAP Screener Compiled State SNAP Data
       href: https://www.snapscreener.com/data
     - title: FY 2018 SNAP QC Technical Documentation, Table F.7

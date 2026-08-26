@@ -74,6 +74,11 @@ KY:
 LA:
   2010-01-01: false
   2021-10-01: true
+  # The 2026-05-21 FNS FY2026 table (a live snapshot last updated August
+  # 2026) shows $0, but no Louisiana source confirms a 10/1/2025
+  # discontinuation: LAC 67:III.1966(A) still mandates the BUA, and the
+  # FY2025 value times the FNS simplified-process CPI factor (1.027)
+  # gives the $258 kept here.
 MA:
   2010-01-01: false
   2021-10-01: true
@@ -192,3 +197,5 @@ metadata:
     href: https://docs.google.com/spreadsheets/d/1JWtEF0wRlQqM3ajMFnUYs_lGwEzSXGit/edit?usp=sharing&ouid=116242521439357911562&rtpof=true&sd=true
   - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
+  - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
+    href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx

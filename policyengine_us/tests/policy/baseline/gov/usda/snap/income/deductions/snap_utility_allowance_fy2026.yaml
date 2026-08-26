@@ -1,0 +1,453 @@
+# FY2026 utility allowances validated against the official FNS table
+# (effective October 1, 2025 - September 30, 2026):
+# https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+# Wisconsin revised its SUAs mid-year: the FNS table shows the revised
+# values, which took effect May 1, 2026 (WI DHS Ops Memos 26-22 and 26-30);
+# the October 1, 2025 values are from WI DHS Ops Memo 25-13.
+
+- name: Wisconsin household with heating costs receives the HCSUA, which rises mid-year on May 1, 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    # WI DHS Ops Memo 25-13: $553 HSUA effective 10/1/2025;
+    # Ops Memos 26-22/26-30: $870 effective 5/1/2026.
+    snap_utility_allowance:
+      2026-04: 553
+      2026-05: 870
+
+- name: Wisconsin household with electricity and water but no heating receives the LUA, which rises mid-year on May 1, 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        pre_subsidy_electricity_expense: 960
+        water_expense: 480
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    # WI DHS Ops Memo 25-13: $385 LUA effective 10/1/2025;
+    # Ops Memos 26-22/26-30: $436 effective 5/1/2026.
+    snap_utility_allowance:
+      2026-04: 385
+      2026-05: 436
+
+- name: Idaho household with two non-heating utilities receives the FY2026 LUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        pre_subsidy_electricity_expense: 80
+        trash_expense: 30
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    snap_utility_allowance_type: LUA
+    snap_utility_allowance: 133
+
+- name: Louisiana household with two non-heating utilities receives the LUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        pre_subsidy_electricity_expense: 80
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: LA
+  output:
+    # The 2026-05-21 FNS table shows $0, but no Louisiana source confirms
+    # a 10/1/2025 discontinuation (LAC 67:III.1966(A) still mandates the
+    # BUA), so the FY2025 value times the simplified-process CPI factor
+    # ($251 x 1.027 = $258) is kept.
+    snap_utility_allowance_type: LUA
+    snap_utility_allowance: 258
+
+- name: Louisiana LUA rises with the fiscal-year change in October 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        pre_subsidy_electricity_expense: 960
+        water_expense: 480
+    households:
+      household:
+        members: [person]
+        state_code: LA
+  output:
+    # FY2025 LUA of $251 through September; $258 from October 1, 2025.
+    snap_utility_allowance:
+      2025-09: 251
+      2025-10: 258
+
+- name: Alabama household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: AL
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 637
+
+- name: Nevada household with only a phone bill receives the FY2026 phone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: NV
+  output:
+    snap_utility_allowance_type: IUA
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 52
+
+- name: Wisconsin household with only a phone bill receives the phone standard, which rises mid-year on May 1, 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 600
+    households:
+      household:
+        members: [person]
+        state_code: WI
+  output:
+    # Only the phone standard applies: $31 through April 2026 (WI DHS
+    # Ops Memo 25-13), $106 from May 2026 (Ops Memos 26-22/26-30).
+    snap_utility_allowance:
+      2026-04: 31
+      2026-05: 106
+
+- name: Missouri household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: MO
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 509
+
+- name: North Carolina one-person household receives the FY2026 size-1 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: NC
+  output:
+    snap_utility_allowance_type: SUA
+    # The FNS workbook cell stores the unrounded intermediate 636.74, but
+    # 7 CFR 273.9(d)(6)(iii)(B) requires standards rounded to the nearest
+    # whole dollar, which is also what the rendered table displays.
+    snap_utility_allowance: 637
+
+- name: South Dakota household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: SD
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 950
+
+- name: South Dakota household with only a phone bill receives the FY2026 phone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: SD
+  output:
+    snap_utility_allowance_type: IUA
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 60
+
+# New York, Maine, and Maryland apply the standard allowance to all
+# households with utility costs, so their LUA and individual standards are
+# pinned directly, following the convention of the other files here.
+- name: Nassau and Suffolk Counties FY2026 LUA is $388 (parameter pin)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NY_NAS
+  output:
+    # OTDA GIS 25DC059 Attachment 1: Basic Utility $388 for Nassau/Suffolk
+    # effective 10/1/2025 (the FNS FY2026 table's NY LUA column misstates
+    # this as $419, New York City's value).
+    snap_limited_utility_allowance: 388
+
+- name: Rest of New York State FY2026 LUA is $355 (parameter pin)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: NY_ONY
+  output:
+    # OTDA GIS 25DC059 Attachment 1: Basic Utility $355 for the rest of the
+    # state effective 10/1/2025 (the FNS FY2026 table's NY LUA column
+    # misstates this as $388, Nassau/Suffolk's value).
+    snap_limited_utility_allowance: 355
+
+- name: Maine FY2026 phone-only utility allowance is $114 (Rule #244 Chart 8, parameter pin)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: ME
+    phone_expense: 50
+  output:
+    # Maine SNAP Rule #244 Chart 8 re-adopts the PhUA at $114 retroactive
+    # to 10/1/2025; the FNS FY2026 table misprints it under the SMD
+    # Offset column.
+    snap_individual_utility_allowance: 114
+
+# Maryland's SUAs are effective January 1 (FNS FY2026 table footnote), so
+# its FY2026 values start 2026-01-01 and its 2025 values run through
+# December 2025.
+- name: Maryland FY2026 phone standard takes effect January 1, 2026 (parameter pin)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MD
+    phone_expense: 50
+  output:
+    snap_individual_utility_allowance: 41
+
+- name: Maryland phone standard stays at its 2025 value through December 2025 (parameter pin)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MD
+    phone_expense: 600
+  output:
+    snap_individual_utility_allowance:
+      2025-12: 40
+
+- name: Maryland household with heating costs keeps the 2025 HCSUA through December 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    snap_utility_allowance:
+      2025-12: 557
+
+- name: Maryland household with heating costs receives the FY2026 HCSUA from January 1, 2026
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: MD
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 572
+
+- name: Maryland FY2026 LUA takes effect January 1, 2026 (parameter pin)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: MD
+  output:
+    snap_limited_utility_allowance: 350
+
+- name: Virginia household with only a phone bill receives the FY2026 phone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: VA
+  output:
+    snap_utility_allowance_type: IUA
+    # Virginia's five other single standards are $0, so the summed
+    # individual allowance is the $54 phone standard alone.
+    snap_utility_allowance: 54
+
+- name: Idaho household with heating costs receives the FY2026 HCSUA
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        heating_cooling_expense: 200
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    snap_utility_allowance_type: SUA
+    snap_utility_allowance: 390
+
+- name: Idaho household with only a phone bill receives the FY2026 phone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: ID
+  output:
+    snap_utility_allowance_type: IUA
+    # Only the phone standard applies; the household incurs no other
+    # utility expense.
+    snap_utility_allowance: 49
+
+- name: North Carolina household with only a phone bill receives the FY2026 phone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+    spm_units:
+      spm_unit:
+        members: [person]
+        phone_expense: 50
+    households:
+      household:
+        members: [person]
+        state_code: NC
+  output:
+    snap_utility_allowance_type: IUA
+    # North Carolina's five other single standards are $0, so the summed
+    # individual allowance is the $42 phone standard alone.
+    snap_utility_allowance: 42
