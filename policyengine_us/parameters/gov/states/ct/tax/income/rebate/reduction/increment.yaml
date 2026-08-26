@@ -1,11 +1,16 @@
-description: Connecticut reduces the child tax rebate amount for each of these increments of state adjusted gross income exceeding the threshold.
+description: Connecticut reduces the child tax rebate amount for each of these increments of federal adjusted gross income exceeding the threshold under the Child Tax Rebate program.
 metadata:
   period: year
   unit: currency-USD
   label: Connecticut child tax rebate reduction increment
   reference:
-    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411 (b)(2)
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411(b)(2)
       href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=549
-      # The legal code section has been repealed
+    # PA 22-118 Sec. 411 is uncodified session law, keyed to TY2021, never added to
+    # the General Statutes. This file does NOT carry the 2022 sunset: that is carried
+    # by amount.yaml / child_cap.yaml (rebate = capped_children * amount, both 0
+    # outside 2021), so this reduction increment is inert outside 2021. `increment`
+    # is deliberately NEVER zeroed because a 0 here divides by zero in
+    # ct_child_tax_rebate.py (np.ceil(excess / increment)).
 values:
-  2022-01-01: 1_000
+  2021-01-01: 1_000
