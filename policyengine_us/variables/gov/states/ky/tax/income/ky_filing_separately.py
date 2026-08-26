@@ -12,15 +12,22 @@ class ky_files_separately(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        itax_indiv = add(
-            tax_unit,
-            period,
-            ["ky_income_tax_before_non_refundable_credits_indiv"],
-        )
+        # Combined-separate (filing status 3) is only available to married
+        # couples; single and head-of-household filers use the joint
+        # (single-column) path.
+        has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
 
-        itax_joint = add(
-            tax_unit,
-            period,
-            ["ky_income_tax_before_non_refundable_credits_joint"],
+        # Kentucky filers elect the path that minimises tax. The election is
+        # made on liability AFTER non-refundable credits: combined-separate
+        # filing can waste personal credits when a spouse's column tax is too
+        # low to absorb them (e.g. an over-65 spouse with only retirement
+        # income whose $40 credit is lost), so the optimal choice can flip once
+        # credits are applied. Comparing tax before credits (the previous
+        # behaviour) wrongly elected combined-separate for a tiny pre-credit
+        # saving and then forfeited the credit. Refundable credits are
+        # path-independent and do not affect the election.
+        separate = tax_unit(
+            "ky_income_tax_before_refundable_credits_if_separate", period
         )
-        return itax_indiv < itax_joint
+        joint = tax_unit("ky_income_tax_before_refundable_credits_if_joint", period)
+        return has_spouse & (separate < joint)

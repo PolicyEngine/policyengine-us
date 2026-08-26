@@ -452,3 +452,34 @@
     # 66-year-old spouse's $40 over-65 credit dies in her near-zero column
     # rather than pooling into the head's column.
     ky_income_tax: 1_353.50
+
+- name: Combined-separate election preserves the age-65 credit (issue 9342)
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # Only the spouse has income, so on the combined-separate path the 65-year-old
+    # head's $40 personal credit is capped at their own $0 column tax and wasted.
+    # Electing on tax after credits keeps the joint path, preserving the credit:
+    # combined-separate tax before refundable credits (1,432.95) exceeds joint
+    # (1,392.95), so the couple does not file separately.
+    ky_files_separately: false
+    ky_income_tax: 1_392.95
