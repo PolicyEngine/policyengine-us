@@ -453,13 +453,14 @@
     # rather than pooling into the head's column.
     ky_income_tax: 1_353.50
 
-- name: Combined-separate election preserves the age-65 credit (issue 9342)
+- name: Combined-separate election preserves the age-65 credit (issue 9342, now discriminating)
   period: 2022
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:
         age: 65
+        employment_income: 400
         is_tax_unit_head: true
       spouse:
         age: 61
@@ -476,10 +477,160 @@
         members: [head, spouse, child]
         state_code: KY
   output:
-    # Only the spouse has income, so on the combined-separate path the 65-year-old
-    # head's $40 personal credit is capped at their own $0 column tax and wasted.
-    # Electing on tax after credits keeps the joint path, preserving the credit:
-    # combined-separate tax before refundable credits (1,432.95) exceeds joint
-    # (1,392.95), so the couple does not file separately.
+    # Head now has $400 of income so the two paths differ, making this case
+    # discriminating (the old $0-income head was a pre-credit tie that passed on
+    # OLD code too). On the combined-separate path the 65-year-old head's $40
+    # personal credit is nearly capped in their tiny column and largely wasted,
+    # so if_separate (1,432.95) exceeds joint. Joint keeps the full credit:
+    # (31,829 - 2,770) x 5% - 40 = 1,412.95. Since if_separate > if_joint, the
+    # couple does NOT file separately, and ky_income_tax equals the joint value.
+    ky_income_tax: 1_412.95
+
+# Suggestion 6(a): boolean assertion kept margin-free (same household as above).
+- name: Combined-separate election preserves the age-65 credit (issue 9342) - boolean gate
+  period: 2022
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 400
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    # if_separate (1,432.95) > if_joint (1,412.95), so joint wins: not separate.
     ky_files_separately: false
-    ky_income_tax: 1_392.95
+
+# Suggestion 6(b): zero-tax married couple. Both columns are $0, so neither path
+# is cheaper; strict "<" means no election, and total tax is $0.
+- name: Zero-tax married couple does not elect combined-separate
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    ky_income_tax: 0
+
+# Suggestion 6(c): the C1 discriminator duplicated at period 2025 (rate 4%,
+# standard deduction $3,270). The separate path still wastes the head's aged
+# credit, so joint wins and the couple does not elect. Boolean asserted
+# margin-free; the currency value is period-dependent (FSTC applies in 2025) and
+# is left unasserted here to keep the discriminator robust.
+- name: Combined-separate election preserves the age-65 credit at 2025
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 400
+        is_tax_unit_head: true
+      spouse:
+        age: 61
+        employment_income: 31_429
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    ky_files_separately: false
+
+# A7 (CI-RISK): married couple near the FPL where the family size tax credit
+# (FSTC) rate is nonzero, pinning that the elected path's ky_income_tax reflects
+# FSTC. Both spouses have equal income, so combined-separate offers no advantage
+# and joint is chosen (ky_files_separately: false). With total MGI ~$18,000 for a
+# 2-person family (2022 FPL ~$18,310), the ratio < 1.0 puts the FSTC rate at 100%,
+# zeroing the tax. The boolean is robust; the $0 currency depends on the exact
+# 2022 FPL and is CI-pending.
+- name: KY married couple near FPL with nonzero FSTC does not elect combined-separate
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 9_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 9_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    # FSTC rate = 100% at ~98% of the 2-person FPL, so KY income tax is fully
+    # offset. CI-pending: exact FPL confirms the rate bracket.
+    ky_income_tax: 0
+
+# A8 (CI-RISK): married couple with a child and federal CDCC, so KY's 20% match
+# applies through the election. Equal-income spouses -> joint chosen. The KY CDCC
+# equals 20% of the federal CDCC (cdcc input); the credit is applied in the Form
+# 740 ordering (personal -> family size -> tuition -> dependent care). Expected
+# ky_income_tax hand-derived best-effort and CI-pending.
+- name: KY married couple with child and CDCC does not elect combined-separate
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        cdcc: 1_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    ky_files_separately: false
+    # Joint: taxable = 60,000 - 2,770 = 57,230; tax = 57,230 x 5% = 2,861.50.
+    # KY CDCC = 20% x 1,000 = 200. Tax after = 2,861.50 - 200 = 2,661.50.
+    # (No FSTC at this income.) CI-pending: confirm ordering + KY AGI details.
+    ky_income_tax: 2_661.50

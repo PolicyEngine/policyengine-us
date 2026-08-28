@@ -12,10 +12,15 @@ class ky_files_separately(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        # Combined-separate (filing status 3) is only available to married
-        # couples; single and head-of-household filers use the joint
+        # Combined-separate (Form 740 Filing Status 2) is only available to
+        # married couples; single and head-of-household filers use the joint
         # (single-column) path. A couple is represented either by a spouse in
-        # the tax unit or by a joint filing status, so accept either.
+        # the tax unit or by a joint filing status, so accept either. The model
+        # gates the election on MARRIED only, a deliberate simplification of
+        # Form 740's "both spouses had income" condition: under the post-credit
+        # election a zero-income spouse's column offers no advantage and only
+        # strands credits, so the joint path weakly dominates and the gate is
+        # harmless.
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
         has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
