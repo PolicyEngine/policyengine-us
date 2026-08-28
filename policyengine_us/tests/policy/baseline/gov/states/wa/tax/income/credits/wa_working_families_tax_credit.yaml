@@ -727,9 +727,96 @@
         members: [head, spouse, child]
         state_code: WA
   output:
-    # AGI $50,047.89 is below the 2023 married-filing-jointly one-child federal
-    # EITC limit of $53,120 (Washington DOR's published 2023 figure), not the
-    # frozen 2022 limit of $49,620. Maximum $625, phase-out start $48,120
+    # The maximum qualifying income equals Washington DOR's published 2023
+    # married-filing-jointly one-child limit of $53,120, not the frozen 2022
+    # limit of $49,620.
+    wa_working_families_tax_credit_maximum_qualifying_income: 53_120
+    # AGI $50,047.89 is below that limit. Maximum $625, phase-out start $48,120
     # (limit $53,120 less the $5,000 band), rate (625 - 50) / 5,000 = 11.5%.
     # 625 - 0.115 x (50,047.89 - 48,120) = 403.
     wa_working_families_tax_credit: 403.29
+
+- name: Case 17, two-child near-ceiling credit reaches the minimum (2-child coverage).
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 59_470
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      spouse:
+        age: 35
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: WA
+  output:
+    # 2023 married-filing-jointly two-child ceiling = $59,478 (Washington DOR).
+    # Maximum $940, phase-out start $54,478 (limit less the $5,000 band), rate
+    # (940 - 50) / 5,000 = 17.8%. Income $59,470 is $8 below the ceiling, so the
+    # credit is at the $50 statutory minimum region: 940 - 0.178 x (59,470 -
+    # 54,478) = 51.43. (The ceiling itself is pinned to DOR's $53,120 in the
+    # one-child case above; DOR rounds to whole dollars, whereas the model
+    # carries the federal indexing to the cent.)
+    wa_working_families_tax_credit: 51.43
+
+- name: Case 18, investment-income limit indexes to the current year.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 15_000
+        taxable_interest_income: 10_500
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_head: true
+      child:
+        age: 5
+        has_tin: true
+        ssn_card_type: CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        would_file_taxes_voluntarily: true
+        takes_up_eitc: true
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WA
+  output:
+    # Investment income $10,500 exceeds the frozen 2022 federal limit ($10,300)
+    # but is below the current-year 2023 limit ($11,000, Washington DOR), so the
+    # filer remains eligible and receives the full 2023 one-child maximum.
+    wa_working_families_tax_credit: 625

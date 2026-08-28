@@ -80,9 +80,9 @@
   output:
     tax_units:
       tax_unit:
-        # 1-kid joint phase-out starts at (20,130 + 6,130 + 3,733/0.1598)
-        # - 5,000 = 44,620; income 20,000 is below it -> full 2026 maximum
-        # 660 x 1.02266 uprating = 674.96.
+        # Income $20,000 is well below the 2026 one-child joint phase-out
+        # start, so the credit is the full 2026 maximum: $660 (2025) x 1.02266
+        # uprating = 674.96.
         wa_working_families_tax_credit: 674.96
         adjusted_gross_income: 20_000.0
 - name: wa_wftc_childless_mid_phase_out (wa)
@@ -482,7 +482,7 @@
     tax_units:
       tax_unit:
         # Top child bracket: 3+ kids 2026 maximum = 1,330 x 1.02266
-        # uprating = 1,360.14; income 20,000 is below the joint 3-kid
-        # phase-out start (20,130 + 6,130 + 6,935/0.2106 - 5,000 = 54,190).
+        # uprating = 1,360.14; income 20,000 is well below the 2026 joint
+        # three-child phase-out start, so the full maximum applies.
         wa_working_families_tax_credit: 1_360.14
         adjusted_gross_income: 20_000.0
