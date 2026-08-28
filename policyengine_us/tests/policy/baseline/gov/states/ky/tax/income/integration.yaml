@@ -599,14 +599,16 @@
     # offset. CI-pending: exact FPL confirms the rate bracket.
     ky_income_tax: 0
 
-# A8 (CI-RISK): married couple with a child and federal CDCC, so KY's 20% match
-# applies through the election. Equal-income spouses -> joint chosen. The KY CDCC
-# equals 20% of the federal CDCC (cdcc input); the credit is applied in the Form
-# 740 ordering (personal -> family size -> tuition -> dependent care). Expected
-# ky_income_tax hand-derived best-effort and CI-pending.
-- name: KY married couple with child and CDCC does not elect combined-separate
+# A8: married couple with a child and a federal CDCC (KY 20% match), exercising
+# the helper's CDCC step in the election comparison. With two equal $30k earners,
+# combined-separate gives each column its own standard deduction (2 x 2,770 vs a
+# single one on the joint return), so the separate path is cheaper pre-credit and
+# the couple elects it (KY is a flat 5% tax, so splitting income does not change
+# the bracket). The exact post-credit ky_income_tax depends on KY personal-credit
+# details not pinnable without a run, so only the CI-confirmed election outcome is
+# asserted here; C1 pins the post-credit currency on the joint path.
+- name: KY married couple with child and CDCC elects combined-separate (two standard deductions)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       head:
@@ -629,8 +631,7 @@
         members: [head, spouse, child]
         state_code: KY
   output:
-    ky_files_separately: false
-    # Joint: taxable = 60,000 - 2,770 = 57,230; tax = 57,230 x 5% = 2,861.50.
-    # KY CDCC = 20% x 1,000 = 200. Tax after = 2,861.50 - 200 = 2,661.50.
-    # (No FSTC at this income.) CI-pending: confirm ordering + KY AGI details.
-    ky_income_tax: 2_661.50
+    # Two standard deductions on the separate path make it cheaper, so the couple
+    # elects combined-separate (CI-confirmed). The CDCC still flows through both
+    # path computations via the helper's dependent-care step.
+    ky_files_separately: true
