@@ -219,3 +219,28 @@
     phone_expense: 600
   output:
     snap_individual_utility_allowance: 0
+
+# Missouri excludes telephone from its LUA qualification (MO DSS manual
+# 1115.035.25.15), so a household with electricity and phone bills routes
+# to the individual standards instead of the NHCS.
+- name: Missouri electricity and phone bills receive the two single standards
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    pre_subsidy_electricity_expense: 960
+    phone_expense: 600
+  output:
+    # Electricity single standard $162 + telephone standard $81 (FY2026).
+    snap_individual_utility_allowance: 243
+
+- name: Missouri household with only a phone bill receives the telephone standard
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: IUA
+    snap_utility_region_str: MO
+    phone_expense: 600
+  output:
+    snap_individual_utility_allowance: 81

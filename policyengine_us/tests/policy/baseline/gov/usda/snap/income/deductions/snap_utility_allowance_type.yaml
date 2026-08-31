@@ -47,3 +47,43 @@
     has_heating_cooling_expense: false
   output:
     snap_utility_allowance_type: SUA
+
+# Missouri excludes telephone from its LUA (the Non-Heating/Cooling
+# Standard) under the 7 CFR 273.9(d)(6)(iii)(A)(3) state option, so a
+# phone bill does not count toward the two-utility LUA qualification
+# (MO DSS manual 1115.035.25.15).
+- name: Missouri phone bill does not count toward the LUA qualification
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Phone plus one other utility leaves only one LUA-qualifying bill.
+    snap_utility_allowance_type: IUA
+
+- name: Missouri with two non-phone utilities plus a phone bill qualifies for the LUA
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 3
+    phone_expense: 600
+    snap_utility_region_str: MO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Colorado phone bill counts toward the LUA qualification
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    phone_expense: 600
+    snap_utility_region_str: CO
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # Colorado includes telephone in its LUA, so phone plus one other
+    # utility still qualifies.
+    snap_utility_allowance_type: LUA

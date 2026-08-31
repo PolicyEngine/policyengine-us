@@ -128,3 +128,30 @@
   output:
     # 400 * 333.952 / 322.561
     snap_limited_utility_allowance: 414.13
+
+# Missouri excludes telephone from its LUA (the Non-Heating/Cooling
+# Standard) and adds the telephone standard on top for households with
+# phone costs (MO DSS manual 1115.035.25.15; 7 CFR 273.9(d)(6)(iii)(A)(3)
+# state option). FY2026: NHCS $373, telephone standard $81.
+- name: Missouri stacks the telephone standard on the NHCS
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: MO
+    water_expense: 480
+    phone_expense: 600
+  output:
+    # NHCS $373 + telephone standard $81.
+    snap_limited_utility_allowance: 454
+
+- name: Missouri NHCS without phone costs has no telephone add-on
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    snap_utility_allowance_type: LUA
+    snap_utility_region_str: MO
+    water_expense: 480
+    trash_expense: 360
+  output:
+    snap_limited_utility_allowance: 373
