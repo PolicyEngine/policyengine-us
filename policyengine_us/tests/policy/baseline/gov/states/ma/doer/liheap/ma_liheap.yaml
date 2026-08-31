@@ -134,39 +134,43 @@
     ma_liheap_hecs_payment: 160
     ma_liheap: 500
 
-# Legacy fallback tests — verify pre-PR-#7986 per-fuel inputs still cap the benefit.
-- name: Legacy fallback, electricity heating uses electricity_expense.
+# Canonical vocabulary tests — heating_type selects the per-fuel expense and
+# derives the MA heating-type category.
+- name: Canonical inputs, electricity heating uses pre_subsidy_electricity_expense.
   period: 2023
   input:
     spm_unit_size: 4
     irs_gross_income: 40_000
     rent: 0
-    ma_liheap_heating_type: ELECTRICITY
-    electricity_expense: 500
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 500
     heat_expense_included_in_rent: false
     receives_housing_assistance: false
     heating_expense_last_year: 1_800
     state_code: MA
   output:
-    # heating_expense_person unset → falls back to electricity_expense (500)
+    # heating_expense = pre_subsidy_electricity_expense (500)
     # min(852 + 160, 500) = 500
+    ma_liheap_heating_type: ELECTRICITY
     ma_liheap: 500
 
-- name: Legacy fallback, oil heating uses fuel_oil_expense.
+- name: Canonical inputs, fuel oil heating uses fuel_oil_expense.
   period: 2023
   input:
     spm_unit_size: 4
     irs_gross_income: 40_000
     rent: 0
-    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    heating_type: FUEL_OIL
     fuel_oil_expense: 500
     heat_expense_included_in_rent: false
     receives_housing_assistance: false
     heating_expense_last_year: 2_000
     state_code: MA
   output:
-    # heating_expense_person unset → falls back to fuel_oil_expense (500)
+    # FUEL_OIL maps to MA's HEATING_OIL_AND_PROPANE category;
+    # heating_expense = fuel_oil_expense (500)
     # min(1_239 + 160, 500) = 500
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
     ma_liheap: 500
 
 - name: Legacy fallback, other heating uses heating_cooling_expense.

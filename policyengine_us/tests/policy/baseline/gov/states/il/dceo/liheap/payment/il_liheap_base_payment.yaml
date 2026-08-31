@@ -195,3 +195,33 @@
     # Bracket 1, size 1, all electric -> $840
     # min(840, 150) = 150 (capped)
     il_liheap_base_payment: 150
+
+- name: Case 9, canonical propane inputs derive the propane matrix row.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        irs_gross_income: 40_000
+      person2:
+        age: 33
+      person3:
+        age: 8
+      person4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: PROPANE
+        bottled_gas_expense: 500
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IL
+  output:
+    # PROPANE maps to the PROPANE_FUEL_OIL matrix row;
+    # heating_expense = bottled_gas_expense (500)
+    # Bracket 3, size 4, propane -> $630; min(630, 500) = 500
+    il_liheap_heating_type: PROPANE_FUEL_OIL
+    il_liheap_base_payment: 500

@@ -1,0 +1,70 @@
+- name: Natural gas heating reads the gas bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    heating_expense: 1_200
+
+- name: Propane heating reads the bottled gas bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: PROPANE
+    bottled_gas_expense: 900
+  output:
+    heating_expense: 900
+
+- name: Electric heating reads the pre-subsidy electricity bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 800
+  output:
+    heating_expense: 800
+
+- name: Kerosene heating reads the fuel oil bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: KEROSENE
+    fuel_oil_expense: 600
+  output:
+    heating_expense: 600
+
+- name: The matching fuel bill takes precedence over the deprecated person-level input.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    heating_expense_person: 700
+  output:
+    heating_expense: 1_000
+
+- name: Falls back to the deprecated person-level input when the fuel bill is unset.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    heating_expense_person: 700
+  output:
+    heating_expense: 700
+
+- name: Falls back to the deprecated heating_cooling_expense last.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_cooling_expense: 400
+  output:
+    heating_expense: 400
+
+- name: Wood heating has no bill input and no fallback set.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: WOOD
+  output:
+    heating_expense: 0

@@ -8,4 +8,10 @@ class heating_expenses(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = ["heating_expense_person"]
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        # Heating bills attach to the dwelling: read the SPM unit's heating
+        # expense through the tax unit head.
+        heating = person.spm_unit("heating_expense", period)
+        is_head = person("is_tax_unit_head", period)
+        return tax_unit.sum(heating * is_head)

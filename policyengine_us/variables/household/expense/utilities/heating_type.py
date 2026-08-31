@@ -1,0 +1,25 @@
+from policyengine_us.model_api import *
+
+
+class HeatingType(Enum):
+    ELECTRICITY = "Electricity"
+    NATURAL_GAS = "Natural gas"
+    FUEL_OIL = "Fuel oil"
+    KEROSENE = "Kerosene"
+    PROPANE = "Propane"
+    WOOD = "Wood"
+    COAL = "Coal"
+    SOLAR = "Solar"
+    OTHER = "Other"
+    NONE = "None"
+
+
+class heating_type(Variable):
+    value_type = Enum
+    entity = SPMUnit
+    possible_values = HeatingType
+    default_value = HeatingType.ELECTRICITY
+    label = "Primary home heating fuel type"
+    documentation = "The fuel used to heat the home, following the American Community Survey house heating fuel categories. State program fuel categories are derived from this input; heat included in rent is the separate heat_expense_included_in_rent input."
+    definition_period = YEAR
+    reference = "https://data.census.gov/table/ACSDT1Y2023.B25040"
