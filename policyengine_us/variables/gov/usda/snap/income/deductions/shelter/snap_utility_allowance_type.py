@@ -24,10 +24,18 @@ class snap_utility_allowance_type(Variable):
         always_sua = spm_unit("snap_state_using_standard_utility_allowance", period)
         has_heating_cooling = spm_unit("has_heating_cooling_expense", period)
         lua_is_defined = lua.active[region].astype(bool)
+        # Under 7 CFR 273.9(d)(6)(iii)(A)(3), including telephone in the LUA
+        # is a state option; where the state excludes it, a phone bill does
+        # not count toward the two-utility LUA qualification.
+        lua_includes_phone = lua.includes_phone[region].astype(bool)
+        has_phone = spm_unit("phone_expense", period) > 0
+        lua_qualifying_bills = distinct_utility_bills - (
+            has_phone & ~lua_includes_phone
+        )
         return select(
             [
                 has_heating_cooling | always_sua,
-                lua_is_defined & (distinct_utility_bills >= 2),
+                lua_is_defined & (lua_qualifying_bills >= 2),
                 distinct_utility_bills > 0,
             ],
             [
