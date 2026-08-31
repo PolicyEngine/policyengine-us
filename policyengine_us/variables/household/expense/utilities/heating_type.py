@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 
 
 class HeatingType(Enum):
+    # Also the right value when heat is included in rent and the tenant
+    # does not know the building's fuel: heat_expense_included_in_rent
+    # carries the heat-in-rent fact and bypasses the expense cap, so the
+    # fuel type is not needed. Never use NONE there — the home has heat.
     UNSPECIFIED = "Unspecified"
     ELECTRICITY = "Electricity"
     NATURAL_GAS = "Natural gas"
