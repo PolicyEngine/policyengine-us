@@ -1,1 +1,2 @@
-Update New Jersey CCAP maximum payment rates to CC-230 (03/26), effective April 1, 2026, and add the intermediate CC-230 (07/24) rates effective August 1, 2024.
+- Update New Jersey CCAP maximum payment rates to CC-230 (03/26), effective April 1, 2026, and add the intermediate CC-230 (07/24) rates effective August 1, 2024.
+- Update Massachusetts CCFA daily reimbursement rates to FY2026, effective July 1, 2025, and correct the FY2025 Western, Central & Southeast preschool rate.

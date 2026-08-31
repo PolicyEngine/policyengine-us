@@ -7,40 +7,62 @@ metadata:
     - ma_ccfa_region
     - ma_ccfa_child_age_category
   reference:
+    - title: FY 2026 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=1
+    - title: CCFA-26-02 Center-Based Child Care Financial Assistance Reimbursement Rates for Fiscal Year 2026
+      href: https://www.mass.gov/doc/eecccfa-26-02center-based-fy26-rate-increaseadvisory/download
     - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
     - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
       href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download
 
+# 2025-07-01 values are FY2026 rates per advisory CCFA-26-02: a 0.5%
+# cost-of-living adjustment to all rates plus targeted increases to the
+# preschool rates in the Northeast and Western, Central & Southeast
+# regions and the toddler rate in the Northeast region. EEC implemented
+# the increase on April 1, 2026, retroactive to July 1, 2025.
+# The FY2025 WESTERN_CENTRAL_AND_SOUTHEAST PRESCHOOL rate is 58.09
+# (previously encoded as 58.9): it equals the region's Head Start
+# full-day rate as in FY2024 and FY2026, and 58.9 would imply an FY2026
+# decrease, contradicting the advisory's targeted increase.
 WESTERN_CENTRAL_AND_SOUTHEAST:
   INFANT:
     2023-07-01: 97.18
     2024-07-01: 105
+    2025-07-01: 105.53
   TODDLER:
     2023-07-01: 75.48
     2024-07-01: 82.5
+    2025-07-01: 82.91
   PRESCHOOL:
     2023-07-01: 57.23
-    2024-07-01: 58.9
+    2024-07-01: 58.09
+    2025-07-01: 58.78
 
 NORTHEAST:
   INFANT:
     2023-07-01: 102.07
     2024-07-01: 110.25
+    2025-07-01: 110.8
   TODDLER:
     2023-07-01: 84.7
     2024-07-01: 85.97
+    2025-07-01: 86.96
   PRESCHOOL:
     2023-07-01: 57.99
     2024-07-01: 59.09
+    2025-07-01: 62.38
 
 METRO_AND_BOSTON_METRO:
   INFANT:
     2023-07-01: 119.52
     2024-07-01: 121.31
+    2025-07-01: 121.92
   TODDLER:
     2023-07-01: 108.46
     2024-07-01: 110.09
+    2025-07-01: 110.64
   PRESCHOOL:
     2023-07-01: 80.13
     2024-07-01: 81.33
+    2025-07-01: 81.74
