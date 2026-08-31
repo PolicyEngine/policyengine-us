@@ -1,0 +1,19 @@
+description: Vermont applies a child citizenship or qualified-immigrant test under the Child Care Financial Assistance Program if this is true.
+# As part of the Act 76 (2023) rollout, the requirement that participating
+# children have an eligible citizenship status ended June 30, 2024:
+# "Citizenship status of participating children will no longer be a factor
+# for CCFAP eligibility." DCF covers federally ineligible children with
+# state funds.
+values:
+  2009-02-09: true
+  2024-07-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Vermont CCFAP immigration test in effect
+  reference:
+    - title: Vermont DCF, Act 76 and CCFAP updates (June 2024)
+      href: https://dcf.vermont.gov/cdd-blog/act-76-and-ccfap-updates-june-2024
+    - title: Vermont DCF, More Vermont families qualify for child care financial assistance
+      href: https://dcf.vermont.gov/dcf-news/more-vermont-families-qualify-child-care-financial-assistance
