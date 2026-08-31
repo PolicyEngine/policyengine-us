@@ -61,10 +61,47 @@
   output:
     heating_expense: 400
 
-- name: Wood heating has no bill input and no fallback set.
+- name: Wood heating reads the wood bill.
   period: 2026
   absolute_error_margin: 0.1
   input:
     heating_type: WOOD
+    wood_expense: 750
+  output:
+    heating_expense: 750
+
+- name: Other heating fuel reads the catch-all bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: OTHER
+    other_heating_fuel_expense: 650
+  output:
+    heating_expense: 650
+
+- name: Solar heating reads the electricity bill for supplemental heat.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: SOLAR
+    pre_subsidy_electricity_expense: 900
+  output:
+    heating_expense: 900
+
+- name: Off-grid solar heating has no fuel bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: SOLAR
   output:
     heating_expense: 0
+
+- name: Mixed-fuel household is represented by its primary fuel's bill.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+    pre_subsidy_electricity_expense: 900
+  output:
+    heating_expense: 1_000

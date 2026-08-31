@@ -189,3 +189,22 @@
     # heating_expense_person unset → falls back to heating_cooling_expense (800)
     # min(672 + 120, 800) = 792
     ma_liheap: 792
+
+- name: Canonical inputs, wood heating maps to the other category and reads wood_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 60_000
+    rent: 18_001
+    heating_type: WOOD
+    wood_expense: 800
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: true
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # WOOD maps to MA's OTHER category (deliverable fuel);
+    # heating_expense = wood_expense (800)
+    # min(672 + 120, 800) = 792
+    ma_liheap_heating_type: OTHER
+    ma_liheap: 792

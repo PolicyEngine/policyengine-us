@@ -7,18 +7,23 @@ class heating_expense(Variable):
     label = "Heating expense"
     unit = USD
     definition_period = YEAR
-    documentation = "Annual home heating expense: the fuel bill matching the household's heating type. Programs that cap benefits at actual heating costs read this variable rather than arbitrating between expense inputs."
+    documentation = "Annual home heating expense: the fuel bill matching the household's primary heating type (mixed-fuel households are represented by their primary fuel's bill). Programs that cap benefits at actual heating costs read this variable rather than arbitrating between expense inputs."
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
         fuel_bill = select(
             [
-                heating_type == types.ELECTRICITY,
+                # Solar-primary homes are assumed grid-tied with electric
+                # supplemental heat; fully off-grid homes have no
+                # electricity bill and get zero.
+                (heating_type == types.ELECTRICITY) | (heating_type == types.SOLAR),
                 heating_type == types.NATURAL_GAS,
                 (heating_type == types.FUEL_OIL) | (heating_type == types.KEROSENE),
                 heating_type == types.PROPANE,
+                heating_type == types.WOOD,
                 heating_type == types.COAL,
+                heating_type == types.OTHER,
             ],
             [
                 # Pre-subsidy electricity avoids circular references:
@@ -28,8 +33,11 @@ class heating_expense(Variable):
                 spm_unit("gas_expense", period),
                 spm_unit("fuel_oil_expense", period),
                 spm_unit("bottled_gas_expense", period),
+                spm_unit("wood_expense", period),
                 spm_unit("coal_expense", period),
+                spm_unit("other_heating_fuel_expense", period),
             ],
+            # NONE has no fuel bill.
             default=0,
         )
         # Deprecated fallbacks under the atomic-inputs migration:

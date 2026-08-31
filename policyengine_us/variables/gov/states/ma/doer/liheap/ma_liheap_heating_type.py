@@ -31,7 +31,7 @@ class ma_liheap_heating_type(Variable):
                 oil_or_propane,
                 heating_type == types.NATURAL_GAS,
                 heating_type == types.KEROSENE,
-                heating_type == types.ELECTRICITY,
+                (heating_type == types.ELECTRICITY) | (heating_type == types.SOLAR),
                 heating_type == types.NONE,
             ],
             [

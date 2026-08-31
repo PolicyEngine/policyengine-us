@@ -29,7 +29,7 @@ class il_liheap_heating_type(Variable):
         return select(
             [
                 heat_in_rent,
-                heating_type == types.ELECTRICITY,
+                (heating_type == types.ELECTRICITY) | (heating_type == types.SOLAR),
                 deliverable_fuel,
             ],
             [
