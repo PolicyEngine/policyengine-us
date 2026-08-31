@@ -1,3 +1,10 @@
+## [1.821.5] - 2026-08-31
+
+### Fixed
+
+- Rename `co_pension_subtraction_indv_eligible..py` and `generate_age_curves.py.py` to remove the duplicated file extensions.
+
+
 ## [1.821.4] - 2026-08-26
 
 ### Fixed
