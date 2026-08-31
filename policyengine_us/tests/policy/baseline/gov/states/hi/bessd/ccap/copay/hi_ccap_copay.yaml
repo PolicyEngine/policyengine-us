@@ -1,12 +1,11 @@
-# HI CCAP family co-payment (HAR 17-798.2-14(b)(4)).
-# Co-payment = (department's maximum rate allowable) x (co-pay percentage).
-# The percentage multiplies the PROVIDER MAX RATE, not gross income. This is
-# the HI-specific difference from income-times-percent designs.
+# HI CCAP family co-payment (HAR 17-798.3-14, eff. 2021-08-06).
+# Co-payment = (co-payment tier from Exhibit II) x (monthly gross income
+# for the family unit), assessed once per family unit.
 #
 # Family of 2, HI 2025 (FPG family of 2 = 24,320/year = 2,026.67/month).
 # Children are full-time (childcare_hours_per_week 30 -> ~130 monthly hours).
 
-- name: Case 1, worked example 740 rate times 9 percent.
+- name: Case 1, worked example gross income times 9 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -31,11 +30,11 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (licensed center or group home, full-time) = 795; copay rate 9%
-    # copay = 795 x 0.09 = 71.55
-    hi_ccap_copay: 71.55
+    # Monthly gross income = 56,000 / 12 = 4,666.67; copay tier 9%
+    # copay = 4,666.67 x 0.09 = 420.00
+    hi_ccap_copay: 420
 
-- name: Case 2, infant/toddler rate 1733 times 5 percent.
+- name: Case 2, gross income times 5 percent.
   period: 2025-01
   absolute_error_margin: 0.01
   input:
@@ -60,9 +59,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Max rate (licensed center infant/toddler, full-time) = 1,733; copay rate 5%
-    # copay = 1,733 x 0.05 = 86.65
-    hi_ccap_copay: 86.65
+    # Monthly gross income = 40,800 / 12 = 3,400; copay tier 5%
+    # copay = 3,400 x 0.05 = 170.00 (the provider rate does not enter)
+    hi_ccap_copay: 170
 
 - name: Case 3, zero copay percent gives zero copay.
   period: 2025-01
@@ -89,5 +88,31 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # 795 x 0.00 = 0
+    # 1,000 x 0.00 = 0
     hi_ccap_copay: 0
+
+# The FFY2025-2027 CCDF plan (section 3.1.2) shows a family unit of 1 at
+# monthly income 3,632 paying a 327 co-payment: ratio far above 230% FPG
+# -> 9% tier, and 3,632 x 0.09 = 326.88, which rounds to the plan's 327.
+- name: Case 4, CCDF plan worked example, family of 1 at 3632 per month.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 43_584  # 3,632/mo
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_copay_rate: 0.09
+    hi_ccap_copay: 326.88

@@ -94,9 +94,9 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1,000, 795) = 795; copay = 795 x 0.09 = 71.55
-    # subsidy = 795 - 71.55 = 723.45
-    hi_ccap: 723.45
+    # capped = min(1,000, 795) = 795; copay = 4,666.67 x 0.09 = 420.00
+    # subsidy = 795 - 420.00 = 375.00
+    hi_ccap: 375
 
 - name: Case 4, two children sum their rates.
   period: 2025-01
@@ -230,9 +230,9 @@
         state_code: HI
   output:
     # capped = min(500 charge, 795 rate) = 500
-    # copay = 795 x 0.09 = 71.55 (always on the dept max rate)
-    # subsidy = max(500 - 71.55, 0) = 428.45 (lesser is the charge, not rate)
-    hi_ccap: 428.45
+    # copay = 4,666.67 x 0.09 = 420.00 (on gross income)
+    # subsidy = max(500 - 420.00, 0) = 80.00 (lesser is the charge, not rate)
+    hi_ccap: 80
 
 - name: Case 8, copay larger than the lesser-of amount floors the subsidy at zero.
   period: 2025-01
@@ -262,8 +262,8 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # capped = min(1 charge, 795 rate) = 1; copay = 795 x 0.09 = 71.55
-    # subsidy = max(1 - 71.55, 0) = 0 (no negative benefit)
+    # capped = min(1 charge, 795 rate) = 1; copay = 4,666.67 x 0.09 = 420.00
+    # subsidy = max(1 - 420.00, 0) = 0 (no negative benefit)
     hi_ccap: 0
 
 - name: Case 9, household with no children produces a graceful zero.
