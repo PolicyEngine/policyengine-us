@@ -1,0 +1,20 @@
+description: Hawaii computes the Child Care Subsidy co-payment as a percentage of the family's monthly gross income when this is in effect, and as a percentage of the department's maximum rate allowable otherwise.
+
+values:
+  2020-01-01: false
+  2021-08-06: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii CCAP income-based co-payment in effect
+  reference:
+    # HAR chapter 17-798.3 (effective August 6, 2021) replaced the
+    # payment provisions of chapter 17-798.2; its section -14 multiplies
+    # the co-payment tier by the family unit's monthly gross income,
+    # where the superseded 17-798.2-14(b)(4) multiplied it by the
+    # department's maximum rate allowable.
+    - title: HAR 17-798.3-14
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=35
+    - title: HAR 17-798.2-14(b)(4)
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=29

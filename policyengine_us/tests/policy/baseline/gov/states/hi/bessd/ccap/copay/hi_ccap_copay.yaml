@@ -116,3 +116,66 @@
   output:
     hi_ccap_copay_rate: 0.09
     hi_ccap_copay: 326.88
+
+# === Effective-date boundary: HAR 17-798.3 replaced 17-798.2's payment
+# provisions on August 6, 2021. Before then the co-payment was the tier
+# percentage of the department's maximum rate allowable, per child
+# (17-798.2-14(b)(4)); since then it is the tier percentage of monthly
+# gross income, per family unit (17-798.3-14). ===
+
+- name: Case 5, before August 2021 the tier applies to the provider maximum rate.
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Max rate (licensed center or group home, full-time) = 795
+    # copay = 795 x 0.09 = 71.55
+    hi_ccap_copay: 71.55
+
+- name: Case 6, from the 2021 rule change the tier applies to gross income.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 56_000  # 4,666.67/mo, far above 230% FPG -> 9%
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 30
+        hi_ccap_provider_category: LICENSED_CENTER_OR_GROUP_HOME
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # copay = 4,666.67 x 0.09 = 420.00 (same household as Case 5)
+    hi_ccap_copay: 420

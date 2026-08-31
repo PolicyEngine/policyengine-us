@@ -1,4 +1,4 @@
-description: Hawaii sets this co-payment percentage of the family's monthly gross income under the Child Care Subsidy program, by the family's gross income as a share of the federal poverty guidelines.
+description: Hawaii sets this co-payment percentage under the Child Care Subsidy program, by the family's gross income as a share of the federal poverty guidelines.
 
 metadata:
   type: single_amount
@@ -10,6 +10,9 @@ metadata:
     # HAR 17-798.3-14 (eff. 2021-08-06): the co-payment tier is determined
     # from Exhibit II, dated January 2, 2020, attached at the end of the
     # chapter, and multiplied by the family unit's monthly gross income.
+    # The superseded 17-798.2-14(b)(4) used the same tier scale but
+    # multiplied it by the department's maximum rate allowable (see
+    # income_based_in_effect.yaml).
     - title: HAR 17-798.3-14
       href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=35
     # The same Exhibit II scale as a standalone scanned chart (eff
