@@ -116,7 +116,10 @@ AZ:
   2017-10-01: 32
   2018-10-01: 36
   2019-10-01: 36
-  2020-10-01: 0
+  # The DES manual's archived FAA6.J page for 10/01/20-09/30/21 sets the
+  # Telephone Utility Allowance at $41; the value was previously misfiled
+  # into limited/main.yaml.
+  2020-10-01: 41
   2021-10-01: 44
   2022-10-01: 47
   2023-10-01: 47

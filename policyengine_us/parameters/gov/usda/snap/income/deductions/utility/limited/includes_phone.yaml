@@ -66,8 +66,10 @@ MN:
   2010-01-01: true
 MO:
   # MO DSS manual 1115.035.25.15: the Non-Heating/Cooling Standard excludes
-  # telephone; the telephone standard is added on top for households with
-  # phone costs.
+  # telephone; "The telephone standard may be used with the NHCS or LUA."
+  # Note Missouri's own "Lower Utility Allowance (LUA)" term means its flat
+  # one-utility standard, not the federal two-utility LUA modeled here --
+  # the NHCS is Missouri's analog of this file's LUA concept.
   2010-01-01: false
 MS:
   2010-01-01: true

@@ -23,9 +23,23 @@ AL:
 AR:
   2010-01-01: false
   2021-10-01: false
+  # The FY2023-FY2026 FNS SUA tables list an Arkansas BUA ($245 rising to
+  # $274), matching the values maintained in main.yaml. The AR SNAP
+  # Certification Manual 6622 (rev. 01/01/2021) describes the BUA earlier,
+  # but no pre-FY2023 amount is published, so activation starts with the
+  # first known value.
+  2022-10-01: true
 AZ:
   2010-01-01: false
   2021-10-01: false
+  # The DES manual's archived FAA6.J Utility Allowance amounts page for
+  # 11/29/22-09/30/23 introduces the LUA with the note "LUA is effective
+  # the benefit month of 01/2023. Budgetary units eligible for LUA for
+  # benefit months prior to 01/2023 receive SUA instead of LUA" (that
+  # three-month SUA fallback is not modeled). The FY2023-FY2026 FNS SUA
+  # tables carry the matching by-household-size values maintained in
+  # by_household_size/amount.yaml.
+  2023-01-01: true
 CA:
   2010-01-01: false
   2021-10-01: true

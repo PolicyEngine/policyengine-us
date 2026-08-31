@@ -87,3 +87,60 @@
     # Colorado includes telephone in its LUA, so phone plus one other
     # utility still qualifies.
     snap_utility_allowance_type: LUA
+
+# The Arizona LUA begins with benefit month January 2023 (DES FAA6.J) and
+# the Arkansas BUA carries its first published amount in FY2023 (FNS SUA
+# tables); before then, two-utility households fall back to the individual
+# standards.
+- name: Arizona household with two non-heating utilities qualifies for the LUA in 2026
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Arkansas household with two non-heating utilities qualifies for the BUA in 2026
+  period: 2026
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: Arkansas household with two non-heating utilities receives individual standards before FY2023
+  period: 2021
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AR
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: Arizona two-utility household receives individual standards in 2022, before the LUA begins
+  period: 2022
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    # The DES FAA6.J archived amounts page: "LUA is effective the benefit
+    # month of 01/2023" (the SUA fallback Arizona applied in late 2022 is
+    # not modeled).
+    snap_utility_allowance_type: IUA
+
+- name: Arizona two-utility household qualifies for the LUA from January 2023
+  period: 2023
+  input:
+    count_distinct_utility_expenses: 2
+    snap_utility_region_str: AZ
+    snap_state_using_standard_utility_allowance: false
+    has_heating_cooling_expense: false
+  output:
+    snap_utility_allowance_type: LUA
