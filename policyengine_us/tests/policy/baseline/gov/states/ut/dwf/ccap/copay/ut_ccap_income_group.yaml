@@ -1,9 +1,11 @@
 # Tests for ut_ccap_income_group (SPMUnit, MONTH, int).
-# Table 4 (effective April 1, 2026) classifies monthly countable income
-# into 16 groups per household size (2 through 12 or more). Each encoded
-# limit is the inclusive upper bound of its group; income above a bound
-# falls in the next group. Countable income is set directly to isolate the
-# classification.
+# Table 4 classifies monthly countable income into 16 groups per
+# household size (2 through 12 or more). Each encoded limit is the
+# inclusive upper bound of its group; income above a bound falls in the
+# next group. Countable income is set directly to isolate the
+# classification. Periods in 2026 use the April 1, 2026 edition (encoded
+# at the 2020-01-01 backdating floor); periods from October 2026 use the
+# October 1, 2026 edition (the 2027-01 cases below).
 
 - name: Case 1, size 2 with low income lands in group 1.
   period: 2026-01
@@ -272,3 +274,43 @@
     # Classification never exceeds group 16; the 85% state median income
     # eligibility ceiling is applied separately in ut_ccap_income_eligible.
     ut_ccap_income_group: 16
+
+- name: Case 13, October 2026 table, size 2 at the group 2 upper bound stays in group 2.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 2_140  # inclusive group 2 upper bound
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # The October 1, 2026 edition raised the size 2 group 2 bound from
+    # 2,082 to 2,140, so 2,140 now stays in group 2.
+    ut_ccap_income_group: 2
+
+- name: Case 14, October 2026 table, size 2 just above the group 2 bound moves to group 3.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ut_ccap_countable_income: 2_141  # above 2,140, group 3 (2,140.01-2,477)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_income_group: 3
