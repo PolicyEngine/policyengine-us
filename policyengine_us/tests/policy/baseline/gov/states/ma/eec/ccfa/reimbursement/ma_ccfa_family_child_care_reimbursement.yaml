@@ -53,3 +53,14 @@
     state_code: MA
   output:
     ma_ccfa_family_child_care_reimbursement: 57.43
+
+- name: Case 6, region 3, 3 years old, FY2026 targeted increase to the over-2 rate.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    age: 3
+    state_code: MA
+  output:
+    ma_ccfa_family_child_care_reimbursement: 50.01
