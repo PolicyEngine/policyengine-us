@@ -7,12 +7,12 @@ class heating_expense(Variable):
     label = "Heating expense"
     unit = USD
     definition_period = YEAR
-    documentation = "Annual home heating expense: the fuel bill matching the household's primary heating type (mixed-fuel households are represented by their primary fuel's bill). Programs that cap benefits at actual heating costs read this variable rather than arbitrating between expense inputs."
+    documentation = "Annual home heating expense: the fuel bill matching the household's primary heating type (mixed-fuel households are represented by their primary fuel's bill). Zero is a valid value. UNSPECIFIED and NONE heating types have no bill here; UNSPECIFIED households are handled by each program's deprecated legacy adapter instead."
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("heating_type", period)
         types = heating_type.possible_values
-        fuel_bill = select(
+        return select(
             [
                 # Solar-primary homes are assumed grid-tied with electric
                 # supplemental heat; fully off-grid homes have no
@@ -37,16 +37,6 @@ class heating_expense(Variable):
                 spm_unit("coal_expense", period),
                 spm_unit("other_heating_fuel_expense", period),
             ],
-            # NONE has no fuel bill.
+            # UNSPECIFIED and NONE: no canonical bill.
             default=0,
-        )
-        # Deprecated fallbacks under the atomic-inputs migration:
-        # heating_expense_person and heating_cooling_expense predate the
-        # per-fuel vocabulary and are still sent by some API users.
-        person_level = add(spm_unit, period, ["heating_expense_person"])
-        heating_cooling = spm_unit("heating_cooling_expense", period)
-        return select(
-            [fuel_bill > 0, person_level > 0],
-            [fuel_bill, person_level],
-            default=heating_cooling,
         )

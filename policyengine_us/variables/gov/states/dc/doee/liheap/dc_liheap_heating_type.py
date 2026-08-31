@@ -15,6 +15,7 @@ class dc_liheap_heating_type(Variable):
     default_value = DCLIHEAPHeatingType.ELECTRICITY
     definition_period = YEAR
     label = "Household heating types for DC LIHEAP"
+    documentation = "Derived from the canonical heating_type input; setting this directly is deprecated during the vocabulary migration."
 
     def formula(spm_unit, period, parameters):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
@@ -39,5 +40,6 @@ class dc_liheap_heating_type(Variable):
                 DCLIHEAPHeatingType.GAS,
                 DCLIHEAPHeatingType.OIL,
             ],
+            # UNSPECIFIED keeps the pre-canonical default of electricity.
             default=DCLIHEAPHeatingType.ELECTRICITY,
         )

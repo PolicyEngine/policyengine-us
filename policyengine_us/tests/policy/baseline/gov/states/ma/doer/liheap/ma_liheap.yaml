@@ -134,6 +134,64 @@
     ma_liheap_hecs_payment: 160
     ma_liheap: 500
 
+# Legacy adapter tests — with heating_type UNSPECIFIED, MA's pre-canonical
+# arbitration applies exactly (person-level total, else the per-fuel bill
+# matching the MA heating type including post-subsidy electricity_expense,
+# else heating_cooling_expense).
+- name: Legacy adapter, electricity heating uses electricity_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: ELECTRICITY
+    electricity_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to electricity_expense (500)
+    # min(852 + 160, 500) = 500
+    ma_liheap: 500
+
+- name: Legacy adapter, oil heating uses fuel_oil_expense.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    fuel_oil_expense: 500
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 2_000
+    state_code: MA
+  output:
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to fuel_oil_expense (500)
+    # min(1_239 + 160, 500) = 500
+    ma_liheap: 500
+
+- name: Legacy inputs set for SNAP do not create a heating cost for a known heating type.
+  period: 2023
+  input:
+    spm_unit_size: 4
+    irs_gross_income: 40_000
+    rent: 0
+    heating_type: ELECTRICITY
+    heating_cooling_expense: 1_200
+    heat_expense_included_in_rent: false
+    receives_housing_assistance: false
+    heating_expense_last_year: 1_800
+    state_code: MA
+  output:
+    # Canonical electric heating with no electricity bill supplied:
+    # heating_expense = 0; heating_cooling_expense is never read.
+    # min(852 + 160, 0) = 0
+    ma_liheap: 0
+
 # Canonical vocabulary tests — heating_type selects the per-fuel expense and
 # derives the MA heating-type category.
 - name: Canonical inputs, electricity heating uses pre_subsidy_electricity_expense.

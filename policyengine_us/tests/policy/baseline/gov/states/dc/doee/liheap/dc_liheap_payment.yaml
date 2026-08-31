@@ -23,6 +23,17 @@
     dc_liheap_heating_type: HEAT_IN_RENT
     dc_liheap_payment: 250
 
+- name: Some income, household size of 4, deprecated direct heating-type override.
+  period: 2024
+  input:
+    irs_gross_income: 2_001
+    dc_liheap_heating_type: HEAT_IN_RENT
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 4
+    state_code: DC
+  output:
+    dc_liheap_payment: 250
+
 - name: Some income, household size of 3, gas.
   period: 2024
   input:
@@ -33,6 +44,39 @@
     spm_unit_size: 3
     state_code: DC
   output:
+    dc_liheap_payment: 1_386
+
+# Legacy adapter tests — with heating_type UNSPECIFIED, DC's pre-canonical
+# arbitration applies exactly (person-level total, else the per-fuel bill
+# matching the DC heating type).
+- name: Legacy adapter, electricity heating uses pre_subsidy_electricity_expense.
+  period: 2024
+  input:
+    irs_gross_income: 0
+    dc_liheap_heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 999
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 1
+    state_code: DC
+  output:
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to pre_subsidy_electricity_expense (999)
+    # min(matrix_amount, 999) = 948
+    dc_liheap_payment: 948
+
+- name: Legacy adapter, gas heating uses gas_expense.
+  period: 2024
+  input:
+    irs_gross_income: 4_001
+    dc_liheap_heating_type: GAS
+    gas_expense: 1_400
+    dc_liheap_housing_type: SINGLE_FAMILY
+    spm_unit_size: 3
+    state_code: DC
+  output:
+    # heating_type unspecified, heating_expense_person unset →
+    # adapter falls back to gas_expense (1_400)
+    # min(matrix_amount, 1_400) = 1_386
     dc_liheap_payment: 1_386
 
 # Canonical vocabulary tests — heating_type selects the per-fuel expense.

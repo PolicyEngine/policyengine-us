@@ -15,6 +15,7 @@ class il_liheap_heating_type(Variable):
     default_value = ILLIHEAPHeatingType.ALL_ELECTRIC
     definition_period = YEAR
     label = "Household heating type for IL LIHEAP"
+    documentation = "Derived from the canonical heating_type input; setting this directly is deprecated during the vocabulary migration."
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
@@ -29,7 +30,10 @@ class il_liheap_heating_type(Variable):
         return select(
             [
                 heat_in_rent,
-                (heating_type == types.ELECTRICITY) | (heating_type == types.SOLAR),
+                # UNSPECIFIED keeps the pre-canonical default of all-electric.
+                (heating_type == types.ELECTRICITY)
+                | (heating_type == types.SOLAR)
+                | (heating_type == types.UNSPECIFIED),
                 deliverable_fuel,
             ],
             [

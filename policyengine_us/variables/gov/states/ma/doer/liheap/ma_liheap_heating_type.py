@@ -16,6 +16,7 @@ class ma_liheap_heating_type(Variable):
     possible_values = MassachusettsLIHEAPHeatingType
     default_value = MassachusettsLIHEAPHeatingType.ELECTRICITY
     label = "Massachusetts LIHEAP household's heating type"
+    documentation = "Derived from the canonical heating_type input; setting this directly is deprecated during the vocabulary migration."
     definition_period = YEAR
     defined_for = StateCode.MA
     reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
@@ -31,7 +32,10 @@ class ma_liheap_heating_type(Variable):
                 oil_or_propane,
                 heating_type == types.NATURAL_GAS,
                 heating_type == types.KEROSENE,
-                (heating_type == types.ELECTRICITY) | (heating_type == types.SOLAR),
+                # UNSPECIFIED keeps the pre-canonical default of electricity.
+                (heating_type == types.ELECTRICITY)
+                | (heating_type == types.SOLAR)
+                | (heating_type == types.UNSPECIFIED),
                 heating_type == types.NONE,
             ],
             [
