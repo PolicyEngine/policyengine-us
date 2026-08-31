@@ -12,7 +12,16 @@ metadata:
   reference:
     - title: Iowa HHS CCA and CCA Plus Family Fee Chart (effective July 1, 2024)
       href: https://hhs.iowa.gov/media/12445/download?inline=#page=1
+    - title: Iowa HHS CCA and CCA Plus Family Fee Chart (effective July 1, 2025)
+      href: https://hhs.iowa.gov/media/16424/download?inline=#page=2
+    - title: Iowa HHS CCA and CCA Plus Family Fee Chart (effective July 1, 2026)
+      href: https://hhs.iowa.gov/media/18656/download?inline#page=2
 
+# The per-unit fees are unchanged in the 2025 and 2026 chart editions
+# (verified cell by cell against both charts), so the 2024-07-01 values
+# carry forward. Level BB is unreachable from 2025-07-01 — the 2025 and
+# 2026 charts end at level AA and the BB income thresholds are set to
+# infinity — so the printed 2024 BB fees below apply only before that date.
 A:
   1: {2024-07-01: 0.00}
   2: {2024-07-01: 0.00}
