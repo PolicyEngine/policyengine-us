@@ -1,0 +1,1 @@
+Use the shared childcare_attending_days_per_month and childcare_days_per_week inputs in the CalWORKs child care time coefficient instead of CA-only day and week counts that defaulted every California child care payment to zero.
