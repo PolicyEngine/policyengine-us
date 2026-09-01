@@ -7,7 +7,10 @@ class ma_ccfa_copay_level(Variable):
     label = "Massachusetts CCSP copay level"
     definition_period = MONTH
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
+    reference = (
+        "https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
+        "https://www.mass.gov/doc/parent-fee-chart-fy2026/download",
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ma.eec.ccfa.copay.fee_level

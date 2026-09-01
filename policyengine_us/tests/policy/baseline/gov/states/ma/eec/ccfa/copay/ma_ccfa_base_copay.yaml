@@ -29,3 +29,76 @@
   output:
     ma_ccfa_base_copay: 64.2
     # (3800 - 2600)*0.0535
+
+# The FY2025 and FY2026 Parent Fee Tables both list 4.45% at fee level 3
+# and 7.6% at fee level 10 (the only cells consistent with the chart's
+# uniform 0.45 percentage-point progression).
+- name: Case 4, family of 2, $2000 income, fee level 3 charges 4.45 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 2_000
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 3
+    ma_ccfa_base_copay: 13.2
+    # (2000 - 20440 / 12) * 0.0445
+
+- name: Case 5, family of 2, $3500 income, fee level 10 charges 7.6 percent.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 3_500
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 10
+    ma_ccfa_base_copay: 136.55
+    # (3500 - 20440 / 12) * 0.076
+
+# === FY2026 Parent Fee Table, effective October 1, 2025: wider income
+# brackets on the 2025 poverty guidelines (family of 2 FPG 21,150/year
+# = 1,762.50/month, chart level-1 ceiling 1,763). ===
+
+- name: Case 6, FY2026 chart worked example, family of 2 with $1850 income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 1_850
+    state_code: MA
+  output:
+    ma_ccfa_copay_level: 2
+    ma_ccfa_base_copay: 3.5
+    # The chart's step-4 example: subtract the FPG (1,763) from 1,850 and
+    # multiply the result by 4 percent (the model uses the exact FPG of
+    # 1,762.50, giving 87.50 * 0.04 = 3.50).
+
+- name: Case 7, FY2026 brackets place $2450 for a family of 2 in fee level 4.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 2
+    ma_ccfa_countable_income: 2_450
+    state_code: MA
+  output:
+    # FY2026 level 4 spans 2,226-2,456; under the FY2025 increments this
+    # income would have landed in level 5.
+    ma_ccfa_copay_level: 4
+    ma_ccfa_base_copay: 33.69
+    # (2450 - 21150 / 12) * 0.049
+
+- name: Case 8, FY2026 family of 7, $5000 income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 7
+    ma_ccfa_countable_income: 5_000
+    state_code: MA
+  output:
+    # Family of 7 FPG = 48,650/year = 4,054.17/month; FY2026 level 4
+    # spans 4,931-5,368.
+    ma_ccfa_copay_level: 4
+    ma_ccfa_base_copay: 46.35
+    # (5000 - 48650 / 12) * 0.049

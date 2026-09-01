@@ -10,7 +10,10 @@ class ma_ccfa_fpg(Variable):
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/parent-fee-chart-fy2025/download"
+    reference = (
+        "https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
+        "https://www.mass.gov/doc/parent-fee-chart-fy2026/download",
+    )
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
