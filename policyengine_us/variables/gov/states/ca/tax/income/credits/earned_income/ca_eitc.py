@@ -7,7 +7,11 @@ class ca_eitc(Variable):
     label = "CalEITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html"  # California Earned Income Tax Credit Worksheet
+    reference = (
+        "https://www.ftb.ca.gov/forms/2023/2023-3514-instructions.html",  # California Earned Income Tax Credit Worksheet
+        "https://www.ftb.ca.gov/forms/2024/2024-3514-booklet.html",
+        "https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.html",
+    )
     defined_for = "ca_eitc_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -61,5 +65,10 @@ class ca_eitc(Variable):
         # The California Earned Income Tax Credit Worksheet (FTB 3514
         # instructions) figures the credit on California earned income (line 2)
         # and on federal AGI (line 5) and takes the smaller (line 6) -- the same
-        # earned-income/AGI comparison the federal EITC uses.
-        return min_(credit_for(earned_income), credit_for(agi))
+        # earned-income/AGI comparison the federal EITC uses. Per RTC 17052(a)
+        # / IRC 32(a)(2)(B), the AGI branch uses "adjusted gross income (or, if
+        # greater, the earned income)", so the AGI lookup runs on the greater of
+        # federal AGI and earned income (mirroring federal eitc_reduction). When
+        # AGI <= earnings this makes the min_ a no-op (worksheet line 5 blank).
+        higher_income = max_(earned_income, agi)
+        return min_(credit_for(earned_income), credit_for(higher_income))
