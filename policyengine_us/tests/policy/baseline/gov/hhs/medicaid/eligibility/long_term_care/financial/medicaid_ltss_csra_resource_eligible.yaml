@@ -1,0 +1,617 @@
+- name: Case 1, Texas individual resource limit includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 1_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_001
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: TX
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, true, false]
+
+- name: Case 2, Texas couple resource limit includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 2_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_001
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: TX
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, true, false]
+
+- name: Case 3, Delaware individual and couple resource limits include their exact boundaries.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 2_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_001
+      individual_below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 1_999
+      individual_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_000
+      individual_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_001
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+      individual_below_tax_unit:
+        members: [individual_below]
+      individual_at_tax_unit:
+        members: [individual_at]
+      individual_above_tax_unit:
+        members: [individual_above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+      individual_below_family:
+        members: [individual_below]
+      individual_at_family:
+        members: [individual_at]
+      individual_above_family:
+        members: [individual_above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+      individual_below_spm_unit:
+        members: [individual_below]
+      individual_at_spm_unit:
+        members: [individual_at]
+      individual_above_spm_unit:
+        members: [individual_above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+      individual_below_marital_unit:
+        members: [individual_below]
+      individual_at_marital_unit:
+        members: [individual_at]
+      individual_above_marital_unit:
+        members: [individual_above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: DE
+      at_household:
+        members: [at]
+        state_code:
+          2026: DE
+      above_household:
+        members: [above]
+        state_code:
+          2026: DE
+      individual_below_household:
+        members: [individual_below]
+        state_code:
+          2026: DE
+      individual_at_household:
+        members: [individual_at]
+        state_code:
+          2026: DE
+      individual_above_household:
+        members: [individual_above]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible:
+      [true, true, false, true, true, false]
+
+- name: Case 4, Washington individual resource boundary is inclusive and assistance unit of two fails closed.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 1_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_countable_resources: 2_001
+      unsupported_couple:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 0
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+      unsupported_couple_tax_unit:
+        members: [unsupported_couple]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+      unsupported_couple_family:
+        members: [unsupported_couple]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+      unsupported_couple_spm_unit:
+        members: [unsupported_couple]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+      unsupported_couple_marital_unit:
+        members: [unsupported_couple]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: WA
+      at_household:
+        members: [at]
+        state_code:
+          2026: WA
+      above_household:
+        members: [above]
+        state_code:
+          2026: WA
+      unsupported_couple_household:
+        members: [unsupported_couple]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, UNMODELED]
+    medicaid_ltss_csra_resource_eligible: [true, true, false, false]
+
+- name: Case 5, the CSRA floor controls when half of snapshot resources is lower.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 60_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 32_532
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 6, half of snapshot resources controls between the CSRA bounds.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 50_000
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 7, the federal CSRA maximum controls when half of snapshot resources is higher.
+  period: 2026-07
+  input:
+    people:
+      at_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_660
+      above_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 162_661
+    tax_units:
+      at_maximum_tax_unit:
+        members: [at_maximum]
+      above_maximum_tax_unit:
+        members: [above_maximum]
+    families:
+      at_maximum_family:
+        members: [at_maximum]
+      above_maximum_family:
+        members: [above_maximum]
+    spm_units:
+      at_maximum_spm_unit:
+        members: [at_maximum]
+      above_maximum_spm_unit:
+        members: [above_maximum]
+    marital_units:
+      at_maximum_marital_unit:
+        members: [at_maximum]
+      above_maximum_marital_unit:
+        members: [above_maximum]
+    households:
+      at_maximum_household:
+        members: [at_maximum]
+        state_code:
+          2026: TX
+      above_maximum_household:
+        members: [above_maximum]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 8, a couple assistance unit with a community spouse flag fails closed.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 2
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_countable_resources: 0
+    medicaid_ltss_community_spouse_countable_resources: 0
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 0
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 9, one dollar above the CSRA floor allowance fails.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 60_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 32_533
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 10, one dollar above the half-of-snapshot allowance fails.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 50_001
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 11, half of snapshot resources ties the Washington state minimum.
+  period: 2026-07
+  input:
+    people:
+      at_tie:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 145_058
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 72_529
+      above_tie:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 145_058
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 72_530
+    tax_units:
+      at_tie_tax_unit:
+        members: [at_tie]
+      above_tie_tax_unit:
+        members: [above_tie]
+    families:
+      at_tie_family:
+        members: [at_tie]
+      above_tie_family:
+        members: [above_tie]
+    spm_units:
+      at_tie_spm_unit:
+        members: [at_tie]
+      above_tie_spm_unit:
+        members: [above_tie]
+    marital_units:
+      at_tie_marital_unit:
+        members: [at_tie]
+      above_tie_marital_unit:
+        members: [above_tie]
+    households:
+      at_tie_household:
+        members: [at_tie]
+        state_code:
+          2026: WA
+      above_tie_household:
+        members: [above_tie]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 12, a genuine two-person institutionalized couple uses the couple limit.
+  period: 2026-07
+  input:
+    people:
+      first_spouse_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_000
+      second_spouse_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_000
+      first_spouse_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_001
+      second_spouse_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_countable_resources: 3_001
+    tax_units:
+      couple_at_tax_unit:
+        members: [first_spouse_at, second_spouse_at]
+      couple_above_tax_unit:
+        members: [first_spouse_above, second_spouse_above]
+    families:
+      couple_at_family:
+        members: [first_spouse_at, second_spouse_at]
+      couple_above_family:
+        members: [first_spouse_above, second_spouse_above]
+    spm_units:
+      couple_at_spm_unit:
+        members: [first_spouse_at, second_spouse_at]
+      couple_above_spm_unit:
+        members: [first_spouse_above, second_spouse_above]
+    marital_units:
+      couple_at_marital_unit:
+        members: [first_spouse_at, second_spouse_at]
+      couple_above_marital_unit:
+        members: [first_spouse_above, second_spouse_above]
+    households:
+      couple_at_household:
+        members: [first_spouse_at, second_spouse_at]
+        state_code:
+          2026: TX
+      couple_above_household:
+        members: [first_spouse_above, second_spouse_above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
+    medicaid_ltss_csra_resource_eligible: [true, true, false, false]
