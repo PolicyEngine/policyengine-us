@@ -188,3 +188,18 @@
         state_code: VT
   output:
     vt_ccfap_eligible_child: [true]
+
+- name: Case 13, non-dependent undocumented child stays ineligible after the citizenship requirement ends.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false]

@@ -69,3 +69,12 @@
     state_code: OR
   output:
     or_erdc_eligible_child: true
+
+- name: Over-age undocumented child stays ineligible after the immigration test sunsets.
+  period: 2027-01
+  input:
+    age: 13
+    immigration_status: UNDOCUMENTED
+    state_code: OR
+  output:
+    or_erdc_eligible_child: false

@@ -25,9 +25,9 @@ class vt_ccfap_eligible_child(Variable):
         # Under the Act 76 rollout, the requirement that participating
         # children have an eligible citizenship status ended June 30, 2024;
         # DCF covers federally ineligible children with state funds.
-        if p.immigration_test_in_effect:
-            immigration_eligible = person(
-                "is_ccdf_immigration_eligible_child", period.this_year
-            )
-            return age_eligible & is_dependent & immigration_eligible
-        return age_eligible & is_dependent
+        immigration_eligible = where(
+            p.immigration_test_in_effect,
+            person("is_ccdf_immigration_eligible_child", period.this_year),
+            True,
+        )
+        return age_eligible & is_dependent & immigration_eligible
