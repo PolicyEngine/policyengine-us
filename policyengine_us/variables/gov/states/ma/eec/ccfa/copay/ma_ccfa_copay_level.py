@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_ccfa_copay_level(Variable):
     value_type = int
     entity = SPMUnit
-    label = "Massachusetts CCSP copay level"
+    label = "Massachusetts CCFA copay level"
     definition_period = MONTH
     defined_for = StateCode.MA
     reference = (

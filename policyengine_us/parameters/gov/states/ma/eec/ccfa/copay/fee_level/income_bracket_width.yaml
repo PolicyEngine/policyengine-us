@@ -1,4 +1,4 @@
-description: Massachusetts uses these monthly income bracket widths by household size to set fee levels under the Child Care Financial Assistance program.
+description: Massachusetts sets fee levels using this monthly income bracket width per household size under the Child Care Financial Assistance program.
 metadata:
   period: month
   unit: currency-USD
@@ -9,10 +9,11 @@ metadata:
     - Household size
   reference:
     - title: EEC Financial Assistance Parent Fee Table FY2025
-      href: https://www.mass.gov/doc/parent-fee-chart-fy2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2025/download
     - title: EEC Financial Assistance Parent Fee Table FY2026
-      href: https://www.mass.gov/doc/parent-fee-chart-fy2026
-# Can't find official documentation for FY2024, assuming the same as FY2025
+      href: https://www.mass.gov/doc/parent-fee-chart-fy2026/download
+# The FY2024 chart (effective 2023-10-01) could not be located; the
+# 2023-10-01 layer carries the FY2025 values.
 # Fee level 1 covers income up to the federal poverty guideline; each
 # subsequent level covers this additional amount of monthly income (the
 # constant difference between consecutive bracket ceilings in the chart).
