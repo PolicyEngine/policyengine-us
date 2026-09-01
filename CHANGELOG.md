@@ -1,3 +1,10 @@
+## [1.821.7] - 2026-09-01
+
+### Fixed
+
+- Removed the Montana property tax rebate from the state non-refundable credit list so it no longer reduces Montana income tax.
+
+
 ## [1.821.6] - 2026-08-31
 
 ### Fixed

@@ -1,1 +1,0 @@
-Removed the Montana property tax rebate from the state non-refundable credit list so it no longer reduces Montana income tax.
