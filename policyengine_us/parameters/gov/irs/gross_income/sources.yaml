@@ -18,8 +18,10 @@ values:
     - taxable_pension_income 
     # Pension income includes annuities and endowment contracts
     - debt_relief
-    # Decedent income
-    # Estate interest income
+    # Income in respect of a decedent (§ 61(a)(14)) is not modeled.
+    # Income from an interest in an estate or trust (§ 61(a)(15)): Schedule E
+    # Part III, carried to Schedule 1 line 5. Losses are deducted in loss_ald.
+    - estate_income
     - taxable_unemployment_compensation
     - taxable_social_security
     - illicit_income
@@ -38,3 +40,9 @@ metadata:
   reference:
     - title: 26 U.S. Code § 61 - Gross income defined
       href: https://www.law.cornell.edu/uscode/text/26/61
+    - title: 26 U.S. Code § 61(a)(15) - Income from an interest in an estate or trust
+      href: https://www.law.cornell.edu/uscode/text/26/61#a_15
+    - title: 2024 Instructions for Schedule 1 (Form 1040), line 5 - Rental real estate, royalties, partnerships, S corporations, trusts, etc.
+      href: https://www.irs.gov/instructions/i1040gi#en_US_2024_publink1000105007
+    - title: 2024 Instructions for Schedule E (Form 1040), Part III - Income or Loss From Estates and Trusts
+      href: https://www.irs.gov/instructions/i1040se#en_US_2024_publink24332td0e2545
